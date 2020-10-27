@@ -12,10 +12,9 @@ node {
        echo "Building: " + BUILD_CONFIG
        // openshiftBuild bldCfg: BUILD_CONFIG, showBuildLogs: 'true'
        // oc run-build BUILD_CONFIG --follow
-       // IMAGE_HASH = sh (
-       //    script: """oc get istag ${IMAGESTREAM_NAME}:latest -o template --template=\"{{.image.dockerImageReference}}\"|awk -F \":\" \'{print \$3}\'""",
-       // 	     returnStdout: true).trim()
-       // echo ">> IMAGE_HASH: $IMAGE_HASH"
+       IMAGE_HASH = sh (
+           script: """oc get istag ${IMAGESTREAM_NAME}:latest -o template --template=\"{{.image.dockerImageReference}}\"|awk -F \":\" \'{print \$3}\'""", returnStdout: true).trim()
+       echo ">> IMAGE_HASH: $IMAGE_HASH"
     }
 
     stage('deploy-' + TAG_NAMES[0]) {
