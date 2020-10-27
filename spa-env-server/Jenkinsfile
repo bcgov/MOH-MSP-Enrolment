@@ -11,7 +11,7 @@ node {
     stage('build') {
        echo "Building: " + BUILD_CONFIG
        // openshiftBuild bldCfg: BUILD_CONFIG, showBuildLogs: 'true'
-       oc start-build BUILD_CONFIG --follow
+       sh ( script: """oc start-build ${BUILD_CONFIG} --follow""", returnStdout: true)
        IMAGE_HASH = sh (
            script: """oc get istag ${IMAGESTREAM_NAME}:latest -o template --template=\"{{.image.dockerImageReference}}\"|awk -F \":\" \'{print \$3}\'""", returnStdout: true).trim()
        echo ">> IMAGE_HASH: $IMAGE_HASH"
