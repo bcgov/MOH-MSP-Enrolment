@@ -8,7 +8,7 @@ def BUILD_CONFIG = APP_NAME
 def IMAGESTREAM_NAME = APP_NAME
 
 node {
-
+    agent any
     stage('build') {
        echo "Building: " + BUILD_CONFIG
        // openshiftBuild bldCfg: BUILD_CONFIG, showBuildLogs: 'true'
@@ -28,6 +28,7 @@ node {
 }
 
 node {
+  agent any
   stage('deploy-' + TAG_NAMES[1]) {
     input "Deploy to " + TAG_NAMES[1] + "?"
     echo "Deploy to " + TAG_NAMES[1] + " " + IMAGESTREAM_NAME + ":" + "${IMAGE_HASH}"
@@ -37,6 +38,7 @@ node {
 }
 
 node {
+  agent any
   stage('deploy-'  + TAG_NAMES[2]) {
     input "Deploy to " + TAG_NAMES[2] + "?"
     echo "Deploy to " + TAG_NAMES[2] + " " + IMAGESTREAM_NAME + ":" + "${IMAGE_HASH}"
