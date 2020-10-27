@@ -10,6 +10,7 @@ def IMAGESTREAM_NAME = APP_NAME
 node {
 
     stage('build') {
+       cd spa-env-server
        echo "Building: " + BUILD_CONFIG
        // openshiftBuild bldCfg: BUILD_CONFIG, showBuildLogs: 'true'
        oc run-build BUILD_CONFIG --follow
@@ -20,6 +21,7 @@ node {
     }
 
     stage('deploy-' + TAG_NAMES[0]) {
+       cd spa-env-server
        echo "Deploying to: " + TAG_NAMES[0]
        echo "Deploy to " + TAG_NAMES[0] + " " + IMAGESTREAM_NAME + ":" + "${IMAGE_HASH}"
        // openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: TAG_NAMES[0], srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}"
@@ -29,6 +31,7 @@ node {
 
 node {
   stage('deploy-' + TAG_NAMES[1]) {
+    cd spa-env-server
     input "Deploy to " + TAG_NAMES[1] + "?"
     echo "Deploy to " + TAG_NAMES[1] + " " + IMAGESTREAM_NAME + ":" + "${IMAGE_HASH}"
     // openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: TAG_NAMES[1], srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}"
@@ -38,6 +41,7 @@ node {
 
 node {
   stage('deploy-'  + TAG_NAMES[2]) {
+    cd spa-env-server
     input "Deploy to " + TAG_NAMES[2] + "?"
     echo "Deploy to " + TAG_NAMES[2] + " " + IMAGESTREAM_NAME + ":" + "${IMAGE_HASH}"
     // openshiftTag destStream: IMAGESTREAM_NAME, verbose: 'true', destTag: TAG_NAMES[2], srcStream: IMAGESTREAM_NAME, srcTag: "${IMAGE_HASH}"
