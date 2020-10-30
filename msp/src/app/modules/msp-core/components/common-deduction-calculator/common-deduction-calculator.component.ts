@@ -1,0 +1,421 @@
+import {Component, DoCheck, EventEmitter, Input, Output} from '@angular/core';
+import {Router} from '@angular/router';
+import * as _ from 'lodash';
+import {Eligibility} from '../../../assistance/models/eligibility.model';
+import {ProcessService} from '../../../../services/process.service';
+import {MspBenefitDataService} from '../../../benefit/services/msp-benefit-data.service';
+import {BenefitApplication} from '../../../benefit/models/benefit-application.model';
+import { ATTENDANT_CARE_CLAIM_AMT } from '../../../../constants';
+import * as moment from 'moment';
+import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
+
+@Component({
+  selector: 'msp-common-deduction-calculator',
+  templateUrl: './common-deduction-calculator.component.html',
+  styleUrls: ['./common-deduction-calculator.component.scss']
+})
+export class CommonDeductionCalculatorComponent implements DoCheck {
+
+
+    static ProcessStepNum = 0;
+
+    @Input() application: BenefitApplication;
+    @Input() eligibilityCalculatorTitle: string;
+    @Input() totalHouseholdIncomeLabel: string;
+    @Input() continueButtonLabel: string;
+    @Input() NotQualifyText: string;
+    @Input() disableContinue: boolean = false;
+    @Output() updateQualify: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+    @Output() taxYearInfoMissing: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+    @Output() continue: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+
+    @Input() qualificationThreshhold: number;
+    total: number;
+
+    constructor(private _router: Router,
+                private dataService: MspBenefitDataService,
+                public _processService: ProcessService
+                ) { }
+
+    ngOnInit(): void {
+      this._processService.setStep(CommonDeductionCalculatorComponent.ProcessStepNum, false);
+    }
+
+    ngDoCheck(): void {
+      const valid = this.canContinue;
+
+      devOnlyConsoleLog('Valid: ' + valid);
+    }
+
+    get ageOver65Amt(): number {
+        return !!this.application.ageOver65 ? 3000 : 0;
+    }
+
+    get spouseAmt(): number {
+        //return !!this.application.hasSpouseOrCommonLaw ? 3000 : 0;
+        return !!this.application.hasSpouse ? 3000 : 0;
+    }
+
+    get spouseAgeOver65Amt(): number {
+        return !!this.application.spouseAgeOver65 ? 3000 : 0;
+    }
+
+    /**
+     * Children amount has been reduced with 50% of child care expense claimed on income tax
+     */
+    get adjustedChildrenAmt(): number {
+        const amt = this.childrenAmt + this.childCareExpense;
+        return amt > 0 ? amt : 0;
+    }
+
+    get childrenAmt(): number {
+        const cnt: number = (!!this.application.childrenCount && this.application.childrenCount > 0) ? this.application.childrenCount : 0;
+        const amt = cnt * 3000;
+        return amt > 0 ? amt : 0;
+    }
+
+    get childCareExpense(): number {
+        return !!this.application.claimedChildCareExpense_line214 ? (this.application.claimedChildCareExpense_line214 / 2) * -1 : 0;
+    }
+
+    get uCCBenefitAmt(): number {
+        return !!this.application.reportedUCCBenefit_line117 ? this.application.reportedUCCBenefit_line117 : 0;
+    }
+
+    get disabilityCreditAmt(): number {
+        const amt = !!this.application.applicantEligibleForDisabilityCredit ? 3000 : 0;
+        this.application.applicantDisabilityCredit = amt;
+        return amt;
+    }
+
+    get spouseDisabilityCreditAmt(): number {
+        const amt = !!this.application.spouseEligibleForDisabilityCredit ? 3000 : 0;
+        this.application.spouseDisabilityCredit = amt;
+        return amt;
+    }
+
+    get childrenDisabilityCreditAmt(): number {
+        const m = this.application.childWithDisabilityCount;
+        const amt = !!m ? 3000 * m : 0;
+        this.application.childrenDisabilityCredit = amt;
+        return amt;
+    }
+
+    get attendantCareExpenseAmt(): number {
+        return this.application.applicantAttendantCareExpense;
+    }
+
+    get childClaimForAttendantCareExpenseAmt(): number {
+        return this.application.childClaimForAttendantCareExpense
+            ? (this.application.childClaimForAttendantCareExpenseCount * ATTENDANT_CARE_CLAIM_AMT)
+            : 0;
+    }
+
+    get spouseClaimForAttendantCareExpenseAmt(): number {
+        return this.application.spouseClaimForAttendantCareExpense
+            ? ATTENDANT_CARE_CLAIM_AMT
+            : 0;
+    }
+
+    get applicantClaimForAttendantCareExpenseAmt(): number {
+        return this.application.applicantClaimForAttendantCareExpense
+            ? ATTENDANT_CARE_CLAIM_AMT
+            : 0;
+    }
+
+    get familyClaimForAttendantCareExpenseAmt(): number {
+        return this.childClaimForAttendantCareExpenseAmt
+            + this.spouseClaimForAttendantCareExpenseAmt
+            + this.applicantClaimForAttendantCareExpenseAmt;
+    }
+
+    get totalDeductions(): number {
+         let total = this.ageOver65Amt
+            + this.spouseAmt
+            + this.spouseAgeOver65Amt
+            + this.adjustedChildrenAmt
+            + this.uCCBenefitAmt
+            + this.disabilityCreditAmt
+            + this.spouseDisabilityCreditAmt
+            + this.childrenDisabilityCreditAmt;
+
+          const otherAmtTotal = (this.application.spouseDSPAmount_line125 * 1) + (this.applicantClaimForAttendantCareExpenseAmt * 1) + (this.spouseClaimForAttendantCareExpenseAmt * 1) + (this.childClaimForAttendantCareExpenseAmt * 1) ;
+
+          total += otherAmtTotal;
+          this.application.totalDeduction = total;
+          this.dataService.saveBenefitApplication();
+          return total;
+    }
+
+    get adjustedIncome(): number {
+        let adjusted: number = parseFloat(this.totalHouseholdIncome) - this.totalDeductions;
+        adjusted < 0 ? adjusted = 0 : adjusted = adjusted;
+
+        this.application.eligibility.adjustedNetIncome = adjusted;
+        this.application.eligibility.totalDeductions = this.totalDeductions;
+
+        this.application.eligibility.childDeduction = this.childrenAmt;
+        this.application.eligibility.disabilityDeduction = this.childrenDisabilityCreditAmt;
+        this.application.eligibility.totalDeductions = this.totalDeductions;
+        this.application.eligibility.totalNetIncome = parseFloat(this.totalHouseholdIncome);
+        this.application.eligibility.spouseDeduction = this.spouseAmt;
+        this.application.eligibility.spouseSixtyFiveDeduction = this.spouseAgeOver65Amt;
+        this.application.eligibility.sixtyFiveDeduction = this.ageOver65Amt;
+
+        /**
+         * Rule 23 on FDS document
+         *
+         * IF D0.NUMBER OF CHILDREN = 0
+         *  THEN Value = 0
+         *  ELSE Value =
+         *  D0.CHILD DEDUCTION -
+         *  D0.CHILD CARE EXPENSES
+         *  IF Value < 0
+         *  THEN Value = 0
+         */
+        this.application.eligibility.deductions = this.adjustedChildrenAmt;
+
+        return adjusted;
+    }
+
+    get applicantIncomeInfoProvided() {
+        const result = (!!this.application.netIncomelastYear && !isNaN(this.application.netIncomelastYear) && (this.application.netIncomelastYear + '').trim() !== '' ); //
+        //const stamp = new Date().getTime();
+        return result;
+    }
+
+    get spouseIncomeInfoProvided() {
+        const result = (!!this.application.spouseIncomeLine236 && !isNaN(this.application.spouseIncomeLine236) && (this.application.spouseIncomeLine236 + '').trim() !== '');
+        return result;
+    }
+
+    get incomeUnderThreshhold() {
+        return _.isNumber(this.adjustedIncome) && this.adjustedIncome <= this.qualificationThreshhold;
+        // let r = this.adjustedIncome <= this.qualificationThreshhold;
+        // return r;
+    }
+
+    //This method has all the logic to hide the Continue button on the Financial Info page
+    get canContinue() {
+        const spouseSpecified =
+            !(this.application.hasSpouse === null || this.application.hasSpouse === undefined);
+
+        const spouseAgeSpecified = !(this.application.spouseAgeOver65 === null || this.application.spouseAgeOver65 === undefined);
+        const applicantAgeSpecified = !(this.application.ageOver65 === null || this.application.ageOver65 === undefined);
+
+        const applicanthaveChildrens = !(this.application.haveChildrens === null || this.application.haveChildrens === undefined);
+        const applicantselfDisabilityCredit = !(this.application.selfDisabilityCredit === null || this.application.selfDisabilityCredit === undefined);
+        const applicantapplicantClaimForAttendantCareExpense = !(this.application.applicantClaimForAttendantCareExpense === null || this.application.applicantClaimForAttendantCareExpense === undefined);
+
+
+        if (this.application.hasRegisteredDisabilityPlan === undefined || this.application.hasClaimedAttendantCareExpenses === undefined) {
+          return false;
+        }
+
+        // check the net income with pattern "^[0-9]{1}[0-9]{0,5}(\.[0-9]{1,2})?$"
+        const patt = /^[0-9]{1}[0-9]{0,5}(\.[0-9]{1,2}){0,1}$/g;
+        let netIncomeValid = false;
+        if (this.application.netIncomelastYear === null || this.application.netIncomelastYear === undefined) {
+
+          netIncomeValid = false;
+        }
+        else {
+            const pm = this.application.netIncomelastYear.toString().match(patt);
+            if (pm && !(pm === null) && pm[0] && ! (pm[0] === null)) {
+              netIncomeValid = this.application.netIncomelastYear.toString() === pm[0];
+            } else {
+              this.continue.emit(false);
+              return false;
+            }
+        }
+
+        const spouseDisabilityCreditAmt = this.application.spouseDSPAmount_line125 && this.application.spouseDSPAmount_line125.toString().match(patt);
+
+        if (this.application.hasRegisteredDisabilityPlan) {
+            if (!spouseDisabilityCreditAmt) {
+               this.continue.emit(false);
+               return false;
+            }
+        }
+
+        // If a spouse id declared then income field becomes required
+        if (this.application.hasSpouse) {
+          if (!this.application.spouseIncomeLine236) {
+              this.continue.emit(false);
+              return false;
+          }
+        }
+
+        // if an applicant has childrens, then Child care expense field becomes required
+        if (this.application.haveChildrens){
+          if (!this.application.claimedChildCareExpense_line214){
+              this.continue.emit(false);
+              return false;
+          }
+        }
+
+        // if an applicant checks the disablity registered plan, registered disabled savings plan becomes mandatory
+        if (this.application.hasRegisteredDisabilityPlan){
+          if (!this.application.spouseDSPAmount_line125){
+              this.continue.emit(false);
+              return false;
+          }
+        }
+
+        //If self disablity credit is checked, then user needs to click on Applicant, spouse or my child checkbox
+        if (this.application.selfDisabilityCredit && !( this.application.applicantEligibleForDisabilityCredit || this.application.spouseEligibleForDisabilityCredit || this.application.childClaimForDisabilityCredit)) {
+          this.continue.emit(false);
+          return false;
+        }
+
+        // If applicant claim for nursing home expenses, then make sure he uploads the document for applicant or spouse or mychild
+        if (this.application.attendantCareExpenseReceipts.length === 0 && (this.application.applicantClaimForAttendantCareExpense || this.application.spouseClaimForAttendantCareExpense || this.application.hasClaimedAttendantCareExpenses === true )) {
+          this.continue.emit( false);
+          return false;
+        }
+
+
+        // Expense child care
+
+        const childCareExpenseAmt = this.application.claimedChildCareExpense_line214 && this.application.claimedChildCareExpense_line214.toString().match(patt);
+
+        if (this.application.haveChildrens) {
+          if (!childCareExpenseAmt) {
+            this.continue.emit(false);
+            return false;
+          }
+        }
+
+        // regex pattern check for the child count and checking if the child count is greater than 30
+        const childCountPattern = /^[0-9]{0,2}$/g;
+        if (this.application.childClaimForAttendantCareExpense) {
+          const childCountcheck = this.application.childWithAttendantCareCount && this.application.childWithAttendantCareCount.toString().match(childCountPattern);
+          if (!childCountcheck) {
+              this.continue.emit(false);
+              return false;
+          }
+        }
+
+        if (this.application.childClaimForDisabilityCredit) {
+          const childCountcheck = this.application.numberOfChildrenWithDisability && this.application.numberOfChildrenWithDisability.toString().match(childCountPattern);
+          if (!childCountcheck) {
+              this.continue.emit(false);
+              return false;
+          }
+        }
+
+        if (this.application.haveChildrens) {
+            const childCountcheck = this.application.childrenCount && this.application.childrenCount.toString().match(childCountPattern);
+            if (!childCountcheck || this.application.childrenCount > 29 ) {
+                this.continue.emit(false);
+                return false;
+            }
+
+            if (this.application.numberOfChildrenWithDisability && (this.application.numberOfChildrenWithDisability > this.application.childrenCount)) {
+                this.continue.emit(false);
+                return false;
+            }
+
+            if (this.application.childWithAttendantCareCount && (this.application.childWithAttendantCareCount > this.application.childrenCount)) {
+              this.continue.emit(false);
+              return false;
+            }
+        }
+
+        // checking if the total income does not exceeds 999999.99
+        if (this.totalHouseholdIncome) {
+            const totalFamilyincome = parseFloat(this.totalHouseholdIncome) * 1 ;
+            if (totalFamilyincome > 999999.99) {
+                this.continue.emit(false);
+                return false;
+            }
+        }
+        // Regex pattern check for the child count
+
+
+        /* if (spouseDisabilityCreditAmt && this.application.hasRegisteredDisabilityPlan) {
+            this.continue.emit(true);
+            return true;
+        } else {
+          this.continue.emit(false);
+          return false;
+        }*/
+
+        // added for DEAM-2 fix Invalid comma in money decimal fields
+        const isSpouseIncomeValid = !spouseSpecified || !this.application || !this.application.spouseIncomeLine236 || this.application.spouseIncomeLine236.toString().match(patt);
+
+        if (this.applicantIncomeInfoProvided && applicantAgeSpecified && spouseSpecified && netIncomeValid && isSpouseIncomeValid && applicanthaveChildrens && applicantapplicantClaimForAttendantCareExpense && applicantselfDisabilityCredit) {
+            if (this.application.hasSpouse) {
+                this.continue.emit(spouseAgeSpecified && this.attendantCareExpenseReceiptsProvided);
+                return spouseAgeSpecified && this.attendantCareExpenseReceiptsProvided;
+            } else {
+                this.continue.emit(this.attendantCareExpenseReceiptsProvided);
+                return this.attendantCareExpenseReceiptsProvided;
+            }
+
+        } else {
+            this.continue.emit(false);
+            return false;
+        }
+
+
+
+    }
+
+
+    navigateToPersonalInfo() {
+
+      this._processService.setStep(CommonDeductionCalculatorComponent.ProcessStepNum, true);
+      this._router.navigate(['/benefit/personal-info']);
+    }
+
+
+    private get attendantCareExpenseReceiptsProvided(): boolean {
+        let provided = true;
+        if (this.incomeUnderThreshhold && (this.childClaimForAttendantCareExpenseAmt > 0
+            || this.applicantClaimForAttendantCareExpenseAmt > 0 || this.spouseClaimForAttendantCareExpenseAmt > 0)) {
+            provided = this.application.attendantCareExpenseReceipts.length > 0;
+        }
+
+        return provided;
+    }
+
+    get isPristine() {
+        return (this.application.ageOver65 !== true && this.application.ageOver65 !== false) &&
+            (this.application.netIncomelastYear === null || this.application.netIncomelastYear === undefined);
+    }
+
+    get personalIncome(): number {
+        if (this.application.netIncomelastYear === null) {
+            return null;
+        }
+        const n = (!!this.application.netIncomelastYear &&
+            !isNaN(this.application.netIncomelastYear)) ? this.application.netIncomelastYear : 0;
+        return parseFloat(n + '');
+    }
+
+    get spouseIncome(): number {
+        const n = this.spouseIncomeInfoProvided ? this.application.spouseIncomeLine236 : 0;
+        return parseFloat(n + '');
+    }
+
+    get totalHouseholdIncome(): string {
+        const t: number = this.personalIncome + this.spouseIncome;
+        const total: string = Number(t).toFixed(2);
+        return total;
+    }
+
+    get eligibility(): Eligibility {
+        return this.application.eligibility;
+    }
+
+    get currentCalendarYear(): string {
+        if (this.application.taxYear) {
+            return this.application.taxYear.toString();
+        }    else return '';
+    }
+    get nextCalendarYear(): Number {
+        return moment().year() + 1;
+    }
+
+}

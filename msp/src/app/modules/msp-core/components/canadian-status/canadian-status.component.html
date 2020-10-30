@@ -1,0 +1,35 @@
+<ng-content select="[sectionTitleInfo]"></ng-content>
+<common-page-section layout="tips">
+  <ng-content select="[additionalInfo]"></ng-content>
+  <div *ngIf="displayStatusInCanada" class="form-group">
+    <div *ngIf="label">
+      <label for="StatusInCanada_{{objectId}}">{{label}}</label><br/>
+    </div>
+    <select class="custom-select"
+      #statusInCanadaRef="ngModel"
+      id="StatusInCanada_{{objectId}}"
+      [(ngModel)]="statusInCanada"
+      [ngModelOptions]="{standalone: true}"
+      (ngModelChange)="statusInCanada = $event;"
+      required>
+      <ng-container>
+        <option selected value="" disabled="true">Please select</option>
+        <option *ngFor="let item of statusOpts"
+          [ngValue]="item"
+          [selected]="statusInCanada == item">
+          {{item}}
+        </option>
+      </ng-container>
+    </select>
+  </div>
+  <div *ngIf="displayStatusReasons" class="form-group">
+    <common-radio
+      name="statusReason_{{objectId}}"
+      id="statusReason_{{objectId}}"
+      [radioLabels]="availableStatusReasons"
+      [(ngModel)]="statusReason"
+      display="table-row-group"
+      required>
+    </common-radio>
+  </div>
+</common-page-section>

@@ -1,0 +1,50 @@
+<common-page-framework layout="blank">
+  <form #formRef="ngForm" novalidate>
+    <a onclick="window.print();return false;">   
+      <strong class="float-right">Print 
+        <i class="fa fa-print fa-lg pointer" aria-hidden="true"></i>
+      </strong> 
+    </a> 
+  
+    <h1>Review your application</h1>
+  
+    <div class="row">
+      <div class="col-lg-6">
+        <msp-person-review-card title="Applicant Information"
+                                [person]="mspApplication.applicant"
+                                [editRouterLink]="personal_info"></msp-person-review-card>
+      </div>
+
+      <div class="col-lg-6" *ngIf="hasSpouse">
+        <msp-person-review-card title="Spouse Information"
+                                [person]="mspApplication.spouse"
+                                [editRouterLink]="spouse_info"></msp-person-review-card>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-6">
+        <msp-contact-review-card [residentialAddress]="mspApplication.residentialAddress"
+                                 [mailingAddress]="mailingAddress"
+                                 [phoneNumber]="mspApplication.phoneNumber"
+                                 [editRouterLink]="address_info"></msp-contact-review-card>
+      </div>
+    </div>
+    
+    <div class='row'>
+      <div class="col-lg-6" *ngIf="hasChildren">
+        <ng-container *ngFor="let child of mspApplication.children; let i = index;">
+          <msp-person-review-card title="Child Information"
+                                  [person]="child"
+                                  [editRouterLink]="child_info"></msp-person-review-card>
+        </ng-container>
+      </div>
+    </div>
+  </form>                
+</common-page-framework>
+<common-form-action-bar widthOption='extra-width-mobile-only'
+                        [defaultColor]='false'
+                        (btnClick)="continue()">
+</common-form-action-bar>
+
+

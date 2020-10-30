@@ -1,0 +1,129 @@
+<account-personal-information
+  [person]="child"
+  [phnList]="phnList">
+  <p class="horizontal-line"></p>
+</account-personal-information>
+
+<div class="row">
+  <div class="col-sm-12 col-md-4">
+    <label for="cancellationReason_{{objectId}}" class="control-label">Reason for cancellation</label>
+    <div class="form-group">
+    <select class="custom-select"
+      name="cancellationReason_{{objectId}}"
+      id="cancellationReason_{{objectId}}"
+      [(ngModel)]="child.cancellationReason"
+      [ngModelOptions]="{standalone: true}"
+      (ngModelChange)="setCancellationStatus($event)">
+      <option selected value="null" disabled="true">Please select</option>
+      <option *ngFor="let item of cancellationReasons"
+        [ngValue]="item.value">
+        {{item.label}}
+      </option>
+    </select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="child.cancellationReason === 2">
+  <div class="form-group">
+    <div class='row'>
+      <div class="col-sm-12 col-md-4">
+        <common-date
+          name="2"
+          label="Date no longer in full time studies"
+          [dateRangeStart]="child.dob"
+          [dateRangeEnd]="dateToday"
+          [errorMessage]="cancellationDateErrorMessage"
+          [(ngModel)]="child.cancellationDate"
+          (ngModelChange)="this.dataService.saveMspAccountApp();">
+        </common-date>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="warning--blue">
+          <i class="fa fa-exclamation-circle" style="font-size: 35px;"></i>
+          <p>
+            You do not need to upload supporting documentation. However, a child 0-18 years of age
+            must have coverage under another account. A child 19 years of age or over will be
+            automatically set up on their own account.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <common-radio
+    [value]="child.hasCurrentMailingAddress"
+    label="Do you know the child's current mailing address?"
+    [radioLabels]='[{"label": "No", "value": false}, {"label": "Yes", "value": true}]'
+    (valueChange)="child.hasCurrentMailingAddress = $event; this.dataService.saveMspAccountApp();">
+  </common-radio>
+
+  <common-page-section layout='noTips'>
+    <div *ngIf="child.hasCurrentMailingAddress">
+      <h2><strong>Child's Mailing Address</strong></h2>
+      <p class="horizontal-line">Please provide the child's current mailing address.</p>
+      <div class="row">
+        <div class="col-sm-12 col-md-4 form-group">
+          <common-address
+            #address
+            [address]="child.mailingAddress"
+            (addressChange)="handleAddressUpdate($event)"
+            [allowExtralines]="true"
+            [disableGeocoder]="true"
+            [isRequired]="true">
+          </common-address>
+        </div>
+      </div>
+    </div>
+  </common-page-section>
+</div>
+
+<div *ngIf="child.cancellationReason === 3" class="row">
+  <div class="col-sm-12 col-md-4 form-group">
+    <common-date
+      name="3"
+      label="Date of deceased"
+      [dateRangeStart]="child.dob"
+      [dateRangeEnd]="dateToday"
+      [errorMessage]="cancellationDateErrorMessage"
+      [(ngModel)]="child.cancellationDate"
+      (ngModelChange)="this.dataService.saveMspAccountApp();">
+    </common-date>
+  </div>
+</div>
+
+<div *ngIf="child.cancellationReason === 4" class="form-group notice text-danger">
+    To remove a child from your MSP account because they have moved away from BC, use the
+    <a href="https://www.health.gov.bc.ca/exforms/msp/7063.html" target="_blank">Permanent Move Outside British Columbia </a>
+    form. If you have additional changes to make to your MSP account, this link is also provided at the end of this form.
+</div>
+
+<div *ngIf="child.cancellationReason === 5" class="row">
+  <div class='col-sm-12 col-md-4 form-group'>
+    <common-date
+      name="5"
+      label="Date child became Armed Forces"
+      [dateRangeStart]="child.dob"
+      [dateRangeEnd]="dateToday"
+      [errorMessage]="cancellationDateErrorMessage"
+      [(ngModel)]="child.cancellationDate"
+      (ngModelChange)="this.dataService.saveMspAccountApp();">
+    </common-date>
+  </div>
+</div>
+
+<div *ngIf="child.cancellationReason === 6" class="row">
+  <div class='col-sm-12 col-md-4 form-group'>
+    <common-date
+      name="6"
+      label="Date incarcerated"
+      [dateRangeStart]="child.dob"
+      [dateRangeEnd]="dateToday"
+      [errorMessage]="cancellationDateErrorMessage"
+      [(ngModel)]="child.cancellationDate"
+      (ngModelChange)="this.dataService.saveMspAccountApp();">
+    </common-date>
+  </div>
+</div>

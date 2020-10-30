@@ -1,0 +1,26 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "outDir": "./dist/out-tsc",
+    "baseUrl": "src",
+    "sourceMap": true,
+    "declaration": false,
+    "moduleResolution": "node",
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "lib": [
+      "es2015",
+      "es2016",
+      "dom"
+    ],
+    "paths": {
+      "@angular/*": ["../node_modules/@angular/*"],
+      "pdfjs/*": ["../node_modules/pdfjs-dist/*"],
+      "mygovbc-captcha-widget/*" : ["../node_modules/mygovbc-captcha-widget/*"]
+    }
+  }
+}

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema version="1.1"
+    xmlns:nt="http://www.gov.bc.ca/hibc/nameAlignmentTypes" 
+    xmlns:ct="http://www.gov.bc.ca/hibc/commonTypes" 
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="http://www.gov.bc.ca/hibc/nameAlignmentTypes">
+
+    <xs:import namespace="http://www.gov.bc.ca/hibc/commonTypes" schemaLocation="CommonTypes.xsd"/>
+
+    <xs:annotation>
+    	<xs:documentation xml:lang="en">
+    		MSP Name Alignment Application - Digital Experience
+    		Version: $LastChangedRevision: 4310 $  
+    		LastChanged: $LastChangedDate: 2017-01-25 14:19:29 -0800 (Wed, 25 Jan 2017) $
+    	</xs:documentation>
+    </xs:annotation>
+
+	<!-- root element -->
+	<xs:element name="nameAlignmentApplication" type="nt:NameAlignmentApplicationType"/>
+	
+	<!-- type of root element -->
+	<xs:complexType name="NameAlignmentApplicationType">
+	    <xs:sequence>
+	    	<xs:element name="accountHolder" type="nt:NameAlignmentAccountHolderType" minOccurs="1" maxOccurs="1"/>
+			<xs:element name="applicant" type="nt:NameAlignmentType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="spouse" type="nt:NameAlignmentType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="children" type="nt:NameAlignmentChildrenType" minOccurs="0" maxOccurs="1"/>
+			<xs:element name="dependents" type="nt:NameAlignmentDependentsType" minOccurs="0" maxOccurs="1"/>
+		</xs:sequence>
+	</xs:complexType>
+    
+    <!-- Children -->
+	<xs:complexType name="NameAlignmentChildrenType">
+		<xs:sequence>
+			<xs:element name="child" type="nt:NameAlignmentType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- Dependents -->
+	<xs:complexType name="NameAlignmentDependentsType">
+		<xs:sequence>
+			<xs:element name="dependent" type="nt:NameAlignmentType" minOccurs="1" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<!-- Common to the person changing name -->
+	<xs:complexType name="NameAlignmentType">
+    	<xs:sequence>
+        	<xs:element name="existingLastName" type="ct:SubNameType" maxOccurs="1"/>
+        	<xs:element name="existingFirstName" type="ct:SubNameType" maxOccurs="1"/>
+        	<xs:element name="existingSecondName" type="ct:SubNameType" minOccurs="0" maxOccurs="1"/>
+        	<xs:element name="newLastName" type="ct:SubNameType" maxOccurs="1"/>
+        	<xs:element name="newFirstName" type="ct:SubNameType" maxOccurs="1"/>
+        	<xs:element name="newSecondName" type="ct:SubNameType" minOccurs="0" maxOccurs="1"/>
+        	<xs:element name="phn" type="ct:PHNType" maxOccurs="1"/>
+        	<xs:element name="birthDate" type="xs:date" maxOccurs="1"/>
+        	<xs:element name="gender" type="ct:GenderType" maxOccurs="1"/>
+        	<xs:element name="attachmentUuids" type="ct:AttachmentUuidsType"/>
+        </xs:sequence>
+    </xs:complexType>
+    
+    <!-- The account holder -->
+	<xs:complexType name="NameAlignmentAccountHolderType">
+    	<xs:sequence>
+        	<xs:element name="LastName" type="ct:SubNameType" maxOccurs="1"/>
+        	<xs:element name="FirstName" type="ct:SubNameType" maxOccurs="1"/>
+        	<xs:element name="SecondName" type="ct:SubNameType" minOccurs="0" maxOccurs="1"/>
+        	<xs:element name="phn" type="ct:PHNType" maxOccurs="1"/>
+        	<xs:element name="birthDate" type="xs:date" maxOccurs="1"/>
+        	<xs:element name="gender" type="ct:GenderType" maxOccurs="1"/>
+       		<xs:element name="telephone" type="ct:TelephoneType"/>
+        	<xs:element name="authorizedByAccountHolder" type="ct:YesOrNoType"/>
+        	<xs:element name="authorizedByAccountHolderDate" type="xs:date"/>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

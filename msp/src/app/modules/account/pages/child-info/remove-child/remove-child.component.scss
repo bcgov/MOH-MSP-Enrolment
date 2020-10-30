@@ -1,0 +1,14 @@
+.warning--blue {
+  color: #0000BF;
+  display: flex;
+  width: 100%;
+
+  > *:first-child {
+    padding-right: 8px;
+  }
+}
+
+.red-text {
+  color: #D9001B;
+}
+

@@ -1,0 +1,303 @@
+@import "mixins";
+@import "./variables.scss";
+// @import "~@ng-select/ng-select/themes/default.theme.css";
+
+html {
+  min-height: 100%;
+}
+
+html,
+body {
+  position: relative;
+  // height: 100%;
+}
+
+
+.deam-container {
+  padding-left: 7rem;
+  padding-right: 7rem;
+  @include remove-x-padding-at-tablet-size;
+}
+
+// Add, Remove, Update buttons container
+.aru-buttons {
+  @include flex-col-at-tablet-size;
+
+  &__button {
+    @media (max-width: 768px) {
+      width: 100%;
+      margin-bottom: 8px;
+      flex: none;
+      max-width: none;
+    }
+  }
+}
+
+.add-document {
+  margin-left: 30px;
+  padding-left: 10px;
+  border-left: 3px solid black;
+  max-width: 100%;
+}
+
+label {
+  font-weight: 800;
+}
+
+// Helpers and other classes not found in bootstrap
+.browserupgrade {
+  margin: 0.2em 0;
+  background: #ccc;
+  color: #000;
+  padding: 0.2em 0;
+}
+
+#wrap {
+  min-height: 100%;
+  height: auto !important;
+  /* Negative indent footer by it's height */
+  margin: 0 auto -48px;
+}
+
+#pad {
+  height: 50px;
+  // @media (max-width: 768px) {
+  //   height: 100px;
+  // }
+}
+
+.fa-check-circle {
+  color: #83d31d;
+}
+
+.fa-exclamation-triangle {
+  color: darkred;
+}
+
+button.disabled {
+  cursor: not-allowed;
+}
+
+// To unbold form labels, auto add optional string
+.optional {
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.optional::after {
+  content: " (optional)";
+}
+
+.if-applicable {
+  font-weight: normal;
+  white-space: nowrap;
+}
+
+.if-applicable::after {
+  content: " (if applicable)";
+}
+
+.success {
+  color: $success;
+}
+
+.danger {
+  color: $danger;
+}
+
+// Upper cases text and input fields
+.to-upper {
+  text-transform: uppercase;
+}
+
+// AngualarJS Helpers
+[ng-click],
+[data-ng-click],
+[x-ng-click] {
+  cursor: pointer;
+  text-decoration: none !important;
+}
+
+.msp-btn-radio {
+  background: #2962ff;
+  color: white;
+  &:hover {
+    background: #2962ff;
+    color: white;
+  }
+  &:not(:hover) {
+    background: #2962ff;
+    color: white;
+  }
+  &::selection {
+    background: #2962ff;
+  }
+  &:active {
+    background: #2962ff;
+  }
+}
+
+/* Apply our bootstrap theme form-control to the input of the component using some
+   some less magic */
+.completer-holder input {
+  @extend .form-control;
+}
+
+/* Add modal header color */
+.modal-header-primary {
+  background: $primary;
+  h2 {
+    color: white;
+    font-weight: 600;
+  }
+}
+
+// this is used across forms to show error message..this is as in bootstrap 3
+.has-error .form-control {
+  border-color: #a94442;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+}
+
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #eee;
+}
+
+.tool-tip {
+  padding: 10px 10px 25px 25px;
+  background: #eceff1;
+  border-radius: 8px 8px 8px 8px;
+  -moz-border-radius: 8px 8px 8px 8px;
+  -webkit-border-radius: 8px 8px 8px 8px;
+  border: 0px solid #eceff1;
+}
+
+/* A more visually important HR */
+.strong-hr {
+  border: none;
+  height: 1px;
+  /* Set the hr color */
+  color: #333;
+  /* old IE */
+  background-color: #333;
+  /* Modern Browsers */
+}
+
+.strong {
+  font-weight: 600;
+}
+
+h3 i {
+  margin-right: 5px;
+  color: #036;
+}
+
+.shade {
+  text-shadow: 2px 2px 4px yellow;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+p.intro {
+  font-size: $font-size-lg;
+  margin-top: 20px;
+}
+
+/*
+Special accessibility class to hide things like labels but still have the readable by screen readers
+ */
+.visuallyhidden {
+  position: absolute;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  width: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+}
+
+/*
+  Hide spinners in firefox
+ */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+// Bootstrap has deprecated these helper classes, replacing them with their
+// "display" helpers, e.g. d-none or d-sm-block.  We should try to use the new
+// helpers wherever possible, but currently some of our implementations (such as
+// the ProgressBar) require these classes.
+@include media-breakpoint-down(sm) {
+  .hidden-xs {
+    display: none !important;
+  }
+}
+
+@include media-breakpoint-down(md) {
+  .hidden-sm {
+    display: none !important;
+  }
+}
+
+@include media-breakpoint-down(lg) {
+  .hidden-md {
+    display: none !important;
+  }
+}
+
+@include media-breakpoint-down(xl) {
+  .hidden-lg {
+    display: none !important;
+  }
+}
+
+.help-block {
+  display: block;
+  margin-top: 0.35rem;
+  margin-bottom: 0.7rem;
+  color: green;
+  color: $gray-600;
+}
+
+// Bootstrap 3 to 4: Re-add has-error label effects, so the question label
+// becomes highlighted red, not just the field.
+.has-error .checkbox,
+.has-error .checkbox-inline,
+.has-error.checkbox-inline label,
+.has-error.checkbox label,
+.has-error .control-label,
+.has-error .help-block,
+.has-error .radio,
+.has-error .radio-inline,
+.has-error.radio-inline label,
+.has-error.radio label {
+  color: $color-danger;
+}
+
+.checkbox label,
+.radio label,
+input[type="checkbox"] + label,
+input[type="radio"] + label {
+  font-weight: 400;
+}
+
+.roundbullet {
+  list-style-type: circle;
+}
+
+// Moved here from many duplicates in component sheets
+.horizontal-line {
+  border-bottom: 1px solid black;
+}

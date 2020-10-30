@@ -1,0 +1,103 @@
+<div class="form-group">
+  <common-radio
+    name="ageCategory_{{objectId}}"
+    id="AgeCategory_{{index}}"
+    [(ngModel)]="childRelationship"
+    label="How old is the child?"
+    [radioLabels]="childAgeCategory"
+    required>
+  </common-radio>
+  <common-radio
+      name="activeCoverage_{{objectId}}"
+      [(ngModel)]="hasActiveMedicalCoverage"
+      label="Does the child currently have active Medical Services Plan coverage?"
+      [radioLabels]='[{"label": "No", "value": false }, {"label": "Yes", "value": true}]'
+      required>
+  </common-radio>
+</div>
+
+<div *ngIf="child.relationship !== undefined && hasActiveMedicalCoverage !== undefined">
+  <div *ngIf="hasActiveMedicalCoverage === false">
+    <!-- Child's status in Canada-->
+    <div class="form-group col-sm-6 add-document">
+      <msp-canadian-status
+        [person]="child"
+        label="Child's status in Canada">
+      </msp-canadian-status>
+
+      <!-- Documents to support the child status in Canada -->
+      <msp-support-documents
+        *ngIf="child.status !== undefined"
+        [canadianStatus]="child.status"
+        [statusReason]="child.currentActivity"
+        [(supportDoc)]="statusDocuments">
+        <div sectionTitleInfo>
+          <h2>Documents to support the child status in Canada</h2>
+          <p class="horizontal-line">
+            Provide <b>one</b> of the required documents to support the child's immigration status in Canada.
+          </p>
+        </div>
+      </msp-support-documents>
+    </div>
+
+    <!-- Has the child's name changed since their id was issued due to a legal name change? -->
+    <common-radio
+      name="nameChange_{{objectId}}"
+      [(ngModel)]="child.hasNameChange"
+      label="Has the child's name changed since their ID was issued due to a legal name change?"
+      (valuehange)="this.personChange.emit(child);"
+      required>
+    </common-radio>
+
+    <!-- Documents - Update name due to name change -->
+    <div class="add-document">
+      <msp-support-documents
+        *ngIf="child.hasNameChange"
+        [supportDocList]="nameChangeDocList"
+        [(supportDoc)]="child.nameChangeDocs">
+        <div sectionTitleInfo>
+          <h2>Documents - Update name due to name change</h2>
+          <p class="horizontal-line">
+            Provide <b>one</b> of the required documents to support the child's name change.
+          </p>
+        </div>
+      </msp-support-documents>
+    </div>
+  </div>
+
+  <!-- Child's Personal Info -->
+  <account-personal-information
+    [person]="child"
+    [phnList]="phnList">
+    <div sectionTitleInfo>
+      <h2><strong>Child's Personal Information</strong></h2>
+      <p class="horizontal-line">
+        Enter the child's legal name as it appears on their official Canadian identity
+        documents, e.g., birth certificate, permanent resident card, passport.
+      </p>
+    </div>
+  </account-personal-information>
+
+  <!-- Child's Gender -->
+  <div class="row">
+    <div class="col-md-4">
+      <common-radio
+        [value]="child.gender"
+        label='Gender'
+        [radioLabels]='[{"label": "Female", "value": "F"}, {"label": "Male", "value": "M"}]'
+        (valueChange)="setGender($event)"
+        required>
+      </common-radio>
+    </div>
+  </div>
+
+  <!-- Child's Residency Information -->
+  <msp-child-moving-information
+    [person]="child">
+    <!-- Don't show the residency header if they have MSP already -->
+    <div *ngIf="hasActiveMedicalCoverage === false" sectionTitleInfo>
+      <h2><strong>Child's Residency Information</strong></h2>
+      <p class="horizontal-line"></p>
+    </div>
+  </msp-child-moving-information>
+</div>
