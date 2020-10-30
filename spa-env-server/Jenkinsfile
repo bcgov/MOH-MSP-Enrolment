@@ -19,7 +19,25 @@ node {
     stage('deploy-' + TAG_NAMES[0]) {
        echo "Deploying to: " + TAG_NAMES[0]
        echo "Deploy to " + TAG_NAMES[0] + " " + IMAGESTREAM_NAME + ":" + "${IMAGE_HASH}"
-       oc tag IMAGESTREAM_NAME + ":" + "${IMAGE_HASH}" IMAGESTREAM_NAME + ":" + TAG_NAMES[0]
+       sh ( script: """oc tag ${IMAGESTREAM_NAME} + ":" + "${IMAGE_HASH}" ${IMAGESTREAM_NAME} + ":" + ${TAG_NAMES[0]}""", returnStdout: true)
     }
 }
+
+node {
+  stage('deploy-' + TAG_NAMES[1]) {
+    input "Deploy to " + TAG_NAMES[1] + "?"
+    echo "Deploy to " + TAG_NAMES[1] + " " + IMAGESTREAM_NAME + ":" + "${IMAGE_HASH}"
+    sh ( script: """oc tag ${IMAGESTREAM_NAME} + ":" + "${IMAGE_HASH}" ${IMAGESTREAM_NAME} + ":" + ${TAG_NAMES[1]}""", returnStdout: true)
+  }
+}
+
+node {
+  stage('deploy-' + TAG_NAMES[2]) {
+    input "Deploy to " + TAG_NAMES[2] + "?"
+    echo "Deploy to " + TAG_NAMES[2] + " " + IMAGESTREAM_NAME + ":" + "${IMAGE_HASH}"
+    sh ( script: """oc tag ${IMAGESTREAM_NAME} + ":" + "${IMAGE_HASH}" ${IMAGESTREAM_NAME} + ":" + ${TAG_NAMES[2]}""", returnStdout: true)
+  }
+}
+
+
 
