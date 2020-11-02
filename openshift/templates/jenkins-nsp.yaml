@@ -43,12 +43,12 @@ objects:
   - apiVersion: security.devops.gov.bc.ca/v1alpha1
     kind: NetworkSecurityPolicy
     metadata:
-      name: builder-to-internet
+      name: jenkins-to-internet
       labels:
         app: jenkins
     spec:
       description: |
-        allow the builder pods to communicate with the internet.
+        allow the jenkins pods to communicate with the internet.
       source:
         - - $namespace=f0463d-tools
           - '@app:k8s:serviceaccountname=jenkins'

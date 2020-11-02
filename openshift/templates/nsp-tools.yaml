@@ -27,7 +27,7 @@ objects:
     metadata:
       # This metadata field will be what you see with the command
       # `oc get externalnetwork` or `kubctl get externalnetwork`.
-      name: all-things-external
+      name: all-things-external-builder
       labels:
         app: platsrv-image-management
     spec:
@@ -54,7 +54,7 @@ objects:
         - - $namespace=${NAMESPACE}
           - '@app:k8s:serviceaccountname=builder'
       destination:
-        - - 'ext:name=all-things-external'
+        - - 'ext:name=all-things-external-builder'
 parameters:
   - name: NAMESPACE
     description: |
