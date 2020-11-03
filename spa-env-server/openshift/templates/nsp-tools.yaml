@@ -18,9 +18,9 @@ kind: Template
 metadata:
   annotations:
     description: |
-      The Network Security Policies (NSP) for the 
-      build image builds mechanics.
-  name: build-image-management
+      The Network Security Policies (NSP) for the associated
+      Platform Services image builds mechanics.
+  name: platform-services-image-management
 objects:
   - apiVersion: security.devops.gov.bc.ca/v1alpha1
     kind: ExternalNetwork
@@ -29,7 +29,7 @@ objects:
       # `oc get externalnetwork` or `kubctl get externalnetwork`.
       name: all-things-external
       labels:
-        app: jenkins-image-management
+        app: platsrv-image-management
     spec:
       # This name will be used internally by Aporeto; it should match
       # the `name` field in metadata above.
@@ -46,7 +46,7 @@ objects:
     metadata:
       name: builder-to-internet
       labels:
-        app: jenkins-image-management
+        app: platsrv-image-management
     spec:
       description: |
         allow the builder pods to communicate with the internet.
