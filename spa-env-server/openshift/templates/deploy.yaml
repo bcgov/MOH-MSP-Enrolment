@@ -266,4 +266,11 @@ parameters:
     displayName: SPA_ENV_MSP_MAINTENANCE_MESSAGE
     required: false
     value: System will be done from time A to time B
- 
+  - name: SERVICE_PORT
+    description: The port this service will sisten on.
+    displayName: SERVICE_PORT
+    value: "8080"
+  - name: SERVICE_IP
+    description: The IP address this service will bind to.
+    displayName: SERVICE_IP
+    value: "0.0.0.0"

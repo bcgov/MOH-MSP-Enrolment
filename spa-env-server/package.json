@@ -12,7 +12,7 @@
   "scripts": {
     "build": "NODE_ENV=production gulp",
     "start": "node $NODE_DEBUG_OPTION build/index.js server",
-    "dev": "nodemon --watch src --inspect=0.0.0.0:9229 --exec node ./src/index.js",
+    "dev": "nodemon --watch src --inspect=0.0.0.0:9229 --exec node ./src/index.js server",
     "test": "echo \"WARNING: No test specified\" && exit 0",
     "test:coverage": "echo \"WARNING: No test specified\" && exit 0",
     "test:lint": "echo \"WARNING: No LINTer specified\" && exit 0",

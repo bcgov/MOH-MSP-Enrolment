@@ -116,6 +116,11 @@ if (args.length == 3 && args[2] == 'server') {
     });
 }
 
+// health and readiness check
+app.get('/hello', function (req, res) {
+    res.status(200).end();
+});
+
 // handle posts to /env endpoint
 app.post('/env', function (req, res) {
     getSPAEnvValue(req).then(function (envValue) {

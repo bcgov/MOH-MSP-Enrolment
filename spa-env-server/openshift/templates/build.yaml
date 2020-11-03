@@ -65,12 +65,12 @@ parameters:
   displayName: Git Repo URL
   name: GIT_REPO_URL
   required: true
-  value: https://github.com/fullboar/spa-env-server.git
+  value: https://github.com/fullboar/MOH-MSP-Enrolment.git
 - description: The git reference or branch.
   displayName: Git Reference
   name: GIT_REF
   required: true
-  value: master
+  value: main
 - description: The source context directory.
   displayName: Source Context Directory
   name: SOURCE_CONTEXT_DIR
