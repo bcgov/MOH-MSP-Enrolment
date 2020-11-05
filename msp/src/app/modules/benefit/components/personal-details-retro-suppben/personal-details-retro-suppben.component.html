@@ -1,0 +1,67 @@
+<form #formRef="ngForm" novalidate>
+
+  <msp-personal-information [(person)]="person"
+                            [phnList]="phnList"
+                            [sinList]="sinList">
+    <div sectionTitleInfo>
+      <!-- Remove Spouse and Child Button, (Red cross) -->
+      <div *ngIf="removeable">
+        <div *ngIf="person.relationship !== Relationship.Applicant">
+          <div  *ngIf="person.relationship === Relationship.Spouse">
+            <h2>Your spouse or common-law partner</h2>
+            Enter your spouse’s legal name as it appears on their BC Services Card.
+            
+            <common-xicon-button label='Remove Spouse' (click)="removeSpouse()"></common-xicon-button>
+            <hr>    
+          </div>
+        </div>
+      </div>
+    </div>     
+  </msp-personal-information>
+
+  <!-- Doc Uploader   -->
+  <h2>Documents</h2>
+  <p class="help-block border-bottom"> Upload {{docText}} Canada Revenue Agency Notice of Assessment or Reassessment for <b>{{benefitApp.taxYear}}</b></p>
+  <div class="row">        
+    <div class="col-8" style="margin-bottom: 15px;">      
+      <common-file-uploader 
+          [images]="person.assistYearDocs"
+          (imagesChange)="addDocument($event)"
+          [id]='benefitApp.id'
+          (errorDocument)="errorDoc($event)" 
+          instructionText="Click add, or drag and drop file into this box">
+      </common-file-uploader>
+    </div>
+    <!-- TIP -->
+    <div  style="background-color : #f2f2f2; height: 240px; width: 396px;">
+      <br>
+      <aside>
+        <div class="row" style="margin-bottom:15px">
+          <div class="col-2">
+            <i class="fa fa-exclamation-circle text-primary pl-4" style="font-size: 35px;"></i>
+          </div>
+        <div class="col-8">
+          <p>
+            If you are uploading a copy of a Notice of Assessment or Reassessment from the Canada Revenue Agency website, make sure the image contains:
+          </p>
+          <ul>
+            <li>
+              Your name
+            </li>
+            <li>
+              The tax year
+            </li>
+            <li>
+              Your net income (line {{ benefitApp.taxYear >= 2019 ? 23600 : 236 }})
+            </li>
+            <li> 
+              If you have a Registered Disability Savings Plan (line {{ benefitApp.taxYear >= 2019 ? 12500 : 125 }})
+            </li>
+            </ul>
+          </div>
+        </div>
+      </aside> 
+    </div>  
+  </div> 
+      <common-image-error-modal #mspImageErrorModal></common-image-error-modal>
+</form>

@@ -1,0 +1,63 @@
+<common-page-framework layout="single">
+  <form #formRef="ngForm" novalidate >
+    <h1>Authorize your application</h1>
+    <p>
+        I have received information about the Medical Services Plan and agree to abide 
+        by the terms and conditions of the Medical Services Plan. I understand that if 
+        a discrepancy exists between the information provided and the legislation, the 
+        legislation will govern.
+    </p>
+    <p>
+        I authorize the Ministry of Health to collect my health information from practitioners 
+        who provide publicly funded health care service(s) to me under the Medical Services Plan 
+        and other publicly funded health care programs, and I provide consent for those practitioners 
+        to disclose such information to the Ministry of Health for the purposes of assessing 
+        eligibility for, and in regard to the administration of, Medical Services Plan and other 
+        Ministry of Health publicly funded health care programs.
+    </p>
+    <p>
+        I declare that all information provided is true and I understand that the Ministry of Health 
+        and/or Health Insurance BC may verify this information with immigration authorities, 
+        law enforcement authorities and other public authorities, agencies and persons as appropriate. 
+        I declare that all persons listed are residents of British Columbia.
+    </p>
+    <div class="strong">
+        {{questionApplicant}}
+    </div>
+    <div class="form-check form-check-inline m-sm-2">
+      <common-checkbox name="applicantAuthorization"
+                       label="{{label}}" 
+                       (ngModelChange)="applicantAuthorizeOnChange($event)" 
+                       [ngModel]="mspApplication.authorizedByApplicant"
+                       [required]="true">
+      </common-checkbox>
+    </div>
+
+    <div *ngIf="hasSpouse">
+      <div class="strong">{{questionSpouse}}</div>
+      <div class="form-check form-check-inline p-sm-2">
+          <common-checkbox name="spouseAuthorization"
+                           label="{{label}}" 
+                           [(ngModel)]="mspApplication.authorizedBySpouse"
+                           [required]="true">
+          </common-checkbox>
+      </div>
+    </div>
+
+    <div class="mt-2">
+      <common-captcha name="captcha"
+                      ngModel
+                      [apiBaseUrl]="captchaApiBaseUrl" 
+                      [nonce]="mspApplication.uuid"
+                      (onValidToken)="mspApplication.authorizationToken=$event"
+                      required>
+      </common-captcha>
+    </div>
+
+  </form>
+</common-page-framework>
+<common-form-action-bar submitLabel="Submit Application"
+                        widthOption='extra-width-mobile-only' 
+                        (btnClick)="continue()"
+                        [isLoading]="loading">
+</common-form-action-bar>

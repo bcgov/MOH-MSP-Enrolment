@@ -1,0 +1,13 @@
+{
+    "/msp/api": {
+        "target": "https://mygovbc-msp-dev.pathfinder.gov.bc.ca",
+        "changeOrigin": true,
+        "secure": false
+    },
+    "/msp/app/images":{
+        "target" : "http://localhost:4300",
+        "pathRewrite": {
+            "^/msp": ""
+        }
+    }
+}

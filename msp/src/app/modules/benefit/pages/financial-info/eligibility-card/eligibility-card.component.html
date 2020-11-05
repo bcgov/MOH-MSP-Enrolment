@@ -1,0 +1,166 @@
+<msp-review-card [title]="'Financial Information'" [editRouterLink]="editRouterLink">
+
+    <div class="row">
+        <div class="col-sm-8">
+            Tax year selected
+        </div>
+        <div class="col-sm-4">
+          <strong>{{this.application.taxYear}}</strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').netAnnualIncome}}
+      </div>
+      <div class="col-sm-4">
+        
+        <strong>{{this.application.netIncomelastYear | currency: 'CAD' : 'symbol-narrow'}}</strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').ageOver65}}
+      </div>
+      <div class="col-sm-4">
+        <strong>{{this.application.ageOver65 === true? 'Yes': 'No'}}</strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').hasSpouseOrCommonLaw}}
+      </div>
+      <div class="col-sm-4">
+        <strong>{{this.application.hasSpouseOrCommonLaw === true? 'Yes': 'No'}}</strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').spouseAgeOver65}}
+      </div>
+      <div class="col-sm-4">
+        <strong>{{this.application.spouseAgeOver65 === true? 'Yes': 'No'}}</strong>
+      </div>
+    </div>
+    <div class="row" *ngIf="this.application.spouseIncomeLine236">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').spouseAnnualIncome}}
+      </div>
+      <div class="col-sm-4">
+       
+        <strong>{{this.application.spouseIncomeLine236 | currency: 'CAD' : 'symbol-narrow' }}</strong>
+      </div>
+    </div>
+    <div class="row" *ngIf="this.application.childrenCount">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').childCount}}
+      </div>
+      <div class="col-sm-4">
+        <strong>{{childrenAmt | currency: 'CAD' : 'symbol-narrow'}}</strong>
+      </div>
+    </div>
+    <div class="row" *ngIf="this.application.claimedChildCareExpense_line214">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').claimedChildCareExpense_line214}}
+      </div>
+      <div class="col-sm-4">
+        
+        <strong>{{this.application.claimedChildCareExpense_line214 | currency: 'CAD' : 'symbol-narrow'}}</strong>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="this.application.reportedUCCBenefit_line117">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').reportedUCCBenefit_line117}}
+      </div>
+      <div class="col-sm-4">
+       
+        <strong>{{this.application.reportedUCCBenefit_line117 | currency: 'CAD' : 'symbol-narrow'}}</strong>
+      </div>
+    </div>
+    <div *ngIf="_mainDisabilityCredit" class="row">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').disabilityCredit}}
+      </div>
+      <div class="col-sm-4">
+       
+        <strong >{{_mainDisabilityCredit | currency: 'CAD' : 'symbol-narrow'}}</strong>
+      </div>
+    </div>
+    <div *ngIf="_spouseDisabilityCredit" class="row">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').spouseDisabilityCredit}}
+      </div>
+      <div class="col-sm-4">
+        
+        <strong>{{_spouseDisabilityCredit | currency: 'CAD' : 'symbol-narrow'}}</strong>
+      </div>
+    </div>
+    <div *ngIf="_childrenDisabilityCredit" class="row">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').childrenDisabilityCredit}}
+      </div>
+      <div class="col-sm-4">
+        <strong>{{_childrenDisabilityCredit | currency: 'CAD' : 'symbol-narrow' }}</strong>
+      </div>
+    </div>
+    <div *ngIf="application.childClaimForAttendantCareExpense" class="row">
+        <div class="col-sm-8">
+            Child attendant care expense
+        </div>  
+        <div class="col-sm-4">
+            <strong> {{childClaimForAttendantCareExpenseAmt| currency: 'CAD' : 'symbol-narrow'}}</strong>
+        </div>
+    </div>
+    <div class="row" *ngIf="this.application.spouseDSPAmount_line125">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').registeredDSP}}
+      </div>
+      <div class="col-sm-4">
+        
+        <strong>{{this.application.spouseDSPAmount_line125 | currency: 'CAD' : 'symbol-narrow'}}</strong>
+      </div>
+    </div>
+
+    <!-- Attendant Care expenses and Spouse Attendant Care Expenses-->
+    
+    <div *ngIf="this.application.applicantClaimForAttendantCareExpense" class="row">
+        <div class="col-sm-8">
+          {{lang('./en/index.js').applicantAttendantCare}}
+        </div>
+        <div class="col-sm-4">
+         
+          <strong >{{_applicantAttendantCareExpense | currency: 'CAD' : 'symbol-narrow' }}</strong>
+        </div>
+    </div>
+
+    <div *ngIf="this.application.spouseClaimForAttendantCareExpense" class="row" >
+        <div class="col-sm-8">
+          {{lang('./en/index.js').spouseAttendantCare}}
+        </div>
+        <div class="col-sm-4">
+          
+          <strong>{{_spouseAttendantCareExpense | currency: 'CAD' : 'symbol-narrow'}}
+          </strong>
+        </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').totalDeductions}}
+      </div>
+      <div class="col-sm-4">
+       
+        <strong> {{this.application.eligibility.totalDeductions | currency: 'CAD' : 'symbol-narrow'}}</strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-8">
+        {{lang('./en/index.js').adjustedIncome}}
+      </div>
+      <div class="col-sm-4">
+          
+        <strong>{{this.application.eligibility.adjustedNetIncome  | currency: 'CAD' : 'symbol-narrow'}}</strong>
+      </div>
+    </div>
+
+</msp-review-card>

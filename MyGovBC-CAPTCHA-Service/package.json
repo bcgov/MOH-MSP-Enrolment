@@ -1,0 +1,60 @@
+{
+  "name": "mygovbc-captcha-service",
+  "version": "7.2.0",
+  "description": "A reusable, secure and reliable CAPTCHA microservice for service providers to use within online digital services.",
+  "main": "lib/index.js",
+  "scripts": {
+    "test": "ts-node tests/test",
+    "start": "ts-node src/index server",
+    "install": "tsc -p .",
+    "generate-private-key": "ts-node util_jwks_gen.ts"
+  },
+  "dependencies": {
+    "@types/express": "^4.16.0",
+    "@types/node": "^10.12.0",
+    "arraybuffer-to-buffer": "0.0.4",
+    "body-parser": "^1.16.0",
+    "buffer": "^5.0.5",
+    "dotenv": "^6.0.0",
+    "express": "^4.14.1",
+    "ip-range-check": "0.0.2",
+    "jsonwebtoken": "^8.0.0",
+    "lame": "^1.2.4",
+    "node-jose": "^1.0.0",
+    "os": "^0.1.1",
+    "streamifier": "^0.1.1",
+    "svg-captcha": "^1.3.1",
+    "text2wav": "^0.0.10",
+    "ts-node": "^7.0.1",
+    "typescript": "^3.1.3",
+    "wav": "^1.0.1",
+    "winston": "^2.3.1"
+  },
+  "optionalDependencies": {
+    "winston-syslog": "^1.2.5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcgov/MyGovBC-CAPTCHA-Service.git"
+  },
+  "keywords": [
+    "MyGovBC",
+    "captcha",
+    "service",
+    "widget",
+    "api",
+    "JWT"
+  ],
+  "author": "Mark Lisé <contact@digitalspace.ca> (http://www.digitalspace.ca/)",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/bcgov/MyGovBC-CAPTCHA-Service/issues"
+  },
+  "homepage": "https://github.com/bcgov/MyGovBC-CAPTCHA-Service#readme",
+  "engines": {
+    "node": ">=8.2.1"
+  },
+  "devDependencies": {
+    "opn": "^5.4.0"
+  }
+}

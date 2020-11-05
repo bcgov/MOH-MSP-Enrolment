@@ -1,0 +1,13 @@
+<label class="intro" id="taxYear" [innerHtml]="lang('./en/index.js').enterTaxYearLabel"></label>
+<div  style="display:inline-block;" *ngFor="let st of assistanceYears;  let i = index">
+    <common-radio [value]="currentTaxYear"
+        [radioLabels]='[{"label": st.year, "value": st.year}]'
+        (valueChange)="setTaxYear(st.year)">
+    </common-radio>
+
+</div>
+
+<div *ngIf="cutOffYear && cutOffYear === currentTaxYear" class="text-danger">
+        <i class="fa fa-exclamation-circle " style="font-size: 15px;"></i>
+        Selecting this Notice of Assessment will allow you to apply for supplementary benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
+</div>

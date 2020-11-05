@@ -1,0 +1,251 @@
+<div *ngIf="title">
+  <h2><strong>{{title}}</strong></h2>
+</div>
+
+<div *ngIf="subtitle">
+  <p class="horizontal-line">{{subtitle}}</p>
+</div>
+
+<!-- Update/renew status in Canada -->
+<div role="dialog" aria-labelledby="q2" class="form-check mb-2">
+  <common-checkbox
+    [label]="'Update/renew status in Canada'"
+    (dataChange)="person.updateStatusInCanada = $event;"
+    [data]="person.updateStatusInCanada">
+  </common-checkbox>
+</div>
+
+<div *ngIf="person.updateStatusInCanada" class="add-document mb-4">
+  <msp-canadian-status
+    [(person)]="person"
+    [hideStatusReasons]="hideStatus">
+    <div sectionTitleInfo>
+      <h2>{{relationshipText}}'s status in Canada</h2>
+    </div>
+  </msp-canadian-status>
+
+  <msp-support-documents
+    *ngIf="checkStatus()"
+    [canadianStatus]="person.status"
+    [supportDocList]="getDocList()"
+    [statusReason]="person.currentActivity"
+    [(supportDoc)]="person.updateStatusInCanadaDocType">
+    <div sectionTitleInfo>
+      <h2>Documents to support status in Canada</h2>
+      <p class="horizontal-line">
+        Provide <b>one</b> of the required documents to support {{possessiveRelationshipNoun}} immigration status in Canada.
+      </p>
+    </div>
+  </msp-support-documents>
+</div>
+
+<!-- Update name - due to marriage -->
+<div *ngIf="isChild === false">
+  <div role="dialog" aria-labelledby="q2" class="form-check mb-2">
+    <common-checkbox
+      [label]="'Update name - due to marriage or divorce'"
+      (dataChange)="changeUpdateNameDueToMarriage($event)"
+      [data]="person.updateNameDueToMarriage">
+    </common-checkbox>
+  </div>
+</div>
+
+<div *ngIf="person.updateNameDueToMarriage" class="add-document mb-4">
+  <msp-support-documents
+    [supportDocList]="nameChangeDueToMarriageDocs"
+    [(supportDoc)]="person.updateNameDueToMarriageDocType">
+    <div class="row" sectionTitleInfo>
+      <div class="col-12">
+        <div>
+          <h2>{{relationshipText}}'s new last name</h2>
+          <p class="horizontal-line">
+            This name will be printed on {{possessiveRelationshipNoun}} new BC Services Card.
+          </p>
+          <div class="row">
+            <div class="col-md-8">
+              <div class="form-group pl-0 common-name-width">
+                <common-name
+                  name="updateNameDueToMarriageRequestedLastName"
+                  label="Requested last name"
+                  [disabled]="disabled"
+                  [(ngModel)]="person.updateNameDueToMarriageRequestedLastName"
+                  maxlength="30"
+                  commonValidateName
+                  required>
+                </common-name>
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <aside>
+                <div class="card">
+                  <div class="card-body">
+                    <div>Tip</div>
+                    <div>
+                      For name changes due to marriage, you may combine your birth last name with a
+                      current and/or previous married last name(s). Last names may be combined in any
+                      order with a hyphen (-) or a space.
+                    </div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </div>
+          
+          <p class="horizontal-line">
+            Provide <b>one</b> of the required documents to support {{possessiveRelationshipNoun}} personal information update.
+          </p>
+        </div>
+      </div>
+    </div>
+  </msp-support-documents>
+</div>
+
+<!-- Update name - due to name change -->
+<div role="dialog" aria-labelledby="q2" class="form-check mb-2" >
+  <common-checkbox
+    [label]="'Update name - due to name change'"
+    (dataChange)="person.updateNameDueToNameChange = $event;"
+    [data]="person.updateNameDueToNameChange">
+  </common-checkbox>
+</div>
+
+<div *ngIf="person.updateNameDueToNameChange" class="add-document mb-4">
+  <msp-support-documents
+    [supportDocList]="nameChangeDueToNameChangeDocs"
+    [(supportDoc)]="person.updateNameDueToNameChangeDocType">
+    <div sectionTitleInfo>
+      <h2><strong>Documents - Update name - due to name change</strong></h2>
+      <p class="horizontal-line">
+        Provide <b>one</b> of the required documents to support {{possessiveRelationshipNoun}} name change.
+      </p>
+    </div>
+  </msp-support-documents>
+</div>
+
+<!-- Update gender designation - due to change -->
+<div role="dialog" aria-labelledby="q2" class="form-check mb-2" >
+  <common-checkbox
+    [label]="'Update gender designation - due to change'"
+    (dataChange)="person.updateGender = $event;"
+    [data]="person.updateGender">
+  </common-checkbox>
+</div>
+<div *ngIf="person.updateGender" class="add-document mb-4">
+  <msp-support-documents
+    [supportDocList]="genderChangeDocs"
+    [(supportDoc)]="person.updateGenderDocType">
+    <div class='immediate-tip-slot'>
+      <aside>
+        <div class="card">
+          <div class="card-body">
+            <div>Tip</div>
+            <div>Applicants must upload at least one document.</div>
+          </div>
+        </div>
+      </aside>
+    </div>
+    <div sectionTitleInfo>
+      <h2><strong>Documents - Update gender designation - due to change</strong></h2>
+      <p class="horizontal-line">
+        Provide the required document(s) to support {{possessiveRelationshipNoun}} personal information update.
+      </p>
+    </div>
+  </msp-support-documents>
+  <div class="mb-4"></div>
+  <div requestAdditionInfo>
+    <div class="form-group p-sm-2">
+      <common-radio
+        name="additionalDoc"
+        [(ngModel)]="person.updateGenderAdditionalDocs"
+        label="Do you need to add a second document?">
+      </common-radio>
+    </div>
+    <msp-support-documents
+      *ngIf="person.updateGenderAdditionalDocs"
+      [supportDocList]="genderChangeDocs"
+      [(supportDoc)]="person.updateGenderDocType2">
+    </msp-support-documents>
+    <div *ngIf="person.updateGenderAdditionalDocs">
+        <div requestAdditionInfo>
+            <div class="form-group p-sm-2">
+              <common-radio
+                name="additionalDoc2"
+                [(ngModel)]="person.updateGenderAdditionalDocs2"
+                label="Do you need to add a third document?">
+              </common-radio>
+            </div>
+            <msp-support-documents
+              *ngIf="person.updateGenderAdditionalDocs2"
+              [supportDocList]="genderChangeDocs"
+              [(supportDoc)]="person.updateGenderDocType3">
+            </msp-support-documents>
+        </div>   
+    </div>
+  </div>
+</div>
+
+<!-- Correct name - due to error -->
+<div role="dialog" aria-labelledby="q2" class="form-check mb-2" >
+  <common-checkbox
+    [label]="'Correct name - due to error'"
+    (dataChange)="person.updateNameDueToError = $event;"
+    [data]="person.updateNameDueToError">
+  </common-checkbox>
+</div>
+
+<div *ngIf="person.updateNameDueToError" class="add-document mb-4">
+  <msp-support-documents
+    [supportDocList]="nameChangeDueToErrorDocs"
+    [(supportDoc)]="person.updateNameDueToErrorDocType">
+    <div sectionTitleInfo>
+      <h2> <strong> Documents - Correct name - due to error</strong> </h2>
+      <p class="horizontal-line">
+        Provide <b>one</b> of the required documents to support {{possessiveRelationshipNoun}} personal information update.
+      </p>
+    </div>
+  </msp-support-documents>
+</div>
+
+<!-- Correct birthdate - due to error-->
+<div role="dialog" aria-labelledby="q2" class="form-check mb-2" >
+  <common-checkbox
+    [label]="'Correct birthdate - due to error'"
+    (dataChange)="person.updateBirthdate = $event;"
+    [data]="person.updateBirthdate">
+  </common-checkbox>
+</div>
+
+<div *ngIf="person.updateBirthdate" class="add-document mb-4">
+  <msp-support-documents
+    [supportDocList]="genderBirthdateChangeDocs"
+    [(supportDoc)]="person.updateBirthdateDocType">
+    <div sectionTitleInfo>
+      <h2> <strong> Documents - Correct birthdate - due to error</strong> </h2>
+      <p class="horizontal-line">
+        Provide <b>one</b> of the required documents to support {{possessiveRelationshipNoun}} personal information update.
+      </p>
+    </div>
+  </msp-support-documents>
+</div>
+
+<!-- Correct gender designation - due to error -->
+<div role="dialog" aria-labelledby="q2" class="form-check mb-2" >
+  <common-checkbox
+    [label]="'Correct gender designation - due to error'"
+    (dataChange)="person.updateGenderDesignation = $event;"
+    [data]="person.updateGenderDesignation">
+  </common-checkbox>
+</div>
+
+<div *ngIf="person.updateGenderDesignation" class="add-document mb-4">
+  <msp-support-documents
+    [supportDocList]="genderBirthdateChangeDocs"
+    [(supportDoc)]="person.updateGenderDesignationDocType">
+    <div sectionTitleInfo>
+      <h2><strong>Documents - Correct gender - due to error</strong></h2>
+      <p class="horizontal-line">
+        Provide <b>one</b> of the required documents to support {{possessiveRelationshipNoun}} personal information update.
+      </p>
+    </div>
+  </msp-support-documents>
+</div>

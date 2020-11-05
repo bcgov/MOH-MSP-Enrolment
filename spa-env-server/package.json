@@ -1,0 +1,32 @@
+{
+  "name": "spa-env-server",
+  "version": "0.9.0",
+  "description": "Serve environment variables of server to remote SPAs (no secrets! only public info)",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcgov/spa-env-server.git"
+  },
+  "homepage": "",
+  "main": "index.js",
+  "scripts": {
+    "prestart": "npm install ; npm install request --save; npm install winston-daily-rotate-file --save; npm install serve-index --save; npm install express-basic-auth --save",
+    "start": "node $NODE_DEBUG_OPTION index.js server",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3",
+    "express-basic-auth": "^1.1.5",
+    "json-stringify-safe": "^5.0.1",
+    "jsonwebtoken": "^8.3.0",
+    "moment-timezone": "^0.5.21",
+    "request": "^2.88.0",
+    "serve-index": "^1.9.1",
+    "winston": "^3.1.0",
+    "winston-daily-rotate-file": "^3.3.3"
+  },
+  "engines": {
+    "node": ">=8.2.1"
+  }
+}

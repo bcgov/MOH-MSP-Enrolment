@@ -1,0 +1,116 @@
+<common-page-framework layout="blank">
+  
+<h1> <strong>Authorize and submit your application</strong> </h1> <br> 
+<p [innerHTML]="lang('./en/index.js').declaration"></p> <br><br>
+
+<form #form="ngForm">
+  <div>
+    <div class="strong" [innerHTML]="questionApplicant"></div>
+    <div class="form-check form-check-inline mb-4" >
+      <input class="input-lg form-check-input"
+             name="authorizedByApplicant"
+             [(ngModel)] = "application.authorizedByApplicant"
+             (ngModelChange) = "deleteAllDocs($event)"
+             id="firstPersonAuthorize" type="checkbox">
+      <label class="form-check-label" for="firstPersonAuthorize" [innerHTML]="lang('./en/index.js').agreeLabel"></label>
+    </div>
+ 
+    <div *ngIf="application.hasSpouseOrCommonLaw">
+      <div class="strong" [innerHTML]="questionSpouse"></div>
+      <div class="form-check form-check-inline">
+        <input class="input-lg form-check-input"
+               name="authorizedBySpouse"
+               [(ngModel)] = "application.authorizedBySpouse"
+               (ngModelChange) = "deleteAllDocs($event)"
+               id="secondPersonAuthorize" type="checkbox">
+        <label class="form-check-label" for="secondPersonAuthorize" [innerHTML]="lang('./en/index.js').agreeLabel"></label>
+      </div>
+    </div>
+  </div>
+  <div style="margin-top: 20px;">
+    <div>{{ questionForAttorney }} </div>
+    <div class="form-check form-check-inline">
+      <input class="input-lg form-check-input"
+             name="authorizedByAttorney"
+             [(ngModel)] = "application.authorizedByAttorney"
+             (ngModelChange) = "handleAuthorizedByAttorney($event)"
+             id="authByAttorney" type="checkbox">
+      <!-- <label class="form-check-label" for="authByAttorney" [innerHTML]="'Yes, I have Power of Attorney or another legal representation agreement'"></label> -->
+      <label class="form-check-label" for="authByAttorney">I have Power of Attorney or another legal representation agreement</label>
+
+    </div>
+  </div>
+  <div *ngIf="application.authorizedByAttorney">
+    
+    <h2><b> Documents </b></h2>
+    <p class="help-block border-bottom">Upload your Power of Attorney document or another legal representation agreement</p>
+    
+    <div class="row">
+      <div class="col-8" >      
+        <common-file-uploader
+              [images]="application.powerOfAttorneyDocs" 
+              (imagesChange)="uploadDocument($event)"
+              id="application.id" 
+              [instructionText]="'Please upload required Power of Attorney or another legal representation agreement'">
+        </common-file-uploader>
+      </div>  
+              <!-- TIP -->
+      <div class="col-2">
+        <div  style="background-color : #f2f2f2; height: 275px; width: 367px;">
+          <br>
+          <aside>
+              <div class="row" style="margin-bottom:15px">
+                      &nbsp;&nbsp;&nbsp; 
+                  <div class="col-8">
+                    <p>
+                        <b>Tip</b>  
+                    </p>
+                    <p>
+                          Scan the document, or take a photo of it
+                    </p>
+                    <p>
+                      Make sure that it's:
+                    </p>
+                      <ul>
+                          <li>
+                              The entire document, from corner to corner
+                          </li>
+                          <li>
+                              Rotated correctly (not upside down or sideways)
+                          </li>
+                          <li>
+                              In focus and easy to read
+                          </li>
+                          <li> 
+                              A JPG, PNG, GIF, BMP or PDF file
+                          </li>
+                      </ul>
+                  </div>
+              </div>
+          </aside> 
+      </div> 
+      </div>
+    </div> 
+  </div>
+  <br><br>
+  <div class="row">
+    <div class="col-lg-8">
+      <common-captcha [apiBaseUrl]="captchaApiBaseUrl" [nonce]="application.uuid"
+      (onValidToken)="application.authorizationToken = $event"></common-captcha>
+    </div>
+  </div>
+</form>
+<!--
+  <button
+  [disabled]="!canContinue"
+  class="btn btn-primary" type="submit" (click)="continue()"
+  [innerHTML]="lang('./en/index.js').continueButton"></button>
+  <msp-cancel></msp-cancel> -->
+  
+</common-page-framework>
+
+<common-form-action-bar [submitLabel]="lang('./en/index.js').continueButton"
+          [canContinue]="canContinue"
+          (btnClick)="continue()"
+          widthOption='extra-width-mobile-only'>
+</common-form-action-bar>

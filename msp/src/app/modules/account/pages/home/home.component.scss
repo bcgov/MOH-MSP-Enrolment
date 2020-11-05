@@ -1,0 +1,123 @@
+@import "mixins";
+
+.cardHeader {
+  background-color: #036;
+  border-radius: 5px 5px 0px 0px;
+  font-size: 22px;
+  color: white;
+  text-align: center;
+  font-weight: bold;
+}
+
+// Container for all content on msp/deam/home page
+.home {
+  font-family: Arial;
+  max-width: 1150px;
+  margin: 0 auto 32px auto;
+  padding: 0;
+
+  // both child bootstrap rows
+  > * {
+    justify-content: space-between;
+    > * {
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  &__grandchild {
+    @include remove-x-padding-at-tablet-size;
+  }
+
+  // Contains main header, intro paragraphs, and alert box
+  &__intro {
+    // Put a bit of space between the paragraph text and warning box on widths above tablet
+    @media (min-width: 768px) {
+      > .home__grandchild:nth-child(2) {
+        padding-right: 24px;
+      }
+    }
+  }
+
+  // Contains "Manage Your Account" & "Address Change Only" sections
+  &__options {
+
+      > .home__grandchild {
+        @media (min-width: 768px) {
+          flex: none;
+          max-width: none;
+          width: calc(50% - 8px);
+          margin-bottom: 0px;
+        }
+
+        // Space between the cards for Manage Account / Address Change Only
+        &:first-child {
+          // space on screens wider than tablet (when side by side)
+          margin-right: 8px;
+          // space on tablet and under (when stacked)
+          @media (max-width: 767px) {
+            margin-bottom: 24px;
+            margin-right: 0px;
+          }
+        }
+
+        &:last-child {
+          // space on screens wider than tablet (when side by side)
+          margin-left: 8px;
+          // space on tablet and under (when stacked)
+          @media (max-width: 767px) {
+            margin-left: 0px;
+          }
+        }
+      }
+
+  }
+}
+
+// The box with alert icon and warning text
+.home-alert {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding: 6px 5%;
+  width: 100%;
+  @include remove-x-padding-at-tablet-size;
+
+  > * {
+    max-width: 100%;
+  }
+
+  // Red alert icon
+  &__icon {
+    // top, horizontal, bottom
+    text-align: center;
+    padding: 8px 0 0 0;
+    @media (max-width: 767px) {
+      padding-left: 16px;
+    }
+  }
+
+  // Alert text
+  &__text {
+    font-size:1rem;
+    padding: 0 16px 16px;
+  }
+
+  // Wrapper around the alert container
+  &__aside-wrapper {
+      align-self: center;
+      justify-self: center;
+      width: 100%;
+  }
+}
+
+.consentModal {
+  font-family: Arial;
+}
+
+.btn-space {
+  margin-right: 5px;
+}
+
+

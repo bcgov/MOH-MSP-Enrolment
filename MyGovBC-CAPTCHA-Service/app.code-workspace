@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "."
+		},
+		{
+			"path": "../text2wav.node.js"
+		},
+		{
+			"path": "../MyGovBC-CAPTCHA-Widget"
+		},
+		{
+			"path": "../angular-scaffold-captcha"
+		},
+	],
+	"settings": {}
+}

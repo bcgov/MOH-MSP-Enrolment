@@ -1,0 +1,68 @@
+/*
+p,
+span,
+td,
+th,
+strong {
+  font-size: 12px !important;
+}
+*/
+
+td,
+th {
+  text-align: center;
+ 
+}
+.table td {
+  padding: 0.6rem;
+}
+
+td {
+  background-color: #fff;
+ 
+}
+
+th {
+  color: #fff;
+  border: 0px;
+}
+
+h2 {
+  margin: 0;
+  padding: 21px 0px 10.5px 10px;
+
+  font-size: 17px;
+}
+
+h3 {
+  font-size: 15px;
+}
+
+
+.centered {
+  text-align: center;
+  padding-bottom: 15px;
+}
+
+.modal-dialog {
+  margin: 0 !important;
+}
+
+.primary-background {
+  background-color: #036;
+}
+
+.ecks {
+  color: #fff;
+  font-size: 21px;
+}
+
+.hidden {
+  display: none;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
