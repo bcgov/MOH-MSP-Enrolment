@@ -10,9 +10,13 @@
   "homepage": "",
   "main": "index.js",
   "scripts": {
-    "prestart": "npm install ; npm install request --save; npm install winston-daily-rotate-file --save; npm install serve-index --save; npm install express-basic-auth --save",
-    "start": "node $NODE_DEBUG_OPTION index.js server",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "NODE_ENV=production gulp",
+    "start": "node $NODE_DEBUG_OPTION build/index.js server",
+    "dev": "nodemon --watch src --inspect=0.0.0.0:9229 --exec node ./src/index.js server",
+    "test": "echo \"WARNING: No test specified\" && exit 0",
+    "test:coverage": "echo \"WARNING: No test specified\" && exit 0",
+    "test:lint": "echo \"WARNING: No LINTer specified\" && exit 0",
+    "test:schema": "echo \"WARNING: No schema specified\" && exit 0"
   },
   "dependencies": {
     "body-parser": "^1.18.3",
@@ -26,7 +30,14 @@
     "winston": "^3.1.0",
     "winston-daily-rotate-file": "^3.3.3"
   },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "nodemon": "^2.0.6"
+  },
   "engines": {
-    "node": ">=8.2.1"
+    "node": ">=10.0.0"
   }
 }

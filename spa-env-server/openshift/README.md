@@ -1,5 +1,44 @@
 # Deploy to OpenShift
 
+NOTES:
+
+``console
+oc process -f images/nsp-tools.yaml \
+  -p NAMESPACE=$(oc project --short) | \
+  oc create -f -
+```
+
+```console
+oc process -f openshift/cicd.yaml \
+  -p NAMESPACE=$(oc project --short) | \
+  oc create -f -
+```
+
+```console
+  oc get secrets | grep github
+```
+➜  spa-env-server git:(master) ✗ oc get secrets|grep github
+github-cicd-dockercfg-mwxgm   kubernetes.io/dockercfg               1      88s
+github-cicd-token-hzq6t       kubernetes.io/service-account-token   4      88s
+github-cicd-token-z2zdm       kubernetes.io/service-account-token   4      88s
+
+
+```console
+oc get secret/github-cicd-token-58f84 \
+  -o json | \
+  jq '.data.token' | \
+  tr -d "\"" | \
+  base64 -d | \
+  pbcopy
+```
+
+``console
+oc process -f openshift/templates/build.yaml | \
+  oc apply -f -
+```
+
+oc policy add-role-to-user system:image-puller system:serviceaccount:$(oc project --short):default -n 96fff4-tools
+
 ## Build 
 
 A Template is provided in openshift/templates/spa-env-server-build.json.  Use the template in your tools project with conjunction with the openshift/templates/spa-env-server-jenkins.json for the jenkins2 pipeline template. 
