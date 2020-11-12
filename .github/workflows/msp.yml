@@ -2,11 +2,11 @@ name: Test & Build
 on:
   push:
     paths:
-      - "spa-env-server/src/**/*.js"
-      - "spa-env-server/package*.json"
+      - "msp/src/**/*.js"
+      - "msp/package*.json"
 defaults:
   run:
-    working-directory: ./spa-env-server
+    working-directory: ./msp
 jobs:
   test:
     runs-on: ubuntu-latest
