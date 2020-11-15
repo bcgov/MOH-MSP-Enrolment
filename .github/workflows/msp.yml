@@ -2,7 +2,8 @@ name: MSP Test & Build
 on:
   push:
     paths:
-      - "msp/src/**/*.js"
+      - "msp/src/**/*.html"
+      - "msp/src/**/*.ts"
       - "msp/package*.json"
   workflow_dispatch:
     inputs:
