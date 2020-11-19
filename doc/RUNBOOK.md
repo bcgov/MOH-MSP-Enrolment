@@ -28,7 +28,7 @@ github-cicd-token-c74j8       kubernetes.io/service-account-token
 github-cicd-token-p69fn       kubernetes.io/service-account-token
 ```
 
-Use one of the tokens (any one will work) and grab the token then base64 encode it. You'll paste this info into your repository's secrets on GitHub:
+Use one of the tokens (any one will work) and grab the token then base64 decode it. You'll paste this info into your repository's secrets on GitHub:
 
 ```console
 oc get secret/github-cicd-token-hzq6t -o json | \
@@ -40,11 +40,25 @@ oc get secret/github-cicd-token-hzq6t -o json | \
 
 ![Add Token as Secret](./add_token.gif)
 
-**Pro Tip**: The command above needs `jq` installed (`brew install jq`) and assumes your on macOS; `pbcopy` just copies the output to the clipboard so you can paste it.
-
 Next, add the OCP4 URL as another git hub secret (you can find the url when you copy the logon command):
 
 ![Add URL as Secret](./add_ocp_url.gif)
+
+**Pro Tip**: 
+
+* The command above needs `jq` installed (`brew install jq`) and assumes your on macOS; `pbcopy` just copies the output to the clipboard so you can paste it.
+
+* You probably need to grant permission for the image puller to pull images from your `*-tools` namespace. The following commands will do this; update the command and run them in each each of dev, test and prod.
+
+```console
+oc policy add-role-to-user edit system:serviceaccount:f0463d-tools:default \
+  -n $(oc project --short)
+```
+
+```console
+oc policy add-role-to-user system:image-puller system:serviceaccount:$(oc project --short):default \
+  -n f0463d-tools
+```
 
 ## `spa-env-server` Component
 
@@ -130,3 +144,26 @@ oc process -f msp/openshift/templates/build.yaml | \
 ```
 
 ### Deploy
+
+The deployment for the `msp` component is straight forward as it has little to no environment variables. The first step in the deploument is to create a `ConfigMap` with the necessary NGINX config:
+
+```console
+oc process -f msp/openshift/templates/config.yaml | \
+  oc create -f -
+```
+
+Once created deploy the web application:
+
+```console
+oc process -f msp/openshift/templates/deploy.yaml \
+  -p NAMESPACE=$(oc project --short) \
+  -p SOURCE_IMAGE_NAMESPACE=f0463d-tools \
+  -p SOURCE_IMAGE_TAG=dev | \
+  oc create -f -
+```
+
+| Parameter              | Required | Description |
+| :--------------------: | :------: | :---------- |
+| NAMESPACE              | Y        | The namespace the component is being deployed to. |
+| SOURCE_IMAGE_NAMESPACE | Y        | The namespace were the source image is located. |
+| SOURCE_IMAGE_TAG       | Y        | The image tag that will trigger deployments |
