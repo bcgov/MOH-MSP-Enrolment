@@ -1,4 +1,4 @@
-name: Deploy to Test
+name: SPA Deploy to Test
 on: 
   workflow_dispatch:
     inputs:

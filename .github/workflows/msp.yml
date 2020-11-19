@@ -6,11 +6,6 @@ on:
       - "msp/src/**/*.ts"
       - "msp/package*.json"
   workflow_dispatch:
-    inputs:
-      source_tag:
-        description: 'Source Image Tag'     
-        required: true
-        default: 'latest'
 defaults:
   run:
     working-directory: ./msp
