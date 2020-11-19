@@ -167,3 +167,30 @@ oc process -f msp/openshift/templates/deploy.yaml \
 | NAMESPACE              | Y        | The namespace the component is being deployed to. |
 | SOURCE_IMAGE_NAMESPACE | Y        | The namespace were the source image is located. |
 | SOURCE_IMAGE_TAG       | Y        | The image tag that will trigger deployments |
+
+## Additional Components
+
+The work done on the `spa-env-server` component can be leveraged for the remanding components of this project. For example, to apply them to the `MyGovBC-MSP-Service` component the following steps will help:
+
+1) Copy the `gulpfile.js` with the build tasks;
+2) Install the packages with `npm -i -D NAME` that are located at the top of the gulpfile in the `require` lines.
+3) Create a `src` directory and move required files like `index.js` into source (move any others that are needed).
+4) Update the `build`, `start` and `dev` scripts in `package.json`.
+
+At this point you should be able to run `npm run build` and have a `build` directory with the required files in it. This will be done by the node S2I image and it will look for a `build` directory for the source artifacts.
+
+Next, create build and deploy templates for this new component:
+
+1) Move your Jenkinsfile(s) aside they are no longer needed;
+2) Copy over the `build.yaml` and `deploy.yaml` form the `spa-env-server`.
+3) Update the `build.yaml` and `deploy.yaml` files as needed.
+
+**NOTE**
+
+In each `deploy.yaml` file there is a label `role: xxxx` this is used to identify each component in Aporeto. Its important that each deployment manifest / component get its own role so the NSP works properly.
+
+The final step is to create a GitHub workflow:
+
+1) Copy the file `spa-env-server.yml` in the `.github/workflows` directory to a new file representing the new component.
+2) Update the paths and build names according to what you changed in `build.yaml`.
+3) Consider adding a manual trigger for testing purposes.
