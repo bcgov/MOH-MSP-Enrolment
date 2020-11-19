@@ -46,7 +46,7 @@ Next, add the OCP4 URL as another git hub secret (you can find the url when you 
 
 ![Add URL as Secret](./add_ocp_url.gif)
 
-## `spa-env-server` Build & Deployment
+## `spa-env-server` Component
 
 The following instructions are for the build and deployment of the `spa-env-server` component.
 
@@ -62,7 +62,7 @@ This workflow is setup to automatically run whenever files in these paths are ch
       - "spa-env-server/package*.json"
 ```
 
-This workflow is triggerd whenever files change in these paths for a PR or direct merge to the `main` branch. The workflow has several steps to run tests, build on node 10, node 10 and the final step is to build the images on OCP. This final step in the workflow `s2i-build` **only** runs when something is merged into the `main` branch.
+This workflow is triggered whenever files change in these paths for a PR or direct merge to the `main` branch. The workflow has several steps to run tests, build on node 10, node 10 and the final step is to build the images on OCP. This final step in the workflow `s2i-build` **only** runs when something is merged into the `main` branch.
 
 When the entire workflow triggers, it will create a new image and automatically tag it with `dev` to trigger an image change deployment in your `dev` namespace.
 
@@ -97,8 +97,36 @@ oc process -f spa-env-server/openshift/templates/deploy.yaml \
 
 **Pro Tip**: Add `params-*.txt` to .gitignore to make sure sensitive prod values are never stored in a repo.
 
-## `msp`  Build & Deployment
+## `msp` Component
+
+The following instructions are for the build and deployment of the `msp` component. The build uses the on-cluster `nodejs:10` S2I image to run any scripts from `package.json` which require node. This step produces an artifacts image (msp-web-artifacts) that used as part of chained build. These artifacts are (from `npm run build`) are then consumed by the NGINX image which is pulled in from the RedHat Container Registry. This results in an image named `msp-web` that can be deployed.
+
+The deployment mounts a `ConfigMap` containing the necessary NGINX config.
 
 ### Build
+
+The GitHub Workflow (Actions) will use `oc` to trigger commands on-cluster. This workflow is located [here](../.github/workflows/msp.yml) in the `.github/workflows` folder of this project.
+
+This workflow is setup to **automatically run** whenever files in these paths are changed:
+
+```yaml
+    paths:
+      - "msp/src/**/*.html"
+      - "msp/src/**/*.ts"
+      - "msp/package*.json"
+```
+
+This workflow is triggered whenever files change in these paths for a PR or direct merge to the `main` branch. Also, for demonstration purposes, this workflow can be triggered manually.
+
+The workflow has several steps to run: tests, build on node 10, node 10 and the final step is to build the images on OCP. This final step in the workflow `s2i-build` **only** runs when something is merged into the `main` branch.
+
+When the entire workflow triggers, it will create a new image and automatically tag it with `dev` to trigger an image change deployment in the `dev` namespace.
+
+Create the OCP image `BuildConfig` using the provided OCP template:
+
+```console
+oc process -f msp/openshift/templates/build.yaml | \
+  oc create -f -
+```
 
 ### Deploy
