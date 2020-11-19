@@ -1,4 +1,4 @@
-name: Deploy to Prod
+name: SPA Deploy to Test
 on: 
   workflow_dispatch:
     inputs:
@@ -14,10 +14,10 @@ jobs:
     # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Prod
+      - name: Deploy to Test
         env:
-          NAMESPACE: 96fff4-tools
-          TARGET_IMAGE_TAG: prod
+          NAMESPACE: f0463d-tools
+          TARGET_IMAGE_TAG: test
         uses: redhat-developer/openshift-actions@v1.1
         with:
           version: "latest"

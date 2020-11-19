@@ -1,12 +1,14 @@
-name: SPA Test & Build
+name: MSP Test & Build
 on:
   push:
     paths:
-      - "spa-env-server/src/**/*.js"
-      - "spa-env-server/package*.json"
+      - "msp/src/**/*.html"
+      - "msp/src/**/*.ts"
+      - "msp/package*.json"
+  workflow_dispatch:
 defaults:
   run:
-    working-directory: ./spa-env-server
+    working-directory: ./msp
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -19,10 +21,10 @@ jobs:
         run: npm ci
       - name: Unit tests w/ coverage
         run: npm run test:coverage
-      - name: LINTing
-        run: npm run test:lint
-      - name: OpenAPI Schema
-        run: npm run test:schema
+      # - name: LINTing
+      #   run: npm run test:lint
+      # - name: OpenAPI Schema
+      #   run: npm run test:schema
   build:
     runs-on: ubuntu-latest
     needs: [test]
@@ -49,16 +51,29 @@ jobs:
           npm run build --if-present
         env:
           CI: "true"
-  s2i-build:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+  image-build:
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     needs: [test, build]
     steps:
-      - name: S2I Build
+      - name: Artifact Build
         env:
           NAMESPACE: f0463d-tools
-          BUILD_NAME: spa-env-server-main-build
-          IMAGE_NAME: spa-env-server
+          BUILD_NAME: msp-web-artifact-build
+          IMAGE_NAME: msp-web-artifacts
+        uses: redhat-developer/openshift-actions@v1.1
+        with:
+          version: "latest"
+          openshift_server_url: ${{ secrets.OpenShiftServerURL}}
+          parameters: '{"apitoken": "${{ secrets.OpenShiftToken }}", "acceptUntrustedCerts": "true"}'
+          cmd: |
+            'version'
+            'start-build ${BUILD_NAME} -n ${NAMESPACE} --follow'
+      - name: Image Build
+        env:
+          NAMESPACE: f0463d-tools
+          BUILD_NAME: msp-web-image-build
+          IMAGE_NAME: msp-web
         uses: redhat-developer/openshift-actions@v1.1
         with:
           version: "latest"
