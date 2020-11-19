@@ -63,7 +63,7 @@ jobs:
     steps:
       - name: Artifact Build
         env:
-          NAMESPACE: 96fff4-tools
+          NAMESPACE: f0463d-tools
           BUILD_NAME: msp-web-artifact-build
           IMAGE_NAME: msp-web-artifacts
         uses: redhat-developer/openshift-actions@v1.1
@@ -76,7 +76,7 @@ jobs:
             'start-build ${BUILD_NAME} -n ${NAMESPACE} --follow'
       - name: Image Build
         env:
-          NAMESPACE: 96fff4-tools
+          NAMESPACE: f0463d-tools
           BUILD_NAME: msp-web-image-build
           IMAGE_NAME: msp-web
         uses: redhat-developer/openshift-actions@v1.1
