@@ -60,6 +60,11 @@ oc policy add-role-to-user system:image-puller system:serviceaccount:$(oc projec
   -n f0463d-tools
 ```
 
+run in dev/test/prod:
+```
+oc policy add-role-to-user system:image-puller system:serviceaccount:f0463d-dev:default --namespace=f0463d-tools
+```
+
 ## `spa-env-server` Component
 
 The following instructions are for the build and deployment of the `spa-env-server` component.
