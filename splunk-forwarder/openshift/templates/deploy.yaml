@@ -163,6 +163,11 @@ parameters:
       the application.
     displayName: Build Project
     required: true
+  - name: LOG_LEVEL
+    description: Log level for pod
+    displayName: LOG_LEVEL
+    required: false
+    value: info 
   - name: SOURCE_IMAGE_NAME
     description: The name of the source image.
     displayName: Source Image Name
@@ -257,5 +262,5 @@ parameters:
   - name: RETRY_COUNT
     description: Number of times to retry remote splunk
     displayName: RETRY_COUNT
-    required: "true"
+    required: true
     value: "1"
