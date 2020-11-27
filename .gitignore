@@ -107,3 +107,6 @@ dist
 spa-env-server/build
 msp/dist
 version.GENERATED.ts
+params-dev.txt
+params-test.txt
+params-prod.txt
