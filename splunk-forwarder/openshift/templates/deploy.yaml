@@ -109,8 +109,6 @@ objects:
                   value: ${SERVICE_USE_AUTH}
                 - name: SERVICE_AUTH_TOKEN
                   value: ${SERVICE_AUTH_TOKEN}
-                - name: USE_AUDIT_LOGS
-                  value: ${USE_AUDIT_LOGS}
                 - name: LOG_DIR_NAME
                   value: ${LOG_DIR_NAME}
                 - name: FILE_LOG_LEVEL
@@ -127,6 +125,16 @@ objects:
                   value: ${MAX_BYTE_SIZE_PER_FILE}
                 - name: USE_SPLUNK
                   value: ${USE_SPLUNK}
+                - name: SPLUNK_URL
+                  value: ${SPLUNK_URL}
+                - name: SPLUNK_AUTH_TOKEN
+                  value: ${SPLUNK_AUTH_TOKEN}
+                - name: ONLY_LOG_WHEN_SPLUNK_FAILS
+                  value: ${ONLY_LOG_WHEN_SPLUNK_FAILS}
+                - name: CA_CERT
+                  value: ${CA_CERT}
+                - name: RETRY_COUNT
+                  value: ${RETRY_COUNT}
               resources:
                 limits:
                   cpu: 200m
@@ -174,11 +182,6 @@ parameters:
       Authorization token required to use the splunk-forwarder service
     displayName: SERVICE_AUTH_TOKEN
     required: true
-  - name: USE_AUDIT_LOGS
-    description: Use Audit logs
-    displayName: USE_AUDIT_LOGS
-    required: true
-    value: "false"
   - name: LOG_DIR_NAME
     description: |
       Directory and name of File logs (will be prepended with 
@@ -222,12 +225,37 @@ parameters:
   - name: SERVICE_PORT
     description: The port this service will sisten on.
     displayName: SERVICE_PORT
+    required: true
     value: "8080"
   - name: SERVICE_IP
     description: The IP address this service will bind to.
     displayName: SERVICE_IP
+    required: true
     value: "0.0.0.0"
   - name: USE_SPLUNK
     description: Use Splunk?
     displayName: USE_SPLUNK
+    required: false
     value: "false"
+  - name: SPLUNK_URL
+    description: remote splunk URL
+    displayName: SPLUNK_URL
+    required: false
+  - name: SPLUNK_AUTH_TOKEN
+    description: Splunk Auth Token
+    displayName: SPLUNK_AUTH_TOKEN
+    required: false
+  - name: ONLY_LOG_WHEN_SPLUNK_FAILS
+    description: Only log to local volume when connection to remote splunk fails
+    displayName: ONLY_LOG_WHEN_SPLUNK_FAILS 
+    required: false
+    value: "true"
+  - name: CA_CERT
+    description: Certificate to connect to remote splunk
+    displayName: CA_CERT
+    required: false
+  - name: RETRY_COUNT
+    description: Number of times to retry remote splunk
+    displayName: RETRY_COUNT
+    required: "true"
+    value: "1"
