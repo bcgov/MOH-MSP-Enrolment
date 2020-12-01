@@ -86,10 +86,10 @@
                     "name": "SYSLOG_PORT",
                     "value": "${SYSLOG_PORT}"
                   },
-		  {
+		              {
                     "name": "BYPASS_ANSWER",
-		    "value": "${BYPASS_ANSWER}"
-		  },
+		                "value": "${BYPASS_ANSWER}"
+		              },
                   {
                     "name": "CORS_ALLOW_ALL",
                     "value": "${CORS_ALLOW_ALL}"

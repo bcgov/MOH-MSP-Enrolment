@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bcgov/MyGovBC-CAPTCHA-Service.git"
+    "url": "git+https://github.com/bcgov/MOH-MSP-Enrolment.git"
   },
   "keywords": [
     "MyGovBC",
@@ -52,9 +52,14 @@
   },
   "homepage": "https://github.com/bcgov/MyGovBC-CAPTCHA-Service#readme",
   "engines": {
-    "node": ">=8.2.1"
+    "node": ">=10.0.0"
   },
   "devDependencies": {
-    "opn": "^5.4.0"
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "opn": "^5.4.0",
+    "nodemon": "^2.0.6"
   }
 }
