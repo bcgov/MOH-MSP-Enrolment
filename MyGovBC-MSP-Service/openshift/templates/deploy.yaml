@@ -99,44 +99,30 @@ objects:
                   value: debug
                 - name: PORT
                   value: "8080"
-                - name: NODE_ENV
-                  value: production
-                - name: SERVICE_IP
-                  value: ${SERVICE_IP}
-                - name: SERVICE_PORT
-                  value: ${SERVICE_PORT}
-                - name: SERVICE_USE_AUTH
-                  value: ${SERVICE_USE_AUTH}
-                - name: SERVICE_AUTH_TOKEN
-                  value: ${SERVICE_AUTH_TOKEN}
-                - name: USE_AUDIT_LOGS
-                  value: ${USE_AUDIT_LOGS}
-                - name: LOG_DIR_NAME
-                  value: ${LOG_DIR_NAME}
-                - name: FILE_LOG_LEVEL
-                  value: ${FILE_LOG_LEVEL}
-                - name: APPEND_POD_NAME_TO_FILE
-                  value: ${APPEND_POD_NAME_TO_FILE}
-                - name: MONITOR_USERNAME
-                  value: ${MONITOR_USERNAME}
-                - name: MONITOR_PASSWORD
-                  value: ${MONITOR_PASSWORD}
-                - name: MAX_FILES
-                  value: ${MAX_FILES}
-                - name: MAX_BYTE_SIZE_PER_FILE
-                  value: ${MAX_BYTE_SIZE_PER_FILE}
-                - name: CURRENT_TIMEZONE
-                  value: ${CURRENT_TIMEZONE}
-                - name: SPA_ENV_MSP_MAINTENANCE_FLAG
-                  value: ${SPA_ENV_MSP_MAINTENANCE_FLAG}
-                - name: SPA_ENV_MSP_MAINTENANCE_START
-                  value: ${SPA_ENV_MSP_MAINTENANCE_START}
-                - name: SPA_ENV_MSP_MAINTENANCE_END
-                  value: ${SPA_ENV_MSP_MAINTENANCE_END}
-                - name: SPA_ENV_MSP_TIME_FORMAT
-                  value: ${SPA_ENV_MSP_TIME_FORMAT}
-                - name: SPA_ENV_MSP_MAINTENANCE_MESSAGE
-                  value: ${SPA_ENV_MSP_MAINTENANCE_MESSAGE}
+                - name: TARGET_URL
+                  value: ${TARGET_URL}
+                - name: TARGET_USERNAME_PASSWORD
+                  value: ${TARGET_USERNAME_PASSWORD}
+                - name: MUTUAL_TLS_PEM_KEY_BASE64
+                  value: ${MUTUAL_TLS_PEM_KEY_BASE64}
+                - name: MUTUAL_TLS_PEM_KEY_PASSPHRASE
+                  value: ${MUTUAL_TLS_PEM_KEY_PASSPHRASE}
+                - name: MUTUAL_TLS_PEM_CERT
+                  value: ${MUTUAL_TLS_PEM_CERT}
+                - name: SECURE_MODE
+                  value: ${SECURE_MODE}
+                - name: USE_MUTUAL_TLS
+                  value: ${USE_MUTUAL_TLS}
+                - name: AUTH_TOKEN_KEY
+                  value: ${AUTH_TOKEN_KEY}
+                - name: USE_AUTH_TOKEN
+                  value: ${USE_AUTH_TOKEN}
+                - name: LOGGER_HOST
+                  value: ${LOGGER_HOST}
+                - name: LOGGER_PORT
+                  value: ${LOGGER_PORT}
+                - name: SPLUNK_AUTH_TOKEN
+                  value: ${SPLUNK_AUTH_TOKEN}
               resources:
                 limits:
                   cpu: 200m

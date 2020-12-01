@@ -4,12 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "NODE_ENV=production gulp",
+    "start": "node $NODE_DEBUG_OPTION build/index.js server",
+    "dev": "nodemon --watch src --inspect=0.0.0.0:9229 --exec node ./src/index.js server",
+    "test:coverage": "echo \"WARNING: No test specified\" && exit 0",
+    "test:lint": "echo \"WARNING: No LINTer specified\" && exit 0",
+    "test:schema": "echo \"WARNING: No schema specified\" && exit 0"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bcgov/MyGovBC-MSP-Service.git"
+    "url": "git+https://github.com/bcgov/MOH-MSP-Enrolment.git"
   },
   "author": "",
   "license": "Apache-2.0",
@@ -26,7 +30,14 @@
     "moment": "^2.20.1",
     "winston": "^2.3.1"
   },
+  "devDependencies": {
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-sourcemaps": "^2.6.5",
+    "gulp-typescript": "^6.0.0-alpha.1",
+    "nodemon": "^2.0.6"
+  },
   "engines": {
-    "node": ">=4.2.5"
+    "node": ">=10.0.0"
   }
 }
