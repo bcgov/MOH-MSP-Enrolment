@@ -5,7 +5,7 @@
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bcgov/splunk-forwarder.git"
+    "url": "git+https://github.com/bcgov/MOH-MSP-Enrolment.git"
   },
   "homepage": "",
   "main": "index.js",
