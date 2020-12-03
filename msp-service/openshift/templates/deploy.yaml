@@ -169,9 +169,34 @@ parameters:
     description: The IP address this service will bind to.
     displayName: SERVICE_IP
     value: "0.0.0.0"
-  - name: USE_AUTH_TOKEN
-    description: Use Authorization token?
-    displayName: USE_AUTH_TOKEN
+  - name: TARGET_URL
+    description: The remote Maximus URL
+    displayName: TARGET_URL
+    required: true
+  - name: TARGET_USERNAME_PASSWORD
+    description: Username/password for the remote Maximus URL
+    displayName: TARGET_USERNAME_PASSWORD
+    required: true
+  - name: MUTUAL_TLS_PEM_KEY_BASE64
+    description: MUTUAL_TLS_PEM_KEY_BASE64
+    displayName: MUTUAL_TLS_PEM_KEY_BASE64
+    required: true
+  - name: MUTUAL_TLS_PEM_KEY_PASSPHRASE
+    description: MUTUAL_TLS_PEM_KEY_PASSPHRASE
+    displayName: MUTUAL_TLS_PEM_KEY_PASSPHRASE
+    required: true
+  - name: MUTUAL_TLS_PEM_CERT
+    description: MUTUAL_TLS_PEM_CERT
+    displayName: MUTUAL_TLS_PEM_CERT
+    required: true
+  - name: SECURE_MODE
+    description: SECURE_MODE
+    displayName: SECURE_MODE
+    required: true
+    value: "true"
+  - name: USE_MUTUAL_TLS
+    description: USE_MUTUAL_TLS
+    displayName: USE_MUTUAL_TLS
     required: true
     value: "true"
   - name: AUTH_TOKEN_KEY
@@ -179,13 +204,23 @@ parameters:
       Authorization token required to use the msp-service service
     displayName: AUTH_TOKEN_KEY
     required: true
-  - name: 
-    description: 
-    displayName: 
+  - name: USE_AUTH_TOKEN
+    description: Use Authorization token?
+    displayName: USE_AUTH_TOKEN
     required: true
     value: "true"
-  - name: 
-    description: 
-    displayName: 
+  - name: LOGGER_HOST
+    description: LOGGER_HOST
+    displayName: LOGGER_HOST
+    required: true
+    value: "splunk-forwarder"
+  - name: LOGGER_PORT
+    description: LOGGER_PORT
+    displayName: LOGGER_PORT
+    required: true
+    value: 8080
+  - name: SPLUNK_AUTH_TOKEN
+    description: SPLUNK_AUTH_TOKEN
+    displayName: SPLUNK_AUTH_TOKEN
     required: true
     value: "true"
