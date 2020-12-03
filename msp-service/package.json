@@ -1,5 +1,5 @@
 {
-  "name": "mygovbc-msp-service",
+  "name": "msp-service",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -18,9 +18,9 @@
   "author": "",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/bcgov/MyGovBC-MSP-Service/issues"
+    "url": "https://github.com/bcgov/msp-service/issues"
   },
-  "homepage": "https://github.com/bcgov/MOH-MSP-Enrolment#MyGovBC-MSP-Service/readme",
+  "homepage": "https://github.com/bcgov/MOH-MSP-Enrolment#msp-service/readme",
   "dependencies": {
     "colors": "^1.1.2",
     "express": "^4.15.0",

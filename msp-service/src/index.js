@@ -326,7 +326,7 @@ function logSplunkInfo (message) {
     req.end();
 }
 
-logSplunkInfo('MyGovBC-MSP-Service server started on port 8080');
+logSplunkInfo('msp-service server started on port 8080');
 
 
 

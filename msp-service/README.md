@@ -1,6 +1,6 @@
-# MyGovBC-MSP-Service
+# msp-service
 
-A NodeJS based static proxy for MyGovBC-MSP user interface.
+A NodeJS based static proxy for msp-service.
 
 ## Features:
 
@@ -50,7 +50,7 @@ openssl.exe pkcs12 -in publicAndprivate.pfx -clcerts -nokeys -out publicCert.pem
 ```
 If you want to base64encode a file, i.e., like the PEMs above:
 ```
-cd <Root of MyGovBC-MSP-Service>
+cd <Root of msp-service>
 node ./base64encode.js <filename> 
 ```
 
