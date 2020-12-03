@@ -169,7 +169,7 @@ parameters:
   - name: SERVICE_PORT
     description: The port this service will sisten on.
     displayName: SERVICE_PORT
-    value: 8080
+    value: "8080"
   - name: SERVICE_IP
     description: The IP address this service will bind to.
     displayName: SERVICE_IP
@@ -223,7 +223,7 @@ parameters:
     description: LOGGER_PORT
     displayName: LOGGER_PORT
     required: true
-    value: 8080
+    value: "8080"
   - name: SPLUNK_AUTH_TOKEN
     description: SPLUNK_AUTH_TOKEN
     displayName: SPLUNK_AUTH_TOKEN
