@@ -20,13 +20,13 @@ metadata:
     description: |
       Deployment template for the SPA environment variable server
     iconClass: icon-node
-  name: MyGovBC-CAPTCHA-Service
+  name: captcha-service
 objects:
   - apiVersion: v1
     kind: Route
     metadata:
       labels:
-        app: MyGovBC-CAPTCHA-Service
+        app: captcha-service
       name: ${API_NAME}
     spec:
       path: ""
@@ -42,7 +42,7 @@ objects:
     kind: Service
     metadata:
       labels:
-        app: MyGovBC-CAPTCHA-Service
+        app: captcha-service
       name: ${API_NAME}
     spec:
       selector:
@@ -56,7 +56,7 @@ objects:
     kind: DeploymentConfig
     metadata:
       labels:
-        app: MyGovBC-CAPTCHA-Service
+        app: captcha-service
       name: ${API_NAME}
     spec:
       strategy:
@@ -78,7 +78,7 @@ objects:
       template:
         metadata:
           labels:
-            app: MyGovBC-CAPTCHA-Service
+            app: captcha-service
             role: api
             deploymentconfig: ${API_NAME}
           name: ${API_NAME}
@@ -137,7 +137,7 @@ parameters:
     displayName: Name
     name: API_NAME
     required: true
-    value: MyGovBC-CAPTCHA-Service
+    value: captcha-service
   - name: SOURCE_IMAGE_NAMESPACE
     description: |
       The namespace of the OpenShift project containing the imagestream for
@@ -147,7 +147,7 @@ parameters:
   - name: SOURCE_IMAGE_NAME
     description: The name of the source image.
     displayName: Source Image Name
-    value: MyGovBC-CAPTCHA-Service
+    value: captcha-service
     required: true
   - name: SOURCE_IMAGE_TAG
     description: The tag of the source image.
@@ -168,7 +168,7 @@ parameters:
     value: "true"
   - name: AUTH_TOKEN_KEY
     description: |
-      Authorization token required to use the MyGovBC-CAPTCHA-Service service
+      Authorization token required to use the captcha-service service
     displayName: AUTH_TOKEN_KEY
     required: true
   - name: 
