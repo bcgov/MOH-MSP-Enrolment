@@ -96,7 +96,7 @@ objects:
                 - containerPort: 8080
               env:
                 - name: LOG_LEVEL
-                  value: debug
+                  value: ${LOG_LEVEL}
                 - name: PORT
                   value: "8080"
                 - name: TARGET_URL
@@ -151,6 +151,11 @@ parameters:
       The namespace of the OpenShift project containing the imagestream for
       the application.
     displayName: Build Project
+    required: true
+  - name: LOG_LEVEL
+    description: LOG_LEVEL
+    displayName: LOG_LEVEL
+    value: "debug"
     required: true
   - name: SOURCE_IMAGE_NAME
     description: The name of the source image.
