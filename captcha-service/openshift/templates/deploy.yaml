@@ -79,7 +79,7 @@ objects:
         metadata:
           labels:
             app: captcha-service
-            role: api
+            role: captchaservice
             deploymentconfig: ${API_NAME}
           name: ${API_NAME}
         spec:

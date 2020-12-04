@@ -79,7 +79,7 @@ objects:
         metadata:
           labels:
             app: splunk-forwarder
-            role: api
+            role: splunkforwarder
             deploymentconfig: ${API_NAME}
           name: ${API_NAME}
         spec:

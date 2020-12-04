@@ -97,7 +97,7 @@ objects:
       metadata:
         labels:
           app: msp-enrolment-web
-          role: frontend
+          role: mspfrontend
           deploymentconfig: ${NAME}
         name: ${NAME}
       spec:
@@ -114,14 +114,44 @@ objects:
               - containerPort: 8080
             env:
               - name: LOG_LEVEL
-                value: debug
+                value: ${LOG_LEVEL}
+              - name: SERVICE_PORT
+                value: "8080"
+              - name: SERVICE_IP
+                value: "0.0.0.0"
+              - name: SOURCE_IMAGE_NAME
+                value: "msp-web"
+              - name: RealIpFrom
+                value: ${RealIpFrom}
+              - name: IpFilterRules
+                value: ${IpFilterRules}
+              - name: AdditionalRealIpFromRules
+                value: ${AdditionalRealIpFromRules}
+              - name: USE_SPLUNK_FORWARDER
+                value: ${USE_SPLUNK_FORWARDER}
+              - name: HTTP_BASIC
+                value: ""
+              - name: HTTP_BASIC_USERNAME
+                value: ${HTTP_BASIC_USERNAME}
+              - name: HTTP_BASIC_PASSWORD
+                value: ${HTTP_BASIC_PASSWORD}
+              - name: SPLUNK_AUTH_TOKEN
+                value: ${SPLUNK_AUTH_TOKEN}
+              - name: SPA_ENV_AUTH_TOKEN
+                value: ${USE_SPLUNK_FORWARDER}
+              - name: MSP_ENV
+                value: ${MSP_ENV}
+              - name: ROUTER_DEFAULT_SERVER_TIMEOUT
+                value: ${ROUTER_DEFAULT_SERVER_TIMEOUT}
+              - name: ROUTER_DEFAULT_CLIENT_TIMEOUT
+                value: ${ROUTER_DEFAULT_CLIENT_TIMEOUT}
             resources:
               limits:
                 cpu: 300m
-                memory: 128Mi
+                memory: 256Mi
               requests:
                 cpu: 200m
-                memory: 92Mi
+                memory: 256Mi
             volumeMounts:
               - name: config-vol
                 mountPath: /opt/app-root/src/nginx.conf
@@ -159,16 +189,42 @@ parameters:
   name: SOURCE_IMAGE_TAG
   required: true
 - description: |
-    The API service name is used to create a path based URL used by the Web
-    to access the API. Its format will be common over all environments.
-  displayName: API Service name
-  name: API_SERVICE_NAME
-  value: xxxx-api
-  required: true
-- description: |
     This is used to construct a path based route for the web to access the
     API.
   displayName: Cluster Domain Name
   name: CLUSTER_DOMAIN
   required: true
   value: apps.silver.devops.gov.bc.ca
+- description: RealIpFrom for nginx
+  name: RealIpFrom
+  value: "142.34.194.118"
+  required: true
+- description: AdditionalRealIpFromRules
+  name: AdditionalRealIpFromRules
+  value: ""
+  required: true
+- description: IpFilterRules
+  name: IpFilterRules
+  value: "allow 0.0.0.0/0; deny all;"
+  required: true
+- description: USE_SPLUNK_FORWARDER
+  name: USE_SPLUNK_FORWARDER
+  value: "true"
+  required: true
+- description: SPLUNK_AUTH_TOKEN
+  name: SPLUNK_AUTH_TOKEN
+  required: false
+- description: SPA_ENV_AUTH_TOKEN
+  name: SPA_ENV_AUTH_TOKEN
+  required: true
+- description: MSP_ENV
+  name: MSP_ENV
+  required: true
+- description: ROUTER_DEFAULT_SERVER_TIMEOUT
+  name: ROUTER_DEFAULT_SERVER_TIMEOUT
+  value: "60s"
+  required: false
+- description: ROUTER_DEFAULT_CLIENT_TIMEOUT
+  name: ROUTER_DEFAULT_CLIENT_TIMEOUT
+  value: "60s"
+  required: false

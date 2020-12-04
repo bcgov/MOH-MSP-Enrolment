@@ -79,7 +79,7 @@ objects:
         metadata:
           labels:
             app: msp-service
-            role: api
+            role: mspservice
             deploymentconfig: ${API_NAME}
           name: ${API_NAME}
         spec:

@@ -79,7 +79,7 @@ objects:
         metadata:
           labels:
             app: spa-env-server
-            role: api
+            role: spaenv
             deploymentconfig: ${API_NAME}
           name: ${API_NAME}
         spec:
