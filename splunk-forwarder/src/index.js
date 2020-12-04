@@ -115,6 +115,11 @@ if (args.length == 3 && args[2] == 'server') {
     });
 }
 
+// health and readiness check
+app.get('/hello', function (req, res) {
+    res.status(200).end();
+});
+
 // handle posts to /log endpoint
 app.post('/log', function (req, res) {
     getLog(req).then(function (mess) {
