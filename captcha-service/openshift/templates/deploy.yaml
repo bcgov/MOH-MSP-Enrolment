@@ -116,10 +116,10 @@ objects:
               resources:
                 limits:
                   cpu: 200m
-                  memory: 128Mi
+                  memory: 256Mi
                 requests:
                   cpu: 100m
-                  memory: 92Mi
+                  memory: 192Mi
               # volumeMounts:
               #   - name: config-vol
               #     mountPath: /opt/app-root/src/build/config/config.json
