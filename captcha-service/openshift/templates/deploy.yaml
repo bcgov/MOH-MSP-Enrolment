@@ -96,15 +96,13 @@ objects:
                 - containerPort: 8080
               env:
                 - name: LOG_LEVEL
-                  value: debug
+                  value: ${LOG_LEVEL}
                 - name: PORT
                   value: "8080"
-                - name: SECRET
-                  value: ${SECRET}
                 - name: SERVICE_PORT
                   value: ${SERVICE_PORT}
-                - name: LOG_LEVEL
-                  value: ${LOG_LEVEL}
+                - name: SECRET
+                  value: ${SECRET}
                 - name: PRIVATE_KEY
                   value: ${PRIVATE_KEY}
                 - name: SYSLOG_PORT
@@ -161,23 +159,33 @@ parameters:
     description: The IP address this service will bind to.
     displayName: SERVICE_IP
     value: "0.0.0.0"
-  - name: USE_AUTH_TOKEN
-    description: Use Authorization token?
-    displayName: USE_AUTH_TOKEN
+  - name: SECRET
+    description: SECRET
+    displayName: SECRET
     required: true
-    value: "true"
-  - name: AUTH_TOKEN_KEY
-    description: |
-      Authorization token required to use the captcha-service service
-    displayName: AUTH_TOKEN_KEY
+  - name: PRIVATE_KEY
+    description: PRIVATE_KEY
+    displayName: PRIVATE_KEY
     required: true
-  - name: 
-    description: 
-    displayName: 
+  - name: SYSLOG_PORT
+    description: SYSLOG_PORT
+    displayName: SYSLOG_PORT
     required: true
-    value: "true"
-  - name: 
-    description: 
-    displayName: 
+    value: "5514"
+  - name: LOG_LEVEL
+    description: LOG_LEVEL
+    displayName: LOG_LEVEL
     required: true
-    value: "true"
+    value: "info"
+  - name: BYPASS_ANSWER
+    description: BYPASS_ANSWER
+    displayName: BYPASS_ANSWER
+    required: false
+  - name: CORS_ALLOW_ALL
+    description: CORS_ALLOW_ALL
+    displayName: CORS_ALLOW_ALL
+    required: false 
+  - name: JWT_SIGN_EXPIRY
+    description: JWT_SIGN_EXPIRY
+    displayName: JWT_SIGN_EXPIRY
+    required: false
