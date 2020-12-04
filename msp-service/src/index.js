@@ -54,6 +54,11 @@ app.get('/status', function (req, res) {
     res.send("OK");
 });
 
+// health and readiness check
+app.get('/hello', function (req, res) {
+    res.status(200).end();
+});
+
 //
 // CAPTCHA Authorization, ALWAYS first
 //
