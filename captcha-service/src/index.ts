@@ -519,9 +519,9 @@ function getMp3DataUriFromText(text: string, language: string = 'en') {
 }
 
 // health and readiness check
-app.get('/hello', function (req, res) {
+app.get(/^\/(hello)?$/, function (req: Request, res: Response) {
     res.status(200).end();
-});
+})
 
 app.get(/^\/(status)?$/, function (req: Request, res: Response) {
   res.send("OK")
