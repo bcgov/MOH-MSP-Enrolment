@@ -30,7 +30,7 @@ objects:
       app: msp-enrolment-web
     name: ${NAME}-to-api
   spec:
-    host: "${NAME}-${NAMESPACE}.${CLUSTER_DOMAIN}"
+    host: "${NAME}-${MSP_ENV}.${CLUSTER_DOMAIN}"
     path: "/api"
     port:
       targetPort: 8080-tcp
@@ -169,12 +169,6 @@ parameters:
   required: true
   value: msp-web
 - description: |
-    The namespace of the OpenShift project containing the imagestream for
-    the application.
-  displayName: Environment namespace
-  name: NAMESPACE
-  required: true
-- description: |
     The openshift project where builds and target images are stored.
   displayName: Build Project
   name: SOURCE_IMAGE_NAMESPACE
@@ -202,7 +196,7 @@ parameters:
 - description: AdditionalRealIpFromRules
   name: AdditionalRealIpFromRules
   value: ""
-  required: true
+  required: false
 - description: IpFilterRules
   name: IpFilterRules
   value: "allow 0.0.0.0/0; deny all;"
@@ -228,3 +222,7 @@ parameters:
   name: ROUTER_DEFAULT_CLIENT_TIMEOUT
   value: "60s"
   required: false
+- description: LOG_LEVEL
+  name: LOG_LEVEL
+  value: "info"
+  required: true
