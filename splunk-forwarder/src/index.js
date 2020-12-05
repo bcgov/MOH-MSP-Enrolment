@@ -15,7 +15,6 @@ const SplunkLogger = require("./splunklogger");
 const utils = require("./utils");
 const basicAuth = require('express-basic-auth')
 
-
 /*=============================================
 =      Environment Variable Configuration     =
 =============================================*/
