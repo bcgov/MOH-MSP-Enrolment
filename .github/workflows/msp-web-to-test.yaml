@@ -1,4 +1,4 @@
-name: MSP-Service Deploy to Prod
+name: msp-web deploy to test
 on: 
   workflow_dispatch:
     inputs:
@@ -14,10 +14,10 @@ jobs:
     # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
-      - name: Deploy to Prod
+      - name: Deploy to Test
         env:
           NAMESPACE: f0463d-tools
-          TARGET_IMAGE_TAG: prod
+          TARGET_IMAGE_TAG: test
         uses: redhat-developer/openshift-actions@v1.1
         with:
           version: "latest"
@@ -25,4 +25,4 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.OpenShiftToken }}", "acceptUntrustedCerts": "true"}'
           cmd: |
             'version'
-            'tag -n ${NAMESPACE} ${NAMESPACE}/MyGovBC-MSP-Service:${{github.event.inputs.source_tag}} ${NAMESPACE}/MyGovBC-MSP-Service:${TARGET_IMAGE_TAG}'
+            'tag -n ${NAMESPACE} ${NAMESPACE}/msp-web:${{github.event.inputs.source_tag}} ${NAMESPACE}/msp-web:${TARGET_IMAGE_TAG}'

@@ -1,4 +1,4 @@
-name: SPA Deploy to Prod
+name: spa-env-server deploy to prod
 on: 
   workflow_dispatch:
     inputs:
@@ -11,7 +11,7 @@ defaults:
     working-directory: ./
 jobs:
   ocp-integration:
-    # if: github.event_name == 'push' && github.ref == 'refs/heads/master'
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Deploy to Prod

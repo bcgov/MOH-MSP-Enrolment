@@ -1,12 +1,12 @@
-name: msp-service build
+name: spa-env-server build
 on:
   push:
     paths:
-      - "msp-service/src/**/*.js"
-      - "msp-service/package*.json"
+      - "spa-env-server/src/**/*.js"
+      - "spa-env-server/package*.json"
 defaults:
   run:
-    working-directory: ./msp-service
+    working-directory: ./spa-env-server
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -57,8 +57,8 @@ jobs:
       - name: S2I Build
         env:
           NAMESPACE: f0463d-tools
-          BUILD_NAME: msp-service-main-build
-          IMAGE_NAME: msp-service
+          BUILD_NAME: spa-env-server-main-build
+          IMAGE_NAME: spa-env-server
         uses: redhat-developer/openshift-actions@v1.1
         with:
           version: "latest"

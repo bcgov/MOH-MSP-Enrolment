@@ -1,12 +1,12 @@
-name: SPA Test & Build
+name: splunk-forwarder build
 on:
   push:
     paths:
-      - "spa-env-server/src/**/*.js"
-      - "spa-env-server/package*.json"
+      - "splunk-forwarder/src/**/*.js"
+      - "splunk-forwarder/package*.json"
 defaults:
   run:
-    working-directory: ./spa-env-server
+    working-directory: ./splunk-forwarder
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -50,15 +50,15 @@ jobs:
         env:
           CI: "true"
   s2i-build:
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    # if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     needs: [test, build]
     steps:
       - name: S2I Build
         env:
           NAMESPACE: f0463d-tools
-          BUILD_NAME: spa-env-server-main-build
-          IMAGE_NAME: spa-env-server
+          BUILD_NAME: splunk-forwarder-main-build
+          IMAGE_NAME: splunk-forwarder
         uses: redhat-developer/openshift-actions@v1.1
         with:
           version: "latest"
