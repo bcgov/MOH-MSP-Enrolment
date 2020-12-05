@@ -14,9 +14,9 @@ jobs:
       - uses: actions/checkout@main
       - uses: actions/setup-node@main
         with:
-          node-version: "12"
+          node-version: "10"
       - name: Install dependencies
-        run: npm ci --only=production
+        run: npm install
       - name: Unit tests w/ coverage
         run: npm run test:coverage
       - name: LINTing
