@@ -46,6 +46,7 @@ const FILE_LOG_NAME = LOG_DIR_NAME ?
     LOG_DIR_NAME + '/sf' + (APPEND_POD_NAME_TO_FILE ? '-' + HOST_NAME : '') + '.log'
     : './logs/sf' + (APPEND_POD_NAME_TO_FILE ? '-' + HOST_NAME : '') + '.log';
 
+
 /*=============================================
 =            APPLICATION CONFIGURATION        =
 =============================================*/
