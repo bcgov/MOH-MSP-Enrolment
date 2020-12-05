@@ -1,4 +1,4 @@
-name: MSP-Service Test & Build
+name: msp-service build
 on:
   push:
     paths:
