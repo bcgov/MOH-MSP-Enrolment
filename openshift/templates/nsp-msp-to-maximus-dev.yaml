@@ -37,7 +37,7 @@ objects:
         specify a custom external network that can be
         referenced by name. ie. d1splunkservices.maximusbc.ca
       entries:
-        - "142.31.59.209"
+        - "142.31.59.209/32"
       servicePorts:
         - "tcp/80"
         - "tcp/443"
@@ -56,7 +56,7 @@ objects:
         specify a custom external network that can be
         referenced by name. ie. d2mspde.maximusbc.ca
       entries:
-        - "142.31.59.209"
+        - "142.31.59.209/32"
       servicePorts:
         - "tcp/80"
         - "tcp/443"
