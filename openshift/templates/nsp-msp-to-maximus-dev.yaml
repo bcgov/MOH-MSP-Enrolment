@@ -35,9 +35,9 @@ objects:
       # the `name` field in metadata above.
       description: |
         specify a custom external network that can be
-        referenced by name.
+        referenced by name. ie. d1splunkservices.maximusbc.ca
       entries:
-        - d1splunkservices.maximusbc.ca
+        - "142.31.59.209"
       servicePorts:
         - "tcp/80"
         - "tcp/443"
@@ -54,9 +54,9 @@ objects:
       # the `name` field in metadata above.
       description: |
         specify a custom external network that can be
-        referenced by name.
+        referenced by name. ie. d2mspde.maximusbc.ca
       entries:
-        - d2mspde.maximusbc.ca
+        - "142.31.59.209"
       servicePorts:
         - "tcp/80"
         - "tcp/443"
