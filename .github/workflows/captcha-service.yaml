@@ -4,6 +4,7 @@ on:
     paths:
       - "captcha-service/src/**/*.js"
       - "captcha-service/package*.json"
+  workflow_dispatch:
 defaults:
   run:
     working-directory: ./captcha-service

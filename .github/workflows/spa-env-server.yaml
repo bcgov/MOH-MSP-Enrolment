@@ -4,6 +4,7 @@ on:
     paths:
       - "spa-env-server/src/**/*.js"
       - "spa-env-server/package*.json"
+  workflow_dispatch:
 defaults:
   run:
     working-directory: ./spa-env-server

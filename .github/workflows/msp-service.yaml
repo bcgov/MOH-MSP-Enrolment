@@ -4,6 +4,7 @@ on:
     paths:
       - "msp-service/src/**/*.js"
       - "msp-service/package*.json"
+  workflow_dispatch:
 defaults:
   run:
     working-directory: ./msp-service
