@@ -1,11 +1,13 @@
 {
   "name": "captcha-service",
-  "version": "7.2.0",
+  "version": "7.3.0",
   "description": "A reusable, secure and reliable CAPTCHA microservice for service providers to use within online digital services.",
   "main": "lib/index.js",
   "scripts": {
+    "build": "NODE_ENV=production gulp",
+    "start": "ts-node $NODE_DEBUG_OPTION build/index server",
+    "dev": "nodemon --watch src --inspect=0.0.0.0:9229 --exec ts-node ./src/index.js server",
     "test": "ts-node tests/test",
-    "start": "ts-node src/index server",
     "install": "tsc -p .",
     "generate-private-key": "ts-node util_jwks_gen.ts"
   },
