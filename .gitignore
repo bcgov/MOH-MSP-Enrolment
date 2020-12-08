@@ -104,9 +104,8 @@ dist
 .tern-port
 
 # Artifacts
-spa-env-server/build
-msp/dist
 version.GENERATED.ts
 params-*.txt
 lib
 build/
+dist/
