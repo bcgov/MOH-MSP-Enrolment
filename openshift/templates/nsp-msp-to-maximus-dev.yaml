@@ -46,6 +46,25 @@ objects:
     metadata:
       # This metadata field will be what you see with the command
       # `oc get externalnetwork` or `kubctl get externalnetwork`.
+      name: cloudflare
+      labels:
+        app: msp-service
+    spec:
+      # This name will be used internally by Aporeto; it should match
+      # the `name` field in metadata above.
+      description: |
+        specify a custom external network that can be
+        referenced by name. ie. cloudflare
+      entries:
+        - "104.16.0.0/16"
+      servicePorts:
+        - "tcp/80"
+        - "tcp/443"
+  - apiVersion: security.devops.gov.bc.ca/v1alpha1
+    kind: ExternalNetwork
+    metadata:
+      # This metadata field will be what you see with the command
+      # `oc get externalnetwork` or `kubctl get externalnetwork`.
       name: msp-middleware
       labels:
         app: msp-service
@@ -77,17 +96,45 @@ objects:
   - apiVersion: security.devops.gov.bc.ca/v1alpha1
     kind: NetworkSecurityPolicy
     metadata:
-      name: msp-web-to-msp-middleware
+      name: splunk-forwarder-to-cloudflare
       labels:
-        app: msp-web
+        app: splunk-forwarder
     spec:
       description: |
-        allow msp server to talk to msp middleware
+        allow splunk-forwarder to talk to cloudflare
       source:
         - - '$namespace=${NAMESPACE}'
-          - 'role=mspserver'
+          - 'role=splunkforwarder'
+      destination:
+        - - 'ext:name=cloudflare'
+  - apiVersion: security.devops.gov.bc.ca/v1alpha1
+    kind: NetworkSecurityPolicy
+    metadata:
+      name: msp-service-to-msp-middleware
+      labels:
+        app: msp-service
+    spec:
+      description: |
+        allow msp service to talk to msp middleware
+      source:
+        - - '$namespace=${NAMESPACE}'
+          - 'role=mspservice'
       destination:
         - - 'ext:name=msp-middleware'
+  - apiVersion: security.devops.gov.bc.ca/v1alpha1
+    kind: NetworkSecurityPolicy
+    metadata:
+      name: msp-service-to-cloudflare
+      labels:
+        app: msp-service
+    spec:
+      description: |
+        allow msp service to talk to cloudflare
+      source:
+        - - '$namespace=${NAMESPACE}'
+          - 'role=mspservice'
+      destination:
+        - - 'ext:name=cloudflare'
 parameters:
   - name: NAMESPACE
     description: |
