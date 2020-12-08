@@ -27,6 +27,12 @@ objects:
     labels:
       app: ${NAME}-web
 - apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: ${NAME}-web
+    labels:
+      app: ${NAME}-web
+- apiVersion: v1
   kind: BuildConfig
   metadata:
     name: ${NAME}-web-artifact-build
