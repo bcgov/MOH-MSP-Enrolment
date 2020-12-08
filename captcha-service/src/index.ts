@@ -11,7 +11,7 @@ var winston = require('winston')
 const ipRangeCheck = require("ip-range-check")
 
 // requires for audio support
-var lame = require('@suldashi/lame')
+var lame = require('lame')
 var wav = require('wav')
 import text2wav = require('text2wav')
 var streamifier = require("streamifier")
