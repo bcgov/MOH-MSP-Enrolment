@@ -27,9 +27,9 @@ objects:
     metadata:
       # This metadata field will be what you see with the command
       # `oc get externalnetwork` or `kubctl get externalnetwork`.
-      name: splunk-server
+      name: maximus-servers
       labels:
-        app: splunk-forwarder
+        app: msp-service
     spec:
       # This name will be used internally by Aporeto; it should match
       # the `name` field in metadata above.
@@ -61,38 +61,19 @@ objects:
         - "tcp/80"
         - "tcp/443"
   - apiVersion: security.devops.gov.bc.ca/v1alpha1
-    kind: ExternalNetwork
-    metadata:
-      # This metadata field will be what you see with the command
-      # `oc get externalnetwork` or `kubctl get externalnetwork`.
-      name: msp-middleware
-      labels:
-        app: msp-service
-    spec:
-      # This name will be used internally by Aporeto; it should match
-      # the `name` field in metadata above.
-      description: |
-        specify a custom external network that can be
-        referenced by name. ie. d2mspde.maximusbc.ca
-      entries:
-        - "142.31.59.209/32"
-      servicePorts:
-        - "tcp/80"
-        - "tcp/443"
-  - apiVersion: security.devops.gov.bc.ca/v1alpha1
     kind: NetworkSecurityPolicy
     metadata:
-      name: splunk-forwarder-to-splunk-server
+      name: splunk-forwarder-to-maximus-servers
       labels:
         app: splunk-forwarder
     spec:
       description: |
-        allow splunk-forwarder to talk to splunk server
+        allow splunk-forwarder to talk to maximus-servers
       source:
         - - '$namespace=${NAMESPACE}'
           - 'role=splunkforwarder'
       destination:
-        - - 'ext:name=splunk-server'
+        - - 'ext:name=maximus-servers'
   - apiVersion: security.devops.gov.bc.ca/v1alpha1
     kind: NetworkSecurityPolicy
     metadata:
@@ -110,17 +91,17 @@ objects:
   - apiVersion: security.devops.gov.bc.ca/v1alpha1
     kind: NetworkSecurityPolicy
     metadata:
-      name: msp-service-to-msp-middleware
+      name: msp-service-to-maximus-servers
       labels:
         app: msp-service
     spec:
       description: |
-        allow msp service to talk to msp middleware
+        allow msp service to talk to maximus servers
       source:
         - - '$namespace=${NAMESPACE}'
           - 'role=mspservice'
       destination:
-        - - 'ext:name=msp-middleware'
+        - - 'ext:name=maximus-servers'
   - apiVersion: security.devops.gov.bc.ca/v1alpha1
     kind: NetworkSecurityPolicy
     metadata:
