@@ -132,7 +132,7 @@ objects:
             }
 
             location /api {
-              proxy_pass http://mygovbc-msp-service:8080/;
+              proxy_pass http://msp-service:8080/;
               proxy_read_timeout 300;
               proxy_connect_timeout 300;
               proxy_send_timeout 300;
@@ -187,7 +187,7 @@ objects:
               }
 
               location /api/captcha/ {
-                proxy_pass http://mygovbc-captcha-service:8080/;
+                proxy_pass http://captcha-service:8080/;
               }
             }
 
