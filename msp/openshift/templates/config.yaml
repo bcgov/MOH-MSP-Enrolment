@@ -234,3 +234,25 @@ parameters:
   - description: MSP_ENV
     name: MSP_ENV
     required: true
+  - description: SOURCE_IMAGE_TAG
+    name: SOURCE_IMAGE_TAG
+    required: true
+  - description: SOURCE_IMAGE_NAMESPACE
+    name: SOURCE_IMAGE_NAMESPACE
+    required: true
+  - description: ROUTER_DEFAULT_CLIENT_TIMEOUT
+    name: ROUTER_DEFAULT_CLIENT_TIMEOUT
+    value: "60s"
+    required: false
+  - description: ROUTER_DEFAULT_SERVER_TIMEOUT
+    name: ROUTER_DEFAULT_SERVER_TIMEOUT
+    value: "60s"
+    required: false
+  - description: LOG_LEVEL
+    name: LOG_LEVEL
+    value: "info"
+    required: true
+  - description: USE_SPLUNK_FORWARDER
+    name: USE_SPLUNK_FORWARDER
+    value: "true"
+    required: false
