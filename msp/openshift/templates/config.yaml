@@ -95,7 +95,7 @@ objects:
             add_header X-XSS-Protection 1;
             add_header X-Frame-Options DENY;
 
-	      # uncomment for test2
+            # uncomment for test2
             # index index.html index.htm;
 
             # serve our angular app here
@@ -104,7 +104,7 @@ objects:
 
               root /opt/app-root/src;
 
-		# comment for test2
+              # comment for test2
               index index.html index.htm;
 
               try_files $uri /index.html;
