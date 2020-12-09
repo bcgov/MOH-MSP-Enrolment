@@ -80,30 +80,7 @@ export class HomeComponent implements OnInit {
 
   continue() {
     this.continueButtonLoading = true;
-
-    this.apiService.sendChangeAddressApplication(this.mspAccountApp)
-      .then((response: ApiResponse) => {
-
-        if (response && response.op_return_code !== 'SUCCESS') {
-          devOnlyConsoleLog('Submission response: ', response.op_return_code);
-        }
-
-        if (response instanceof HttpErrorResponse) {
-          this.logService.log({
-              name: 'DEAM - System Error',
-              confirmationNumber: this.mspAccountApp.referenceNumber,
-              url: this.router.url
-          }, 'DEAM - Submission Response Error' + response.message);
-          return;
-        }
-
-        this.continueButtonLoading = false;
-
-        // Open new window.
-        window.open(this.outLinkUrl, '_blank');
-
-      }).catch((error: ResponseType | any) => {
-        devOnlyConsoleLog('Error in sending request: ', error);
-      });
+    window.open(this.outLinkUrl, '_blank');
+    this.continueButtonLoading = false;
   }
 }
