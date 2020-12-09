@@ -160,7 +160,7 @@ objects:
                 if ( $request_method ~ ^(HEAD|OPTIONS)$ ) {
                   return 200;
                 }
-                proxy_set_header Authorization "spaenv ${PA_ENV_AUTH_TOKEN}";
+                proxy_set_header Authorization "spaenv ${SPA_ENV_AUTH_TOKEN}";
                 proxy_set_header http_host ${HOSTNAME};
                 proxy_pass_header Authorization;
                 proxy_pass_header http_host;
