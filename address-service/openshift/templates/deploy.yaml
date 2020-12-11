@@ -101,8 +101,6 @@ objects:
                   value: "8080"
                 - name: MUTUAL_TLS_PEM_KEY_BASE64
                   value: ${MUTUAL_TLS_PEM_KEY_BASE64}
-                - name: MUTUAL_TLS_PEM_KEY_PASSPHRASE
-                  value: ${MUTUAL_TLS_PEM_KEY_PASSPHRASE}
                 - name: MUTUAL_TLS_PEM_CERT
                   value: ${MUTUAL_TLS_PEM_CERT}
                 - name: ADDRESS_VALIDATOR_URL
@@ -153,10 +151,6 @@ parameters:
   - name: MUTUAL_TLS_PEM_KEY_BASE64
     description: MUTUAL_TLS_PEM_KEY_BASE64
     displayName: MUTUAL_TLS_PEM_KEY_BASE64
-    required: true
-  - name: MUTUAL_TLS_PEM_KEY_PASSPHRASE
-    description: MUTUAL_TLS_PEM_KEY_PASSPHRASE
-    displayName: MUTUAL_TLS_PEM_KEY_PASSPHRASE
     required: true
   - name: MUTUAL_TLS_PEM_CERT
     description: MUTUAL_TLS_PEM_CERT
