@@ -135,6 +135,20 @@ objects:
           - 'role=mspservice'
       destination:
         - - 'ext:name=cloudflare'
+  - apiVersion: security.devops.gov.bc.ca/v1alpha1
+    kind: NetworkSecurityPolicy
+    metadata:
+      name: address-service-to-address-doctor
+      labels:
+        app: address-service
+    spec:
+      description: |
+        allow address service to talk to cgi address doctor
+      source:
+        - - '$namespace=${NAMESPACE}'
+          - 'role=addressservice'
+      destination:
+        - - 'ext:name=addressdoctor'
 parameters:
   - name: NAMESPACE
     description: |

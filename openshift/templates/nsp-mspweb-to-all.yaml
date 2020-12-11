@@ -40,6 +40,21 @@ objects:
   - apiVersion: security.devops.gov.bc.ca/v1alpha1
     kind: NetworkSecurityPolicy
     metadata:
+      name: msp-to-address-service
+      labels:
+        app: msp-web
+    spec:
+      description: |
+        allow msp frontend to talk to spa-env-server
+      source:
+        - - '$namespace=${NAMESPACE}'
+          - 'role=mspfrontend'
+      destination:
+        - - '$namespace=${NAMESPACE}'
+          - 'role=addressservice'
+  - apiVersion: security.devops.gov.bc.ca/v1alpha1
+    kind: NetworkSecurityPolicy
+    metadata:
       name: msp-to-msp-service
       labels:
         app: msp-web
