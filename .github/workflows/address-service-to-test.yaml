@@ -1,4 +1,4 @@
-name: msp-service deploy to test
+name: address-service deploy to test
 on: 
   workflow_dispatch:
     inputs:
@@ -25,4 +25,4 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.OpenShiftToken }}", "acceptUntrustedCerts": "true"}'
           cmd: |
             'version'
-            'tag -n ${NAMESPACE} ${NAMESPACE}/msp-service:${{github.event.inputs.source_tag}} ${NAMESPACE}/msp-service:${TARGET_IMAGE_TAG}'
+            'tag -n ${NAMESPACE} ${NAMESPACE}/address-service:${{github.event.inputs.source_tag}} ${NAMESPACE}/address-service:${TARGET_IMAGE_TAG}'
