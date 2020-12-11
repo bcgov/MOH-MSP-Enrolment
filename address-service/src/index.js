@@ -19,6 +19,7 @@ const MAX_BYTE_SIZE_PER_FILE = parseInt(process.env.MAX_BYTE_SIZE_PER_FILE, 10) 
 
 var transport = null;
 
+
 // initialize winston
 winston.level = LOG_LEVEL
 winston.remove(winston.transports.Console)
