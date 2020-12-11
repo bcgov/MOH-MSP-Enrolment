@@ -1,4 +1,3 @@
-const winston = require('winston');
 const fs = require('fs');
 const https = require('https');
 const axios = require('axios');
@@ -7,6 +6,7 @@ const xmlConvert = require('xml-js');
 const soap = require('easy-soap-request');
 const soapRequest = require('./soapRequest.js');
 var packageJSON = require('./package.json');
+var winston = require('winston');
 
 const clientCert = base64Decode(process.env.MUTUAL_TLS_PEM_CERT);
 const clientKey = base64Decode(process.env.MUTUAL_TLS_PEM_KEY_BASE64);
