@@ -53,22 +53,28 @@ export class GeneralAppComponent {
 
   ngOnInit() {
     this.routerSubscription = this.router.events
-      .pipe(
-        filter(event => event instanceof NavigationEnd)
-      ).subscribe(event => {
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe(event => {
         document.body.scrollTop = 0;
       });
 
-      const prefix = environment.appConstants.serviceName;
-      this.headerSubscription = this.header.title.subscribe(title => {
-        this.headerName = title;
-      });
-    
-    console.log('version info:', version.gitCommit, version.buildTime, version.message, version.projectVersion, version.success);
+    this.headerSubscription = this.header.title.subscribe(title => {
+      this.headerName = title;
+    });
 
+    console.log("version:", version);
+    console.log(
+      "version info:",
+      version.gitCommit,
+      version.buildTime,
+      version.message,
+      version.projectVersion,
       version.success
-            ? console.log('%c' + version.message, 'color: #036; font-size: 20px;')
-            : console.error(version.message);
+    );
+
+    version.success
+      ? console.log("%c" + version.message, "color: #036; font-size: 20px;")
+      : console.error(version.message);
   }
 
   ngOnDestroy() {
