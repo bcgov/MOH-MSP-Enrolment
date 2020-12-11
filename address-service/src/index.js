@@ -11,7 +11,7 @@ var packageJSON = require('./package.json');
 const clientCert = base64Decode(process.env.MUTUAL_TLS_PEM_CERT);
 const clientKey = base64Decode(process.env.MUTUAL_TLS_PEM_KEY_BASE64);
 
-const FILE_LOG_LEVEL = process.env.FILE_LOG_LEVEL || 'info';
+const LOG_LEVEL = process.env.LOG_LEVEL || 'info';
 const HOST_NAME = process.env.HOSTNAME || '?';
 const USE_AUDIT_LOGS = (process.env.USE_AUDIT_LOGS == 'true');
 const MAX_FILES = parseInt(process.env.MAX_FILES, 10) || 10;
