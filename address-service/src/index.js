@@ -47,6 +47,11 @@ app.get('/', function (req, res) {
     res.send("OK. Version: " + packageJSON.version);
 });
 
+// health and readiness check
+app.get('/hello', function (req, res) {
+    res.status(200).end();
+});
+
 // Add status endpoint
 app.get('/status', function (req, res) {
     res.setHeader('Content-Type', 'text/plain');
