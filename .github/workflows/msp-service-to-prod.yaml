@@ -25,4 +25,4 @@ jobs:
           parameters: '{"apitoken": "${{ secrets.OpenShiftToken }}", "acceptUntrustedCerts": "true"}'
           cmd: |
             'version'
-            'tag -n ${NAMESPACE} ${NAMESPACE}/MyGovBC-MSP-Service:${{github.event.inputs.source_tag}} ${NAMESPACE}/MyGovBC-MSP-Service:${TARGET_IMAGE_TAG}'
+            'tag -n ${NAMESPACE} ${NAMESPACE}/msp-service:${{github.event.inputs.source_tag}} ${NAMESPACE}/msp-service:${TARGET_IMAGE_TAG}'
