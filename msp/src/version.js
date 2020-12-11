@@ -47,6 +47,10 @@ export const success = ${success};
 export const message = 'Version error. Unable to generate version.'`
     }
 
+    // log so we can see it in github action's build 10x, in npm install and build
+    console.log('version generation: trimmed(' + trimmed + ') buildTime(' + buildTime + ') projectVersion(' + projectVersion + ')', stdout);
+
+    // create the file version.GENERATED.ts in the src directory
     fs.writeFileSync(
         __dirname + '/version.GENERATED.ts',
         content,
