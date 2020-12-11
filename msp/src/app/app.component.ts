@@ -62,8 +62,8 @@ export class GeneralAppComponent {
       this.headerName = title;
     });
 
-    console.log("version:", version);
-    console.log(
+    window.console.log("version:", version);
+    window.console.log(
       "version info:",
       version.gitCommit,
       version.buildTime,
@@ -72,9 +72,9 @@ export class GeneralAppComponent {
       version.success
     );
 
-    version.success
-      ? console.log("%c" + version.message, "color: #036; font-size: 20px;")
-      : console.error(version.message);
+    // version.success
+    //   ? console.log("%c" + version.message, "color: #036; font-size: 20px;")
+    //   : console.error(version.message);
   }
 
   ngOnDestroy() {
