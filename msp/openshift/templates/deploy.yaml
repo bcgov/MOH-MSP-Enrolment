@@ -141,6 +141,8 @@ objects:
                 value: ${USE_SPLUNK_FORWARDER}
               - name: MSP_ENV
                 value: ${MSP_ENV}
+              - name: MSP_VERSION
+                value: ${MSP_VERSION}
               - name: ROUTER_DEFAULT_SERVER_TIMEOUT
                 value: ${ROUTER_DEFAULT_SERVER_TIMEOUT}
               - name: ROUTER_DEFAULT_CLIENT_TIMEOUT
@@ -213,6 +215,9 @@ parameters:
   required: true
 - description: MSP_ENV
   name: MSP_ENV
+  required: true
+- description: MSP_VERSION
+  name: MSP_VERSION
   required: true
 - description: ROUTER_DEFAULT_SERVER_TIMEOUT
   name: ROUTER_DEFAULT_SERVER_TIMEOUT

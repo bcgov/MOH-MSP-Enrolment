@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { environment } from '../environments/environment';
-import * as version from '../version.GENERATED';
+// import * as version from '../version.GENERATED';
 import { HeaderService } from './services/header.service';
 // import { } from '../version.GENERATED';
 
@@ -62,15 +62,16 @@ export class GeneralAppComponent {
       this.headerName = title;
     });
 
-    window.console.log("version:", version);
-    window.console.log(
-      "version info:",
-      version.gitCommit,
-      version.buildTime,
-      version.message,
-      version.projectVersion,
-      version.success
-    );
+    window.console.log("version:", process.env.MSP_VERSION);
+    
+    // window.console.log(
+    //   "version info:",
+    //   version.gitCommit,
+    //   version.buildTime,
+    //   version.message,
+    //   version.projectVersion,
+    //   version.success
+    // );
 
     // version.success
     //   ? console.log("%c" + version.message, "color: #036; font-size: 20px;")
