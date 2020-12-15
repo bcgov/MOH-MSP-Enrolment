@@ -21,6 +21,9 @@ require('child_process').exec('git rev-parse --short HEAD', function(err, stdout
     // Checking we have a realistic response
     let success = false;
     let content;
+  
+    console.log('trimmed:', trimmed, 'buildTime:', buildTime, 'projectVersion:', projectVersion);
+
     if (trimmed.length && buildTime.length && projectVersion.length) {
         success = true;
     }
