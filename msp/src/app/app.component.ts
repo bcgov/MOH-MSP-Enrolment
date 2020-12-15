@@ -3,7 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { environment } from '../environments/environment';
-import * as version from '../version.GENERATED';
+import * as version from 'version.GENERATED';
 import { HeaderService } from './services/header.service';
 
 @Component({
@@ -59,16 +59,7 @@ export class GeneralAppComponent {
     this.headerSubscription = this.header.title.subscribe(title => {
       this.headerName = title;
     });
-
-    window.console.log(
-      "version info:",
-      version.gitCommit,
-      version.buildTime,
-      version.message,
-      version.projectVersion,
-      version.success
-    );
-
+    
     version.success
       ? console.log("%c" + version.message, "color: #036; font-size: 20px;")
       : console.error(version.message);
