@@ -59,7 +59,9 @@ export class GeneralAppComponent {
     this.headerSubscription = this.header.title.subscribe(title => {
       this.headerName = title;
     });
-    
+
+    console.log('version is:', version);
+
     version.success
       ? console.log("%c" + version.message, "color: #036; font-size: 20px;")
       : console.error(version.message);

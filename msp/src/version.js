@@ -8,9 +8,8 @@ const fs = require('fs');
 // can run on Jenkins. However the generated file is a .ts as it's consumed by
 // Angular in app.component.ts.
 
-// To update project version, use npm version patch/minor/major
-// https://docs.npmjs.com/cli/version
-const { version: projectVersion } = require('../package.json');
+// Update the version here
+const projectVersion = '3.3.2';
 
 require('child_process').exec('git rev-parse --short HEAD', function(err, stdout) {
     console.log('Last commit hash on this branch is:', stdout);
