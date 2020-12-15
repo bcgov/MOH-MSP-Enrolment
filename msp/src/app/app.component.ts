@@ -3,15 +3,13 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { environment } from '../environments/environment';
-// import * as version from '../version.GENERATED';
+import * as version from '../version.GENERATED';
 import { HeaderService } from './services/header.service';
-// import { } from '../version.GENERATED';
 
 @Component({
   selector: 'general-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-
 })
 export class GeneralAppComponent {
   private viewContainerRef: ViewContainerRef;
@@ -62,20 +60,18 @@ export class GeneralAppComponent {
       this.headerName = title;
     });
 
-    window.console.log("version:", process.env.MSP_VERSION);
-    
-    // window.console.log(
-    //   "version info:",
-    //   version.gitCommit,
-    //   version.buildTime,
-    //   version.message,
-    //   version.projectVersion,
-    //   version.success
-    // );
+    window.console.log(
+      "version info:",
+      version.gitCommit,
+      version.buildTime,
+      version.message,
+      version.projectVersion,
+      version.success
+    );
 
-    // version.success
-    //   ? console.log("%c" + version.message, "color: #036; font-size: 20px;")
-    //   : console.error(version.message);
+    version.success
+      ? console.log("%c" + version.message, "color: #036; font-size: 20px;")
+      : console.error(version.message);
   }
 
   ngOnDestroy() {
