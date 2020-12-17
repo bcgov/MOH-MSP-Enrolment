@@ -3,13 +3,15 @@ import { Router, NavigationEnd } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 import { environment } from '../environments/environment';
-import * as version from 'version.GENERATED';
+import * as version from '../version.GENERATED';
 import { HeaderService } from './services/header.service';
+// import { } from '../version.GENERATED';
 
 @Component({
   selector: 'general-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+
 })
 export class GeneralAppComponent {
   private viewContainerRef: ViewContainerRef;
@@ -33,36 +35,46 @@ export class GeneralAppComponent {
       // if on the home page, don't redirect but remove any stored application data
       if (url.includes('/home')) {
         this.clearStorage();
-      // if anywhere else besides confirmation, redirect them to the home page
+        // if anywhere else besides confirmation, redirect them to the home page
       } else if (!url.includes('/confirmation')) {
         this.hardRedirect('/msp/deam/home');
       }
-    // Refresh on retro assistance
+      // Refresh on retro assistance
     } else if (url.includes('/assistance')) {
       // if on the home page, don't redirect but remove any stored application data
       if (url.includes('/home')) {
         this.clearStorage();
-      // if anywhere else besides confirmation, redirect them to the home page
+        // if anywhere else besides confirmation, redirect them to the home page
       } else if (!url.includes('/confirmation')) {
         this.hardRedirect('/msp/assistance/home');
+      }
+    } else if (url.includes('/benefit')) {
+      // if on the home page, don't redirect but remove any stored application data
+      if (url.includes('/eligibility')) {
+        this.clearStorage();
+        // if anywhere else besides confirmation, redirect them to the home page
+      } else if (!url.includes('/confirmation')) {
+        this.hardRedirect('/msp/benefit/eligibility');
       }
     }
   }
 
   ngOnInit() {
     this.routerSubscription = this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe(event => {
+      .pipe(
+        filter(event => event instanceof NavigationEnd)
+      ).subscribe(event => {
         document.body.scrollTop = 0;
       });
 
-    this.headerSubscription = this.header.title.subscribe(title => {
-      this.headerName = title;
-    });
+      const prefix = environment.appConstants.serviceName;
+      this.headerSubscription = this.header.title.subscribe(title => {
+        this.headerName = title;
+      });
 
-    version.success
-      ? console.log("%c" + version.message, "color: #036; font-size: 20px;")
-      : console.error(version.message);
+      version.success
+            ? console.log('%c' + version.message, 'color: #036; font-size: 20px;')
+            : console.error(version.message);
   }
 
   ngOnDestroy() {

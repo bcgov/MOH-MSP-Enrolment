@@ -10,24 +10,12 @@ import { AssistTransformService } from '../../services/assist-transform.service'
 import { AssistMapping } from '../../models/assist-mapping';
 import { HeaderService } from '../../../../services/header.service';
 import { ROUTES_ASSIST } from '../../models/assist-route-constants';
+import { MspLogService } from 'app/services/log.service';
+import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 
 @Component({
   selector: 'msp-assist-container',
-  template: `
-    <common-core-breadcrumb>
-      <common-wizard-progress-bar center [progressSteps]="progressSteps">
-      </common-wizard-progress-bar>
-    </common-core-breadcrumb>
-    <common-page-framework layout="blank">
-      <router-outlet></router-outlet>
-    </common-page-framework>
-    <common-form-action-bar
-      (btnClick)="continue()"
-      [submitLabel]="submitLabelRPA"
-      [isLoading]="isLoading"
-      [defaultColor]="useDefaultColorRPA"
-    ></common-form-action-bar>
-  `,
+  templateUrl: './assist-container.component.html',
   styleUrls: ['./assist-container.component.scss']
 })
 export class AssistContainerComponent extends Container implements OnInit {
@@ -47,7 +35,8 @@ export class AssistContainerComponent extends Container implements OnInit {
     private dataSvc: MspDataService,
     private schemaSvc: SchemaService,
     private xformSvc: AssistTransformService,
-    private header: HeaderService
+    private header: HeaderService,
+    private logService: MspLogService
   ) {
     super();
     this.setProgressSteps(assistPages);
@@ -125,9 +114,14 @@ export class AssistContainerComponent extends Container implements OnInit {
       ]);
       }
     } catch (err) {
-      console.error(err);
-    } finally {
-      // Should there be some code in here??
+      devOnlyConsoleLog(err);
+      this.logService.log(
+        {
+          name: 'PA - Error in submit',
+          url: this.router.url
+        },
+        'PA error in submit:' + err
+      );
     }
   }
 }

@@ -9,25 +9,7 @@ import { AssistanceYear } from '../../models/assistance-year.model';
 import { AssistStateService } from '../../services/assist-state.service';
 
 @Component({
-  // templateUrl: './personal-info.component.html'
-  template: `
-    <h1>{{ title }}</h1>
-    <h2>{{ subtitle }}</h2>
-    <p class="border-bottom">{{ description }}</p>
-    <form #formRef="ngForm" novalidate>
-      <common-page-section layout="noTips">
-        <msp-personal-information
-          [person]="financialAssistApplication.applicant"
-          (personChange)="saveAccountHolder()"
-        ></msp-personal-information>
-      </common-page-section>
-      <h3>{{ documentsTitle }}</h3>
-      <p class="border-bottom">{{ documentsDescription }}</p>
-      <msp-assist-cra-documents
-        [assistanceYears]="assistanceYears"
-      ></msp-assist-cra-documents>
-    </form>
-  `
+  templateUrl: './personal-info.component.html'
 })
 export class AssistancePersonalInfoComponent extends BaseComponent {
 
@@ -61,7 +43,7 @@ export class AssistancePersonalInfoComponent extends BaseComponent {
           distinctUntilChanged()
         )
         .subscribe(() => {
-          this.stateSvc.setPageValid( this.route.snapshot.routeConfig.path, this.personalInfoForm.valid );
+          this.stateSvc.setPageValid( this.route.snapshot.routeConfig.path, this.personalInfoForm.valid && this.hasFiles() );
           this.dataService.saveFinAssistApplication();
         })
     );
@@ -107,6 +89,18 @@ export class AssistancePersonalInfoComponent extends BaseComponent {
 
   ngOnDestroy() {
     this.subscriptionList.forEach(itm => itm.unsubscribe());
+  }
+
+  // Ensure at least one document has been uploaded per assist year
+  hasFiles() {
+    let hasAllFiles = true;
+    this.financialAssistApplication.assistYears.forEach(yr => {
+      if (yr.files && yr.files.length < 1) {
+        hasAllFiles = false;
+      }
+    });
+
+    return hasAllFiles;
   }
 
   createDocumentDesc(years: any[]) {
