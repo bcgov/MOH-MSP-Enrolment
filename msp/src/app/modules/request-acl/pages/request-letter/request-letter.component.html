@@ -20,8 +20,7 @@
     <common-page-section layout='tips'>
       <div class="col-sm-6 pl-0">
         <div class="form-group">
-          <common-phn #AccountHolder_Phn="ngModel"
-                      name="AccountHolderPhn"
+          <common-phn name="AccountHolderPhn"
                       [(ngModel)]="accountHolderPhn"
                       [errorMessage]="errorMessage"
                       (blur)="triggerValidation(specificMemberInput)"
