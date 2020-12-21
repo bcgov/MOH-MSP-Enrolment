@@ -1,5 +1,5 @@
 <msp-consent-modal #mspConsentModal
-                   (onClose)="AccountHolderPhn.focus()"
+                   (onClose)="Account_Holder_Phn.focus()"
                    [consentProcessName]="'ACL'" 
                    (accept)="acceptAgreement($event)">
 </msp-consent-modal>
@@ -20,7 +20,8 @@
     <common-page-section layout='tips'>
       <div class="col-sm-6 pl-0">
         <div class="form-group">
-          <common-phn name="AccountHolderPhn"
+          <common-phn #Account_Holder_Phn
+                      name="AccountHolderPhn"
                       [(ngModel)]="accountHolderPhn"
                       [errorMessage]="errorMessage"
                       (blur)="triggerValidation(specificMemberInput)"
