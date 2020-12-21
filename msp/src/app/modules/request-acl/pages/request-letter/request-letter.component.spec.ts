@@ -46,7 +46,6 @@ describe('RequestLetterComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RequestLetterComponent);
     component = fixture.componentInstance;
-    fixture.detectChanges();
   });
 
   it('should create', () => {
