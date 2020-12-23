@@ -30,7 +30,7 @@ objects:
       name: splunk-local-log
     spec:
       accessModes:
-      - ReadWriteOnce
+      - ReadWriteMany
       resources:
         requests:
           storage: 1Gi

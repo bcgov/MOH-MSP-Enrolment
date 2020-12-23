@@ -23,6 +23,21 @@ metadata:
   name: spa-env-server
 objects:
   - apiVersion: v1
+    kind: PersistentVolumeClaim
+    metadata:
+      labels:
+        app: spa-env-server
+      name: spa-env-log
+    spec:
+      accessModes:
+      - ReadWriteMany
+      resources:
+        requests:
+          storage: 1Gi
+      storageClassName: netapp-file-standard
+      volumeMode: Filesystem
+
+  - apiVersion: v1
     kind: Route
     metadata:
       labels:
