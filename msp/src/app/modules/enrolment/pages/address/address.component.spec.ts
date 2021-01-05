@@ -25,6 +25,7 @@ describe('EnrolAddressComponent', () => {
     });
     fixture = TestBed.createComponent(EnrolAddressComponent);
     component = fixture.componentInstance;
+    fixture.detectChanges();
   });
 
   it('should create', () => {
