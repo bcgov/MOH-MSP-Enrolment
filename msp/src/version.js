@@ -1,4 +1,4 @@
-const fs = require('fs');
+const fs = require("fs");
 /* tslint:disable */
 
 // This files is called in the npm pre-build hooks. It creates a generated
@@ -12,42 +12,48 @@ const fs = require('fs');
 // https://docs.npmjs.com/cli/version
 const { version: projectVersion } = require('../package.json');
 
-require('child_process').exec('git rev-parse --short HEAD', function(err, stdout) {
-    console.log('Last commit hash on this branch is:', stdout);
-    const trimmed = stdout.replace("\n", '');
+require("child_process").exec(
+  "git rev-parse --short HEAD",
+  function (err, stdout) {
+    console.log("Last commit hash on this branch is:", stdout);
+    const trimmed = stdout.replace("\n", "");
     const time = new Date();
-    const timezone = {timeZone: "America/Vancouver"};
-    const buildTime = `${ time.toLocaleDateString('en-CA', timezone) } at ${time.toLocaleTimeString('en-CA', timezone) }`;
+    const timezone = { timeZone: "America/Vancouver" };
+    const buildTime = `${time.toLocaleDateString(
+      "en-CA",
+      timezone
+    )} at ${time.toLocaleTimeString("en-CA", timezone)}`;
 
     // Checking we have a realistic response
     let success = false;
     let content;
+
+    // No longer checking trimmed.length on OC4 - stdout now behaves differently in new deployment
     if (buildTime.length && projectVersion.length) {
-        success = true;
+      success = true;
     }
 
     if (success) {
-    // Unindent so the generated file is unintended too.
-content = `// DO NOT DELETE OR APP WILL FAIL TO COMPILE! Generated from version.js
+      // Unindented so the generated file is unindented too.
+      content = `// DO NOT DELETE OR APP WILL FAIL TO COMPILE! Generated from version.js
 export const gitCommit = '${trimmed}';
-export const buildTime = '${ buildTime }';
+export const buildTime = '${buildTime}';
 /** App version retrieved from package.json. */
 export const projectVersion = '${projectVersion}';
 /** Human readable message  */
-export const message = 'Canonical Version: ${ trimmed } - ${ buildTime } (v${projectVersion}) \\nhttps://github.com/bcgov/MyGovBC-MSP/commits/${ trimmed }';
+export const message = 'Canonical Version: ${trimmed} - ${buildTime} (v${projectVersion}) \\nhttps://github.com/bcgov/MyGovBC-MSP/commits/${trimmed}';
 /** If true, other values should be present. */
 export const success = ${success};
-`
+`;
     } else {
-content = `//DO NOT DELETE OR APP WILL FAIL TO COMPILE! Generated from version.js
+      content = `//DO NOT DELETE OR APP WILL FAIL TO COMPILE! Generated from version.js
 // SOMETHING HAS GONE WRONG AND VERSION WAS NOT GENERATED SUCCESSFULLY
 export const success = ${success};
-export const message = 'Version error. Unable to generate version.'`
+export const message = 'Version error. Unable to generate version.'`;
     }
 
-    fs.writeFileSync(
-        __dirname + '/version.GENERATED.ts',
-        content,
-        {encoding: 'utf8'}
-    )
-});
+    fs.writeFileSync(__dirname + "/version.GENERATED.ts", content, {
+      encoding: "utf8",
+    });
+  }
+);
