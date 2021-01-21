@@ -1,9 +1,10 @@
 import {ChangeDetectorRef, DoCheck, EventEmitter,
-  Output, QueryList, SimpleChanges, Optional} from '@angular/core';
+  Output, QueryList, SimpleChanges, Optional, OnInit} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {NgForm} from '@angular/forms';
 import {UUID} from 'angular2-uuid';
 import {ProcessService} from '../services/process.service';
+import { scrollTo } from 'moh-common-lib';
 
 export class ValidEvent {
   id: string;
@@ -22,7 +23,7 @@ export class ValidEvent {
  * If you want the form validated, you MUST declare the NgForm as a @ViewChild in the extended class
  * If you want custom validation in the extended class, implement isValid():boolean
  */
-export class BaseComponent implements DoCheck {
+export class BaseComponent implements DoCheck, OnInit {
 
   /**
    * An identifier for parents to keep track of components
@@ -44,6 +45,10 @@ export class BaseComponent implements DoCheck {
 
   constructor(public changeDetectorRef: ChangeDetectorRef) {
     // A linked process step auto sets in when invalid or valid is determine
+  }
+
+  ngOnInit() {
+    scrollTo(0);
   }
 
   initProcessMembers(processStepNum: number, processService: ProcessService){
