@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule } from '@angular/platform-browser';
 import { GeneralAppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
@@ -38,6 +39,7 @@ if ( environment.useMockBackend ) {
 
 @NgModule({
   imports: [
+    BrowserAnimationsModule,
     BrowserModule,
     SharedCoreModule,
     HttpClientModule,
