@@ -24,6 +24,8 @@ import {
 import { ErrorMessage } from 'moh-common-lib';
 import { formatDateField } from '../../../../../modules/account/helpers/date';
 import { subDays } from 'date-fns';
+import { SpaEnvService } from '../../../../../services/spa-env.service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'msp-remove-spouse',
@@ -34,7 +36,7 @@ export class RemoveSpouseComponent extends BaseComponent {
   //static ProcessStepNum = 1;
 
   docSelected: string;
-
+  public readonly addressServiceUrl: string = environment.appConstants.addressApiBaseUrl;
   //langActivities = require('../../../../components/msp/common/activities/i18n');
 
   //langStatus = legalStatus;
@@ -85,7 +87,8 @@ export class RemoveSpouseComponent extends BaseComponent {
 
   constructor(
     public dataService: MspAccountMaintenanceDataService,
-    cd: ChangeDetectorRef
+    cd: ChangeDetectorRef,
+    private spaEnvService: SpaEnvService
     ) {
       super(cd);
     }
@@ -145,4 +148,8 @@ export class RemoveSpouseComponent extends BaseComponent {
     return this.listofCancellationReasons;
   }
 
+  get isAddressValidatorEnabled(): boolean {
+    const envs = this.spaEnvService.getValues();
+    return envs && envs.SPA_ENV_ENABLE_ADDRESS_VALIDATOR === 'true';
+  }
 }

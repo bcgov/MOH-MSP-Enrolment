@@ -7,6 +7,8 @@ import { ProcessService } from '../../../../services/process.service';
 import { Router } from '@angular/router';
 
 import {  ProvinceList, PROVINCE_LIST, CountryList, CANADA, BRITISH_COLUMBIA, Address, COUNTRY_LIST, CheckCompleteBaseService } from 'moh-common-lib';
+import { SpaEnvService } from '../../../../services/spa-env.service';
+import { environment } from 'environments/environment';
 //import { CountryList,ProvinceList,countryData, provinceData } from '../../../../models/msp-constants';
 
 @Component({
@@ -19,6 +21,7 @@ export class BenefitAddressComponent extends BaseComponent {
   addAnotherOutsideBCPersonButton = 'Add Another Person';
   sameMailingAddress = 'Use this as my mailing address.';
   provideDifferentMailingAddress = 'I want to provide a mailing address that is different from the residential address above.';
+  public readonly addressServiceUrl: string = environment.appConstants.addressApiBaseUrl;
 
   static ProcessStepNum = 3;
 
@@ -32,7 +35,8 @@ export class BenefitAddressComponent extends BaseComponent {
   constructor(private dataService: MspBenefitDataService,
               private _router: Router,
               private _processService: ProcessService,
-              private cd: ChangeDetectorRef) {
+              private cd: ChangeDetectorRef,
+              private spaEnvService: SpaEnvService) {
     super(cd);
     this.mspApplication = this.dataService.benefitApp;
   }
@@ -82,5 +86,10 @@ export class BenefitAddressComponent extends BaseComponent {
       this._processService.setStep(BenefitAddressComponent.ProcessStepNum, true);
       this._router.navigate(['/benefit/review']);
     }
+  }
+
+  get isAddressValidatorEnabled(): boolean {
+    const envs = this.spaEnvService.getValues();
+    return envs && envs.SPA_ENV_ENABLE_ADDRESS_VALIDATOR === 'true';
   }
 }

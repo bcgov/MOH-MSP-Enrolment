@@ -15,6 +15,7 @@
           reside at in B.C.
         </p>
         <common-address
+          *ngIf='!isAddressValidatorEnabled'
           #address
           [address]="mspAccountApp?.residentialAddress"
           (addressChange)="handleAddressUpdate($event)"
@@ -23,6 +24,18 @@
           [disableGeocoder]="true"
           [bcOnly]="true"
           [isRequired]="true"
+        >
+        </common-address>
+        <common-address
+          *ngIf='isAddressValidatorEnabled'
+          #address
+          [address]="mspAccountApp?.residentialAddress"
+          (addressChange)="handleAddressUpdate($event)"
+          [disabled]="{ province: true, country: true }"
+          [allowExtralines]="true"
+          [bcOnly]="true"
+          [isRequired]="true"
+          [addressServiceUrl]="addressServiceUrl"
         >
         </common-address>
 
@@ -45,6 +58,7 @@
             "
           >
             <common-address
+              *ngIf='!isAddressValidatorEnabled'
               [address]="mspAccountApp?.mailingAddress"
               (addressChange)="handleAddressUpdate($event)"
               [defaultProvince]="defaultProvince"
@@ -52,6 +66,17 @@
               [allowExtralines]="true"
               [disableGeocoder]="true"
               [isRequired]="true"
+            >
+            </common-address>
+            <common-address
+              *ngIf='isAddressValidatorEnabled'
+              [address]="mspAccountApp?.mailingAddress"
+              (addressChange)="handleAddressUpdate($event)"
+              [defaultProvince]="defaultProvince"
+              [provinceList]="provinceList"
+              [allowExtralines]="true"
+              [isRequired]="true"
+              [addressServiceUrl]="addressServiceUrl"
             >
             </common-address>
           </div>

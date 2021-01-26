@@ -15,6 +15,8 @@ import {
 
 import { Subscription } from 'rxjs';
 import { BaseForm } from '../../models/base-form';
+import { SpaEnvService } from '../../../../services/spa-env.service';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'msp-contact-info',
@@ -45,11 +47,14 @@ export class ContactInfoComponent extends BaseForm implements OnInit, AfterViewI
    mspAccountApp: MspAccountApp;
    subscriptions: Subscription[];
 
+   public readonly addressServiceUrl: string = environment.appConstants.addressApiBaseUrl;
+
    constructor(private dataService: MspAccountMaintenanceDataService,
                protected router: Router,
                protected containerService: ContainerService,
                protected pageStateService: PageStateService,
-               public _processService: ProcessService) {
+               public _processService: ProcessService,
+               private spaEnvService: SpaEnvService) {
      super(router, containerService, pageStateService, _processService);
      this.mspAccountApp = this.dataService.accountApp;
    }
@@ -87,5 +92,10 @@ export class ContactInfoComponent extends BaseForm implements OnInit, AfterViewI
     }
     this._processService.setStep(ContactInfoComponent.ProcessStepNum, true);
     this.navigate('/deam/review');
+  }
+
+  get isAddressValidatorEnabled(): boolean {
+    const envs = this.spaEnvService.getValues();
+    return envs && envs.SPA_ENV_ENABLE_ADDRESS_VALIDATOR === 'true';
   }
 }

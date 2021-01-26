@@ -78,11 +78,20 @@
       <div class="row">
         <div class="col-sm-12 col-md-4 form-group">
           <common-address
+            *ngIf='!isAddressValidatorEnabled'
             #address
             [address]="spouse.mailingAddress"
             (addressChange)="handleAddressUpdate($event)"
             [allowExtralines]="true"
             [disableGeocoder]="true"
+            [isRequired]="true">
+          </common-address>
+          <common-address
+            *ngIf='isAddressValidatorEnabled'
+            #address
+            [address]="spouse.mailingAddress"
+            (addressChange)="handleAddressUpdate($event)"
+            [addressServiceUrl]="addressServiceUrl"
             [isRequired]="true">
           </common-address>
         </div>
