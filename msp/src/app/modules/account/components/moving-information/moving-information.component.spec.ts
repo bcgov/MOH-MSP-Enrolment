@@ -7,17 +7,24 @@ import { FormsModule } from '@angular/forms';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import { CanadianStatusReason, StatusInCanada } from '../../../msp-core/models/canadian-status.enum';
 import { isBefore, subDays, addDays, addMonths, parseISO } from 'date-fns';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { MspLogService } from '../../../../services/log.service';
 
 describe('ChildMovingInformationComponent', () => {
   let component: ChildMovingInformationComponent;
   let fixture: any;
 
   beforeEach(async(() => {
+    const mspLogServiceStub = () => ({ log: () => {} });
     TestBed.configureTestingModule({
       declarations: [ ChildMovingInformationComponent ],
       imports: [
         FormsModule,
+        HttpClientTestingModule,
         SharedCoreModule
+      ],
+      providers: [
+        { provide: MspLogService, useFactory: mspLogServiceStub }
       ]
     })
     .compileComponents();
