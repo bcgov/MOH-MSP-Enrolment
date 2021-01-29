@@ -7,10 +7,17 @@
   </common-page-section>
   <common-page-section layout="double">
     <common-address
+      *ngIf='!isAddressValidatorEnabled'
       [(address)]="address"
       isRequired="true"
       allowExtralines="true"
       disableGeocoder="true"
+    ></common-address>
+    <common-address
+      *ngIf='isAddressValidatorEnabled'
+      [(address)]="address"
+      isRequired="true"
+      [addressServiceUrl]="addressServiceUrl"
     ></common-address>
   </common-page-section>
   <h2 class="border-bottom">{{ phoneTitle }}</h2>

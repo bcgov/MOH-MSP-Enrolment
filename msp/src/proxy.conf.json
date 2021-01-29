@@ -1,6 +1,6 @@
 {
     "/msp/api": {
-        "target": "https://mygovbc-msp-dev.pathfinder.gov.bc.ca",
+        "target": "https://msp-web-f0463d-dev.apps.silver.devops.gov.bc.ca",
         "changeOrigin": true,
         "secure": false
     },
