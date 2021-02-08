@@ -297,17 +297,34 @@ function formatAddressData(data) {
     result.Country = getTextData(data, 'Country');
     result.Residue = getTextData(data, 'Residue');
     result.DeliveryAddressLines = getTextData(data, 'DeliveryAddressLines');
+    result.AddressLines = getAddressLines(data);
     result.AddressComplete = data.AddressComplete._text.replace('\n', ' ');
     return result;
 }
 
 function getTextData(data, key) {
-    // if (data[key] && Array.isArray(data[key])) {
-    //     return data[key];
-    // }
     if (data[key] && data[key].string && data[key].string._text) {
         return data[key].string._text;
     } else {
         return '';
+    }
+}
+
+function getAddressLines(data) {
+    if (!data) {
+        return [];
+    } else if (data.DeliveryAddressLines
+               && Array.isArray(data.DeliveryAddressLines.string)) {
+        const lines = [];
+        for(let i=0; i<data.DeliveryAddressLines.string.length; i++) {
+            lines.push(data.DeliveryAddressLines.string[i]._text);
+        }
+        return lines;
+    } else if (data.DeliveryAddressLines
+               && data.DeliveryAddressLines.string
+               && data.DeliveryAddressLines.string._text) {
+        return [data.DeliveryAddressLines.string._text];
+    } else {
+        return [];
     }
 }
