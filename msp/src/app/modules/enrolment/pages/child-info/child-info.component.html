@@ -127,6 +127,7 @@
                 <common-address *ngIf='isAddressValidatorEnabled'
                                 [(address)]="child.schoolAddress"
                                 [isRequired]="true"
+                                [allowExtralines]="true"
                                 [addressServiceUrl]="addressServiceUrl">
                 </common-address>
               </div>

@@ -17,6 +17,7 @@
       *ngIf='isAddressValidatorEnabled'
       [(address)]="address"
       isRequired="true"
+      [allowExtralines]="true"
       [addressServiceUrl]="addressServiceUrl"
     ></common-address>
   </common-page-section>
