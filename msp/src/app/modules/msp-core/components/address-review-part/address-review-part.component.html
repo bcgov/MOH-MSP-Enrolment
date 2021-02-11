@@ -7,8 +7,8 @@
                     label="Street Address"
                     [columnClass]="columnClass">
     <span>{{address.addressLine1}}<br></span>
-    <span *ngIf="address.addressLine2 != null">{{address.addressLine2}}<br></span>
-    <span *ngIf="address.addressLine3 != null">{{address.addressLine3}}<br></span>
+    <span *ngIf="address.addressLine2 != null && address.addressLine2 !== ''">{{address.addressLine2}}<br></span>
+    <span *ngIf="address.addressLine3 != null && address.addressLine3 !== ''">{{address.addressLine3}}<br></span>
   </msp-review-part> 
 
   <msp-review-part *ngIf="address?.city"

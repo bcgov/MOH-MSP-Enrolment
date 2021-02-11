@@ -21,6 +21,7 @@
                       [address]="residentialAddress"
                       [isRequired]="true"
                       [disabled]="{province: true, country: true}"
+                      [allowExtralines]="true"
                       [addressServiceUrl]="addressServiceUrl"
                       [bcOnly]="true">
       </common-address>
@@ -46,6 +47,7 @@
           <common-address *ngIf='isAddressValidatorEnabled'
                           [address]="mailingAddress"
                           [isRequired]="true"
+                          [allowExtralines]="true"
                           [addressServiceUrl]="addressServiceUrl">
           </common-address>
         </div>

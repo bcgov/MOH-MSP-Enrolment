@@ -80,6 +80,7 @@
             #address
             [address]="child.mailingAddress"
             (addressChange)="handleAddressUpdate($event)"
+            [allowExtralines]="true"
             [addressServiceUrl]="addressServiceUrl"
             [isRequired]="true">
           </common-address>
