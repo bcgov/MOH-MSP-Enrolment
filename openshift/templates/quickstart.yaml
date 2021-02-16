@@ -1,4 +1,7 @@
 ---
+# oc delete nsp,en --all && oc process -f quickstart.yaml NAMESPACE_PREFIX=${$(oc project --short)%%"-"*} -p ENVIRONMENT=${$(oc project --short)##*"-"} | oc apply -f -
+#
+#
 apiVersion: template.openshift.io/v1
 kind: Template
 labels:
