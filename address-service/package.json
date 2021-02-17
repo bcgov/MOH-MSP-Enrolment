@@ -1,6 +1,6 @@
 {
   "name": "address-service",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/bcgov/MOH-MSP-Enrolment/address-service/#readme",
   "dependencies": {
-    "axios": "^0.19.0",
+    "axios": "^0.21.1",
     "easy-soap-request": "^3.2.0",
     "express": "^4.15.0",
     "http-proxy-middleware": "^0.20.0",
