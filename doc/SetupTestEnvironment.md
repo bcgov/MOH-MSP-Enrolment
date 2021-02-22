@@ -7,22 +7,40 @@
 ```console
 oc project ...-test
 ```
-
-2. create ./openshift/templates/nsp-msp-to-maximus-test.yaml  (copy from -dev.yaml)
-   change the IP of proxy to test proxy
-   the apply using:
+2. Switch Apporeto to Kubernetes network policy
+Make sure you're in dev:
 ```console
-oc process -f nsp-msp-to-maximus-test.yaml \
-  -p NAMESPACE=$(oc project --short) | \
-  oc apply -f -
+oc get nsp
+```
+And obtain name (such as builder-to-internet), and delete it, ie:
+```console
+oc delete nsp address-service-to-address-doctor msp-service-to-cloudflare msp-service-to-maximus-servers msp-service-to-splunk-forwarder msp-to-address-service msp-to-captcha-service msp-to-msp-service  msp-to-spa-env-server msp-to-splunk-forwarder splunk-forwarder-to-cloudflare splunk-forwarder-to-maximus-servers
 ```
 
-3. apply the internal NSPs:
+Same with endpoints:
 ```console
-oc process -f nsp-mspweb-to-all.yaml \
-  -p NAMESPACE=$(oc project --short) | \
-  oc apply -f -
+oc get en
 ```
+And obtain names, then delete, ie:
+```console
+oc delete en addressdoctor cloudflare maximus-servers
+```
+
+3. apply the quickstart (for tools, make sure your default oc project is tools):
+cd /openshift/templates
+```console
+oc process -f quickstart.yaml NAMESPACE_PREFIX=f0463d -p ENVIRONMENT=test | oc apply -f -
+```
+
+To check things out:
+The oc process should have created 3 networkpolicies and 2 network security policies.  To check them:
+oc get nsp
+oc get networkpolicy
+To look more in detail, for example:
+oc describe nsp/any-to-any
+oc describe networkpolicy/allow-all-internal
+
+
 4. allow the test project to pull from tools:
    Go to the test project (oc project f0463d-test).
 ```console
