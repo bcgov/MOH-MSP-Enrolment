@@ -60,12 +60,12 @@ objects:
       #  allow msp frontend to talk to spa-env-server
       podSelector:
         matchLabels:
-          component: spaenv
+          role: spaenv
       ingress:
         - from:
             - podSelector:
                 matchLabels:
-                  component: mspfrontend
+                  role: mspfrontend
           ports:
             - protocol: TCP
               port: 8080
@@ -79,12 +79,12 @@ objects:
       #  allow msp frontend to talk to address-service
       podSelector:
         matchLabels:
-          component: addressservice
+          role: addressservice
       ingress:
         - from:
             - podSelector:
                 matchLabels:
-                  component: mspfrontend
+                  role: mspfrontend
           ports:
             - protocol: TCP
               port: 8080
@@ -98,12 +98,12 @@ objects:
       #  allow msp frontend to talk to msp-service
       podSelector:
         matchLabels:
-          component: mspservice
+          role: mspservice
       ingress:
         - from:
             - podSelector:
                 matchLabels:
-                  component: mspfrontend
+                  role: mspfrontend
           ports:
             - protocol: TCP
               port: 8080
@@ -117,12 +117,12 @@ objects:
       #  allow msp frontend to talk to msp-service
       podSelector:
         matchLabels:
-          component: splunkforwarder
+          role: splunkforwarder
       ingress:
         - from:
             - podSelector:
                 matchLabels:
-                  component: mspfrontend
+                  role: mspfrontend
           ports:
             - protocol: TCP
               port: 8080
@@ -136,12 +136,12 @@ objects:
       #  allow msp frontend to talk to captcha-service
       podSelector:
         matchLabels:
-          component: captchaservice
+          role: captchaservice
       ingress:
         - from:
             - podSelector:
                 matchLabels:
-                  component: mspfrontend
+                  role: mspfrontend
           ports:
             - protocol: TCP
               port: 8080
@@ -155,12 +155,12 @@ objects:
       #  allow msp service to talk to splunk-forwarder
       podSelector:
         matchLabels:
-          component: splunkforwarder
+          role: splunkforwarder
       ingress:
         - from:
             - podSelector:
                 matchLabels:
-                  component: mspservice
+                  role: mspservice
           ports:
             - protocol: TCP
               port: 8080
