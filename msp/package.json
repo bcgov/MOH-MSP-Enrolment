@@ -107,6 +107,7 @@
     "zone.js": "~0.8.26"
   },
   "resolutions": {
-    "serialize-javascript": "^3.1.0"
+    "serialize-javascript": "^3.1.0",
+    "socket.io": "^2.4.0"
   }
 }
