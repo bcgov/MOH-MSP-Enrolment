@@ -43,6 +43,7 @@ export const environment = {
         MSP_WAIT_PERIOD: 'http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/how-to-enrol/coverage-wait-period',
         FPCARE: 'http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan',
         ICBC: 'http://www.icbc.com/',
+        ICBC_APPOINTMENT: 'https://www.icbc.com/driver-licensing/visit-dl-office/Pages/Book-a-knowledge-test-and-other-services.aspx',
         BCSC_UPDATE: 'https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/change-personal-information',
         ACBC: 'https://www.addresschange.gov.bc.ca',
         MGMT_MSP_ACCOUNT: 'https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/managing-your-msp-account'
