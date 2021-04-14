@@ -557,7 +557,7 @@ export class MspApiAccountService extends AbstractHttpService {
 
     to.livedInBC = LivedInBCTypeFactory.make();
 
-    to.livedInBC.hasLivedInBC = from.liveInBC ? 'Y' : 'N';
+    to.livedInBC.hasLivedInBC = from.livedInBCSinceBirth ? 'Y' : 'N';
 
     if (from.arrivalToBCDate) {
       to.livedInBC.recentBCMoveDate = format(
@@ -718,7 +718,7 @@ export class MspApiAccountService extends AbstractHttpService {
 
     to.livedInBC = LivedInBCTypeFactory.make();
 
-    to.livedInBC.hasLivedInBC = from.liveInBC ? 'Y' : 'N';
+    to.livedInBC.hasLivedInBC = from.livedInBCSinceBirth ? 'Y' : 'N';
 
     if (from.arrivalToBCDate) {
       to.livedInBC.recentBCMoveDate = format(

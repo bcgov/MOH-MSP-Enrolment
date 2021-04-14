@@ -103,6 +103,9 @@ dist
 # TernJS port file
 .tern-port
 
+# temp secrets directory
+secrets/
+
 # Artifacts
 params-*.txt
 lib
