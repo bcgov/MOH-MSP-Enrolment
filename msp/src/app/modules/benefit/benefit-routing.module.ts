@@ -16,12 +16,12 @@ const routes: Routes = [
   {
     path: 'eligibility',
     component: EligibilityComponent,
-    data: {title: 'Eligibility'}
+    data: {title: 'Eligibility - MSP Supplementary Benefits'}
   },
   {
     path: 'confirmation',
     component: BenefitConfirmationComponent,
-    data: {title: 'Confirmation'}
+    data: {title: 'Confirmation - MSP Supplementary Benefits'}
   },
   {
     path: '',
