@@ -1,4 +1,4 @@
-
+<main class="container-fluid" id="content">
 <common-consent-modal #mspConsentModal [isUnderMaintenance]="true" (cutOffDate)= "spaEnvCutOffDate($event)"
   title="Information collection notice" agreeLabel="I have read and understand this information"
   [processName]="'SUPPBEN'" (accept)="benefitApp.infoCollectionAgreement = $event; this.dataService.saveBenefitApplication();">
@@ -49,3 +49,4 @@
         (btnClick)="navigate()"
         widthOption='extra-width-mobile-only'>
 </common-form-action-bar>
+</main>

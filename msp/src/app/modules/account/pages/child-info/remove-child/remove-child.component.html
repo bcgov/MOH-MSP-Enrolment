@@ -8,12 +8,13 @@
   <div class="col-sm-12 col-md-4">
     <label for="cancellationReason_{{objectId}}" class="control-label">Reason for cancellation</label>
     <div class="form-group">
-    <select class="custom-select"
+    <select class="form-control"
       name="cancellationReason_{{objectId}}"
       id="cancellationReason_{{objectId}}"
       [(ngModel)]="child.cancellationReason"
       [ngModelOptions]="{standalone: true}"
-      (ngModelChange)="setCancellationStatus($event)">
+      (ngModelChange)="setCancellationStatus($event)"
+      required>
       <option selected value="null" disabled="true">Please select</option>
       <option *ngFor="let item of cancellationReasons"
         [ngValue]="item.value">
@@ -35,7 +36,8 @@
           [dateRangeEnd]="dateToday"
           [errorMessage]="cancellationDateErrorMessage"
           [(ngModel)]="child.cancellationDate"
-          (ngModelChange)="this.dataService.saveMspAccountApp();">
+          (ngModelChange)="this.dataService.saveMspAccountApp();"
+          required>
         </common-date>
       </div>
     </div>
@@ -57,7 +59,8 @@
     [value]="child.hasCurrentMailingAddress"
     label="Do you know the child's current mailing address?"
     [radioLabels]='[{"label": "No", "value": false}, {"label": "Yes", "value": true}]'
-    (valueChange)="child.hasCurrentMailingAddress = $event; this.dataService.saveMspAccountApp();">
+    (valueChange)="child.hasCurrentMailingAddress = $event; this.dataService.saveMspAccountApp();"
+    required>
   </common-radio>
 
   <common-page-section layout='noTips'>
@@ -94,7 +97,7 @@
             </div>
             <div class="col-md-1"></div>
             <div class="col-md-5 aside-col">
-              <aside>
+              <div class="tipbox">
                 <h3>Tip</h3>
                 <p>
                   As you type the street address, this form will suggest valid postal addresses.
@@ -102,7 +105,7 @@
                   If the address has a suite or apartment number, please type it with digits, no spaces, and a dash (-) before the street address.
                   For example, 111-215 Sample Road. If the address does not appear in the list of suggested postal addresses, please type it manually.
                 </p>
-              </aside>
+              </div>
             </div>
           </div>
         </div>
@@ -120,7 +123,8 @@
       [dateRangeEnd]="dateToday"
       [errorMessage]="cancellationDateErrorMessage"
       [(ngModel)]="child.cancellationDate"
-      (ngModelChange)="this.dataService.saveMspAccountApp();">
+      (ngModelChange)="this.dataService.saveMspAccountApp();"
+      required>
     </common-date>
   </div>
 </div>
@@ -140,7 +144,8 @@
       [dateRangeEnd]="dateToday"
       [errorMessage]="cancellationDateErrorMessage"
       [(ngModel)]="child.cancellationDate"
-      (ngModelChange)="this.dataService.saveMspAccountApp();">
+      (ngModelChange)="this.dataService.saveMspAccountApp();"
+      required>
     </common-date>
   </div>
 </div>
@@ -154,7 +159,8 @@
       [dateRangeEnd]="dateToday"
       [errorMessage]="cancellationDateErrorMessage"
       [(ngModel)]="child.cancellationDate"
-      (ngModelChange)="this.dataService.saveMspAccountApp();">
+      (ngModelChange)="this.dataService.saveMspAccountApp();"
+      required>
     </common-date>
   </div>
 </div>
