@@ -7,10 +7,13 @@
   <div class='col-sm-12 col-md-4'>
     <label for="objectId" class="control-label">Reason for cancellation</label>
     <div class="form-group">
-      <select class="custom-select"
+      <select class="form-control"
         [id]="objectId"
+        aria-label="Reason for cancellation"
         [(ngModel)]="spouse.cancellationReason"
-        (ngModelChange)="setCancellationStatus($event)">
+        (ngModelChange)="setCancellationStatus($event)"
+        aria-required="true"
+        required>
         <ng-container>
           <option selected value="null" disabled="true">Please select</option>
           <option *ngFor="let item of cancellationReasons"
@@ -33,7 +36,8 @@
         [dateRangeEnd]="yesterday"
         [(ngModel)]="spouse.cancellationDate"
         (ngModelChange)="this.dataService.saveMspAccountApp();"
-        [errorMessage]='cancellationDateErrorMessage'>
+        [errorMessage]='cancellationDateErrorMessage'
+        required>
       </common-date>
     </div>
   </div>
@@ -47,9 +51,9 @@
           [supportDocList]="spouseRemoveDocs"
           [(supportDoc)]="spouse.removedSpouseDueToDivorceDoc">
           <div sectionTitleInfo>
-            <h2>
+            <h3 class="h2-style">
               <strong>Documents - Cancellation due to separation/divorce</strong>
-            </h2>
+            </h3>
             <p class="horizontal-line">
               Provide <b>one</b> of the required documents to support your spouse cancellation.
             </p>
@@ -67,13 +71,14 @@
         [value]="spouse.hasCurrentMailingAddress"
         label="Do you know your spouse's current mailing address?"
         [radioLabels]='[{"label": "No", "value": false}, {"label": "Yes", "value": true}]'
-        (valueChange)="spouse.hasCurrentMailingAddress = $event; this.dataService.saveMspAccountApp();">
+        (valueChange)="spouse.hasCurrentMailingAddress = $event; this.dataService.saveMspAccountApp();"
+        required>
       </common-radio>
     </div>
   </div>
   <common-page-section layout="noTips">
     <div *ngIf="spouse.hasCurrentMailingAddress">
-      <h2><strong>Spouse's Mailing Address</strong></h2>
+      <h3 class="h2-style"><strong>Spouse's Mailing Address</strong></h3>
       <p class="horizontal-line">Please provide the spouse's current mailing address.</p>
       <div class="row"
            *ngIf='!isAddressValidatorEnabled'>
@@ -102,7 +107,7 @@
         </div>
         <div class="col-md-1"></div>
         <div class="col-md-5 aside-col">
-          <aside>
+          <div class="tipbox">
             <h3>Tip</h3>
             <p>
               As you type the street address, this form will suggest valid postal addresses.
@@ -110,7 +115,7 @@
               If the address has a suite or apartment number, please type it with digits, no spaces, and a dash (-) before the street address.
               For example, 111-215 Sample Road. If the address does not appear in the list of suggested postal addresses, please type it manually.
             </p>
-          </aside>
+          </div>
         </div>
       </div>
     </div>
@@ -124,7 +129,8 @@
       [restrictDate]="'past'"
       [(ngModel)]="spouse.cancellationDate"
       (ngModelChange)="this.dataService.saveMspAccountApp();"
-      [errorMessage]='dateErrorMessage'>
+      [errorMessage]='dateErrorMessage'
+      required>
     </common-date>
   </div>
 </div>
@@ -136,7 +142,8 @@
       [restrictDate]="'past'"
       [(ngModel)]="spouse.cancellationDate"
       (ngModelChange)="this.dataService.saveMspAccountApp();"
-      [errorMessage]='dateErrorMessage'>
+      [errorMessage]='dateErrorMessage'
+      required>
     </common-date>
   </div>
 </div>
@@ -154,7 +161,8 @@
       [restrictDate]="'past'"
       [(ngModel)]="spouse.cancellationDate"
       (ngModelChange)="this.dataService.saveMspAccountApp();"
-      [errorMessage]='dateErrorMessage'>
+      [errorMessage]='dateErrorMessage'
+      required>
     </common-date>
   </div>
 </div>
@@ -166,7 +174,8 @@
       [restrictDate]="'past'"
       [(ngModel)]="spouse.cancellationDate"
       (ngModelChange)="this.dataService.saveMspAccountApp();"
-      [errorMessage]='dateErrorMessage'>
+      [errorMessage]='dateErrorMessage'
+      required>
     </common-date>
   </div>
 </div>

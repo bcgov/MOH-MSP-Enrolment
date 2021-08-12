@@ -117,6 +117,12 @@ export class AccountReviewComponent extends BaseForm implements OnInit {
     return this.spouseForAuthorization.firstName + ' ' + this.spouseForAuthorization.lastName;
   }
 
+  keyPress(event){
+    if (event.keyCode === 13){ // code for Enter key
+      this.printPage();
+    }
+  }
+
   printPage() {
     window.print();
     return false;
