@@ -97,7 +97,7 @@ objects:
       metadata:
         labels:
           app: jha-enrolment-web
-          role: ppnsfrontend
+          role: mspfrontend
           deploymentconfig: ${NAME}
         name: ${NAME}
       spec:
@@ -138,12 +138,12 @@ objects:
               - name: SPLUNK_AUTH_TOKEN
                 valueFrom:
                   secretKeyRef:
-                    name: jha-web-splunk-auth-token
+                    name: msp-web-splunk-auth-token
                     key: token
               - name: SPA_ENV_AUTH_TOKEN
                 valueFrom:
                   secretKeyRef:
-                    name: jha-web-spa-env-auth-token
+                    name: msp-web-spa-env-auth-token
                     key: token
               - name: JHA_ENV
                 value: ${JHA_ENV}
