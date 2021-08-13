@@ -2,13 +2,13 @@ import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
-import YourInfoPage from '@/views/pay-patient/HomePage.vue';
+import HomePage from '@/views/form-a/HomePage.vue';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 Vue.use(Vuelidate);
 
-describe('Pay Patient - HomePage.vue', () => {
+describe('Form A - HomePage.vue', () => {
   let state;
   let store;
 
@@ -30,7 +30,7 @@ describe('Pay Patient - HomePage.vue', () => {
     });
   });
   it('renders', () => {
-    const wrapper = shallowMount(YourInfoPage, {
+    const wrapper = shallowMount(HomePage, {
       store,
       localVue,
     });
