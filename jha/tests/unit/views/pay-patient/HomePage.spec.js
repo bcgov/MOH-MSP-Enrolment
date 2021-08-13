@@ -19,7 +19,7 @@ describe('Pay Patient - HomePage.vue', () => {
 
     store = new Vuex.Store({
       modules: {
-        payPatientForm: {
+        formAModule: {
           state,
           namespaced: true,
           actions: {

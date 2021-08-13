@@ -55,15 +55,15 @@
 
 <script>
 import PageContent from '@/components/PageContent.vue';
-import ReviewTableList from '@/components/pay-practitioner/ReviewTableList.vue';
+import ReviewTableList from '@/components/form-a/ReviewTableList.vue';
 import { formatDate } from 'common-lib-vue';
 import { getConvertedPath } from '@/helpers/url';
 import pageStateService from '@/services/page-state-service';
-import { payPractitionerRoutes } from '@/router/routes';
+import { formARoutes } from '@/router/routes';
 import {
   MODULE_NAME as formModule,
   RESET_FORM
-} from '@/store/modules/pay-patient-form';
+} from '@/store/modules/form-a-module';
 import { scrollTo } from '@/helpers/scroll';
 import logService from '@/services/log-service';
 
@@ -80,13 +80,13 @@ export default {
     };
   },
   created() {
-    this.submissionDate = formatDate(this.$store.state.payPractitionerForm.submissionDate);
-    this.referenceNumber = this.$store.state.payPractitionerForm.referenceNumber || 'Unknown';
+    this.submissionDate = formatDate(this.$store.state.formAModule.submissionDate);
+    this.referenceNumber = this.$store.state.formAModule.referenceNumber || 'Unknown';
 
     logService.logNavigation(
-      this.$store.state.payPractitionerForm.applicationUuid,
-      payPractitionerRoutes.SUBMISSION_PAGE.path,
-      payPractitionerRoutes.SUBMISSION_PAGE.title
+      this.$store.state.formAModule.applicationUuid,
+      formARoutes.SUBMISSION_PAGE.path,
+      formARoutes.SUBMISSION_PAGE.title
     );
   },
   methods: {
@@ -98,12 +98,12 @@ export default {
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
     this.$store.dispatch(formModule + '/' + RESET_FORM);
-    if (to.path === payPractitionerRoutes.HOME_PAGE.path) {
+    if (to.path === formARoutes.HOME_PAGE.path) {
       next();
     } else {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        payPractitionerRoutes.HOME_PAGE.path
+        formARoutes.HOME_PAGE.path
       )
       next({ path: toPath });
     }

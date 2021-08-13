@@ -54,7 +54,7 @@ import environment from '../settings';
 import {
   MODULE_NAME,
   SET_SHOW_MOBILE_STEPPER_DETAILS,
-} from '../store/modules/app';
+} from '../store/modules/app-module';
 
 export default {
   name: "ProgressBar",
@@ -65,10 +65,10 @@ export default {
   },
   computed: {
     hideMobileStep() {
-      return this.$store.state.app.showMobileStepperDetails;
+      return this.$store.state.appModule.showMobileStepperDetails;
     },
     hideMobileProgress() {
-      return !this.$store.state.app.showMobileStepperDetails;
+      return !this.$store.state.appModule.showMobileStepperDetails;
     },
     progressBarStyles() {
       const index = this.routes.findIndex(element => {

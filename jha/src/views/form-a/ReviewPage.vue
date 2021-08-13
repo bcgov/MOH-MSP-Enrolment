@@ -2,13 +2,11 @@
   <div>
     <PageContent>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Review request</h1>
+        <h1>Review</h1>
         <p>Review your request before submission</p>
         <hr/>
-        <CorrespondenceAttachedMessage v-if="!isFormAbleToSubmit" />
         <ReviewTableList :showEditButtons='true' 
                         tableBackgroundColor='#EEE'/>
-        <CorrespondenceAttachedMessage v-if="!isFormAbleToSubmit" />
         <div v-if="isSystemUnavailable"
             class="text-danger mt-3 mb-5"
             aria-live="assertive">Unable to continue, system unavailable. Please try again later.</div>
@@ -16,40 +14,37 @@
     </PageContent>
     <ContinueBar @continue='continueHandler()'
                 :hasLoader='isLoading'
-                :buttonLabel='continueButtonLabel'/>
+                buttonLabel='Submit'/>
   </div>
 </template>
 
 <script>
 import PageContent from '@/components/PageContent.vue';
 import ContinueBar from '@/components/ContinueBar.vue';
-import CorrespondenceAttachedMessage from '@/components/CorrespondenceAttachedMessage.vue';
-import ReviewTableList from '@/components/pay-patient/ReviewTableList.vue';
+import ReviewTableList from '@/components/form-a/ReviewTableList.vue';
 import pageStateService from '@/services/page-state-service';
 import {
-  payPatientRoutes,
+  formARoutes,
   isPastPath
-} from '../../router/routes';
+} from '@/router/routes';
 import {
   scrollTo,
   scrollToError,
   getTopScrollPosition
-} from '../../helpers/scroll';
+} from '@/helpers/scroll';
 import { getConvertedPath } from '@/helpers/url';
-import { isCorrespondenceAttachedAbleToSubmit } from '@/helpers/form-helpers';
 import {
   MODULE_NAME as formModule,
   RESET_FORM,
   SET_REFERENCE_NUMBER,
-  SET_SUBMISSION_DATE,
-} from '../../store/modules/pay-patient-form';
-import apiService from '../../services/api-service';
-import logService from '../../services/log-service';
+  SET_SUBMISSION_DATE
+} from '@/store/modules/form-a-module';
+import apiService from '@/services/api-service';
+import logService from '@/services/log-service';
 
 export default {
   name: 'ReviewPage',
   components: {
-    CorrespondenceAttachedMessage,
     PageContent,
     ContinueBar,
     ReviewTableList,
@@ -62,18 +57,14 @@ export default {
   },
   created() {
     logService.logNavigation(
-      this.$store.state.payPatientForm.applicationUuid,
-      payPatientRoutes.REVIEW_PAGE.path,
-      payPatientRoutes.REVIEW_PAGE.title
+      this.$store.state.formAModule.applicationUuid,
+      formARoutes.REVIEW_PAGE.path,
+      formARoutes.REVIEW_PAGE.title
     );
   },
   methods: {
     continueHandler() {
-      if (this.isFormAbleToSubmit) {
-        this.submitForm();
-      } else {
-        window.print();
-      }
+      this.submitForm();
     },
     submitForm() {
       this.isLoading = true;
@@ -81,11 +72,11 @@ export default {
 
       this.$store.dispatch(formModule + '/' + SET_SUBMISSION_DATE, new Date());
 
-      const token = this.$store.state.payPatientForm.captchaToken;
-      const applicationUuid = this.$store.state.payPatientForm.applicationUuid;
-      const formState = this.$store.state.payPatientForm;
+      const token = this.$store.state.formAModule.captchaToken;
+      const applicationUuid = this.$store.state.formAModule.applicationUuid;
+      const formState = this.$store.state.formAModule;
 
-      apiService.submitPayPatientApplication(token, formState)
+      apiService.submitFormAApplication(token, formState)
         .then((response) => {
           // Handle HTTP success.
           const returnCode = response.data.returnCode;
@@ -103,6 +94,12 @@ export default {
               this.navigateToSubmissionPage();
               break;
             case '1': // Submission failed.
+              logService.logError(applicationUuid, {
+                event: 'submission failure',
+                response: response.data,
+              });
+              this.navigateToSubmissionErrorPage();
+              break;
             case '2': // Unknown case, but not '0', so failing the the submission.
               logService.logError(applicationUuid, {
                 event: 'submission failure',
@@ -132,13 +129,13 @@ export default {
           scrollToError();
         });
       
-      // Manually navigate to submission success page when middleware is down.
-      // this.navigateToSubmissionPage();
+      // Manually navigate to submission success page when middleware/RAPID is down.
+      this.navigateToSubmissionPage();
     },
     navigateToSubmissionPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        payPatientRoutes.SUBMISSION_PAGE.path
+        formARoutes.SUBMISSION_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -148,7 +145,7 @@ export default {
     navigateToSubmissionErrorPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        payPatientRoutes.SUBMISSION_ERROR_PAGE.path
+        formARoutes.SUBMISSION_ERROR_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -156,32 +153,21 @@ export default {
       scrollTo();
     }
   },
-  computed: {
-    isFormAbleToSubmit() {
-      const correspondenceAttached = this.$store.state.payPatientForm.medicalServiceClaims.map(x => x.correspondenceAttached);
-      return correspondenceAttached.every(isCorrespondenceAttachedAbleToSubmit);
-    },
-    continueButtonLabel() {
-      if (this.isFormAbleToSubmit) {
-        return 'Continue';
-      }
-      return 'Print';
-    },
-  },
+  computed: {},
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === payPatientRoutes.HOME_PAGE.path) {
+    if (to.path === formARoutes.HOME_PAGE.path) {
       this.$store.dispatch(formModule + '/' + RESET_FORM);
       next();
-    } else if (pageStateService.isPageComplete(to.path) || isPastPath(to.path, from.path)) {
+    } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
       next();
     } else {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        payPatientRoutes.REVIEW_PAGE.path
+        formARoutes.REVIEW_PAGE.path
       );
       next({
         path: toPath,

@@ -25,16 +25,11 @@ import {
 } from 'common-lib-vue';
 import ProgressBar from '@/components/ProgressBar.vue';
 import {
-  payPatientStepRoutes,
-  payPractitionerStepRoutes,
-  payPatientCSRStepRoutes,
-  payPractitionerCSRStepRoutes,
+  formAStepRoutes,
 } from '@/router/step-routes';
 import {
-  PAY_PATIENT_BASE_URL,
-  PAY_PRACTITIONER_BASE_URL,
+  FORM_A_BASE_URL,
 } from '@/router/routes';
-import { isCSR } from '@/helpers/url';
 
 export default {
   name: 'App',
@@ -54,19 +49,15 @@ export default {
   computed: {
     stepRoutes() {
       const currentPath = this.$router.currentRoute.path;
-      if (currentPath.includes(PAY_PATIENT_BASE_URL)) {
-        return isCSR(currentPath) ? payPatientCSRStepRoutes : payPatientStepRoutes;
-      } else if (currentPath.includes(PAY_PRACTITIONER_BASE_URL)) {
-        return isCSR(currentPath) ? payPractitionerCSRStepRoutes : payPractitionerStepRoutes;
+      if (currentPath.includes(FORM_A_BASE_URL)) {
+        return formAStepRoutes;
       }
       return [];
     },
     pageTitle() {
       const currentPath = this.$router.currentRoute.path;
-      if (currentPath.includes(PAY_PATIENT_BASE_URL)) {
-        return isCSR(currentPath) ? 'Pay Patient Claim - CSR' : 'Pay Patient Claim';
-      } else if (currentPath.includes(PAY_PRACTITIONER_BASE_URL)) {
-        return isCSR(currentPath) ? 'Pay Practitioner Claim - CSR' : 'Pay Practitioner Claim';
+      if (currentPath.includes(FORM_A_BASE_URL)) {
+        return 'Form A';
       }
       return '';
     }
