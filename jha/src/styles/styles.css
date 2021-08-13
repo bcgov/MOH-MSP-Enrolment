@@ -1,0 +1,28 @@
+body {
+  color: #313132;
+}
+
+.print-only {
+  display: none;
+}
+
+@media print {
+  .print-only {
+    display: block;
+  }
+}
+
+body.no-scroll {
+  overflow: hidden;
+}
+
+.text-danger {
+  font-size: 13.33px;
+  color: #D8292F !important; /* Override Bootstrap class for passing accessibility tests. */
+}
+
+/* Override BCGOV Bootstrap styles. */
+.form-control {
+  color: #606060;
+  border: 1px solid #606060;
+}
