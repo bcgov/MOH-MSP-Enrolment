@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageContent>
+    <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Review</h1>
         <p>Review your request before submission</p>
@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import PageContent from '@/components/PageContent.vue';
 import ContinueBar from '@/components/ContinueBar.vue';
 import ReviewTableList from '@/components/form-a/ReviewTableList.vue';
 import pageStateService from '@/services/page-state-service';
@@ -41,6 +40,8 @@ import {
 } from '@/store/modules/form-a-module';
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
+import { getPageContentDeltaHeight } from '@/helpers/dom';
+import { PageContent } from 'common-lib-vue';
 
 export default {
   name: 'ReviewPage',
@@ -52,6 +53,7 @@ export default {
   data: () => {
     return {
       isLoading: false,
+      pageContentDeltaHeight: 0,
       isSystemUnavailable: false,
     }
   },
@@ -61,6 +63,10 @@ export default {
       formARoutes.REVIEW_PAGE.path,
       formARoutes.REVIEW_PAGE.title
     );
+
+    this.$nextTick(() => {
+      this.pageContentDeltaHeight = getPageContentDeltaHeight();
+    });
   },
   methods: {
     continueHandler() {

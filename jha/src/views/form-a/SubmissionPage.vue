@@ -54,9 +54,12 @@
 </template>
 
 <script>
-import PageContent from '@/components/PageContent.vue';
 import ReviewTableList from '@/components/form-a/ReviewTableList.vue';
-import { formatDate } from 'common-lib-vue';
+import {
+  PageContent,
+  formatDate,
+} from 'common-lib-vue';
+import { getPageContentDeltaHeight } from '@/helpers/dom';
 import { getConvertedPath } from '@/helpers/url';
 import pageStateService from '@/services/page-state-service';
 import { formARoutes } from '@/router/routes';
@@ -75,6 +78,7 @@ export default {
   },
   data: () => {
     return {
+      pageContentDeltaHeight: 0,
       submissionDate: '',
       referenceNumber: '',
     };
@@ -88,6 +92,10 @@ export default {
       formARoutes.SUBMISSION_PAGE.path,
       formARoutes.SUBMISSION_PAGE.title
     );
+
+    this.$nextTick(() => {
+      this.pageContentDeltaHeight = getPageContentDeltaHeight();
+    });
   },
   methods: {
     printPage() {

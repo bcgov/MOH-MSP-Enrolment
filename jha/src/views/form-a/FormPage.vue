@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageContent>
+    <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <div class="row align-items-end">
           <div class="col-md-7">
@@ -33,12 +33,13 @@ import {
   getConvertedPath,
 } from '@/helpers/url';
 import ContinueBar from '@/components/ContinueBar.vue';
-import PageContent from '@/components/PageContent.vue';
 import {
   MODULE_NAME as formModule,
   RESET_FORM,
 } from '@/store/modules/form-a-module';
 import logService from '@/services/log-service';
+import { getPageContentDeltaHeight } from '@/helpers/dom';
+import { PageContent } from 'common-lib-vue';
 
 export default {
   name: 'MainFormPage',
@@ -49,6 +50,7 @@ export default {
   data: () => {
     return {
       isPageLoaded: false,
+      pageContentDeltaHeight: 0,
     };
   },
   created() {
@@ -61,6 +63,10 @@ export default {
       formARoutes.FORM_PAGE.path,
       formARoutes.FORM_PAGE.title
     );
+
+    this.$nextTick(() => {
+      this.pageContentDeltaHeight = getPageContentDeltaHeight();
+    });
   },
   validations() {
     const validations = {};

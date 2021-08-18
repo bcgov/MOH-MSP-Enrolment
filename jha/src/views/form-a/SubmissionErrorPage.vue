@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageContent>
+    <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
 
         <div class="box-border border border-danger rounded">
@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import PageContent from '@/components/PageContent.vue';
 import pageStateService from '@/services/page-state-service';
 import { formARoutes } from '@/router/routes';
 import {
@@ -33,11 +32,18 @@ import {
 import { scrollTo } from '@/helpers/scroll';
 import { getConvertedPath } from '@/helpers/url';
 import logService from '@/services/log-service';
+import { getPageContentDeltaHeight } from '@/helpers/dom';
+import { PageContent } from 'common-lib-vue';
 
 export default {
   name: 'SubmissionErrorPage',
   components: {
     PageContent,
+  },
+  data: () => {
+    return {
+      pageContentDeltaHeight: 0,
+    };
   },
   created() {
     logService.logNavigation(
@@ -45,6 +51,10 @@ export default {
       formARoutes.SUBMISSION_ERROR_PAGE.path,
       formARoutes.SUBMISSION_ERROR_PAGE.title
     );
+
+    this.$nextTick(() => {
+      this.pageContentDeltaHeight = getPageContentDeltaHeight();
+    })
   },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
