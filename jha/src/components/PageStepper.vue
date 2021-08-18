@@ -1,6 +1,6 @@
 <template>
   <nav v-if='isCurrentPathInSteps'
-      class="component-container">
+      class="progress-bar-component">
     <div class="progress-bar-container">
       <div class="progress-bar" :style="progressBarStyles"></div>
     </div>
@@ -10,7 +10,7 @@
         v-for="(route, index) in routes"
         :key="route.path"
         :style='getLinkStyles(route.path)'
-        @click="onClickLink(route.path)"
+        @click="handleClickLink(route.path)"
       >
         <div class="step" v-bind:class="{'step-selected': index + 1 === currentStepNumber, 'step-passed': index + 1 < currentStepNumber}">
           <div class="step-text" v-bind:class="{'v-step-text-selected': index + 1 === currentStepNumber}">{{ route.title }}</div>
@@ -32,7 +32,7 @@
         href="javascript:void(0);"
         v-for="(route, index) in routes"
         :key="route.path"
-        @click="onClickLink(route.path)"
+        @click="handleClickLink(route.path)"
       >
         <div class="v-step" v-bind:class="{'v-step-selected': index + 1 === currentStepNumber, 'v-step-passed': index + 1 < currentStepNumber}">
           <div class="v-step-text" v-bind:class="{'v-step-text-selected': index + 1 === currentStepNumber}" >{{ route.title }}</div>
@@ -47,28 +47,30 @@
 </template>
 
 <script>
-import pageStateService from '../services/page-state-service';
-import { isPastPath } from '../router/routes';
-import { scrollTo } from '../helpers/scroll';
-import environment from '../settings';
-import {
-  MODULE_NAME,
-  SET_SHOW_MOBILE_STEPPER_DETAILS,
-} from '../store/modules/app-module';
-
 export default {
-  name: "ProgressBar",
+  name: "PageStepper",
   components: {},
   props: {
-    currentPath: String,
-    routes: Array
+    currentPath: {
+      type: String,
+    },
+    routes: {
+      type: Array,
+      default: () => {
+        return [];
+      }
+    },
+    isMobileStepperOpen: {
+      type: Boolean,
+      default: false,
+    }
   },
   computed: {
     hideMobileStep() {
-      return this.$store.state.appModule.showMobileStepperDetails;
+      return this.isMobileStepperOpen;
     },
     hideMobileProgress() {
-      return !this.$store.state.appModule.showMobileStepperDetails;
+      return !this.isMobileStepperOpen;
     },
     progressBarStyles() {
       const index = this.routes.findIndex(element => {
@@ -109,28 +111,31 @@ export default {
     }
   },
   methods: {
-    onClickLink(path) {
-      if (this.currentPath !== path && 
-        (
-          environment.bypassRouteGuards ||
-          isPastPath(path, this.currentPath)
-        )) {
-        pageStateService.setPageIncomplete(this.currentPath);
-        pageStateService.setPageComplete(path);
-        this.$router.push(path);
-        scrollTo(0);
+    handleClickLink(path) {
+      if (this.isPastPath(path)) {
+        this.$emit('onClickLink', path);
       }
     },
     getLinkStyles(path) {
       return {
-        cursor: isPastPath(path, this.currentPath) ? 'pointer' : 'default'
+        cursor: this.isPastPath(path) ? 'pointer' : 'default'
       }
     },
     openDropdown() {
-      this.$store.dispatch(MODULE_NAME + '/' + SET_SHOW_MOBILE_STEPPER_DETAILS, true);
+      this.$emit('toggleShowMobileDetails', true);
     },
     closeDropdown() {
-      this.$store.dispatch(MODULE_NAME + '/' + SET_SHOW_MOBILE_STEPPER_DETAILS, false);
+      this.$emit('toggleShowMobileDetails', false);
+    },
+    isPastPath(path) {
+      for (let i=0; i<this.routes.length; i++) {
+        if (this.routes[i].path === this.currentPath) {
+          return false;
+        } else if (this.routes[i].path === path) {
+          return true;
+        }
+      }
+      return false;
     }
   }
 };
@@ -138,7 +143,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.component-container {
+.progress-bar-component {
   flex: 1;
   padding: 2em 0em;
   min-height: 65px;
@@ -214,7 +219,7 @@ export default {
   font-weight: bold;
 }
 @media only screen and (max-width: 480px) {
-  .component-container {
+  .progress-bar-component {
     padding: 0;
   }
   .progress-bar-container,

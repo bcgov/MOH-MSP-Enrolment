@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageContent>
+    <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
 
         <div class="box-border border border-danger rounded">
@@ -23,7 +23,6 @@
 </template>
 
 <script>
-import PageContent from '@/components/PageContent.vue';
 import pageStateService from '@/services/page-state-service';
 import { formARoutes } from '@/router/routes';
 import {
@@ -33,9 +32,12 @@ import {
 import { scrollTo } from '@/helpers/scroll';
 import { getConvertedPath } from '@/helpers/url';
 import logService from '@/services/log-service';
+import { PageContent } from 'common-lib-vue';
+import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
   name: 'SubmissionErrorPage',
+  mixins: [pageContentMixin],
   components: {
     PageContent,
   },

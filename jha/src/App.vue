@@ -4,8 +4,11 @@
             imagePath='/jha/images/' />
     <main>
       <div class="container stepper">
-        <ProgressBar :currentPath='$router.currentRoute.path'
-                    :routes='stepRoutes'/>
+        <PageStepper :currentPath='$router.currentRoute.path'
+                    :routes='stepRoutes'
+                    @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+                    :isMobileStepperOpen='isMobileStepperOpen'
+                    @onClickLink='handleClickStepperLink($event)'/>
       </div>
       <router-view/>
     </main>
@@ -23,20 +26,26 @@ import {
   Header,
   Footer
 } from 'common-lib-vue';
-import ProgressBar from '@/components/ProgressBar.vue';
+import PageStepper from '@/components/PageStepper.vue';
 import {
   formAStepRoutes,
 } from '@/router/step-routes';
 import {
   FORM_A_BASE_URL,
 } from '@/router/routes';
+import {
+  MODULE_NAME as appModule,
+  SET_SHOW_MOBILE_STEPPER_DETAILS,
+} from '@/store/modules/app-module';
+import pageStateService from '@/services/page-state-service';
+import { scrollTo } from '@/helpers/scroll';
 
 export default {
   name: 'App',
   components: {
-    Header: Header,
-    Footer: Footer,
-    ProgressBar: ProgressBar
+    Header,
+    Footer,
+    PageStepper,
   },
   data: () => {
     return {
@@ -60,6 +69,20 @@ export default {
         return 'Form A';
       }
       return '';
+    },
+    isMobileStepperOpen() {
+      return this.$store.state.appModule.showMobileStepperDetails;
+    }
+  },
+  methods: {
+    handleToggleShowMobileStepperDetails(isDetailsShown) {
+      this.$store.dispatch(appModule + '/' + SET_SHOW_MOBILE_STEPPER_DETAILS, isDetailsShown);
+    },
+    handleClickStepperLink(path) {
+      pageStateService.setPageIncomplete(this.$router.currentRoute.path);
+      pageStateService.setPageComplete(path);
+      this.$router.push(path);
+      scrollTo(0);
     }
   }
 }

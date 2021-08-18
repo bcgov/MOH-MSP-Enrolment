@@ -1,4 +1,4 @@
-export const MODULE_NAME = 'app';
+export const MODULE_NAME = 'appModule';
 
 export const SET_SHOW_MOBILE_STEPPER_DETAILS = 'setShowMobileStepperDetails';
 

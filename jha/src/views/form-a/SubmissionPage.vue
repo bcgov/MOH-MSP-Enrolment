@@ -54,9 +54,11 @@
 </template>
 
 <script>
-import PageContent from '@/components/PageContent.vue';
 import ReviewTableList from '@/components/form-a/ReviewTableList.vue';
-import { formatDate } from 'common-lib-vue';
+import {
+  PageContent,
+  formatDate,
+} from 'common-lib-vue';
 import { getConvertedPath } from '@/helpers/url';
 import pageStateService from '@/services/page-state-service';
 import { formARoutes } from '@/router/routes';
@@ -66,9 +68,11 @@ import {
 } from '@/store/modules/form-a-module';
 import { scrollTo } from '@/helpers/scroll';
 import logService from '@/services/log-service';
+import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
   name: 'SubmissionPage',
+  mixins: [pageContentMixin],
   components: {
     PageContent,
     ReviewTableList,

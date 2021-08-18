@@ -4,7 +4,7 @@
                   :applicationUuid="applicationUuid"
                   @close="handleCloseConsentModal"
                   @captchaVerified="handleCaptchaVerified" />
-    <PageContent>
+    <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-5">
         <h1>Form Title</h1>
         <hr/>
@@ -27,7 +27,6 @@ import {
   getTopScrollPosition
 } from '@/helpers/scroll';
 import ContinueBar from '@/components/ContinueBar.vue';
-import PageContent from '@/components/PageContent.vue';
 import ConsentModal from '@/components/ConsentModal.vue';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -37,9 +36,12 @@ import {
 } from '@/store/modules/form-a-module';
 import logService from '@/services/log-service';
 import { getConvertedPath } from '@/helpers/url';
+import { PageContent } from 'common-lib-vue';
+import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
   name: 'HomePage',
+  mixins:[pageContentMixin],
   components: {
     ConsentModal,
     ContinueBar,
