@@ -90,7 +90,7 @@ export class PersonalInfoComponent extends EnrolForm {
       valid = valid && this.hasNameDocuments;
     }
 
-    if ( this.applicant.fullTimeStudent ) {
+    if ( this.applicant.fullTimeStudent && !this.applicant.isTemporaryResident ) {
       valid = valid && this.applicant.inBCafterStudies;
     }
 
