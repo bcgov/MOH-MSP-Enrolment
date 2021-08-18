@@ -32,11 +32,12 @@ import {
 import { scrollTo } from '@/helpers/scroll';
 import { getConvertedPath } from '@/helpers/url';
 import logService from '@/services/log-service';
-import { getPageContentDeltaHeight } from '@/helpers/dom';
 import { PageContent } from 'common-lib-vue';
+import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
   name: 'SubmissionErrorPage',
+  mixins: [pageContentMixin],
   components: {
     PageContent,
   },
@@ -51,10 +52,6 @@ export default {
       formARoutes.SUBMISSION_ERROR_PAGE.path,
       formARoutes.SUBMISSION_ERROR_PAGE.title
     );
-
-    this.$nextTick(() => {
-      this.pageContentDeltaHeight = getPageContentDeltaHeight();
-    })
   },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {

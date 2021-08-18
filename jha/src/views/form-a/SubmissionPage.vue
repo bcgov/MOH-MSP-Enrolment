@@ -59,7 +59,6 @@ import {
   PageContent,
   formatDate,
 } from 'common-lib-vue';
-import { getPageContentDeltaHeight } from '@/helpers/dom';
 import { getConvertedPath } from '@/helpers/url';
 import pageStateService from '@/services/page-state-service';
 import { formARoutes } from '@/router/routes';
@@ -69,16 +68,17 @@ import {
 } from '@/store/modules/form-a-module';
 import { scrollTo } from '@/helpers/scroll';
 import logService from '@/services/log-service';
+import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
   name: 'SubmissionPage',
+  mixins: [pageContentMixin],
   components: {
     PageContent,
     ReviewTableList,
   },
   data: () => {
     return {
-      pageContentDeltaHeight: 0,
       submissionDate: '',
       referenceNumber: '',
     };
@@ -92,10 +92,6 @@ export default {
       formARoutes.SUBMISSION_PAGE.path,
       formARoutes.SUBMISSION_PAGE.title
     );
-
-    this.$nextTick(() => {
-      this.pageContentDeltaHeight = getPageContentDeltaHeight();
-    });
   },
   methods: {
     printPage() {

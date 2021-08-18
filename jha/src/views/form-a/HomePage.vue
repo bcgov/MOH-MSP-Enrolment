@@ -36,11 +36,12 @@ import {
 } from '@/store/modules/form-a-module';
 import logService from '@/services/log-service';
 import { getConvertedPath } from '@/helpers/url';
-import { getPageContentDeltaHeight } from '@/helpers/dom';
 import { PageContent } from 'common-lib-vue';
+import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
   name: 'HomePage',
+  mixins:[pageContentMixin],
   components: {
     ConsentModal,
     ContinueBar,
@@ -50,7 +51,6 @@ export default {
     return {
       showConsentModal: true,
       applicationUuid: null,
-      pageContentDeltaHeight: 0,
     }
   },
   created() {
@@ -78,9 +78,6 @@ export default {
       formARoutes.HOME_PAGE.path,
       formARoutes.HOME_PAGE.title
     );
-    this.$nextTick(() => {
-      this.pageContentDeltaHeight = getPageContentDeltaHeight();
-    });
   },
   methods: {
     handleCaptchaVerified(captchaToken) {

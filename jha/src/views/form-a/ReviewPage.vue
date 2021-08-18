@@ -40,11 +40,12 @@ import {
 } from '@/store/modules/form-a-module';
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
-import { getPageContentDeltaHeight } from '@/helpers/dom';
 import { PageContent } from 'common-lib-vue';
+import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
   name: 'ReviewPage',
+  mixins: [pageContentMixin],
   components: {
     PageContent,
     ContinueBar,
@@ -53,7 +54,6 @@ export default {
   data: () => {
     return {
       isLoading: false,
-      pageContentDeltaHeight: 0,
       isSystemUnavailable: false,
     }
   },
@@ -63,10 +63,6 @@ export default {
       formARoutes.REVIEW_PAGE.path,
       formARoutes.REVIEW_PAGE.title
     );
-
-    this.$nextTick(() => {
-      this.pageContentDeltaHeight = getPageContentDeltaHeight();
-    });
   },
   methods: {
     continueHandler() {

@@ -11,23 +11,14 @@
 </template>
 
 <script>
-import { getPageContentDeltaHeight } from '@/helpers/dom';
 import { PageContent } from 'common-lib-vue';
+import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
   name: 'MaintenancePage',
+  mixins: [pageContentMixin],
   components: {
     PageContent,
-  },
-  data: () => {
-    return {
-      pageContentDeltaHeight: 0,
-    };
-  },
-  created() {
-    this.$nextTick(() => {
-      this.pageContentDeltaHeight = getPageContentDeltaHeight();
-    });
   }
 }
 </script>
