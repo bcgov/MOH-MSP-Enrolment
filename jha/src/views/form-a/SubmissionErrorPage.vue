@@ -41,11 +41,6 @@ export default {
   components: {
     PageContent,
   },
-  data: () => {
-    return {
-      pageContentDeltaHeight: 0,
-    };
-  },
   created() {
     logService.logNavigation(
       this.$store.state.formAModule.applicationUuid,
