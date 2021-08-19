@@ -85,7 +85,8 @@
             </common-radio>
           </div>
 
-          <div *ngIf="applicant.fullTimeStudent" class="ml-4 border-left">
+          <!-- Don't ask the below question if they are a temporary permit holder -->
+          <div *ngIf="applicant.fullTimeStudent && !applicant.isTemporaryResident" class="ml-4 border-left">
             <div class="form-group">
               <common-radio
                 name="inBCafterStudies_{{objectId}}"
