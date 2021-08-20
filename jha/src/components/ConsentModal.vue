@@ -43,8 +43,10 @@
 </template>
 
 <script>
-import { Button } from "common-lib-vue";
-import Captcha from '../components/Captcha';
+import {
+  Button,
+  Captcha,
+} from "common-lib-vue";
 
 export default {
   name: "ConsentModal",

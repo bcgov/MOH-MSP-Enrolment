@@ -19,7 +19,6 @@
 </template>
 
 <script>
-import ContinueBar from '@/components/ContinueBar.vue';
 import ReviewTableList from '@/components/form-a/ReviewTableList.vue';
 import pageStateService from '@/services/page-state-service';
 import {
@@ -40,7 +39,10 @@ import {
 } from '@/store/modules/form-a-module';
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
-import { PageContent } from 'common-lib-vue';
+import {
+  ContinueBar,
+  PageContent,
+} from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {

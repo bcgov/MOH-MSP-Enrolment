@@ -32,13 +32,15 @@ import {
 import {
   getConvertedPath,
 } from '@/helpers/url';
-import ContinueBar from '@/components/ContinueBar.vue';
 import {
   MODULE_NAME as formModule,
   RESET_FORM,
 } from '@/store/modules/form-a-module';
 import logService from '@/services/log-service';
-import { PageContent } from 'common-lib-vue';
+import {
+  ContinueBar,
+  PageContent,
+} from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
