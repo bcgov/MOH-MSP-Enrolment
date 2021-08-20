@@ -24,9 +24,9 @@ import './styles/styles.css';
 import project from '../package.json';
 import {
   Header,
-  Footer
+  Footer,
+  PageStepper,
 } from 'common-lib-vue';
-import PageStepper from '@/components/PageStepper.vue';
 import {
   formAStepRoutes,
 } from '@/router/step-routes';

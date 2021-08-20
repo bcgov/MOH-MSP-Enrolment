@@ -26,7 +26,6 @@ import {
   scrollTo,
   getTopScrollPosition
 } from '@/helpers/scroll';
-import ContinueBar from '@/components/ContinueBar.vue';
 import ConsentModal from '@/components/ConsentModal.vue';
 import { v4 as uuidv4 } from 'uuid';
 import {
@@ -36,7 +35,10 @@ import {
 } from '@/store/modules/form-a-module';
 import logService from '@/services/log-service';
 import { getConvertedPath } from '@/helpers/url';
-import { PageContent } from 'common-lib-vue';
+import {
+  PageContent,
+  ContinueBar,
+} from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
