@@ -279,7 +279,7 @@ export class ChildInfoComponent extends BaseForm implements OnInit, AfterViewIni
           // Ticked "reside in BC after completing study in this school?"
           && this.isSet(addedChild.inBCafterStudies);
         
-        if (addedChild._status !== StatusInCanada.TemporaryResident) {
+        if (addedChild.status !== StatusInCanada.TemporaryResident) {
           valid = valid && addedChild.inBCafterStudies === true
         }
 
