@@ -638,6 +638,9 @@ export class MspApiAccountService extends AbstractHttpService {
       from.mailingAddress.postal
     ) {
       to.mailingAddress = this.convertAddress(from.mailingAddress);
+    } else {
+      // If they don't have a mailing address, make their residential address their mailing address
+      to.mailingAddress = this.convertAddress(from.residentialAddress);
     }
 
     if (from.hasDischarge) {
@@ -828,6 +831,9 @@ export class MspApiAccountService extends AbstractHttpService {
       from.mailingAddress.postal
     ) {
       to.mailingAddress = this.convertAddress(from.mailingAddress);
+    } else {
+      // If they don't have a mailing address, make their residential address their mailing address
+      to.mailingAddress = this.convertAddress(from.residentialAddress);
     }
 
     if (from.hasDischarge) {
