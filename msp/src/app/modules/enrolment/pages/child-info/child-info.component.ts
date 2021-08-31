@@ -132,7 +132,8 @@ export class ChildInfoComponent extends EnrolForm {
                                  x.nameChangeDocs.images.length > 0;
                   }
 
-                  if ( x.relationship === Relationship.Child19To24 ) {
+                  // If they are a temporary resident, allow them to leave BC after studies. Otherwise, they must return
+                  if ( x.relationship === Relationship.Child19To24 && x.status !== StatusInCanada.TemporaryResident) {
                     childValid = childValid && x.inBCafterStudies;
                   }
 
