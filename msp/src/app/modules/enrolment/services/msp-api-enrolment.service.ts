@@ -152,8 +152,8 @@ export class MspApiEnrolmentService extends BaseMspApiService {
       to.livedInBC.isPermanentMove = from.madePermanentMoveToBC === true ? 'Y' : 'N';
     }
 
-    if ( from.hasPreviousBCPhn ) {
-      to.livedInBC.prevHealthNumber = from.previousBCPhn;
+    if ( from.healthNumberFromOtherProvince ) {
+      to.livedInBC.prevHealthNumber = from.healthNumberFromOtherProvince;
     }
 
     if ( from.movedFromProvinceOrCountry ) {
@@ -277,6 +277,8 @@ export class MspApiEnrolmentService extends BaseMspApiService {
 
     if ( !application.mailingSameAsResidentialAddress ) {
       enrolee.mailingAddress = this.convertAddress( application.mailingAddress );
+    } else {
+      enrolee.mailingAddress = this.convertAddress( application.residentialAddress );
     }
 
     return enrolee;
