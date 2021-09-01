@@ -176,7 +176,7 @@ export class MspApiEnrolmentService extends BaseMspApiService {
       to.outsideBC.destination = from.departureDestination;
     }
 
-    if ( from.inBCafterStudies ) {
+    if (from.inBCafterStudies !== undefined && from.inBCafterStudies !== null) {
       to.willBeAway.isInBCafterStudies = from.inBCafterStudies ? 'Y' : 'N';
     }
 
