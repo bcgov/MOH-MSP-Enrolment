@@ -37,7 +37,7 @@
           [errorMessage]="cancellationDateErrorMessage"
           [(ngModel)]="child.cancellationDate"
           (ngModelChange)="this.dataService.saveMspAccountApp();"
-          required>
+          [required]="true">
         </common-date>
       </div>
     </div>
@@ -60,7 +60,7 @@
     label="Do you know the child's current mailing address?"
     [radioLabels]='[{"label": "No", "value": false}, {"label": "Yes", "value": true}]'
     (valueChange)="child.hasCurrentMailingAddress = $event; this.dataService.saveMspAccountApp();"
-    required>
+    [required]="true">
   </common-radio>
 
   <common-page-section layout='noTips'>
@@ -124,7 +124,7 @@
       [errorMessage]="cancellationDateErrorMessage"
       [(ngModel)]="child.cancellationDate"
       (ngModelChange)="this.dataService.saveMspAccountApp();"
-      required>
+      [required]="true">
     </common-date>
   </div>
 </div>
@@ -145,7 +145,7 @@
       [errorMessage]="cancellationDateErrorMessage"
       [(ngModel)]="child.cancellationDate"
       (ngModelChange)="this.dataService.saveMspAccountApp();"
-      required>
+      [required]="true">
     </common-date>
   </div>
 </div>
@@ -160,7 +160,7 @@
       [errorMessage]="cancellationDateErrorMessage"
       [(ngModel)]="child.cancellationDate"
       (ngModelChange)="this.dataService.saveMspAccountApp();"
-      required>
+      [required]="true">
     </common-date>
   </div>
 </div>
