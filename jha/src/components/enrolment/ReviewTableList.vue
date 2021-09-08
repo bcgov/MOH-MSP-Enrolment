@@ -52,7 +52,7 @@ export default {
       const items = [];
       items.push({
         label: 'Application UUID:',
-        value: this.$store.state.formAModule.applicationUuid,
+        value: this.$store.state.enrolmentModule.applicationUuid,
       });
       return items;
     },

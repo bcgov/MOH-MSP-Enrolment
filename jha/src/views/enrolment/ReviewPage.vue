@@ -61,7 +61,7 @@ export default {
   },
   created() {
     logService.logNavigation(
-      this.$store.state.formAModule.applicationUuid,
+      this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.REVIEW_PAGE.path,
       enrolmentRoutes.REVIEW_PAGE.title
     );
@@ -76,9 +76,9 @@ export default {
 
       this.$store.dispatch(formModule + '/' + SET_SUBMISSION_DATE, new Date());
 
-      const token = this.$store.state.formAModule.captchaToken;
-      const applicationUuid = this.$store.state.formAModule.applicationUuid;
-      const formState = this.$store.state.formAModule;
+      const token = this.$store.state.enrolmentModule.captchaToken;
+      const applicationUuid = this.$store.state.enrolmentModule.applicationUuid;
+      const formState = this.$store.state.enrolmentModule;
 
       apiService.submitEnrolmentApplication(token, formState)
         .then((response) => {

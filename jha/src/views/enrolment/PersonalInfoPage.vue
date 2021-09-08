@@ -37,26 +37,20 @@ import {
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
-  name: 'EligibilityPage',
+  name: 'PersonalInfoPage',
   mixins: [pageContentMixin],
   components: {
     ContinueBar,
     PageContent,
   },
   data: () => {
-    return {
-      isPageLoaded: false,
-    };
+    return {};
   },
   created() {
-    setTimeout(() => {
-      this.isPageLoaded = true;
-    }, 0);
-
     logService.logNavigation(
-      this.$store.state.formAModule.applicationUuid,
-      enrolmentRoutes.ELIGIBILITY_PAGE.path,
-      enrolmentRoutes.ELIGIBILITY_PAGE.title
+      this.$store.state.enrolmentModule.applicationUuid,
+      enrolmentRoutes.PERSONAL_INFO_PAGE.path,
+      enrolmentRoutes.PERSONAL_INFO_PAGE.title
     );
   },
   validations() {

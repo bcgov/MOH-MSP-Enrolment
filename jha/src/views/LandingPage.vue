@@ -3,7 +3,7 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-5">
         <h1>Available forms</h1>
-        <p><a href="/jha/enrolment">Form A</a></p>
+        <p><a href="/jha/enrolment">JHA Enrolment</a></p>
       </div>
     </PageContent>
   </div>

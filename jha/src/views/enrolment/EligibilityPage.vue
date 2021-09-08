@@ -54,7 +54,7 @@ export default {
     }, 0);
 
     logService.logNavigation(
-      this.$store.state.formAModule.applicationUuid,
+      this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.ELIGIBILITY_PAGE.path,
       enrolmentRoutes.ELIGIBILITY_PAGE.title
     );

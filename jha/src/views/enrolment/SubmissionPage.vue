@@ -84,11 +84,11 @@ export default {
     };
   },
   created() {
-    this.submissionDate = formatDate(this.$store.state.formAModule.submissionDate);
-    this.referenceNumber = this.$store.state.formAModule.referenceNumber || 'Unknown';
+    this.submissionDate = formatDate(this.$store.state.enrolmentModule.submissionDate);
+    this.referenceNumber = this.$store.state.enrolmentModule.referenceNumber || 'Unknown';
 
     logService.logNavigation(
-      this.$store.state.formAModule.applicationUuid,
+      this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.SUBMISSION_PAGE.path,
       enrolmentRoutes.SUBMISSION_PAGE.title
     );

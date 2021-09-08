@@ -43,7 +43,7 @@ export default {
   },
   created() {
     logService.logNavigation(
-      this.$store.state.formAModule.applicationUuid,
+      this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.SUBMISSION_ERROR_PAGE.path,
       enrolmentRoutes.SUBMISSION_ERROR_PAGE.title
     );
