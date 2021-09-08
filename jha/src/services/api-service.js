@@ -6,7 +6,7 @@ const BASE_API_PATH = '/jha/api/';
 const SUBMIT_FORM_A_APPLICATION_URL = BASE_API_PATH + 'jhaIntegration/payPatientSubmission';
 
 class ApiService {
-  submitFormAApplication(token, formState) {
+  submitEnrolmentApplication(token, formState) {
     const jsonPayload = {
       applicationUuid: formState.applicationUuid,
       requestUuid: uuidv4(),

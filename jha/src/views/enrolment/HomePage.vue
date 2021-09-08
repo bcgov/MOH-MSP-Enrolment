@@ -19,7 +19,7 @@
 import pageStateService from '@/services/page-state-service';
 import spaEnvService from '@/services/spa-env-service';
 import {
-  formARoutes,
+  enrolmentRoutes,
   commonRoutes,
 } from '@/router/routes';
 import {
@@ -32,7 +32,7 @@ import {
   MODULE_NAME as formModule,
   SET_APPLICATION_UUID,
   SET_CAPTCHA_TOKEN,
-} from '@/store/modules/form-a-module';
+} from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import { getConvertedPath } from '@/helpers/url';
 import {
@@ -77,8 +77,8 @@ export default {
       });
     logService.logNavigation(
       this.applicationUuid,
-      formARoutes.HOME_PAGE.path,
-      formARoutes.HOME_PAGE.title
+      enrolmentRoutes.HOME_PAGE.path,
+      enrolmentRoutes.HOME_PAGE.title
     );
   },
   methods: {
@@ -91,7 +91,7 @@ export default {
     nextPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.FORM_PAGE.path
+        enrolmentRoutes.FORM_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -109,7 +109,7 @@ export default {
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.HOME_PAGE.path
+        enrolmentRoutes.HOME_PAGE.path
       );
       next({
         path: toPath,

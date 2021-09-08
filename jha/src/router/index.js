@@ -1,24 +1,24 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {
-  FORM_A_BASE_URL,
-  formARoutes,
+  ENROLMENT_BASE_URL,
+  enrolmentRoutes,
   commonRoutes,
 } from './routes';
 import pageStateService from '@/services/page-state-service';
 import LandingPage from '@/views/LandingPage.vue';
-import FormAHomePage from '@/views/form-a/HomePage.vue';
-import FormAFormPage from '@/views/form-a/FormPage.vue';
-import FormAReviewPage from '@/views/form-a/ReviewPage.vue';
-import FormASubmissionPage from '@/views/form-a/SubmissionPage.vue';
-import FormASubmissionErrorPage from '@/views/form-a/SubmissionErrorPage.vue';
+import EnrolmentHomePage from '@/views/enrolment/HomePage.vue';
+import EnrolmentFormPage from '@/views/enrolment/FormPage.vue';
+import EnrolmentReviewPage from '@/views/enrolment/ReviewPage.vue';
+import EnrolmentSubmissionPage from '@/views/enrolment/SubmissionPage.vue';
+import EnrolmentSubmissionErrorPage from '@/views/enrolment/SubmissionErrorPage.vue';
 import MaintenancePage from '@/views/MaintenancePage.vue';
 import PageNotFoundPage from '@/views/PageNotFoundPage.vue';
 
 Vue.use(VueRouter);
 
 pageStateService.importPageRoutes(commonRoutes);
-pageStateService.importPageRoutes(formARoutes);
+pageStateService.importPageRoutes(enrolmentRoutes);
 
 const routeCollection = [
   {
@@ -39,29 +39,29 @@ const routeCollection = [
   
   // Form A Routes.
   {
-    path: formARoutes.HOME_PAGE.path,
-    name: formARoutes.HOME_PAGE.name,
-    component: FormAHomePage
+    path: enrolmentRoutes.HOME_PAGE.path,
+    name: enrolmentRoutes.HOME_PAGE.name,
+    component: EnrolmentHomePage
   },
   {
-    path: formARoutes.FORM_PAGE.path,
-    name: formARoutes.FORM_PAGE.name,
-    component: FormAFormPage
+    path: enrolmentRoutes.FORM_PAGE.path,
+    name: enrolmentRoutes.FORM_PAGE.name,
+    component: EnrolmentFormPage
   },
   {
-    path: formARoutes.REVIEW_PAGE.path,
-    name: formARoutes.REVIEW_PAGE.name,
-    component: FormAReviewPage
+    path: enrolmentRoutes.REVIEW_PAGE.path,
+    name: enrolmentRoutes.REVIEW_PAGE.name,
+    component: EnrolmentReviewPage
   },
   {
-    path: formARoutes.SUBMISSION_PAGE.path,
-    name: formARoutes.SUBMISSION_PAGE.name,
-    component: FormASubmissionPage
+    path: enrolmentRoutes.SUBMISSION_PAGE.path,
+    name: enrolmentRoutes.SUBMISSION_PAGE.name,
+    component: EnrolmentSubmissionPage
   },
   {
-    path: formARoutes.SUBMISSION_ERROR_PAGE.path,
-    name: formARoutes.SUBMISSION_ERROR_PAGE.name,
-    component: FormASubmissionErrorPage
+    path: enrolmentRoutes.SUBMISSION_ERROR_PAGE.path,
+    name: enrolmentRoutes.SUBMISSION_ERROR_PAGE.name,
+    component: EnrolmentSubmissionErrorPage
   },
 ];
 
@@ -73,10 +73,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // Home redirects.
-  if (to.path.includes(FORM_A_BASE_URL + '/')
-    && to.path !== formARoutes.HOME_PAGE.path
+  if (to.path.includes(ENROLMENT_BASE_URL + '/')
+    && to.path !== enrolmentRoutes.HOME_PAGE.path
     && !pageStateService.isPageVisited(to.path)) {
-    next({ name: formARoutes.HOME_PAGE.name });
+    next({ name: enrolmentRoutes.HOME_PAGE.name });
   }
   
   // Catch-all (navigation).

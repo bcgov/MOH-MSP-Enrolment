@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import appModule from './modules/app-module';
-import formAModule from './modules/form-a-module';
+import formAModule from './modules/enrolment-module';
 
 Vue.use(Vuex);
 

@@ -21,7 +21,7 @@
 <script>
 import pageStateService from '@/services/page-state-service';
 import {
-  formARoutes,
+  enrolmentRoutes,
   isPastPath,
 } from '@/router/routes';
 import {
@@ -35,7 +35,7 @@ import {
 import {
   MODULE_NAME as formModule,
   RESET_FORM,
-} from '@/store/modules/form-a-module';
+} from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
   ContinueBar,
@@ -62,8 +62,8 @@ export default {
 
     logService.logNavigation(
       this.$store.state.formAModule.applicationUuid,
-      formARoutes.FORM_PAGE.path,
-      formARoutes.FORM_PAGE.title
+      enrolmentRoutes.FORM_PAGE.path,
+      enrolmentRoutes.FORM_PAGE.title
     );
   },
   validations() {
@@ -84,7 +84,7 @@ export default {
       // Navigate to next path.
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.REVIEW_PAGE.path
+        enrolmentRoutes.REVIEW_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -96,7 +96,7 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === formARoutes.HOME_PAGE.path) {
+    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
       this.$store.dispatch(formModule + '/' + RESET_FORM);
       next();
     } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
@@ -106,7 +106,7 @@ export default {
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.FORM_PAGE.path
+        enrolmentRoutes.FORM_PAGE.path
       );
       next({
         path: toPath,

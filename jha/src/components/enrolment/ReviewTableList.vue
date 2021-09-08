@@ -20,7 +20,7 @@
 
 <script>
 import ReviewTable from '@/components/ReviewTable.vue';
-import { formARoutes } from '@/router/routes';
+import { enrolmentRoutes } from '@/router/routes';
 import {
   scrollToElement,
 } from '@/helpers/scroll';
@@ -61,7 +61,7 @@ export default {
     navigateToMainFormPage(anchorName) {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.FORM_PAGE.path
+        enrolmentRoutes.FORM_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);

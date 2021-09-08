@@ -1,4 +1,4 @@
-import dummyData from '@/store/states/form-a-module-dummy-data';
+import dummyData from '@/store/states/enrolment-module-dummy-data';
 import settings from '@/settings';
 
 export const MODULE_NAME = 'formAModule';

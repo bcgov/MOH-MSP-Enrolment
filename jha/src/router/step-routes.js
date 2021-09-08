@@ -1,8 +1,8 @@
 import {
-  formARoutes
+  enrolmentRoutes
 } from './routes';
 
-export const formAStepRoutes = [
-  {...formARoutes.FORM_PAGE},
-  {...formARoutes.REVIEW_PAGE},
+export const jhaFormStepRoutes = [
+  {...enrolmentRoutes.FORM_PAGE},
+  {...enrolmentRoutes.REVIEW_PAGE},
 ];

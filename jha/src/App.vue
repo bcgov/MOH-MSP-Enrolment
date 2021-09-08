@@ -28,10 +28,10 @@ import {
   PageStepper,
 } from 'common-lib-vue';
 import {
-  formAStepRoutes,
+  jhaFormStepRoutes,
 } from '@/router/step-routes';
 import {
-  FORM_A_BASE_URL,
+  ENROLMENT_BASE_URL,
 } from '@/router/routes';
 import {
   MODULE_NAME as appModule,
@@ -58,15 +58,15 @@ export default {
   computed: {
     stepRoutes() {
       const currentPath = this.$router.currentRoute.path;
-      if (currentPath.includes(FORM_A_BASE_URL)) {
-        return formAStepRoutes;
+      if (currentPath.includes(ENROLMENT_BASE_URL)) {
+        return jhaFormStepRoutes;
       }
       return [];
     },
     pageTitle() {
       const currentPath = this.$router.currentRoute.path;
-      if (currentPath.includes(FORM_A_BASE_URL)) {
-        return 'Form A';
+      if (currentPath.includes(ENROLMENT_BASE_URL)) {
+        return 'Joint Health Application';
       }
       return '';
     },

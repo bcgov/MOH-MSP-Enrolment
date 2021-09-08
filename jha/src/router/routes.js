@@ -1,30 +1,30 @@
-export const FORM_A_BASE_URL = '/form-a';
+export const ENROLMENT_BASE_URL = '/enrolment';
 
-export const formARoutes = {
+export const enrolmentRoutes = {
   HOME_PAGE: {
-    path: FORM_A_BASE_URL,
+    path: ENROLMENT_BASE_URL,
     title: 'Home',
-    name: 'FormAHomePage',
+    name: 'EnrolmentHomePage',
   },
   FORM_PAGE: {
-    path: FORM_A_BASE_URL + '/form',
+    path: ENROLMENT_BASE_URL + '/form',
     title: 'Form',
-    name: 'FormAFormPage',
+    name: 'EnrolmentFormPage',
   },
   REVIEW_PAGE: {
-    path: FORM_A_BASE_URL + '/review',
+    path: ENROLMENT_BASE_URL + '/review',
     title: 'Review',
-    name: 'FormAReviewPage',
+    name: 'EnrolmentReviewPage',
   },
   SUBMISSION_PAGE: {
-    path: FORM_A_BASE_URL + '/submission',
+    path: ENROLMENT_BASE_URL + '/submission',
     title: 'Submission',
-    name: 'FormASubmissionPage',
+    name: 'EnrolmentSubmissionPage',
   },
   SUBMISSION_ERROR_PAGE: {
-    path: FORM_A_BASE_URL + '/submission-error',
+    path: ENROLMENT_BASE_URL + '/submission-error',
     title: 'Submission error',
-    name: 'FormASubmissionErrorPage',
+    name: 'EnrolmentSubmissionErrorPage',
   },
 };
 
@@ -47,16 +47,16 @@ export const commonRoutes = {
 };
 
 export const formARouteStepOrder = [
-  formARoutes.HOME_PAGE,
-  formARoutes.FORM_PAGE,
-  formARoutes.REVIEW_PAGE,
-  formARoutes.SUBMISSION_PAGE
+  enrolmentRoutes.HOME_PAGE,
+  enrolmentRoutes.FORM_PAGE,
+  enrolmentRoutes.REVIEW_PAGE,
+  enrolmentRoutes.SUBMISSION_PAGE
 ];
 
 export const isPastPath = (toPath, fromPath) => {
   let stepRoutes = [];
 
-  if (toPath.includes(FORM_A_BASE_URL + '/')) {
+  if (toPath.includes(ENROLMENT_BASE_URL + '/')) {
     stepRoutes = formARouteStepOrder;
   }
 

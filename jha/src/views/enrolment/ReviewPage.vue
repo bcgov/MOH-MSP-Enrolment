@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import ReviewTableList from '@/components/form-a/ReviewTableList.vue';
+import ReviewTableList from '@/components/enrolment/ReviewTableList.vue';
 import pageStateService from '@/services/page-state-service';
 import {
-  formARoutes,
+  enrolmentRoutes,
   isPastPath
 } from '@/router/routes';
 import {
@@ -36,7 +36,7 @@ import {
   RESET_FORM,
   SET_REFERENCE_NUMBER,
   SET_SUBMISSION_DATE
-} from '@/store/modules/form-a-module';
+} from '@/store/modules/enrolment-module';
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
 import {
@@ -62,8 +62,8 @@ export default {
   created() {
     logService.logNavigation(
       this.$store.state.formAModule.applicationUuid,
-      formARoutes.REVIEW_PAGE.path,
-      formARoutes.REVIEW_PAGE.title
+      enrolmentRoutes.REVIEW_PAGE.path,
+      enrolmentRoutes.REVIEW_PAGE.title
     );
   },
   methods: {
@@ -80,7 +80,7 @@ export default {
       const applicationUuid = this.$store.state.formAModule.applicationUuid;
       const formState = this.$store.state.formAModule;
 
-      apiService.submitFormAApplication(token, formState)
+      apiService.submitEnrolmentApplication(token, formState)
         .then((response) => {
           // Handle HTTP success.
           const returnCode = response.data.returnCode;
@@ -139,7 +139,7 @@ export default {
     navigateToSubmissionPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.SUBMISSION_PAGE.path
+        enrolmentRoutes.SUBMISSION_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -149,7 +149,7 @@ export default {
     navigateToSubmissionErrorPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.SUBMISSION_ERROR_PAGE.path
+        enrolmentRoutes.SUBMISSION_ERROR_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -161,7 +161,7 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === formARoutes.HOME_PAGE.path) {
+    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
       this.$store.dispatch(formModule + '/' + RESET_FORM);
       next();
     } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
@@ -171,7 +171,7 @@ export default {
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.REVIEW_PAGE.path
+        enrolmentRoutes.REVIEW_PAGE.path
       );
       next({
         path: toPath,

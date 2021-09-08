@@ -54,18 +54,18 @@
 </template>
 
 <script>
-import ReviewTableList from '@/components/form-a/ReviewTableList.vue';
+import ReviewTableList from '@/components/enrolment/ReviewTableList.vue';
 import {
   PageContent,
   formatDate,
 } from 'common-lib-vue';
 import { getConvertedPath } from '@/helpers/url';
 import pageStateService from '@/services/page-state-service';
-import { formARoutes } from '@/router/routes';
+import { enrolmentRoutes } from '@/router/routes';
 import {
   MODULE_NAME as formModule,
   RESET_FORM
-} from '@/store/modules/form-a-module';
+} from '@/store/modules/enrolment-module';
 import { scrollTo } from '@/helpers/scroll';
 import logService from '@/services/log-service';
 import pageContentMixin from '@/mixins/page-content-mixin';
@@ -89,8 +89,8 @@ export default {
 
     logService.logNavigation(
       this.$store.state.formAModule.applicationUuid,
-      formARoutes.SUBMISSION_PAGE.path,
-      formARoutes.SUBMISSION_PAGE.title
+      enrolmentRoutes.SUBMISSION_PAGE.path,
+      enrolmentRoutes.SUBMISSION_PAGE.title
     );
   },
   methods: {
@@ -102,12 +102,12 @@ export default {
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
     this.$store.dispatch(formModule + '/' + RESET_FORM);
-    if (to.path === formARoutes.HOME_PAGE.path) {
+    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
       next();
     } else {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.HOME_PAGE.path
+        enrolmentRoutes.HOME_PAGE.path
       )
       next({ path: toPath });
     }
