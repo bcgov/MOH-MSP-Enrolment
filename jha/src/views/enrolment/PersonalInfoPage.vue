@@ -2,14 +2,7 @@
   <div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <div class="row align-items-end">
-          <div class="col-md-7">
-            <h1>Form</h1>
-          </div>
-          <div class="col-md-5">
-            <p class="text-right"><span class="required-asterisk">*</span> Required Information</p>
-          </div>
-        </div>
+        <h1>Form</h1>
         <hr class="mt-0"/>
         <p>Form here.</p>
       </div>
@@ -21,7 +14,7 @@
 <script>
 import pageStateService from '@/services/page-state-service';
 import {
-  formARoutes,
+  enrolmentRoutes,
   isPastPath,
 } from '@/router/routes';
 import {
@@ -35,7 +28,7 @@ import {
 import {
   MODULE_NAME as formModule,
   RESET_FORM,
-} from '@/store/modules/form-a-module';
+} from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
   ContinueBar,
@@ -44,26 +37,20 @@ import {
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
-  name: 'MainFormPage',
+  name: 'PersonalInfoPage',
   mixins: [pageContentMixin],
   components: {
     ContinueBar,
     PageContent,
   },
   data: () => {
-    return {
-      isPageLoaded: false,
-    };
+    return {};
   },
   created() {
-    setTimeout(() => {
-      this.isPageLoaded = true;
-    }, 0);
-
     logService.logNavigation(
-      this.$store.state.formAModule.applicationUuid,
-      formARoutes.FORM_PAGE.path,
-      formARoutes.FORM_PAGE.title
+      this.$store.state.enrolmentModule.applicationUuid,
+      enrolmentRoutes.PERSONAL_INFO_PAGE.path,
+      enrolmentRoutes.PERSONAL_INFO_PAGE.title
     );
   },
   validations() {
@@ -84,7 +71,7 @@ export default {
       // Navigate to next path.
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.REVIEW_PAGE.path
+        enrolmentRoutes.SPOUSE_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -96,7 +83,7 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === formARoutes.HOME_PAGE.path) {
+    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
       this.$store.dispatch(formModule + '/' + RESET_FORM);
       next();
     } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
@@ -106,7 +93,7 @@ export default {
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.FORM_PAGE.path
+        enrolmentRoutes.PERSONAL_INFO_PAGE.path
       );
       next({
         path: toPath,

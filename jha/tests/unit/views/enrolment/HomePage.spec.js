@@ -2,13 +2,13 @@ import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
-import HomePage from '@/views/form-a/HomePage.vue';
+import HomePage from '@/views/enrolment/HomePage.vue';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 Vue.use(Vuelidate);
 
-describe('Form A - HomePage.vue', () => {
+describe('Enrolment - HomePage.vue', () => {
   let state;
   let store;
 
@@ -19,7 +19,7 @@ describe('Form A - HomePage.vue', () => {
 
     store = new Vuex.Store({
       modules: {
-        formAModule: {
+        enrolmentModule: {
           state,
           namespaced: true,
           actions: {

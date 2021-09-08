@@ -8,7 +8,7 @@
       <div v-if='showEditButtons'
           class="col-3 text-right">
         <a href="javascript:void(0)"
-           @click="navigateToMainFormPage('patient')">Edit 
+           @click="navigateToMainEligibilityPage('patient')">Edit 
           <font-awesome-icon icon="pencil-alt" />
         </a>
       </div>
@@ -20,7 +20,7 @@
 
 <script>
 import ReviewTable from '@/components/ReviewTable.vue';
-import { formARoutes } from '@/router/routes';
+import { enrolmentRoutes } from '@/router/routes';
 import {
   scrollToElement,
 } from '@/helpers/scroll';
@@ -52,16 +52,16 @@ export default {
       const items = [];
       items.push({
         label: 'Application UUID:',
-        value: this.$store.state.formAModule.applicationUuid,
+        value: this.$store.state.enrolmentModule.applicationUuid,
       });
       return items;
     },
   },
   methods: {
-    navigateToMainFormPage(anchorName) {
+    navigateToMainEligibilityPage(anchorName) {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.FORM_PAGE.path
+        enrolmentRoutes.ELIGIBILITY_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);

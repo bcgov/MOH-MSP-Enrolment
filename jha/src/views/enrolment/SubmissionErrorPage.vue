@@ -24,11 +24,11 @@
 
 <script>
 import pageStateService from '@/services/page-state-service';
-import { formARoutes } from '@/router/routes';
+import { enrolmentRoutes } from '@/router/routes';
 import {
   MODULE_NAME as formModule,
   RESET_FORM
-} from '@/store/modules/form-a-module';
+} from '@/store/modules/enrolment-module';
 import { scrollTo } from '@/helpers/scroll';
 import { getConvertedPath } from '@/helpers/url';
 import logService from '@/services/log-service';
@@ -43,21 +43,21 @@ export default {
   },
   created() {
     logService.logNavigation(
-      this.$store.state.formAModule.applicationUuid,
-      formARoutes.SUBMISSION_ERROR_PAGE.path,
-      formARoutes.SUBMISSION_ERROR_PAGE.title
+      this.$store.state.enrolmentModule.applicationUuid,
+      enrolmentRoutes.SUBMISSION_ERROR_PAGE.path,
+      enrolmentRoutes.SUBMISSION_ERROR_PAGE.title
     );
   },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
     this.$store.dispatch(formModule + '/' + RESET_FORM);
-    if (to.path === formARoutes.HOME_PAGE.path) {
+    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
       next();
     } else {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        formARoutes.HOME_PAGE.path
+        enrolmentRoutes.HOME_PAGE.path
       )
       next({ path: toPath });
     }

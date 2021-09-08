@@ -1,8 +1,12 @@
 import {
-  formARoutes
+  enrolmentRoutes
 } from './routes';
 
-export const formAStepRoutes = [
-  {...formARoutes.FORM_PAGE},
-  {...formARoutes.REVIEW_PAGE},
+export const enrolmentStepRoutes = [
+  {...enrolmentRoutes.ELIGIBILITY_PAGE},
+  {...enrolmentRoutes.PERSONAL_INFO_PAGE},
+  {...enrolmentRoutes.SPOUSE_INFO_PAGE},
+  {...enrolmentRoutes.CHILD_INFO_PAGE},
+  {...enrolmentRoutes.CONTACT_INFO_PAGE},
+  {...enrolmentRoutes.REVIEW_PAGE},
 ];

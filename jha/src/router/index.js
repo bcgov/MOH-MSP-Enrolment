@@ -1,24 +1,28 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {
-  FORM_A_BASE_URL,
-  formARoutes,
+  ENROLMENT_BASE_URL,
+  enrolmentRoutes,
   commonRoutes,
 } from './routes';
 import pageStateService from '@/services/page-state-service';
 import LandingPage from '@/views/LandingPage.vue';
-import FormAHomePage from '@/views/form-a/HomePage.vue';
-import FormAFormPage from '@/views/form-a/FormPage.vue';
-import FormAReviewPage from '@/views/form-a/ReviewPage.vue';
-import FormASubmissionPage from '@/views/form-a/SubmissionPage.vue';
-import FormASubmissionErrorPage from '@/views/form-a/SubmissionErrorPage.vue';
+import EnrolmentHomePage from '@/views/enrolment/HomePage.vue';
+import EnrolmentEligibilityPage from '@/views/enrolment/EligibilityPage.vue';
+import EnrolmentPersonalInfoPage from '@/views/enrolment/PersonalInfoPage.vue';
+import EnrolmentSpouseInfoPage from '@/views/enrolment/SpouseInfoPage.vue';
+import EnrolmentChildInfoPage from '@/views/enrolment/ChildInfoPage.vue';
+import EnrolmentContactInfoPage from '@/views/enrolment/ContactInfoPage.vue';
+import EnrolmentReviewPage from '@/views/enrolment/ReviewPage.vue';
+import EnrolmentSubmissionPage from '@/views/enrolment/SubmissionPage.vue';
+import EnrolmentSubmissionErrorPage from '@/views/enrolment/SubmissionErrorPage.vue';
 import MaintenancePage from '@/views/MaintenancePage.vue';
 import PageNotFoundPage from '@/views/PageNotFoundPage.vue';
 
 Vue.use(VueRouter);
 
 pageStateService.importPageRoutes(commonRoutes);
-pageStateService.importPageRoutes(formARoutes);
+pageStateService.importPageRoutes(enrolmentRoutes);
 
 const routeCollection = [
   {
@@ -37,31 +41,51 @@ const routeCollection = [
     component: PageNotFoundPage
   },
   
-  // Form A Routes.
+  // Enrolment routes.
   {
-    path: formARoutes.HOME_PAGE.path,
-    name: formARoutes.HOME_PAGE.name,
-    component: FormAHomePage
+    path: enrolmentRoutes.HOME_PAGE.path,
+    name: enrolmentRoutes.HOME_PAGE.name,
+    component: EnrolmentHomePage
   },
   {
-    path: formARoutes.FORM_PAGE.path,
-    name: formARoutes.FORM_PAGE.name,
-    component: FormAFormPage
+    path: enrolmentRoutes.ELIGIBILITY_PAGE.path,
+    name: enrolmentRoutes.ELIGIBILITY_PAGE.name,
+    component: EnrolmentEligibilityPage
   },
   {
-    path: formARoutes.REVIEW_PAGE.path,
-    name: formARoutes.REVIEW_PAGE.name,
-    component: FormAReviewPage
+    path: enrolmentRoutes.PERSONAL_INFO_PAGE.path,
+    name: enrolmentRoutes.PERSONAL_INFO_PAGE.name,
+    component: EnrolmentPersonalInfoPage
   },
   {
-    path: formARoutes.SUBMISSION_PAGE.path,
-    name: formARoutes.SUBMISSION_PAGE.name,
-    component: FormASubmissionPage
+    path: enrolmentRoutes.SPOUSE_INFO_PAGE.path,
+    name: enrolmentRoutes.SPOUSE_INFO_PAGE.name,
+    component: EnrolmentSpouseInfoPage
   },
   {
-    path: formARoutes.SUBMISSION_ERROR_PAGE.path,
-    name: formARoutes.SUBMISSION_ERROR_PAGE.name,
-    component: FormASubmissionErrorPage
+    path: enrolmentRoutes.CHILD_INFO_PAGE.path,
+    name: enrolmentRoutes.CHILD_INFO_PAGE.name,
+    component: EnrolmentChildInfoPage
+  },
+  {
+    path: enrolmentRoutes.CONTACT_INFO_PAGE.path,
+    name: enrolmentRoutes.CONTACT_INFO_PAGE.name,
+    component: EnrolmentContactInfoPage
+  },
+  {
+    path: enrolmentRoutes.REVIEW_PAGE.path,
+    name: enrolmentRoutes.REVIEW_PAGE.name,
+    component: EnrolmentReviewPage
+  },
+  {
+    path: enrolmentRoutes.SUBMISSION_PAGE.path,
+    name: enrolmentRoutes.SUBMISSION_PAGE.name,
+    component: EnrolmentSubmissionPage
+  },
+  {
+    path: enrolmentRoutes.SUBMISSION_ERROR_PAGE.path,
+    name: enrolmentRoutes.SUBMISSION_ERROR_PAGE.name,
+    component: EnrolmentSubmissionErrorPage
   },
 ];
 
@@ -73,10 +97,10 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // Home redirects.
-  if (to.path.includes(FORM_A_BASE_URL + '/')
-    && to.path !== formARoutes.HOME_PAGE.path
+  if (to.path.includes(ENROLMENT_BASE_URL + '/')
+    && to.path !== enrolmentRoutes.HOME_PAGE.path
     && !pageStateService.isPageVisited(to.path)) {
-    next({ name: formARoutes.HOME_PAGE.name });
+    next({ name: enrolmentRoutes.HOME_PAGE.name });
   }
   
   // Catch-all (navigation).
