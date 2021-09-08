@@ -8,7 +8,7 @@
       <div v-if='showEditButtons'
           class="col-3 text-right">
         <a href="javascript:void(0)"
-           @click="navigateToMainFormPage('patient')">Edit 
+           @click="navigateToMainEligibilityPage('patient')">Edit 
           <font-awesome-icon icon="pencil-alt" />
         </a>
       </div>
@@ -58,10 +58,10 @@ export default {
     },
   },
   methods: {
-    navigateToMainFormPage(anchorName) {
+    navigateToMainEligibilityPage(anchorName) {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.FORM_PAGE.path
+        enrolmentRoutes.ELIGIBILITY_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);

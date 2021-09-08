@@ -91,7 +91,7 @@ export default {
     nextPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.FORM_PAGE.path
+        enrolmentRoutes.ELIGIBILITY_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);

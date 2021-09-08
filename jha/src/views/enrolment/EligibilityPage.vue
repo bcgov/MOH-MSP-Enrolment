@@ -2,14 +2,7 @@
   <div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <div class="row align-items-end">
-          <div class="col-md-7">
-            <h1>Form</h1>
-          </div>
-          <div class="col-md-5">
-            <p class="text-right"><span class="required-asterisk">*</span> Required Information</p>
-          </div>
-        </div>
+        <h1>Form</h1>
         <hr class="mt-0"/>
         <p>Form here.</p>
       </div>
@@ -44,7 +37,7 @@ import {
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
-  name: 'MainFormPage',
+  name: 'EligibilityPage',
   mixins: [pageContentMixin],
   components: {
     ContinueBar,
@@ -62,8 +55,8 @@ export default {
 
     logService.logNavigation(
       this.$store.state.formAModule.applicationUuid,
-      enrolmentRoutes.FORM_PAGE.path,
-      enrolmentRoutes.FORM_PAGE.title
+      enrolmentRoutes.ELIGIBILITY_PAGE.path,
+      enrolmentRoutes.ELIGIBILITY_PAGE.title
     );
   },
   validations() {
@@ -84,7 +77,7 @@ export default {
       // Navigate to next path.
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.REVIEW_PAGE.path
+        enrolmentRoutes.PERSONAL_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -106,7 +99,7 @@ export default {
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.FORM_PAGE.path
+        enrolmentRoutes.ELIGIBILITY_PAGE.path
       );
       next({
         path: toPath,

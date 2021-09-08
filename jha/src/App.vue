@@ -28,7 +28,7 @@ import {
   PageStepper,
 } from 'common-lib-vue';
 import {
-  jhaFormStepRoutes,
+  enrolmentStepRoutes,
 } from '@/router/step-routes';
 import {
   ENROLMENT_BASE_URL,
@@ -59,7 +59,7 @@ export default {
     stepRoutes() {
       const currentPath = this.$router.currentRoute.path;
       if (currentPath.includes(ENROLMENT_BASE_URL)) {
-        return jhaFormStepRoutes;
+        return enrolmentStepRoutes;
       }
       return [];
     },
