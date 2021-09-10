@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { HeaderService } from './services/header.service';
 import { GeneralAppComponent } from './app.component';
 import { Observable } from 'rxjs';
@@ -14,6 +14,7 @@ describe('GeneralAppComponent', () => {
 
   beforeEach(() => {
     const viewContainerRefStub = () => ({});
+    const activatedRouteStub = () => ({});
     const routerStub = () => ({ events: new Observable() });
     const headerServiceStub = () => ({ title: new Observable() });
     const mspLogServiceStub = () => ({ log: () => {} });
@@ -21,6 +22,7 @@ describe('GeneralAppComponent', () => {
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [GeneralAppComponent],
       providers: [
+        { provide: ActivatedRoute, useFactory: activatedRouteStub },
         { provide: ViewContainerRef, useFactory: viewContainerRefStub },
         { provide: Router, useFactory: routerStub },
         { provide: HeaderService, useFactory: headerServiceStub },
