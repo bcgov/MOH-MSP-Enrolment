@@ -1,11 +1,11 @@
 {
   "name": "mygovbc-msp",
-  "version": "3.4.5",
+  "version": "3.4.7",
   "description": "MyGovBC MSP Service Provider Web App",
   "license": "Apache-2.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bcgov/MyGovBC-MSP.git"
+    "url": "https://github.com/bcgov/MOH-MSP-Enrolment.git"
   },
   "homepage": "https://my.gov.bc.ca/msp",
   "main": "server.js",

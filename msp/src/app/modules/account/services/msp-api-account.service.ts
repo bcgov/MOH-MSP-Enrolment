@@ -948,45 +948,6 @@ export class MspApiAccountService extends AbstractHttpService {
     if (from.newlyAdopted) {
       to.adoptionDate = format(from.adoptedDate, this.ISO8601DateFormat);
     }
-
-    // Has this family member been outside of BC for more than a total of 30 days during the past 12 months?
-    if (from.declarationForOutsideOver30Days != null) {
-      to.outsideBC = OutsideBCTypeFactory.make();
-      to.outsideBC.beenOutsideBCMoreThan =
-        from.declarationForOutsideOver30Days === true ? 'Y' : 'N';
-      if (from.declarationForOutsideOver30Days) {
-        if (from.outOfBCRecord.hasDeparture) {
-          to.outsideBC.departureDate = String(from.outOfBCRecord.departureDate)
-        }
-        if (from.outOfBCRecord.hasReturn) {
-          to.outsideBC.returnDate = String(from.outOfBCRecord.returnDate)
-        }
-        to.outsideBC.familyMemberReason = from.outOfBCRecord.reason;
-        to.outsideBC.destination = from.outOfBCRecord.location;
-      }
-    }
-
-    //  Will this family member be outside of BC for more than a total of 30 days during the next 6 months?
-
-    if (from.plannedAbsence != null) {
-      to.outsideBCinFuture = OutsideBCTypeFactory.make();
-      to.outsideBCinFuture.beenOutsideBCMoreThan =
-        from.plannedAbsence === true ? 'Y' : 'N';
-      if (from.plannedAbsence) {
-        if (from.planOnBeingOutOfBCRecord.hasDeparture) {
-          to.outsideBCinFuture.departureDate = String(from.planOnBeingOutOfBCRecord.departureDate)
-        }
-
-        if (from.planOnBeingOutOfBCRecord.hasReturn) {
-          to.outsideBCinFuture.returnDate = String(from.planOnBeingOutOfBCRecord.returnDate);
-        }
-
-        to.outsideBCinFuture.familyMemberReason =
-          from.planOnBeingOutOfBCRecord.reason;
-        to.outsideBCinFuture.destination =
-          from.planOnBeingOutOfBCRecord.location;
-      }
-    }
   }
 
   private populateNewBeneficiaryDetailsForSpouse(
@@ -1020,55 +981,6 @@ export class MspApiAccountService extends AbstractHttpService {
             this.ISO8601DateFormat
           );
         }
-      }
-    }
-
-    // Has this family member been outside of BC for more than a total of 30 days during the past 12 months?
-    if (from.declarationForOutsideOver30Days != null) {
-      to.outsideBC = OutsideBCTypeFactory.make();
-      to.outsideBC.beenOutsideBCMoreThan =
-        from.declarationForOutsideOver30Days === true ? 'Y' : 'N';
-      if (from.declarationForOutsideOver30Days) {
-        if (from.outOfBCRecord.hasDeparture) {
-          to.outsideBC.departureDate = format(
-            from.outOfBCRecord.departureDate,
-            this.ISO8601DateFormat
-          );
-        }
-        if (from.outOfBCRecord.hasReturn) {
-          to.outsideBC.returnDate = format(
-            from.outOfBCRecord.returnDate,
-            this.ISO8601DateFormat
-          );
-        }
-        to.outsideBC.familyMemberReason = from.outOfBCRecord.reason;
-        to.outsideBC.destination = from.outOfBCRecord.location;
-      }
-    }
-
-    //  Will this family member be outside of BC for more than a total of 30 days during the next 6 months?
-
-    if (from.plannedAbsence != null) {
-      to.outsideBCinFuture = OutsideBCTypeFactory.make();
-      to.outsideBCinFuture.beenOutsideBCMoreThan =
-        from.plannedAbsence === true ? 'Y' : 'N';
-      if (from.plannedAbsence) {
-        if (from.planOnBeingOutOfBCRecord.hasDeparture) {
-          to.outsideBCinFuture.departureDate = format(
-            from.planOnBeingOutOfBCRecord.departureDate,
-            this.ISO8601DateFormat
-          );
-        }
-        if (from.planOnBeingOutOfBCRecord.hasReturn) {
-          to.outsideBCinFuture.returnDate = format(
-            from.planOnBeingOutOfBCRecord.returnDate,
-            this.ISO8601DateFormat
-          );
-        }
-        to.outsideBCinFuture.familyMemberReason =
-          from.planOnBeingOutOfBCRecord.reason;
-        to.outsideBCinFuture.destination =
-          from.planOnBeingOutOfBCRecord.location;
       }
     }
   }

@@ -34,7 +34,7 @@ export const buildTime = '${ buildTime }';
 /** App version retrieved from package.json. */
 export const projectVersion = '${projectVersion}';
 /** Human readable message  */
-export const message = 'Canonical Version: ${ trimmed } - ${ buildTime } (v${projectVersion}) \\nhttps://github.com/bcgov/MyGovBC-MSP/commits/${ trimmed }';
+export const message = 'Canonical Version: ${ trimmed } - ${ buildTime } (v${projectVersion}) \\nhttps://github.com/bcgov/MOH-MSP-Enrolment/commits/${ trimmed }';
 /** If true, other values should be present. */
 export const success = ${success};
 `
