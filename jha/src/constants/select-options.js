@@ -1,132 +1,70 @@
-export const selectOptionsSubmissionCode = [
+import { StatusInCanada } from './immigration-status-types';
+import { SupportDocumentTypes } from './document-types';
+
+export const selectOptionsImmigrationStatus = [
   {
-    value: 'A',
-    label: 'A (Preapproved by Claims Management or Staff)'
+    value: StatusInCanada.Citizen,
+    label: StatusInCanada.Citizen
   },
   {
-    value: 'C',
-    label: 'C (Coverage Reinstated)'
+    value: StatusInCanada.PermanentResident,
+    label: StatusInCanada.PermanentResident
   },
   {
-    value: 'D',
-    label: 'D (Valid Duplicate)'
+    value: StatusInCanada.TemporaryResident,
+    label: StatusInCanada.TemporaryResident
   },
-  {
-    value: 'I',
-    label: 'I (ICBC has Accepted Responsibility)'
-  },
-  {
-    value: 'R',
-    label: 'R (Resubmission of a Previous Claim)'
-  },
-  {
-    value: 'W',
-    label: 'W (WCB Overage or WCB Refused - Now Billing MSP)'
-  },
-  {
-    value: 'X',
-    label: 'X (Resubmission of a Previously Refused Claim)'
-  }
 ];
 
-export const selectOptionsCorrespondenceAttached = [
+export const selectOptionsCitizenshipSupportDocuments = [
   {
-    value: 'C',
-    label: 'C (Paper correspondence following)'
+    value: SupportDocumentTypes.CanadianBirthCertificate,
+    label: SupportDocumentTypes.CanadianBirthCertificate
   },
   {
-    value: 'N',
-    label: 'N (Note Record following this claim record)'
+    value: SupportDocumentTypes.CanadianCitizenCard,
+    label: SupportDocumentTypes.CanadianCitizenCard
   },
   {
-    value: 'B',
-    label: 'B (both)'
-  }
+    value: SupportDocumentTypes.CanadianPassport,
+    label: SupportDocumentTypes.CanadianPassport
+  },
 ];
 
-export const selectOptionsServiceLocation = [
+export const selectOptionsPermanentResidentSupportDocuments = [
   {
-    value: 'A',
-    label: '(A) Practitioner\'s Office - In Community'
+    value: SupportDocumentTypes.PermanentResidentConfirmation,
+    label: SupportDocumentTypes.PermanentResidentConfirmation
   },
   {
-    value: 'B',
-    label: '(B) Community Health Centre'
+    value: SupportDocumentTypes.RecordOfLanding,
+    label: SupportDocumentTypes.RecordOfLanding
   },
   {
-    value: 'C',
-    label: '(C) Residential Care/Assisted Living Residence'
+    value: SupportDocumentTypes.PermanentResidentCard,
+    label: SupportDocumentTypes.PermanentResidentCard
+  },
+];
+
+export const selectOptionsTemporaryPermitSupportDocuments = [
+  {
+    value: SupportDocumentTypes.WorkPermit,
+    label: SupportDocumentTypes.WorkPermit
   },
   {
-    value: 'D',
-    label: '(D) Diagnostic Facility'
+    value: SupportDocumentTypes.StudyPermit,
+    label: SupportDocumentTypes.StudyPermit
   },
   {
-    value: 'E',
-    label: '(E) Hospital Emergency Room (unscheduled patient)'
+    value: SupportDocumentTypes.ReligiousWorker,
+    label: SupportDocumentTypes.ReligiousWorker
   },
   {
-    value: 'F',
-    label: '(F) Private medical/surgical facility'
+    value: SupportDocumentTypes.PassportWithDiplomaticFoil,
+    label: SupportDocumentTypes.PassportWithDiplomaticFoil
   },
   {
-    value: 'G',
-    label: '(G) Hospital, Day Care (surgery)'
+    value: SupportDocumentTypes.VisitorVisa,
+    label: SupportDocumentTypes.VisitorVisa
   },
-  {
-    value: 'I',
-    label: '(I) Hospital Inpatient'
-  },
-  {
-    value: 'J',
-    label: '(J) First Nations Primary Health Care Clinic'
-  },
-  {
-    value: 'K',
-    label: '(K) Hybrid Primary Care Practice'
-  },
-  {
-    value: 'L',
-    label: '(L) Longitudinal Primary Care Practice (e.g., GP family practice or PCN clinic)'
-  },
-  {
-    value: 'N',
-    label: '(N) Health Care Practitioner Office (non-physician)'
-  },
-  {
-    value: 'P',
-    label: '(P) Hospital Outpatient'
-  },
-  {
-    value: 'Q',
-    label: '(Q) Specialist Physician Office'
-  },
-  {
-    value: 'R',
-    label: '(R) Patient\'s private home'
-  },
-  {
-    value: 'T',
-    label: '(T) Practitioner\'s office, in publicly administered facility'
-  },
-  {
-    value: 'U',
-    label: '(U) Urgent and Primary Care Centre'
-  },
-  {
-    value: 'V',
-    label: '(V) Exclusive Virtual Care Clinic'
-  },
-  {
-    value: 'W',
-    label: '(W) Walk-In Clinic'
-  },
-  {
-    value: 'M',
-    label: '(M) Mental Health Centre'
-  },
-  {
-    value: 'Z',
-    label: '(Z) Other, e.g., accident site or in an ambulance'
-  }
 ];
