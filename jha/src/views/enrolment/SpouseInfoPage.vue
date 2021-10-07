@@ -344,7 +344,6 @@ export default {
     };
   },
   created() {
-    console.log(this.optionsImmigrationStatus);
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.SPOUSE_INFO_PAGE.path,
