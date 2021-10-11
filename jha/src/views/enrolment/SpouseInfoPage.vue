@@ -240,10 +240,6 @@ import {
 import {
   getConvertedPath,
 } from '@/helpers/url';
-import {
-  MODULE_NAME as formModule,
-  RESET_FORM,
-} from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
   ContinueBar,
@@ -278,6 +274,32 @@ import {
   radioOptionsReleasedFromInstitution,
 } from '@/constants/radio-options';
 import { StatusInCanada } from '@/constants/immigration-status-types';
+import {
+  MODULE_NAME as enrolmentModule,
+  RESET_FORM,
+  SET_HAS_SPOUSE,
+  SET_SPOUSE_STATUS,
+  SET_SPOUSE_STATUS_REASON,
+  SET_SPOUSE_FIRST_NAME,
+  SET_SPOUSE_MIDDLE_NAME,
+  SET_SPOUSE_LAST_NAME,
+  SET_SPOUSE_BIRTH_DATE,
+  SET_SPOUSE_GENDER,
+  SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH,
+  SET_SPOUSE_MADE_PERMANENT_MOVE,
+  SET_SPOUSE_MOVED_FROM,
+  SET_SPOUSE_RECENT_BC_MOVE_DATE,
+  SET_SPOUSE_CANADA_ARRIVAL_DATE,
+  SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS,
+  SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_REASON,
+  SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION,
+  SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DEPARTURE_DATE,
+  SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_RETURN_DATE,
+  SET_SPOUSE_HAS_PREVIOUS_BC_HEALTH_NUMBER,
+  SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER,
+  SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION,
+  SET_SPOUSE_DISCHARGE_DATE,
+} from '@/store/modules/enrolment-module';
 
 const nameValidator = (value) => {
   const criteria = /^[a-zA-Z][a-zA-Z-.']*$/;
@@ -344,6 +366,29 @@ export default {
     };
   },
   created() {
+    this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse;
+    this.spouseStatus = this.$store.state.enrolmentModule.spouseStatus;
+    this.spouseStatusReason = this.$store.state.enrolmentModule.spouseStatusReason;
+    this.spouseFirstName = this.$store.state.enrolmentModule.spouseFirstName;
+    this.spouseMiddleName = this.$store.state.enrolmentModule.spouseMiddleName;
+    this.spouseLastName = this.$store.state.enrolmentModule.spouseLastName;
+    this.spouseBirthDate = this.$store.state.enrolmentModule.spouseBirthDate;
+    this.spouseGender = this.$store.state.enrolmentModule.spouseGender;
+    this.spouseLivedInBCSinceBirth = this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth;
+    this.spouseMadePermanentMove = this.$store.state.enrolmentModule.spouseMadePermanentMove;
+    this.spouseMovedFrom = this.$store.state.enrolmentModule.spouseMovedFrom;
+    this.spouseRecentBCMoveDate = this.$store.state.enrolmentModule.spouseRecentBCMoveDate;
+    this.spouseCanadaArrivalDate = this.$store.state.enrolmentModule.spouseCanadaArrivalDate;
+    this.spouseOutsideBCLast12Months = this.$store.state.enrolmentModule.spouseOutsideBCLast12Months;
+    this.spouseOutsideBCLast12MonthsReason = this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsReason;
+    this.spouseOutsideBCLast12MonthsDestination = this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsDestination;
+    this.spouseOutsideBCLast12MonthsDepartureDate = this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsDepartureDate;
+    this.spouseOutsideBCLast12MonthsReturnDate = this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsReturnDate;
+    this.spouseHasPreviousBCHealthNumber = this.$store.state.enrolmentModule.spouseHasPreviousBCHealthNumber;
+    this.spousePreviousBCHealthNumber = this.$store.state.enrolmentModule.spousePreviousBCHealthNumber;
+    this.spouseBeenReleasedFromInstitution = this.$store.state.enrolmentModule.spouseBeenReleasedFromInstitution;
+    this.spouseDischargeDate = this.$store.state.enrolmentModule.spouseDischargeDate;
+      
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.SPOUSE_INFO_PAGE.path,
@@ -424,6 +469,8 @@ export default {
   },
   methods: {
     validateFields() {
+      this.saveData();
+
       if (!this.hasSpouse) {
         this.navigateToNextPage();
       }
@@ -435,6 +482,30 @@ export default {
       }
 
       this.navigateToNextPage();
+    },
+    saveData() {
+      this.$store.dispatch(enrolmentModule + '/' + SET_HAS_SPOUSE, this.hasSpouse);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_STATUS, this.spouseStatus);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_STATUS_REASON, this.spouseStatusReason);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_FIRST_NAME, this.spouseFirstName);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MIDDLE_NAME, this.spouseMiddleName);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_LAST_NAME, this.spouseLastName);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_BIRTH_DATE, this.spouseBirthDate);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_GENDER, this.spouseGender);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, this.spouseLivedInBCSinceBirth);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MADE_PERMANENT_MOVE, this.spouseMadePermanentMove);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MOVED_FROM, this.spouseMovedFrom);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_RECENT_BC_MOVE_DATE, this.spouseRecentBCMoveDate);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_CANADA_ARRIVAL_DATE, this.spouseCanadaArrivalDate);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS, this.spouseOutsideBCLast12Months);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_REASON, this.spouseOutsideBCLast12MonthsReason);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION, this.spouseOutsideBCLast12MonthsDestination);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DEPARTURE_DATE, this.spouseOutsideBCLast12MonthsDepartureDate);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_RETURN_DATE, this.spouseOutsideBCLast12MonthsReturnDate);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_HAS_PREVIOUS_BC_HEALTH_NUMBER, this.spouseHasPreviousBCHealthNumber);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER, this.spousePreviousBCHealthNumber);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION, this.spouseBeenReleasedFromInstitution);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_DISCHARGE_DATE, this.spouseDischargeDate);
     },
     navigateToNextPage() {
       // Navigate to next path.
@@ -453,7 +524,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
     if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(formModule + '/' + RESET_FORM);
+      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
       next();
     } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
       next();
@@ -477,11 +548,5 @@ export default {
 </script>
 
 <style scoped>
-/* Should be moved into a global stylesheet */
-.tabbed-section {
-  margin-left: 20px;
-  border-left: 1px solid grey;
-  padding-left: 12px;
-}
 </style>
 
