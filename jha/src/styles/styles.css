@@ -26,3 +26,9 @@ body.no-scroll {
   color: #606060;
   border: 1px solid #606060;
 }
+
+.tabbed-section {
+  margin-left: 20px;
+  border-left: 1px solid grey;
+  padding-left: 12px;
+}

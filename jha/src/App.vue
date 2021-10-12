@@ -88,20 +88,13 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 main {
   padding: 0;
 }
-
 @media only screen and (max-width: 575px) {
   .container.stepper {
     padding: 0;
   }
-}
-
-.tabbed-section {
-  margin-left: 20px;
-  border-left: 1px solid grey;
-  padding-left: 12px;
 }
 </style>
