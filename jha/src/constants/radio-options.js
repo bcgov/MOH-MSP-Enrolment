@@ -136,3 +136,16 @@ export const radioOptionsReleasedFromInstitution = [
     value: 'Y',
   }
 ];
+
+export const radioOptionsNoYes = [
+  {
+    id: 'no',
+    label: 'No',
+    value: 'N',
+  },
+  {
+    id: 'yes',
+    label: 'Yes',
+    value: 'Y',
+  }
+]
