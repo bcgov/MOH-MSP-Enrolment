@@ -68,3 +68,14 @@ export const selectOptionsTemporaryPermitSupportDocuments = [
     label: SupportDocumentTypes.VisitorVisa
   },
 ];
+
+export const selectOptionsNameChangeSupportDocuments = [
+  {
+    value: SupportDocumentTypes.MarriageCertificate,
+    label: SupportDocumentTypes.MarriageCertificate
+  },
+  {
+    value: SupportDocumentTypes.ChangeOfNameCertificate,
+    label: SupportDocumentTypes.ChangeOfNameCertificate
+  },
+];
