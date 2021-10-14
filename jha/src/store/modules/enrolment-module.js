@@ -9,6 +9,10 @@ export const SET_APPLICATION_UUID = 'setApplicationUuid';
 export const SET_CAPTCHA_TOKEN = 'setCaptchaToken';
 export const SET_SUBMISSION_DATE = 'setSubmissionDate';
 export const SET_REFERENCE_NUMBER = 'setReferenceNumber';
+// Form selections
+export const SET_IS_APPLYING_FOR_MSP = 'setIsApplyingForMSP';
+export const SET_IS_APPLYING_FOR_FPCARE = 'setIsApplyingForFPCare';
+export const SET_IS_APPLYING_FOR_SUPP_BEN = 'setIsApplyingForSuppBen';
 // Spouse info
 export const SET_HAS_SPOUSE = 'setHasSpouse';
 export const SET_SPOUSE_STATUS = 'setSpouseStatus';
@@ -41,6 +45,10 @@ export default {
       captchaToken: null,
       submissionDate: null,
       referenceNumber: null,
+      // Form selections
+      isApplyingForMSP: false,
+      isApplyingForFPCare: false,
+      isApplyingForSuppBen: false,
       // Spouse info
       hasSpouse: null,
       spouseStatus: null,
@@ -82,6 +90,16 @@ export default {
     },
     [SET_REFERENCE_NUMBER](state, payload) {
       state.referenceNumber = payload;
+    },
+    // Form selections
+    [SET_IS_APPLYING_FOR_MSP](state, payload) {
+      state.isApplyingForMSP = payload;
+    },
+    [SET_IS_APPLYING_FOR_FPCARE](state, payload) {
+      state.isApplyingForFPCare = payload;
+    },
+    [SET_IS_APPLYING_FOR_SUPP_BEN](state, payload) {
+      state.isApplyingForSuppBen = payload;
     },
     // Spouse info
     [SET_HAS_SPOUSE](state, payload) {
@@ -169,6 +187,16 @@ export default {
     },
     [SET_REFERENCE_NUMBER]({ commit }, payload) {
       commit(SET_REFERENCE_NUMBER, payload);
+    },
+    // Form selections
+    [SET_IS_APPLYING_FOR_MSP]({commit}, payload) {
+      commit(SET_IS_APPLYING_FOR_MSP, payload);
+    },
+    [SET_IS_APPLYING_FOR_FPCARE]({commit}, payload) {
+      commit(SET_IS_APPLYING_FOR_FPCARE, payload);
+    },
+    [SET_IS_APPLYING_FOR_SUPP_BEN]({commit}, payload) {
+      commit(SET_IS_APPLYING_FOR_SUPP_BEN, payload);
     },
     // Spouse info
     [SET_HAS_SPOUSE]({ commit }, payload) {

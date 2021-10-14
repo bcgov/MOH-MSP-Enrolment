@@ -1,21 +1,21 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 import {
-  ENROLMENT_BASE_URL,
   enrolmentRoutes,
   commonRoutes,
 } from './routes';
 import pageStateService from '@/services/page-state-service';
-import LandingPage from '@/views/LandingPage.vue';
-import EnrolmentHomePage from '@/views/enrolment/HomePage.vue';
-import EnrolmentEligibilityPage from '@/views/enrolment/EligibilityPage.vue';
-import EnrolmentPersonalInfoPage from '@/views/enrolment/PersonalInfoPage.vue';
-import EnrolmentSpouseInfoPage from '@/views/enrolment/SpouseInfoPage.vue';
-import EnrolmentChildInfoPage from '@/views/enrolment/ChildInfoPage.vue';
-import EnrolmentContactInfoPage from '@/views/enrolment/ContactInfoPage.vue';
-import EnrolmentReviewPage from '@/views/enrolment/ReviewPage.vue';
-import EnrolmentSubmissionPage from '@/views/enrolment/SubmissionPage.vue';
-import EnrolmentSubmissionErrorPage from '@/views/enrolment/SubmissionErrorPage.vue';
+import HomePage from '@/views/enrolment/HomePage.vue';
+import PersonalInfoPage from '@/views/enrolment/PersonalInfoPage.vue';
+import SpouseInfoPage from '@/views/enrolment/SpouseInfoPage.vue';
+import ChildInfoPage from '@/views/enrolment/ChildInfoPage.vue';
+import ContactInfoPage from '@/views/enrolment/ContactInfoPage.vue';
+import FPCareInfoPage from '@/views/enrolment/FPCareInfoPage.vue';
+import SuppBenInfoPage from '@/views/enrolment/SuppBenInfoPage.vue';
+import DocumentsPage from '@/views/enrolment/DocumentsPage.vue';
+import ReviewPage from '@/views/enrolment/ReviewPage.vue';
+import SubmissionPage from '@/views/enrolment/SubmissionPage.vue';
+import SubmissionErrorPage from '@/views/enrolment/SubmissionErrorPage.vue';
 import MaintenancePage from '@/views/MaintenancePage.vue';
 import PageNotFoundPage from '@/views/PageNotFoundPage.vue';
 
@@ -25,11 +25,6 @@ pageStateService.importPageRoutes(commonRoutes);
 pageStateService.importPageRoutes(enrolmentRoutes);
 
 const routeCollection = [
-  {
-    path: commonRoutes.LANDING_PAGE.path,
-    name: commonRoutes.LANDING_PAGE.name,
-    component: LandingPage
-  },
   {
     path: commonRoutes.MAINTENANCE_PAGE.path,
     name: commonRoutes.MAINTENANCE_PAGE.name,
@@ -45,47 +40,57 @@ const routeCollection = [
   {
     path: enrolmentRoutes.HOME_PAGE.path,
     name: enrolmentRoutes.HOME_PAGE.name,
-    component: EnrolmentHomePage
-  },
-  {
-    path: enrolmentRoutes.ELIGIBILITY_PAGE.path,
-    name: enrolmentRoutes.ELIGIBILITY_PAGE.name,
-    component: EnrolmentEligibilityPage
+    component: HomePage
   },
   {
     path: enrolmentRoutes.PERSONAL_INFO_PAGE.path,
     name: enrolmentRoutes.PERSONAL_INFO_PAGE.name,
-    component: EnrolmentPersonalInfoPage
+    component: PersonalInfoPage
   },
   {
     path: enrolmentRoutes.SPOUSE_INFO_PAGE.path,
     name: enrolmentRoutes.SPOUSE_INFO_PAGE.name,
-    component: EnrolmentSpouseInfoPage
+    component: SpouseInfoPage
   },
   {
     path: enrolmentRoutes.CHILD_INFO_PAGE.path,
     name: enrolmentRoutes.CHILD_INFO_PAGE.name,
-    component: EnrolmentChildInfoPage
+    component: ChildInfoPage
   },
   {
     path: enrolmentRoutes.CONTACT_INFO_PAGE.path,
     name: enrolmentRoutes.CONTACT_INFO_PAGE.name,
-    component: EnrolmentContactInfoPage
+    component: ContactInfoPage
+  },
+  {
+    path: enrolmentRoutes.FPCARE_INFO_PAGE.path,
+    name: enrolmentRoutes.FPCARE_INFO_PAGE.name,
+    component: FPCareInfoPage
+  },
+  {
+    path: enrolmentRoutes.SUPP_BEN_INFO_PAGE.path,
+    name: enrolmentRoutes.SUPP_BEN_INFO_PAGE.name,
+    component: SuppBenInfoPage
+  },
+  {
+    path: enrolmentRoutes.DOCUMENTS_PAGE.path,
+    name: enrolmentRoutes.DOCUMENTS_PAGE.name,
+    component: DocumentsPage
   },
   {
     path: enrolmentRoutes.REVIEW_PAGE.path,
     name: enrolmentRoutes.REVIEW_PAGE.name,
-    component: EnrolmentReviewPage
+    component: ReviewPage
   },
   {
     path: enrolmentRoutes.SUBMISSION_PAGE.path,
     name: enrolmentRoutes.SUBMISSION_PAGE.name,
-    component: EnrolmentSubmissionPage
+    component: SubmissionPage
   },
   {
     path: enrolmentRoutes.SUBMISSION_ERROR_PAGE.path,
     name: enrolmentRoutes.SUBMISSION_ERROR_PAGE.name,
-    component: EnrolmentSubmissionErrorPage
+    component: SubmissionErrorPage
   },
 ];
 
@@ -97,8 +102,7 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   // Home redirects.
-  if (to.path.includes(ENROLMENT_BASE_URL + '/')
-    && to.path !== enrolmentRoutes.HOME_PAGE.path
+  if (to.path !== enrolmentRoutes.HOME_PAGE.path
     && !pageStateService.isPageVisited(to.path)) {
     next({ name: enrolmentRoutes.HOME_PAGE.name });
   }

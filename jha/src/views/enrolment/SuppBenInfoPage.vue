@@ -37,7 +37,7 @@ import {
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
-  name: 'ContactInfoPage',
+  name: 'SuppBenInfoPage',
   mixins: [pageContentMixin],
   components: {
     ContinueBar,
@@ -49,8 +49,8 @@ export default {
   created() {
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
-      enrolmentRoutes.CONTACT_INFO_PAGE.path,
-      enrolmentRoutes.CONTACT_INFO_PAGE.title
+      enrolmentRoutes.SUPP_BEN_INFO_PAGE.path,
+      enrolmentRoutes.SUPP_BEN_INFO_PAGE.title
     );
   },
   validations() {
@@ -69,18 +69,9 @@ export default {
     },
     navigateToNextPage() {
       // Navigate to next path.
-      let nextPath;
-      if (this.$store.state.enrolmentModule.isApplyingForFPCare) {
-        nextPath = enrolmentRoutes.FPCARE_INFO_PAGE.path;
-      } else if (this.$store.state.enrolmentModule.isApplyingForSuppBen) {
-        nextPath = enrolmentRoutes.SUPP_BEN_INFO_PAGE.path;
-      } else {
-        nextPath = enrolmentRoutes.DOCUMENTS_PAGE.path;
-      }
-      
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        nextPath
+        enrolmentRoutes.DOCUMENTS_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -102,7 +93,7 @@ export default {
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.CONTACT_INFO_PAGE.path
+        enrolmentRoutes.SUPP_BEN_INFO_PAGE.path
       );
       next({
         path: toPath,

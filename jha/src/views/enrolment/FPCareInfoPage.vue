@@ -37,26 +37,20 @@ import {
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
-  name: 'EligibilityPage',
+  name: 'FPCareInfoPage',
   mixins: [pageContentMixin],
   components: {
     ContinueBar,
     PageContent,
   },
   data: () => {
-    return {
-      isPageLoaded: false,
-    };
+    return {};
   },
   created() {
-    setTimeout(() => {
-      this.isPageLoaded = true;
-    }, 0);
-
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
-      enrolmentRoutes.ELIGIBILITY_PAGE.path,
-      enrolmentRoutes.ELIGIBILITY_PAGE.title
+      enrolmentRoutes.FPCARE_INFO_PAGE.path,
+      enrolmentRoutes.FPCARE_INFO_PAGE.title
     );
   },
   validations() {
@@ -75,9 +69,10 @@ export default {
     },
     navigateToNextPage() {
       // Navigate to next path.
+      const nextPath = this.$store.state.enrolmentModule.isApplyingForSuppBen ? enrolmentRoutes.SUPP_BEN_INFO_PAGE.path : enrolmentRoutes.DOCUMENTS_PAGE.path;
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.PERSONAL_INFO_PAGE.path
+        nextPath
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -99,7 +94,7 @@ export default {
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.ELIGIBILITY_PAGE.path
+        enrolmentRoutes.FPCARE_INFO_PAGE.path
       );
       next({
         path: toPath,

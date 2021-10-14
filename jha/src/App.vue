@@ -28,17 +28,12 @@ import {
   PageStepper,
 } from 'common-lib-vue';
 import {
-  enrolmentStepRoutes,
-} from '@/router/step-routes';
-import {
-  ENROLMENT_BASE_URL,
-} from '@/router/routes';
-import {
   MODULE_NAME as appModule,
   SET_SHOW_MOBILE_STEPPER_DETAILS,
 } from '@/store/modules/app-module';
 import pageStateService from '@/services/page-state-service';
 import { scrollTo } from '@/helpers/scroll';
+import { enrolmentRoutes } from './router/routes';
 
 export default {
   name: 'App',
@@ -50,6 +45,7 @@ export default {
   data: () => {
     return {
       version: project.version,
+      pageTitle: 'Joint Health Application',
     };
   },
   created() {
@@ -57,18 +53,23 @@ export default {
   },
   computed: {
     stepRoutes() {
-      const currentPath = this.$router.currentRoute.path;
-      if (currentPath.includes(ENROLMENT_BASE_URL)) {
-        return enrolmentStepRoutes;
+      const routes = [
+        {...enrolmentRoutes.HOME_PAGE},
+        {...enrolmentRoutes.PERSONAL_INFO_PAGE},
+        {...enrolmentRoutes.SPOUSE_INFO_PAGE},
+        {...enrolmentRoutes.CHILD_INFO_PAGE},
+        {...enrolmentRoutes.CONTACT_INFO_PAGE}
+      ];
+      if (this.$store.state.enrolmentModule.isApplyingForFPCare) {
+        routes.push({...enrolmentRoutes.FPCARE_INFO_PAGE});
       }
-      return [];
-    },
-    pageTitle() {
-      const currentPath = this.$router.currentRoute.path;
-      if (currentPath.includes(ENROLMENT_BASE_URL)) {
-        return 'Joint Health Application';
+      if (this.$store.state.enrolmentModule.isApplyingForSuppBen) {
+        routes.push({...enrolmentRoutes.SUPP_BEN_INFO_PAGE});
       }
-      return '';
+      routes.push({...enrolmentRoutes.DOCUMENTS_PAGE});
+      routes.push({...enrolmentRoutes.REVIEW_PAGE});
+      routes.push({...enrolmentRoutes.SUBMISSION_PAGE});
+      return routes;
     },
     isMobileStepperOpen() {
       return this.$store.state.appModule.showMobileStepperDetails;
