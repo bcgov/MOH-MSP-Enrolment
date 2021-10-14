@@ -39,12 +39,12 @@
         <Select label="Immigration status in Canada"
           id="immigration-status"
           class="mb-3"
-          v-model="immigrationStatus"
-          :options="immigrationStatusOptions"/>
+          v-model="citizenshipStatus"
+          :options="citizenshipStatusOptions"/>
         <Radio name="citizen-status-reason"
           class="mb-3"
-          v-model="citizenStatusReason"
-          :items="citizenStatusReasonOptions" />
+          v-model="citizenshipStatusReason"
+          :items="citizenshipStatusReasonOptions" />
         
         <h2>Documents</h2>
         <p>Provide one of the following documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload document to support the name change.</p>
@@ -102,7 +102,7 @@
             id="country-of-origin"
             class="mb-3"
             defaultOptionLabel="Please select a country"
-            v-model="countryOfOrigin"/>
+            v-model="moveFromOrigin"/>
           <DateInput label="Arrival date in B.C."
             id="arrival-date-in-bc"
             class="mb-3"
@@ -203,8 +203,36 @@ import {
   getConvertedPath,
 } from '@/helpers/url';
 import {
-  MODULE_NAME as formModule,
+  MODULE_NAME as enrolmentModule,
   RESET_FORM,
+  SET_AH_FIRST_NAME,
+  SET_AH_MIDDLE_NAME,
+  SET_AH_LAST_NAME,
+  SET_AH_BIRTHDATE,
+  SET_AH_SIN,
+  SET_AH_GENDER,
+  SET_AH_CITIZENSHIP_STATUS,
+  SET_AH_CITIZENSHIP_STATUS_REASON,
+  SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE,
+  SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS,
+  SET_AH_IS_NAME_CHANGED,
+  SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE,
+  SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS,
+  SET_AH_IS_MOVED_TO_BC_PERMANENTLY,
+  SET_AH_MOVE_FROM_ORIGIN,
+  SET_AH_ARRIVAL_DATE_IN_BC,
+  SET_AH_ARRIVAL_DATE_IN_CANADA,
+  SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS,
+  SET_AH_OUTSIDE_BC_LAST_12_MONTHS_REASON,
+  SET_AH_OUTSIDE_BC_LAST_12_MONTHS_LOCATION,
+  SET_AH_OUTSIDE_BC_LAST_12_MONTHS_DEPARTURE_DATE,
+  SET_AH_OUTSIDE_BC_LAST_12_MONTHS_RETURN_DATE,
+  SET_AH_HAS_PREVIOUS_PHN,
+  SET_AH_PREVIOUS_PHN,
+  SET_AH_IS_RELEASED_FROM_ARMED_FORCES,
+  SET_AH_ARMED_FORCES_DISCHARGE_DATE,
+  SET_AH_IS_STUDENT,
+  SET_AH_WILL_STUDENT_RESIDE_IN_BC,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
@@ -248,8 +276,8 @@ export default {
     return {
       // Radio and Select options.
       genderOptions: radioOptionsGender,
-      immigrationStatusOptions: selectOptionsImmigrationStatus,
-      citizenStatusReasonOptions: radioOptionsCitizenStatusReasons,
+      citizenshipStatusOptions: selectOptionsImmigrationStatus,
+      citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
       citizenshipSupportDocumentsOptions: selectOptionsCitizenshipSupportDocuments,
       radioOptionsNoYes: radioOptionsNoYes,
       nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
@@ -260,15 +288,15 @@ export default {
       birthdate: null,
       socialInsuranceNumber: null,
       gender: null,
-      immigrationStatus: null,
-      citizenStatusReason: null,
+      citizenshipStatus: null,
+      citizenshipStatusReason: null,
       citizenshipSupportDocumentType: null,
       citizenshipSupportDocuments: [],
       isNameChanged: null,
       nameChangeSupportDocumentType: null,
       nameChangeSupportDocuments: [],
       isMovedToBCPermanently: null,
-      countryOfOrigin: null,
+      moveFromOrigin: null,
       arrivalDateInBC: null,
       arrivalDateInCanada: null,
       isOutsideBCInLast12Months: null,
@@ -285,6 +313,35 @@ export default {
     };
   },
   created() {
+    this.firstName = this.$store.state.enrolmentModule.ahFirstName;
+    this.middleName = this.$store.state.enrolmentModule.ahMiddleName;
+    this.lastName = this.$store.state.enrolmentModule.ahLastName;
+    this.birthdate = this.$store.state.enrolmentModule.ahBirthdate;
+    this.socialInsuranceNumber = this.$store.state.enrolmentModule.ahSIN;
+    this.gender = this.$store.state.enrolmentModule.ahGender;
+    this.citizenshipStatus = this.$store.state.enrolmentModule.ahCitizenshipStatus;
+    this.citizenshipStatusReason = this.$store.state.enrolmentModule.ahCitizenshipStatusReason;
+    this.citizenshipSupportDocumentType = this.$store.state.enrolmentModule.ahCitizenshipSupportDocumentType;
+    this.citizenshipSupportDocuments = this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments;
+    this.isNameChanged = this.$store.state.enrolmentModule.ahIsNameChanged;
+    this.nameChangeSupportDocumentType = this.$store.state.enrolmentModule.ahNameChangeSupportDocumentType;
+    this.nameChangeSupportDocuments = this.$store.state.enrolmentModule.ahNameChangeSupportDocuments;
+    this.isMovedToBCPermanently = this.$store.state.enrolmentModule.ahIsMovedToBCPermanently;
+    this.moveFromOrigin = this.$store.state.enrolmentModule.ahMoveFromOrigin;
+    this.arrivalDateInBC = this.$store.state.enrolmentModule.ahArrivalDateInBC;
+    this.arrivalDateInCanada = this.$store.state.enrolmentModule.ahArrivalDateInCanada;
+    this.isOutsideBCInLast12Months = this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months;
+    this.departureReason = this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReason;
+    this.departureLocation = this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsLocation;
+    this.departureBeginDate = this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsDepartureDate;
+    this.departureReturnDate = this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReturnDate;
+    this.hasPreviousPHN = this.$store.state.enrolmentModule.ahHasPreviousPHN;
+    this.previousPHN = this.$store.state.enrolmentModule.ahPreviousPHN;
+    this.isReleasedFromArmedForces = this.$store.state.enrolmentModule.ahIsReleasedFromArmedForces;
+    this.armedForcesDischargeDate = this.$store.state.enrolmentModule.ahArmedForcesDischargeDate;
+    this.isStudent = this.$store.state.enrolmentModule.ahIsStudent;
+    this.willStudentResideInBC = this.$store.state.enrolmentModule.ahWillStudentResideInBC;
+    
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.PERSONAL_INFO_PAGE.path,
@@ -303,7 +360,38 @@ export default {
         return;
       }
 
+      this.saveData();
       this.navigateToNextPage();
+    },
+    saveData() {
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_FIRST_NAME}`, this.firstName);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_MIDDLE_NAME}`, this.middleName);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_LAST_NAME}`, this.lastName);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_BIRTHDATE}`, this.birthdate);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_SIN}`, this.socialInsuranceNumber);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_GENDER}`, this.gender);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_STATUS}`, this.citizenshipStatus);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_STATUS_REASON}`, this.citizenshipStatusReason);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE}`, this.citizenshipSupportDocumentType);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS}`, this.citizenshipSupportDocuments);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_NAME_CHANGED}`, this.isNameChanged);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE}`, this.nameChangeSupportDocumentType);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS}`, this.nameChangeSupportDocuments);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_MOVED_TO_BC_PERMANENTLY}`, this.isMovedToBCPermanently);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_MOVE_FROM_ORIGIN}`, this.moveFromOrigin);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_ARRIVAL_DATE_IN_BC}`, this.arrivalDateInBC);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_ARRIVAL_DATE_IN_CANADA}`, this.arrivalDateInCanada);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS}`, this.isOutsideBCInLast12Months);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_OUTSIDE_BC_LAST_12_MONTHS_REASON}`, this.departureReason);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_OUTSIDE_BC_LAST_12_MONTHS_LOCATION}`, this.departureLocation);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_OUTSIDE_BC_LAST_12_MONTHS_DEPARTURE_DATE}`, this.departureBeginDate);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_OUTSIDE_BC_LAST_12_MONTHS_RETURN_DATE}`, this.departureReturnDate);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_HAS_PREVIOUS_PHN}`, this.hasPreviousPHN);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_PREVIOUS_PHN}`, this.previousPHN);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_RELEASED_FROM_ARMED_FORCES}`, this.isReleasedFromArmedForces);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_ARMED_FORCES_DISCHARGE_DATE}`, this.armedForcesDischargeDate);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_STUDENT}`, this.isStudent);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_WILL_STUDENT_RESIDE_IN_BC}`, this.willStudentResideInBC);
     },
     navigateToNextPage() {
       // Navigate to next path.
@@ -322,7 +410,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
     if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(formModule + '/' + RESET_FORM);
+      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
       next();
     } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
       next();
