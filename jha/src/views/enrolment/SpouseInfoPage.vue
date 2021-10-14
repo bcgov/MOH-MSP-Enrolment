@@ -471,8 +471,9 @@ export default {
     validateFields() {
       this.saveData();
 
-      if (!this.hasSpouse) {
+      if (this.hasSpouse === 'N') {
         this.navigateToNextPage();
+        return;
       }
 
       this.$v.$touch()

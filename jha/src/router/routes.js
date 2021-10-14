@@ -1,59 +1,62 @@
-export const ENROLMENT_BASE_URL = '/enrolment';
-
 export const enrolmentRoutes = {
   HOME_PAGE: {
-    path: ENROLMENT_BASE_URL,
+    path: '/',
     title: 'Home',
-    name: 'EnrolmentHomePage',
-  },
-  ELIGIBILITY_PAGE: {
-    path: ENROLMENT_BASE_URL + '/eligibility',
-    title: 'Check Eligibility',
-    name: 'EnrolmentEligibilityPage',
+    name: 'HomePage',
   },
   PERSONAL_INFO_PAGE: {
-    path: ENROLMENT_BASE_URL + '/personal-info',
+    path: '/personal-info',
     title: 'Personal Info',
-    name: 'EnrolmentPersonalInfoPage',
+    name: 'PersonalInfoPage',
   },
   SPOUSE_INFO_PAGE: {
-    path: ENROLMENT_BASE_URL + '/spouse-info',
+    path: '/spouse-info',
     title: 'Spouse Info',
-    name: 'EnrolmentSpouseInfoPage',
+    name: 'SpouseInfoPage',
   },
   CHILD_INFO_PAGE: {
-    path: ENROLMENT_BASE_URL + '/child-info',
+    path: '/child-info',
     title: 'Child Info',
-    name: 'EnrolmentChildInfoPage',
+    name: 'ChildInfoPage',
   },
   CONTACT_INFO_PAGE: {
-    path: ENROLMENT_BASE_URL + '/contact-info',
+    path: '/contact-info',
     title: 'Contact Info',
-    name: 'EnrolmentContactInfoPage',
+    name: 'ContactInfoPage',
+  },
+  FPCARE_INFO_PAGE: {
+    path: '/fpcare-info',
+    title: 'FPCare Info',
+    name: 'FPCareInfoPage',
+  },
+  SUPP_BEN_INFO_PAGE: {
+    path: '/supp-ben-info',
+    title: 'Supp Ben Info',
+    name: 'SuppBenInfoPage',
+  },
+  DOCUMENTS_PAGE: {
+    path: '/documents',
+    title: 'Documents',
+    name: 'DocumentsPage',
   },
   REVIEW_PAGE: {
-    path: ENROLMENT_BASE_URL + '/review',
+    path: '/review',
     title: 'Review',
-    name: 'EnrolmentReviewPage',
+    name: 'ReviewPage',
   },
   SUBMISSION_PAGE: {
-    path: ENROLMENT_BASE_URL + '/submission',
+    path: '/submission',
     title: 'Submission',
-    name: 'EnrolmentSubmissionPage',
+    name: 'SubmissionPage',
   },
   SUBMISSION_ERROR_PAGE: {
-    path: ENROLMENT_BASE_URL + '/submission-error',
+    path: '/submission-error',
     title: 'Submission error',
-    name: 'EnrolmentSubmissionErrorPage',
+    name: 'SubmissionErrorPage',
   },
 };
 
 export const commonRoutes = {
-  LANDING_PAGE: {
-    path: '/',
-    title: 'Landing page',
-    name: 'LandingPage'
-  },
   MAINTENANCE_PAGE: {
     path: '/maintenance',
     title: 'Maintenance',
@@ -68,7 +71,13 @@ export const commonRoutes = {
 
 export const enrolmentRouteStepOrder = [
   enrolmentRoutes.HOME_PAGE,
-  enrolmentRoutes.ELIGIBILITY_PAGE,
+  enrolmentRoutes.PERSONAL_INFO_PAGE,
+  enrolmentRoutes.SPOUSE_INFO_PAGE,
+  enrolmentRoutes.CHILD_INFO_PAGE,
+  enrolmentRoutes.CONTACT_INFO_PAGE,
+  enrolmentRoutes.FPCARE_INFO_PAGE,
+  enrolmentRoutes.SUPP_BEN_INFO_PAGE,
+  enrolmentRoutes.DOCUMENTS_PAGE,
   enrolmentRoutes.REVIEW_PAGE,
   enrolmentRoutes.SUBMISSION_PAGE
 ];
@@ -76,9 +85,7 @@ export const enrolmentRouteStepOrder = [
 export const isPastPath = (toPath, fromPath) => {
   let stepRoutes = [];
 
-  if (toPath.includes(ENROLMENT_BASE_URL + '/')) {
-    stepRoutes = enrolmentRouteStepOrder;
-  }
+  stepRoutes = enrolmentRouteStepOrder;
 
   for (let i=0; i<stepRoutes.length; i++) {
     if (stepRoutes[i].path === fromPath) {
