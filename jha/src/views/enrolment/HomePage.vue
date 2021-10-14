@@ -121,7 +121,7 @@ export default {
       });
 
     logService.logNavigation(
-      this.$store.state.enrolmentModule.applicationUuid,
+      this.applicationUuid,
       enrolmentRoutes.HOME_PAGE.path,
       enrolmentRoutes.HOME_PAGE.title
     );
