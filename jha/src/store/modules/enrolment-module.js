@@ -175,6 +175,33 @@ export default {
       commit(SET_CAPTCHA_TOKEN, null);
       commit(SET_SUBMISSION_DATE, null);
       commit(SET_REFERENCE_NUMBER, null);
+      // Form selections
+      commit(SET_IS_APPLYING_FOR_MSP, false);
+      commit(SET_IS_APPLYING_FOR_FPCARE, false);
+      commit(SET_IS_APPLYING_FOR_SUPP_BEN, false);
+      // Spouse info
+      commit(SET_HAS_SPOUSE, null);
+      commit(SET_SPOUSE_STATUS, null);
+      commit(SET_SPOUSE_STATUS_REASON, null);
+      commit(SET_SPOUSE_FIRST_NAME, null);
+      commit(SET_SPOUSE_MIDDLE_NAME, null);
+      commit(SET_SPOUSE_LAST_NAME, null);
+      commit(SET_SPOUSE_BIRTH_DATE, null);
+      commit(SET_SPOUSE_GENDER, null);
+      commit(SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, null);
+      commit(SET_SPOUSE_MADE_PERMANENT_MOVE, null);
+      commit(SET_SPOUSE_MOVED_FROM, null);
+      commit(SET_SPOUSE_RECENT_BC_MOVE_DATE, null);
+      commit(SET_SPOUSE_CANADA_ARRIVAL_DATE, null);
+      commit(SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS, null);
+      commit(SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_REASON, null);
+      commit(SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION, null);
+      commit(SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DEPARTURE_DATE, null);
+      commit(SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_RETURN_DATE, null);
+      commit(SET_SPOUSE_HAS_PREVIOUS_BC_HEALTH_NUMBER, null);
+      commit(SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER, null);
+      commit(SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION, null);
+      commit(SET_SPOUSE_DISCHARGE_DATE, null);
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
       commit(SET_APPLICATION_UUID, payload);
