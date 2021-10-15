@@ -2,9 +2,18 @@
   <div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Form</h1>
+        <h1>Upload Supporting Documents</h1>
         <hr class="mt-0"/>
-        <p>Form here.</p>
+        <div>
+          <h3>Upload your Canda Revenue Agency Notice of Assessment or Reassessment for 2020</h3>
+          <hr/>
+          <FileUploader v-model="ahCRADocuments" />
+        </div>
+        <div v-if="hasSpouse">
+          <h3>Upload your spouse's Canda Revenue Agency Notice of Assessment or Reassessment for 2020</h3>
+          <hr/>
+          <FileUploader v-model="spouseCRADocuments" />
+        </div>
       </div>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
@@ -28,11 +37,14 @@ import {
 import {
   MODULE_NAME as formModule,
   RESET_FORM,
+  SET_AH_CRA_DOCUMENTS,
+  SET_SPOUSE_CRA_DOCUMENTS,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
   ContinueBar,
   PageContent,
+  FileUploader,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 
@@ -42,9 +54,14 @@ export default {
   components: {
     ContinueBar,
     PageContent,
+    FileUploader,
   },
   data: () => {
-    return {};
+    return {
+      ahCRADocuments: [],
+      spouseCRADocuments: [],
+      hasSpouse: false,
+    };
   },
   created() {
     logService.logNavigation(
@@ -52,6 +69,9 @@ export default {
       enrolmentRoutes.DOCUMENTS_PAGE.path,
       enrolmentRoutes.DOCUMENTS_PAGE.title
     );
+    this.ahCRADocuments = this.$store.state.documents.ahCRADocuments;
+    this.spouseCRADocuments = this.$store.state.documents.spouseCRADocuments;
+    this.hasSpouse = this.$store.state.documents.hasSpouse;
   },
   validations() {
     const validations = {};
@@ -64,7 +84,10 @@ export default {
         scrollToError();
         return;
       }
-
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_CRA_DOCUMENTS}`, this.ahCRADocuments);
+      if (this.hasSpouse) {
+        this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_CRA_DOCUMENTS}`, this.spouseCRADocuments);
+      }
       this.navigateToNextPage();
     },
     navigateToNextPage() {
