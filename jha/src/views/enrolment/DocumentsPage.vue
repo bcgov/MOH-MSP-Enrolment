@@ -69,9 +69,9 @@ export default {
       enrolmentRoutes.DOCUMENTS_PAGE.path,
       enrolmentRoutes.DOCUMENTS_PAGE.title
     );
-    this.ahCRADocuments = this.$store.state.documents.ahCRADocuments;
-    this.spouseCRADocuments = this.$store.state.documents.spouseCRADocuments;
-    this.hasSpouse = this.$store.state.documents.hasSpouse;
+    this.ahCRADocuments = this.$store.state.enrolmentModule.ahCRADocuments;
+    this.spouseCRADocuments = this.$store.state.enrolmentModule.spouseCRADocuments;
+    this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse;
   },
   validations() {
     const validations = {};
