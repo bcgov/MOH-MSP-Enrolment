@@ -4,15 +4,32 @@
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Upload Supporting Documents</h1>
         <hr class="mt-0"/>
-        <div>
-          <h3>Upload your Canda Revenue Agency Notice of Assessment or Reassessment for 2020</h3>
-          <hr/>
-          <FileUploader v-model="ahCRADocuments" />
-        </div>
-        <div v-if="hasSpouse">
-          <h3>Upload your spouse's Canda Revenue Agency Notice of Assessment or Reassessment for 2020</h3>
-          <hr/>
-          <FileUploader v-model="spouseCRADocuments" />
+        <div class="row">
+          <div class="col-md-8">
+            <div>
+              <p class="font-weight-bold">Upload your Canada Revenue Agency Notice of Assessment or Reassessment for 2020</p>
+              <hr/>
+              <FileUploader v-model="ahCRADocuments" />
+            </div>
+            <div v-if="hasSpouse">
+              <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for 2020</p>
+              <hr/>
+              <FileUploader v-model="spouseCRADocuments" />
+            </div>
+          </div>
+          <div class="col-md-4">
+            <TipBox title="Tip">
+              <p>
+                If you are uploading a copy of a Notice of Assessment of Reassessment from the Canada Revenue Agency website, make sure the image contains:
+              </p>
+              <ul>
+                <li>Your Name</li>
+                <li>The Tax Year</li>
+                <li>Your Net Income(line 23600)</li>
+                <li>If you have a Regisered Disability Savings Plan(line 12500)</li>
+              </ul>
+            </TipBox>
+          </div>
         </div>
       </div>
     </PageContent>
@@ -47,6 +64,7 @@ import {
   FileUploader,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
+import TipBox from '@/components/TipBox';
 
 export default {
   name: 'DocumentsPage',
@@ -55,6 +73,7 @@ export default {
     ContinueBar,
     PageContent,
     FileUploader,
+    TipBox,
   },
   data: () => {
     return {
@@ -71,7 +90,8 @@ export default {
     );
     this.ahCRADocuments = this.$store.state.enrolmentModule.ahCRADocuments;
     this.spouseCRADocuments = this.$store.state.enrolmentModule.spouseCRADocuments;
-    this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse;
+    this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse !== 'N';
+    console.log("hasSpouse:", this.hasSpouse);
   },
   validations() {
     const validations = {};
