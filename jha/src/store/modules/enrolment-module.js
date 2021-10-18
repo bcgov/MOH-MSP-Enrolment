@@ -42,6 +42,7 @@ export const SET_AH_IS_RELEASED_FROM_ARMED_FORCES = 'setIsReleasedFromArmedForce
 export const SET_AH_ARMED_FORCES_DISCHARGE_DATE = 'setArmedForcesDischargeDate';
 export const SET_AH_IS_STUDENT = 'setAHIsStudent';
 export const SET_AH_WILL_STUDENT_RESIDE_IN_BC = 'setAHWillStudentResideInBC';
+export const SET_AH_CRA_DOCUMENTS = 'setAHCRADocuments';
 // Spouse info
 export const SET_HAS_SPOUSE = 'setHasSpouse';
 export const SET_SPOUSE_STATUS = 'setSpouseStatus';
@@ -65,6 +66,7 @@ export const SET_SPOUSE_HAS_PREVIOUS_BC_HEALTH_NUMBER = 'setSpouseHasPreviousBCH
 export const SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER = 'setSpousePreviousBCHealthNumber';
 export const SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION = 'setSpouseBeenReleasedFromInstitution';
 export const SET_SPOUSE_DISCHARGE_DATE = 'setSpouseDischargeDate';
+export const SET_SPOUSE_CRA_DOCUMENTS = 'setSpouseCRADocuments';
 
 export default {
   namespaced: true,
@@ -107,6 +109,7 @@ export default {
       ahArmedForcesDischargeDate: null,
       ahIsStudent: null,
       ahWillStudentResideInBC: null,
+      ahCRADocuments: [],
       // Spouse info
       hasSpouse: null,
       spouseStatus: null,
@@ -130,6 +133,7 @@ export default {
       spousePreviousBCHealthNumber: null,
       spouseBeenReleasedFromInstitution: null,
       spouseDischargeDate: null,
+      spouseCRADocuments: [],
     };
     if (settings.useDummyData) {
       Object.assign(state, dummyData);
@@ -244,6 +248,9 @@ export default {
     [SET_AH_WILL_STUDENT_RESIDE_IN_BC](state, payload) {
       state.ahWillStudentResideInBC = payload;
     },
+    [SET_AH_CRA_DOCUMENTS](state, payload) {
+      state.ahCRADocuments = payload;
+    },
     // Spouse info
     [SET_HAS_SPOUSE](state, payload) {
       state.hasSpouse = payload;
@@ -311,6 +318,9 @@ export default {
     [SET_SPOUSE_DISCHARGE_DATE](state, payload) {
       state.spouseDischargeDate = payload;
     },
+    [SET_SPOUSE_CRA_DOCUMENTS](state, payload) {
+      state.spouseCRADocuments = payload;
+    },
   },
   actions: {
     [RESET_FORM]({ commit }) {
@@ -351,6 +361,7 @@ export default {
       commit(SET_AH_ARMED_FORCES_DISCHARGE_DATE, null);
       commit(SET_AH_IS_STUDENT, null);
       commit(SET_AH_WILL_STUDENT_RESIDE_IN_BC, null);
+      commit(SET_AH_CRA_DOCUMENTS, []);
       // Spouse info
       commit(SET_HAS_SPOUSE, null);
       commit(SET_SPOUSE_STATUS, null);
@@ -374,6 +385,7 @@ export default {
       commit(SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER, null);
       commit(SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION, null);
       commit(SET_SPOUSE_DISCHARGE_DATE, null);
+      commit(SET_SPOUSE_CRA_DOCUMENTS, []);
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
       commit(SET_APPLICATION_UUID, payload);
@@ -482,6 +494,9 @@ export default {
     [SET_AH_WILL_STUDENT_RESIDE_IN_BC]({ commit }, payload) {
       commit(SET_AH_WILL_STUDENT_RESIDE_IN_BC, payload);
     },
+    [SET_AH_CRA_DOCUMENTS]({ commit }, payload) {
+      commit(SET_AH_CRA_DOCUMENTS, payload);
+    },
     // Spouse info
     [SET_HAS_SPOUSE]({ commit }, payload) {
       commit(SET_HAS_SPOUSE, payload);
@@ -548,6 +563,9 @@ export default {
     },
     [SET_SPOUSE_DISCHARGE_DATE]({ commit }, payload) {
       commit(SET_SPOUSE_DISCHARGE_DATE, payload);
+    },
+    [SET_SPOUSE_CRA_DOCUMENTS]({ commit }, payload) {
+      commit(SET_SPOUSE_CRA_DOCUMENTS, payload);
     },
   },
   getters: {}
