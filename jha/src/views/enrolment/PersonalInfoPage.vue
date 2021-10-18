@@ -14,11 +14,19 @@
           v-if="$v.firstName.$dirty
             && !$v.firstName.required"
           aria-live="assertive">First name is required.</div>
+        <div class="text-danger"
+          v-if="$v.firstName.$dirty
+            && !$v.firstName.nameValidator"
+          aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
         <Input label="Middle name (optional)"
           id="middle-name"
           class="mt-3"
           v-model="middleName"
           @blur="handleBlurField($v.middleName)" />
+        <div class="text-danger"
+          v-if="$v.middleName.$dirty
+            && !$v.middleName.nameValidator"
+          aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
         <Input label="Last name"
           id="last-name"
           class="mt-3"
@@ -28,6 +36,10 @@
           v-if="$v.lastName.$dirty
             && !$v.lastName.required"
           aria-live="assertive">Last name is required.</div>
+        <div class="text-danger"
+          v-if="$v.lastName.$dirty
+            && !$v.lastName.nameValidator"
+          aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
         <DateInput label="Birthdate"
           id="birthdate"
           class="mt-3"
@@ -261,6 +273,10 @@
             class="mt-3"
             v-model="previousPHN"
             @blur="handleBlurField($v.previousPHN)"/>
+          <div class="text-danger"
+            v-if="$v.previousPHN.$dirty
+              && !$v.previousPHN.phnValidator"
+            aria-live="assertive">Personal Health Number is not valid.</div>
         </div>
         <Radio label="Have you been released from the Canadian Armed Forces or an institution?"
           class="mt-3"
@@ -373,6 +389,8 @@ import {
   PhnInput,
   Radio,
   Select,
+  optionalValidator,
+  phnValidator,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import {
@@ -388,6 +406,9 @@ import {
 import {
   required,
 } from 'vuelidate/lib/validators';
+import {
+  nameValidator,
+} from '@/helpers/validators';
 
 export default {
   name: 'PersonalInfoPage',
@@ -483,10 +504,14 @@ export default {
     const validations = {
       firstName: {
         required,
+        nameValidator: optionalValidator(nameValidator),
       },
-      middleName: {},
+      middleName: {
+        nameValidator: optionalValidator(nameValidator),
+      },
       lastName: {
         required,
+        nameValidator: optionalValidator(nameValidator),
       },
       birthdate: {
         required,
@@ -530,7 +555,9 @@ export default {
       hasPreviousPHN: {
         required,
       },
-      previousPHN: {},
+      previousPHN: {
+        phnValidator: optionalValidator(phnValidator),
+      },
       isReleasedFromArmedForces: {
         required,
       },
