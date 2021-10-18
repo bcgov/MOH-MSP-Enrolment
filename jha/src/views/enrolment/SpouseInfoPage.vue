@@ -535,9 +535,7 @@ export default {
   watch: {
     // When the status is changed, clear the reason
     spouseStatus() {
-      this.$nextTick(() => {
-        this.spouseStatusReason = null;
-      });
+      this.spouseStatusReason = null;
     }
   },
   methods: {
