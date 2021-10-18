@@ -91,7 +91,6 @@ export default {
     this.ahCRADocuments = this.$store.state.enrolmentModule.ahCRADocuments;
     this.spouseCRADocuments = this.$store.state.enrolmentModule.spouseCRADocuments;
     this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse !== 'N';
-    console.log("hasSpouse:", this.hasSpouse);
   },
   validations() {
     const validations = {};
@@ -104,9 +103,9 @@ export default {
         scrollToError();
         return;
       }
-      this.$store.dispatch(`${enrolmentModule}/${SET_AH_CRA_DOCUMENTS}`, this.ahCRADocuments);
+      this.$store.dispatch(`${formModule}/${SET_AH_CRA_DOCUMENTS}`, this.ahCRADocuments);
       if (this.hasSpouse) {
-        this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_CRA_DOCUMENTS}`, this.spouseCRADocuments);
+        this.$store.dispatch(`${formModule}/${SET_SPOUSE_CRA_DOCUMENTS}`, this.spouseCRADocuments);
       }
       this.navigateToNextPage();
     },
