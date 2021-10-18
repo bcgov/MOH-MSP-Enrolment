@@ -361,6 +361,7 @@ export default {
       commit(SET_AH_ARMED_FORCES_DISCHARGE_DATE, null);
       commit(SET_AH_IS_STUDENT, null);
       commit(SET_AH_WILL_STUDENT_RESIDE_IN_BC, null);
+      commit(SET_AH_CRA_DOCUMENTS, []);
       // Spouse info
       commit(SET_HAS_SPOUSE, null);
       commit(SET_SPOUSE_STATUS, null);
@@ -384,6 +385,7 @@ export default {
       commit(SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER, null);
       commit(SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION, null);
       commit(SET_SPOUSE_DISCHARGE_DATE, null);
+      commit(SET_SPOUSE_CRA_DOCUMENTS, []);
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
       commit(SET_APPLICATION_UUID, payload);
@@ -492,6 +494,9 @@ export default {
     [SET_AH_WILL_STUDENT_RESIDE_IN_BC]({ commit }, payload) {
       commit(SET_AH_WILL_STUDENT_RESIDE_IN_BC, payload);
     },
+    [SET_AH_CRA_DOCUMENTS]({ commit }, payload) {
+      commit(SET_AH_CRA_DOCUMENTS, payload);
+    },
     // Spouse info
     [SET_HAS_SPOUSE]({ commit }, payload) {
       commit(SET_HAS_SPOUSE, payload);
@@ -558,6 +563,9 @@ export default {
     },
     [SET_SPOUSE_DISCHARGE_DATE]({ commit }, payload) {
       commit(SET_SPOUSE_DISCHARGE_DATE, payload);
+    },
+    [SET_SPOUSE_CRA_DOCUMENTS]({ commit }, payload) {
+      commit(SET_SPOUSE_CRA_DOCUMENTS, payload);
     },
   },
   getters: {}
