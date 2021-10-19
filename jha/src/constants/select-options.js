@@ -46,23 +46,35 @@ export const selectOptionsPermanentResidentSupportDocuments = [
   },
 ];
 
-export const selectOptionsTemporaryPermitSupportDocuments = [
+export const selectOptionWorkPermitSupportDocument = [
   {
     value: SupportDocumentTypes.WorkPermit,
     label: SupportDocumentTypes.WorkPermit
   },
+];
+
+export const selectOptionStudyPermitSupportDocument = [
   {
     value: SupportDocumentTypes.StudyPermit,
     label: SupportDocumentTypes.StudyPermit
   },
+];
+
+export const selectOptionReligiousWorkSupportDocument = [
   {
     value: SupportDocumentTypes.ReligiousWorker,
     label: SupportDocumentTypes.ReligiousWorker
   },
+];
+
+export const selectOptionDiplomaticFoilSupportDocument = [
   {
     value: SupportDocumentTypes.PassportWithDiplomaticFoil,
     label: SupportDocumentTypes.PassportWithDiplomaticFoil
   },
+];
+
+export const selectOptionVisitorVisaSupportDocument = [
   {
     value: SupportDocumentTypes.VisitorVisa,
     label: SupportDocumentTypes.VisitorVisa
