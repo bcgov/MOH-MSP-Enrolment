@@ -7,6 +7,8 @@
         <p>Do you have a spouse or common-law partner who also needs to enrol for MSP coverage? If so, you are required to provide spouse information and provide supporting documents.</p>
         <hr class="mt-0"/>
         <Radio
+          id='has-spouse'
+          name='has-spouse'
           label='Do you have a spouse or common-law partner?'
           v-model='hasSpouse'
           :items='radioOptionsNoYes' />
@@ -17,7 +19,10 @@
           <h2>Spouse or common-law partner</h2>
           <p>Please provide the spouse's personal information and immigration status in Canada. You will be required to upload supporting documents with your application.</p>
           <hr class="mt-0"/>
-          <Select label="Spouse's immigration status in Canada"
+          <Select 
+            id='spouse-status'
+            name='spouse-status'
+            label="Spouse's immigration status in Canada"
             class='mt-3'
             v-model='spouseStatus'
             :options='citizenshipStatusOptions' />
@@ -37,6 +42,8 @@
           </div>
           <div v-if="spouseStatus === statusOptions.TemporaryResident">
             <Radio
+              id='spouse-status-reason'
+              name='spouse-status-reason'
               label=''
               v-model='spouseStatusReason'
               :items='temporaryResidentStatusReasonOptions' />
@@ -48,23 +55,34 @@
             <h2>Documents</h2>
             <p>Provide one of the following documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload document to support the name change.</p>
             <hr/>
-            <Select label="Document Type"
+            <Select 
+              label="Document Type"
+              name="citizen-support-document-type"
               id="citizen-support-document-type"
               class="mb-3"
               v-model="spouseCitizenshipSupportDocumentType"
               :options="citizenshipSupportDocumentOptions" />
+            <div class="text-danger"
+              v-if="$v.spouseCitizenshipSupportDocumentType.$dirty && !$v.spouseCitizenshipSupportDocumentType.required"
+              aria-live="assertive">Please select one of the above.</div>
             <div v-if="spouseCitizenshipSupportDocumentType">
               <h2>{{spouseCitizenshipSupportDocumentType}}</h2>
               <hr/>
               <FileUploader v-model="spouseCitizenshipSupportDocuments" />
+              <div class="text-danger"
+                v-if="$v.spouseCitizenshipSupportDocuments.$dirty && !$v.spouseCitizenshipSupportDocuments.required"
+                aria-live="assertive">File upload required.</div>
             </div>
 
             <Radio label="Has your spouse's name changed since your ID was issued due to marriage or legal name change?"
               id="name-change"
               name="name-change"
-              class="mb-3"
+              class="mt-3 mb-3"
               v-model="spouseIsNameChanged"
               :items="radioOptionsNoYes" />
+            <div class="text-danger"
+              v-if="$v.spouseIsNameChanged.$dirty && !$v.spouseIsNameChanged.required"
+              aria-live="assertive">Please indicate if your spouse's name changed.</div>
             <div v-if="spouseIsNameChanged === 'Y'"
               class="tabbed-section">
               <h2>Additional Documents</h2>
@@ -74,16 +92,24 @@
                 <li>Legal Name Change Certificate</li>
               </ul>
               <hr/>
-              <Select label="Document Type"
+              <Select 
+                label="Document Type"
+                name="name-change-doc-type"
                 id="name-change-doc-type"
                 class="mb-3"
                 v-model="spouseNameChangeSupportDocumentType"
                 :options="nameChangeSupportDocumentOptions"/>
+              <div class="text-danger"
+                v-if="$v.spouseNameChangeSupportDocumentType.$dirty && !$v.spouseNameChangeSupportDocumentType.required"
+                aria-live="assertive">Please select one of the above.</div>
               <div v-if="spouseNameChangeSupportDocumentType">
                 <h2>{{spouseNameChangeSupportDocumentType}}</h2>
                 <hr/>
                 <FileUploader class="mb-3"
                   v-model="spouseNameChangeSupportDocuments"/>
+                <div class="text-danger"
+                  v-if="$v.spouseNameChangeSupportDocuments.$dirty && !$v.spouseNameChangeSupportDocuments.required"
+                  aria-live="assertive">File upload required.</div>
               </div>
             </div>
           </div>
@@ -134,6 +160,8 @@
               aria-live="assertive">Birth date cannot be in the future.</div>
             <Radio
               label='Gender'
+              id='spouse-gender'
+              name='spouse-gender'
               v-model='spouseGender'
               className="mt-3"
               :items='radioGenderOptions'
@@ -146,6 +174,8 @@
             <hr>
             <Radio
               label='Has your spouse lived in B.C. since birth?'
+              id='lived-in-bc'
+              name='lived-in-bc'
               v-model='spouseLivedInBCSinceBirth'
               className="mt-3"
               :items='radioOptionsNoYes'
@@ -155,6 +185,8 @@
               aria-live="assertive">Please indicate whether your spouse has lived in BC since birth.</div>
             <Radio
               label='Has your spouse moved to B.C. permanently?'
+              id='permanent-move'
+              name='permanent-move'
               v-model='spouseMadePermanentMove'
               className="mt-3"
               :items='radioOptionsNoYes'
@@ -188,6 +220,8 @@
               </div>
               <Radio
                 label='Has your spouse been outside B.C. for more than 30 days in total in the past 12 months?'
+                id='outside-bc-past-12'
+                name='outside-bc-past-12'
                 v-model='spouseOutsideBCLast12Months'
                 className="mt-3"
                 :items='radioOptionsNoYes'
@@ -227,6 +261,8 @@
               </div>
               <Radio
                 label='Does your spouse have a previous B.C. Personal Health Number?'
+                id='has-previous-bc-health-number'
+                name='has-previous-bc-health-number'
                 v-model='spouseHasPreviousBCHealthNumber'
                 className="mt-3"
                 :items='radioOptionsNoYes'
@@ -245,6 +281,8 @@
               </div>
               <Radio
                 label='Has your spouse been released from the Canadian Armed Forces or an institution?'
+                id='been-released-from-institution'
+                name='been-released-from-institution'
                 v-model='spouseBeenReleasedFromInstitution'
                 className="mt-3"
                 :items='radioOptionsNoYes'
@@ -471,6 +509,15 @@ export default {
       spouseStatusReason: {
         required,
       },
+      spouseCitizenshipSupportDocumentType: {
+        required,
+      },
+      spouseCitizenshipSupportDocuments: {
+        required,
+      },
+      spouseIsNameChanged: {
+        required,
+      },
       spouseFirstName: {
         required,
         nameValidator,
@@ -507,6 +554,11 @@ export default {
       },
     };
 
+    if (this.spouseIsNameChanged === 'Y') {
+      validations.spouseNameChangeSupportDocumentType = { required };
+      validations.spouseNameChangeSupportDocuments = { required };
+    }
+
     if (this.spouseLivedInBCSinceBirth === 'N') {
       validations.spouseMovedFrom = { required };
       validations.spouseRecentBCMoveDate = { required };
@@ -536,6 +588,12 @@ export default {
     // When the status is changed, clear the reason
     spouseStatus() {
       this.spouseStatusReason = null;
+      this.spouseCitizenshipSupportDocumentType = null;
+      this.spouseCitizenshipSupportDocuments = [];
+    },
+    spouseStatusReason() {
+      this.spouseCitizenshipSupportDocumentType = null;
+      this.spouseCitizenshipSupportDocuments = [];
     }
   },
   methods: {
