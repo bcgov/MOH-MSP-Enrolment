@@ -67,6 +67,15 @@ export const SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER = 'setSpousePreviousBCHealthNu
 export const SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION = 'setSpouseBeenReleasedFromInstitution';
 export const SET_SPOUSE_DISCHARGE_DATE = 'setSpouseDischargeDate';
 export const SET_SPOUSE_CRA_DOCUMENTS = 'setSpouseCRADocuments';
+// Contact info
+export const SET_RES_ADDRESS_LINE_1 = 'setResAddressLine1';
+export const SET_RES_ADDRESS_LINE_2 = 'setResAddressLine2';
+export const SET_RES_ADDRESS_LINE_3 = 'setResAddressLine3';
+export const SET_RES_CITY = 'setResCity';
+export const SET_RES_PROVINCE = 'setResProvince';
+export const SET_RES_COUNTRY = 'setResCountry';
+export const SET_RES_POSTAL_CODE = 'setResPostalCode';
+
 export const SET_PHONE = 'setPhone';
 
 export default {
@@ -137,6 +146,13 @@ export default {
       spouseCRADocuments: [],
       // Contact info
       phone: null,
+      resAddressLine1: null,
+      resAddressLine2: null,
+      resAddressLine3: null,
+      resCity: null,
+      resProvince: "British Columbia",
+      resCountry: "Canada",
+      resPostalCode: null,
     };
     if (settings.useDummyData) {
       Object.assign(state, dummyData);
@@ -325,6 +341,28 @@ export default {
       state.spouseCRADocuments = payload;
     },
     // Contact info
+    [SET_RES_ADDRESS_LINE_1](state, payload) {
+      state.spouseCRADocuments = payload;
+    },
+    [SET_RES_ADDRESS_LINE_2](state, payload) {
+      state.spouseCRADocuments = payload;
+    },
+    [SET_RES_ADDRESS_LINE_3](state, payload) {
+      state.spouseCRADocuments = payload;
+    },
+    [SET_RES_CITY](state, payload) {
+      state.spouseCRADocuments = payload;
+    },
+    [SET_RES_PROVINCE](state, payload) {
+      state.spouseCRADocuments = payload;
+    },
+    [SET_RES_COUNTRY](state, payload) {
+      state.spouseCRADocuments = payload;
+    },
+    [SET_RES_POSTAL_CODE](state, payload) {
+      state.spouseCRADocuments = payload;
+    },
+    
     [SET_PHONE](state, payload) {
       state.spouseCRADocuments = payload;
     },
@@ -394,6 +432,14 @@ export default {
       commit(SET_SPOUSE_DISCHARGE_DATE, null);
       commit(SET_SPOUSE_CRA_DOCUMENTS, []);
       //contact info
+      commit(SET_RES_ADDRESS_LINE_1, null);
+      commit(SET_RES_ADDRESS_LINE_2, null);
+      commit(SET_RES_ADDRESS_LINE_3, null);
+      commit(SET_RES_CITY, null);
+      commit(SET_RES_PROVINCE, null);
+      commit(SET_RES_COUNTRY, null);
+      commit(SET_RES_POSTAL_CODE, null);
+
       commit(SET_PHONE, null);
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
@@ -577,6 +623,28 @@ export default {
       commit(SET_SPOUSE_CRA_DOCUMENTS, payload);
     },
     // Contact info
+    [SET_RES_ADDRESS_LINE_1]({ commit }, payload) {
+      commit(SET_RES_ADDRESS_LINE_1, payload);
+    },
+    [SET_RES_ADDRESS_LINE_2]({ commit }, payload) {
+      commit(SET_RES_ADDRESS_LINE_2, payload);
+    },
+    [SET_RES_ADDRESS_LINE_3]({ commit }, payload) {
+      commit(SET_RES_ADDRESS_LINE_3, payload);
+    },
+    [SET_RES_CITY]({ commit }, payload) {
+      commit(SET_RES_CITY, payload);
+    },
+    [SET_RES_PROVINCE]({ commit }, payload) {
+      commit(SET_RES_CITY, payload);
+    },
+    [SET_RES_COUNTRY]({ commit }, payload) {
+      commit(SET_RES_CITY, payload);
+    },
+    [SET_RES_POSTAL_CODE]({ commit }, payload) {
+      commit(SET_RES_CITY, payload);
+    },
+    
     [SET_PHONE]({ commit }, payload) {
       commit(SET_PHONE, payload);
     },

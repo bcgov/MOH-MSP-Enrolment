@@ -15,11 +15,11 @@
               id="res-address-line1"
               v-model="resAddressLine1"
               @blur="handleBlurField($v.resAddressLine1)" />
-            <Input label="Address Line 2"
+            <Input label="Address Line 2 (optional)"
               id="res-address-line2"
               v-model="resAddressLine2"
               @blur="handleBlurField($v.resAddressLine2)" />
-            <Input label="Address Line 3"
+            <Input label="Address Line 3 (optional)"
               id="res-address-line3"
               v-model="resAddressLine3"
               @blur="handleBlurField($v.resAddressLine3)" />
@@ -120,6 +120,13 @@ import {
 import {
   MODULE_NAME as formModule,
   SET_PHONE,
+  SET_RES_ADDRESS_LINE_1,
+  SET_RES_ADDRESS_LINE_2,
+  SET_RES_ADDRESS_LINE_3,
+  SET_RES_CITY,
+  SET_RES_PROVINCE,
+  SET_RES_COUNTRY,
+  SET_RES_POSTAL_CODE,
   RESET_FORM,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
@@ -188,6 +195,14 @@ export default {
       enrolmentRoutes.CONTACT_INFO_PAGE.title
     );
 
+    this.resAddressLine1 = this.$store.state.enrolmentModule.resAddressLine1;
+    this.resAddressLine2 = this.$store.state.enrolmentModule.resAddressLine2;
+    this.resAddressLine3 = this.$store.state.enrolmentModule.resAddressLine3;
+    this.resCity = this.$store.state.enrolmentModule.resCity;
+    this.resProvince = this.$store.state.enrolmentModule.resProvince;
+    this.resCountry = this.$store.state.enrolmentModule.resCountry;
+    this.resPostalCode = this.$store.state.enrolmentModule.resPostalCode;
+
     this.phone = this.$store.state.enrolmentModule.phone;
   },
   validations() {
@@ -210,6 +225,14 @@ export default {
       this.navigateToNextPage();
     },
     saveData() {
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_ADDRESS_LINE_1}`, this.resAddressLine1);
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_ADDRESS_LINE_2}`, this.resAddressLine2);
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_ADDRESS_LINE_3}`, this.resAddressLine3);
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_CITY}`, this.resCity);
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_PROVINCE}`, this.resProvince);
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_COUNTRY}`, this.resCountry);
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_POSTAL_CODE}`, this.resPostalCode);
+
       this.$store.dispatch(`${enrolmentModule}/${SET_PHONE}`, this.phone);
     },
     navigateToNextPage() {
