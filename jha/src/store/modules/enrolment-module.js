@@ -67,6 +67,7 @@ export const SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER = 'setSpousePreviousBCHealthNu
 export const SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION = 'setSpouseBeenReleasedFromInstitution';
 export const SET_SPOUSE_DISCHARGE_DATE = 'setSpouseDischargeDate';
 export const SET_SPOUSE_CRA_DOCUMENTS = 'setSpouseCRADocuments';
+export const SET_PHONE = 'setPhone';
 
 export default {
   namespaced: true,
@@ -134,6 +135,8 @@ export default {
       spouseBeenReleasedFromInstitution: null,
       spouseDischargeDate: null,
       spouseCRADocuments: [],
+      // Contact info
+      phone: null,
     };
     if (settings.useDummyData) {
       Object.assign(state, dummyData);
@@ -321,6 +324,10 @@ export default {
     [SET_SPOUSE_CRA_DOCUMENTS](state, payload) {
       state.spouseCRADocuments = payload;
     },
+    // Contact info
+    [SET_PHONE](state, payload) {
+      state.spouseCRADocuments = payload;
+    },
   },
   actions: {
     [RESET_FORM]({ commit }) {
@@ -386,6 +393,8 @@ export default {
       commit(SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION, null);
       commit(SET_SPOUSE_DISCHARGE_DATE, null);
       commit(SET_SPOUSE_CRA_DOCUMENTS, []);
+      //contact info
+      commit(SET_PHONE, null);
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
       commit(SET_APPLICATION_UUID, payload);
@@ -566,6 +575,10 @@ export default {
     },
     [SET_SPOUSE_CRA_DOCUMENTS]({ commit }, payload) {
       commit(SET_SPOUSE_CRA_DOCUMENTS, payload);
+    },
+    // Contact info
+    [SET_PHONE]({ commit }, payload) {
+      commit(SET_PHONE, payload);
     },
   },
   getters: {}
