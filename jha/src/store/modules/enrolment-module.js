@@ -75,7 +75,14 @@ export const SET_RES_CITY = 'setResCity';
 export const SET_RES_PROVINCE = 'setResProvince';
 export const SET_RES_COUNTRY = 'setResCountry';
 export const SET_RES_POSTAL_CODE = 'setResPostalCode';
-
+export const SET_MAIL_ADDRESS_LINE_1 = 'setMailAddressLine1';
+export const SET_MAIL_ADDRESS_LINE_2 = 'setMailAddressLine2';
+export const SET_MAIL_ADDRESS_LINE_3 = 'setMailAddressLine3';
+export const SET_MAIL_CITY = 'setMailCity';
+export const SET_MAIL_PROVINCE = 'setMailProvince';
+export const SET_MAIL_COUNTRY = 'setMailCountry';
+export const SET_MAIL_POSTAL_CODE = 'setMailPostalCode';
+export const SET_MAIL_SAME = 'setMailSame';
 export const SET_PHONE = 'setPhone';
 
 export default {
@@ -145,7 +152,6 @@ export default {
       spouseDischargeDate: null,
       spouseCRADocuments: [],
       // Contact info
-      phone: null,
       resAddressLine1: null,
       resAddressLine2: null,
       resAddressLine3: null,
@@ -153,6 +159,15 @@ export default {
       resProvince: "British Columbia",
       resCountry: "Canada",
       resPostalCode: null,
+      mailAddressLine1: null,
+      mailAddressLine2: null,
+      mailAddressLine3: null,
+      mailCity: null,
+      mailProvince: "British Columbia",
+      mailCountry: "Canada",
+      mailPostalCode: null,
+      mailSame: true,
+      phone: null,
     };
     if (settings.useDummyData) {
       Object.assign(state, dummyData);
@@ -342,29 +357,52 @@ export default {
     },
     // Contact info
     [SET_RES_ADDRESS_LINE_1](state, payload) {
-      state.spouseCRADocuments = payload;
+      state.resAddressLine1 = payload;
     },
     [SET_RES_ADDRESS_LINE_2](state, payload) {
-      state.spouseCRADocuments = payload;
+      state.resAddressLine2 = payload;
     },
     [SET_RES_ADDRESS_LINE_3](state, payload) {
-      state.spouseCRADocuments = payload;
+      state.resAddressLine3 = payload;
     },
     [SET_RES_CITY](state, payload) {
-      state.spouseCRADocuments = payload;
+      state.resCity = payload;
     },
     [SET_RES_PROVINCE](state, payload) {
-      state.spouseCRADocuments = payload;
+      state.resProvince = payload;
     },
     [SET_RES_COUNTRY](state, payload) {
-      state.spouseCRADocuments = payload;
+      state.resCountry = payload;
     },
     [SET_RES_POSTAL_CODE](state, payload) {
-      state.spouseCRADocuments = payload;
+      state.resPostalCode = payload;
     },
-    
+    [SET_MAIL_ADDRESS_LINE_1](state, payload) {
+      state.mailAddressLine1 = payload;
+    },
+    [SET_MAIL_ADDRESS_LINE_2](state, payload) {
+      state.mailAddressLine2 = payload;
+    },
+    [SET_MAIL_ADDRESS_LINE_3](state, payload) {
+      state.mailAddressLine3 = payload;
+    },
+    [SET_MAIL_CITY](state, payload) {
+      state.mailCity = payload;
+    },
+    [SET_MAIL_PROVINCE](state, payload) {
+      state.mailProvince = payload;
+    },
+    [SET_MAIL_COUNTRY](state, payload) {
+      state.mailCountry = payload;
+    },
+    [SET_MAIL_POSTAL_CODE](state, payload) {
+      state.mailPostalCode = payload;
+    },
+    [SET_MAIL_SAME](state, payload) {
+      state.mailSame = payload;
+    },
     [SET_PHONE](state, payload) {
-      state.spouseCRADocuments = payload;
+      state.phone = payload;
     },
   },
   actions: {
@@ -439,7 +477,14 @@ export default {
       commit(SET_RES_PROVINCE, null);
       commit(SET_RES_COUNTRY, null);
       commit(SET_RES_POSTAL_CODE, null);
-
+      commit(SET_MAIL_ADDRESS_LINE_1, null);
+      commit(SET_MAIL_ADDRESS_LINE_2, null);
+      commit(SET_MAIL_ADDRESS_LINE_3, null);
+      commit(SET_MAIL_CITY, null);
+      commit(SET_MAIL_PROVINCE, null);
+      commit(SET_MAIL_COUNTRY, null);
+      commit(SET_MAIL_POSTAL_CODE, null);
+      commit(SET_MAIL_SAME, true);
       commit(SET_PHONE, null);
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
@@ -636,15 +681,38 @@ export default {
       commit(SET_RES_CITY, payload);
     },
     [SET_RES_PROVINCE]({ commit }, payload) {
-      commit(SET_RES_CITY, payload);
+      commit(SET_RES_PROVINCE, payload);
     },
     [SET_RES_COUNTRY]({ commit }, payload) {
-      commit(SET_RES_CITY, payload);
+      commit(SET_RES_COUNTRY, payload);
     },
     [SET_RES_POSTAL_CODE]({ commit }, payload) {
-      commit(SET_RES_CITY, payload);
+      commit(SET_RES_POSTAL_CODE, payload);
     },
-    
+    [SET_MAIL_ADDRESS_LINE_1]({ commit }, payload) {
+      commit(SET_MAIL_ADDRESS_LINE_1, payload);
+    },
+    [SET_MAIL_ADDRESS_LINE_2]({ commit }, payload) {
+      commit(SET_MAIL_ADDRESS_LINE_2, payload);
+    },
+    [SET_MAIL_ADDRESS_LINE_3]({ commit }, payload) {
+      commit(SET_MAIL_ADDRESS_LINE_3, payload);
+    },
+    [SET_MAIL_CITY]({ commit }, payload) {
+      commit(SET_MAIL_CITY, payload);
+    },
+    [SET_MAIL_PROVINCE]({ commit }, payload) {
+      commit(SET_MAIL_PROVINCE, payload);
+    },
+    [SET_MAIL_COUNTRY]({ commit }, payload) {
+      commit(SET_MAIL_COUNTRY, payload);
+    },
+    [SET_MAIL_POSTAL_CODE]({ commit }, payload) {
+      commit(SET_MAIL_POSTAL_CODE, payload);
+    },
+    [SET_MAIL_SAME]({ commit }, payload) {
+      commit(SET_MAIL_SAME, payload);
+    },
     [SET_PHONE]({ commit }, payload) {
       commit(SET_PHONE, payload);
     },

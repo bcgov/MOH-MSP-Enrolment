@@ -44,6 +44,7 @@
               v-model="resPostalCode"
               @blur="handleBlurField($v.resPostalCode)" />
             <div class="text-danger" v-if="$v.resPostalCode.$dirty && !$v.resPostalCode.required" aria-live="assertive">Postal code is required.</div>
+            <div class="text-danger" v-if="$v.resPostalCode.$dirty && !$v.resPostalCode.bcPostalCodeValidator" aria-live="assertive">Postal code entered must be in BC.</div>
           </div>
           <div class="col-md-6">
             <div>
@@ -137,6 +138,14 @@ import {
   SET_RES_PROVINCE,
   SET_RES_COUNTRY,
   SET_RES_POSTAL_CODE,
+  SET_MAIL_ADDRESS_LINE_1,
+  SET_MAIL_ADDRESS_LINE_2,
+  SET_MAIL_ADDRESS_LINE_3,
+  SET_MAIL_CITY,
+  SET_MAIL_PROVINCE,
+  SET_MAIL_COUNTRY,
+  SET_MAIL_POSTAL_CODE,
+  SET_MAIL_SAME,
   RESET_FORM,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
@@ -147,24 +156,13 @@ import {
   PostalCodeInput,
   Button,
   PhoneNumberInput,
+  phoneValidator,
+  bcPostalCodeValidator,
 } from 'common-lib-vue';
 import {
   required,
 } from 'vuelidate/lib/validators';
 import pageContentMixin from '@/mixins/page-content-mixin';
-
-const phoneValidator = (value) => {
-  if (!value) {
-    return true;
-  }
-  const stripped = value
-        .replace(/_/g, '') // remove underlines
-        .replace(/\s/g, '') // spaces
-        .replace(/\+|-/g, '') // + or - symbol
-        .replace('(', '')
-        .replace(')', '');
-  return stripped.length === 10;
-};
 
 export default {
   name: 'ContactInfoPage',
@@ -215,7 +213,14 @@ export default {
     this.resProvince = this.$store.state.enrolmentModule.resProvince;
     this.resCountry = this.$store.state.enrolmentModule.resCountry;
     this.resPostalCode = this.$store.state.enrolmentModule.resPostalCode;
-
+    this.mailAddressLine1 = this.$store.state.enrolmentModule.mailAddressLine1;
+    this.mailAddressLine2 = this.$store.state.enrolmentModule.mailAddressLine2;
+    this.mailAddressLine3 = this.$store.state.enrolmentModule.mailAddressLine3;
+    this.mailCity = this.$store.state.enrolmentModule.mailCity;
+    this.mailProvince = this.$store.state.enrolmentModule.mailProvince;
+    this.mailCountry = this.$store.state.enrolmentModule.mailCountry;
+    this.mailPostalCode = this.$store.state.enrolmentModule.mailPostalCode;
+    this.mailSame = this.$store.state.enrolmentModule.mailSame;
     this.phone = this.$store.state.enrolmentModule.phone;
   },
   validations() {
@@ -228,6 +233,7 @@ export default {
       },
       resPostalCode: {
         required,
+        bcPostalCodeValidator,
       },
       phone: {
         phoneValidator,
@@ -276,7 +282,14 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_RES_PROVINCE}`, this.resProvince);
       this.$store.dispatch(`${enrolmentModule}/${SET_RES_COUNTRY}`, this.resCountry);
       this.$store.dispatch(`${enrolmentModule}/${SET_RES_POSTAL_CODE}`, this.resPostalCode);
-
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_ADDRESS_LINE_1}`, this.mailAddressLine1);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_ADDRESS_LINE_2}`, this.mailAddressLine2);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_ADDRESS_LINE_3}`, this.mailAddressLine3);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_CITY}`, this.mailCity);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_PROVINCE}`, this.mailProvince);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_COUNTRY}`, this.mailCountry);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_POSTAL_CODE}`, this.mailPostalCode);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_SAME}`, this.mailSame);
       this.$store.dispatch(`${enrolmentModule}/${SET_PHONE}`, this.phone);
     },
     navigateToNextPage() {
