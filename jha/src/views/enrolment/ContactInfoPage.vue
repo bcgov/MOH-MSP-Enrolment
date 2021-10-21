@@ -15,6 +15,7 @@
               id="res-address-line1"
               v-model="resAddressLine1"
               @blur="handleBlurField($v.resAddressLine1)" />
+            <div class="text-danger" v-if="$v.resAddressLine1.$dirty && !$v.resAddressLine1.required" aria-live="assertive">Street address is required.</div>
             <Input label="Address Line 2 (optional)"
               id="res-address-line2"
               v-model="resAddressLine2"
@@ -27,18 +28,22 @@
               id="res-city"
               v-model="resCity"
               @blur="handleBlurField($v.resCity)" />
+            <div class="text-danger" v-if="$v.resCity.$dirty && !$v.resCity.required" aria-live="assertive">City is required.</div>
             <Input label="Province"
               id="res-province"
               v-model="resProvince"
-              @blur="handleBlurField($v.resProvince)" />
+              @blur="handleBlurField($v.resProvince)"
+              :disabled='true' />
             <Input label="Country"
               id="res-country"
               v-model="resCountry"
-              @blur="handleBlurField($v.resCountry)" />
+              @blur="handleBlurField($v.resCountry)"
+              :disabled='true' />
             <PostalCodeInput label="Postal Code"
               id="res-postal-code"
               v-model="resPostalCode"
               @blur="handleBlurField($v.resPostalCode)" />
+            <div class="text-danger" v-if="$v.resPostalCode.$dirty && !$v.resPostalCode.required" aria-live="assertive">Postal code is required.</div>
           </div>
           <div class="col-md-6">
             <div>
@@ -49,13 +54,14 @@
             <div v-if="mailSame">
               <Button label='My Mailing Address is Different'
                 @click='differentAddress()'
-                class='different-address btn-warning'/>
+                class='different-address btn-secondary'/>
             </div>
             <div v-else>
               <Input label="Address Line 1"
                 id="mail-address-line1"
                 v-model="mailAddressLine1"
                 @blur="handleBlurField($v.mailAddressLine1)" />
+              <div class="text-danger" v-if="$v.mailAddressLine1.$dirty && !$v.mailAddressLine1.required" aria-live="assertive">Mailing address is required.</div>
               <Input label="Address Line 2 (optional)"
                 id="mail-address-line2"
                 v-model="mailAddressLine2"
@@ -68,18 +74,22 @@
                 id="mail-city"
                 v-model="mailCity"
                 @blur="handleBlurField($v.mailCity)" />
+              <div class="text-danger" v-if="$v.mailCity.$dirty && !$v.mailCity.required" aria-live="assertive">City is required.</div>
               <Input label="Province"
                 id="mail-province"
                 v-model="mailProvince"
                 @blur="handleBlurField($v.mailProvince)" />
+              <div class="text-danger" v-if="$v.mailProvince.$dirty && !$v.mailProvince.required" aria-live="assertive">Province is required.</div>
               <Input label="Country"
                 id="mail-country"
                 v-model="mailCountry"
                 @blur="handleBlurField($v.mailCountry)" />
-              <PostalCodeInput label="Postal Code"
+              <div class="text-danger" v-if="$v.mailCountry.$dirty && !$v.mailCountry.required" aria-live="assertive">Country is required.</div>
+              <Input label="Postal Code"
                 id="mail-postal-code"
                 v-model="mailPostalCode"
                 @blur="handleBlurField($v.mailPostalCode)" />
+              <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal code is required.</div>
             </div>
           </div>
         </div>
@@ -118,7 +128,7 @@ import {
   getConvertedPath,
 } from '@/helpers/url';
 import {
-  MODULE_NAME as formModule,
+  MODULE_NAME as enrolmentModule,
   SET_PHONE,
   SET_RES_ADDRESS_LINE_1,
   SET_RES_ADDRESS_LINE_2,
@@ -138,6 +148,9 @@ import {
   Button,
   PhoneNumberInput,
 } from 'common-lib-vue';
+import {
+  required,
+} from 'vuelidate/lib/validators';
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 const phoneValidator = (value) => {
@@ -206,11 +219,42 @@ export default {
     this.phone = this.$store.state.enrolmentModule.phone;
   },
   validations() {
-    const validations = {
+    let validations = {
+      resAddressLine1: {
+        required,
+      },
+      resCity: {
+        required,
+      },
+      resPostalCode: {
+        required,
+      },
       phone: {
         phoneValidator,
       },
     };
+    if ( !this.mailSame ) {
+      let mailValidations = {
+        mailAddressLine1: {
+          required,
+        },
+        mailCity: {
+          required,
+        },
+        mailProvince: {
+          required,
+        },
+        mailCountry: {
+          required,
+        },
+        
+        mailPostalCode: {
+          required,
+        },
+      };
+      validations = {...validations, ...mailValidations};
+    }
+
     return validations;
   },
   methods: {
@@ -269,7 +313,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
     if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(formModule + '/' + RESET_FORM);
+      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
       next();
     } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
       next();
