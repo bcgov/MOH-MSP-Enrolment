@@ -7,3 +7,7 @@ export const nameValidator = (value) => {
   const criteria = /^[a-zA-Z][a-zA-Z-.' ]*$/;
   return criteria.test(value);
 };
+
+export const yesValidator = (value) => {
+  return value === 'Y';
+};

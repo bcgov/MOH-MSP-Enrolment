@@ -157,174 +157,227 @@
           </div>
         </div>
 
-        <h2 class="mt-4">Moving Information</h2>
-        <hr/>
-        <Radio label="Have you moved to B.C. permanently?"
-          id="is-moved-to-bc-permanently"
-          name="is-moved-to-bc-permanently"
-          v-model="isMovedToBCPermanently"
-          :items="radioOptionsNoYes"
-          @blur="handleBlurField($v.isMovedToBCPermanently)"/>
-        <div class="text-danger"
-          v-if="$v.isMovedToBCPermanently.$dirty
-            && !$v.isMovedToBCPermanently.required"
-          aria-live="assertive">This field is required.</div>
-        <div v-if="isMovedToBCPermanently === 'Y'"
-          class="tabbed-section">
-          <Select label="Which country are you moving from?"
-            id="country-of-origin"
-            class="mt-3"
-            defaultOptionLabel="Please select a country"
-            v-model="moveFromOrigin"
-            :options="citizenshipStatusOptions"
-            @blur="handleBlurField($v.moveFromOrigin)"/>
-          <div class="text-danger"
-            v-if="$v.moveFromOrigin.$dirty
-              && !$v.moveFromOrigin.required"
-            aria-live="assertive">Country of origin is required.</div>
-          <DateInput label="Arrival date in B.C."
-            id="arrival-date-in-bc"
-            class="mt-3"
-            v-model="arrivalDateInBC"
-            @blur="handleBlurField($v.arrivalDateInBC)" />
-          <div class="text-danger"
-            v-if="$v.arrivalDateInBC.$dirty
-              && !$v.arrivalDateInBC.required"
-            aria-live="assertive">Arrival date in B.C. is required.</div>
-          <DateInput label="Arrival date in Canada"
-            id="arrival-date-in-canada"
-            class="mt-3"
-            v-model="arrivalDateInCanada"
-            @blur="handleBlurField($v.arrivalDateInCanada)" />
-          <div class="text-danger"
-            v-if="$v.arrivalDateInCanada.$dirty
-              && !$v.arrivalDateInCanada.required"
-            aria-live="assertive">Arrival date in Canada is required.</div>
-        </div>
-        <Radio label="Have you been outside B.C. for more than 30 days in total in the past 12 months?"
-          class="mt-3"
-          id="outside-bc-12-months"
-          name="outside-bc-12-months"
-          v-model="isOutsideBCInLast12Months"
-          :items="radioOptionsNoYes"
-          @blur="handleBlurField($v.isOutsideBCInLast12Months)">
-          <template v-slot:description>
-            <span class="field-description">If you have been living in B.C. for less than 12 months, please indicate any absences since arrival.</span>
-          </template>
-        </Radio>
-        <div class="text-danger"
-          v-if="$v.isOutsideBCInLast12Months.$dirty
-            && !$v.isOutsideBCInLast12Months.required"
-          aria-live="assertive">This field is required.</div>
-        <div v-if="isOutsideBCInLast12Months === 'Y'"
-          class="tabbed-section">
-          <Input label="Reason for departure"
-            id="departure-reason"
-            class="mt-3"
-            v-model="departureReason"
-            @blur="handleBlurField($v.departureReason)" />
-          <div class="text-danger"
-            v-if="$v.departureReason.$dirty
-              && !$v.departureReason.required"
-            aria-live="assertive">Reason for departure is required.</div>
-          <Input label="Location"
-            id="departure-location"
-            class="mt-3"
-            v-model="departureLocation"
-            @blur="handleBlurField($v.departureLocation)" />
-          <div class="text-danger"
-            v-if="$v.departureLocation.$dirty
-              && !$v.departureLocation.required"
-            aria-live="assertive">Location is required.</div>
-          <DateInput label="Departure date"
-            id="departure-begin-date"
-            class="mt-3"
-            v-model="departureBeginDate"
-            @blur="handleBlurField($v.departureBeginDate)" />
-          <div class="text-danger"
-            v-if="$v.departureBeginDate.$dirty
-              && !$v.departureBeginDate.required"
-            aria-live="assertive">Departure date is required.</div>
-          <DateInput label="Return date"
-            id="departure-return-date"
-            class="mt-3"
-            v-model="departureReturnDate"
-            @blur="handleBlurField($v.departureReturnDate)" />
-          <div class="text-danger"
-            v-if="$v.departureReturnDate.$dirty
-              && !$v.departureReturnDate.required"
-            aria-live="assertive">Return date is required.</div>
-        </div>
-        <Radio label="Do you have a previous B.C. Personal Health Number?"
-          class="mt-3"
-          id="has-previous-phn"
-          name="has-previous-phn"
-          v-model="hasPreviousPHN"
-          :items="radioOptionsNoYes"
-          @blur="handleBlurField($v.hasPreviousPHN)"/>
-        <div class="text-danger"
-          v-if="$v.hasPreviousPHN.$dirty
-            && !$v.hasPreviousPHN.required"
-          aria-live="assertive">This field is required.</div>
-        <div v-if="hasPreviousPHN === 'Y'"
-          class="tabbed-section">
-          <PhnInput label="Your previous B.C. Personal Health Number (optional)"
-            id="previous-phn"
-            class="mt-3"
-            v-model="previousPHN"
-            @blur="handleBlurField($v.previousPHN)"/>
-          <div class="text-danger"
-            v-if="$v.previousPHN.$dirty
-              && !$v.previousPHN.phnValidator"
-            aria-live="assertive">Personal Health Number is not valid.</div>
-        </div>
-        <Radio label="Have you been released from the Canadian Armed Forces or an institution?"
-          class="mt-3"
-          id="is-released-from-armed-forces"
-          name="is-released-from-armed-forces"
-          v-model="isReleasedFromArmedForces"
-          :items="radioOptionsNoYes"
-          @blur="handleBlurField($v.isReleasedFromArmedForces)"/>
-        <div class="text-danger"
-          v-if="$v.isReleasedFromArmedForces.$dirty
-            && !$v.isReleasedFromArmedForces.required"
-          aria-live="assertive">This field is required.</div>
-        <div v-if="isReleasedFromArmedForces === 'Y'"
-          class="tabbed-section">
-          <DateInput label="Discharge date"
-            id="armed-forces-discharge-date"
-            class="mt-3"
-            v-model="armedForcesDischargeDate"
-            @blur="handleBlurField($v.armedForcesDischargeDate)"/>
-          <div class="text-danger"
-            v-if="$v.armedForcesDischargeDate.$dirty
-              && !$v.armedForcesDischargeDate.required"
-            aria-live="assertive">Discharge date is required.</div>
-        </div>
-        <Radio label="Are you a full-time student in B.C.?"
-          class="mt-3"
-          id="is-student"
-          name="is-student"
-          v-model="isStudent"
-          :items="radioOptionsNoYes"
-          @blur="handleBlurField($v.isStudent)"/>
-        <div class="text-danger"
-          v-if="$v.isStudent.$dirty
-            && !$v.isStudent.required"
-          aria-live="assertive">This field is required.</div>
-        <div v-if="isStudent === 'Y'"
-          class="tabbed-section">
-          <Radio label="Will you reside in B.C. upon completion of your studies?"
-            id="will-student-reside-in-bc"
-            name="will-student-reside-in-bc"
-            class="mt-3"
-            v-model="willStudentResideInBC"
-            :items="radioOptionsNoYes"
-            @blur="handleBlurField($v.willStudentResideInBC)"/>
-          <div class="text-danger"
-          v-if="$v.willStudentResideInBC.$dirty
-            && !$v.willStudentResideInBC.required"
-          aria-live="assertive">This field is required.</div>
+        <div v-if="isMovingInformationShown">
+          <h2 class="mt-4">Moving Information</h2>
+          <hr class="mb-0"/>
+          <div v-if="requestLivedInBCSinceBirth">
+            <Radio label="Have you lived in B.C. since birth?"
+              id="has-live-in-bc-since-birth"
+              name="has-live-in-bc-since-birth"
+              class="mt-3"
+              v-model="hasLivedInBCSinceBirth"
+              :items="radioOptionsNoYes"
+              @blur="handleBlurField($v.hasLivedInBCSinceBirth)"/>
+            <div class="text-danger"
+              v-if="$v.hasLivedInBCSinceBirth.$dirty
+                && !$v.hasLivedInBCSinceBirth.required"
+              aria-live="assertive">This field is required.</div>
+          </div>
+          <div v-if="requestPermanentMoveInfo">
+            <Radio label="Have you moved to B.C. permanently?"
+              id="is-moved-to-bc-permanently"
+              name="is-moved-to-bc-permanently"
+              class="mt-3"
+              v-model="isMovedToBCPermanently"
+              :items="radioOptionsNoYes"
+              @blur="handleBlurField($v.isMovedToBCPermanently)"/>
+            <div class="text-danger"
+              v-if="$v.isMovedToBCPermanently.$dirty
+                && !$v.isMovedToBCPermanently.required"
+              aria-live="assertive">This field is required.</div>
+            <div class="text-danger"
+              v-if="isMovedToBCPermanently === 'N'"
+              aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, you are not eligible for enrolment in the Medical Services Plan. Please contact <a href="#" target="_blank">Health Insurance BC</a> for further information.</div>
+          </div>
+          <div v-if="canContinueProcess">
+            <div v-if="requestProvinceMoveInfo">
+              <RegionSelect label="Which province are you moving from?"
+                id="province-of-origin"
+                class="mt-3"
+                country="Canada"
+                defaultOptionLabel="Please select a province"
+                @blur="handleBlurField($v.moveFromOrigin)"/>
+              <div class="text-danger"
+                v-if="$v.moveFromOrigin.$dirty
+                  && !$v.moveFromOrigin.required"
+                aria-live="assertive">Province of origin is required.</div>
+            </div>
+            <div v-else-if="requestCountryMoveInfo">
+              <CountrySelect label="Which country are you moving from?"
+                id="country-of-origin"
+                class="mt-3"
+                defaultOptionLabel="Please select a country"
+                v-model="moveFromOrigin"
+                @blur="handleBlurField($v.moveFromOrigin)"/>
+              <div class="text-danger"
+                v-if="$v.moveFromOrigin.$dirty
+                  && !$v.moveFromOrigin.required"
+                aria-live="assertive">Country of origin is required.</div>
+            </div>
+            <div v-if="requestArrivalInBCInfo">
+              <DateInput label="Arrival date in B.C."
+                id="arrival-date-in-bc"
+                class="mt-3"
+                v-model="arrivalDateInBC"
+                @blur="handleBlurField($v.arrivalDateInBC)" />
+              <div class="text-danger"
+                v-if="$v.arrivalDateInBC.$dirty
+                  && !$v.arrivalDateInBC.required"
+                aria-live="assertive">Arrival date in B.C. is required.</div>
+            </div>
+            <div v-if="requestArrivalInCanadaInfo">
+              <DateInput :label="`Arrival date in Canada${citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry ? '' : ' (optional)'}`"
+                id="arrival-date-in-canada"
+                class="mt-3"
+                v-model="arrivalDateInCanada"
+                @blur="handleBlurField($v.arrivalDateInCanada)" />
+              <div class="text-danger"
+                v-if="$v.arrivalDateInCanada.$dirty
+                  && !$v.arrivalDateInCanada.required"
+                aria-live="assertive">Arrival date in Canada is required.</div>
+            </div>
+            <div v-if="requestProvHealthNumber">
+              <Input label="Health Number from that province (optional)"
+                id="previous-health-number"
+                class="mt-3"
+                v-model="previousHealthNumber"
+                @blur="handleBlurField($v.previousHealthNumber)" />
+            </div>
+            <div>
+              <Radio label="Have you been outside B.C. for more than 30 days in total in the past 12 months?"
+                class="mt-3"
+                id="outside-bc-12-months"
+                name="outside-bc-12-months"
+                v-model="isOutsideBCInLast12Months"
+                :items="radioOptionsNoYes"
+                @blur="handleBlurField($v.isOutsideBCInLast12Months)">
+                <template v-slot:description>
+                  <span class="field-description">If you have been living in B.C. for less than 12 months, please indicate any absences since arrival.</span>
+                </template>
+              </Radio>
+              <div class="text-danger"
+                v-if="$v.isOutsideBCInLast12Months.$dirty
+                  && !$v.isOutsideBCInLast12Months.required"
+                aria-live="assertive">This field is required.</div>
+            </div>
+            <div v-if="isOutsideBCInLast12Months === 'Y'"
+              class="tabbed-section">
+              <Input label="Reason for departure"
+                id="departure-reason"
+                class="mt-3"
+                v-model="departureReason"
+                @blur="handleBlurField($v.departureReason)" />
+              <div class="text-danger"
+                v-if="$v.departureReason.$dirty
+                  && !$v.departureReason.required"
+                aria-live="assertive">Reason for departure is required.</div>
+              <Input label="Location"
+                id="departure-location"
+                class="mt-3"
+                v-model="departureLocation"
+                @blur="handleBlurField($v.departureLocation)" />
+              <div class="text-danger"
+                v-if="$v.departureLocation.$dirty
+                  && !$v.departureLocation.required"
+                aria-live="assertive">Location is required.</div>
+              <DateInput label="Departure date"
+                id="departure-begin-date"
+                class="mt-3"
+                v-model="departureBeginDate"
+                @blur="handleBlurField($v.departureBeginDate)" />
+              <div class="text-danger"
+                v-if="$v.departureBeginDate.$dirty
+                  && !$v.departureBeginDate.required"
+                aria-live="assertive">Departure date is required.</div>
+              <DateInput label="Return date"
+                id="departure-return-date"
+                class="mt-3"
+                v-model="departureReturnDate"
+                @blur="handleBlurField($v.departureReturnDate)" />
+              <div class="text-danger"
+                v-if="$v.departureReturnDate.$dirty
+                  && !$v.departureReturnDate.required"
+                aria-live="assertive">Return date is required.</div>
+            </div>
+            <div>
+              <Radio label="Do you have a previous B.C. Personal Health Number?"
+                class="mt-3"
+                id="has-previous-phn"
+                name="has-previous-phn"
+                v-model="hasPreviousPHN"
+                :items="radioOptionsNoYes"
+                @blur="handleBlurField($v.hasPreviousPHN)"/>
+              <div class="text-danger"
+                v-if="$v.hasPreviousPHN.$dirty
+                  && !$v.hasPreviousPHN.required"
+                aria-live="assertive">This field is required.</div>
+            </div>
+            <div v-if="hasPreviousPHN === 'Y'"
+              class="tabbed-section">
+              <PhnInput label="Your previous B.C. Personal Health Number (optional)"
+                id="previous-phn"
+                class="mt-3"
+                v-model="previousPHN"
+                @blur="handleBlurField($v.previousPHN)"/>
+              <div class="text-danger"
+                v-if="$v.previousPHN.$dirty
+                  && !$v.previousPHN.phnValidator"
+                aria-live="assertive">Personal Health Number is not valid.</div>
+            </div>
+            <div v-if="requestArmedForceInfo">
+              <Radio label="Have you been released from the Canadian Armed Forces or an institution?"
+                class="mt-3"
+                id="is-released-from-armed-forces"
+                name="is-released-from-armed-forces"
+                v-model="isReleasedFromArmedForces"
+                :items="radioOptionsNoYes"
+                @blur="handleBlurField($v.isReleasedFromArmedForces)"/>
+              <div class="text-danger"
+                v-if="$v.isReleasedFromArmedForces.$dirty
+                  && !$v.isReleasedFromArmedForces.required"
+                aria-live="assertive">This field is required.</div>
+            </div>
+            <div v-if="isReleasedFromArmedForces === 'Y'"
+              class="tabbed-section">
+              <DateInput label="Discharge date"
+                id="armed-forces-discharge-date"
+                class="mt-3"
+                v-model="armedForcesDischargeDate"
+                @blur="handleBlurField($v.armedForcesDischargeDate)"/>
+              <div class="text-danger"
+                v-if="$v.armedForcesDischargeDate.$dirty
+                  && !$v.armedForcesDischargeDate.required"
+                aria-live="assertive">Discharge date is required.</div>
+            </div>
+            <div>
+              <Radio label="Are you a full-time student in B.C.?"
+                class="mt-3"
+                id="is-student"
+                name="is-student"
+                v-model="isStudent"
+                :items="radioOptionsNoYes"
+                @blur="handleBlurField($v.isStudent)"/>
+              <div class="text-danger"
+                v-if="$v.isStudent.$dirty
+                  && !$v.isStudent.required"
+                aria-live="assertive">This field is required.</div>
+            </div>
+            <div v-if="isStudent === 'Y'"
+              class="tabbed-section">
+              <Radio label="Will you reside in B.C. upon completion of your studies?"
+                id="will-student-reside-in-bc"
+                name="will-student-reside-in-bc"
+                class="mt-3"
+                v-model="willStudentResideInBC"
+                :items="radioOptionsNoYes"
+                @blur="handleBlurField($v.willStudentResideInBC)"/>
+              <div class="text-danger"
+              v-if="$v.willStudentResideInBC.$dirty
+                && !$v.willStudentResideInBC.required"
+              aria-live="assertive">This field is required.</div>
+            </div>
+          </div>
+          
         </div>
       </div>
     </PageContent>
@@ -362,6 +415,7 @@ import {
   SET_AH_IS_NAME_CHANGED,
   SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE,
   SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS,
+  SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH,
   SET_AH_IS_MOVED_TO_BC_PERMANENTLY,
   SET_AH_MOVE_FROM_ORIGIN,
   SET_AH_ARRIVAL_DATE_IN_BC,
@@ -381,6 +435,7 @@ import {
 import logService from '@/services/log-service';
 import {
   ContinueBar,
+  CountrySelect,
   DateInput,
   DigitInput,
   FileUploader,
@@ -388,6 +443,7 @@ import {
   PageContent,
   PhnInput,
   Radio,
+  RegionSelect,
   Select,
   optionalValidator,
   phnValidator,
@@ -405,16 +461,23 @@ import {
 } from '@/constants/select-options';
 import {
   required,
+  requiredIf,
 } from 'vuelidate/lib/validators';
 import {
   nameValidator,
+  yesValidator,
 } from '@/helpers/validators';
+import {
+  CanadianStatusReasons,
+  StatusInCanada,
+} from '@/constants/immigration-status-types'
 
 export default {
   name: 'PersonalInfoPage',
   mixins: [pageContentMixin],
   components: {
     ContinueBar,
+    CountrySelect,
     DateInput,
     DigitInput,
     FileUploader,
@@ -422,10 +485,14 @@ export default {
     PageContent,
     PhnInput,
     Radio,
+    RegionSelect,
     Select,
   },
   data: () => {
     return {
+      isPageLoaded: false,
+      // Constants.
+      CanadianStatusReasons,
       // Radio and Select options.
       genderOptions: radioOptionsGender,
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
@@ -447,10 +514,12 @@ export default {
       isNameChanged: null,
       nameChangeSupportDocumentType: null,
       nameChangeSupportDocuments: [],
+      hasLivedInBCSinceBirth: null,
       isMovedToBCPermanently: null,
       moveFromOrigin: null,
       arrivalDateInBC: null,
       arrivalDateInCanada: null,
+      previousHealthNumber: null,
       isOutsideBCInLast12Months: null,
       departureReason: null,
       departureLocation: null,
@@ -478,10 +547,12 @@ export default {
     this.isNameChanged = this.$store.state.enrolmentModule.ahIsNameChanged;
     this.nameChangeSupportDocumentType = this.$store.state.enrolmentModule.ahNameChangeSupportDocumentType;
     this.nameChangeSupportDocuments = this.$store.state.enrolmentModule.ahNameChangeSupportDocuments;
+    this.hasLivedInBCSinceBirth = this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth;
     this.isMovedToBCPermanently = this.$store.state.enrolmentModule.ahIsMovedToBCPermanently;
     this.moveFromOrigin = this.$store.state.enrolmentModule.ahMoveFromOrigin;
     this.arrivalDateInBC = this.$store.state.enrolmentModule.ahArrivalDateInBC;
     this.arrivalDateInCanada = this.$store.state.enrolmentModule.ahArrivalDateInCanada;
+    this.previousHealthNumber = this.$store.state.enrolmentModule.previousHealthNumber;
     this.isOutsideBCInLast12Months = this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months;
     this.departureReason = this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReason;
     this.departureLocation = this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsLocation;
@@ -499,6 +570,10 @@ export default {
       enrolmentRoutes.PERSONAL_INFO_PAGE.path,
       enrolmentRoutes.PERSONAL_INFO_PAGE.title
     );
+
+    this.$nextTick(() => {
+      this.isPageLoaded = true;
+    })
   },
   validations() {
     const validations = {
@@ -539,12 +614,12 @@ export default {
       },
       nameChangeSupportDocumentType: {},
       nameChangeSupportDocuments: {},
-      isMovedToBCPermanently: {
-        required,
-      },
+      hasLivedInBCSinceBirth: {},
+      isMovedToBCPermanently: {},
       moveFromOrigin: {},
       arrivalDateInBC: {},
       arrivalDateInCanada: {},
+      previousHealthNumber: {},
       isOutsideBCInLast12Months: {
         required,
       },
@@ -558,9 +633,7 @@ export default {
       previousPHN: {
         phnValidator: optionalValidator(phnValidator),
       },
-      isReleasedFromArmedForces: {
-        required,
-      },
+      isReleasedFromArmedForces: {},
       armedForcesDischargeDate: {},
       isStudent: {
         required,
@@ -571,16 +644,32 @@ export default {
       validations.nameChangeSupportDocumentType.required = required;
       validations.nameChangeSupportDocuments.required = required;
     }
-    if (this.isMovedToBCPermanently === 'Y') {
+    if (this.requestLivedInBCSinceBirth) {
+      validations.hasLivedInBCSinceBirth.required = required;
+    }
+    if (this.requestPermanentMoveInfo) {
+      validations.isMovedToBCPermanently.required = required;
+      validations.isMovedToBCPermanently.yesValidator = yesValidator;
+    }
+    if (this.requestCountryMoveInfo || this.requestProvinceMoveInfo) {
       validations.moveFromOrigin.required = required;
+    }
+    if (this.requestArrivalInBCInfo) {
       validations.arrivalDateInBC.required = required;
-      validations.arrivalDateInCanada.required = required;
+    }
+    if (this.requestArrivalInCanadaInfo) {
+      validations.arrivalDateInCanada.required = requiredIf(() => {
+        return this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry;
+      });
     }
     if (this.isOutsideBCInLast12Months === 'Y') {
       validations.departureReason.required = required;
       validations.departureLocation.required = required;
       validations.departureBeginDate.required = required;
       validations.departureReturnDate.required = required;
+    }
+    if (this.requestArmedForceInfo) {
+      validations.isReleasedFromArmedForces.required = required;
     }
     if (this.isReleasedFromArmedForces === 'Y') {
       validations.armedForcesDischargeDate.required = required;
@@ -615,6 +704,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_NAME_CHANGED}`, this.isNameChanged);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE}`, this.nameChangeSupportDocumentType);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS}`, this.nameChangeSupportDocuments);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH}`, this.hasLivedInBCSinceBirth);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_MOVED_TO_BC_PERMANENTLY}`, this.isMovedToBCPermanently);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_MOVE_FROM_ORIGIN}`, this.moveFromOrigin);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_ARRIVAL_DATE_IN_BC}`, this.arrivalDateInBC);
@@ -648,7 +738,88 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    requestLivedInBCSinceBirth() {
+      return this.citizenshipStatus === StatusInCanada.Citizen
+          && this.citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP;
+    },
+    requestPermanentMoveInfo() {
+      if (this.requestLivedInBCSinceBirth) {
+        // Convert to boolean
+        return !!this.hasLivedInBCSinceBirth;
+      }
+      return this.citizenshipStatus === StatusInCanada.Citizen
+          || this.citizenshipStatus === StatusInCanada.PermanentResident
+          || this.citizenshipStatus === StatusInCanada.TemporaryResident;
+    },
+    requestProvinceMoveInfo() {
+      return (this.citizenshipStatus === StatusInCanada.Citizen
+          && (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
+            || ( this.citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP
+              && this.hasLivedInBCSinceBirth === 'N')
+            )
+          )
+          || ( this.citizenshipStatus === StatusInCanada.PermanentResident
+            && this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince);
+    },
+    requestCountryMoveInfo() {
+      return ( this.citizenshipStatus === StatusInCanada.Citizen
+            || this.citizenshipStatus === StatusInCanada.PermanentResident)
+          && this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry;
+    },
+    requestArrivalInBCInfo() {
+      return ((this.citizenshipStatus === StatusInCanada.Citizen
+            || this.citizenshipStatus === StatusInCanada.PermanentResident
+          ) && (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
+            || this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry)
+          )
+          || this.citizenshipStatus === StatusInCanada.TemporaryResident;
+    },
+    requestArrivalInCanadaInfo() {
+      if (this.requestLivedInBCSinceBirth) {
+        return this.hasLivedInBCSinceBirth === 'N';
+      }
+      return true;
+    },
+    requestProvHealthNumber() {
+      return this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
+          && (this.citizenshipStatus === StatusInCanada.Citizen
+            || this.citizenshipStatus === StatusInCanada.PermanentResident);
+    },
+    requestArmedForceInfo() {
+      return this.citizenshipStatus === StatusInCanada.Citizen;
+    },
+    isMovingInformationShown() {
+      return !!this.citizenshipStatus
+          && !!this.citizenshipStatusReason;
+    },
+    canContinueProcess() {
+      if (this.isMovedToBCPermanently) {
+        if (this.requestLivedInBCSinceBirth) {
+          return this.hasLivedInBCSinceBirth
+              && this.isMovedToBCPermanently === 'Y';
+        }
+        return this.isMovedToBCPermanently === 'Y'
+            || this.citizenshipStatus === StatusInCanada.TemporaryResident;
+      }
+      return true;
+    }
+  },
+  watch: {
+    citizenshipStatus() {
+      if (this.isPageLoaded) {
+        this.hasLivedInBCSinceBirth = null;
+      }
+    },
+    citizenshipStatusReason() {
+      if (this.isPageLoaded) {
+        this.moveFromOrigin = null;
+        this.arrivalDateInBC = null;
+        this.arrivalDateInCanada = null;
+        this.previousHealthNumber = null;
+      }
+    },
+  },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);

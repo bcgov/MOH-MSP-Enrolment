@@ -27,6 +27,7 @@ export const SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS = 'setAHCitizenshipSupportDocu
 export const SET_AH_IS_NAME_CHANGED = 'setAHIsNameChanged';
 export const SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE = 'setAHNameChangeSupportDocumentType';
 export const SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS = 'setAHNameChangeSupportDocuments';
+export const SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH = 'setAHHasLivedInBCSinceBirth';
 export const SET_AH_IS_MOVED_TO_BC_PERMANENTLY = 'setAHIsMovedToBCPermanently';
 export const SET_AH_MOVE_FROM_ORIGIN = 'setAHMoveFromOrigin';
 export const SET_AH_ARRIVAL_DATE_IN_BC = 'setAHArrivalDateInBC';
@@ -99,6 +100,7 @@ export default {
       ahIsNameChanged: null,
       ahNameChangeSupportDocumentType: null,
       ahNameChangeSupportDocuments: [],
+      ahHasLivedInBCSinceBirth: null,
       ahIsMovedToBCPermanently: null,
       ahMoveFromOrigin: null,
       ahArrivalDateInBC: null,
@@ -212,6 +214,9 @@ export default {
     },
     [SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS](state, payload) {
       state.ahNameChangeSupportDocuments = payload;
+    },
+    [SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH](state, payload) {
+      state.ahHasLivedInBCSinceBirth = payload;
     },
     [SET_AH_IS_MOVED_TO_BC_PERMANENTLY](state, payload) {
       state.ahIsMovedToBCPermanently = payload;
@@ -371,6 +376,7 @@ export default {
       commit(SET_AH_IS_NAME_CHANGED, null);
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, null);
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS, []);
+      commit(SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH, null);
       commit(SET_AH_IS_MOVED_TO_BC_PERMANENTLY, null);
       commit(SET_AH_MOVE_FROM_ORIGIN, null);
       commit(SET_AH_ARRIVAL_DATE_IN_BC, null);
@@ -478,6 +484,9 @@ export default {
     },
     [SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS]({ commit }, payload) {
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS, payload);
+    },
+    [SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH]({ commit }, payload) {
+      commit(SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH, payload);
     },
     [SET_AH_IS_MOVED_TO_BC_PERMANENTLY]({ commit }, payload) {
       commit(SET_AH_IS_MOVED_TO_BC_PERMANENTLY, payload);
