@@ -55,6 +55,7 @@
             <div v-if="mailSame">
               <Button label='My Mailing Address is Different'
                 @click='differentAddress()'
+                color='gold'
                 class='different-address btn-secondary'/>
             </div>
             <div v-else>
