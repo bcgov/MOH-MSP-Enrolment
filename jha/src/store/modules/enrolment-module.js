@@ -82,7 +82,7 @@ export const SET_MAIL_CITY = 'setMailCity';
 export const SET_MAIL_PROVINCE = 'setMailProvince';
 export const SET_MAIL_COUNTRY = 'setMailCountry';
 export const SET_MAIL_POSTAL_CODE = 'setMailPostalCode';
-export const SET_MAIL_SAME = 'setMailSame';
+export const SET_IS_MAIL_SAME = 'setIsMailSame';
 export const SET_PHONE = 'setPhone';
 
 export default {
@@ -166,7 +166,7 @@ export default {
       mailProvince: "British Columbia",
       mailCountry: "Canada",
       mailPostalCode: null,
-      mailSame: true,
+      isMailSame: true,
       phone: null,
     };
     if (settings.useDummyData) {
@@ -398,8 +398,8 @@ export default {
     [SET_MAIL_POSTAL_CODE](state, payload) {
       state.mailPostalCode = payload;
     },
-    [SET_MAIL_SAME](state, payload) {
-      state.mailSame = payload;
+    [SET_IS_MAIL_SAME](state, payload) {
+      state.isMailSame = payload;
     },
     [SET_PHONE](state, payload) {
       state.phone = payload;
@@ -484,7 +484,7 @@ export default {
       commit(SET_MAIL_PROVINCE, null);
       commit(SET_MAIL_COUNTRY, null);
       commit(SET_MAIL_POSTAL_CODE, null);
-      commit(SET_MAIL_SAME, true);
+      commit(SET_IS_MAIL_SAME, true);
       commit(SET_PHONE, null);
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
@@ -710,8 +710,8 @@ export default {
     [SET_MAIL_POSTAL_CODE]({ commit }, payload) {
       commit(SET_MAIL_POSTAL_CODE, payload);
     },
-    [SET_MAIL_SAME]({ commit }, payload) {
-      commit(SET_MAIL_SAME, payload);
+    [SET_IS_MAIL_SAME]({ commit }, payload) {
+      commit(SET_IS_MAIL_SAME, payload);
     },
     [SET_PHONE]({ commit }, payload) {
       commit(SET_PHONE, payload);

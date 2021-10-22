@@ -76,7 +76,7 @@
               <p class="address-description">Enter your mailing address - if it's different</p>
             </div>
             <hr class="mt-0"/>
-            <div v-if="mailSame">
+            <div v-if="isMailSame">
               <Button label='My Mailing Address is Different'
                 @click='differentAddress()'
                 color='gold'
@@ -161,7 +161,7 @@
             </div>
           </div>
         </div>
-        <input type="checkbox" id="sameAddressCheck" v-model="mailSame">
+        <input type="checkbox" id="sameAddressCheck" v-model="isMailSame">
         <label for="sameAddressCheck">This is my mailing address.</label>
         <h2>Phone</h2>   
         <hr class="mt-0"/>
@@ -212,7 +212,7 @@ import {
   SET_MAIL_PROVINCE,
   SET_MAIL_COUNTRY,
   SET_MAIL_POSTAL_CODE,
-  SET_MAIL_SAME,
+  SET_IS_MAIL_SAME,
   RESET_FORM,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
@@ -260,7 +260,7 @@ export default {
       mailProvince: "British Columbia",
       mailCountry: "Canada",
       mailPostalCode: null,
-      mailSame: true,
+      isMailSame: true,
       phone: null,
       phoneInputStyle: {
         width: '160px',
@@ -289,7 +289,7 @@ export default {
     this.mailProvince = this.$store.state.enrolmentModule.mailProvince;
     this.mailCountry = this.$store.state.enrolmentModule.mailCountry;
     this.mailPostalCode = this.$store.state.enrolmentModule.mailPostalCode;
-    this.mailSame = this.$store.state.enrolmentModule.mailSame;
+    this.isMailSame = this.$store.state.enrolmentModule.isMailSame;
     this.phone = this.$store.state.enrolmentModule.phone;
   },
   validations() {
@@ -320,7 +320,7 @@ export default {
         phoneValidator,
       },
     };
-    if ( !this.mailSame ) {
+    if ( !this.isMailSame ) {
       let mailValidations = {
         mailAddressLine1: {
           required,
@@ -388,7 +388,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_PROVINCE}`, this.mailProvince);
       this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_COUNTRY}`, this.mailCountry);
       this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_POSTAL_CODE}`, this.mailPostalCode);
-      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_SAME}`, this.mailSame);
+      this.$store.dispatch(`${enrolmentModule}/${SET_IS_MAIL_SAME}`, this.isMailSame);
       this.$store.dispatch(`${enrolmentModule}/${SET_PHONE}`, this.phone);
     },
     navigateToNextPage() {
@@ -417,7 +417,7 @@ export default {
       }
     },
     differentAddress(){
-      this.mailSame = false;
+      this.isMailSame = false;
     },
   },
   computed: {},
