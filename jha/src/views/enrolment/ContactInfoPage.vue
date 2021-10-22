@@ -210,7 +210,6 @@ import {
 } from 'common-lib-vue';
 import {
   required,
-  maxLength,
 } from 'vuelidate/lib/validators';
 import pageContentMixin from '@/mixins/page-content-mixin';
 
