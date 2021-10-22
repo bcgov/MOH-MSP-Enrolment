@@ -170,7 +170,7 @@
           v-model='phone'
           className='mt-3'
           class='phone-number'
-          :inputStyle='phoneInputStyle' />
+          :inputStyle='smallStyles' />
         <div class="text-danger"
             v-if="!$v.phone.phoneValidator"
             aria-live="assertive">The phone number you entered is not valid.</div>
@@ -190,11 +190,14 @@ import {
 import {
   scrollTo,
   scrollToError,
-  getTopScrollPosition
+  getTopScrollPosition,
 } from '@/helpers/scroll';
 import {
   getConvertedPath,
 } from '@/helpers/url';
+import { 
+  smallStyles, 
+}  from '@/constants/input-styles'
 import {
   MODULE_NAME as enrolmentModule,
   SET_PHONE,
@@ -262,10 +265,6 @@ export default {
       mailPostalCode: null,
       isMailSame: true,
       phone: null,
-      phoneInputStyle: {
-        width: '160px',
-        maxWidth: '100%',
-      }
     };
   },
   created() {
