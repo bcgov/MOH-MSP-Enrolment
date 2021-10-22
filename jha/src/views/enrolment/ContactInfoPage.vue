@@ -14,42 +14,34 @@
             <Input label="Address Line 1"
               id="res-address-line1"
               v-model="resAddressLine1"
+              maxlength="25"
               @blur="handleBlurField($v.resAddressLine1)" />
             <div class="text-danger" v-if="$v.resAddressLine1.$dirty && !$v.resAddressLine1.required" aria-live="assertive">Street address is required.</div>
             <div class="text-danger"
                 v-if="$v.resAddressLine1.$dirty && !$v.resAddressLine1.specialCharacterValidator"
                 aria-live="assertive">Street address cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-            <div class="text-danger"
-              v-if="$v.resAddressLine1.$dirty && $v.resAddressLine1.required && !$v.resAddressLine1.maxLength"
-              aria-live="assertive">Street address exceeds the maximum number of allowable characters.</div>
             <Input label="Address Line 2 (optional)"
               id="res-address-line2"
               v-model="resAddressLine2"
+              maxlength="25"
               @blur="handleBlurField($v.resAddressLine2)" />
             <div class="text-danger"
                 v-if="$v.resAddressLine2.$dirty && !$v.resAddressLine2.specialCharacterValidator"
                 aria-live="assertive">Street address cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-              <div class="text-danger"
-              v-if="$v.resAddressLine2.$dirty && !$v.resAddressLine2.maxLength"
-              aria-live="assertive">Street address exceeds the maximum number of allowable characters.</div>
             <Input label="Address Line 3 (optional)"
               id="res-address-line3"
               v-model="resAddressLine3"
+              maxlength="25"
               @blur="handleBlurField($v.resAddressLine3)" />
             <div class="text-danger"
                 v-if="$v.resAddressLine3.$dirty && !$v.resAddressLine3.specialCharacterValidator"
                 aria-live="assertive">Street address cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-            <div class="text-danger"
-              v-if="$v.resAddressLine3.$dirty && !$v.resAddressLine3.maxLength"
-              aria-live="assertive">Street address exceeds the maximum number of allowable characters.</div>
             <Input label="City"
               id="res-city"
               v-model="resCity"
+              maxlength="25"
               @blur="handleBlurField($v.resCity)" />
             <div class="text-danger" v-if="$v.resCity.$dirty && !$v.resCity.required" aria-live="assertive">City is required.</div>
-            <div class="text-danger"
-              v-if="$v.resCity.$dirty && $v.resCity.required && !$v.resCity.maxLength"
-              aria-live="assertive">City exceeds the maximum number of allowable characters.</div>
             <div class="text-danger"
                 v-if="$v.resCity.$dirty && !$v.resCity.specialCharacterValidator"
                 aria-live="assertive">City cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
@@ -78,7 +70,7 @@
             <hr class="mt-0"/>
             <div v-if="isMailSame">
               <Button label='My Mailing Address is Different'
-                @click='differentAddress()'
+                @click='handleClickDifferentAddress()'
                 color='gold'
                 class='different-address'/>
             </div>
@@ -86,83 +78,69 @@
               <Input label="Address Line 1"
                 id="mail-address-line1"
                 v-model="mailAddressLine1"
+                maxlength="25"
                 @blur="handleBlurField($v.mailAddressLine1)" />
               <div class="text-danger" v-if="$v.mailAddressLine1.$dirty && !$v.mailAddressLine1.required" aria-live="assertive">Mailing address is required.</div>
               <div class="text-danger"
                 v-if="$v.mailAddressLine1.$dirty && !$v.mailAddressLine1.specialCharacterValidator"
                 aria-live="assertive">Mailing address cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-              <div class="text-danger"
-                v-if="$v.mailAddressLine1.$dirty && $v.mailAddressLine1.required && !$v.mailAddressLine1.maxLength"
-                aria-live="assertive">Mailing address exceeds the maximum number of allowable characters.</div>
               <Input label="Address Line 2 (optional)"
                 id="mail-address-line2"
                 v-model="mailAddressLine2"
+                maxlength="25"
                 @blur="handleBlurField($v.mailAddressLine2)" />
-              <div class="text-danger"
-                v-if="$v.mailAddressLine2.$dirty && !$v.mailAddressLine2.maxLength"
-                aria-live="assertive">Mailing address exceeds the maximum number of allowable characters.</div>
               <div class="text-danger"
                 v-if="$v.mailAddressLine2.$dirty && !$v.mailAddressLine2.specialCharacterValidator"
                 aria-live="assertive">Mailing address cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
               <Input label="Address Line 3 (optional)"
                 id="mail-address-line3"
                 v-model="mailAddressLine3"
+                maxlength="25"
                 @blur="handleBlurField($v.mailAddressLine3)" />
               <div class="text-danger"
                 v-if="$v.mailAddressLine3.$dirty && !$v.mailAddressLine3.specialCharacterValidator"
                 aria-live="assertive">Mailing address cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-              <div class="text-danger"
-                v-if="$v.mailAddressLine3.$dirty && !$v.mailAddressLine3.maxLength"
-                aria-live="assertive">Mailing address exceeds the maximum number of allowable characters.</div>
               <Input label="City"
                 id="mail-city"
                 v-model="mailCity"
+                maxlength="25"
                 @blur="handleBlurField($v.mailCity)" />
               <div class="text-danger" v-if="$v.mailCity.$dirty && !$v.mailCity.required" aria-live="assertive">City is required.</div>
-              <div class="text-danger"
-                v-if="$v.mailCity.$dirty && $v.mailCity.required && !$v.mailCity.maxLength"
-                aria-live="assertive">City exceeds the maximum number of allowable characters.</div>
               <div class="text-danger"
                 v-if="$v.mailCity.$dirty && !$v.mailCity.specialCharacterValidator"
                 aria-live="assertive">City cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
               <Input label="Province"
                 id="mail-province"
                 v-model="mailProvince"
+                maxlength="25"
                 @blur="handleBlurField($v.mailProvince)" />
               <div class="text-danger" v-if="$v.mailProvince.$dirty && !$v.mailProvince.required" aria-live="assertive">Province is required.</div>
               <div class="text-danger"
                 v-if="$v.mailProvince.$dirty && !$v.mailProvince.specialCharacterValidator"
                 aria-live="assertive">Province cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-              <div class="text-danger"
-                v-if="$v.mailProvince.$dirty && $v.mailProvince.required && !$v.mailProvince.maxLength"
-                aria-live="assertive">Province exceeds the maximum number of allowable characters.</div>
               <Input label="Country"
                 id="mail-country"
                 v-model="mailCountry"
+                maxlength="250"
                 @blur="handleBlurField($v.mailCountry)" />
               <div class="text-danger" v-if="$v.mailCountry.$dirty && !$v.mailCountry.required" aria-live="assertive">Country is required.</div>
               <div class="text-danger"
                 v-if="$v.mailCountry.$dirty && !$v.mailCountry.specialCharacterValidator"
                 aria-live="assertive">Country cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-              <div class="text-danger"
-                v-if="$v.mailCountry.$dirty && $v.mailCountry.required && !$v.mailCountry.maxLength"
-                aria-live="assertive">Country exceeds the maximum number of allowable characters.</div>
               <Input label="Postal Code"
                 id="mail-postal-code"
                 v-model="mailPostalCode"
+                maxlength="25"
                 @blur="handleBlurField($v.mailPostalCode)" />
               <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal code is required.</div>
               <div class="text-danger"
                 v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.specialCharacterValidator"
                 aria-live="assertive">Postal Code cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-              <div class="text-danger"
-                v-if="$v.mailPostalCode.$dirty && $v.mailPostalCode.required && !$v.mailPostalCode.maxLength"
-                aria-live="assertive">Postal Code exceeds the maximum number of allowable characters.</div>
             </div>
           </div>
         </div>
-        <input type="checkbox" id="sameAddressCheck" v-model="isMailSame">
-        <label for="sameAddressCheck">This is my mailing address.</label>
+        <input type="checkbox" id="same-address-check" v-model="isMailSame">
+        <label for="same-address-check">This is my mailing address.</label>
         <h2>Phone</h2>   
         <hr class="mt-0"/>
         <PhoneNumberInput id='phone-input'
@@ -265,6 +243,7 @@ export default {
       mailPostalCode: null,
       isMailSame: true,
       phone: null,
+      smallStyles: smallStyles,
     };
   },
   created() {
@@ -296,19 +275,15 @@ export default {
       resAddressLine1: {
         required,
         specialCharacterValidator,
-        maxLength: maxLength(25),
       },
       resAddressLine2: {
         specialCharacterValidator,
-        maxLength: maxLength(25),
       },
       resAddressLine3: {
         specialCharacterValidator,
-        maxLength: maxLength(25),
       },
       resCity: {
         required,
-        maxLength: maxLength(25),
         specialCharacterValidator,
       },
       resPostalCode: {
@@ -324,35 +299,28 @@ export default {
         mailAddressLine1: {
           required,
           specialCharacterValidator,
-          maxLength: maxLength(25),
         },
         mailAddressLine2: {
           specialCharacterValidator,
-          maxLength: maxLength(25),
         },
         mailAddressLine3: {
           specialCharacterValidator,
-          maxLength: maxLength(25),
         },
         mailCity: {
           required,
-          maxLength: maxLength(25),
           specialCharacterValidator,
         },
         mailProvince: {
           required,
-          maxLength: maxLength(25),
           specialCharacterValidator
         },
         mailCountry: {
           required,
-          maxLength: maxLength(250),
           specialCharacterValidator
         },
         
         mailPostalCode: {
           required,
-          maxLength: maxLength(25),
           specialCharacterValidator
         },
       };
@@ -415,7 +383,7 @@ export default {
         validationObject.$touch();
       }
     },
-    differentAddress(){
+    handleClickDifferentAddress(){
       this.isMailSame = false;
     },
   },
@@ -451,7 +419,7 @@ export default {
   .address-description {
     min-height: 3.5rem;
   }
-  #sameAddressCheck {
+  #same-address-check {
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
