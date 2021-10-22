@@ -27,6 +27,7 @@ export const SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS = 'setAHCitizenshipSupportDocu
 export const SET_AH_IS_NAME_CHANGED = 'setAHIsNameChanged';
 export const SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE = 'setAHNameChangeSupportDocumentType';
 export const SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS = 'setAHNameChangeSupportDocuments';
+export const SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH = 'setAHHasLivedInBCSinceBirth';
 export const SET_AH_IS_MOVED_TO_BC_PERMANENTLY = 'setAHIsMovedToBCPermanently';
 export const SET_AH_MOVE_FROM_ORIGIN = 'setAHMoveFromOrigin';
 export const SET_AH_ARRIVAL_DATE_IN_BC = 'setAHArrivalDateInBC';
@@ -47,6 +48,11 @@ export const SET_AH_CRA_DOCUMENTS = 'setAHCRADocuments';
 export const SET_HAS_SPOUSE = 'setHasSpouse';
 export const SET_SPOUSE_STATUS = 'setSpouseStatus';
 export const SET_SPOUSE_STATUS_REASON = 'setSpouseStatusReason';
+export const SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE = 'setSpouseCitizenshipSupportDocumentType';
+export const SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS = 'setSpouseCitizenshipSupportDocuments';
+export const SET_SPOUSE_IS_NAME_CHANGED = 'setSpouseIsNameChanged';
+export const SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE = 'setSpouseNameChangeSupportDocumentType';
+export const SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENTS = 'setSpouseNameChangeSupportDocuments';
 export const SET_SPOUSE_FIRST_NAME = 'setSpouseFirstName';
 export const SET_SPOUSE_MIDDLE_NAME = 'setSpouseMiddleName';
 export const SET_SPOUSE_LAST_NAME = 'setSpouseLastName';
@@ -111,6 +117,7 @@ export default {
       ahIsNameChanged: null,
       ahNameChangeSupportDocumentType: null,
       ahNameChangeSupportDocuments: [],
+      ahHasLivedInBCSinceBirth: null,
       ahIsMovedToBCPermanently: null,
       ahMoveFromOrigin: null,
       ahArrivalDateInBC: null,
@@ -131,6 +138,11 @@ export default {
       hasSpouse: null,
       spouseStatus: null,
       spouseStatusReason: null,
+      spouseCitizenshipSupportDocumentType: null,
+      spouseCitizenshipSupportDocuments: [],
+      spouseIsNameChanged: null,
+      spouseNameChangeSupportDocumentType: null,
+      spouseNameChangeSupportDocuments: [],
       spouseFirstName: null,
       spouseMiddleName: null,
       spouseLastName: null,
@@ -237,6 +249,9 @@ export default {
     [SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS](state, payload) {
       state.ahNameChangeSupportDocuments = payload;
     },
+    [SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH](state, payload) {
+      state.ahHasLivedInBCSinceBirth = payload;
+    },
     [SET_AH_IS_MOVED_TO_BC_PERMANENTLY](state, payload) {
       state.ahIsMovedToBCPermanently = payload;
     },
@@ -294,6 +309,21 @@ export default {
     },
     [SET_SPOUSE_STATUS_REASON](state, payload) {
       state.spouseStatusReason = payload;
+    },
+    [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE](state, payload) {
+      state.spouseCitizenshipSupportDocumentType = payload;
+    },
+    [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS](state, payload) {
+      state.spouseCitizenshipSupportDocuments = payload;
+    },
+    [SET_SPOUSE_IS_NAME_CHANGED](state, payload) {
+      state.spouseIsNameChanged = payload;
+    },
+    [SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE](state, payload) {
+      state.spouseNameChangeSupportDocumentType = payload;
+    },
+    [SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENTS](state, payload) {
+      state.spouseNameChangeSupportDocuments = payload;
     },
     [SET_SPOUSE_FIRST_NAME](state, payload) {
       state.spouseFirstName = payload;
@@ -429,6 +459,7 @@ export default {
       commit(SET_AH_IS_NAME_CHANGED, null);
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, null);
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS, []);
+      commit(SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH, null);
       commit(SET_AH_IS_MOVED_TO_BC_PERMANENTLY, null);
       commit(SET_AH_MOVE_FROM_ORIGIN, null);
       commit(SET_AH_ARRIVAL_DATE_IN_BC, null);
@@ -449,6 +480,11 @@ export default {
       commit(SET_HAS_SPOUSE, null);
       commit(SET_SPOUSE_STATUS, null);
       commit(SET_SPOUSE_STATUS_REASON, null);
+      commit(SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE, null);
+      commit(SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS, []);
+      commit(SET_SPOUSE_IS_NAME_CHANGED, null);
+      commit(SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, null);
+      commit(SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENTS, []);
       commit(SET_SPOUSE_FIRST_NAME, null);
       commit(SET_SPOUSE_MIDDLE_NAME, null);
       commit(SET_SPOUSE_LAST_NAME, null);
@@ -549,6 +585,9 @@ export default {
     [SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS]({ commit }, payload) {
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS, payload);
     },
+    [SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH]({ commit }, payload) {
+      commit(SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH, payload);
+    },
     [SET_AH_IS_MOVED_TO_BC_PERMANENTLY]({ commit }, payload) {
       commit(SET_AH_IS_MOVED_TO_BC_PERMANENTLY, payload);
     },
@@ -606,6 +645,21 @@ export default {
     },
     [SET_SPOUSE_STATUS_REASON]({ commit }, payload) {
       commit(SET_SPOUSE_STATUS_REASON, payload);
+    },
+    [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE]({ commit }, payload) {
+      commit(SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE, payload);
+    },
+    [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS]({ commit }, payload) {
+      commit(SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS, payload);
+    },
+    [SET_SPOUSE_IS_NAME_CHANGED]({ commit }, payload) {
+      commit(SET_SPOUSE_IS_NAME_CHANGED, payload);
+    },
+    [SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE]({ commit }, payload) {
+      commit(SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, payload);
+    },
+    [SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENTS]({ commit }, payload) {
+      commit(SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENTS, payload);
     },
     [SET_SPOUSE_FIRST_NAME]({ commit }, payload) {
       commit(SET_SPOUSE_FIRST_NAME, payload);

@@ -46,19 +46,6 @@ export const radioOptionsTemporaryResidentStatusReasons = [
   }
 ];
 
-export const radioOptionsHasSpouse = [
-  {
-    id: 'no-spouse',
-    label: 'No',
-    value: 'N',
-  },
-  {
-    id: 'has-spouse',
-    label: 'Yes',
-    value: 'Y',
-  }
-];
-
 export const radioOptionsGender = [
   {
     id: 'male',
@@ -69,71 +56,6 @@ export const radioOptionsGender = [
     id: 'female',
     label: 'Female',
     value: 'F',
-  }
-];
-
-export const radioOptionsLivedInBCSinceBirth = [
-  {
-    id: 'not-lived-in-bc-since',
-    label: 'No',
-    value: 'N',
-  },
-  {
-    id: 'lived-in-bc-since',
-    label: 'Yes',
-    value: 'Y',
-  }
-];
-
-export const radioOptionsPermanentMove = [
-  {
-    id: 'not-permanent-move',
-    label: 'No',
-    value: 'N',
-  },
-  {
-    id: 'permanent-move',
-    label: 'Yes',
-    value: 'Y',
-  }
-];
-
-export const radioOptionsOutsideBCLast12Months = [
-  {
-    id: 'last-twelve-months-no',
-    label: 'No',
-    value: 'N',
-  },
-  {
-    id: 'last-twelve-months-yes',
-    label: 'Yes',
-    value: 'Y',
-  }
-];
-
-export const radioOptionsHasPreviousBCHealthNumber = [
-  {
-    id: 'does-not-have-previous-health-number',
-    label: 'No',
-    value: 'N',
-  },
-  {
-    id: 'has-previous-health-number',
-    label: 'Yes',
-    value: 'Y',
-  }
-];
-
-export const radioOptionsReleasedFromInstitution = [
-  {
-    id: 'not-released',
-    label: 'No',
-    value: 'N',
-  },
-  {
-    id: 'released',
-    label: 'Yes',
-    value: 'Y',
   }
 ];
 
