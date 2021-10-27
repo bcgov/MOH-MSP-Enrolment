@@ -2,9 +2,70 @@
   <div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Form</h1>
+        <h1>Suplimentary Benefits Financial Information</h1>
+        <h4 class="font-weight-normal">
+          Your application must be based on income from the most recent Notice of 
+          Assessment or Notice of Reassessment available from Canada Revenue Agency(CRA). 
+          You will be required to upload a copy (and your spouse's, if applicable) with your application.
+        </h4>
         <hr class="mt-0"/>
-        <p>Form here.</p>
+        <h2>Which year's Notice of Assessment or Reassessment will you upload?</h2>
+        <Radio id="select-noa-year"
+                name="select-noa-year"
+                class="mt-3"
+                :horizontalAlign="true"
+                v-model="selectedNOAYear"
+                :items="radioOptionsNOAYears"
+                @blur="handleBlurField($v.selectedNOAYear)"/>
+        <div v-if="selectedNOAYear === `${this.currentYear - 2}`" class="text-danger">
+          <font-awesome-icon icon="exclamation-circle"/>
+          Selecting this Notice of Assessment will allow you to apply for supplementary benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
+        </div>
+        <p class="mt-2 mb-1 font-weight-bolder">Enter your 2020 net income.</p>
+        <CurrencyInput id="ah-net-income"
+          label="See line 23600 of your Notice of Assessment or Reassessment."
+          v-model="ahNetIncome"
+          :inputStyle='mediumStyles'/>
+        <div v-if="hasSpouse === 'Y'">
+          <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's 2020 net income.</p>
+          <CurrencyInput id="spouse-net-income"
+            label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
+            v-model="spouseNetIncome"
+            :inputStyle='mediumStyles'/>
+        </div>
+        <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim a disability tax credit in {{selectedNOAYear}}?</p>
+        <Radio id="has-disability-credit"
+          name="has-disability-credit"
+          label="See line 31600, 31800, or 32600 of your Notice of Assessment or Reassessment."
+          v-model="hasDisabilityCredit"
+          :items="radioOptionsNoYes"
+          @blur="handleBlurField($v.hasDisabilityCredit)"/>
+        <div class="ml-5" v-if="hasDisabilityCredit === 'Y'">
+          <h1>PLACE HOLDER FOR SELECTION LIST</h1>
+        </div>
+        <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your Medical Services Plan account have a Registered Disability Savings Plan?</p>
+        <Radio id="has-disability-savings"
+          name="has-disability-savings"
+          v-model="hasDisabilitySavings"
+          :items="radioOptionsNoYes"
+          @blur="handleBlurField($v.hasDisabilitySavings)"/>
+        <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
+        <Radio id="has-attendant-nursing-expenses"
+          name="has-attendant-nursing-expenses"
+          label="See line 21500 or 33099 of your Notice of Assessment or Reassessment."
+          v-model="hasAttendantNursingExpenses"
+          :items="radioOptionsNoYes"
+          @blur="handleBlurField($v.hasAttendantNursingExpenses)"/>
+        <div class="ml-5" v-if="hasAttendantNursingExpenses === 'Y'">
+          <h1>PLACE HOLDER FOR SELECTION LIST</h1>
+          <DigitInput v-if="selectedAttendantNursingRecipients.includes('child')"
+            id="num-attendant-nursing-children"
+            label="How many children claimed attendant care expenses?"
+            v-model="numAttendantNursingChildren"
+            :inputStyle="extraSmallStyles"/>
+          <p class="font-weight-bolder">Please upload your attendant care or nursing receipts</p>
+          <FileUploader v-model="AttendantNursingReceipts" />
+        </div>
       </div>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
@@ -25,6 +86,14 @@ import {
 import {
   getConvertedPath,
 } from '@/helpers/url';
+import { 
+  mediumStyles,
+  extraSmallStyles,
+}  from '@/constants/input-styles';
+import { 
+  radioOptionsNoYes, 
+}  from '@/constants/radio-options';
+
 import {
   MODULE_NAME as formModule,
   RESET_FORM,
@@ -33,6 +102,10 @@ import logService from '@/services/log-service';
 import {
   ContinueBar,
   PageContent,
+  Radio,
+  CurrencyInput,
+  FileUploader,
+  DigitInput,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 
@@ -42,9 +115,29 @@ export default {
   components: {
     ContinueBar,
     PageContent,
+    Radio,
+    CurrencyInput,
+    FileUploader,
+    DigitInput,
   },
   data: () => {
-    return {};
+    return {
+      currentYear: 2,
+      selectedNOAYear: '',
+      radioOptionsNOAYears: [],
+      ahNetIncome: '',
+      hasSpouse: '',
+      spouseNetIncome: '',
+      hasDisabilityCredit: '',
+      hasDisabilitySavings: '',
+      hasAttendantNursingExpenses: '',
+      selectedAttendantNursingRecipients: [],
+      numAttendantNursingChildren: '',
+      AttendantNursingReceipts: [],
+      mediumStyles: mediumStyles,
+      extraSmallStyles: extraSmallStyles,
+      radioOptionsNoYes: radioOptionsNoYes,
+    };
   },
   created() {
     logService.logNavigation(
@@ -52,6 +145,30 @@ export default {
       enrolmentRoutes.SUPP_BEN_INFO_PAGE.path,
       enrolmentRoutes.SUPP_BEN_INFO_PAGE.title
     );
+
+    this.ahNetIncome = '';
+    this.hasSpouse = 'Y';
+    this.spouseNetIncome = '';
+    this.hasDisabilityCredit = 'Y';
+    this.hasDisabilitySavings = 'N';
+    this.hasAttendantNursingExpenses = 'Y';
+    this.selectedAttendantNursingRecipients = ['child'];
+    this.numAttendantNursingChildren = '1';
+    this.AttendantNursingReceipts = [];
+    this.currentYear = (new Date()).getFullYear();
+    this.selectedNOAYear = `${this.currentYear - 1}`;
+    this.radioOptionsNOAYears = [
+      {
+        id: 'currentNOAYear',
+        label: `${this.currentYear - 1}`,
+        value: `${this.currentYear - 1}`,
+      },
+      {
+        id: 'previousNOAYear',
+        label: `${this.currentYear - 2}`,
+        value: `${this.currentYear - 2}`,
+      }
+    ];
   },
   validations() {
     const validations = {};
@@ -77,6 +194,11 @@ export default {
       pageStateService.visitPage(toPath);
       this.$router.push(toPath);
       scrollTo(0);
+    },
+    handleBlurField(validationObject) {
+      if (validationObject) {
+        validationObject.$touch();
+      }
     },
   },
   computed: {},
