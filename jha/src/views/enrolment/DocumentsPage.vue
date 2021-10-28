@@ -27,6 +27,7 @@
                 <li>The Tax Year</li>
                 <li>Your Net Income(line 23600)</li>
                 <li>If you have a Regisered Disability Savings Plan(line 12500)</li>
+                <li>A JPG, PNG, GIF, BMP, or PDF file.</li>
               </ul>
             </TipBox>
           </div>

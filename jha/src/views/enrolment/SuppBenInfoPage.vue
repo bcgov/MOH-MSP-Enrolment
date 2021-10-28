@@ -13,7 +13,6 @@
         <Radio id="select-noa-year"
                 name="select-noa-year"
                 class="mt-3"
-                :horizontalAlign="true"
                 v-model="selectedNOAYear"
                 :items="radioOptionsNOAYears"
                 @blur="handleBlurField($v.selectedNOAYear)"/>
@@ -64,7 +63,24 @@
             v-model="numAttendantNursingChildren"
             :inputStyle="extraSmallStyles"/>
           <p class="font-weight-bolder">Please upload your attendant care or nursing receipts</p>
-          <FileUploader v-model="AttendantNursingReceipts" />
+          <div class="row">
+            <div class="col-md-7">
+              <FileUploader class="ml-0"
+                v-model="AttendantNursingReceipts" />
+            </div>
+            <div class="col-md-4">
+              <TipBox title="Tip">
+                <p>Scan the document, or take a photo of it.</p>
+                <p>Make sure it's:</p>
+                <ul>
+                  <li>The entire document, from corner to corner.</li>
+                  <li>Rotated Correctly(not upside down or sideways).</li>
+                  <li>In focus and easy to read.</li>
+                  <li>A JPG, PNG, GIF, BMP, or PDF file.</li>
+                </ul>
+              </TipBox>
+            </div>
+          </div>
         </div>
       </div>
     </PageContent>
@@ -107,6 +123,7 @@ import {
   FileUploader,
   DigitInput,
 } from 'common-lib-vue';
+import TipBox from '@/components/TipBox';
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
@@ -119,6 +136,7 @@ export default {
     CurrencyInput,
     FileUploader,
     DigitInput,
+    TipBox,
   },
   data: () => {
     return {
