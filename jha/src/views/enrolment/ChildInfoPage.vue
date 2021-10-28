@@ -428,6 +428,7 @@ import {
   PostalCodeInput,
   FileUploader,
   optionalValidator,
+  cloneDeep,
   pastDateValidator,
   phnValidator,
   specialCharacterValidator,
@@ -546,7 +547,7 @@ export default {
   },
   created() {
     this.hasChildren = this.$store.state.enrolmentModule.hasChildren;
-    this.children = this.$store.state.enrolmentModule.children;
+    this.children = this.$store.state.enrolmentModule.children ? cloneDeep(this.$store.state.enrolmentModule.children) : [];;
     
     setTimeout(() => {
       this.pageLoaded = true;
