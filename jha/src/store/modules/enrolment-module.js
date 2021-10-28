@@ -397,6 +397,7 @@ export default {
     },
     [SET_CHILDREN](state, payload) {
       state.children = payload;
+    },
     // Contact info
     [SET_RES_ADDRESS_LINE_1](state, payload) {
       state.resAddressLine1 = payload;
@@ -742,6 +743,7 @@ export default {
     },
     [SET_CHILDREN]({ commit }, payload) {
       commit(SET_CHILDREN, payload);
+    },
     // Contact info
     [SET_RES_ADDRESS_LINE_1]({ commit }, payload) {
       commit(SET_RES_ADDRESS_LINE_1, payload);
