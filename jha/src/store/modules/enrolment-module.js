@@ -72,6 +72,9 @@ export const SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER = 'setSpousePreviousBCHealthNu
 export const SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION = 'setSpouseBeenReleasedFromInstitution';
 export const SET_SPOUSE_DISCHARGE_DATE = 'setSpouseDischargeDate';
 export const SET_SPOUSE_CRA_DOCUMENTS = 'setSpouseCRADocuments';
+// Child info
+export const SET_HAS_CHILDREN = 'setHasChildren';
+export const SET_CHILDREN = 'setChildren';
 
 export default {
   namespaced: true,
@@ -144,6 +147,9 @@ export default {
       spouseBeenReleasedFromInstitution: null,
       spouseDischargeDate: null,
       spouseCRADocuments: [],
+      // Child info
+      hasChildren: null,
+      children: [],
     };
     if (settings.useDummyData) {
       Object.assign(state, dummyData);
@@ -346,6 +352,13 @@ export default {
     [SET_SPOUSE_CRA_DOCUMENTS](state, payload) {
       state.spouseCRADocuments = payload;
     },
+    // Child info
+    [SET_HAS_CHILDREN](state, payload) {
+      state.hasChildren = payload;
+    },
+    [SET_CHILDREN](state, payload) {
+      state.children = payload;
+    },
   },
   actions: {
     [RESET_FORM]({ commit }) {
@@ -416,6 +429,9 @@ export default {
       commit(SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION, null);
       commit(SET_SPOUSE_DISCHARGE_DATE, null);
       commit(SET_SPOUSE_CRA_DOCUMENTS, []);
+      // Child info
+      commit(SET_HAS_CHILDREN, null);
+      commit(SET_CHILDREN, []);
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
       commit(SET_APPLICATION_UUID, payload);
@@ -611,6 +627,13 @@ export default {
     },
     [SET_SPOUSE_CRA_DOCUMENTS]({ commit }, payload) {
       commit(SET_SPOUSE_CRA_DOCUMENTS, payload);
+    },
+    // Child info
+    [SET_HAS_CHILDREN]({ commit }, payload) {
+      commit(SET_HAS_CHILDREN, payload);
+    },
+    [SET_CHILDREN]({ commit }, payload) {
+      commit(SET_CHILDREN, payload);
     },
   },
   getters: {}

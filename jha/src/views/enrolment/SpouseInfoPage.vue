@@ -425,6 +425,7 @@ export default {
   },
   data: () => {
     return {
+      pageLoaded: false,
       // Radio and select options
       radioGenderOptions: radioOptionsGender,
       radioOptionsNoYes: radioOptionsNoYes,
@@ -491,7 +492,11 @@ export default {
     this.spousePreviousBCHealthNumber = this.$store.state.enrolmentModule.spousePreviousBCHealthNumber;
     this.spouseBeenReleasedFromInstitution = this.$store.state.enrolmentModule.spouseBeenReleasedFromInstitution;
     this.spouseDischargeDate = this.$store.state.enrolmentModule.spouseDischargeDate;
-      
+    
+    setTimeout(() => {
+      this.pageLoaded = true;
+    }, 0);
+
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.SPOUSE_INFO_PAGE.path,
@@ -587,13 +592,17 @@ export default {
   watch: {
     // When the status is changed, clear the reason
     spouseStatus() {
-      this.spouseStatusReason = null;
-      this.spouseCitizenshipSupportDocumentType = null;
-      this.spouseCitizenshipSupportDocuments = [];
+      if (this.pageLoaded) {
+        this.spouseStatusReason = null;
+        this.spouseCitizenshipSupportDocumentType = null;
+        this.spouseCitizenshipSupportDocuments = [];
+      }
     },
     spouseStatusReason() {
-      this.spouseCitizenshipSupportDocumentType = null;
-      this.spouseCitizenshipSupportDocuments = [];
+      if (this.pageLoaded) {
+        this.spouseCitizenshipSupportDocumentType = null;
+        this.spouseCitizenshipSupportDocuments = [];
+      }
     }
   },
   methods: {

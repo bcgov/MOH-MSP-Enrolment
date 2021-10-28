@@ -1,4 +1,5 @@
 import { CanadianStatusReasons } from './immigration-status-types'
+import { ChildAgeTypes } from './child-age-types';
 
 export const radioOptionsCitizenStatusReasons = [
   {
@@ -70,4 +71,17 @@ export const radioOptionsNoYes = [
     label: 'Yes',
     value: 'Y',
   }
-]
+];
+
+export const radioOptionsChildAge = [
+  {
+    id: '0-18',
+    label: '0-18 years',
+    value: ChildAgeTypes.Child0To18,
+  },
+  {
+    id: '19-24',
+    label: '19-24 years (must be a full-time student)',
+    value: ChildAgeTypes.Child19To24,
+  }
+];

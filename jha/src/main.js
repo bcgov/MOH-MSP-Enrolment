@@ -5,6 +5,8 @@ import router from '@/router';
 import store from '@/store';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import {
+  faAngleDown,
+  faAngleRight,
   faArrowLeft,
   faArrowRight,
   faCalendarAlt,
@@ -22,6 +24,8 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import 'core-js/es/number'; // IE polyfill for `Number.isNaN()`.
 import { isIE } from '@/helpers/user-agent';
 
+library.add(faAngleDown);
+library.add(faAngleRight);
 library.add(faArrowLeft);
 library.add(faArrowRight);
 library.add(faCalendarAlt);

@@ -3,6 +3,7 @@ import {
   CanadianStatusReasons,
   StatusInCanada,
 } from '../../constants/immigration-status-types';
+import { ChildAgeTypes } from '../../constants/child-age-types'
 
 export default {
   // Account Holder info.
@@ -34,4 +35,46 @@ export default {
   ahArmedForcesDischargeDate: null,
   ahIsStudent: 'Y',
   ahWillStudentResideInBC: 'Y',
+  // Child info
+  hasChildren: true,
+  children: [
+    {
+      collapsed: false,
+      ageRange: ChildAgeTypes.Child0To18,
+      status: StatusInCanada.Citizen,
+      statusReason: CanadianStatusReasons.LivingInBCWithoutMSP,
+      citizenshipSupportDocumentType: SupportDocumentTypes.CanadianBirthCertificate,
+      citizenshipSupportDocuments: [{}],
+      isNameChanged: 'N',
+      nameChangeSupportDocumentType: null,
+      nameChangeSupportDocuments: [],
+      firstName: 'Timothy',
+      middleName: null,
+      lastName: 'Doe',
+      birthDate: new Date('2010-02-02'),
+      gender: 'M',
+      movedFrom: 'USA',
+      arrivalToBCDate: new Date('2010-02-02'),
+      arrivalToCanadaDate: new Date('2010-02-02'),
+      madePermanentMove: 'Y',
+      outsideBCLast12Months: 'N',
+      outsideBCLast12MonthsReason: null,
+      outsideBCLast12MonthsDestination: null,
+      outsideBCLast12MonthsDepartureDate: null,
+      outsideBCLast12MonthsReturnDate: null,
+      hasPreviousPHN: 'N',
+      previousPHN: null,
+      schoolName: null,
+      schoolAddressLine1: null,
+      schoolAddressLine2: null,
+      schoolAddressLine3: null,
+      schoolCity: null,
+      schoolProvinceOrState: null,
+      schoolCountry: null,
+      schoolPostalCode: null,
+      schoolDepartureDate: null,
+      schoolCompletionDate: null,
+      willResideInBCAfterStudies: null,
+    }
+  ]
 };
