@@ -2,9 +2,26 @@
   <div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Form</h1>
+        <h1>Fair PharmaCare Financial Information</h1>
         <hr class="mt-0"/>
-        <p>Form here.</p>
+        <CurrencyInput :label="`Enter your net income from ${noaYear} - see line 23600 of your Notice of Assessment or Reassessment from the Canada Revenue Agency (samples). For more information, please see Frequently Asked Questions.`"
+          v-model="ahIncome"
+          id="ah-income"
+          class="mt-3"/>
+        <CurrencyInput :label="`Enter your spouse/common-law partner's net income from ${noaYear} - see line 23600 of your Notice of Assessment or Reassessment from the Canada Revenue Agency (samples). For more information, please see Frequently Asked Questions.`"
+          v-model="spouseIncome"
+          id="spouse-income"
+          class="mt-3"/>
+        <h2 class="mt-5">Disability Information (if applicable)</h2>
+        <hr/>
+        <CurrencyInput :label="`How much did you report for a Registered Disability Savings Plan on your income tax return ${noaYear} (line 12500)?`"
+          v-model="ahDisabilitySavings"
+          id="ah-disability-savings"
+          class="mt-3"/>
+        <CurrencyInput :label="`How much did your spouse/common-law partner report for a Registered Disability Savings Plan on your income tax return ${noaYear} (line 12500)?`"
+          v-model="spouseDisabilitySavings"
+          id="spouse-disability-savings"
+          class="mt-3"/>
       </div>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
@@ -32,21 +49,33 @@ import {
 import logService from '@/services/log-service';
 import {
   ContinueBar,
+  CurrencyInput,
   PageContent,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
   name: 'FPCareInfoPage',
-  mixins: [pageContentMixin],
+  mixins: [
+    pageContentMixin,
+  ],
   components: {
     ContinueBar,
+    CurrencyInput,
     PageContent,
   },
   data: () => {
-    return {};
+    return {
+      noaYear: null,
+      ahIncome: null,
+      ahDisabilitySavings: null,
+      spouseIncome: null,
+      spouseDisabilitySavings: null,
+    };
   },
   created() {
+    this.noaYear = new Date().getFullYear() - 2;
+
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.FPCARE_INFO_PAGE.path,

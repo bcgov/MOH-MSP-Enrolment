@@ -27,6 +27,7 @@ export const SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS = 'setAHCitizenshipSupportDocu
 export const SET_AH_IS_NAME_CHANGED = 'setAHIsNameChanged';
 export const SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE = 'setAHNameChangeSupportDocumentType';
 export const SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS = 'setAHNameChangeSupportDocuments';
+export const SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH = 'setAHHasLivedInBCSinceBirth';
 export const SET_AH_IS_MOVED_TO_BC_PERMANENTLY = 'setAHIsMovedToBCPermanently';
 export const SET_AH_MOVE_FROM_ORIGIN = 'setAHMoveFromOrigin';
 export const SET_AH_ARRIVAL_DATE_IN_BC = 'setAHArrivalDateInBC';
@@ -75,6 +76,23 @@ export const SET_SPOUSE_CRA_DOCUMENTS = 'setSpouseCRADocuments';
 // Child info
 export const SET_HAS_CHILDREN = 'setHasChildren';
 export const SET_CHILDREN = 'setChildren';
+// Contact info
+export const SET_RES_ADDRESS_LINE_1 = 'setResAddressLine1';
+export const SET_RES_ADDRESS_LINE_2 = 'setResAddressLine2';
+export const SET_RES_ADDRESS_LINE_3 = 'setResAddressLine3';
+export const SET_RES_CITY = 'setResCity';
+export const SET_RES_PROVINCE = 'setResProvince';
+export const SET_RES_COUNTRY = 'setResCountry';
+export const SET_RES_POSTAL_CODE = 'setResPostalCode';
+export const SET_MAIL_ADDRESS_LINE_1 = 'setMailAddressLine1';
+export const SET_MAIL_ADDRESS_LINE_2 = 'setMailAddressLine2';
+export const SET_MAIL_ADDRESS_LINE_3 = 'setMailAddressLine3';
+export const SET_MAIL_CITY = 'setMailCity';
+export const SET_MAIL_PROVINCE = 'setMailProvince';
+export const SET_MAIL_COUNTRY = 'setMailCountry';
+export const SET_MAIL_POSTAL_CODE = 'setMailPostalCode';
+export const SET_IS_MAIL_SAME = 'setIsMailSame';
+export const SET_PHONE = 'setPhone';
 
 export default {
   namespaced: true,
@@ -102,6 +120,7 @@ export default {
       ahIsNameChanged: null,
       ahNameChangeSupportDocumentType: null,
       ahNameChangeSupportDocuments: [],
+      ahHasLivedInBCSinceBirth: null,
       ahIsMovedToBCPermanently: null,
       ahMoveFromOrigin: null,
       ahArrivalDateInBC: null,
@@ -150,6 +169,23 @@ export default {
       // Child info
       hasChildren: null,
       children: [],
+      // Contact info
+      resAddressLine1: null,
+      resAddressLine2: null,
+      resAddressLine3: null,
+      resCity: null,
+      resProvince: "British Columbia",
+      resCountry: "Canada",
+      resPostalCode: null,
+      mailAddressLine1: null,
+      mailAddressLine2: null,
+      mailAddressLine3: null,
+      mailCity: null,
+      mailProvince: "British Columbia",
+      mailCountry: "Canada",
+      mailPostalCode: null,
+      isMailSame: true,
+      phone: null,
     };
     if (settings.useDummyData) {
       Object.assign(state, dummyData);
@@ -218,6 +254,9 @@ export default {
     },
     [SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS](state, payload) {
       state.ahNameChangeSupportDocuments = payload;
+    },
+    [SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH](state, payload) {
+      state.ahHasLivedInBCSinceBirth = payload;
     },
     [SET_AH_IS_MOVED_TO_BC_PERMANENTLY](state, payload) {
       state.ahIsMovedToBCPermanently = payload;
@@ -358,6 +397,54 @@ export default {
     },
     [SET_CHILDREN](state, payload) {
       state.children = payload;
+    // Contact info
+    [SET_RES_ADDRESS_LINE_1](state, payload) {
+      state.resAddressLine1 = payload;
+    },
+    [SET_RES_ADDRESS_LINE_2](state, payload) {
+      state.resAddressLine2 = payload;
+    },
+    [SET_RES_ADDRESS_LINE_3](state, payload) {
+      state.resAddressLine3 = payload;
+    },
+    [SET_RES_CITY](state, payload) {
+      state.resCity = payload;
+    },
+    [SET_RES_PROVINCE](state, payload) {
+      state.resProvince = payload;
+    },
+    [SET_RES_COUNTRY](state, payload) {
+      state.resCountry = payload;
+    },
+    [SET_RES_POSTAL_CODE](state, payload) {
+      state.resPostalCode = payload;
+    },
+    [SET_MAIL_ADDRESS_LINE_1](state, payload) {
+      state.mailAddressLine1 = payload;
+    },
+    [SET_MAIL_ADDRESS_LINE_2](state, payload) {
+      state.mailAddressLine2 = payload;
+    },
+    [SET_MAIL_ADDRESS_LINE_3](state, payload) {
+      state.mailAddressLine3 = payload;
+    },
+    [SET_MAIL_CITY](state, payload) {
+      state.mailCity = payload;
+    },
+    [SET_MAIL_PROVINCE](state, payload) {
+      state.mailProvince = payload;
+    },
+    [SET_MAIL_COUNTRY](state, payload) {
+      state.mailCountry = payload;
+    },
+    [SET_MAIL_POSTAL_CODE](state, payload) {
+      state.mailPostalCode = payload;
+    },
+    [SET_IS_MAIL_SAME](state, payload) {
+      state.isMailSame = payload;
+    },
+    [SET_PHONE](state, payload) {
+      state.phone = payload;
     },
   },
   actions: {
@@ -384,6 +471,7 @@ export default {
       commit(SET_AH_IS_NAME_CHANGED, null);
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, null);
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS, []);
+      commit(SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH, null);
       commit(SET_AH_IS_MOVED_TO_BC_PERMANENTLY, null);
       commit(SET_AH_MOVE_FROM_ORIGIN, null);
       commit(SET_AH_ARRIVAL_DATE_IN_BC, null);
@@ -432,6 +520,23 @@ export default {
       // Child info
       commit(SET_HAS_CHILDREN, null);
       commit(SET_CHILDREN, []);
+      //contact info
+      commit(SET_RES_ADDRESS_LINE_1, null);
+      commit(SET_RES_ADDRESS_LINE_2, null);
+      commit(SET_RES_ADDRESS_LINE_3, null);
+      commit(SET_RES_CITY, null);
+      commit(SET_RES_PROVINCE, null);
+      commit(SET_RES_COUNTRY, null);
+      commit(SET_RES_POSTAL_CODE, null);
+      commit(SET_MAIL_ADDRESS_LINE_1, null);
+      commit(SET_MAIL_ADDRESS_LINE_2, null);
+      commit(SET_MAIL_ADDRESS_LINE_3, null);
+      commit(SET_MAIL_CITY, null);
+      commit(SET_MAIL_PROVINCE, null);
+      commit(SET_MAIL_COUNTRY, null);
+      commit(SET_MAIL_POSTAL_CODE, null);
+      commit(SET_IS_MAIL_SAME, true);
+      commit(SET_PHONE, null);
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
       commit(SET_APPLICATION_UUID, payload);
@@ -494,6 +599,9 @@ export default {
     },
     [SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS]({ commit }, payload) {
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS, payload);
+    },
+    [SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH]({ commit }, payload) {
+      commit(SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH, payload);
     },
     [SET_AH_IS_MOVED_TO_BC_PERMANENTLY]({ commit }, payload) {
       commit(SET_AH_IS_MOVED_TO_BC_PERMANENTLY, payload);
@@ -634,6 +742,54 @@ export default {
     },
     [SET_CHILDREN]({ commit }, payload) {
       commit(SET_CHILDREN, payload);
+    // Contact info
+    [SET_RES_ADDRESS_LINE_1]({ commit }, payload) {
+      commit(SET_RES_ADDRESS_LINE_1, payload);
+    },
+    [SET_RES_ADDRESS_LINE_2]({ commit }, payload) {
+      commit(SET_RES_ADDRESS_LINE_2, payload);
+    },
+    [SET_RES_ADDRESS_LINE_3]({ commit }, payload) {
+      commit(SET_RES_ADDRESS_LINE_3, payload);
+    },
+    [SET_RES_CITY]({ commit }, payload) {
+      commit(SET_RES_CITY, payload);
+    },
+    [SET_RES_PROVINCE]({ commit }, payload) {
+      commit(SET_RES_PROVINCE, payload);
+    },
+    [SET_RES_COUNTRY]({ commit }, payload) {
+      commit(SET_RES_COUNTRY, payload);
+    },
+    [SET_RES_POSTAL_CODE]({ commit }, payload) {
+      commit(SET_RES_POSTAL_CODE, payload);
+    },
+    [SET_MAIL_ADDRESS_LINE_1]({ commit }, payload) {
+      commit(SET_MAIL_ADDRESS_LINE_1, payload);
+    },
+    [SET_MAIL_ADDRESS_LINE_2]({ commit }, payload) {
+      commit(SET_MAIL_ADDRESS_LINE_2, payload);
+    },
+    [SET_MAIL_ADDRESS_LINE_3]({ commit }, payload) {
+      commit(SET_MAIL_ADDRESS_LINE_3, payload);
+    },
+    [SET_MAIL_CITY]({ commit }, payload) {
+      commit(SET_MAIL_CITY, payload);
+    },
+    [SET_MAIL_PROVINCE]({ commit }, payload) {
+      commit(SET_MAIL_PROVINCE, payload);
+    },
+    [SET_MAIL_COUNTRY]({ commit }, payload) {
+      commit(SET_MAIL_COUNTRY, payload);
+    },
+    [SET_MAIL_POSTAL_CODE]({ commit }, payload) {
+      commit(SET_MAIL_POSTAL_CODE, payload);
+    },
+    [SET_IS_MAIL_SAME]({ commit }, payload) {
+      commit(SET_IS_MAIL_SAME, payload);
+    },
+    [SET_PHONE]({ commit }, payload) {
+      commit(SET_PHONE, payload);
     },
   },
   getters: {}
