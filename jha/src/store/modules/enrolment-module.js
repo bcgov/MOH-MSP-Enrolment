@@ -73,6 +73,9 @@ export const SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER = 'setSpousePreviousBCHealthNu
 export const SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION = 'setSpouseBeenReleasedFromInstitution';
 export const SET_SPOUSE_DISCHARGE_DATE = 'setSpouseDischargeDate';
 export const SET_SPOUSE_CRA_DOCUMENTS = 'setSpouseCRADocuments';
+// Child info
+export const SET_HAS_CHILDREN = 'setHasChildren';
+export const SET_CHILDREN = 'setChildren';
 // Contact info
 export const SET_RES_ADDRESS_LINE_1 = 'setResAddressLine1';
 export const SET_RES_ADDRESS_LINE_2 = 'setResAddressLine2';
@@ -163,6 +166,9 @@ export default {
       spouseBeenReleasedFromInstitution: null,
       spouseDischargeDate: null,
       spouseCRADocuments: [],
+      // Child info
+      hasChildren: null,
+      children: [],
       // Contact info
       resAddressLine1: null,
       resAddressLine2: null,
@@ -385,6 +391,13 @@ export default {
     [SET_SPOUSE_CRA_DOCUMENTS](state, payload) {
       state.spouseCRADocuments = payload;
     },
+    // Child info
+    [SET_HAS_CHILDREN](state, payload) {
+      state.hasChildren = payload;
+    },
+    [SET_CHILDREN](state, payload) {
+      state.children = payload;
+    },
     // Contact info
     [SET_RES_ADDRESS_LINE_1](state, payload) {
       state.resAddressLine1 = payload;
@@ -505,6 +518,9 @@ export default {
       commit(SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION, null);
       commit(SET_SPOUSE_DISCHARGE_DATE, null);
       commit(SET_SPOUSE_CRA_DOCUMENTS, []);
+      // Child info
+      commit(SET_HAS_CHILDREN, null);
+      commit(SET_CHILDREN, []);
       //contact info
       commit(SET_RES_ADDRESS_LINE_1, null);
       commit(SET_RES_ADDRESS_LINE_2, null);
@@ -720,6 +736,13 @@ export default {
     },
     [SET_SPOUSE_CRA_DOCUMENTS]({ commit }, payload) {
       commit(SET_SPOUSE_CRA_DOCUMENTS, payload);
+    },
+    // Child info
+    [SET_HAS_CHILDREN]({ commit }, payload) {
+      commit(SET_HAS_CHILDREN, payload);
+    },
+    [SET_CHILDREN]({ commit }, payload) {
+      commit(SET_CHILDREN, payload);
     },
     // Contact info
     [SET_RES_ADDRESS_LINE_1]({ commit }, payload) {
