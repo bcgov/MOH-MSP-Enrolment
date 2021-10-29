@@ -76,6 +76,23 @@ export default {
       schoolDepartureDate: null,
       schoolCompletionDate: null,
       willResideInBCAfterStudies: null,
-    }
-  ]
+    },
+  ],
+  // ContactInfoPage
+  resAddressLine1: '1234 White House Ln.',
+  resAddressLine2: null,
+  resAddressLine3: null,
+  resCity: 'Victoria',
+  resProvince: "British Columbia",
+  resCountry: "Canada",
+  resPostalCode: "V8P 1A1",
+  mailAddressLine1: '1234 Black House Ln.',
+  mailAddressLine2: null,
+  mailAddressLine3: null,
+  mailCity: 'Vancouver',
+  mailProvince: "British Columbia",
+  mailCountry: "Canada",
+  mailPostalCode: 'V5T 4T4',
+  isMailSame: false,
+  phone: null,
 };
