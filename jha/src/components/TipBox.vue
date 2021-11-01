@@ -1,6 +1,6 @@
 <template>
   <div :class="'tip-container rounded p-3' + className">
-    <div>
+    <div v-if="title">
       <p class="title">{{ title }}</p>
     </div>
     <div>
@@ -15,7 +15,6 @@ export default {
   props: {
     title: {
       type: String,
-      default: 'Tip',
     },
     className: {
       type: String,
