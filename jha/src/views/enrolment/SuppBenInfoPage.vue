@@ -9,6 +9,7 @@
           You will be required to upload a copy (and your spouse's, if applicable) with your application.
         </h4>
         <hr class="mt-0"/>
+        <SuppBenWidget v-model="widgetInfo"/>
         <h2>Which year's Notice of Assessment or Reassessment will you upload?</h2>
         <Radio id="select-noa-year"
                 name="select-noa-year"
@@ -109,7 +110,6 @@ import {
 import { 
   radioOptionsNoYes, 
 }  from '@/constants/radio-options';
-
 import {
   MODULE_NAME as formModule,
   RESET_FORM,
@@ -124,6 +124,7 @@ import {
   DigitInput,
 } from 'common-lib-vue';
 import TipBox from '@/components/TipBox';
+import SuppBenWidget from '@/components/SuppBenWidget';
 import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
@@ -137,6 +138,7 @@ export default {
     FileUploader,
     DigitInput,
     TipBox,
+    SuppBenWidget,
   },
   data: () => {
     return {
@@ -144,13 +146,20 @@ export default {
       selectedNOAYear: '',
       radioOptionsNOAYears: [],
       ahNetIncome: '',
-      hasSpouse: '',
-      spouseNetIncome: '',
+      ahBirthDate: null,
+      hasSpouse: null,
+      spouseNetIncome: null,
+      spouseBirthDate: null,
+      children: [],
+      claimedChildCareExpenses: null,
       hasDisabilityCredit: '',
-      hasDisabilitySavings: '',
-      hasAttendantNursingExpenses: '',
+      selectedDisabilityRecipients: [],
+      numDisabilityChildren: null,
+      hasDisabilitySavings: null,
+      dspAmount: null,
+      hasAttendantNursingExpenses: null,
       selectedAttendantNursingRecipients: [],
-      numAttendantNursingChildren: '',
+      numAttendantNursingChildren: null,
       AttendantNursingReceipts: [],
       mediumStyles: mediumStyles,
       extraSmallStyles: extraSmallStyles,
@@ -219,7 +228,33 @@ export default {
       }
     },
   },
-  computed: {},
+  computed: {
+    widgetInfo() {
+      let info = {};
+      info.ahNetIncome = this.ahNetIncome;
+      info.ahBirthDate = this.ahBirthDate;
+      info.hasSpouse = this.hasSpouse;
+      info.spouseNetIncome = this.spouseNetIncome;
+      info.spouseBirthDate = this.spouseBirthDate;
+      info.children = this.children;
+      info.claimedChildCareExpenses = this.claimedChildCareExpenses;
+      info.ahDisabilityCredit = this.hasDisabilityCredit === 'Y'
+                                && this.selectedDisabilityRecipients.includes('ah');
+      info.spouseDisabilityCredit = this.hasDisabilityCredit === 'Y'
+                                && this.selectedDisabilityRecipients.includes('spouse');
+      info.childDisabilityCredit = this.hasDisabilityCredit === 'Y'
+                                && this.selectedDisabilityRecipients.includes('child');                          
+      info.numDisabilityChildren = this.numDisabilityChildren;
+      info.dspAmount = (this.hasDisabilitySavings === 'Y') ? this.dspAmount : null;
+      info.ahAttendantNursingExpenses = this.hasAttendantNursingExpenses === 'Y'
+                                && this.selectedAttendantNursingRecipients.includes('ah');
+      info.spouseAttendantNursingExpenses = this.hasAttendantNursingExpenses === 'Y'
+                                && this.selectedAttendantNursingRecipients.includes('spouse');
+      info.childAttendantNursingExpenses = this.hasAttendantNursingExpenses === 'Y'
+                                && this.selectedAttendantNursingRecipients.includes('child'); 
+      return info;
+    },
+  },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);

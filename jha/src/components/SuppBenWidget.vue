@@ -44,10 +44,10 @@
           {{currencyString(spouse65Deduction)}}
         </td>
       </tr>
-      <tr v-if="childDeductions > 0">
+      <tr v-if="childDeduction > 0">
         <td>Children</td>
         <td>
-          {{currencyString(childDeductions)}}
+          {{currencyString(childDeduction)}}
         </td>
       </tr>
       <tr v-if="claimedChildCareExpensesReduction > 0">
@@ -162,7 +162,7 @@ import {
 } from 'common-lib-vue';
 
 export default {
-  name: "SupBenWidget",
+  name: "SuppBenWidget",
   props: {
     value: {
       type: Object,
@@ -184,10 +184,10 @@ export default {
     },
     stringToFloat(stringNumber) {
       return (!!stringNumber && !isNaN(stringNumber)) ? 
-        parseFloat(removeCommas(stringNumber)) : 0;
+        parseFloat(this.removeCommas(stringNumber)) : 0;
     },
-    ageOver65(birthdate) {
-      return (birthDate instanceof Date) && (65 <= calculateAge(birthdate));
+    ageOver65(birthDate) {
+      return (birthDate instanceof Date) && (65 <= calculateAge(birthDate));
     },
     currencyString(num) {
       return (num >= 0) ?
@@ -198,9 +198,9 @@ export default {
   computed: {
     // Income
     totalHouseholdIncome() {
-      let income = stringToFloat(this.value.ahNetIncome);
+      let income = this.stringToFloat(this.value.ahNetIncome);
       if( this.value.hasSpouse) {
-        income += stringToFloat(this.value.spouseNetIncome);
+        income += this.stringToFloat(this.value.spouseNetIncome);
       }
       income = (income > 0) ? income : 0;
       this.value.totalHouseholdIncome = income;
@@ -208,7 +208,7 @@ export default {
     },
     // Deductions
     ah65Deduction() {
-      let deduction = ageOver65(this.value.ahBirthdate) ? 3000 : 0;
+      let deduction = this.ageOver65(this.value.ahBirthDate) ? 3000 : 0;
       this.value.ah65Deduction = deduction;
       return deduction;
     },
@@ -218,24 +218,27 @@ export default {
       return deduction;
     },
     spouse65Deduction() {
-      let deduction = ageOver65(this.value.spouseBirthdate) ? 3000 : 0;
+      let deduction = this.ageOver65(this.value.spouseBirthDate) ? 3000 : 0;
       this.value.spouse65Deduction = deduction;
       return deduction;
     },
+    numChildren() {
+      return !!this.value.children ?  this.value.children.length : 0;
+    },
     childDeduction() {
-      let deduction = !!this.value.children ? this.value.children.length() * 3000: 0;
+      let deduction = !!this.value.children ? this.numChildren * 3000: 0;
       this.value.childDeduction = deduction;
       return deduction;
     },
     claimedChildCareExpensesReduction() {
-      let expenses = stringToFloat(this.value.claimedChildCareExpenses);
+      let expenses = this.stringToFloat(this.value.claimedChildCareExpenses);
       expenses = expenses > 0 ? ((expenses / 2) * -1): 0;
-      this.value.childAdjustedDeduction = (((expenses * -1) < this.childDeductions) ?  
-                    (this.childDeductions + expenses) : 0);
+      this.value.childAdjustedDeduction = (((expenses * -1) < this.childDeduction) ?  
+                    (this.childDeduction + expenses) : 0);
       return expenses;
     },
     ahDisabilityCreditDeduction() {
-      let deduction = !!this.value.ahDisabilityCredit ? 3000: 0;
+      let deduction = this.value.ahDisabilityCredit ? 3000: 0;
       this.value.ahDisabilityCreditDeduction = deduction;
       return deduction;
     },
@@ -246,9 +249,10 @@ export default {
     },
     childDisabilityCreditDeduction() {
       let deduction = 0;
-      if ( !!this.value.numDisabilityChildren
+      if (this.value.childDisabilityCredit
+          && !!this.value.numDisabilityChildren
           && this.value.numDisabilityChildren > 0
-          && this.value.numDisabilityChildren <= this.value.children.length()
+          && this.value.numDisabilityChildren <= this.numChildren
         ) {
         deduction = this.value.numDisabilityChildren * 3000;
       }
@@ -256,26 +260,27 @@ export default {
       return deduction;
     },
     dspDeduction() {
-      let deduction = stringToFloat(this.value.dspDeduction);
+      let deduction = this.stringToFloat(this.value.dspAmount);
       deduction = (deduction > 0) ? deduction: 0;
       this.value.dspDeduction = deduction;
       return deduction;
     },
     ahAttendantNursingDeduction() {
-      let deduction = !!this.value.ahAttendantNursingCredit ? 3000: 0;
+      let deduction = !!this.value.ahAttendantNursingExpenses ? 3000: 0;
       this.value.ahAttendantNursingDeduction = deduction;
       return deduction;
     },
     spouseAttendantNursingDeduction() {
-      let deduction = !!this.value.spouseAttendantNursingCredit ? 3000: 0;
+      let deduction = !!this.value.spouseAttendantNursingExpenses ? 3000: 0;
       this.value.spouseAttendantNursingDeduction = deduction;
       return deduction;
     },
     childAttendantNursingDeduction() {
       let deduction = 0;
-      if ( !!this.value.numAttendantNursingChildren
+      if (this.value.childAttendantNursingExpenses
+          && !!this.value.numAttendantNursingChildren
           && this.value.numAttendantNursingChildren > 0
-          && this.value.numAttendantNursingChildren <= this.value.children.length()
+          && this.value.numAttendantNursingChildren <= this.numChildren
         ) {
         deduction = this.value.numAttendantNursingChildren * 3000;
       }
@@ -287,8 +292,8 @@ export default {
       let  deductions =  this.ah65Deduction
         + this.spouseDeduction
         + this.spouse65Deduction
-        + (((this.claimedChildCareExpensesReduction * -1) < this.childDeductions) ?  
-              (this.childDeductions + this.claimedChildCareExpensesReduction)
+        + (((this.claimedChildCareExpensesReduction * -1) < this.childDeduction) ?  
+              (this.childDeduction + this.claimedChildCareExpensesReduction)
               : 0)
         + this.ahDisabilityCreditDeduction
         + this.spouseDisabilityCreditDeduction
