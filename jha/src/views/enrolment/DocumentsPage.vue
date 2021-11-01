@@ -113,7 +113,7 @@ export default {
       // Navigate to next path.
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.REVIEW_PAGE.path
+        enrolmentRoutes.CONTACT_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);

@@ -98,7 +98,7 @@ export default {
     },
     navigateToNextPage() {
       // Navigate to next path.
-      const nextPath = this.$store.state.enrolmentModule.isApplyingForSuppBen ? enrolmentRoutes.SUPP_BEN_INFO_PAGE.path : enrolmentRoutes.DOCUMENTS_PAGE.path;
+      const nextPath = this.$store.state.enrolmentModule.isApplyingForSuppBen ? enrolmentRoutes.SUPP_BEN_INFO_PAGE.path : enrolmentRoutes.CONTACT_INFO_PAGE.path;
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
         nextPath
