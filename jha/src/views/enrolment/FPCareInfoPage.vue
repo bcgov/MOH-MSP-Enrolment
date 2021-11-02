@@ -4,27 +4,57 @@
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Fair PharmaCare Financial Information</h1>
         <hr class="mt-0"/>
-        <CurrencyInput :label="`Enter your net income from ${noaYear} - see line 23600 of your Notice of Assessment or Reassessment from the Canada Revenue Agency (samples). For more information, please see Frequently Asked Questions.`"
-          v-model="ahIncome"
-          id="ah-income"
-          class="mt-3"/>
-        <CurrencyInput :label="`Enter your spouse/common-law partner's net income from ${noaYear} - see line 23600 of your Notice of Assessment or Reassessment from the Canada Revenue Agency (samples). For more information, please see Frequently Asked Questions.`"
-          v-model="spouseIncome"
-          id="spouse-income"
-          class="mt-3"/>
-        <h2 class="mt-5">Disability Information (if applicable)</h2>
-        <hr/>
-        <CurrencyInput :label="`How much did you report for a Registered Disability Savings Plan on your income tax return ${noaYear} (line 12500)?`"
-          v-model="ahDisabilitySavings"
-          id="ah-disability-savings"
-          class="mt-3"/>
-        <CurrencyInput :label="`How much did your spouse/common-law partner report for a Registered Disability Savings Plan on your income tax return ${noaYear} (line 12500)?`"
-          v-model="spouseDisabilitySavings"
-          id="spouse-disability-savings"
-          class="mt-3"/>
+        <div class="row">
+          <div class="col-md-7">
+            <div>
+              <CurrencyInput :label="`Enter your net income from ${noaYear} - see line 23600 of your Notice of Assessment or Reassessment from the Canada Revenue Agency (samples). For more information, please see Frequently Asked Questions.`"
+                v-model="ahIncome"
+                id="ah-income"
+                @blur="handleBlurField($v.ahIncome)"/>
+              <div class="text-danger"
+                v-if="$v.ahIncome.$dirty
+                  && !$v.ahIncome.required"
+                aria-live="assertive">Your net income from {{noaYear}} is required.</div>
+            </div>
+            <div v-if="hasSpouse">
+              <CurrencyInput :label="`Enter your spouse/common-law partner's net income from ${noaYear} - see line 23600 of your spouse/common-law partner's Notice of Assessment or Reassessment from the Canada Revenue Agency (samples). For more information, please see Frequently Asked Questions.`"
+                v-model="spouseIncome"
+                id="spouse-income"
+                class="mt-3"
+                @blur="handleBlurField($v.spouseIncome)"/>
+              <div class="text-danger"
+                v-if="$v.spouseIncome.$dirty
+                  && hasSpouse
+                  && !$v.spouseIncome.required"
+                aria-live="assertive">Your spouse/common-law partner's net income from {{noaYear}} is required.</div>
+            </div>
+            <h2 class="mt-5">Disability Information (if applicable)</h2>
+            <hr/>
+            <div>
+              <CurrencyInput :label="`How much did you report for a Registered Disability Savings Plan on your income tax return ${noaYear} (line 12500)?`"
+                v-model="ahRDSP"
+                id="ah-disability-savings"
+                class="mt-3"
+                @blur="handleBlurField($v.ahRDSP)"/>
+            </div>
+            <div v-if="hasSpouse">
+              <CurrencyInput :label="`How much did your spouse/common-law partner report for a Registered Disability Savings Plan on your income tax return ${noaYear} (line 12500)?`"
+                v-model="spouseRDSP"
+                id="spouse-disability-savings"
+                class="mt-3"
+                @blur="handleBlurField($v.spouseRDSP)"/>
+            </div>
+          </div>
+          <div class="col-md-5 mt-4 mt-md-0">
+            <TipBox>
+              <FPCWidget v-model="widgetData"/>
+            </TipBox>
+          </div>
+        </div>
       </div>
     </PageContent>
-    <ContinueBar @continue="validateFields()" />
+    <ContinueBar @continue="validateFields()"
+      class="continue-bar" />
   </div>
 </template>
 
@@ -53,6 +83,9 @@ import {
   PageContent,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
+import TipBox from '@/components/TipBox.vue';
+import FPCWidget from '@/components/enrolment/FPCWidget.vue';
+import { required } from 'vuelidate/lib/validators';
 
 export default {
   name: 'FPCareInfoPage',
@@ -62,15 +95,17 @@ export default {
   components: {
     ContinueBar,
     CurrencyInput,
+    FPCWidget,
     PageContent,
+    TipBox,
   },
   data: () => {
     return {
       noaYear: null,
       ahIncome: null,
-      ahDisabilitySavings: null,
+      ahRDSP: null,
       spouseIncome: null,
-      spouseDisabilitySavings: null,
+      spouseRDSP: null,
     };
   },
   created() {
@@ -83,7 +118,17 @@ export default {
     );
   },
   validations() {
-    const validations = {};
+    const validations = {
+      ahIncome: {
+        required,
+      },
+      ahRDSP: {},
+      spouseIncome: {},
+      spouseRDSP: {},
+    };
+    if (this.hasSpouse) {
+      validations.spouseIncome.required = required;
+    }
     return validations;
   },
   methods: {
@@ -108,8 +153,25 @@ export default {
       this.$router.push(toPath);
       scrollTo(0);
     },
+    handleBlurField(validationObject) {
+      if (validationObject) {
+        validationObject.$touch();
+      }
+    },
   },
-  computed: {},
+  computed: {
+    hasSpouse() {
+      return this.$store.state.enrolmentModule.hasSpouse === 'Y';
+    },
+    widgetData() {
+      return {
+        ahIncome: this.ahIncome,
+        ahRDSP: this.ahRDSP,
+        spouseIncome: this.spouseIncome,
+        spouseRDSP: this.spouseRDSP,
+      };
+    }
+  },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
@@ -138,4 +200,7 @@ export default {
 </script>
 
 <style scoped>
+.continue-bar {
+  z-index: 4; /* Fixes Bootstrap input group overlapping ContinueBar component. */
+}
 </style>
