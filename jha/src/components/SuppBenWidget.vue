@@ -145,10 +145,10 @@
         </tr>
       </tbody>
     </table>
-    <p v-if="adjustedIncome > 0 && incomeUnderThreshhold">
+    <p v-if="adjustedIncome > 0 && incomeUnderThreshhold" class="text-success font-weight-bold">
       It is likely that you will qualify for Supplementary Benefits.
     </p>
-    <p v-else>
+    <p v-else class="text-danger font-weight-bold" aria-live="assertive">
       You might not qualify for Supplementary Benefits.
     </p>
   </div>
