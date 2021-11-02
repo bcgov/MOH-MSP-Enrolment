@@ -33,6 +33,13 @@
             v-model="spouseNetIncome"
             :inputStyle='mediumStyles'/>
         </div>
+        <div v-if="children.length > 0">
+          <p class="mt-4 mb-1 font-weight-bolder">How much did you claim for child care expenses in {{selectedNOAYear}}?</p>
+          <CurrencyInput id="child-care-expenses"
+            label="See line 21400 of your Notice of Assessment or Reassessment."
+            v-model="claimedChildCareExpenses"
+            :inputStyle='mediumStyles'/>
+        </div>
         <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim a disability tax credit in {{selectedNOAYear}}?</p>
         <Radio id="has-disability-credit"
           name="has-disability-credit"
@@ -41,7 +48,16 @@
           :items="radioOptionsNoYes"
           @blur="handleBlurField($v.hasDisabilityCredit)"/>
         <div class="ml-5" v-if="hasDisabilityCredit === 'Y'">
-          <h1>PLACE HOLDER FOR SELECTION LIST</h1>
+          <CheckboxGroup id="selected-disability-credit-recipients"
+            name="selected-disability-credit-recipients"
+            label="Who claimed the disability tax credit?"
+            v-model="selectedDisabilityRecipients"
+            :items="selectOptionsFamilyMembers"/>
+          <DigitInput v-if="selectedDisabilityRecipients.includes('child')"
+            id="num-attendant-nursing-children"
+            label="How many of your children are eligible for a disability tax credit?"
+            v-model="numDisabilityChildren"
+            :inputStyle="extraSmallStyles"/>
         </div>
         <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your Medical Services Plan account have a Registered Disability Savings Plan?</p>
         <Radio id="has-disability-savings"
@@ -49,6 +65,13 @@
           v-model="hasDisabilitySavings"
           :items="radioOptionsNoYes"
           @blur="handleBlurField($v.hasDisabilitySavings)"/>
+        <div class="ml-5" v-if="hasDisabilitySavings === 'Y'">
+          <p class="mt-4 mb-1 font-weight-bolder">How much did you report for a Registered Disability Savings Plan in {{selectedNOAYear}}?</p>
+          <CurrencyInput id="disability-savings-plan"
+            label="See Line 12500 of the Notice of Assessment or Reassessment"
+            v-model="dspAmount"
+            :inputStyle='mediumStyles'/>
+        </div>
         <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
         <Radio id="has-attendant-nursing-expenses"
           name="has-attendant-nursing-expenses"
@@ -57,7 +80,11 @@
           :items="radioOptionsNoYes"
           @blur="handleBlurField($v.hasAttendantNursingExpenses)"/>
         <div class="ml-5" v-if="hasAttendantNursingExpenses === 'Y'">
-          <h1>PLACE HOLDER FOR SELECTION LIST</h1>
+          <CheckboxGroup id="selected-attendant-nursing-recipients"
+            name="selected-attendant-nursing-recipients"
+            label="Who claimed the attendant or nursing home expenses?"
+            v-model="selectedAttendantNursingRecipients"
+            :items="selectOptionsFamilyMembers"/>
           <DigitInput v-if="selectedAttendantNursingRecipients.includes('child')"
             id="num-attendant-nursing-children"
             label="How many children claimed attendant care expenses?"
@@ -111,6 +138,10 @@ import {
   radioOptionsNoYes, 
 }  from '@/constants/radio-options';
 import {
+  selectOptionsFamilyMembers
+} from '@/constants/select-options';
+
+import {
   MODULE_NAME as formModule,
   RESET_FORM,
 } from '@/store/modules/enrolment-module';
@@ -122,6 +153,7 @@ import {
   CurrencyInput,
   FileUploader,
   DigitInput,
+  CheckboxGroup,
 } from 'common-lib-vue';
 import TipBox from '@/components/TipBox';
 import SuppBenWidget from '@/components/SuppBenWidget';
@@ -137,6 +169,7 @@ export default {
     CurrencyInput,
     FileUploader,
     DigitInput,
+    CheckboxGroup,
     TipBox,
     SuppBenWidget,
   },
@@ -164,6 +197,7 @@ export default {
       mediumStyles: mediumStyles,
       extraSmallStyles: extraSmallStyles,
       radioOptionsNoYes: radioOptionsNoYes,
+      selectOptionsFamilyMembers: selectOptionsFamilyMembers,
     };
   },
   created() {
@@ -176,11 +210,13 @@ export default {
     this.ahNetIncome = '';
     this.hasSpouse = 'Y';
     this.spouseNetIncome = '';
-    this.hasDisabilityCredit = 'Y';
+    this.children = ['test1', 'test2', 'test3']
+    this.hasDisabilityCredit = 'N';
+    this.selectedDisabilityRecipients = [];
     this.hasDisabilitySavings = 'N';
-    this.hasAttendantNursingExpenses = 'Y';
-    this.selectedAttendantNursingRecipients = ['child'];
-    this.numAttendantNursingChildren = '1';
+    this.hasAttendantNursingExpenses = 'N';
+    this.selectedAttendantNursingRecipients = [];
+    this.numAttendantNursingChildren = '';
     this.AttendantNursingReceipts = [];
     this.currentYear = (new Date()).getFullYear();
     this.selectedNOAYear = `${this.currentYear - 1}`;
@@ -252,6 +288,7 @@ export default {
                                 && this.selectedAttendantNursingRecipients.includes('spouse');
       info.childAttendantNursingExpenses = this.hasAttendantNursingExpenses === 'Y'
                                 && this.selectedAttendantNursingRecipients.includes('child'); 
+      info.numAttendantNursingChildren = this.numAttendantNursingChildren
       return info;
     },
   },

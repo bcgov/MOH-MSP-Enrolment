@@ -1,7 +1,7 @@
 <template>
   <div :class="'widget-container rounded p-3' + className">
     <h2>Eligibility Calculator</h2>
-    <table class="table">
+    <table class="table table-borderless">
       <tbody>
         <tr>
           <td>
@@ -18,7 +18,7 @@
     </table>
     <hr style="border: 1px solid black" />
 
-    <table class="table">
+    <table class="table table-borderless">
       <tr>
         <th>
           <h3>Deductions</h3>
@@ -50,7 +50,7 @@
           {{currencyString(childDeduction)}}
         </td>
       </tr>
-      <tr v-if="claimedChildCareExpensesReduction > 0">
+      <tr v-if="claimedChildCareExpensesReduction < 0">
         <td>
           -50% child care expense claimed on income tax
         </td>
@@ -128,7 +128,7 @@
     </table>
     <hr style="border: 1px solid black;">
 
-    <table class="table">
+    <table class="table table-borderless">
       <tbody>
         <tr>
           <td>
@@ -149,7 +149,7 @@
       It is likely that you will qualify for Supplementary Benefits.
     </p>
     <p v-else>
-      "You might not qualify for Supplementary Benefits."
+      You might not qualify for Supplementary Benefits.
     </p>
   </div>
 </template>

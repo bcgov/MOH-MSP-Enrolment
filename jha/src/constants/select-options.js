@@ -1,6 +1,24 @@
 import { StatusInCanada } from './immigration-status-types';
 import { SupportDocumentTypes } from './document-types';
 
+export const selectOptionsFamilyMembers = [
+  {
+    id: 'ah',
+    value: 'ah',
+    label: 'Myself'
+  },
+  {
+    id: 'spouse',
+    value: 'spouse',
+    label: 'My spouse/common-law partner'
+  },
+  {
+    id: 'child',
+    value: 'child',
+    label: 'My child'
+  },
+];
+
 export const selectOptionsImmigrationStatus = [
   {
     value: StatusInCanada.Citizen,
