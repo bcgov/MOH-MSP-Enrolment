@@ -9,68 +9,74 @@
           You will be required to upload a copy (and your spouse's, if applicable) with your application.
         </h4>
         <hr class="mt-0"/>
-        <SuppBenWidget v-model="widgetInfo"/>
-        <h2>Which year's Notice of Assessment or Reassessment will you upload?</h2>
-        <Radio id="select-noa-year"
-                name="select-noa-year"
-                class="mt-3"
-                v-model="selectedNOAYear"
-                :items="radioOptionsNOAYears"
-                @blur="handleBlurField($v.selectedNOAYear)"/>
-        <div v-if="selectedNOAYear === `${this.currentYear - 2}`" class="text-danger">
-          <font-awesome-icon icon="exclamation-circle"/>
-          Selecting this Notice of Assessment will allow you to apply for supplementary benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
-        </div>
-        <p class="mt-2 mb-1 font-weight-bolder">Enter your 2020 net income.</p>
-        <CurrencyInput id="ah-net-income"
-          label="See line 23600 of your Notice of Assessment or Reassessment."
-          v-model="ahNetIncome"
-          :inputStyle='mediumStyles'/>
-        <div v-if="hasSpouse === 'Y'">
-          <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's 2020 net income.</p>
-          <CurrencyInput id="spouse-net-income"
-            label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
-            v-model="spouseNetIncome"
-            :inputStyle='mediumStyles'/>
-        </div>
-        <div v-if="children.length > 0">
-          <p class="mt-4 mb-1 font-weight-bolder">How much did you claim for child care expenses in {{selectedNOAYear}}?</p>
-          <CurrencyInput id="child-care-expenses"
-            label="See line 21400 of your Notice of Assessment or Reassessment."
-            v-model="claimedChildCareExpenses"
-            :inputStyle='mediumStyles'/>
-        </div>
-        <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim a disability tax credit in {{selectedNOAYear}}?</p>
-        <Radio id="has-disability-credit"
-          name="has-disability-credit"
-          label="See line 31600, 31800, or 32600 of your Notice of Assessment or Reassessment."
-          v-model="hasDisabilityCredit"
-          :items="radioOptionsNoYes"
-          @blur="handleBlurField($v.hasDisabilityCredit)"/>
-        <div class="ml-5" v-if="hasDisabilityCredit === 'Y'">
-          <CheckboxGroup id="selected-disability-credit-recipients"
-            name="selected-disability-credit-recipients"
-            label="Who claimed the disability tax credit?"
-            v-model="selectedDisabilityRecipients"
-            :items="selectOptionsFamilyMembers"/>
-          <DigitInput v-if="selectedDisabilityRecipients.includes('child')"
-            id="num-attendant-nursing-children"
-            label="How many of your children are eligible for a disability tax credit?"
-            v-model="numDisabilityChildren"
-            :inputStyle="extraSmallStyles"/>
-        </div>
-        <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your Medical Services Plan account have a Registered Disability Savings Plan?</p>
-        <Radio id="has-disability-savings"
-          name="has-disability-savings"
-          v-model="hasDisabilitySavings"
-          :items="radioOptionsNoYes"
-          @blur="handleBlurField($v.hasDisabilitySavings)"/>
-        <div class="ml-5" v-if="hasDisabilitySavings === 'Y'">
-          <p class="mt-4 mb-1 font-weight-bolder">How much did you report for a Registered Disability Savings Plan in {{selectedNOAYear}}?</p>
-          <CurrencyInput id="disability-savings-plan"
-            label="See Line 12500 of the Notice of Assessment or Reassessment"
-            v-model="dspAmount"
-            :inputStyle='mediumStyles'/>
+        <div class="row">
+          <div class="col-md-8">
+            <h2>Which year's Notice of Assessment or Reassessment will you upload?</h2>
+            <Radio id="select-noa-year"
+                    name="select-noa-year"
+                    class="mt-3"
+                    v-model="selectedNOAYear"
+                    :items="radioOptionsNOAYears"
+                    @blur="handleBlurField($v.selectedNOAYear)"/>
+            <div v-if="selectedNOAYear === `${this.currentYear - 2}`" class="text-danger">
+              <font-awesome-icon icon="exclamation-circle"/>
+              Selecting this Notice of Assessment will allow you to apply for supplementary benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
+            </div>
+            <p class="mt-2 mb-1 font-weight-bolder">Enter your 2020 net income.</p>
+            <CurrencyInput id="ah-net-income"
+              label="See line 23600 of your Notice of Assessment or Reassessment."
+              v-model="ahNetIncome"
+              :inputStyle='mediumStyles'/>
+            <div v-if="hasSpouse === 'Y'">
+              <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's 2020 net income.</p>
+              <CurrencyInput id="spouse-net-income"
+                label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
+                v-model="spouseNetIncome"
+                :inputStyle='mediumStyles'/>
+            </div>
+            <div v-if="children.length > 0">
+              <p class="mt-4 mb-1 font-weight-bolder">How much did you claim for child care expenses in {{selectedNOAYear}}?</p>
+              <CurrencyInput id="child-care-expenses"
+                label="See line 21400 of your Notice of Assessment or Reassessment."
+                v-model="claimedChildCareExpenses"
+                :inputStyle='mediumStyles'/>
+            </div>
+            <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim a disability tax credit in {{selectedNOAYear}}?</p>
+            <Radio id="has-disability-credit"
+              name="has-disability-credit"
+              label="See line 31600, 31800, or 32600 of your Notice of Assessment or Reassessment."
+              v-model="hasDisabilityCredit"
+              :items="radioOptionsNoYes"
+              @blur="handleBlurField($v.hasDisabilityCredit)"/>
+            <div class="ml-5" v-if="hasDisabilityCredit === 'Y'">
+              <CheckboxGroup id="selected-disability-credit-recipients"
+                name="selected-disability-credit-recipients"
+                label="Who claimed the disability tax credit?"
+                v-model="selectedDisabilityRecipients"
+                :items="selectOptionsFamilyMembers"/>
+              <DigitInput v-if="selectedDisabilityRecipients.includes('child')"
+                id="num-attendant-nursing-children"
+                label="How many of your children are eligible for a disability tax credit?"
+                v-model="numDisabilityChildren"
+                :inputStyle="extraSmallStyles"/>
+            </div>
+            <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your Medical Services Plan account have a Registered Disability Savings Plan?</p>
+            <Radio id="has-disability-savings"
+              name="has-disability-savings"
+              v-model="hasDisabilitySavings"
+              :items="radioOptionsNoYes"
+              @blur="handleBlurField($v.hasDisabilitySavings)"/>
+            <div class="ml-5" v-if="hasDisabilitySavings === 'Y'">
+              <p class="mt-4 mb-1 font-weight-bolder">How much did you report for a Registered Disability Savings Plan in {{selectedNOAYear}}?</p>
+              <CurrencyInput id="disability-savings-plan"
+                label="See Line 12500 of the Notice of Assessment or Reassessment"
+                v-model="dspAmount"
+                :inputStyle='mediumStyles'/>
+            </div>
+          </div>
+          <div class="col-md-4">
+            <SuppBenWidget v-model="widgetData"/>
+          </div>
         </div>
         <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
         <Radio id="has-attendant-nursing-expenses"
@@ -264,8 +270,21 @@ export default {
       }
     },
   },
+  watch: {
+    selectedNOAYear: function(value) {
+      if (this.fpcComplete && value === `${this.currentYear - 2}`) {
+        // LOAD INCOME VALUES FROM FPC INPUT*********************************************
+      } else {
+        this.ahNetIncome = '';
+        this.spouseNetIncome = '';
+      }
+    },
+  },
   computed: {
-    widgetInfo() {
+    fpcComplete() {
+      return this.$store.state.enrolmentModule.isApplyingForFPCare;
+    },
+    widgetData() {
       let info = {};
       info.ahNetIncome = this.ahNetIncome;
       info.ahBirthDate = this.ahBirthDate;
