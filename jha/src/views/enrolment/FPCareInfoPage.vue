@@ -73,8 +73,12 @@ import {
   getConvertedPath,
 } from '@/helpers/url';
 import {
-  MODULE_NAME as formModule,
+  MODULE_NAME as enrolmentModule,
   RESET_FORM,
+  SET_AH_FPC_INCOME,
+  SET_AH_FPC_RDSP,
+  SET_SPOUSE_FPC_INCOME,
+  SET_SPOUSE_FPC_RDSP,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
@@ -111,6 +115,11 @@ export default {
   created() {
     this.noaYear = new Date().getFullYear() - 2;
 
+    this.ahIncome = this.$store.state.enrolmentModule.ahFPCIncome;
+    this.ahRDSP = this.$store.state.enrolmentModule.ahFPCRDSP;
+    this.spouseIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
+    this.spouseRDSP = this.$store.state.enrolmentModule.spouseFPCRDSP;
+
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.FPCARE_INFO_PAGE.path,
@@ -139,7 +148,14 @@ export default {
         return;
       }
 
+      this.saveData();
       this.navigateToNextPage();
+    },
+    saveData() {
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_FPC_INCOME}`, this.ahIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_FPC_RDSP}`, this.ahRDSP);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_FPC_INCOME}`, this.spouseIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_FPC_RDSP}`, this.spouseRDSP);
     },
     navigateToNextPage() {
       // Navigate to next path.
@@ -176,7 +192,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
     if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(formModule + '/' + RESET_FORM);
+      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
       next();
     } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
       next();
