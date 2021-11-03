@@ -44,8 +44,8 @@ export const SET_AH_ARMED_FORCES_DISCHARGE_DATE = 'setArmedForcesDischargeDate';
 export const SET_AH_IS_STUDENT = 'setAHIsStudent';
 export const SET_AH_WILL_STUDENT_RESIDE_IN_BC = 'setAHWillStudentResideInBC';
 export const SET_AH_CRA_DOCUMENTS = 'setAHCRADocuments';
-export const SET_AH_INCOME = 'setAHIncome';
-export const SET_AH_RDSP = 'setAHRDSP';
+export const SET_AH_FPC_INCOME = 'setAHFPCIncome';
+export const SET_AH_FPC_RDSP = 'setAHFPCRDSP';
 // Spouse info
 export const SET_HAS_SPOUSE = 'setHasSpouse';
 export const SET_SPOUSE_STATUS = 'setSpouseStatus';
@@ -75,8 +75,8 @@ export const SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER = 'setSpousePreviousBCHealthNu
 export const SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION = 'setSpouseBeenReleasedFromInstitution';
 export const SET_SPOUSE_DISCHARGE_DATE = 'setSpouseDischargeDate';
 export const SET_SPOUSE_CRA_DOCUMENTS = 'setSpouseCRADocuments';
-export const SET_SPOUSE_INCOME = 'setSpouseIncome';
-export const SET_SPOUSE_RDSP = 'setSpouseRDSP';
+export const SET_SPOUSE_FPC_INCOME = 'setSpouseFPCIncome';
+export const SET_SPOUSE_FPC_RDSP = 'setSpouseFPCRDSP';
 // Child info
 export const SET_HAS_CHILDREN = 'setHasChildren';
 export const SET_CHILDREN = 'setChildren';
@@ -141,8 +141,8 @@ export default {
       ahIsStudent: null,
       ahWillStudentResideInBC: null,
       ahCRADocuments: [],
-      ahIncome: null,
-      ahRDSP: null,
+      ahFPCIncome: null,
+      ahFPCRDSP: null,
       // Spouse info
       hasSpouse: null,
       spouseStatus: null,
@@ -172,8 +172,8 @@ export default {
       spouseBeenReleasedFromInstitution: null,
       spouseDischargeDate: null,
       spouseCRADocuments: [],
-      spouseIncome: null,
-      spouseRDSP: null,
+      spouseFPCIncome: null,
+      spouseFPCRDSP: null,
       // Child info
       hasChildren: null,
       children: [],
@@ -314,11 +314,11 @@ export default {
     [SET_AH_CRA_DOCUMENTS](state, payload) {
       state.ahCRADocuments = payload;
     },
-    [SET_AH_INCOME](state, payload) {
-      state.ahIncome = payload;
+    [SET_AH_FPC_INCOME](state, payload) {
+      state.ahFPCIncome = payload;
     },
-    [SET_AH_RDSP](state, payload) {
-      state.ahRDSP = payload;
+    [SET_AH_FPC_RDSP](state, payload) {
+      state.ahFPCRDSP = payload;
     },
     // Spouse info
     [SET_HAS_SPOUSE](state, payload) {
@@ -405,11 +405,11 @@ export default {
     [SET_SPOUSE_CRA_DOCUMENTS](state, payload) {
       state.spouseCRADocuments = payload;
     },
-    [SET_SPOUSE_INCOME](state, payload) {
-      state.spouseIncome = payload;
+    [SET_SPOUSE_FPC_INCOME](state, payload) {
+      state.spouseFPCIncome = payload;
     },
-    [SET_SPOUSE_RDSP](state, payload) {
-      state.spouseRDSP = payload;
+    [SET_SPOUSE_FPC_RDSP](state, payload) {
+      state.spouseFPCRDSP = payload;
     },
     // Child info
     [SET_HAS_CHILDREN](state, payload) {
@@ -509,8 +509,8 @@ export default {
       commit(SET_AH_IS_STUDENT, null);
       commit(SET_AH_WILL_STUDENT_RESIDE_IN_BC, null);
       commit(SET_AH_CRA_DOCUMENTS, []);
-      commit(SET_AH_INCOME, null);
-      commit(SET_AH_RDSP, null);
+      commit(SET_AH_FPC_INCOME, null);
+      commit(SET_AH_FPC_RDSP, null);
       // Spouse info
       commit(SET_HAS_SPOUSE, null);
       commit(SET_SPOUSE_STATUS, null);
@@ -540,8 +540,8 @@ export default {
       commit(SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION, null);
       commit(SET_SPOUSE_DISCHARGE_DATE, null);
       commit(SET_SPOUSE_CRA_DOCUMENTS, []);
-      commit(SET_SPOUSE_INCOME, null);
-      commit(SET_SPOUSE_RDSP, null);
+      commit(SET_SPOUSE_FPC_INCOME, null);
+      commit(SET_SPOUSE_FPC_RDSP, null);
       // Child info
       commit(SET_HAS_CHILDREN, null);
       commit(SET_CHILDREN, []);
@@ -676,11 +676,11 @@ export default {
     [SET_AH_CRA_DOCUMENTS]({ commit }, payload) {
       commit(SET_AH_CRA_DOCUMENTS, payload);
     },
-    [SET_AH_INCOME]({ commit }, payload) {
-      commit(SET_AH_INCOME, payload);
+    [SET_AH_FPC_INCOME]({ commit }, payload) {
+      commit(SET_AH_FPC_INCOME, payload);
     },
-    [SET_AH_RDSP]({ commit }, payload) {
-      commit(SET_AH_RDSP, payload);
+    [SET_AH_FPC_RDSP]({ commit }, payload) {
+      commit(SET_AH_FPC_RDSP, payload);
     },
     // Spouse info
     [SET_HAS_SPOUSE]({ commit }, payload) {
@@ -767,11 +767,11 @@ export default {
     [SET_SPOUSE_CRA_DOCUMENTS]({ commit }, payload) {
       commit(SET_SPOUSE_CRA_DOCUMENTS, payload);
     },
-    [SET_SPOUSE_INCOME]({ commit }, payload) {
-      commit(SET_SPOUSE_INCOME, payload);
+    [SET_SPOUSE_FPC_INCOME]({ commit }, payload) {
+      commit(SET_SPOUSE_FPC_INCOME, payload);
     },
-    [SET_SPOUSE_RDSP]({ commit }, payload) {
-      commit(SET_SPOUSE_RDSP, payload);
+    [SET_SPOUSE_FPC_RDSP]({ commit }, payload) {
+      commit(SET_SPOUSE_FPC_RDSP, payload);
     },
     // Child info
     [SET_HAS_CHILDREN]({ commit }, payload) {
