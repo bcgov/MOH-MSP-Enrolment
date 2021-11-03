@@ -15,6 +15,10 @@
                 v-if="$v.ahIncome.$dirty
                   && !$v.ahIncome.required"
                 aria-live="assertive">Your net income from {{noaYear}} is required.</div>
+              <div class="text-danger"
+                v-if="$v.ahIncome.$dirty
+                  && !$v.ahIncome.positiveNumberValidator"
+                aria-live="assertive">Your net income from {{noaYear}} is must be a positive number.</div>
             </div>
             <div v-if="hasSpouse">
               <CurrencyInput :label="`Enter your spouse/common-law partner's net income from ${noaYear} - see line 23600 of your spouse/common-law partner's Notice of Assessment or Reassessment from the Canada Revenue Agency (samples). For more information, please see Frequently Asked Questions.`"
@@ -27,6 +31,11 @@
                   && hasSpouse
                   && !$v.spouseIncome.required"
                 aria-live="assertive">Your spouse/common-law partner's net income from {{noaYear}} is required.</div>
+              <div class="text-danger"
+                v-if="$v.spouseIncome.$dirty
+                  && hasSpouse
+                  && !$v.spouseIncome.positiveNumberValidator"
+                aria-live="assertive">Your spouse/common-law partner's net income from {{noaYear}} must be a positive number.</div>
             </div>
             <h2 class="mt-5">Disability Information (if applicable)</h2>
             <hr/>
@@ -36,6 +45,10 @@
                 id="ah-disability-savings"
                 class="mt-3"
                 @blur="handleBlurField($v.ahRDSP)"/>
+              <div class="text-danger"
+                v-if="$v.ahRDSP.$dirty
+                  && !$v.ahRDSP.positiveNumberValidator"
+                aria-live="assertive">Your Registered Disability Savings Plan amount from {{noaYear}} must be a positive number.</div>
             </div>
             <div v-if="hasSpouse">
               <CurrencyInput :label="`How much did your spouse/common-law partner report for a Registered Disability Savings Plan on your income tax return ${noaYear} (line 12500)?`"
@@ -43,6 +56,10 @@
                 id="spouse-disability-savings"
                 class="mt-3"
                 @blur="handleBlurField($v.spouseRDSP)"/>
+              <div class="text-danger"
+                v-if="$v.spouseRDSP.$dirty
+                  && !$v.spouseRDSP.positiveNumberValidator"
+                aria-live="assertive">Your spouse/common-law partner's Registered Disability Savings Plan amount from {{noaYear}} must be a positive number.</div>
             </div>
           </div>
           <div class="col-md-5 mt-4 mt-md-0">
@@ -85,6 +102,8 @@ import {
   ContinueBar,
   CurrencyInput,
   PageContent,
+  optionalValidator,
+  positiveNumberValidator,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import TipBox from '@/components/TipBox.vue';
@@ -130,10 +149,17 @@ export default {
     const validations = {
       ahIncome: {
         required,
+        positiveNumberValidator: optionalValidator(positiveNumberValidator),
       },
-      ahRDSP: {},
-      spouseIncome: {},
-      spouseRDSP: {},
+      ahRDSP: {
+        positiveNumberValidator: optionalValidator(positiveNumberValidator),
+      },
+      spouseIncome: {
+        positiveNumberValidator: optionalValidator(positiveNumberValidator),
+      },
+      spouseRDSP: {
+        positiveNumberValidator: optionalValidator(positiveNumberValidator),
+      },
     };
     if (this.hasSpouse) {
       validations.spouseIncome.required = required;
