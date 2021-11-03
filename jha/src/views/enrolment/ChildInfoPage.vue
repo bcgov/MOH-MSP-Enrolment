@@ -14,15 +14,19 @@
             :key="'child-' + index"
             :set="v = $v.children.$each[index]">
           <div class="heading mt-3">
-            <div v-if="!child.collapsed" @click="collapseChild(index)" class="icon-container">
+            <div v-if="!child.collapsed" @click="collapseChild(index)" class="icon-header">
               <font-awesome-icon icon="angle-down" size="3x" />
+              <h2 class="m-0 ml-2">{{getChildTitle(index)}}</h2>
             </div>
-            <div v-if="child.collapsed" @click="expandChild(index)" class="icon-container">
+            <div v-if="child.collapsed" @click="expandChild(index)" class="icon-header">
               <font-awesome-icon icon="angle-right" size="3x" />
+              <h2 class="m-0 ml-2">{{getChildTitle(index)}}</h2>
             </div>
-            <h2 class="m-0">{{getChildTitle(index)}}</h2>
-            <hr/>
+            <div class="text-danger remove-icon" @click="removeChild(index)">
+                <font-awesome-icon icon="times-circle" size="2x"/>
+            </div>
           </div>
+          <hr/>
           <div :class="{'collapsed': child.collapsed}">
             <Radio
               label='How old is the child?'
@@ -721,6 +725,9 @@ export default {
         willResideInBCAfterStudies: null,
       });
     },
+    removeChild(index) {
+      this.children.splice(index, 1);
+    },
     getChildTitle(index) {
       return 'Child #' + (index + 1) + ' basic information';
     },
@@ -789,10 +796,20 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_CHILDREN, this.children);
     },
     navigateToNextPage() {
-      // Navigate to next path.
+      // Determine which page to navigate to next
+      let routePath;
+      if (this.$store.state.enrolmentModule.isApplyingForFPCare) {
+        routePath = enrolmentRoutes.FPCARE_INFO_PAGE.path;
+      } else if (this.$store.state.enrolmentModule.isApplyingForSuppBen) {
+        routePath = enrolmentRoutes.SUPP_BEN_INFO_PAGE.path;
+      } else {
+        routePath = enrolmentRoutes.CONTACT_INFO_PAGE.path;
+      }
+
+      // Navigate to next path
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.CONTACT_INFO_PAGE.path
+        routePath
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -844,8 +861,19 @@ export default {
 <style scoped>
 .heading {
   display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.icon-header {
+  display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+}
+
+.remove-icon {
+  cursor: pointer;
 }
 
 .collapsed {
