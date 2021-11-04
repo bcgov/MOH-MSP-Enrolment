@@ -10,7 +10,7 @@
         </h4>
         <hr class="mt-0"/>
         <div class="row">
-          <div class="col-md-8">
+          <div class="col-md-7">
             <h2>Which year's Notice of Assessment or Reassessment will you upload?</h2>
             <Radio id="select-noa-year"
                     name="select-noa-year"
@@ -73,36 +73,39 @@
                 v-model="dspAmount"
                 :inputStyle='mediumStyles'/>
             </div>
+            <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
+            <Radio id="has-attendant-nursing-expenses"
+              name="has-attendant-nursing-expenses"
+              label="See line 21500 or 33099 of your Notice of Assessment or Reassessment."
+              v-model="hasAttendantNursingExpenses"
+              :items="radioOptionsNoYes"
+              @blur="handleBlurField($v.hasAttendantNursingExpenses)"/>
+            <div class="ml-5" v-if="hasAttendantNursingExpenses === 'Y'">
+              <CheckboxGroup id="selected-attendant-nursing-recipients"
+                name="selected-attendant-nursing-recipients"
+                label="Who claimed the attendant or nursing home expenses?"
+                v-model="selectedAttendantNursingRecipients"
+                :items="selectOptionsFamilyMembers"/>
+              <DigitInput v-if="selectedAttendantNursingRecipients.includes('child')"
+                id="num-attendant-nursing-children"
+                label="How many children claimed attendant care expenses?"
+                v-model="numAttendantNursingChildren"
+                :inputStyle="extraSmallStyles"/>
+            </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-5" v-if="!windowWidthLessThan(770)">
             <SuppBenWidget v-model="widgetData"/>
           </div>
         </div>
-        <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
-        <Radio id="has-attendant-nursing-expenses"
-          name="has-attendant-nursing-expenses"
-          label="See line 21500 or 33099 of your Notice of Assessment or Reassessment."
-          v-model="hasAttendantNursingExpenses"
-          :items="radioOptionsNoYes"
-          @blur="handleBlurField($v.hasAttendantNursingExpenses)"/>
-        <div class="ml-5" v-if="hasAttendantNursingExpenses === 'Y'">
-          <CheckboxGroup id="selected-attendant-nursing-recipients"
-            name="selected-attendant-nursing-recipients"
-            label="Who claimed the attendant or nursing home expenses?"
-            v-model="selectedAttendantNursingRecipients"
-            :items="selectOptionsFamilyMembers"/>
-          <DigitInput v-if="selectedAttendantNursingRecipients.includes('child')"
-            id="num-attendant-nursing-children"
-            label="How many children claimed attendant care expenses?"
-            v-model="numAttendantNursingChildren"
-            :inputStyle="extraSmallStyles"/>
-          <p class="font-weight-bolder">Please upload your attendant care or nursing receipts</p>
+
+        <div v-if="hasAttendantNursingExpenses === 'Y'">
+          <p class="font-weight-bolder ml-5">Please upload your attendant care or nursing receipts</p>
           <div class="row">
             <div class="col-md-7">
-              <FileUploader class="ml-0"
+              <FileUploader class="ml-5"
                 v-model="AttendantNursingReceipts" />
             </div>
-            <div class="col-md-4">
+            <div class="col-md-5">
               <TipBox title="Tip">
                 <p>Scan the document, or take a photo of it.</p>
                 <p>Make sure it's:</p>
@@ -116,6 +119,9 @@
             </div>
           </div>
         </div>
+        <div class="mt-3" v-if="windowWidthLessThan(770)">
+            <SuppBenWidget v-model="widgetData"/>
+          </div>
       </div>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
@@ -160,6 +166,7 @@ import {
   FileUploader,
   DigitInput,
   CheckboxGroup,
+  windowWidthMixin,
 } from 'common-lib-vue';
 import TipBox from '@/components/TipBox';
 import SuppBenWidget from '@/components/SuppBenWidget';
@@ -167,7 +174,7 @@ import pageContentMixin from '@/mixins/page-content-mixin';
 
 export default {
   name: 'SuppBenInfoPage',
-  mixins: [pageContentMixin],
+  mixins: [pageContentMixin, windowWidthMixin],
   components: {
     ContinueBar,
     PageContent,
