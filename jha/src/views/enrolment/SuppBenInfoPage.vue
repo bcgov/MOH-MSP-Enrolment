@@ -25,13 +25,13 @@
             <p class="mt-2 mb-1 font-weight-bolder">Enter your 2020 net income.</p>
             <CurrencyInput id="ah-net-income"
               label="See line 23600 of your Notice of Assessment or Reassessment."
-              v-model="ahSuppBenNetIncome"
+              v-model="ahSBIncome"
               :inputStyle='mediumStyles'/>
             <div v-if="hasSpouse === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's 2020 net income.</p>
               <CurrencyInput id="spouse-net-income"
                 label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
-                v-model="spouseSuppBenNetIncome"
+                v-model="spouseSBIncome"
                 :inputStyle='mediumStyles'/>
             </div>
             <div v-if="children.length > 0">
@@ -63,14 +63,14 @@
             <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your Medical Services Plan account have a Registered Disability Savings Plan?</p>
             <Radio id="has-disability-savings"
               name="has-disability-savings"
-              v-model="hasDisabilitySavings"
+              v-model="hasRDSP"
               :items="radioOptionsNoYes"
-              @blur="handleBlurField($v.hasDisabilitySavings)"/>
-            <div class="ml-5" v-if="hasDisabilitySavings === 'Y'">
+              @blur="handleBlurField($v.hasRDSP)"/>
+            <div class="ml-5" v-if="hasRDSP === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">How much did you report for a Registered Disability Savings Plan in {{selectedNOAYear}}?</p>
               <CurrencyInput id="disability-savings-plan"
                 label="See Line 12500 of the Notice of Assessment or Reassessment"
-                v-model="dspAmount"
+                v-model="sbRDSPAmount"
                 :inputStyle='mediumStyles'/>
             </div>
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
@@ -93,7 +93,7 @@
                 :inputStyle="extraSmallStyles"/>
             </div>
           </div>
-          <div class="col-md-5" v-if="!windowWidthLessThan(770)">
+          <div class="col-md-5" v-if="windowWidth >= 768">
             <SuppBenWidget v-model="widgetData"/>
           </div>
         </div>
@@ -103,7 +103,7 @@
           <div class="row">
             <div class="col-md-7">
               <FileUploader class="ml-5"
-                v-model="AttendantNursingReceipts" />
+                v-model="attendantNursingReceipts" />
             </div>
             <div class="col-md-5">
               <TipBox title="Tip">
@@ -119,7 +119,7 @@
             </div>
           </div>
         </div>
-        <div class="mt-3" v-if="windowWidthLessThan(770)">
+        <div class="mt-3" v-if="windowWidth < 768">
             <SuppBenWidget v-model="widgetData"/>
           </div>
       </div>
@@ -154,7 +154,7 @@ import {
 } from '@/constants/select-options';
 
 import {
-  MODULE_NAME as formModule,
+  MODULE_NAME as enrolmentModule,
   RESET_FORM,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
@@ -191,22 +191,22 @@ export default {
       currentYear: 2,
       selectedNOAYear: '',
       radioOptionsNOAYears: [],
-      ahSuppBenNetIncome: '',
+      ahSBIncome: '',
       ahBirthDate: null,
       hasSpouse: null,
-      spouseSuppBenNetIncome: null,
+      spouseSBIncome: null,
       spouseBirthDate: null,
       children: [],
       claimedChildCareExpenses: null,
       hasDisabilityCredit: '',
       selectedDisabilityRecipients: [],
       numDisabilityChildren: null,
-      hasDisabilitySavings: null,
-      dspAmount: null,
+      hasRDSP: null,
+      sbRDSPAmount: null,
       hasAttendantNursingExpenses: null,
       selectedAttendantNursingRecipients: [],
       numAttendantNursingChildren: null,
-      AttendantNursingReceipts: [],
+      attendantNursingReceipts: [],
       mediumStyles: mediumStyles,
       extraSmallStyles: extraSmallStyles,
       radioOptionsNoYes: radioOptionsNoYes,
@@ -220,19 +220,20 @@ export default {
       enrolmentRoutes.SUPP_BEN_INFO_PAGE.title
     );
 
-    this.ahSuppBenNetIncome = '';
-    this.hasSpouse = 'Y';
-    this.spouseSuppBenNetIncome = '';
-    this.children = ['test1', 'test2', 'test3']
-    this.hasDisabilityCredit = 'N';
-    this.selectedDisabilityRecipients = [];
-    this.hasDisabilitySavings = 'N';
-    this.hasAttendantNursingExpenses = 'N';
-    this.selectedAttendantNursingRecipients = [];
-    this.numAttendantNursingChildren = '';
-    this.AttendantNursingReceipts = [];
+    this.selectedNOAYear = this.$store.state.enrolmentModule.selectedNOAYear;
+    this.ahSBIncome = this.$store.state.enrolmentModule.ahSBIncome;
+    this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse;
+    this.spouseSBIncome = this.$store.state.enrolmentModule.spouseSBIncome;
+    this.children = this.$store.state.enrolmentModule.children;
+    this.hasDisabilityCredit = this.$store.state.enrolmentModule.hasDisabilityCredit;
+    this.selectedDisabilityRecipients = this.$store.state.enrolmentModule.selectedDisabilityRecipients;
+    this.hasRDSP = this.$store.state.enrolmentModule.hasRDSP;
+    this.hasAttendantNursingExpenses = this.$store.state.enrolmentModule.hasAttendantNursingExpenses;
+    this.selectedAttendantNursingRecipients = this.$store.state.enrolmentModule.selectedAttendantNursingRecipients;
+    this.numAttendantNursingChildren = this.$store.state.enrolmentModule.numAttendantNursingChildren;
+    this.attendantNursingReceipts = this.$store.state.enrolmentModule.attendantNursingReceipts;
+    
     this.currentYear = (new Date()).getFullYear();
-    this.selectedNOAYear = `${this.currentYear - 1}`;
     this.radioOptionsNOAYears = [
       {
         id: 'currentNOAYear',
@@ -279,24 +280,23 @@ export default {
   },
   watch: {
     selectedNOAYear: function(value) {
-      if (this.fpcComplete && value === `${this.currentYear - 2}`) {
-        // LOAD INCOME VALUES FROM FPC INPUT*********************************************
+      if ( this.$store.state.enrolmentModule.isApplyingForFPCare
+        && value === `${this.currentYear - 2}`) {
+        this.ahSBIncome = this.$store.state.enrolmentModule.ahFPCIncome;
+        this.spouseSBIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
       } else {
-        this.ahSuppBenNetIncome = '';
-        this.spouseSuppBenNetIncome = '';
+        this.ahSBIncome = '';
+        this.spouseSBIncome = '';
       }
     },
   },
   computed: {
-    fpcComplete() {
-      return this.$store.state.enrolmentModule.isApplyingForFPCare;
-    },
     widgetData() {
       let info = {};
-      info.ahSuppBenNetIncome = this.ahSuppBenNetIncome;
+      info.ahSBIncome = this.ahSBIncome;
       info.ahBirthDate = this.ahBirthDate;
       info.hasSpouse = this.hasSpouse;
-      info.spouseSuppBenNetIncome = this.spouseSuppBenNetIncome;
+      info.spouseSBIncome = this.spouseSBIncome;
       info.spouseBirthDate = this.spouseBirthDate;
       info.children = this.children;
       info.claimedChildCareExpenses = this.claimedChildCareExpenses;
@@ -307,7 +307,7 @@ export default {
       info.childDisabilityCredit = this.hasDisabilityCredit === 'Y'
                                 && this.selectedDisabilityRecipients.includes('child');                          
       info.numDisabilityChildren = this.numDisabilityChildren;
-      info.dspAmount = (this.hasDisabilitySavings === 'Y') ? this.dspAmount : null;
+      info.sbRDSPAmount = (this.hasRDSP === 'Y') ? this.sbRDSPAmount : null;
       info.ahAttendantNursingExpenses = this.hasAttendantNursingExpenses === 'Y'
                                 && this.selectedAttendantNursingRecipients.includes('ah');
       info.spouseAttendantNursingExpenses = this.hasAttendantNursingExpenses === 'Y'
@@ -322,7 +322,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
     if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(formModule + '/' + RESET_FORM);
+      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
       next();
     } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
       next();

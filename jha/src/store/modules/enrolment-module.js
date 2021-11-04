@@ -80,6 +80,20 @@ export const SET_SPOUSE_FPC_RDSP = 'setSpouseFPCRDSP';
 // Child info
 export const SET_HAS_CHILDREN = 'setHasChildren';
 export const SET_CHILDREN = 'setChildren';
+// SuppBenInfo
+export const SET_SELECTED_NOA_YEAR = 'setSelectedNOAYear';
+export const SET_AH_SB_INCOME = 'setAHSBIncome';
+export const SET_SPOUSE_SB_INCOME = 'setSpouseSBIncome';
+export const SET_CLAIMED_CHILD_CARE_EXPENSES = 'setClaimedChildCareExpenses';
+export const SET_HAS_DISABILITY_CREDIT = 'setHasDisabilityCredit';
+export const SET_SELECTED_DISABILITY_RECIPIENTS = 'setSelectedDisabilityRecipients';
+export const SET_NUM_DISABILITY_CHILDREN = 'setNumDisabilityChildren';
+export const SET_HAS_RDSP = 'setHasRDSP';
+export const SET_SB_RDSP_AMOUNT = 'setSBRDSPAmount';
+export const SET_HAS_ATTENDANT_NURSING_EXPENSES = 'setHasAttendantNursingExpenses';
+export const SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS = 'setSelectedAttendantNursingRecipients';
+export const SET_NUM_ATTENDANT_NURSING_CHILDREN = 'setNumAttendantNursingChildren';
+export const SET_ATTENDANT_NURSING_RECEIPTS = 'setAttendantNursingReceipts';
 // Contact info
 export const SET_RES_ADDRESS_LINE_1 = 'setResAddressLine1';
 export const SET_RES_ADDRESS_LINE_2 = 'setResAddressLine2';
@@ -177,6 +191,20 @@ export default {
       // Child info
       hasChildren: null,
       children: [],
+      // SuppBenInfo
+      selectedNOAYear: `${(new Date()).getFullYear() - 1}`,
+      ahSBIncome: '',
+      spouseSBIncome: null,
+      claimedChildCareExpenses: null,
+      hasDisabilityCredit: 'N',
+      selectedDisabilityRecipients: [],
+      numDisabilityChildren: null,
+      hasRDSP: 'N',
+      sbRDSPAmount: null,
+      hasAttendantNursingExpenses: 'N',
+      selectedAttendantNursingRecipients: [],
+      numAttendantNursingChildren: null,
+      attendantNursingReceipts: [],
       // Contact info
       resAddressLine1: null,
       resAddressLine2: null,
@@ -418,6 +446,46 @@ export default {
     [SET_CHILDREN](state, payload) {
       state.children = payload;
     },
+    // SuppBenInfo
+    [SET_SELECTED_NOA_YEAR](state, payload) {
+      state.selectedNOAYear = payload;
+    },
+    [SET_AH_SB_INCOME](state, payload) {
+      state.ahSBIncome = payload;
+    },
+    [SET_SPOUSE_SB_INCOME](state, payload) {
+      state.spouseSBIncome = payload;
+    },
+    [SET_CLAIMED_CHILD_CARE_EXPENSES](state, payload) {
+      state.claimedChildCareExpenses = payload;
+    },
+    [SET_HAS_DISABILITY_CREDIT](state, payload) {
+      state.hasDisabilityCredit = payload;
+    },
+    [SET_SELECTED_DISABILITY_RECIPIENTS](state, payload) {
+      state.selectedDisabilityRecipients = payload;
+    },
+    [SET_NUM_DISABILITY_CHILDREN](state, payload) {
+      state.numDisabilityChildren = payload;
+    },
+    [SET_HAS_RDSP](state, payload) {
+      state.hasRDSP = payload;
+    },
+    [SET_SB_RDSP_AMOUNT](state, payload) {
+      state.sbRDSPAmount = payload;
+    },
+    [SET_HAS_ATTENDANT_NURSING_EXPENSES](state, payload) {
+      state.hasAttendantNursingExpenses = payload;
+    },
+    [SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS](state, payload) {
+      state.selectedAttendantNursingRecipients = payload;
+    },
+    [SET_NUM_ATTENDANT_NURSING_CHILDREN](state, payload) {
+      state.numAttendantNursingChildren = payload;
+    },
+    [SET_ATTENDANT_NURSING_RECEIPTS](state, payload) {
+      state.attendantNursingReceipts = payload;
+    },
     // Contact info
     [SET_RES_ADDRESS_LINE_1](state, payload) {
       state.resAddressLine1 = payload;
@@ -542,6 +610,20 @@ export default {
       commit(SET_SPOUSE_CRA_DOCUMENTS, []);
       commit(SET_SPOUSE_FPC_INCOME, null);
       commit(SET_SPOUSE_FPC_RDSP, null);
+      // SuppBen info
+      commit(SET_SELECTED_NOA_YEAR, null);
+      commit(SET_AH_SB_INCOME, null);
+      commit(SET_SPOUSE_SB_INCOME, null);
+      commit(SET_CLAIMED_CHILD_CARE_EXPENSES, null);
+      commit(SET_HAS_DISABILITY_CREDIT, null);
+      commit(SET_SELECTED_DISABILITY_RECIPIENTS, []);
+      commit(SET_NUM_DISABILITY_CHILDREN, null);
+      commit(SET_HAS_RDSP, null);
+      commit(SET_SB_RDSP_AMOUNT, null);
+      commit(SET_HAS_ATTENDANT_NURSING_EXPENSES, null);
+      commit(SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS, []);
+      commit(SET_NUM_ATTENDANT_NURSING_CHILDREN, null);
+      commit(SET_ATTENDANT_NURSING_RECEIPTS, []);
       // Child info
       commit(SET_HAS_CHILDREN, null);
       commit(SET_CHILDREN, []);
@@ -779,6 +861,46 @@ export default {
     },
     [SET_CHILDREN]({ commit }, payload) {
       commit(SET_CHILDREN, payload);
+    },
+    // SuppBen info
+    [SET_SELECTED_NOA_YEAR]({ commit }, payload) {
+      commit(SET_SELECTED_NOA_YEAR, payload);
+    },
+    [SET_AH_SB_INCOME]({ commit }, payload) {
+      commit(SET_AH_SB_INCOME, payload);
+    },
+    [SET_SPOUSE_SB_INCOME]({ commit }, payload) {
+      commit(SET_SPOUSE_SB_INCOME, payload);
+    },
+    [SET_CLAIMED_CHILD_CARE_EXPENSES]({ commit }, payload) {
+      commit(SET_CLAIMED_CHILD_CARE_EXPENSES, payload);
+    },
+    [SET_HAS_DISABILITY_CREDIT]({ commit }, payload) {
+      commit(SET_HAS_DISABILITY_CREDIT, payload);
+    },
+    [SET_SELECTED_DISABILITY_RECIPIENTS]({ commit }, payload) {
+      commit(SET_SELECTED_DISABILITY_RECIPIENTS, payload);
+    },
+    [SET_NUM_DISABILITY_CHILDREN]({ commit }, payload) {
+      commit(SET_NUM_DISABILITY_CHILDREN, payload);
+    },
+    [SET_HAS_RDSP]({ commit }, payload) {
+      commit(SET_HAS_RDSP, payload);
+    },
+    [SET_SB_RDSP_AMOUNT]({ commit }, payload) {
+      commit(SET_SB_RDSP_AMOUNT, payload);
+    },
+    [SET_HAS_ATTENDANT_NURSING_EXPENSES]({ commit }, payload) {
+      commit(SET_HAS_ATTENDANT_NURSING_EXPENSES, payload);
+    },
+    [SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS]({ commit }, payload) {
+      commit(SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS, payload);
+    },
+    [SET_NUM_ATTENDANT_NURSING_CHILDREN]({ commit }, payload) {
+      commit(SET_NUM_ATTENDANT_NURSING_CHILDREN, payload);
+    },
+    [SET_ATTENDANT_NURSING_RECEIPTS]({ commit }, payload) {
+      commit(SET_ATTENDANT_NURSING_RECEIPTS, payload);
     },
     // Contact info
     [SET_RES_ADDRESS_LINE_1]({ commit }, payload) {
