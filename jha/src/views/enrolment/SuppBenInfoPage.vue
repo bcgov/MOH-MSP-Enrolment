@@ -25,13 +25,13 @@
             <p class="mt-2 mb-1 font-weight-bolder">Enter your 2020 net income.</p>
             <CurrencyInput id="ah-net-income"
               label="See line 23600 of your Notice of Assessment or Reassessment."
-              v-model="ahNetIncome"
+              v-model="ahSuppBenNetIncome"
               :inputStyle='mediumStyles'/>
             <div v-if="hasSpouse === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's 2020 net income.</p>
               <CurrencyInput id="spouse-net-income"
                 label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
-                v-model="spouseNetIncome"
+                v-model="spouseSuppBenNetIncome"
                 :inputStyle='mediumStyles'/>
             </div>
             <div v-if="children.length > 0">
@@ -191,10 +191,10 @@ export default {
       currentYear: 2,
       selectedNOAYear: '',
       radioOptionsNOAYears: [],
-      ahNetIncome: '',
+      ahSuppBenNetIncome: '',
       ahBirthDate: null,
       hasSpouse: null,
-      spouseNetIncome: null,
+      spouseSuppBenNetIncome: null,
       spouseBirthDate: null,
       children: [],
       claimedChildCareExpenses: null,
@@ -220,9 +220,9 @@ export default {
       enrolmentRoutes.SUPP_BEN_INFO_PAGE.title
     );
 
-    this.ahNetIncome = '';
+    this.ahSuppBenNetIncome = '';
     this.hasSpouse = 'Y';
-    this.spouseNetIncome = '';
+    this.spouseSuppBenNetIncome = '';
     this.children = ['test1', 'test2', 'test3']
     this.hasDisabilityCredit = 'N';
     this.selectedDisabilityRecipients = [];
@@ -282,8 +282,8 @@ export default {
       if (this.fpcComplete && value === `${this.currentYear - 2}`) {
         // LOAD INCOME VALUES FROM FPC INPUT*********************************************
       } else {
-        this.ahNetIncome = '';
-        this.spouseNetIncome = '';
+        this.ahSuppBenNetIncome = '';
+        this.spouseSuppBenNetIncome = '';
       }
     },
   },
@@ -293,10 +293,10 @@ export default {
     },
     widgetData() {
       let info = {};
-      info.ahNetIncome = this.ahNetIncome;
+      info.ahSuppBenNetIncome = this.ahSuppBenNetIncome;
       info.ahBirthDate = this.ahBirthDate;
       info.hasSpouse = this.hasSpouse;
-      info.spouseNetIncome = this.spouseNetIncome;
+      info.spouseSuppBenNetIncome = this.spouseSuppBenNetIncome;
       info.spouseBirthDate = this.spouseBirthDate;
       info.children = this.children;
       info.claimedChildCareExpenses = this.claimedChildCareExpenses;
