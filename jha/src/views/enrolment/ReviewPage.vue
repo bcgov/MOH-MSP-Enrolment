@@ -3,7 +3,6 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Review</h1>
-        <p>Review your request before submission</p>
         <hr/>
         <ReviewTableList :showEditButtons='true' 
                         tableBackgroundColor='#EEE'/>

@@ -359,18 +359,9 @@ export default {
     },
     navigateToNextPage() {
       // Navigate to next path.
-      let nextPath;
-      if (this.$store.state.enrolmentModule.isApplyingForFPCare) {
-        nextPath = enrolmentRoutes.FPCARE_INFO_PAGE.path;
-      } else if (this.$store.state.enrolmentModule.isApplyingForSuppBen) {
-        nextPath = enrolmentRoutes.SUPP_BEN_INFO_PAGE.path;
-      } else {
-        nextPath = enrolmentRoutes.DOCUMENTS_PAGE.path;
-      }
-      
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        nextPath
+        enrolmentRoutes.REVIEW_PAGE.path,
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
