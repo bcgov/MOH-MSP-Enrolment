@@ -26,26 +26,32 @@
             <CurrencyInput id="ah-net-income"
               label="See line 23600 of your Notice of Assessment or Reassessment."
               v-model="ahSBIncome"
-              :inputStyle='mediumStyles'/>
+              :inputStyle='mediumStyles'
+              @blur="handleBlurField($v.ahSBIncome)"/>
               <div class="text-danger"
                   v-if="$v.ahSBIncome.$dirty && !$v.ahSBIncome.required"
-                  aria-live="assertive">Your net income from {{selectedNOAYear}} is required.</div>
+                    aria-live="assertive">Your net income from {{selectedNOAYear}} is required.</div>
             <div v-if="hasSpouse === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's 2020 net income.</p>
               <CurrencyInput id="spouse-net-income"
                 label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
                 v-model="spouseSBIncome"
-                :inputStyle='mediumStyles'/>
+                :inputStyle='mediumStyles'
+                @blur="handleBlurField($v.spouseSBIncome)"/>
               <div class="text-danger"
                   v-if="$v.spouseSBIncome.$dirty && !$v.spouseSBIncome.required"
-                  aria-live="assertive">Your spouse/common-law partner's net income from {{selectedNOAYear}} is required.</div>
+                    aria-live="assertive">Your spouse/common-law partner's net income from {{selectedNOAYear}} is required.</div>
             </div>
             <div v-if="children.length > 0">
               <p class="mt-4 mb-1 font-weight-bolder">How much did you claim for child care expenses in {{selectedNOAYear}}?</p>
               <CurrencyInput id="child-care-expenses"
                 label="See line 21400 of your Notice of Assessment or Reassessment."
                 v-model="claimedChildCareExpenses"
-                :inputStyle='mediumStyles'/>
+                :inputStyle='mediumStyles'
+                @blur="handleBlurField($v.claimedChildCareExpenses)"/>
+              <div class="text-danger"
+                v-if="$v.claimedChildCareExpenses.$dirty && !$v.claimedChildCareExpenses.required"
+                  aria-live="assertive">Your claimed child care expenses from {{selectedNOAYear}} are required.</div>
             </div>
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim a disability tax credit in {{selectedNOAYear}}?</p>
             <Radio id="has-disability-credit"
@@ -59,21 +65,25 @@
                 name="selected-disability-credit-recipients"
                 label="Who claimed the disability tax credit?"
                 v-model="selectedDisabilityRecipients"
-                :items="selectOptionsFamilyMembers"/>
+                :items="selectOptionsFamilyMembers"
+                @blur="handleBlurField($v.selectedDisabilityRecipients)"/>
               <div class="text-danger"
                 v-if="$v.selectedDisabilityRecipients.$dirty && !$v.selectedDisabilityRecipients.required"
-                aria-live="assertive">You must select who claimed the disability tax credit</div>
+                  aria-live="assertive">You must select who claimed the disability tax credit.</div>
               <div v-if="selectedDisabilityRecipients.includes('child')">
                 <DigitInput id="num-attendant-nursing-children"
                   label="How many of your children are eligible for a disability tax credit?"
                   v-model="numDisabilityChildren"
-                  :inputStyle="extraSmallStyles"/>
+                  :inputStyle="extraSmallStyles"
+                  @blur="handleBlurField($v.numDisabilityChildren)"/>
                 <div class="text-danger"
                   v-if="$v.numDisabilityChildren.$dirty && !$v.numDisabilityChildren.required"
-                  aria-live="assertive">You must enter how many of your children claimed the disability tax credit</div>
+                    aria-live="assertive">You must enter how many of your children claimed the disability tax credit.</div>
                 <div class="text-danger"
-                  v-if="$v.numDisabilityChildren.$dirty && !$v.numDisabilityChildren.validateNumChildren"
-                  aria-live="assertive">This number cannot be zero or exceed the number of children on your account.</div>
+                  v-if="$v.numDisabilityChildren.$dirty
+                      && $v.numDisabilityChildren.required
+                      && !$v.numDisabilityChildren.validateNumChildren"
+                    aria-live="assertive">This number cannot be zero or exceed the number of children on your account.</div>
               </div>
             </div>
             <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your Medical Services Plan account have a Registered Disability Savings Plan?</p>
@@ -87,10 +97,11 @@
               <CurrencyInput id="disability-savings-plan"
                 label="See Line 12500 of the Notice of Assessment or Reassessment"
                 v-model="sbRDSPAmount"
-                :inputStyle='mediumStyles'/>
+                :inputStyle='mediumStyles'
+                @blur="handleBlurField($v.sbRDSPAmount)"/>
               <div class="text-danger"
                 v-if="$v.sbRDSPAmount.$dirty && !$v.sbRDSPAmount.required"
-                aria-live="assertive">You must enter how much you reported for a Registered Disability Savings Plan</div>
+                  aria-live="assertive">You must enter how much you reported for a Registered Disability Savings Plan</div>
             </div>
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
             <Radio id="has-attendant-nursing-expenses"
@@ -104,21 +115,25 @@
                 name="selected-attendant-nursing-recipients"
                 label="Who claimed the attendant or nursing home expenses?"
                 v-model="selectedAttendantNursingRecipients"
-                :items="selectOptionsFamilyMembers"/>
+                :items="selectOptionsFamilyMembers"
+                @blur="handleBlurField($v.selectedAttendantNursingRecipients)"/>
               <div class="text-danger"
                 v-if="$v.selectedAttendantNursingRecipients.$dirty && !$v.selectedAttendantNursingRecipients.required"
-                aria-live="assertive">You must select who claimed the attendant or nursing home expenses</div>
+                  aria-live="assertive">You must select who claimed the attendant or nursing home expenses.</div>
               <div v-if="selectedAttendantNursingRecipients.includes('child')">
                 <DigitInput id="num-attendant-nursing-children"
                   label="How many children claimed attendant care expenses?"
                   v-model="numAttendantNursingChildren"
-                  :inputStyle="extraSmallStyles"/>
+                  :inputStyle="extraSmallStyles"
+                  @blur="handleBlurField($v.numAttendantNursingChildren)"/>
                 <div class="text-danger"
                   v-if="$v.numAttendantNursingChildren.$dirty && !$v.numAttendantNursingChildren.required"
-                  aria-live="assertive">You must enter how many of your children claimed the attendant or nursing home expenses</div>
+                    aria-live="assertive">You must enter how many of your children claimed the attendant or nursing home expenses.</div>
                 <div class="text-danger"
-                  v-if="$v.numAttendantNursingChildren.$dirty && !$v.numAttendantNursingChildren.validateNumChildren"
-                  aria-live="assertive">This number cannot be zero or exceed the number of children on your account.</div>
+                  v-if="$v.numAttendantNursingChildren.$dirty
+                    && $v.numAttendantNursingChildren.required
+                    && !$v.numAttendantNursingChildren.validateNumChildren"
+                    aria-live="assertive">This number cannot be zero or exceed the number of children on your account.</div>
               </div>
             </div>
           </div>
@@ -128,14 +143,15 @@
         </div>
 
         <div v-if="hasAttendantNursingExpenses === 'Y'">
-          <p class="font-weight-bolder ml-5">Please upload your attendant care or nursing receipts</p>
+          <p class="font-weight-bolder ml-5">Please upload your attendant care or nursing receipts.</p>
           <div class="row">
             <div class="col-md-7">
               <FileUploader class="ml-5"
-                v-model="attendantNursingReceipts" />
+                v-model="attendantNursingReceipts"
+                @blur="handleBlurField($v.attendantNursingReceipts)"/>
               <div class="text-danger"
                   v-if="$v.attendantNursingReceipts.$dirty && !$v.attendantNursingReceipts.required"
-                  aria-live="assertive">You must upload your attendant care or nursing receipts</div>
+                    aria-live="assertive">You must upload your attendant care or nursing receipts.</div>
             </div>
             <div class="col-md-5">
               <TipBox title="Tip">
@@ -203,9 +219,12 @@ import {
 import TipBox from '@/components/TipBox';
 import SuppBenWidget from '@/components/SuppBenWidget';
 import pageContentMixin from '@/mixins/page-content-mixin';
+import {
+  required,
+} from 'vuelidate/lib/validators';
 
-validateNumChildren = (value) => {
-  return (value <= this.children.length) 
+let validateNumChildren = (value, vm) => {
+  return (value <= vm.children.length) 
       && (parseInt(value) > 0);
 };
 
@@ -288,12 +307,13 @@ export default {
     ];
   },
   validations() {
-    const validations = {
+    let validations = {
       ahSBIncome: {
         required,
       },
     };
     if (this.hasSpouse === 'Y') validations.spouseSBIncome = {required};
+    if (this.children.length > 0) validations.claimedChildCareExpenses = {required};
     if (this.hasDisabilityCredit === 'Y') validations.selectedDisabilityRecipients = {required};
     if (this.hasDisabilityCredit === 'Y' && this.selectedDisabilityRecipients.includes('child')){
       validations.numDisabilityChildren = {required, validateNumChildren};
