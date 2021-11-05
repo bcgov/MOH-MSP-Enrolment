@@ -189,16 +189,16 @@ export default {
   data: () => {
     return {
       currentYear: 2,
-      selectedNOAYear: '',
+      selectedNOAYear: null,
       radioOptionsNOAYears: [],
-      ahSBIncome: '',
+      ahSBIncome: null,
       ahBirthDate: null,
       hasSpouse: null,
       spouseSBIncome: null,
       spouseBirthDate: null,
       children: [],
       claimedChildCareExpenses: null,
-      hasDisabilityCredit: '',
+      hasDisabilityCredit: null,
       selectedDisabilityRecipients: [],
       numDisabilityChildren: null,
       hasRDSP: null,
@@ -207,6 +207,7 @@ export default {
       selectedAttendantNursingRecipients: [],
       numAttendantNursingChildren: null,
       attendantNursingReceipts: [],
+      widgetData: {},
       mediumStyles: mediumStyles,
       extraSmallStyles: extraSmallStyles,
       radioOptionsNoYes: radioOptionsNoYes,
@@ -227,7 +228,9 @@ export default {
     this.children = this.$store.state.enrolmentModule.children;
     this.hasDisabilityCredit = this.$store.state.enrolmentModule.hasDisabilityCredit;
     this.selectedDisabilityRecipients = this.$store.state.enrolmentModule.selectedDisabilityRecipients;
+    this.numDisabilityChildren = this.$store.state.enrolmentModule.numDisabilityChildren
     this.hasRDSP = this.$store.state.enrolmentModule.hasRDSP;
+    this.sbRDSPAmount = this.$store.state.enrolmentModule.sbRDSPAmount
     this.hasAttendantNursingExpenses = this.$store.state.enrolmentModule.hasAttendantNursingExpenses;
     this.selectedAttendantNursingRecipients = this.$store.state.enrolmentModule.selectedAttendantNursingRecipients;
     this.numAttendantNursingChildren = this.$store.state.enrolmentModule.numAttendantNursingChildren;
@@ -252,6 +255,38 @@ export default {
     return validations;
   },
   methods: {
+    saveData() {
+      this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_NOA_YEAR}`, this.selectedNOAYear);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_SB_INCOME}`, this.ahSBIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_SB_INCOME}`, this.spouseSBIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CLAIMED_CHILD_CARE_EXPENSES}`, this.claimedChildCareExpenses);
+      this.$store.dispatch(`${enrolmentModule}/${SET_HAS_DISABILITY_CREDIT}`, this.hasDisabilityCredit);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_DISABILITY_RECIPIENTS}`, this.selectedDisabilityRecipients);
+      this.$store.dispatch(`${enrolmentModule}/${SET_NUM_DISABILITY_CHILDREN}`, this.numDisabilityChildren);
+      this.$store.dispatch(`${enrolmentModule}/${SET_HAS_RDSP}`, this.hasRDSP);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_RDSP_AMOUNT}`, this.sbRDSPAmount);
+      this.$store.dispatch(`${enrolmentModule}/${SET_HAS_ATTENDANT_NURSING_EXPENSES}`, this.hasAttendantNursingExpenses);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS}`, this.selectedAttendantNursingRecipients);
+      this.$store.dispatch(`${enrolmentModule}/${SET_NUM_ATTENDANT_NURSING_CHILDREN}`, this.numAttendantNursing);
+      this.$store.dispatch(`${enrolmentModule}/${SET_ATTENDANT_NURSING_RECEIPTS}`, this.attendantNursingReceipts);
+      
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_HOUSEHOLD_INCOME}`, this.widgetData.sbTotalHouseholdIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_65_DEDUCTION}`, this.widgetData.ah65Deduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_DEDUCTION}`, this.widgetData.spouseDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_65_DEDUCTION}`, this.widgetData.spouse65Deduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_DEDUCTION}`, this.widgetData.childDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_ADJUSTED_DEDUCTION}`, this.widgetData.childAdjustedDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_DISABILITY_CREDIT_DEDUCTION}`, this.widgetData.ahDisabilityCreditDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION}`, this.widgetData.spouseDisabilityCreditDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_DISABILITY_CREDIT_DEDUCTION}`, this.widgetData.childDisabilityCreditDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_RDSP_DEDUCTION}`, this.widgetData.sbRDSPDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_ATTENDANT_NURSING_DEDUCTION}`, this.widgetData.ahAttendantNursingDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION}`, this.widgetData.spouseAttendantNursingDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_ATTENDANT_NURSING_DEDUCTION}`, this.widgetData.childAttendantNursingDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_DEDUCTIONS}`, this.widgetData.sbTotalDeductions);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_ADJUSTED_INCOME}`, this.widgetData.sbAdjustedIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_INCOME_UNDER_THRESHOLD}`, this.widgetData.sbIncomeUnderThreshold);
+    },
     validateFields() {
       this.$v.$touch()
       if (this.$v.$invalid) {
@@ -259,6 +294,7 @@ export default {
         return;
       }
 
+      this.saveData();
       this.navigateToNextPage();
     },
     navigateToNextPage() {
@@ -280,18 +316,22 @@ export default {
   },
   watch: {
     selectedNOAYear: function(value) {
-      if ( this.$store.state.enrolmentModule.isApplyingForFPCare
-        && value === `${this.currentYear - 2}`) {
-        this.ahSBIncome = this.$store.state.enrolmentModule.ahFPCIncome;
-        this.spouseSBIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
-      } else {
-        this.ahSBIncome = '';
-        this.spouseSBIncome = '';
+      if (this.$store.state.enrolmentModule.isApplyingForFPCare) {
+        if (value === `${this.currentYear - 2}`) {
+          this.ahSBIncome = this.$store.state.enrolmentModule.ahFPCIncome;
+          this.spouseSBIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
+        } else {
+          this.ahSBIncome = this.$store.state.enrolmentModule.ahSBIncome;
+          this.spouseSBIncome = this.$store.state.enrolmentModule.spouseSBIncome;
+        }
       }
+    },
+    updatedWidgetData: function(value) {
+      this.widgetData = value;
     },
   },
   computed: {
-    widgetData() {
+    updatedWidgetData() {
       let info = {};
       info.ahSBIncome = this.ahSBIncome;
       info.ahBirthDate = this.ahBirthDate;

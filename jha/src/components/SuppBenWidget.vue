@@ -8,8 +8,8 @@
             <span>Total Household Income</span>
           </td>
           <td>
-            <span v-if="totalHouseholdIncome > 0">
-              {{ currencyString(totalHouseholdIncome) }}
+            <span v-if="sbTotalHouseholdIncome > 0">
+              {{ currencyString(sbTotalHouseholdIncome) }}
             </span>
             <span v-else> - - </span>
           </td>
@@ -82,12 +82,12 @@
           {{currencyString(childDisabilityCreditDeduction)}}
         </td>
       </tr>
-      <tr v-if="dspDeduction > 0">
+      <tr v-if="sbRDSPDeduction > 0">
         <td>
           Disability savings plan
         </td>
         <td>
-          {{currencyString(dspDeduction)}}
+          {{currencyString(sbRDSPDeduction)}}
         </td>
       </tr>
       <tr v-if="ahAttendantNursingDeduction > 0">
@@ -119,8 +119,8 @@
           <h4>Total deductions</h4>
         </td>
         <td>
-          <span v-if="totalDeductions > 0" >
-            {{currencyString(totalDeductions)}}
+          <span v-if="sbTotalDeductions > 0" >
+            {{currencyString(sbTotalDeductions)}}
           </span>
           <span v-else>- - </span>
         </td>
@@ -135,8 +135,8 @@
             <h4>Adjusted Net Income:</h4>
           </td>
           <td>
-            <span v-if="adjustedIncome > 0">
-              {{currencyString(adjustedIncome)}}
+            <span v-if="sbAdjustedIncome > 0">
+              {{currencyString(sbAdjustedIncome)}}
             </span>
             <span v-else>
               - -
@@ -145,7 +145,7 @@
         </tr>
       </tbody>
     </table>
-    <p v-if="adjustedIncome > 0 && incomeUnderThreshhold" class="text-success font-weight-bold">
+    <p v-if="sbAdjustedIncome > 0 && sbIncomeUnderThreshold" class="text-success font-weight-bold">
       It is likely that you will qualify for Supplementary Benefits.
     </p>
     <p v-else class="text-danger font-weight-bold" aria-live="assertive">
@@ -197,13 +197,13 @@ export default {
   },
   computed: {
     // Income
-    totalHouseholdIncome() {
-      let income = this.stringToFloat(this.value.ahNetIncome);
+    sbTotalHouseholdIncome() {
+      let income = this.stringToFloat(this.value.ahSBIncome);
       if( this.value.hasSpouse) {
-        income += this.stringToFloat(this.value.spouseNetIncome);
+        income += this.stringToFloat(this.value.spouseSBIncome);
       }
       income = (income > 0) ? income : 0;
-      this.value.totalHouseholdIncome = income;
+      this.value.sbTotalHouseholdIncome = income;
       return income;
     },
     // Deductions
@@ -259,10 +259,10 @@ export default {
       this.value.childDisabilityCreditDeduction = deduction;
       return deduction;
     },
-    dspDeduction() {
-      let deduction = this.stringToFloat(this.value.dspAmount);
+    sbRDSPDeduction() {
+      let deduction = this.stringToFloat(this.value.sbRDSPAmount);
       deduction = (deduction > 0) ? deduction: 0;
-      this.value.dspDeduction = deduction;
+      this.value.sbRDSPDeduction = deduction;
       return deduction;
     },
     ahAttendantNursingDeduction() {
@@ -288,7 +288,7 @@ export default {
       return deduction;
     },
     // Totals
-    totalDeductions() {
+    sbTotalDeductions() {
       let  deductions =  this.ah65Deduction
         + this.spouseDeduction
         + this.spouse65Deduction
@@ -298,22 +298,22 @@ export default {
         + this.ahDisabilityCreditDeduction
         + this.spouseDisabilityCreditDeduction
         + this.childDisabilityCreditDeduction
-        + this.dspDeduction
+        + this.sbRDSPDeduction
         + this.ahAttendantNursingDeduction
         + this.spouseAttendantNursingDeduction
         + this.childAttendantNursingDeduction;
-      this.value.totalDeductions = deductions;
+      this.value.sbTotalDeductions = deductions;
       return deductions;
     },
-    adjustedIncome() {
-      let adjusted = this.totalHouseholdIncome - this.totalDeductions;
+    sbAdjustedIncome() {
+      let adjusted = this.sbTotalHouseholdIncome - this.sbTotalDeductions;
       adjusted = (adjusted > 0) ? adjusted : 0;
-      this.value.adjustedIncome = adjusted;
+      this.value.sbAdjustedIncome = adjusted;
       return adjusted;
     },
-    incomeUnderThreshhold() {
-      let underThreshold = this.adjustedIncome <= this.qualificationThreshhold;
-      this.value.incomeUnderThreshold = underThreshold;
+    sbIncomeUnderThreshold() {
+      let underThreshold = this.sbAdjustedIncome <= this.qualificationThreshhold;
+      this.value.sbIncomeUnderThreshold = underThreshold;
       return underThreshold;
     },
   },
