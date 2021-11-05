@@ -27,12 +27,18 @@
               label="See line 23600 of your Notice of Assessment or Reassessment."
               v-model="ahSBIncome"
               :inputStyle='mediumStyles'/>
+              <div class="text-danger"
+                  v-if="$v.ahSBIncome.$dirty && !$v.ahSBIncome.required"
+                  aria-live="assertive">Your net income from {{selectedNOAYear}} is required.</div>
             <div v-if="hasSpouse === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's 2020 net income.</p>
               <CurrencyInput id="spouse-net-income"
                 label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
                 v-model="spouseSBIncome"
                 :inputStyle='mediumStyles'/>
+              <div class="text-danger"
+                  v-if="$v.spouseSBIncome.$dirty && !$v.spouseSBIncome.required"
+                  aria-live="assertive">Your spouse/common-law partner's net income from {{selectedNOAYear}} is required.</div>
             </div>
             <div v-if="children.length > 0">
               <p class="mt-4 mb-1 font-weight-bolder">How much did you claim for child care expenses in {{selectedNOAYear}}?</p>
@@ -54,11 +60,21 @@
                 label="Who claimed the disability tax credit?"
                 v-model="selectedDisabilityRecipients"
                 :items="selectOptionsFamilyMembers"/>
-              <DigitInput v-if="selectedDisabilityRecipients.includes('child')"
-                id="num-attendant-nursing-children"
-                label="How many of your children are eligible for a disability tax credit?"
-                v-model="numDisabilityChildren"
-                :inputStyle="extraSmallStyles"/>
+              <div class="text-danger"
+                v-if="$v.selectedDisabilityRecipients.$dirty && !$v.selectedDisabilityRecipients.required"
+                aria-live="assertive">You must select who claimed the disability tax credit</div>
+              <div v-if="selectedDisabilityRecipients.includes('child')">
+                <DigitInput id="num-attendant-nursing-children"
+                  label="How many of your children are eligible for a disability tax credit?"
+                  v-model="numDisabilityChildren"
+                  :inputStyle="extraSmallStyles"/>
+                <div class="text-danger"
+                  v-if="$v.numDisabilityChildren.$dirty && !$v.numDisabilityChildren.required"
+                  aria-live="assertive">You must enter how many of your children claimed the disability tax credit</div>
+                <div class="text-danger"
+                  v-if="$v.numDisabilityChildren.$dirty && !$v.numDisabilityChildren.validateNumChildren"
+                  aria-live="assertive">This number cannot be zero or exceed the number of children on your account.</div>
+              </div>
             </div>
             <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your Medical Services Plan account have a Registered Disability Savings Plan?</p>
             <Radio id="has-disability-savings"
@@ -72,6 +88,9 @@
                 label="See Line 12500 of the Notice of Assessment or Reassessment"
                 v-model="sbRDSPAmount"
                 :inputStyle='mediumStyles'/>
+              <div class="text-danger"
+                v-if="$v.sbRDSPAmount.$dirty && !$v.sbRDSPAmount.required"
+                aria-live="assertive">You must enter how much you reported for a Registered Disability Savings Plan</div>
             </div>
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
             <Radio id="has-attendant-nursing-expenses"
@@ -86,11 +105,21 @@
                 label="Who claimed the attendant or nursing home expenses?"
                 v-model="selectedAttendantNursingRecipients"
                 :items="selectOptionsFamilyMembers"/>
-              <DigitInput v-if="selectedAttendantNursingRecipients.includes('child')"
-                id="num-attendant-nursing-children"
-                label="How many children claimed attendant care expenses?"
-                v-model="numAttendantNursingChildren"
-                :inputStyle="extraSmallStyles"/>
+              <div class="text-danger"
+                v-if="$v.selectedAttendantNursingRecipients.$dirty && !$v.selectedAttendantNursingRecipients.required"
+                aria-live="assertive">You must select who claimed the attendant or nursing home expenses</div>
+              <div v-if="selectedAttendantNursingRecipients.includes('child')">
+                <DigitInput id="num-attendant-nursing-children"
+                  label="How many children claimed attendant care expenses?"
+                  v-model="numAttendantNursingChildren"
+                  :inputStyle="extraSmallStyles"/>
+                <div class="text-danger"
+                  v-if="$v.numAttendantNursingChildren.$dirty && !$v.numAttendantNursingChildren.required"
+                  aria-live="assertive">You must enter how many of your children claimed the attendant or nursing home expenses</div>
+                <div class="text-danger"
+                  v-if="$v.numAttendantNursingChildren.$dirty && !$v.numAttendantNursingChildren.validateNumChildren"
+                  aria-live="assertive">This number cannot be zero or exceed the number of children on your account.</div>
+              </div>
             </div>
           </div>
           <div class="col-md-5" v-if="windowWidth >= 768">
@@ -104,6 +133,9 @@
             <div class="col-md-7">
               <FileUploader class="ml-5"
                 v-model="attendantNursingReceipts" />
+              <div class="text-danger"
+                  v-if="$v.attendantNursingReceipts.$dirty && !$v.attendantNursingReceipts.required"
+                  aria-live="assertive">You must upload your attendant care or nursing receipts</div>
             </div>
             <div class="col-md-5">
               <TipBox title="Tip">
@@ -171,6 +203,11 @@ import {
 import TipBox from '@/components/TipBox';
 import SuppBenWidget from '@/components/SuppBenWidget';
 import pageContentMixin from '@/mixins/page-content-mixin';
+
+validateNumChildren = (value) => {
+  return (value <= this.children.length) 
+      && (parseInt(value) > 0);
+};
 
 export default {
   name: 'SuppBenInfoPage',
@@ -251,7 +288,25 @@ export default {
     ];
   },
   validations() {
-    const validations = {};
+    const validations = {
+      ahSBIncome: {
+        required,
+      },
+    };
+    if (this.hasSpouse === 'Y') validations.spouseSBIncome = {required};
+    if (this.hasDisabilityCredit === 'Y') validations.selectedDisabilityRecipients = {required};
+    if (this.hasDisabilityCredit === 'Y' && this.selectedDisabilityRecipients.includes('child')){
+      validations.numDisabilityChildren = {required, validateNumChildren};
+    }
+    if (this.hasRDSP === 'Y') validations.sbRDSPAmount = {required};
+    if (this.hasAttendantNursingExpenses === 'Y') {
+      validations.selectedAttendantNursingRecipients = {required};
+      validations.attendantNursingReceipts = {required};
+    }
+    if (this.hasAttendantNursingExpenses === 'Y' && this.selectedAttendantNursingRecipients.includes('child')){
+      validations.numAttendantNursingChildren = {required, validateNumChildren};
+    }
+
     return validations;
   },
   methods: {
