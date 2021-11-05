@@ -1,8 +1,8 @@
 <template>
   <div class="form-group bcgov-table-body p-3"
       :style="{'background-color': backgroundColor}">
-    <div v-for="element in elements"
-        :key="element.label"
+    <div v-for="(element, index) in elements"
+        :key="element.label + '-' + index"
         class="bcgov-row d-flex">
       <div class="bcgov-table-cell label">
         <div class="table-cell-max">{{element.label}}</div>
@@ -46,7 +46,6 @@ export default {
 
 .bcgov-table-cell.label {
   width: 50%;
-  text-align: right;
 }
 .bcgov-table-cell.value {
   width: 50%;
