@@ -66,6 +66,7 @@
                 label="Who claimed the disability tax credit?"
                 v-model="selectedDisabilityRecipients"
                 :items="selectOptionsFamilyMembers"
+                icon='cross'
                 @blur="handleBlurField($v.selectedDisabilityRecipients)"/>
               <div class="text-danger"
                 v-if="$v.selectedDisabilityRecipients.$dirty && !$v.selectedDisabilityRecipients.required"
@@ -116,6 +117,7 @@
                 label="Who claimed the attendant or nursing home expenses?"
                 v-model="selectedAttendantNursingRecipients"
                 :items="selectOptionsFamilyMembers"
+                icon='cross'
                 @blur="handleBlurField($v.selectedAttendantNursingRecipients)"/>
               <div class="text-danger"
                 v-if="$v.selectedAttendantNursingRecipients.$dirty && !$v.selectedAttendantNursingRecipients.required"
@@ -284,6 +286,7 @@ export default {
     this.children = this.$store.state.enrolmentModule.children;
     this.hasDisabilityCredit = this.$store.state.enrolmentModule.hasDisabilityCredit;
     this.selectedDisabilityRecipients = this.$store.state.enrolmentModule.selectedDisabilityRecipients;
+    console.log(this.selectedDisabilityRecipients);
     this.numDisabilityChildren = this.$store.state.enrolmentModule.numDisabilityChildren
     this.hasRDSP = this.$store.state.enrolmentModule.hasRDSP;
     this.sbRDSPAmount = this.$store.state.enrolmentModule.sbRDSPAmount
