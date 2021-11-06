@@ -238,7 +238,7 @@ export default {
       childAttendantNursingDeduction: 0,
       sbTotalDeductions: 0,
       sbAdjustedIncome: 0,
-      sbIncomeUnderThreshold: false,
+      sbIncomeUnderThreshold: null,
       // Contact info
       resAddressLine1: null,
       resAddressLine2: null,
@@ -723,7 +723,7 @@ export default {
       commit(SET_CHILD_ATTENDANT_NURSING_DEDUCTION, 0);
       commit(SET_SB_TOTAL_DEDUCTIONS, 0);
       commit(SET_SB_ADJUSTED_INCOME, 0);
-      commit(SET_SB_INCOME_UNDER_THRESHOLD, false);
+      commit(SET_SB_INCOME_UNDER_THRESHOLD, null);
       // Child info
       commit(SET_HAS_CHILDREN, null);
       commit(SET_CHILDREN, []);
@@ -1025,7 +1025,7 @@ export default {
       commit(SET_AH_DISABILITY_CREDIT_DEDUCTION, payload);
     },
     [SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION]({ commit }, payload) {
-      commit(SET_ATTENDSET_SPOUSE_DISABILITY_CREDIT_DEDUCTIONANT_NURSING_RECEIPTS, payload);
+      commit(SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION, payload);
     },
     [SET_CHILD_DISABILITY_CREDIT_DEDUCTION]({ commit }, payload) {
       commit(SET_CHILD_DISABILITY_CREDIT_DEDUCTION, payload);
@@ -1047,6 +1047,9 @@ export default {
     },
     [SET_SB_ADJUSTED_INCOME]({ commit }, payload) {
       commit(SET_SB_ADJUSTED_INCOME, payload);
+    },
+    [SET_SB_INCOME_UNDER_THRESHOLD]({ commit }, payload) {
+      commit(SET_SB_INCOME_UNDER_THRESHOLD, payload);
     },
     // Contact info
     [SET_RES_ADDRESS_LINE_1]({ commit }, payload) {

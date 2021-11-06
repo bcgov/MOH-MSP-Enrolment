@@ -206,6 +206,36 @@ import {
 import {
   MODULE_NAME as enrolmentModule,
   RESET_FORM,
+  SET_SELECTED_NOA_YEAR,
+  SET_AH_SB_INCOME,
+  SET_SPOUSE_SB_INCOME,
+  SET_CLAIMED_CHILD_CARE_EXPENSES,
+  SET_HAS_DISABILITY_CREDIT,
+  SET_SELECTED_DISABILITY_RECIPIENTS,
+  SET_NUM_DISABILITY_CHILDREN,
+  SET_HAS_RDSP,
+  SET_SB_RDSP_AMOUNT,
+  SET_HAS_ATTENDANT_NURSING_EXPENSES,
+  SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS,
+  SET_NUM_ATTENDANT_NURSING_CHILDREN,
+  SET_ATTENDANT_NURSING_RECEIPTS,
+  // Calculated SuppBen Widget Values
+  SET_SB_TOTAL_HOUSEHOLD_INCOME,
+  SET_AH_65_DEDUCTION,
+  SET_SPOUSE_DEDUCTION,
+  SET_SPOUSE_65_DEDUCTION,
+  SET_CHILD_DEDUCTION,
+  SET_CHILD_ADJUSTED_DEDUCTION,
+  SET_AH_DISABILITY_CREDIT_DEDUCTION,
+  SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION,
+  SET_CHILD_DISABILITY_CREDIT_DEDUCTION,
+  SET_SB_RDSP_DEDUCTION,
+  SET_AH_ATTENDANT_NURSING_DEDUCTION,
+  SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION,
+  SET_CHILD_ATTENDANT_NURSING_DEDUCTION,
+  SET_SB_TOTAL_DEDUCTIONS,
+  SET_SB_ADJUSTED_INCOME,
+  SET_SB_INCOME_UNDER_THRESHOLD,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
@@ -226,7 +256,7 @@ import {
 } from 'vuelidate/lib/validators';
 
 let validateNumChildren = (value, vm) => {
-  return (value <= vm.children.length) 
+  return (parseInt(value) <= vm.children.length) 
       && (parseInt(value) > 0);
 };
 
@@ -284,9 +314,9 @@ export default {
     this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse;
     this.spouseSBIncome = this.$store.state.enrolmentModule.spouseSBIncome;
     this.children = this.$store.state.enrolmentModule.children;
+    this.claimedChildCareExpenses = this.$store.state.enrolmentModule.claimedChildCareExpenses;
     this.hasDisabilityCredit = this.$store.state.enrolmentModule.hasDisabilityCredit;
     this.selectedDisabilityRecipients = this.$store.state.enrolmentModule.selectedDisabilityRecipients;
-    console.log(this.selectedDisabilityRecipients);
     this.numDisabilityChildren = this.$store.state.enrolmentModule.numDisabilityChildren
     this.hasRDSP = this.$store.state.enrolmentModule.hasRDSP;
     this.sbRDSPAmount = this.$store.state.enrolmentModule.sbRDSPAmount
@@ -345,7 +375,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_SB_RDSP_AMOUNT}`, this.sbRDSPAmount);
       this.$store.dispatch(`${enrolmentModule}/${SET_HAS_ATTENDANT_NURSING_EXPENSES}`, this.hasAttendantNursingExpenses);
       this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS}`, this.selectedAttendantNursingRecipients);
-      this.$store.dispatch(`${enrolmentModule}/${SET_NUM_ATTENDANT_NURSING_CHILDREN}`, this.numAttendantNursing);
+      this.$store.dispatch(`${enrolmentModule}/${SET_NUM_ATTENDANT_NURSING_CHILDREN}`, this.numAttendantNursingChildren);
       this.$store.dispatch(`${enrolmentModule}/${SET_ATTENDANT_NURSING_RECEIPTS}`, this.attendantNursingReceipts);
       
       this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_HOUSEHOLD_INCOME}`, this.widgetData.sbTotalHouseholdIncome);
