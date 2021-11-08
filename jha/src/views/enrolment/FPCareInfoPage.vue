@@ -7,10 +7,13 @@
         <div class="row">
           <div class="col-md-7">
             <div>
-              <CurrencyInput :label="`Enter your net income from ${noaYear} - see line 23600 of your Notice of Assessment or Reassessment from the Canada Revenue Agency (samples). For more information, please see Frequently Asked Questions.`"
-                v-model="ahIncome"
+              <CurrencyInput v-model="ahIncome"
                 id="ah-income"
-                @blur="handleBlurField($v.ahIncome)"/>
+                @blur="handleBlurField($v.ahIncome)">
+                <template v-slot:description>
+                  <label for="ah-income">Enter your net income from {{noaYear}} - see line 23600 of your Notice of Assessment or Reassessment from the Canada Revenue Agency (<a href="javascript:void(0)" @click="handleClickIncomeSample()">samples</a>). For more information, please see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
+                </template>
+              </CurrencyInput>
               <div class="text-danger"
                 v-if="$v.ahIncome.$dirty
                   && !$v.ahIncome.required"
@@ -21,11 +24,14 @@
                 aria-live="assertive">Your net income from {{noaYear}} is must be a positive number.</div>
             </div>
             <div v-if="hasSpouse">
-              <CurrencyInput :label="`Enter your spouse/common-law partner's net income from ${noaYear} - see line 23600 of your spouse/common-law partner's Notice of Assessment or Reassessment from the Canada Revenue Agency (samples). For more information, please see Frequently Asked Questions.`"
-                v-model="spouseIncome"
+              <CurrencyInput v-model="spouseIncome"
                 id="spouse-income"
                 class="mt-3"
-                @blur="handleBlurField($v.spouseIncome)"/>
+                @blur="handleBlurField($v.spouseIncome)">
+                <template v-slot:description>
+                  <label for="spouse-income">Enter your spouse/common-law partner's net income from {{noaYear}} - see line 23600 of your spouse/common-law partner's Notice of Assessment or Reassessment from the Canada Revenue Agency (<a href="javscript:void(0)" @click="handleClickIncomeSample()">samples</a>). For more information, please see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
+                </template>
+              </CurrencyInput>
               <div class="text-danger"
                 v-if="$v.spouseIncome.$dirty
                   && hasSpouse
@@ -70,6 +76,17 @@
         </div>
       </div>
     </PageContent>
+    <portal v-if="isSampleModalOpen"
+      to="modal">
+      <ContentModal @close="handleCloseSampleModal()"
+        title="Tax Documents">
+        <p>Income Tax T1 General Sample</p>
+        <div class="sample-image-container text-center">
+          <img src="/jha/images/income-tax-t1-sample.jpeg"
+            alt="Income tax T1 sample" />
+        </div>
+      </ContentModal>
+    </portal>
     <ContinueBar @continue="validateFields()"
       class="continue-bar" />
   </div>
@@ -99,6 +116,7 @@ import {
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
+  ContentModal,
   ContinueBar,
   CurrencyInput,
   PageContent,
@@ -116,6 +134,7 @@ export default {
     pageContentMixin,
   ],
   components: {
+    ContentModal,
     ContinueBar,
     CurrencyInput,
     FPCWidget,
@@ -129,6 +148,7 @@ export default {
       ahRDSP: null,
       spouseIncome: null,
       spouseRDSP: null,
+      isSampleModalOpen: false,
     };
   },
   created() {
@@ -200,6 +220,12 @@ export default {
         validationObject.$touch();
       }
     },
+    handleClickIncomeSample() {
+      this.isSampleModalOpen = true;
+    },
+    handleCloseSampleModal() {
+      this.isSampleModalOpen = false;
+    }
   },
   computed: {
     hasSpouse() {
@@ -244,5 +270,8 @@ export default {
 <style scoped>
 .continue-bar {
   z-index: 4; /* Fixes Bootstrap input group overlapping ContinueBar component. */
+}
+.sample-image-container img {
+  max-width: 100%;
 }
 </style>
