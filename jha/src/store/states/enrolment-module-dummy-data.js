@@ -66,6 +66,8 @@ export default {
   spousePreviousBCHealthNumber: null,
   spouseBeenReleasedFromInstitution: 'N',
   spouseDischargeDate: null,
+  spouseFPCIncome: '20000',
+  spouseFPCRDSP: '2000',
   // Child info
   hasChildren: true,
   children: [
