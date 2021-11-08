@@ -36,6 +36,8 @@ export default {
   ahArmedForcesDischargeDate: null,
   ahIsStudent: 'Y',
   ahWillStudentResideInBC: 'Y',
+  ahFPCIncome: '10000',
+  ahFPCRDSP: '1000',
   // Spouse info
   hasSpouse: 'Y',
   spouseStatus: StatusInCanada.Citizen,
