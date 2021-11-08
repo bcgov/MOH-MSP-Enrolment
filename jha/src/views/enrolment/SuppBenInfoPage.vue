@@ -140,7 +140,8 @@
             </div>
           </div>
           <div class="col-md-5" v-if="windowWidth >= 768">
-            <SuppBenWidget v-model="widgetData"/>
+            <SuppBenWidget :inputData="widgetData"
+            @change="setWidgetOutput"/>
           </div>
         </div>
 
@@ -170,7 +171,8 @@
           </div>
         </div>
         <div class="mt-3" v-if="windowWidth < 768">
-            <SuppBenWidget v-model="widgetData"/>
+            <SuppBenWidget :inputData="widgetData"
+              @change="setWidgetOutput"/>
           </div>
       </div>
     </PageContent>
@@ -295,7 +297,7 @@ export default {
       selectedAttendantNursingRecipients: [],
       numAttendantNursingChildren: null,
       attendantNursingReceipts: [],
-      widgetData: {},
+      widgetOutput: {},
       mediumStyles: mediumStyles,
       extraSmallStyles: extraSmallStyles,
       radioOptionsNoYes: radioOptionsNoYes,
@@ -363,6 +365,9 @@ export default {
     return validations;
   },
   methods: {
+    setWidgetOutput(data) {
+      this.widgetOutput = data;
+    },
     saveData() {
       this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_NOA_YEAR}`, this.selectedNOAYear);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_SB_INCOME}`, this.ahSBIncome);
@@ -378,22 +383,22 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_NUM_ATTENDANT_NURSING_CHILDREN}`, this.numAttendantNursingChildren);
       this.$store.dispatch(`${enrolmentModule}/${SET_ATTENDANT_NURSING_RECEIPTS}`, this.attendantNursingReceipts);
       
-      this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_HOUSEHOLD_INCOME}`, this.widgetData.sbTotalHouseholdIncome);
-      this.$store.dispatch(`${enrolmentModule}/${SET_AH_65_DEDUCTION}`, this.widgetData.ah65Deduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_DEDUCTION}`, this.widgetData.spouseDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_65_DEDUCTION}`, this.widgetData.spouse65Deduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_DEDUCTION}`, this.widgetData.childDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_ADJUSTED_DEDUCTION}`, this.widgetData.childAdjustedDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_AH_DISABILITY_CREDIT_DEDUCTION}`, this.widgetData.ahDisabilityCreditDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION}`, this.widgetData.spouseDisabilityCreditDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_DISABILITY_CREDIT_DEDUCTION}`, this.widgetData.childDisabilityCreditDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SB_RDSP_DEDUCTION}`, this.widgetData.sbRDSPDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_AH_ATTENDANT_NURSING_DEDUCTION}`, this.widgetData.ahAttendantNursingDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION}`, this.widgetData.spouseAttendantNursingDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_ATTENDANT_NURSING_DEDUCTION}`, this.widgetData.childAttendantNursingDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_DEDUCTIONS}`, this.widgetData.sbTotalDeductions);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SB_ADJUSTED_INCOME}`, this.widgetData.sbAdjustedIncome);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SB_INCOME_UNDER_THRESHOLD}`, this.widgetData.sbIncomeUnderThreshold);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_HOUSEHOLD_INCOME}`, this.widgetOutput.sbTotalHouseholdIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_65_DEDUCTION}`, this.widgetOutput.ah65Deduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_DEDUCTION}`, this.widgetOutput.spouseDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_65_DEDUCTION}`, this.widgetOutput.spouse65Deduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_DEDUCTION}`, this.widgetOutput.childDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_ADJUSTED_DEDUCTION}`, this.widgetOutput.childAdjustedDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_DISABILITY_CREDIT_DEDUCTION}`, this.widgetOutput.ahDisabilityCreditDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION}`, this.widgetOutput.spouseDisabilityCreditDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_DISABILITY_CREDIT_DEDUCTION}`, this.widgetOutput.childDisabilityCreditDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_RDSP_DEDUCTION}`, this.widgetOutput.sbRDSPDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_ATTENDANT_NURSING_DEDUCTION}`, this.widgetOutput.ahAttendantNursingDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION}`, this.widgetOutput.spouseAttendantNursingDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_ATTENDANT_NURSING_DEDUCTION}`, this.widgetOutput.childAttendantNursingDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_DEDUCTIONS}`, this.widgetOutput.sbTotalDeductions);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_ADJUSTED_INCOME}`, this.widgetOutput.sbAdjustedIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_INCOME_UNDER_THRESHOLD}`, this.widgetOutput.sbIncomeUnderThreshold);
     },
     validateFields() {
       this.$v.$touch()
@@ -434,12 +439,9 @@ export default {
         }
       }
     },
-    updatedWidgetData: function(value) {
-      this.widgetData = value;
-    },
   },
   computed: {
-    updatedWidgetData() {
+    widgetData() {
       let info = {};
       info.ahSBIncome = this.ahSBIncome;
       info.ahBirthDate = this.ahBirthDate;
