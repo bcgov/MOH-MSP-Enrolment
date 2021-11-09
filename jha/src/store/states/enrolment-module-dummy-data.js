@@ -36,6 +36,8 @@ export default {
   ahArmedForcesDischargeDate: null,
   ahIsStudent: 'Y',
   ahWillStudentResideInBC: 'Y',
+  ahFPCIncome: '10000',
+  ahFPCRDSP: '1000',
   // Spouse info
   hasSpouse: 'Y',
   spouseStatus: StatusInCanada.Citizen,
@@ -64,6 +66,8 @@ export default {
   spousePreviousBCHealthNumber: null,
   spouseBeenReleasedFromInstitution: 'N',
   spouseDischargeDate: null,
+  spouseFPCIncome: '20000',
+  spouseFPCRDSP: '2000',
   // Child info
   hasChildren: true,
   children: [

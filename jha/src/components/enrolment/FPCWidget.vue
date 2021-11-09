@@ -36,18 +36,28 @@
     <p>The information you entered indicates you would be eligible for the level of coverage below. Coverage is temporary until we verify your income with CRA.</p>
 
     <h3>Level of Coverage</h3>
-    <DistributionBar startingLabel="$0"
+    <div v-if="isLoading"
+      class="text-center">
+      <Loader color="#000"
+        size="24px" />
+    </div>
+    <DistributionBar v-if="!isLoading"
+      startingLabel="$0"
       :items="distributionBarItems"/>
   </div>
 </template>
 
 <script>
-import { DistributionBar } from 'common-lib-vue';
+import {
+  DistributionBar,
+  Loader,
+} from 'common-lib-vue';
 
 export default {
   name: 'FPCWidget',
   components: {
     DistributionBar,
+    Loader,
   },
   props: {
     value: {
@@ -56,6 +66,14 @@ export default {
         return {};
       }
     }
+  },
+  data: () => {
+    return {
+      isLoading: false,
+    };
+  },
+  created() {
+    this.fetchCoverageData();
   },
   computed: {
     formattedTotalIncome() {
@@ -106,6 +124,15 @@ export default {
       };
       const formatter = new Intl.NumberFormat('en-US', formatterOptions);
       return formatter.format(value).replace('.00', '');
+    },
+    fetchCoverageData() {
+      this.isLoading = true;
+      // Make API request for coverage data.
+
+      // Temporarily set timeout to remove loading status.
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 5000);
     }
   }
 }
