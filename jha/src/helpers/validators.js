@@ -11,3 +11,8 @@ export const nameValidator = (value) => {
 export const yesValidator = (value) => {
   return value === 'Y';
 };
+
+export const nonBCValidator = (value) => {
+  return value !== 'BC'
+      && value !== 'British Columbia';
+};

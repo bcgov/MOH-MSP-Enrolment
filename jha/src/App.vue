@@ -1,18 +1,21 @@
 <template>
   <div id="app">
-    <Header :title='pageTitle'
-            imagePath='/jha/images/' />
-    <main>
-      <div class="container stepper">
-        <PageStepper :currentPath='$router.currentRoute.path'
-                    :routes='stepRoutes'
-                    @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
-                    :isMobileStepperOpen='isMobileStepperOpen'
-                    @onClickLink='handleClickStepperLink($event)'/>
-      </div>
-      <router-view/>
-    </main>
-    <Footer :version='version' />
+    <div :aria-hidden="isModalOpen">
+      <Header :title='pageTitle'
+              imagePath='/jha/images/' />
+      <main>
+        <div class="container stepper">
+          <PageStepper :currentPath='$router.currentRoute.path'
+                      :routes='stepRoutes'
+                      @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+                      :isMobileStepperOpen='isMobileStepperOpen'
+                      @onClickLink='handleClickStepperLink($event)'/>
+        </div>
+        <router-view/>
+      </main>
+      <Footer :version='version' />
+    </div>
+    <portal-target name="modal"></portal-target>
   </div>
 </template>
 
@@ -34,6 +37,7 @@ import {
 import pageStateService from '@/services/page-state-service';
 import { scrollTo } from '@/helpers/scroll';
 import { enrolmentRoutes } from './router/routes';
+import { Wormhole } from 'portal-vue';
 
 export default {
   name: 'App',
@@ -73,6 +77,9 @@ export default {
     },
     isMobileStepperOpen() {
       return this.$store.state.appModule.showMobileStepperDetails;
+    },
+    isModalOpen() {
+      return Wormhole.hasContentFor('modal');
     }
   },
   methods: {

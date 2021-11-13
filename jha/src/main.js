@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
+import PortalVue from 'portal-vue';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
@@ -43,6 +44,7 @@ library.add(faExclamationCircle);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(Vuelidate);
+Vue.use(PortalVue);
 
 Vue.config.productionTip = false;
 
