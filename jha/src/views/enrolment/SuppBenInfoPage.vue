@@ -22,7 +22,7 @@
               <font-awesome-icon icon="exclamation-circle"/>
               Selecting this Notice of Assessment will allow you to apply for supplementary benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
             </div>
-            <p class="mt-2 mb-1 font-weight-bolder">Enter your 2020 net income.</p>
+            <p class="mt-2 mb-1 font-weight-bolder">Enter your {{selectedNOAYear}} net income.</p>
             <CurrencyInput id="ah-net-income"
               label="See line 23600 of your Notice of Assessment or Reassessment."
               v-model="ahSBIncome"
@@ -32,7 +32,7 @@
                   v-if="$v.ahSBIncome.$dirty && !$v.ahSBIncome.required"
                     aria-live="assertive">Your net income from {{selectedNOAYear}} is required.</div>
             <div v-if="hasSpouse === 'Y'">
-              <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's 2020 net income.</p>
+              <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's {{selectedNOAYear}} net income.</p>
               <CurrencyInput id="spouse-net-income"
                 label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
                 v-model="spouseSBIncome"
@@ -42,7 +42,31 @@
                   v-if="$v.spouseSBIncome.$dirty && !$v.spouseSBIncome.required"
                     aria-live="assertive">Your spouse/common-law partner's net income from {{selectedNOAYear}} is required.</div>
             </div>
-            <div v-if="children.length > 0">
+
+            <div v-if="onlySuppBen">
+              <p class="mt-4 mb-1 font-weight-bolder">Do you have any children on your Medical Services Plan account?</p>
+              <Radio id="has-children"
+                name="has-children"
+                v-model="hasChildren"
+                :items="radioOptionsNoYes"
+                @blur="handleBlurField($v.hasChildren)"/>
+              <div v-if="hasChildren === 'Y'">
+                <DigitInput id="num-children"
+                  label="How many children do you have on your account?"
+                  v-model="numChildren"
+                  :inputStyle="extraSmallStyles"
+                  @blur="handleBlurField($v.numChildren)"/>
+                <div class="text-danger"
+                  v-if="$v.numChildren.$dirty && !$v.numChildren.required"
+                    aria-live="assertive">You must enter how many children are on your account.</div>
+                <div class="text-danger"
+                  v-if="$v.numChildren.$dirty
+                      && $v.numChildren.required
+                      && !$v.numChildren.validateNumChildren"
+                    aria-live="assertive">This number cannot be zero or over 28.</div>
+              </div>
+            </div>
+            <div v-if="intNumChildren > 0">
               <p class="mt-4 mb-1 font-weight-bolder">How much did you claim for child care expenses in {{selectedNOAYear}}?</p>
               <CurrencyInput id="child-care-expenses"
                 label="See line 21400 of your Notice of Assessment or Reassessment."
@@ -53,6 +77,7 @@
                 v-if="$v.claimedChildCareExpenses.$dirty && !$v.claimedChildCareExpenses.required"
                   aria-live="assertive">Your claimed child care expenses from {{selectedNOAYear}} are required.</div>
             </div>
+
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim a disability tax credit in {{selectedNOAYear}}?</p>
             <Radio id="has-disability-credit"
               name="has-disability-credit"
@@ -83,7 +108,7 @@
                 <div class="text-danger"
                   v-if="$v.numDisabilityChildren.$dirty
                       && $v.numDisabilityChildren.required
-                      && !$v.numDisabilityChildren.validateNumChildren"
+                      && !$v.numDisabilityChildren.validateNumChildClaims"
                     aria-live="assertive">This number cannot be zero or exceed the number of children on your account.</div>
               </div>
             </div>
@@ -134,14 +159,13 @@
                 <div class="text-danger"
                   v-if="$v.numAttendantNursingChildren.$dirty
                     && $v.numAttendantNursingChildren.required
-                    && !$v.numAttendantNursingChildren.validateNumChildren"
+                    && !$v.numAttendantNursingChildren.validateNumChildClaims"
                     aria-live="assertive">This number cannot be zero or exceed the number of children on your account.</div>
               </div>
             </div>
           </div>
           <div class="col-md-5" v-if="windowWidth >= 768">
-            <SuppBenWidget :inputData="widgetData"
-            @change="setWidgetOutput"/>
+            <SuppBenWidget :inputData="widgetData"/>
           </div>
         </div>
 
@@ -171,8 +195,7 @@
           </div>
         </div>
         <div class="mt-3" v-if="windowWidth < 768">
-            <SuppBenWidget :inputData="widgetData"
-              @change="setWidgetOutput"/>
+            <SuppBenWidget :inputData="widgetData"/>
           </div>
       </div>
     </PageContent>
@@ -204,10 +227,13 @@ import {
 import {
   selectOptionsFamilyMembers
 } from '@/constants/select-options';
+import SuppBenData from '@/data-types/supp-ben-data';
 
 import {
   MODULE_NAME as enrolmentModule,
   RESET_FORM,
+  SET_HAS_CHILDREN,
+  SET_NUM_CHILDREN,
   SET_SELECTED_NOA_YEAR,
   SET_AH_SB_INCOME,
   SET_SPOUSE_SB_INCOME,
@@ -257,10 +283,13 @@ import {
   required,
 } from 'vuelidate/lib/validators';
 
-let validateNumChildren = (value, vm) => {
-  return (parseInt(value) <= vm.children.length) 
+let validateNumChildClaims = (value, vm) => {
+  return (parseInt(value) <= vm.intNumChildren) 
       && (parseInt(value) > 0);
 };
+let validateNumChildren = (value) => {
+  return (parseInt(value) > 0) && (parseInt(value) <= 28)
+}
 
 export default {
   name: 'SuppBenInfoPage',
@@ -278,6 +307,7 @@ export default {
   },
   data: () => {
     return {
+      onlySuppBen: false,
       currentYear: 2,
       selectedNOAYear: null,
       radioOptionsNOAYears: [],
@@ -286,7 +316,8 @@ export default {
       hasSpouse: null,
       spouseSBIncome: null,
       spouseBirthDate: null,
-      children: [],
+      hasChildren: null,
+      numChildren: null,
       claimedChildCareExpenses: null,
       hasDisabilityCredit: null,
       selectedDisabilityRecipients: [],
@@ -297,7 +328,6 @@ export default {
       selectedAttendantNursingRecipients: [],
       numAttendantNursingChildren: null,
       attendantNursingReceipts: [],
-      widgetOutput: {},
       mediumStyles: mediumStyles,
       extraSmallStyles: extraSmallStyles,
       radioOptionsNoYes: radioOptionsNoYes,
@@ -311,11 +341,15 @@ export default {
       enrolmentRoutes.SUPP_BEN_INFO_PAGE.title
     );
 
+    // Load stored data
+    this.onlySuppBen = !this.$store.state.enrolmentModule.isApplyingForMSP
+                      && !this.$store.state.enrolmentModule.isApplyingForFPCare;
     this.selectedNOAYear = this.$store.state.enrolmentModule.selectedNOAYear;
     this.ahSBIncome = this.$store.state.enrolmentModule.ahSBIncome;
     this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse;
     this.spouseSBIncome = this.$store.state.enrolmentModule.spouseSBIncome;
-    this.children = this.$store.state.enrolmentModule.children;
+    this.hasChildren = this.$store.state.enrolmentModule.hasChildren ? 'Y' : 'N';
+    this.numChildren = `${this.$store.state.enrolmentModule.numChildren}`;
     this.claimedChildCareExpenses = this.$store.state.enrolmentModule.claimedChildCareExpenses;
     this.hasDisabilityCredit = this.$store.state.enrolmentModule.hasDisabilityCredit;
     this.selectedDisabilityRecipients = this.$store.state.enrolmentModule.selectedDisabilityRecipients;
@@ -328,6 +362,19 @@ export default {
     this.attendantNursingReceipts = this.$store.state.enrolmentModule.attendantNursingReceipts;
     
     this.currentYear = (new Date()).getFullYear();
+    
+    // disable selection options for spouse
+    if (this.hasSpouse === 'N') {
+      this.selectOptionsFamilyMembers.filter(option => {return option.id === "spouse";} )[0].disabled = true;
+      if (this.selectedDisabilityRecipients.includes("spouse")){
+        this.selectedDisabilityRecipients.splice(this.selectedDisabilityRecipients.indexOf("spouse"), 1);
+      }
+      if (this.selectedAttendantNursingRecipients.includes("spouse")){
+        this.selectedAttendantNursingRecipients.splice(this.selectedAttendantNursingRecipients.indexOf("spouse"), 1);
+      }
+    }
+    
+    // set options for years
     this.radioOptionsNOAYears = [
       {
         id: 'currentNOAYear',
@@ -348,10 +395,11 @@ export default {
       },
     };
     if (this.hasSpouse === 'Y') validations.spouseSBIncome = {required};
-    if (this.children.length > 0) validations.claimedChildCareExpenses = {required};
+    if (this.hasChildren === 'Y' && this.onlySuppBen) validations.numChildren = {required, validateNumChildren};
+    if (this.hasChildren === 'Y') validations.claimedChildCareExpenses = {required};
     if (this.hasDisabilityCredit === 'Y') validations.selectedDisabilityRecipients = {required};
     if (this.hasDisabilityCredit === 'Y' && this.selectedDisabilityRecipients.includes('child')){
-      validations.numDisabilityChildren = {required, validateNumChildren};
+      validations.numDisabilityChildren = {required, validateNumChildClaims};
     }
     if (this.hasRDSP === 'Y') validations.sbRDSPAmount = {required};
     if (this.hasAttendantNursingExpenses === 'Y') {
@@ -359,19 +407,20 @@ export default {
       validations.attendantNursingReceipts = {required};
     }
     if (this.hasAttendantNursingExpenses === 'Y' && this.selectedAttendantNursingRecipients.includes('child')){
-      validations.numAttendantNursingChildren = {required, validateNumChildren};
+      validations.numAttendantNursingChildren = {required, validateNumChildClaims};
     }
 
     return validations;
   },
   methods: {
-    setWidgetOutput(data) {
-      this.widgetOutput = data;
-    },
     saveData() {
       this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_NOA_YEAR}`, this.selectedNOAYear);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_SB_INCOME}`, this.ahSBIncome);
       this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_SB_INCOME}`, this.spouseSBIncome);
+      if (this.onlySuppBen) {
+        this.$store.dispatch(`${enrolmentModule}/${SET_HAS_CHILDREN}`, this.hasChildren === 'Y');
+        this.$store.dispatch(`${enrolmentModule}/${SET_NUM_CHILDREN}`, this.intNumChildren);
+      }
       this.$store.dispatch(`${enrolmentModule}/${SET_CLAIMED_CHILD_CARE_EXPENSES}`, this.claimedChildCareExpenses);
       this.$store.dispatch(`${enrolmentModule}/${SET_HAS_DISABILITY_CREDIT}`, this.hasDisabilityCredit);
       this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_DISABILITY_RECIPIENTS}`, this.selectedDisabilityRecipients);
@@ -383,22 +432,22 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_NUM_ATTENDANT_NURSING_CHILDREN}`, this.numAttendantNursingChildren);
       this.$store.dispatch(`${enrolmentModule}/${SET_ATTENDANT_NURSING_RECEIPTS}`, this.attendantNursingReceipts);
       
-      this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_HOUSEHOLD_INCOME}`, this.widgetOutput.sbTotalHouseholdIncome);
-      this.$store.dispatch(`${enrolmentModule}/${SET_AH_65_DEDUCTION}`, this.widgetOutput.ah65Deduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_DEDUCTION}`, this.widgetOutput.spouseDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_65_DEDUCTION}`, this.widgetOutput.spouse65Deduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_DEDUCTION}`, this.widgetOutput.childDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_ADJUSTED_DEDUCTION}`, this.widgetOutput.childAdjustedDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_AH_DISABILITY_CREDIT_DEDUCTION}`, this.widgetOutput.ahDisabilityCreditDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION}`, this.widgetOutput.spouseDisabilityCreditDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_DISABILITY_CREDIT_DEDUCTION}`, this.widgetOutput.childDisabilityCreditDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SB_RDSP_DEDUCTION}`, this.widgetOutput.sbRDSPDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_AH_ATTENDANT_NURSING_DEDUCTION}`, this.widgetOutput.ahAttendantNursingDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION}`, this.widgetOutput.spouseAttendantNursingDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_ATTENDANT_NURSING_DEDUCTION}`, this.widgetOutput.childAttendantNursingDeduction);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_DEDUCTIONS}`, this.widgetOutput.sbTotalDeductions);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SB_ADJUSTED_INCOME}`, this.widgetOutput.sbAdjustedIncome);
-      this.$store.dispatch(`${enrolmentModule}/${SET_SB_INCOME_UNDER_THRESHOLD}`, this.widgetOutput.sbIncomeUnderThreshold);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_HOUSEHOLD_INCOME}`, this.widgetData.totalHouseholdIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_65_DEDUCTION}`, this.widgetData.ah65Deduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_DEDUCTION}`, this.widgetData.spouseDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_65_DEDUCTION}`, this.widgetData.spouse65Deduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_DEDUCTION}`, this.widgetData.childDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_ADJUSTED_DEDUCTION}`, this.widgetData.childAdjustedDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_DISABILITY_CREDIT_DEDUCTION}`, this.widgetData.ahDisabilityCreditDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION}`, this.widgetData.spouseDisabilityCreditDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_DISABILITY_CREDIT_DEDUCTION}`, this.widgetData.childDisabilityCreditDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_RDSP_DEDUCTION}`, this.widgetData.rdspDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_ATTENDANT_NURSING_DEDUCTION}`, this.widgetData.ahAttendantNursingDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION}`, this.widgetData.spouseAttendantNursingDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CHILD_ATTENDANT_NURSING_DEDUCTION}`, this.widgetData.childAttendantNursingDeduction);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_TOTAL_DEDUCTIONS}`, this.widgetData.totalDeductions);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_ADJUSTED_INCOME}`, this.widgetData.adjustedIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_INCOME_UNDER_THRESHOLD}`, this.widgetData.incomeUnderThreshold);
     },
     validateFields() {
       this.$v.$touch()
@@ -439,32 +488,66 @@ export default {
         }
       }
     },
+    intNumChildren: function(value) {
+      if (value === 0) {
+        //the ah has no children so disable the checkbox group option for child 
+        this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = true;
+        //if the ah has selected child for one of the deductions, remove that selection
+        if (this.selectedDisabilityRecipients.includes("child")){
+          this.selectedDisabilityRecipients.splice(this.selectedDisabilityRecipients.indexOf("child"), 1);
+        }
+        if (this.selectedAttendantNursingRecipients.includes("child")){
+          this.selectedAttendantNursingRecipients.splice(this.selectedAttendantNursingRecipients.indexOf("child"), 1);
+        }
+      } else {
+        // the hasChildren is 'Y' and numChildren is > 0 so enable the checkbox group option for child
+        this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
+      }
+    },
+    hasChildren: function(value) {
+      if (value === 'N') {
+        //the ah has no children so disable the checkbox group option for child 
+        this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = true;
+        //if the ah has selected child for one of the deductions, remove that selection
+        if (this.selectedDisabilityRecipients.includes("child")){
+          this.selectedDisabilityRecipients.splice(this.selectedDisabilityRecipients.indexOf("child"), 1);
+        }
+        if (this.selectedAttendantNursingRecipients.includes("child")){
+          this.selectedAttendantNursingRecipients.splice(this.selectedAttendantNursingRecipients.indexOf("child"), 1);
+        }
+      } else if (this.intNumChildren > 0) {
+        // the hasChildren is 'Y' and numChildren is > 0 so enable the checkbox group option for child
+        this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
+      }
+    },
   },
   computed: {
+    intNumChildren() {
+      if (this.hasChildren && this.hasChildren === 'Y') {
+        return (this.numChildren && !isNaN(this.numChildren)) ? 
+          parseInt(this.numChildren) : 0;
+      }
+      return 0;
+    },
     widgetData() {
-      let info = {};
-      info.ahSBIncome = this.ahSBIncome;
-      info.ahBirthDate = this.ahBirthDate;
+      let info = new SuppBenData();
+      info.selectedNOAYear = this.selectedNOAYear;
+      info.ahIncome = this.ahSBIncome;
+      info.ahBirthdate = this.ahBirthdate;
       info.hasSpouse = this.hasSpouse;
-      info.spouseSBIncome = this.spouseSBIncome;
-      info.spouseBirthDate = this.spouseBirthDate;
-      info.children = this.children;
+      info.spouseIncome = this.spouseSBIncome;
+      info.numChildren = this.intNumChildren;
       info.claimedChildCareExpenses = this.claimedChildCareExpenses;
-      info.ahDisabilityCredit = this.hasDisabilityCredit === 'Y'
-                                && this.selectedDisabilityRecipients.includes('ah');
-      info.spouseDisabilityCredit = this.hasDisabilityCredit === 'Y'
-                                && this.selectedDisabilityRecipients.includes('spouse');
-      info.childDisabilityCredit = this.hasDisabilityCredit === 'Y'
-                                && this.selectedDisabilityRecipients.includes('child');                          
-      info.numDisabilityChildren = this.numDisabilityChildren;
-      info.sbRDSPAmount = (this.hasRDSP === 'Y') ? this.sbRDSPAmount : null;
-      info.ahAttendantNursingExpenses = this.hasAttendantNursingExpenses === 'Y'
-                                && this.selectedAttendantNursingRecipients.includes('ah');
-      info.spouseAttendantNursingExpenses = this.hasAttendantNursingExpenses === 'Y'
-                                && this.selectedAttendantNursingRecipients.includes('spouse');
-      info.childAttendantNursingExpenses = this.hasAttendantNursingExpenses === 'Y'
-                                && this.selectedAttendantNursingRecipients.includes('child'); 
-      info.numAttendantNursingChildren = this.numAttendantNursingChildren
+      info.hasDisabilityCredit = this.hasDisabilityCredit;
+      info.selectedDisabilityRecipients = this.selectedDisabilityRecipients;
+      info.numDisabilityChildren = this.numDisabilityChildren
+      info.hasRDSP = this.hasRDSP;
+      info.rdspAmount = this.sbRDSPAmount;
+      info.hasAttendantNursingExpenses = this.hasAttendantNursingExpenses;
+      info.selectedAttendantNursingRecipients = this.selectedAttendantNursingRecipients;
+      info.numAttendantNursingChildren = this.numAttendantNursingChildren;
+      info.attendantNursingReceipts = this.attendantNursingReceipts;
+      info.qualificationThreshhold = 42000;
       return info;
     },
   },

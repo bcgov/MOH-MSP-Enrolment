@@ -79,6 +79,7 @@ export const SET_SPOUSE_FPC_INCOME = 'setSpouseFPCIncome';
 export const SET_SPOUSE_FPC_RDSP = 'setSpouseFPCRDSP';
 // Child info
 export const SET_HAS_CHILDREN = 'setHasChildren';
+export const SET_NUM_CHILDREN = 'setNumChildren';
 export const SET_CHILDREN = 'setChildren';
 // SuppBenInfo
 export const SET_SELECTED_NOA_YEAR = 'setSelectedNOAYear';
@@ -207,6 +208,7 @@ export default {
       spouseFPCRDSP: null,
       // Child info
       hasChildren: null,
+      numChildren: 0,
       children: [],
       // SuppBenInfo
       selectedNOAYear: `${(new Date()).getFullYear() - 1}`,
@@ -477,6 +479,9 @@ export default {
     [SET_HAS_CHILDREN](state, payload) {
       state.hasChildren = payload;
     },
+    [SET_NUM_CHILDREN](state, payload) {
+      state.numChildren = payload;
+    },
     [SET_CHILDREN](state, payload) {
       state.children = payload;
     },
@@ -726,6 +731,7 @@ export default {
       commit(SET_SB_INCOME_UNDER_THRESHOLD, null);
       // Child info
       commit(SET_HAS_CHILDREN, null);
+      commit(SET_NUM_CHILDREN, null);
       commit(SET_CHILDREN, []);
       //contact info
       commit(SET_RES_ADDRESS_LINE_1, null);
@@ -958,6 +964,9 @@ export default {
     // Child info
     [SET_HAS_CHILDREN]({ commit }, payload) {
       commit(SET_HAS_CHILDREN, payload);
+    },
+    [SET_NUM_CHILDREN]({ commit }, payload) {
+      commit(SET_NUM_CHILDREN, payload);
     },
     [SET_CHILDREN]({ commit }, payload) {
       commit(SET_CHILDREN, payload);
