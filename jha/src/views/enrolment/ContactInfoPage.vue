@@ -299,7 +299,7 @@ export default {
       },
     };
     if (!this.onlyFPC) {
-      let resValidations = {
+      const resValidations = {
         resAddressLine1: {
           required,
           specialCharacterValidator,
@@ -322,7 +322,7 @@ export default {
       validations = {...validations, ...resValidations};
     }
     if ( !this.isMailSame ) {
-      let mailValidations = {
+      const mailValidations = {
         mailAddressLine1: {
           required,
           specialCharacterValidator,
