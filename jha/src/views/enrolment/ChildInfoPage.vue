@@ -471,6 +471,7 @@ import {
   MODULE_NAME as enrolmentModule,
   RESET_FORM,
   SET_HAS_CHILDREN,
+  SET_NUM_CHILDREN,
   SET_CHILDREN,
 } from '@/store/modules/enrolment-module';
 import { ChildAgeTypes } from '../../constants/child-age-types';
@@ -793,6 +794,7 @@ export default {
     },
     saveData() {
       this.$store.dispatch(enrolmentModule + '/' + SET_HAS_CHILDREN, this.hasChildren);
+      this.$store.dispatch(enrolmentModule + '/' + SET_NUM_CHILDREN, this.children.length);
       this.$store.dispatch(enrolmentModule + '/' + SET_CHILDREN, this.children);
     },
     navigateToNextPage() {

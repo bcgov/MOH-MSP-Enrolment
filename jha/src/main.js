@@ -20,6 +20,7 @@ import {
   faPrint,
   faTimesCircle,
   faInfoCircle,
+  faExclamationCircle,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import 'core-js/es/number'; // IE polyfill for `Number.isNaN()`.
@@ -39,6 +40,7 @@ library.add(faPencilAlt);
 library.add(faPrint);
 library.add(faTimesCircle);
 library.add(faInfoCircle);
+library.add(faExclamationCircle);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(Vuelidate);

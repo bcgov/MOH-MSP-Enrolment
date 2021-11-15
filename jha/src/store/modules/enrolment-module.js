@@ -79,7 +79,39 @@ export const SET_SPOUSE_FPC_INCOME = 'setSpouseFPCIncome';
 export const SET_SPOUSE_FPC_RDSP = 'setSpouseFPCRDSP';
 // Child info
 export const SET_HAS_CHILDREN = 'setHasChildren';
+export const SET_NUM_CHILDREN = 'setNumChildren';
 export const SET_CHILDREN = 'setChildren';
+// SuppBenInfo
+export const SET_SELECTED_NOA_YEAR = 'setSelectedNOAYear';
+export const SET_AH_SB_INCOME = 'setAHSBIncome';
+export const SET_SPOUSE_SB_INCOME = 'setSpouseSBIncome';
+export const SET_CLAIMED_CHILD_CARE_EXPENSES = 'setClaimedChildCareExpenses';
+export const SET_HAS_DISABILITY_CREDIT = 'setHasDisabilityCredit';
+export const SET_SELECTED_DISABILITY_RECIPIENTS = 'setSelectedDisabilityRecipients';
+export const SET_NUM_DISABILITY_CHILDREN = 'setNumDisabilityChildren';
+export const SET_HAS_RDSP = 'setHasRDSP';
+export const SET_SB_RDSP_AMOUNT = 'setSBRDSPAmount';
+export const SET_HAS_ATTENDANT_NURSING_EXPENSES = 'setHasAttendantNursingExpenses';
+export const SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS = 'setSelectedAttendantNursingRecipients';
+export const SET_NUM_ATTENDANT_NURSING_CHILDREN = 'setNumAttendantNursingChildren';
+export const SET_ATTENDANT_NURSING_RECEIPTS = 'setAttendantNursingReceipts';
+// Calculated SuppBen Widget Values
+export const SET_SB_TOTAL_HOUSEHOLD_INCOME = 'setSBTotalHouseholdIncome';
+export const SET_AH_65_DEDUCTION = 'setAh65Deduction';
+export const SET_SPOUSE_DEDUCTION = 'setSpouseDeduction';
+export const SET_SPOUSE_65_DEDUCTION = 'setSpouse65Deduction';
+export const SET_CHILD_DEDUCTION = 'setChildDeduction';
+export const SET_CHILD_ADJUSTED_DEDUCTION = 'setChildAdjustedDeduction';
+export const SET_AH_DISABILITY_CREDIT_DEDUCTION = 'setAHDisabilityCreditDeduction';
+export const SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION = 'setSpouseDisabilityCreditDeduction';
+export const SET_CHILD_DISABILITY_CREDIT_DEDUCTION = 'setChildDisabilityCreditDeduction';
+export const SET_SB_RDSP_DEDUCTION = 'setSBRDSPDeduction';
+export const SET_AH_ATTENDANT_NURSING_DEDUCTION = 'setAHAttendantNursingDeduction';
+export const SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION = 'setSpouseAttendantNursingDeduction';
+export const SET_CHILD_ATTENDANT_NURSING_DEDUCTION = 'setChildAttendantNursingDeduction';
+export const SET_SB_TOTAL_DEDUCTIONS = 'setSBTotalDeductions';
+export const SET_SB_ADJUSTED_INCOME = 'setSBAdjustedIncome';
+export const SET_SB_INCOME_UNDER_THRESHOLD = 'setSBIncomeUnderThreshold';
 // Contact info
 export const SET_RES_ADDRESS_LINE_1 = 'setResAddressLine1';
 export const SET_RES_ADDRESS_LINE_2 = 'setResAddressLine2';
@@ -176,7 +208,39 @@ export default {
       spouseFPCRDSP: null,
       // Child info
       hasChildren: null,
+      numChildren: 0,
       children: [],
+      // SuppBenInfo
+      selectedNOAYear: `${(new Date()).getFullYear() - 1}`,
+      ahSBIncome: '',
+      spouseSBIncome: null,
+      claimedChildCareExpenses: null,
+      hasDisabilityCredit: 'N',
+      selectedDisabilityRecipients: [],
+      numDisabilityChildren: null,
+      hasRDSP: 'N',
+      sbRDSPAmount: null,
+      hasAttendantNursingExpenses: 'N',
+      selectedAttendantNursingRecipients: [],
+      numAttendantNursingChildren: null,
+      attendantNursingReceipts: [],
+      // Calculated SuppBen Widget Values
+      sbTotalHouseholdIncome: 0,
+      ah65Deduction: 0,
+      spouseDeduction: 0,
+      spouse65Deduction: 0,
+      childDeduction: 0,
+      childAdjustedDeduction: 0,
+      ahDisabilityCreditDeduction: 0,
+      spouseDisabilityCreditDeduction: 0,
+      childDisabilityCreditDeduction: 0,
+      sbRDSPDeduction: 0,
+      ahAttendantNursingDeduction: 0,
+      spouseAttendantNursingDeduction: 0,
+      childAttendantNursingDeduction: 0,
+      sbTotalDeductions: 0,
+      sbAdjustedIncome: 0,
+      sbIncomeUnderThreshold: null,
       // Contact info
       resAddressLine1: null,
       resAddressLine2: null,
@@ -415,8 +479,100 @@ export default {
     [SET_HAS_CHILDREN](state, payload) {
       state.hasChildren = payload;
     },
+    [SET_NUM_CHILDREN](state, payload) {
+      state.numChildren = payload;
+    },
     [SET_CHILDREN](state, payload) {
       state.children = payload;
+    },
+    // SuppBenInfo
+    [SET_SELECTED_NOA_YEAR](state, payload) {
+      state.selectedNOAYear = payload;
+    },
+    [SET_AH_SB_INCOME](state, payload) {
+      state.ahSBIncome = payload;
+    },
+    [SET_SPOUSE_SB_INCOME](state, payload) {
+      state.spouseSBIncome = payload;
+    },
+    [SET_CLAIMED_CHILD_CARE_EXPENSES](state, payload) {
+      state.claimedChildCareExpenses = payload;
+    },
+    [SET_HAS_DISABILITY_CREDIT](state, payload) {
+      state.hasDisabilityCredit = payload;
+    },
+    [SET_SELECTED_DISABILITY_RECIPIENTS](state, payload) {
+      state.selectedDisabilityRecipients = payload;
+    },
+    [SET_NUM_DISABILITY_CHILDREN](state, payload) {
+      state.numDisabilityChildren = payload;
+    },
+    [SET_HAS_RDSP](state, payload) {
+      state.hasRDSP = payload;
+    },
+    [SET_SB_RDSP_AMOUNT](state, payload) {
+      state.sbRDSPAmount = payload;
+    },
+    [SET_HAS_ATTENDANT_NURSING_EXPENSES](state, payload) {
+      state.hasAttendantNursingExpenses = payload;
+    },
+    [SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS](state, payload) {
+      state.selectedAttendantNursingRecipients = payload;
+    },
+    [SET_NUM_ATTENDANT_NURSING_CHILDREN](state, payload) {
+      state.numAttendantNursingChildren = payload;
+    },
+    [SET_ATTENDANT_NURSING_RECEIPTS](state, payload) {
+      state.attendantNursingReceipts = payload;
+    },
+    // Calculated SuppBen Widget Values
+    [SET_SB_TOTAL_HOUSEHOLD_INCOME](state, payload) {
+      state.sbTotalHouseholdIncome = payload;
+    },
+    [SET_AH_65_DEDUCTION](state, payload) {
+      state.ah65Deduction = payload;
+    },
+    [SET_SPOUSE_DEDUCTION](state, payload) {
+      state.spouseDeduction = payload;
+    },
+    [SET_SPOUSE_65_DEDUCTION](state, payload) {
+      state.spouse65Deduction = payload;
+    },
+    [SET_CHILD_DEDUCTION](state, payload) {
+      state.childDeduction = payload;
+    },
+    [SET_CHILD_ADJUSTED_DEDUCTION](state, payload) {
+      state.childAdjustedDeduction = payload;
+    },
+    [SET_AH_DISABILITY_CREDIT_DEDUCTION](state, payload) {
+      state.ahDisabilityCreditDeduction = payload;
+    },
+    [SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION](state, payload) {
+      state.spouseDisabilityCreditDeduction = payload;
+    },
+    [SET_CHILD_DISABILITY_CREDIT_DEDUCTION](state, payload) {
+      state.childDisabilityCreditDeduction = payload;
+    },
+    [SET_SB_RDSP_DEDUCTION](state, payload) {
+      state.sbRDSPDeduction = payload;
+    },
+    [SET_AH_ATTENDANT_NURSING_DEDUCTION](state, payload) {
+      state.ahAttendantNursingDeduction = payload;
+    },
+    [SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION](state, payload) {
+      state.spouseAttendantNursingDeduction = payload;
+    },
+    [SET_CHILD_ATTENDANT_NURSING_DEDUCTION](state, payload) {
+      state.childAttendantNursingDeduction = payload;
+    },
+    [SET_SB_TOTAL_DEDUCTIONS](state, payload) {
+      state.sbTotalDeductions = payload;
+    },
+    [SET_SB_ADJUSTED_INCOME](state, payload) {
+      state.sbAdjustedIncome = payload;
+    },
+    [SET_SB_INCOME_UNDER_THRESHOLD](state, payload) {
+      state.sbIncomeUnderThreshold = payload;
     },
     // Contact info
     [SET_RES_ADDRESS_LINE_1](state, payload) {
@@ -542,8 +698,40 @@ export default {
       commit(SET_SPOUSE_CRA_DOCUMENTS, []);
       commit(SET_SPOUSE_FPC_INCOME, null);
       commit(SET_SPOUSE_FPC_RDSP, null);
+      // SuppBen info
+      commit(SET_SELECTED_NOA_YEAR, null);
+      commit(SET_AH_SB_INCOME, null);
+      commit(SET_SPOUSE_SB_INCOME, null);
+      commit(SET_CLAIMED_CHILD_CARE_EXPENSES, null);
+      commit(SET_HAS_DISABILITY_CREDIT, null);
+      commit(SET_SELECTED_DISABILITY_RECIPIENTS, []);
+      commit(SET_NUM_DISABILITY_CHILDREN, null);
+      commit(SET_HAS_RDSP, null);
+      commit(SET_SB_RDSP_AMOUNT, null);
+      commit(SET_HAS_ATTENDANT_NURSING_EXPENSES, null);
+      commit(SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS, []);
+      commit(SET_NUM_ATTENDANT_NURSING_CHILDREN, null);
+      commit(SET_ATTENDANT_NURSING_RECEIPTS, []);
+      // Calculated SuppBen Widget Values
+      commit(SET_SB_TOTAL_HOUSEHOLD_INCOME, 0);
+      commit(SET_AH_65_DEDUCTION, 0);
+      commit(SET_SPOUSE_DEDUCTION, 0);
+      commit(SET_SPOUSE_65_DEDUCTION, 0);
+      commit(SET_CHILD_DEDUCTION, 0);
+      commit(SET_CHILD_ADJUSTED_DEDUCTION, 0);
+      commit(SET_AH_DISABILITY_CREDIT_DEDUCTION, 0);
+      commit(SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION, 0);
+      commit(SET_CHILD_DISABILITY_CREDIT_DEDUCTION, 0);
+      commit(SET_SB_RDSP_DEDUCTION, 0);
+      commit(SET_AH_ATTENDANT_NURSING_DEDUCTION, 0);
+      commit(SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION, 0);
+      commit(SET_CHILD_ATTENDANT_NURSING_DEDUCTION, 0);
+      commit(SET_SB_TOTAL_DEDUCTIONS, 0);
+      commit(SET_SB_ADJUSTED_INCOME, 0);
+      commit(SET_SB_INCOME_UNDER_THRESHOLD, null);
       // Child info
       commit(SET_HAS_CHILDREN, null);
+      commit(SET_NUM_CHILDREN, null);
       commit(SET_CHILDREN, []);
       //contact info
       commit(SET_RES_ADDRESS_LINE_1, null);
@@ -777,8 +965,100 @@ export default {
     [SET_HAS_CHILDREN]({ commit }, payload) {
       commit(SET_HAS_CHILDREN, payload);
     },
+    [SET_NUM_CHILDREN]({ commit }, payload) {
+      commit(SET_NUM_CHILDREN, payload);
+    },
     [SET_CHILDREN]({ commit }, payload) {
       commit(SET_CHILDREN, payload);
+    },
+    // SuppBen info
+    [SET_SELECTED_NOA_YEAR]({ commit }, payload) {
+      commit(SET_SELECTED_NOA_YEAR, payload);
+    },
+    [SET_AH_SB_INCOME]({ commit }, payload) {
+      commit(SET_AH_SB_INCOME, payload);
+    },
+    [SET_SPOUSE_SB_INCOME]({ commit }, payload) {
+      commit(SET_SPOUSE_SB_INCOME, payload);
+    },
+    [SET_CLAIMED_CHILD_CARE_EXPENSES]({ commit }, payload) {
+      commit(SET_CLAIMED_CHILD_CARE_EXPENSES, payload);
+    },
+    [SET_HAS_DISABILITY_CREDIT]({ commit }, payload) {
+      commit(SET_HAS_DISABILITY_CREDIT, payload);
+    },
+    [SET_SELECTED_DISABILITY_RECIPIENTS]({ commit }, payload) {
+      commit(SET_SELECTED_DISABILITY_RECIPIENTS, payload);
+    },
+    [SET_NUM_DISABILITY_CHILDREN]({ commit }, payload) {
+      commit(SET_NUM_DISABILITY_CHILDREN, payload);
+    },
+    [SET_HAS_RDSP]({ commit }, payload) {
+      commit(SET_HAS_RDSP, payload);
+    },
+    [SET_SB_RDSP_AMOUNT]({ commit }, payload) {
+      commit(SET_SB_RDSP_AMOUNT, payload);
+    },
+    [SET_HAS_ATTENDANT_NURSING_EXPENSES]({ commit }, payload) {
+      commit(SET_HAS_ATTENDANT_NURSING_EXPENSES, payload);
+    },
+    [SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS]({ commit }, payload) {
+      commit(SET_SELECTED_ATTENDANT_NURSING_RECIPIENTS, payload);
+    },
+    [SET_NUM_ATTENDANT_NURSING_CHILDREN]({ commit }, payload) {
+      commit(SET_NUM_ATTENDANT_NURSING_CHILDREN, payload);
+    },
+    [SET_ATTENDANT_NURSING_RECEIPTS]({ commit }, payload) {
+      commit(SET_ATTENDANT_NURSING_RECEIPTS, payload);
+    },
+    // Calculated SuppBen Widget Values
+    [SET_SB_TOTAL_HOUSEHOLD_INCOME]({ commit }, payload) {
+      commit(SET_SB_TOTAL_HOUSEHOLD_INCOME, payload);
+    },
+    [SET_AH_65_DEDUCTION]({ commit }, payload) {
+      commit(SET_AH_65_DEDUCTION, payload);
+    },
+    [SET_SPOUSE_DEDUCTION]({ commit }, payload) {
+      commit(SET_SPOUSE_DEDUCTION, payload);
+    },
+    [SET_SPOUSE_65_DEDUCTION]({ commit }, payload) {
+      commit(SET_SPOUSE_65_DEDUCTION, payload);
+    },
+    [SET_CHILD_DEDUCTION]({ commit }, payload) {
+      commit(SET_CHILD_DEDUCTION, payload);
+    },
+    [SET_CHILD_ADJUSTED_DEDUCTION]({ commit }, payload) {
+      commit(SET_CHILD_ADJUSTED_DEDUCTION, payload);
+    },
+    [SET_AH_DISABILITY_CREDIT_DEDUCTION]({ commit }, payload) {
+      commit(SET_AH_DISABILITY_CREDIT_DEDUCTION, payload);
+    },
+    [SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION]({ commit }, payload) {
+      commit(SET_SPOUSE_DISABILITY_CREDIT_DEDUCTION, payload);
+    },
+    [SET_CHILD_DISABILITY_CREDIT_DEDUCTION]({ commit }, payload) {
+      commit(SET_CHILD_DISABILITY_CREDIT_DEDUCTION, payload);
+    },
+    [SET_SB_RDSP_DEDUCTION]({ commit }, payload) {
+      commit(SET_SB_RDSP_DEDUCTION, payload);
+    },
+    [SET_AH_ATTENDANT_NURSING_DEDUCTION]({ commit }, payload) {
+      commit(SET_AH_ATTENDANT_NURSING_DEDUCTION, payload);
+    },
+    [SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION]({ commit }, payload) {
+      commit(SET_SPOUSE_ATTENDANT_NURSING_DEDUCTION, payload);
+    },
+    [SET_CHILD_ATTENDANT_NURSING_DEDUCTION]({ commit }, payload) {
+      commit(SET_CHILD_ATTENDANT_NURSING_DEDUCTION, payload);
+    },
+    [SET_SB_TOTAL_DEDUCTIONS]({ commit }, payload) {
+      commit(SET_SB_TOTAL_DEDUCTIONS, payload);
+    },
+    [SET_SB_ADJUSTED_INCOME]({ commit }, payload) {
+      commit(SET_SB_ADJUSTED_INCOME, payload);
+    },
+    [SET_SB_INCOME_UNDER_THRESHOLD]({ commit }, payload) {
+      commit(SET_SB_INCOME_UNDER_THRESHOLD, payload);
     },
     // Contact info
     [SET_RES_ADDRESS_LINE_1]({ commit }, payload) {
