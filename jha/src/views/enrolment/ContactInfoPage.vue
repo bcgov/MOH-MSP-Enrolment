@@ -49,13 +49,13 @@
               <div class="text-danger"
                   v-if="$v.resCity.$dirty && !$v.resCity.specialCharacterValidator"
                   aria-live="assertive">City cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-              <Input class="mt-3"
+              <RegionSelect class="mt-3"
                 label="Province"
                 id="res-province"
                 v-model="resProvince"
                 @blur="handleBlurField($v.resProvince)"
                 :disabled='true' />
-              <Input class="mt-3"
+              <CountrySelect class="mt-3"
                 label="Country"
                 id="res-country"
                 v-model="resCountry"
@@ -121,7 +121,14 @@
               <div class="text-danger"
                 v-if="$v.mailCity.$dirty && !$v.mailCity.specialCharacterValidator"
                 aria-live="assertive">City cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-              <Input class="mt-3"
+              <RegionSelect v-if="mailCountry === 'Canada'"
+                class="mt-3"
+                label="Province"
+                id="mail-province"
+                v-model="mailProvince"
+                @blur="handleBlurField($v.mailProvince)" />
+              <Input v-else
+                class="mt-3"
                 label="Province"
                 id="mail-province"
                 v-model="mailProvince"
@@ -131,11 +138,10 @@
               <div class="text-danger"
                 v-if="$v.mailProvince.$dirty && !$v.mailProvince.specialCharacterValidator"
                 aria-live="assertive">Province cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-              <Input class="mt-3"
+              <CountrySelect class="mt-3"
                 label="Country"
                 id="mail-country"
                 v-model="mailCountry"
-                maxlength="250"
                 @blur="handleBlurField($v.mailCountry)" />
               <div class="text-danger" v-if="$v.mailCountry.$dirty && !$v.mailCountry.required" aria-live="assertive">Country is required.</div>
               <div class="text-danger"
@@ -229,15 +235,17 @@ import {
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
-  ContinueBar,
-  Checkbox,
-  PageContent,
-  Input,
-  PostalCodeInput,
   Button,
+  Checkbox,
+  ContinueBar,
+  CountrySelect,
+  Input,
+  PageContent,
   PhoneNumberInput,
-  phoneValidator,
+  PostalCodeInput,
+  RegionSelect,
   bcPostalCodeValidator,
+  phoneValidator,
   specialCharacterValidator,
 } from 'common-lib-vue';
 import {
@@ -250,13 +258,15 @@ export default {
   name: 'ContactInfoPage',
   mixins: [pageContentMixin],
   components: {
+    Button,
     Checkbox,
     ContinueBar,
-    PageContent,
+    CountrySelect,
     Input,
-    PostalCodeInput,
-    Button,
+    PageContent,
     PhoneNumberInput,
+    PostalCodeInput,
+    RegionSelect,
     TipBox
   },
   data: () => {
