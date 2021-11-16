@@ -9,6 +9,7 @@ export const SET_APPLICATION_UUID = 'setApplicationUuid';
 export const SET_CAPTCHA_TOKEN = 'setCaptchaToken';
 export const SET_SUBMISSION_DATE = 'setSubmissionDate';
 export const SET_REFERENCE_NUMBER = 'setReferenceNumber';
+export const SET_IS_INFO_COLLECTION_NOTICE_OPEN = 'setIsInfoCollectionNoticeOpen';
 // Form selections
 export const SET_IS_APPLYING_FOR_MSP = 'setIsApplyingForMSP';
 export const SET_IS_APPLYING_FOR_FPCARE = 'setIsApplyingForFPCare';
@@ -138,6 +139,7 @@ export default {
       captchaToken: null,
       submissionDate: null,
       referenceNumber: null,
+      isInfoCollectionNoticeOpen: true,
       // Form selections
       isApplyingForMSP: false,
       isApplyingForFPCare: false,
@@ -276,6 +278,9 @@ export default {
     },
     [SET_REFERENCE_NUMBER](state, payload) {
       state.referenceNumber = payload;
+    },
+    [SET_IS_INFO_COLLECTION_NOTICE_OPEN](state, payload) {
+      state.isInfoCollectionNoticeOpen = payload;
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP](state, payload) {
@@ -630,6 +635,7 @@ export default {
       commit(SET_CAPTCHA_TOKEN, null);
       commit(SET_SUBMISSION_DATE, null);
       commit(SET_REFERENCE_NUMBER, null);
+      commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, true);
       // Form selections
       commit(SET_IS_APPLYING_FOR_MSP, false);
       commit(SET_IS_APPLYING_FOR_FPCARE, false);
@@ -762,6 +768,9 @@ export default {
     },
     [SET_REFERENCE_NUMBER]({ commit }, payload) {
       commit(SET_REFERENCE_NUMBER, payload);
+    },
+    [SET_IS_INFO_COLLECTION_NOTICE_OPEN]({ commit }, payload) {
+      commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, payload);
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP]({commit}, payload) {

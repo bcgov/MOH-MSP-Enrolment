@@ -2,13 +2,13 @@ import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
 import Vue from 'vue';
 import Vuelidate from 'vuelidate';
-import HomePage from '@/views/enrolment/HomePage.vue';
+import FormSelectionPage from '@/views/enrolment/FormSelectionPage.vue';
 
 const localVue = createLocalVue();
 localVue.use(Vuex);
 Vue.use(Vuelidate);
 
-describe('Enrolment - HomePage.vue', () => {
+describe('Enrolment - FormSelectionPage.vue', () => {
   let state;
   let store;
 
@@ -30,7 +30,7 @@ describe('Enrolment - HomePage.vue', () => {
     });
   });
   it('renders', () => {
-    const wrapper = shallowMount(HomePage, {
+    const wrapper = shallowMount(FormSelectionPage, {
       store,
       localVue,
     });
