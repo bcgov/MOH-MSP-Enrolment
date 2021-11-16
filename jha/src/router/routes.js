@@ -2,7 +2,7 @@ export const enrolmentRoutes = {
   HOME_PAGE: {
     path: '/',
     title: 'Home',
-    name: 'HomePage',
+    name: 'FormSelectionPage',
   },
   PERSONAL_INFO_PAGE: {
     path: '/personal-info',

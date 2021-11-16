@@ -446,7 +446,6 @@ import {
 } from '@/helpers/url';
 import {
   MODULE_NAME as enrolmentModule,
-  RESET_FORM,
   SET_AH_FIRST_NAME,
   SET_AH_MIDDLE_NAME,
   SET_AH_LAST_NAME,
@@ -951,10 +950,7 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
-      next();
-    } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
+    if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
       next();
     } else {
       // Navigate to self.

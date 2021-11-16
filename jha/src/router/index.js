@@ -5,7 +5,7 @@ import {
   commonRoutes,
 } from './routes';
 import pageStateService from '@/services/page-state-service';
-import HomePage from '@/views/enrolment/HomePage.vue';
+import FormSelectionPage from '@/views/enrolment/FormSelectionPage.vue';
 import PersonalInfoPage from '@/views/enrolment/PersonalInfoPage.vue';
 import SpouseInfoPage from '@/views/enrolment/SpouseInfoPage.vue';
 import ChildInfoPage from '@/views/enrolment/ChildInfoPage.vue';
@@ -40,7 +40,7 @@ const routeCollection = [
   {
     path: enrolmentRoutes.HOME_PAGE.path,
     name: enrolmentRoutes.HOME_PAGE.name,
-    component: HomePage
+    component: FormSelectionPage
   },
   {
     path: enrolmentRoutes.PERSONAL_INFO_PAGE.path,
