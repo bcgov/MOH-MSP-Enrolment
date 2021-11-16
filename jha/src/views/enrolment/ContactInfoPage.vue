@@ -123,7 +123,7 @@
                 aria-live="assertive">City cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
               <RegionSelect v-if="mailCountry === 'Canada'"
                 class="mt-3"
-                label="Province"
+                label="Region"
                 id="mail-province"
                 v-model="mailProvince"
                 @blur="handleBlurField($v.mailProvince)" />
@@ -276,15 +276,16 @@ export default {
       resAddressLine2: null,
       resAddressLine3: null,
       resCity: null,
-      resProvince: "British Columbia",
-      resCountry: "Canada",
+      resProvince: null,
+      resCountry: null,
       resPostalCode: null,
       mailAddressLine1: null,
       mailAddressLine2: null,
       mailAddressLine3: null,
       mailCity: null,
-      mailProvince: "British Columbia",
-      mailCountry: "Canada",
+      mailProvince: null,
+      mailCountry: null,
+      mailCountryOld: "_",
       mailPostalCode: null,
       isMailSame: true,
       phone: null,
@@ -433,6 +434,21 @@ export default {
     handleClickDifferentAddress(){
       this.isMailSame = false;
     },
+  },
+  watch: {
+    mailCountry: function(value) {
+      // don't clear province if the change is from loading from store
+      if (this.mailCountryOld !== "_") {
+        if(this.mailCountryOld === "Canada" && value !== "Canada") {
+          // don't keep a Canadian province if not in canada
+          this.mailProvince = "";
+        } else if (this.mailCountryOld !== "Canada" && value === "Canada") {
+          // if changing to canada, a canadian province must be selected by default.
+          this.mailProvince = "British Columbia";
+        }
+      }
+      this.mailCountryOld = value;
+    }
   },
   computed: {},
   // Required in order to block back navigation.
