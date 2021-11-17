@@ -271,6 +271,7 @@ export default {
   },
   data: () => {
     return {
+      isPageLoaded: false,
       onlyFPC: false,
       resAddressLine1: null,
       resAddressLine2: null,
@@ -320,6 +321,9 @@ export default {
     if (this.onlyFPC) {
       this.isMailSame = false;
     }
+    this.$nextTick(() => {
+      this.isPageLoaded = true;
+    })
   },
   validations() {
     let validations = {
@@ -437,7 +441,7 @@ export default {
   watch: {
     mailCountry: function(value, oldValue) {
       // don't clear province if the change is from loading from store
-      if (oldValue !== "_") {
+      if (this.isPageLoaded) {
         if(oldValue === "Canada" && value !== "Canada") {
           // don't keep a Canadian province if not in canada
           this.mailProvince = "";
