@@ -2,6 +2,26 @@ export const enrolmentRoutes = {
   HOME_PAGE: {
     path: '/',
     title: 'Home',
+    name: 'HomePage',
+  },
+  MSP_ELIGIBILITY_PAGE: {
+    path: '/msp-eligibility',
+    title: 'MSP Eligibility',
+    name: 'MSPEligibilityPage',
+  },
+  FPCARE_ELIGIBILITY_PAGE: {
+    path: '/fpcare-eligibility',
+    title: 'Fair PharmaCare Eligibility',
+    name: 'FPCareEligibilityPage',
+  },
+  SUPP_BEN_ELIGIBILITY_PAGE: {
+    path: '/supp-ben-eligibility',
+    title: 'Supplimentary Benefits Eligibility',
+    name: 'SuppBenligibilityPage',
+  },
+  FORM_SELECTION_PAGE: {
+    path: '/form-selection',
+    title: 'JHA Selection',
     name: 'FormSelectionPage',
   },
   PERSONAL_INFO_PAGE: {
@@ -70,7 +90,10 @@ export const commonRoutes = {
 };
 
 export const enrolmentRouteStepOrder = [
-  enrolmentRoutes.HOME_PAGE,
+  enrolmentRoutes.MSP_ELIGIBILITY_PAGE,
+  enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE,
+  enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE,
+  enrolmentRoutes.FORM_SELECTION_PAGE,
   enrolmentRoutes.PERSONAL_INFO_PAGE,
   enrolmentRoutes.SPOUSE_INFO_PAGE,
   enrolmentRoutes.CHILD_INFO_PAGE,

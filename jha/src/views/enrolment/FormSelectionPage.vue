@@ -120,8 +120,8 @@ export default {
 
     logService.logNavigation(
       this.applicationUuid,
-      enrolmentRoutes.HOME_PAGE.path,
-      enrolmentRoutes.HOME_PAGE.title
+      enrolmentRoutes.FORM_SELECTION_PAGE.path,
+      enrolmentRoutes.FORM_SELECTION_PAGE.title
     );
 
     this.$nextTick(() => {
@@ -177,7 +177,7 @@ export default {
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.HOME_PAGE.path
+        enrolmentRoutes.FORM_SELECTION_PAGE.path
       );
       next({
         path: toPath,
