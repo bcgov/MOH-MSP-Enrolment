@@ -22,7 +22,7 @@
               <font-awesome-icon icon="angle-right" size="3x" />
               <h2 class="m-0 ml-2">{{getChildTitle(index)}}</h2>
             </div>
-            <div class="text-danger remove-icon" @click="removeChild(index)">
+            <div class="remove-icon" @click="removeChild(index)">
                 <font-awesome-icon icon="times-circle" size="2x"/>
             </div>
           </div>
