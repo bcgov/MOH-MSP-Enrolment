@@ -284,8 +284,7 @@ export default {
       mailAddressLine3: null,
       mailCity: null,
       mailProvince: null,
-      mailCountry: null,
-      mailCountryOld: "_",
+      mailCountry: "_",
       mailPostalCode: null,
       isMailSame: true,
       phone: null,
@@ -436,18 +435,17 @@ export default {
     },
   },
   watch: {
-    mailCountry: function(value) {
+    mailCountry: function(value, oldValue) {
       // don't clear province if the change is from loading from store
-      if (this.mailCountryOld !== "_") {
-        if(this.mailCountryOld === "Canada" && value !== "Canada") {
+      if (oldValue !== "_") {
+        if(oldValue === "Canada" && value !== "Canada") {
           // don't keep a Canadian province if not in canada
           this.mailProvince = "";
-        } else if (this.mailCountryOld !== "Canada" && value === "Canada") {
+        } else if (oldValue !== "Canada" && value === "Canada") {
           // if changing to canada, a canadian province must be selected by default.
           this.mailProvince = "British Columbia";
         }
       }
-      this.mailCountryOld = value;
     }
   },
   computed: {},
