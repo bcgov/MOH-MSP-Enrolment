@@ -6,6 +6,9 @@ import {
 } from './routes';
 import pageStateService from '@/services/page-state-service';
 import FormSelectionPage from '@/views/enrolment/FormSelectionPage.vue';
+import MSPEligibilityPage from '@/views/enrolment/MSPEligibilityPage.vue';
+import FPCareEligibilityPage from '@/views/enrolment/FPCareEligibilityPage.vue';
+import SuppBenEligibilityPage from '@/views/enrolment/SuppBenEligibilityPage.vue';
 import PersonalInfoPage from '@/views/enrolment/PersonalInfoPage.vue';
 import SpouseInfoPage from '@/views/enrolment/SpouseInfoPage.vue';
 import ChildInfoPage from '@/views/enrolment/ChildInfoPage.vue';
@@ -40,6 +43,31 @@ const routeCollection = [
   {
     path: enrolmentRoutes.HOME_PAGE.path,
     name: enrolmentRoutes.HOME_PAGE.name,
+    redirect: () => {
+      const path = enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path;
+      pageStateService.setPageComplete(path);
+      pageStateService.visitPage(path);
+      return path;
+    }
+  },
+  {
+    path: enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path,
+    name: enrolmentRoutes.MSP_ELIGIBILITY_PAGE.name,
+    component: MSPEligibilityPage
+  },
+  {
+    path: enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.path,
+    name: enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.name,
+    component: FPCareEligibilityPage
+  },
+  {
+    path: enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path,
+    name: enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.name,
+    component: SuppBenEligibilityPage
+  },
+  {
+    path: enrolmentRoutes.FORM_SELECTION_PAGE.path,
+    name: enrolmentRoutes.FORM_SELECTION_PAGE.name,
     component: FormSelectionPage
   },
   {

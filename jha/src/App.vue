@@ -88,7 +88,7 @@ export default {
   computed: {
     stepRoutes() {
       const routes = [
-        {...enrolmentRoutes.HOME_PAGE},
+        {...enrolmentRoutes.FORM_SELECTION_PAGE},
         {...enrolmentRoutes.PERSONAL_INFO_PAGE},
         {...enrolmentRoutes.SPOUSE_INFO_PAGE},
         {...enrolmentRoutes.CHILD_INFO_PAGE},
