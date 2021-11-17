@@ -7,6 +7,7 @@
         <p>Do you have a spouse or common-law partner who also needs to enrol for MSP coverage? If so, you are required to provide spouse information and provide supporting documents.</p>
         <hr class="mt-0"/>
         <Radio
+          v-if="hasSpouse !== 'Y'"
           id='has-spouse'
           name='has-spouse'
           label='Do you have a spouse or common-law partner?'
@@ -15,9 +16,15 @@
         <div class="text-danger"
           v-if="$v.hasSpouse.$dirty && !$v.hasSpouse.required"
           aria-live="assertive">Please indicate whether or not you have a spouse who needs to enrol.</div>
+        
         <div v-if="hasSpouse === 'Y'" class="mt-3">
           <h2>Spouse or common-law partner</h2>
-          <p>Please provide the spouse's personal information and immigration status in Canada. You will be required to upload supporting documents with your application.</p>
+          <div class="heading mt-3">
+            <p>Please provide the spouse's personal information and immigration status in Canada. You will be required to upload supporting documents with your application.</p>
+            <div class="ml-1 remove-icon" @click="removeSpouse()">
+              <font-awesome-icon icon="times-circle" size="2x"/>
+            </div>
+          </div>
           <hr class="mt-0"/>
           <Select 
             id='spouse-status'
@@ -68,10 +75,26 @@
             <div v-if="spouseCitizenshipSupportDocumentType">
               <h2>{{spouseCitizenshipSupportDocumentType}}</h2>
               <hr/>
-              <FileUploader v-model="spouseCitizenshipSupportDocuments" />
-              <div class="text-danger"
-                v-if="$v.spouseCitizenshipSupportDocuments.$dirty && !$v.spouseCitizenshipSupportDocuments.required"
-                aria-live="assertive">File upload required.</div>
+              <div class="row">
+                  <div class="col-md-7">
+                    <FileUploader v-model="spouseCitizenshipSupportDocuments" />
+                    <div class="text-danger"
+                      v-if="$v.spouseCitizenshipSupportDocuments.$dirty && !$v.spouseCitizenshipSupportDocuments.required"
+                      aria-live="assertive">File upload required.</div>
+                  </div>
+                  <div class="col-md-5">
+                    <TipBox title="Tip">
+                      <p>Scan the document, or take a photo of it.</p>
+                      <p>Make sure that it's:</p>
+                      <ul>
+                        <li>The entire document, from corner to corner</li>
+                        <li>Rotated correctly (not upside down or sideways</li>
+                        <li>In focus and easy to read</li>
+                        <li>A JPG, PNG, GIF, BMP or PDF file</li>
+                      </ul>
+                    </TipBox>
+                  </div>
+                </div>
             </div>
 
             <Radio label="Has your spouse's name changed since your ID was issued due to marriage or legal name change?"
@@ -105,11 +128,27 @@
               <div v-if="spouseNameChangeSupportDocumentType">
                 <h2>{{spouseNameChangeSupportDocumentType}}</h2>
                 <hr/>
-                <FileUploader class="mb-3"
-                  v-model="spouseNameChangeSupportDocuments"/>
-                <div class="text-danger"
-                  v-if="$v.spouseNameChangeSupportDocuments.$dirty && !$v.spouseNameChangeSupportDocuments.required"
-                  aria-live="assertive">File upload required.</div>
+                <div class="row">
+                  <div class="col-md-7">
+                    <FileUploader class="mb-3"
+                        v-model="spouseNameChangeSupportDocuments"/>
+                      <div class="text-danger"
+                        v-if="$v.spouseNameChangeSupportDocuments.$dirty && !$v.spouseNameChangeSupportDocuments.required"
+                        aria-live="assertive">File upload required.</div>
+                  </div>
+                  <div class="col-md-5">
+                    <TipBox title="Tip">
+                      <p>Scan the document, or take a photo of it.</p>
+                      <p>Make sure that it's:</p>
+                      <ul>
+                        <li>The entire document, from corner to corner</li>
+                        <li>Rotated correctly (not upside down or sideways</li>
+                        <li>In focus and easy to read</li>
+                        <li>A JPG, PNG, GIF, BMP or PDF file</li>
+                      </ul>
+                    </TipBox>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -172,132 +211,141 @@
             <!-- Spouse moving information -->
             <h2 class="mt-3">Moving information</h2>
             <hr>
-            <Radio
-              label='Has your spouse lived in B.C. since birth?'
-              id='lived-in-bc'
-              name='lived-in-bc'
-              v-model='spouseLivedInBCSinceBirth'
-              className="mt-3"
-              :items='radioOptionsNoYes'
-              :horizontalAlign="true" />
-            <div class="text-danger"
-              v-if="$v.spouseLivedInBCSinceBirth.$dirty && !$v.spouseLivedInBCSinceBirth.required"
-              aria-live="assertive">Please indicate whether your spouse has lived in BC since birth.</div>
-            <Radio
-              label='Has your spouse moved to B.C. permanently?'
-              id='permanent-move'
-              name='permanent-move'
-              v-model='spouseMadePermanentMove'
-              className="mt-3"
-              :items='radioOptionsNoYes'
-              :horizontalAlign="true" />
-            <div class="text-danger"
-              v-if="$v.spouseMadePermanentMove.$dirty && !$v.spouseMadePermanentMove.required"
-              aria-live="assertive">Please indicate whether your spouse has made a permanent move to BC.</div>
-            <div class="text-danger"
-              v-if="$v.spouseMadePermanentMove.$dirty && $v.spouseMadePermanentMove.required && !$v.spouseMadePermanentMove.permanentMoveValidator"
-              aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your spouse is not eligible for enrolment in the Medical Services Plan. Please contact <a href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.</div>
-            <div v-if="spouseMadePermanentMove !== 'N'">
-              <div v-if="spouseLivedInBCSinceBirth === 'N'">
-                <Input 
+            <div class="row">
+              <div class="col-md-7">
+                <Radio
+                  label='Has your spouse lived in B.C. since birth?'
+                  id='lived-in-bc'
+                  name='lived-in-bc'
+                  v-model='spouseLivedInBCSinceBirth'
                   className="mt-3"
-                  label="Which province or country is your spouse moving from?" 
-                  v-model="spouseMovedFrom"/>
+                  :items='radioOptionsNoYes'
+                  :horizontalAlign="true" />
                 <div class="text-danger"
-                  v-if="$v.spouseMovedFrom.$dirty && !$v.spouseMovedFrom.required"
-                  aria-live="assertive">Please indicate where your spouse moved from.</div>
-                <DateInput label='Most recent move to B.C.'
-                  id='move-date'
-                  className='mt-3'
-                  v-model='spouseRecentBCMoveDate' />
+                  v-if="$v.spouseLivedInBCSinceBirth.$dirty && !$v.spouseLivedInBCSinceBirth.required"
+                  aria-live="assertive">Please indicate whether your spouse has lived in BC since birth.</div>
+                <Radio
+                  label='Has your spouse moved to B.C. permanently?'
+                  id='permanent-move'
+                  name='permanent-move'
+                  v-model='spouseMadePermanentMove'
+                  className="mt-3"
+                  :items='radioOptionsNoYes'
+                  :horizontalAlign="true" />
                 <div class="text-danger"
-                  v-if="$v.spouseRecentBCMoveDate.$dirty && !$v.spouseRecentBCMoveDate.required"
-                  aria-live="assertive">Most recent BC move date is required.</div>
-                <DateInput label='Arrival date in Canada (optional)'
-                  id='canada-arrival-date'
-                  className='mt-3'
-                  v-model='spouseCanadaArrivalDate' />
+                  v-if="$v.spouseMadePermanentMove.$dirty && !$v.spouseMadePermanentMove.required"
+                  aria-live="assertive">Please indicate whether your spouse has made a permanent move to BC.</div>
+                <div class="text-danger"
+                  v-if="$v.spouseMadePermanentMove.$dirty && $v.spouseMadePermanentMove.required && !$v.spouseMadePermanentMove.permanentMoveValidator"
+                  aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your spouse is not eligible for enrolment in the Medical Services Plan. Please contact <a href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.</div>
+                <div v-if="spouseMadePermanentMove !== 'N'">
+                  <div v-if="spouseLivedInBCSinceBirth === 'N'">
+                    <Input 
+                      className="mt-3"
+                      label="Which province or country is your spouse moving from?" 
+                      v-model="spouseMovedFrom"/>
+                    <div class="text-danger"
+                      v-if="$v.spouseMovedFrom.$dirty && !$v.spouseMovedFrom.required"
+                      aria-live="assertive">Please indicate where your spouse moved from.</div>
+                    <DateInput label='Most recent move to B.C.'
+                      id='move-date'
+                      className='mt-3'
+                      v-model='spouseRecentBCMoveDate' />
+                    <div class="text-danger"
+                      v-if="$v.spouseRecentBCMoveDate.$dirty && !$v.spouseRecentBCMoveDate.required"
+                      aria-live="assertive">Most recent BC move date is required.</div>
+                    <DateInput label='Arrival date in Canada (optional)'
+                      id='canada-arrival-date'
+                      className='mt-3'
+                      v-model='spouseCanadaArrivalDate' />
+                  </div>
+                  <Radio
+                    label='Has your spouse been outside B.C. for more than 30 days in total in the past 12 months?'
+                    id='outside-bc-past-12'
+                    name='outside-bc-past-12'
+                    v-model='spouseOutsideBCLast12Months'
+                    className="mt-3"
+                    :items='radioOptionsNoYes'
+                    :horizontalAlign="true" />
+                  <div class="text-danger"
+                    v-if="$v.spouseOutsideBCLast12Months.$dirty && !$v.spouseOutsideBCLast12Months.required"
+                    aria-live="assertive">Please indicate whether your spouse has been outside BC in the past 12 months.</div>
+                  <div v-if="spouseOutsideBCLast12Months === 'Y'" class="tabbed-section">
+                    <Input 
+                      className="mt-3"
+                      label="Reason for departure" 
+                      v-model="spouseOutsideBCLast12MonthsReason"/>
+                    <div class="text-danger"
+                      v-if="$v.spouseOutsideBCLast12MonthsReason.$dirty && !$v.spouseOutsideBCLast12MonthsReason.required"
+                      aria-live="assertive">Please indicate the reason your spouse left BC.</div>
+                    <Input 
+                      className="mt-3"
+                      label="Location" 
+                      v-model="spouseOutsideBCLast12MonthsDestination"/>
+                    <div class="text-danger"
+                      v-if="$v.spouseOutsideBCLast12MonthsDestination.$dirty && !$v.spouseOutsideBCLast12MonthsDestination.required"
+                      aria-live="assertive">Please indicate the location your spouse left BC to.</div>
+                    <DateInput label='Departure date'
+                      id='departure-date'
+                      className='mt-3'
+                      v-model='spouseOutsideBCLast12MonthsDepartureDate' />
+                    <div class="text-danger"
+                      v-if="$v.spouseOutsideBCLast12MonthsDepartureDate.$dirty && !$v.spouseOutsideBCLast12MonthsDepartureDate.required"
+                      aria-live="assertive">Departure date is required.</div>
+                    <DateInput label='Return date'
+                      id='return-date'
+                      className='mt-3'
+                      v-model='spouseOutsideBCLast12MonthsReturnDate' />
+                    <div class="text-danger"
+                      v-if="$v.spouseOutsideBCLast12MonthsReturnDate.$dirty && !$v.spouseOutsideBCLast12MonthsReturnDate.required"
+                      aria-live="assertive">Return date is required.</div>
+                  </div>
+                  <Radio
+                    label='Does your spouse have a previous B.C. Personal Health Number?'
+                    id='has-previous-bc-health-number'
+                    name='has-previous-bc-health-number'
+                    v-model='spouseHasPreviousBCHealthNumber'
+                    className="mt-3"
+                    :items='radioOptionsNoYes'
+                    :horizontalAlign="true" />
+                  <div class="text-danger"
+                    v-if="$v.spouseHasPreviousBCHealthNumber.$dirty && !$v.spouseHasPreviousBCHealthNumber.required"
+                    aria-live="assertive">Please indicate whether your spouse has a previous BC Personal Health Number.</div>
+                  <div v-if="spouseHasPreviousBCHealthNumber === 'Y'" class="tabbed-section">
+                    <PhnInput 
+                      className="mt-3"
+                      label="Your spouse's previous B.C. Personal Health Number (optional)" 
+                      v-model="spousePreviousBCHealthNumber"/>
+                    <div class="text-danger"
+                      v-if="$v.spousePreviousBCHealthNumber.$dirty && !$v.spousePreviousBCHealthNumber.phnValidator"
+                      aria-live="assertive">Invalid Personal Health Number</div>
+                  </div>
+                  <Radio
+                    label='Has your spouse been released from the Canadian Armed Forces or an institution?'
+                    id='been-released-from-institution'
+                    name='been-released-from-institution'
+                    v-model='spouseBeenReleasedFromInstitution'
+                    className="mt-3"
+                    :items='radioOptionsNoYes'
+                    :horizontalAlign="true" />
+                  <div class="text-danger"
+                    v-if="$v.spouseBeenReleasedFromInstitution.$dirty && !$v.spouseBeenReleasedFromInstitution.required"
+                    aria-live="assertive">Please indicate whether your spouse has been released from an institution.</div>
+                  <div v-if="spouseBeenReleasedFromInstitution === 'Y'" class="tabbed-section">
+                    <DateInput label='Discharge date'
+                      id='discharge-date'
+                      className='mt-3'
+                      v-model='spouseDischargeDate' />
+                    <div class="text-danger"
+                      v-if="$v.spouseDischargeDate.$dirty && !$v.spouseDischargeDate.required"
+                      aria-live="assertive">Discharge date is required.</div>
+                  </div>
+                </div>
               </div>
-              <Radio
-                label='Has your spouse been outside B.C. for more than 30 days in total in the past 12 months?'
-                id='outside-bc-past-12'
-                name='outside-bc-past-12'
-                v-model='spouseOutsideBCLast12Months'
-                className="mt-3"
-                :items='radioOptionsNoYes'
-                :horizontalAlign="true" />
-              <div class="text-danger"
-                v-if="$v.spouseOutsideBCLast12Months.$dirty && !$v.spouseOutsideBCLast12Months.required"
-                aria-live="assertive">Please indicate whether your spouse has been outside BC in the past 12 months.</div>
-              <div v-if="spouseOutsideBCLast12Months === 'Y'" class="tabbed-section">
-                <Input 
-                  className="mt-3"
-                  label="Reason for departure" 
-                  v-model="spouseOutsideBCLast12MonthsReason"/>
-                <div class="text-danger"
-                  v-if="$v.spouseOutsideBCLast12MonthsReason.$dirty && !$v.spouseOutsideBCLast12MonthsReason.required"
-                  aria-live="assertive">Please indicate the reason your spouse left BC.</div>
-                <Input 
-                  className="mt-3"
-                  label="Location" 
-                  v-model="spouseOutsideBCLast12MonthsDestination"/>
-                <div class="text-danger"
-                  v-if="$v.spouseOutsideBCLast12MonthsDestination.$dirty && !$v.spouseOutsideBCLast12MonthsDestination.required"
-                  aria-live="assertive">Please indicate the location your spouse left BC to.</div>
-                <DateInput label='Departure date'
-                  id='departure-date'
-                  className='mt-3'
-                  v-model='spouseOutsideBCLast12MonthsDepartureDate' />
-                <div class="text-danger"
-                  v-if="$v.spouseOutsideBCLast12MonthsDepartureDate.$dirty && !$v.spouseOutsideBCLast12MonthsDepartureDate.required"
-                  aria-live="assertive">Departure date is required.</div>
-                <DateInput label='Return date'
-                  id='return-date'
-                  className='mt-3'
-                  v-model='spouseOutsideBCLast12MonthsReturnDate' />
-                <div class="text-danger"
-                  v-if="$v.spouseOutsideBCLast12MonthsReturnDate.$dirty && !$v.spouseOutsideBCLast12MonthsReturnDate.required"
-                  aria-live="assertive">Return date is required.</div>
-              </div>
-              <Radio
-                label='Does your spouse have a previous B.C. Personal Health Number?'
-                id='has-previous-bc-health-number'
-                name='has-previous-bc-health-number'
-                v-model='spouseHasPreviousBCHealthNumber'
-                className="mt-3"
-                :items='radioOptionsNoYes'
-                :horizontalAlign="true" />
-              <div class="text-danger"
-                v-if="$v.spouseHasPreviousBCHealthNumber.$dirty && !$v.spouseHasPreviousBCHealthNumber.required"
-                aria-live="assertive">Please indicate whether your spouse has a previous BC Personal Health Number.</div>
-              <div v-if="spouseHasPreviousBCHealthNumber === 'Y'" class="tabbed-section">
-                <PhnInput 
-                  className="mt-3"
-                  label="Your spouse's previous B.C. Personal Health Number (optional)" 
-                  v-model="spousePreviousBCHealthNumber"/>
-                <div class="text-danger"
-                  v-if="$v.spousePreviousBCHealthNumber.$dirty && !$v.spousePreviousBCHealthNumber.phnValidator"
-                  aria-live="assertive">Invalid Personal Health Number</div>
-              </div>
-              <Radio
-                label='Has your spouse been released from the Canadian Armed Forces or an institution?'
-                id='been-released-from-institution'
-                name='been-released-from-institution'
-                v-model='spouseBeenReleasedFromInstitution'
-                className="mt-3"
-                :items='radioOptionsNoYes'
-                :horizontalAlign="true" />
-              <div class="text-danger"
-                v-if="$v.spouseBeenReleasedFromInstitution.$dirty && !$v.spouseBeenReleasedFromInstitution.required"
-                aria-live="assertive">Please indicate whether your spouse has been released from an institution.</div>
-              <div v-if="spouseBeenReleasedFromInstitution === 'Y'" class="tabbed-section">
-                <DateInput label='Discharge date'
-                  id='discharge-date'
-                  className='mt-3'
-                  v-model='spouseDischargeDate' />
-                <div class="text-danger"
-                  v-if="$v.spouseDischargeDate.$dirty && !$v.spouseDischargeDate.required"
-                  aria-live="assertive">Discharge date is required.</div>
+              <div class="col-md-5 mt-3">
+                <TipBox>
+                  <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer.</p>
+                </TipBox>
               </div>
             </div>
           </div>
@@ -396,6 +444,7 @@ import {
   SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION,
   SET_SPOUSE_DISCHARGE_DATE,
 } from '@/store/modules/enrolment-module';
+import TipBox from '@/components/TipBox.vue';
 
 const nameValidator = (value) => {
   const criteria = /^[a-zA-Z][a-zA-Z-.']*$/;
@@ -422,6 +471,7 @@ export default {
     DateInput,
     PhnInput,
     FileUploader,
+    TipBox
   },
   data: () => {
     return {
@@ -606,6 +656,9 @@ export default {
     }
   },
   methods: {
+    removeSpouse() {
+      this.hasSpouse = 'N';
+    },
     validateFields() {
       this.saveData();
 
@@ -716,5 +769,14 @@ export default {
 </script>
 
 <style scoped>
+.heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.remove-icon {
+  cursor: pointer;
+}
 </style>
 
