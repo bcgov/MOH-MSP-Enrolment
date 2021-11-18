@@ -9,6 +9,7 @@
         <Input label="First name"
           id="first-name"
           v-model="firstName"
+          maxlength="30"
           @blur="handleBlurField($v.firstName)" />
         <div class="text-danger"
           v-if="$v.firstName.$dirty
@@ -22,6 +23,7 @@
           id="middle-name"
           class="mt-3"
           v-model="middleName"
+          maxlength="30"
           @blur="handleBlurField($v.middleName)" />
         <div class="text-danger"
           v-if="$v.middleName.$dirty
@@ -31,6 +33,7 @@
           id="last-name"
           class="mt-3"
           v-model="lastName"
+          maxlength="30"
           @blur="handleBlurField($v.lastName)" />
         <div class="text-danger"
           v-if="$v.lastName.$dirty
@@ -49,6 +52,14 @@
           v-if="$v.birthdate.$dirty
             && !$v.birthdate.required"
           aria-live="assertive">Birthdate is required.</div>
+        <div class="text-danger"
+          v-if="$v.birthdate.$dirty
+            && !$v.birthdate.distantPastValidator"
+          aria-live="assertive">Birthdate is invalid.</div>
+        <div class="text-danger"
+          v-if="$v.birthdate.$dirty
+            && !$v.birthdate.birthdate16YearsValidator"
+          aria-live="assertive">An applicant must be 16 years or older.</div>
         <DigitInput label="Social Insurance Number (SIN)"
           id="social-insurance-number"
           class="mt-3"
@@ -304,6 +315,7 @@
                     id="departure-reason"
                     class="mt-3"
                     v-model="departureReason"
+                    maxlength="20"
                     @blur="handleBlurField($v.departureReason)" />
                   <div class="text-danger"
                     v-if="$v.departureReason.$dirty
@@ -313,6 +325,7 @@
                     id="departure-location"
                     class="mt-3"
                     v-model="departureLocation"
+                    maxlength="20"
                     @blur="handleBlurField($v.departureLocation)" />
                   <div class="text-danger"
                     v-if="$v.departureLocation.$dirty
@@ -489,6 +502,7 @@ import {
   Radio,
   RegionSelect,
   Select,
+  distantPastValidator,
   optionalValidator,
   phnValidator,
 } from 'common-lib-vue';
@@ -517,6 +531,17 @@ import {
   StatusInCanada,
 } from '@/constants/immigration-status-types';
 import TipBox from '@/components/TipBox.vue';
+import {
+  isBefore,
+  isSameDay,
+  startOfToday,
+  subYears,
+} from 'date-fns';
+
+const birthdate16YearsValidator = (value) => {
+  const sixteenYearsAgo = subYears(startOfToday(), 16);
+  return isSameDay(sixteenYearsAgo, value) || isBefore(value, sixteenYearsAgo);
+};
 
 export default {
   name: 'PersonalInfoPage',
@@ -637,6 +662,8 @@ export default {
       },
       birthdate: {
         required,
+        distantPastValidator: optionalValidator(distantPastValidator),
+        birthdate16YearsValidator: optionalValidator(birthdate16YearsValidator),
       },
       socialInsuranceNumber: {
         required,
