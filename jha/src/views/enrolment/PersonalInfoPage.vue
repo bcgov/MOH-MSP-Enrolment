@@ -47,11 +47,16 @@
           id="birthdate"
           class="mt-3"
           v-model="birthdate"
-          @blur="handleBlurField($v.birthdate)" />
+          @blur="handleBlurField($v.birthdate)"
+          @processDate="handleProcessBirthdate($event)" />
         <div class="text-danger"
           v-if="$v.birthdate.$dirty
             && !$v.birthdate.required"
           aria-live="assertive">Birthdate is required.</div>
+        <div class="text-danger"
+          v-if="$v.birthdate.$dirty
+            && !$v.birthdate.dateDataValidator"
+          aria-live="assertive">Birthdate is invalid.</div>
         <div class="text-danger"
           v-if="$v.birthdate.$dirty
             && !$v.birthdate.distantPastValidator"
@@ -522,9 +527,11 @@ import {
   requiredIf,
 } from 'vuelidate/lib/validators';
 import {
+  dateDataRequired,
+  dateDataValidator,
   nameValidator,
-  yesValidator,
   nonBCValidator,
+  yesValidator,
 } from '@/helpers/validators';
 import {
   CanadianStatusReasons,
@@ -603,6 +610,9 @@ export default {
       armedForcesDischargeDate: null,
       isStudent: null,
       willStudentResideInBC: null,
+
+      // Date data which is processed by date validators:
+      birthdateData: null,
     };
   },
   created() {
@@ -661,7 +671,8 @@ export default {
         nameValidator: optionalValidator(nameValidator),
       },
       birthdate: {
-        required,
+        required: dateDataRequired(this.birthdateData),
+        dateDataValidator: dateDataValidator(this.birthdateData),
         distantPastValidator: optionalValidator(distantPastValidator),
         birthdate16YearsValidator: optionalValidator(birthdate16YearsValidator),
       },
@@ -813,7 +824,10 @@ export default {
       if (validationObject) {
         validationObject.$touch();
       }
-    }
+    },
+    handleProcessBirthdate(data) {
+      this.birthdateData = data;
+    },
   },
   computed: {
     requestLivedInBCSinceBirth() {
