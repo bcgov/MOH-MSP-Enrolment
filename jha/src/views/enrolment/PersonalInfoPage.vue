@@ -100,15 +100,29 @@
           v-if="$v.citizenshipStatus.$dirty
             && !$v.citizenshipStatus.required"
           aria-live="assertive">Immigration status in Canada is required.</div>
-        <Radio name="citizen-status-reason"
-          class="mt-3"
-          v-model="citizenshipStatusReason"
-          :items="citizenshipStatusReasonOptions"
-          @blur="handleBlurField($v.citizenshipStatusReason)" />
-        <div class="text-danger"
-          v-if="$v.citizenshipStatusReason.$dirty
-            && !$v.citizenshipStatusReason.required"
-          aria-live="assertive">This field is required.</div>
+        <div v-if="citizenshipStatus === StatusInCanada.Citizen
+            || citizenshipStatus === StatusInCanada.PermanentResident">
+          <Radio name="citizen-status-reason"
+            class="mt-3"
+            v-model="citizenshipStatusReason"
+            :items="citizenshipStatusReasonOptions"
+            @blur="handleBlurField($v.citizenshipStatusReason)" />
+          <div class="text-danger"
+            v-if="$v.citizenshipStatusReason.$dirty
+              && !$v.citizenshipStatusReason.required"
+            aria-live="assertive">This field is required.</div>
+        </div>
+        <div v-if="citizenshipStatus === StatusInCanada.TemporaryResident">
+          <Radio name="citizen-status-reason"
+            class="mt-3"
+            v-model="citizenshipStatusReason"
+            :items="temporaryResidentStatusReasonOptions"
+            @blur="handleBlurField($v.citizenshipStatusReason)" />
+          <div class="text-danger"
+            v-if="$v.citizenshipStatusReason.$dirty
+              && !$v.citizenshipStatusReason.required"
+            aria-live="assertive">This field is required.</div>
+        </div>
         
         <h2 class="mt-4">Documents</h2>
         <p>Provide one of the following documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload document to support the name change.</p>
@@ -238,7 +252,7 @@
                   aria-live="assertive">This field is required.</div>
                 <div class="text-danger"
                   v-if="isMovedToBCPermanently === 'N'"
-                  aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, you are not eligible for enrolment in the Medical Services Plan. Please contact <a href="#" target="_blank">Health Insurance BC</a> for further information.</div>
+                  aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, you are not eligible for enrolment in the Medical Services Plan. Please contact <a href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us" target="_blank">Health Insurance BC</a> for further information.</div>
               </div>
               <div v-if="canContinueProcess">
                 <div v-if="requestProvinceMoveInfo">
@@ -517,6 +531,7 @@ import pageContentMixin from '@/mixins/page-content-mixin';
 import {
   radioOptionsGender,
   radioOptionsCitizenStatusReasons,
+  radioOptionsAHTemporaryResidentStatusReasons,
   radioOptionsNoYes,
 } from '@/constants/radio-options';
 import {
@@ -573,11 +588,13 @@ export default {
     return {
       isPageLoaded: false,
       // Constants.
+      StatusInCanada,
       CanadianStatusReasons,
       // Radio and Select options.
       genderOptions: radioOptionsGender,
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
+      temporaryResidentStatusReasonOptions: radioOptionsAHTemporaryResidentStatusReasons,
       citizenshipSupportDocumentsOptions: selectOptionsCitizenshipSupportDocuments,
       radioOptionsNoYes: radioOptionsNoYes,
       nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
@@ -906,8 +923,10 @@ export default {
   watch: {
     citizenshipStatus() {
       if (this.isPageLoaded) {
+        this.citizenshipStatusReason = null;
         this.hasLivedInBCSinceBirth = null;
         this.previousHealthNumber = null;
+        this.$v.citizenshipStatusReason.$reset();
         this.$v.hasLivedInBCSinceBirth.$reset();
         this.$v.previousHealthNumber.$reset();
       }
