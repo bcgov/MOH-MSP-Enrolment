@@ -18,7 +18,7 @@
         <div class="text-danger"
           v-if="$v.firstName.$dirty
             && !$v.firstName.nameValidator"
-          aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+          aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>First name must be a letter.</div>
         <Input label="Middle name (optional)"
           id="middle-name"
           class="mt-3"
@@ -28,7 +28,7 @@
         <div class="text-danger"
           v-if="$v.middleName.$dirty
             && !$v.middleName.nameValidator"
-          aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+          aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Middle name must be a letter.</div>
         <Input label="Last name"
           id="last-name"
           class="mt-3"
@@ -42,7 +42,7 @@
         <div class="text-danger"
           v-if="$v.lastName.$dirty
             && !$v.lastName.nameValidator"
-          aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+          aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Last name must be a letter.</div>
         <DateInput label="Birthdate"
           id="birthdate"
           class="mt-3"
@@ -65,15 +65,17 @@
           v-if="$v.birthdate.$dirty
             && !$v.birthdate.birthdate16YearsValidator"
           aria-live="assertive">An applicant must be 16 years or older.</div>
-        <DigitInput label="Social Insurance Number (SIN)"
-          id="social-insurance-number"
-          class="mt-3"
-          v-model="socialInsuranceNumber"
-          @blur="handleBlurField($v.socialInsuranceNumber)" />
-        <div class="text-danger"
-          v-if="$v.socialInsuranceNumber.$dirty
-            && !$v.socialInsuranceNumber.required"
-          aria-live="assertive">Social insurance number is required.</div>
+        <div v-if="requestSocialInsuranceNumber">
+          <DigitInput label="Social Insurance Number (SIN)"
+            id="social-insurance-number"
+            class="mt-3"
+            v-model="socialInsuranceNumber"
+            @blur="handleBlurField($v.socialInsuranceNumber)" />
+          <div class="text-danger"
+            v-if="$v.socialInsuranceNumber.$dirty
+              && !$v.socialInsuranceNumber.required"
+            aria-live="assertive">Social insurance number is required.</div>
+        </div>
         <Radio label="Gender"
           id="gender"
           name="gender"
@@ -527,7 +529,7 @@ import {
   requiredIf,
 } from 'vuelidate/lib/validators';
 import {
-  dateDataRequired,
+  dateDataRequiredValidator,
   dateDataValidator,
   nameValidator,
   nonBCValidator,
@@ -671,14 +673,12 @@ export default {
         nameValidator: optionalValidator(nameValidator),
       },
       birthdate: {
-        required: dateDataRequired(this.birthdateData),
+        required: dateDataRequiredValidator(this.birthdateData),
         dateDataValidator: dateDataValidator(this.birthdateData),
         distantPastValidator: optionalValidator(distantPastValidator),
         birthdate16YearsValidator: optionalValidator(birthdate16YearsValidator),
       },
-      socialInsuranceNumber: {
-        required,
-      },
+      socialInsuranceNumber: {},
       gender: {
         required,
       },
@@ -725,6 +725,9 @@ export default {
       },
       willStudentResideInBC: {},
     };
+    if (this.requestSocialInsuranceNumber) {
+      validations.socialInsuranceNumber.required = required;
+    }
     if (this.isNameChanged === 'Y') {
       validations.nameChangeSupportDocumentType.required = required;
       validations.nameChangeSupportDocuments.required = required;
@@ -830,6 +833,10 @@ export default {
     },
   },
   computed: {
+    requestSocialInsuranceNumber() {
+      return this.$store.state.enrolmentModule.isApplyingForFPCare
+          || this.$store.state.enrolmentModule.isApplyingForSuppBen;
+    },
     requestLivedInBCSinceBirth() {
       return this.citizenshipStatus === StatusInCanada.Citizen
           && this.citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP;
