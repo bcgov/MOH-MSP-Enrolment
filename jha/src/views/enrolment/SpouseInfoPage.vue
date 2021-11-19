@@ -617,7 +617,7 @@ export default {
     if (this.spouseLivedInBCSinceBirth === 'N') {
       validations.spouseMovedFrom = { required };
       validations.spouseRecentBCMoveDate = { required };
-      validations.spouseCanadaArrivalDate = { required };
+      validations.spouseCanadaArrivalDate = {  };
     }
 
     if (this.spouseOutsideBCLast12Months === 'Y') {
