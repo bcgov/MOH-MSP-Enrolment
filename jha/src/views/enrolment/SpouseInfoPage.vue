@@ -190,12 +190,21 @@
             <DateInput label='Birth date:'
               id='birth-date'
               className='mt-3'
-              v-model='spouseBirthDate' />
+              v-model='spouseBirthDate'
+              @processDate="handleProcessDate($event, 'birth-date')" />
             <div class="text-danger"
               v-if="$v.spouseBirthDate.$dirty && !$v.spouseBirthDate.required"
               aria-live="assertive">Birth date is required.</div>
             <div class="text-danger"
-              v-if="$v.spouseBirthDate.$dirty && $v.spouseBirthDate.required && !$v.spouseBirthDate.birthDatePastValidator"
+              v-if="$v.spouseBirthDate.$dirty
+                    && $v.spouseBirthDate.required
+                    && !$v.spouseBirthDate.validDate"
+              aria-live="assertive">Invalid birth date.</div>
+            <div class="text-danger"
+              v-if="$v.spouseBirthDate.$dirty
+                    && $v.spouseBirthDate.required
+                    && $v.spouseBirthDate.validDate
+                    && !$v.spouseBirthDate.birthDatePastValidator"
               aria-live="assertive">Birth date cannot be in the future.</div>
             <Radio
               label='Gender'
@@ -250,14 +259,48 @@
                     <DateInput label='Most recent move to B.C.'
                       id='move-date'
                       className='mt-3'
-                      v-model='spouseRecentBCMoveDate' />
+                      v-model='spouseRecentBCMoveDate'
+                      @processDate="handleProcessDate($event, 'move-date')" />
                     <div class="text-danger"
                       v-if="$v.spouseRecentBCMoveDate.$dirty && !$v.spouseRecentBCMoveDate.required"
                       aria-live="assertive">Most recent BC move date is required.</div>
+                    <div class="text-danger"
+                      v-if="$v.spouseRecentBCMoveDate.$dirty
+                            && $v.spouseRecentBCMoveDate.required
+                            && !$v.spouseRecentBCMoveDate.validDate"
+                      aria-live="assertive">Invalid Arrival date in BC.</div>
+                    <div class="text-danger"
+                      v-if="$v.spouseRecentBCMoveDate.$dirty
+                            && $v.spouseRecentBCMoveDate.required
+                            && $v.spouseRecentBCMoveDate.validDate
+                            && !$v.spouseRecentBCMoveDate.pastDateValidator"
+                      aria-live="assertive">Most recent move to BC date cannot be in the future.</div>
+                    <div class="text-danger"
+                      v-if="$v.spouseRecentBCMoveDate.$dirty
+                            && $v.spouseRecentBCMoveDate.required
+                            && $v.spouseRecentBCMoveDate.validDate
+                            && $v.spouseRecentBCMoveDate.pastDateValidator
+                            && !$v.spouseRecentBCMoveDate.dateOrderValidator"
+                      aria-live="assertive">The spouse's most recent move to BC cannot be before the spouse's date of birth and cannot be before the move to Canada date.</div>
                     <DateInput label='Arrival date in Canada (optional)'
                       id='canada-arrival-date'
                       className='mt-3'
-                      v-model='spouseCanadaArrivalDate' />
+                      v-model='spouseCanadaArrivalDate'
+                      @processDate="handleProcessDate($event, 'canada-arrival-date')" />
+                    <div class="text-danger"
+                      v-if="$v.spouseCanadaArrivalDate.$dirty && !$v.spouseCanadaArrivalDate.validDate"
+                      aria-live="assertive">Invalid Arrival date in Canada.</div>
+                    <div class="text-danger"
+                      v-if="$v.spouseCanadaArrivalDate.$dirty
+                            && $v.spouseCanadaArrivalDate.validDate
+                            && !$v.spouseCanadaArrivalDate.pastDateValidator"
+                      aria-live="assertive">Most recent move to Canada date cannot be in the future.</div>
+                    <div class="text-danger"
+                      v-if="$v.spouseCanadaArrivalDate.$dirty 
+                            && $v.spouseCanadaArrivalDate.validDate
+                            && $v.spouseCanadaArrivalDate.pastDateValidator
+                            && !$v.spouseCanadaArrivalDate.dateOrderValidator"
+                      aria-live="assertive">The spouse's most recent move to Canada cannot be before the spouse's date of birth and cannot be after the move to B.C. date.</div>
                   </div>
                   <Radio
                     label='Has your spouse been outside B.C. for more than 30 days in total in the past 12 months?'
@@ -459,6 +502,24 @@ const permanentMoveValidator = (value) => {
   return value === 'Y';
 }
 
+const completeDateValidator = (input) => (_value, vm) => {
+  return !vm.invalidDates.includes(input);
+}
+
+const dateOrderValidator = (value, vm) => {
+  if (!value) {
+    return false;
+  }
+  if(vm.spouseBirthDate) {
+    if (vm.spouseBirthDate.getTime() > value.getTime()) {
+      return false
+    }
+  } 
+  if (vm.spouseRecentBCMoveDate && vm.spouseCanadaArrivalDate){
+    return vm.spouseRecentBCMoveDate.getTime() >= vm.spouseCanadaArrivalDate.getTime();
+  }
+}
+
 export default {
   name: 'SpouseInfoPage',
   mixins: [pageContentMixin],
@@ -512,6 +573,8 @@ export default {
       spousePreviousBCHealthNumber: null,
       spouseBeenReleasedFromInstitution: null,
       spouseDischargeDate: null,
+      // array of date fields with invalid/incomplete input
+      invalidDates: [],
     };
   },
   created() {
@@ -587,6 +650,7 @@ export default {
       spouseBirthDate: {
         required,
         birthDatePastValidator,
+        validDate: completeDateValidator('birth-date'),
       },
       spouseGender: {
         required,
@@ -616,8 +680,17 @@ export default {
 
     if (this.spouseLivedInBCSinceBirth === 'N') {
       validations.spouseMovedFrom = { required };
-      validations.spouseRecentBCMoveDate = { required };
-      validations.spouseCanadaArrivalDate = {  };
+      validations.spouseRecentBCMoveDate = {
+        required,
+        validDate: completeDateValidator('move-date'),
+        pastDateValidator,
+        dateOrderValidator,
+      };
+      validations.spouseCanadaArrivalDate = {
+        validDate: completeDateValidator('canada-arrival-date'),
+        pastDateValidator,
+        dateOrderValidator,
+      };
     }
 
     if (this.spouseOutsideBCLast12Months === 'Y') {
@@ -656,6 +729,20 @@ export default {
     }
   },
   methods: {
+    handleProcessDate(data, input) {
+      console.log(this.invalidDates)
+      if (!data.date) {
+        if (this.invalidDates.indexOf(input) === -1){
+          this.invalidDates.push(input);
+        }
+      } else {
+        if (this.invalidDates.indexOf(input) !== -1){
+          this.invalidDates.splice(this.invalidDates.indexOf(input), 1);
+        }
+      }
+      console.log(input)
+      console.log(this.invalidDates)
+    },
     removeSpouse() {
       this.hasSpouse = 'N';
     },
