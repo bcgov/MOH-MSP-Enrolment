@@ -124,56 +124,60 @@
             aria-live="assertive">This field is required.</div>
         </div>
         
-        <h2 class="mt-4">Documents</h2>
-        <p>Provide one of the following documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload document to support the name change.</p>
-        <hr/>
-        <Select label="Document Type"
-          id="citizen-support-document-type"
-          v-model="citizenshipSupportDocumentType"
-          :options="citizenshipSupportDocumentsOptions"
-          @blur="handleBlurField($v.citizenshipSupportDocumentType)" />
-        <div class="text-danger"
-          v-if="$v.citizenshipSupportDocumentType.$dirty
-            && !$v.citizenshipSupportDocumentType.required"
-          aria-live="assertive">Document Type is required.</div>
-        <div v-if="citizenshipSupportDocumentType"
-          class="mt-3">
-          <h2 class="mt-4">{{citizenshipSupportDocumentType}}</h2>
+        <div v-if="isCitizenshipDocsShown">
+          <h2 class="mt-4">Documents</h2>
+          <p>Provide one of the following documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload document to support the name change.</p>
           <hr/>
-          <div class="row">
-            <div class="col-md-7">
-              <FileUploader v-model="citizenshipSupportDocuments" />
-              <div class="text-danger mt-3"
-                v-if="$v.citizenshipSupportDocuments.$dirty
-                  && !$v.citizenshipSupportDocuments.required"
-                aria-live="assertive">You must include documentation for your application.</div>
-            </div>
-            <div class="col-md-5">
-              <TipBox title="Tip">
-                <p>Scan the document, or take a photo of it.</p>
-                <p>Make sure that it's:</p>
-                <ul>
-                  <li>The entire document, from corner to corner</li>
-                  <li>Rotated correctly (not upside down or sideways</li>
-                  <li>In focus and easy to read</li>
-                  <li>A JPG, PNG, GIF, BMP or PDF file</li>
-                </ul>
-              </TipBox>
+          <Select label="Document Type"
+            id="citizen-support-document-type"
+            v-model="citizenshipSupportDocumentType"
+            :options="citizenshipSupportDocumentsOptions"
+            @blur="handleBlurField($v.citizenshipSupportDocumentType)" />
+          <div class="text-danger"
+            v-if="$v.citizenshipSupportDocumentType.$dirty
+              && !$v.citizenshipSupportDocumentType.required"
+            aria-live="assertive">Document Type is required.</div>
+          <div v-if="citizenshipSupportDocumentType"
+            class="mt-3">
+            <h2 class="mt-4">{{citizenshipSupportDocumentType}}</h2>
+            <hr/>
+            <div class="row">
+              <div class="col-md-7">
+                <FileUploader v-model="citizenshipSupportDocuments" />
+                <div class="text-danger mt-3"
+                  v-if="$v.citizenshipSupportDocuments.$dirty
+                    && !$v.citizenshipSupportDocuments.required"
+                  aria-live="assertive">You must include documentation for your application.</div>
+              </div>
+              <div class="col-md-5">
+                <TipBox title="Tip">
+                  <p>Scan the document, or take a photo of it.</p>
+                  <p>Make sure that it's:</p>
+                  <ul>
+                    <li>The entire document, from corner to corner</li>
+                    <li>Rotated correctly (not upside down or sideways</li>
+                    <li>In focus and easy to read</li>
+                    <li>A JPG, PNG, GIF, BMP or PDF file</li>
+                  </ul>
+                </TipBox>
+              </div>
             </div>
           </div>
         </div>
 
-        <Radio label="Has your name changed since your ID was issued due to marriage or legal name change?"
-          id="name-change"
-          name="name-change"
-          class="mt-3"
-          v-model="isNameChanged"
-          :items="radioOptionsNoYes"
-          @blur="handleBlurField($v.isNameChanged)" />
-        <div class="text-danger"
-          v-if="$v.isNameChanged.$dirty
-            && !$v.isNameChanged.required"
-          aria-live="assertive">This field is required.</div>
+        <div v-if="isCitizenshipDocsShown">
+          <Radio label="Has your name changed since your ID was issued due to marriage or legal name change?"
+            id="name-change"
+            name="name-change"
+            class="mt-3"
+            v-model="isNameChanged"
+            :items="radioOptionsNoYes"
+            @blur="handleBlurField($v.isNameChanged)" />
+          <div class="text-danger"
+            v-if="$v.isNameChanged.$dirty
+              && !$v.isNameChanged.required"
+            aria-live="assertive">This field is required.</div>
+        </div>
         <div v-if="isNameChanged === 'Y'"
           class="tabbed-section mt-3">
           <h2 class="mt-4">Additional Documents</h2>
@@ -537,7 +541,13 @@ import {
 import {
   selectOptionsImmigrationStatus,
   selectOptionsCitizenshipSupportDocuments,
+  selectOptionsPermanentResidentSupportDocuments,
   selectOptionsNameChangeSupportDocuments,
+  selectOptionWorkPermitSupportDocument,
+  selectOptionStudyPermitSupportDocument,
+  selectOptionReligiousWorkSupportDocument,
+  selectOptionDiplomaticFoilSupportDocument,
+  selectOptionVisitorVisaSupportDocument,
 } from '@/constants/select-options';
 import {
   required,
@@ -595,7 +605,6 @@ export default {
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
       temporaryResidentStatusReasonOptions: radioOptionsAHTemporaryResidentStatusReasons,
-      citizenshipSupportDocumentsOptions: selectOptionsCitizenshipSupportDocuments,
       radioOptionsNoYes: radioOptionsNoYes,
       nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
       // Data to be saved.
@@ -906,7 +915,32 @@ export default {
     },
     isMovingInformationShown() {
       return !!this.citizenshipStatus
-          && !!this.citizenshipStatusReason;
+          && !!this.citizenshipStatusReason
+          && !!this.citizenshipSupportDocuments.length > 0
+          && !!this.isNameChanged;
+    },
+    isCitizenshipDocsShown() {
+      return !!this.citizenshipStatusReason;
+    },
+    citizenshipSupportDocumentsOptions() {
+      if (this.citizenshipStatus === StatusInCanada.PermanentResident) {
+        return selectOptionsPermanentResidentSupportDocuments;
+      } else if (this.citizenshipStatus === StatusInCanada.TemporaryResident){
+        if (this.citizenshipStatusReason === CanadianStatusReasons.WorkingInBC) {
+          return selectOptionWorkPermitSupportDocument;
+        } else if (this.citizenshipStatusReason === CanadianStatusReasons.StudyingInBC) {
+          return selectOptionStudyPermitSupportDocument;
+        } else if (this.citizenshipStatusReason === CanadianStatusReasons.ReligiousWorker) {
+          return selectOptionReligiousWorkSupportDocument;
+        } else if (this.citizenshipStatusReason === CanadianStatusReasons.Diplomat) {
+          return selectOptionDiplomaticFoilSupportDocument;
+        } else if (this.citizenshipStatusReason === CanadianStatusReasons.Visiting) {
+          return selectOptionVisitorVisaSupportDocument;
+        }
+      } else {
+        return selectOptionsCitizenshipSupportDocuments;
+      }
+      return [];
     },
     canContinueProcess() {
       if (this.isMovedToBCPermanently) {
@@ -933,14 +967,24 @@ export default {
     },
     citizenshipStatusReason() {
       if (this.isPageLoaded) {
+        this.citizenshipSupportDocumentType = null;
+        this.isNameChanged = null;
         this.moveFromOrigin = null;
         this.arrivalDateInBC = null;
         this.arrivalDateInCanada = null;
         this.previousHealthNumber = null;
+        this.$v.citizenshipSupportDocumentType.$reset();
+        this.$v.isNameChanged.$reset();
         this.$v.moveFromOrigin.$reset();
         this.$v.arrivalDateInBC.$reset();
         this.$v.arrivalDateInCanada.$reset();
         this.$v.previousHealthNumber.$reset();
+      }
+    },
+    citizenshipSupportDocumentType() {
+      if (this.isPageLoaded) {
+        this.citizenshipSupportDocuments = [];
+        this.$v.citizenshipSupportDocuments.$reset();
       }
     },
     isNameChanged() {
