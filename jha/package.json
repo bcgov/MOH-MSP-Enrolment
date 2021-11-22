@@ -1,6 +1,6 @@
 {
   "name": "jha",
-  "version": "0.1.16",
+  "version": "0.1.17",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -16,7 +16,7 @@
     "@fortawesome/free-solid-svg-icons": "^5.15.2",
     "@fortawesome/vue-fontawesome": "^2.0.2",
     "axios": "^0.21.4",
-    "common-lib-vue": "^1.0.64",
+    "common-lib-vue": "^1.0.65",
     "core-js": "^3.6.5",
     "date-fns": "^2.16.1",
     "portal-vue": "^2.1.7",
