@@ -730,7 +730,6 @@ export default {
   },
   methods: {
     handleProcessDate(data, input) {
-      console.log(this.invalidDates)
       if (!data.date) {
         if (this.invalidDates.indexOf(input) === -1){
           this.invalidDates.push(input);
@@ -740,8 +739,6 @@ export default {
           this.invalidDates.splice(this.invalidDates.indexOf(input), 1);
         }
       }
-      console.log(input)
-      console.log(this.invalidDates)
     },
     removeSpouse() {
       this.hasSpouse = 'N';
