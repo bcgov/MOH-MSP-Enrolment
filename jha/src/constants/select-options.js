@@ -80,8 +80,8 @@ export const selectOptionStudyPermitSupportDocument = [
 
 export const selectOptionReligiousWorkSupportDocument = [
   {
-    value: SupportDocumentTypes.ReligiousWorker,
-    label: SupportDocumentTypes.ReligiousWorker
+    value: SupportDocumentTypes.VisitorVisa,
+    label: SupportDocumentTypes.VisitorVisa
   },
 ];
 
