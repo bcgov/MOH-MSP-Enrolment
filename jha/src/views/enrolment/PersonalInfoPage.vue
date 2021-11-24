@@ -56,11 +56,11 @@
         <div class="text-danger"
           v-if="$v.birthdate.$dirty
             && !$v.birthdate.dateDataValidator"
-          aria-live="assertive">Birthdate is invalid.</div>
+          aria-live="assertive">Invalid Birthdate.</div>
         <div class="text-danger"
           v-if="$v.birthdate.$dirty
             && !$v.birthdate.distantPastValidator"
-          aria-live="assertive">Birthdate is invalid.</div>
+          aria-live="assertive">Invalid Birthdate.</div>
         <div class="text-danger"
           v-if="$v.birthdate.$dirty
             && !$v.birthdate.birthdate16YearsValidator"
@@ -425,7 +425,7 @@
                       && !$v.armedForcesDischargeDate.required"
                     aria-live="assertive">Discharge date is required.</div>
                 </div>
-                <div>
+                <div v-if="requestIsStudent">
                   <Radio label="Are you a full-time student in B.C.?"
                     class="mt-3"
                     id="is-student"
@@ -746,9 +746,7 @@ export default {
       },
       isReleasedFromArmedForces: {},
       armedForcesDischargeDate: {},
-      isStudent: {
-        required,
-      },
+      isStudent: {},
       willStudentResideInBC: {},
     };
     if (this.requestSocialInsuranceNumber) {
@@ -790,6 +788,9 @@ export default {
     }
     if (this.isReleasedFromArmedForces === 'Y') {
       validations.armedForcesDischargeDate.required = required;
+    }
+    if (this.requestIsStudent) {
+      validations.isStudent.required = required;
     }
     if (this.isStudent === 'Y') {
       validations.willStudentResideInBC.required = required;
@@ -912,6 +913,9 @@ export default {
     },
     requestArmedForceInfo() {
       return this.citizenshipStatus === StatusInCanada.Citizen;
+    },
+    requestIsStudent() {
+      return this.isMovedToBCPermanently === 'Y';
     },
     isMovingInformationShown() {
       return !!this.citizenshipStatus
@@ -1043,6 +1047,12 @@ export default {
       if (this.isPageLoaded) {
         this.previousPHN = null;
         this.$v.previousPHN.$reset();
+      }
+    },
+    requestArmedForceInfo() {
+      if (this.isPageLoaded) {
+        this.isReleasedFromArmedForces = null;
+        this.$v.isReleasedFromArmedForces.$reset();
       }
     },
     isReleasedFromArmedForces() {
