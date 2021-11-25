@@ -63,7 +63,8 @@ export const SET_SPOUSE_BIRTH_DATE = 'setSpouseBirthDate';
 export const SET_SPOUSE_GENDER = 'setSpouseGender';
 export const SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH = 'setSpouseLivedInBCSinceBirth';
 export const SET_SPOUSE_MADE_PERMANENT_MOVE = 'setSpouseMadePermanentMove';
-export const SET_SPOUSE_MOVED_FROM = 'setSpouseMovedFrom';
+export const SET_SPOUSE_MOVED_FROM_PROVINCE = 'setSpouseMovedFromProvince';
+export const SET_SPOUSE_MOVED_FROM_COUNTRY = 'setSpouseMovedFromCountry';
 export const SET_SPOUSE_RECENT_BC_MOVE_DATE = 'setSpouseRecentBCMoveDate';
 export const SET_SPOUSE_CANADA_ARRIVAL_DATE = 'setSpouseCanadaArrivalDate';
 export const SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS = 'setSpouseOutsideBCLast12Months';
@@ -193,7 +194,8 @@ export default {
       spouseGender: null,
       spouseLivedInBCSinceBirth: null,
       spouseMadePermanentMove: null,
-      spouseMovedFrom: null,
+      spouseMovedFromProvince: null,
+      spouseMovedFromCountry: null,
       spouseRecentBCMoveDate: null,
       spouseCanadaArrivalDate: null,
       spouseOutsideBCLast12Months: null,
@@ -435,8 +437,11 @@ export default {
     [SET_SPOUSE_MADE_PERMANENT_MOVE](state, payload) {
       state.spouseMadePermanentMove = payload;
     },
-    [SET_SPOUSE_MOVED_FROM](state, payload) {
-      state.spouseMovedFrom = payload;
+    [SET_SPOUSE_MOVED_FROM_PROVINCE](state, payload) {
+      state.spouseMovedFromProvince = payload;
+    },
+    [SET_SPOUSE_MOVED_FROM_COUNTRY](state, payload) {
+      state.spouseMovedFromCountry = payload;
     },
     [SET_SPOUSE_RECENT_BC_MOVE_DATE](state, payload) {
       state.spouseRecentBCMoveDate = payload;
@@ -689,7 +694,8 @@ export default {
       commit(SET_SPOUSE_GENDER, null);
       commit(SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, null);
       commit(SET_SPOUSE_MADE_PERMANENT_MOVE, null);
-      commit(SET_SPOUSE_MOVED_FROM, null);
+      commit(SET_SPOUSE_MOVED_FROM_PROVINCE, null);
+      commit(SET_SPOUSE_MOVED_FROM_COUNTRY, null);
       commit(SET_SPOUSE_RECENT_BC_MOVE_DATE, null);
       commit(SET_SPOUSE_CANADA_ARRIVAL_DATE, null);
       commit(SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS, null);
@@ -925,8 +931,11 @@ export default {
     [SET_SPOUSE_MADE_PERMANENT_MOVE]({ commit }, payload) {
       commit(SET_SPOUSE_MADE_PERMANENT_MOVE, payload);
     },
-    [SET_SPOUSE_MOVED_FROM]({ commit }, payload) {
-      commit(SET_SPOUSE_MOVED_FROM, payload);
+    [SET_SPOUSE_MOVED_FROM_PROVINCE]({ commit }, payload) {
+      commit(SET_SPOUSE_MOVED_FROM_PROVINCE, payload);
+    },
+    [SET_SPOUSE_MOVED_FROM_COUNTRY]({ commit }, payload) {
+      commit(SET_SPOUSE_MOVED_FROM_COUNTRY, payload);
     },
     [SET_SPOUSE_RECENT_BC_MOVE_DATE]({ commit }, payload) {
       commit(SET_SPOUSE_RECENT_BC_MOVE_DATE, payload);
