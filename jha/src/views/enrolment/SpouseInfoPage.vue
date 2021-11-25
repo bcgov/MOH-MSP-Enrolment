@@ -720,7 +720,6 @@ export default {
     }
 
     if (this.showProvinceSelector) {
-      console.log("validate province selector")
       validations.spouseMovedFromProvince = { required };
     }
     if (this.showCountrySelector) {
