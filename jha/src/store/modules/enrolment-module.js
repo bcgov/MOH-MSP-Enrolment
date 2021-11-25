@@ -28,6 +28,7 @@ export const SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS = 'setAHCitizenshipSupportDocu
 export const SET_AH_IS_NAME_CHANGED = 'setAHIsNameChanged';
 export const SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE = 'setAHNameChangeSupportDocumentType';
 export const SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS = 'setAHNameChangeSupportDocuments';
+export const SET_AH_FROM_PROVINCE_OR_COUNTRY = 'setAHFromProvinceOrCountry';
 export const SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH = 'setAHHasLivedInBCSinceBirth';
 export const SET_AH_IS_MOVED_TO_BC_PERMANENTLY = 'setAHIsMovedToBCPermanently';
 export const SET_AH_MOVE_FROM_ORIGIN = 'setAHMoveFromOrigin';
@@ -158,6 +159,7 @@ export default {
       ahIsNameChanged: null,
       ahNameChangeSupportDocumentType: null,
       ahNameChangeSupportDocuments: [],
+      ahFromProvinceOrCountry: null,
       ahHasLivedInBCSinceBirth: null,
       ahIsMovedToBCPermanently: null,
       ahMoveFromOrigin: null,
@@ -331,6 +333,9 @@ export default {
     },
     [SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS](state, payload) {
       state.ahNameChangeSupportDocuments = payload;
+    },
+    [SET_AH_FROM_PROVINCE_OR_COUNTRY](state, payload) {
+      state.ahFromProvinceOrCountry = payload;
     },
     [SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH](state, payload) {
       state.ahHasLivedInBCSinceBirth = payload;
@@ -654,6 +659,7 @@ export default {
       commit(SET_AH_IS_NAME_CHANGED, null);
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, null);
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS, []);
+      commit(SET_AH_FROM_PROVINCE_OR_COUNTRY, null);
       commit(SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH, null);
       commit(SET_AH_IS_MOVED_TO_BC_PERMANENTLY, null);
       commit(SET_AH_MOVE_FROM_ORIGIN, null);
@@ -821,6 +827,9 @@ export default {
     },
     [SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS]({ commit }, payload) {
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS, payload);
+    },
+    [SET_AH_FROM_PROVINCE_OR_COUNTRY]({ commit }, payload) {
+      commit(SET_AH_FROM_PROVINCE_OR_COUNTRY, payload);
     },
     [SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH]({ commit }, payload) {
       commit(SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH, payload);

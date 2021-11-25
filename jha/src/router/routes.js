@@ -26,17 +26,17 @@ export const enrolmentRoutes = {
   },
   PERSONAL_INFO_PAGE: {
     path: '/personal-info',
-    title: 'Personal Info',
+    title: 'Acct. Holder',
     name: 'PersonalInfoPage',
   },
   SPOUSE_INFO_PAGE: {
     path: '/spouse-info',
-    title: 'Spouse Info',
+    title: 'Spouse',
     name: 'SpouseInfoPage',
   },
   CHILD_INFO_PAGE: {
     path: '/child-info',
-    title: 'Child Info',
+    title: 'Children',
     name: 'ChildInfoPage',
   },
   CONTACT_INFO_PAGE: {
@@ -46,7 +46,7 @@ export const enrolmentRoutes = {
   },
   FPCARE_INFO_PAGE: {
     path: '/fpcare-info',
-    title: 'FPCare Info',
+    title: 'F PCare Info',
     name: 'FPCareInfoPage',
   },
   SUPP_BEN_INFO_PAGE: {
