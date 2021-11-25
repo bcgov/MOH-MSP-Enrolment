@@ -231,16 +231,18 @@
             <hr>
             <div class="row">
               <div class="col-md-7">
-                <Radio v-if="spouseStatus === statusOptions.Citizen && spouseStatusReason === canadianStatusReasons.LivingInBCWithoutMSP"
-                  label='Has your spouse lived in B.C. since birth?'
-                  id='lived-in-bc'
-                  name='lived-in-bc'
-                  v-model='spouseLivedInBCSinceBirth'
-                  className="mt-3"
-                  :items='radioOptionsNoYes' />
-                <div class="text-danger"
-                  v-if="$v.spouseLivedInBCSinceBirth.$dirty && !$v.spouseLivedInBCSinceBirth.required"
-                  aria-live="assertive">Please indicate whether your spouse has lived in BC since birth.</div>
+                <div v-if="spouseStatus === statusOptions.Citizen && spouseStatusReason === canadianStatusReasons.LivingInBCWithoutMSP">
+                  <Radio 
+                    label='Has your spouse lived in B.C. since birth?'
+                    id='lived-in-bc'
+                    name='lived-in-bc'
+                    v-model='spouseLivedInBCSinceBirth'
+                    className="mt-3"
+                    :items='radioOptionsNoYes' />
+                  <div class="text-danger"
+                    v-if="$v.spouseLivedInBCSinceBirth.$dirty && !$v.spouseLivedInBCSinceBirth.required"
+                    aria-live="assertive">Please indicate whether your spouse has lived in BC since birth.</div>
+                </div>
                 <Radio
                   label='Has your spouse moved to B.C. permanently?'
                   id='permanent-move'
@@ -254,7 +256,7 @@
                 <div class="text-danger"
                   v-if="$v.spouseMadePermanentMove.$dirty && $v.spouseMadePermanentMove.required && !$v.spouseMadePermanentMove.permanentMoveValidator"
                   aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your spouse is not eligible for enrolment in the Medical Services Plan. Please contact <a href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.</div>
-                <div v-if="spouseMadePermanentMove !== 'N'">
+                <div v-if="spouseMadePermanentMove !== 'N' || spouseStatus === statusOptions.TemporaryResident">
                   <div v-if="showProvinceSelector">
                     <RegionSelect
                       className="mt-3"
@@ -385,16 +387,18 @@
                       v-if="$v.spousePreviousBCHealthNumber.$dirty && !$v.spousePreviousBCHealthNumber.phnValidator"
                       aria-live="assertive">Invalid Personal Health Number</div>
                   </div>
-                  <Radio v-if="this.spouseStatus === statusOptions.Citizen"
-                    label='Has your spouse been released from the Canadian Armed Forces or an institution?'
-                    id='been-released-from-institution'
-                    name='been-released-from-institution'
-                    v-model='spouseBeenReleasedFromInstitution'
-                    className="mt-3"
-                    :items='radioOptionsNoYes' />
-                  <div class="text-danger"
-                    v-if="$v.spouseBeenReleasedFromInstitution.$dirty && !$v.spouseBeenReleasedFromInstitution.required"
-                    aria-live="assertive">Please indicate whether your spouse has been released from an institution.</div>
+                  <div v-if="this.spouseStatus === statusOptions.Citizen">
+                    <Radio
+                      label='Has your spouse been released from the Canadian Armed Forces or an institution?'
+                      id='been-released-from-institution'
+                      name='been-released-from-institution'
+                      v-model='spouseBeenReleasedFromInstitution'
+                      className="mt-3"
+                      :items='radioOptionsNoYes' />
+                    <div class="text-danger"
+                      v-if="$v.spouseBeenReleasedFromInstitution.$dirty && !$v.spouseBeenReleasedFromInstitution.required"
+                      aria-live="assertive">Please indicate whether your spouse has been released from an institution.</div>
+                  </div>
                   <div v-if="spouseBeenReleasedFromInstitution === 'Y'" class="tabbed-section">
                     <DateInput label='Discharge date'
                       id='discharge-date'
@@ -696,7 +700,8 @@ export default {
       },
       spouseMadePermanentMove: {
         required,
-        permanentMoveValidator: optionalValidator(permanentMoveValidator),
+        permanentMoveValidator: (this.spouseStatus !== StatusInCanada.TemporaryResident) ?
+            optionalValidator(permanentMoveValidator) : true,
       },
       spouseOutsideBCLast12Months: {
         required,
