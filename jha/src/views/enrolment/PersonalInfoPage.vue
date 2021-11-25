@@ -229,6 +229,18 @@
           <hr class="mb-0"/>
           <div class="row">
             <div class="col-md-7">
+              <div v-if="requestFromProvinceOrCountry">
+                <Input label="From which province or country?"
+                  id="from-province-or-country"
+                  class="mt-3"
+                  maxlength="25"
+                  v-model="fromProvinceOrCountry"
+                  @blur="handleBlurField($v.fromProvinceOrCountry)"/>
+                <div class="text-danger"
+                  v-if="$v.fromProvinceOrCountry.$dirty
+                    && !$v.fromProvinceOrCountry.required"
+                  aria-live="assertive">Field is required.</div>
+              </div>
               <div v-if="requestLivedInBCSinceBirth">
                 <Radio label="Have you lived in B.C. since birth?"
                   id="has-live-in-bc-since-birth"
@@ -255,7 +267,7 @@
                     && !$v.isMovedToBCPermanently.required"
                   aria-live="assertive">This field is required.</div>
                 <div class="text-danger"
-                  v-if="isMovedToBCPermanently === 'N'"
+                  v-if="!canContinueProcess"
                   aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, you are not eligible for enrolment in the Medical Services Plan. Please contact <a href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us" target="_blank">Health Insurance BC</a> for further information.</div>
               </div>
               <div v-if="canContinueProcess">
@@ -289,7 +301,7 @@
                     aria-live="assertive">Country of origin is required.</div>
                 </div>
                 <div v-if="requestArrivalInBCInfo">
-                  <DateInput label="Arrival date in B.C."
+                  <DateInput :label="`${citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'Most recent move to B.C.' : 'Arrival date in B.C.'}`"
                     id="arrival-date-in-bc"
                     class="mt-3"
                     v-model="arrivalDateInBC"
@@ -297,7 +309,7 @@
                   <div class="text-danger"
                     v-if="$v.arrivalDateInBC.$dirty
                       && !$v.arrivalDateInBC.required"
-                    aria-live="assertive">Arrival date in B.C. is required.</div>
+                    aria-live="assertive">{{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'Most recent move to B.C.' : 'Arrival date in B.C.'}} is required.</div>
                 </div>
                 <div v-if="requestArrivalInCanadaInfo">
                   <DateInput :label="`Arrival date in Canada${citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry ? '' : ' (optional)'}`"
@@ -497,6 +509,7 @@ import {
   SET_AH_IS_NAME_CHANGED,
   SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE,
   SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS,
+  SET_AH_FROM_PROVINCE_OR_COUNTRY,
   SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH,
   SET_AH_IS_MOVED_TO_BC_PERMANENTLY,
   SET_AH_MOVE_FROM_ORIGIN,
@@ -621,6 +634,7 @@ export default {
       isNameChanged: null,
       nameChangeSupportDocumentType: null,
       nameChangeSupportDocuments: [],
+      fromProvinceOrCountry: null,
       hasLivedInBCSinceBirth: null,
       isMovedToBCPermanently: null,
       moveFromOrigin: null,
@@ -657,6 +671,7 @@ export default {
     this.isNameChanged = this.$store.state.enrolmentModule.ahIsNameChanged;
     this.nameChangeSupportDocumentType = this.$store.state.enrolmentModule.ahNameChangeSupportDocumentType;
     this.nameChangeSupportDocuments = this.$store.state.enrolmentModule.ahNameChangeSupportDocuments;
+    this.fromProvinceOrCountry = this.$store.state.enrolmentModule.ahFromProvinceOrCountry;
     this.hasLivedInBCSinceBirth = this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth;
     this.isMovedToBCPermanently = this.$store.state.enrolmentModule.ahIsMovedToBCPermanently;
     this.moveFromOrigin = this.$store.state.enrolmentModule.ahMoveFromOrigin;
@@ -725,6 +740,7 @@ export default {
       },
       nameChangeSupportDocumentType: {},
       nameChangeSupportDocuments: {},
+      fromProvinceOrCountry: {},
       hasLivedInBCSinceBirth: {},
       isMovedToBCPermanently: {},
       moveFromOrigin: {},
@@ -756,12 +772,18 @@ export default {
       validations.nameChangeSupportDocumentType.required = required;
       validations.nameChangeSupportDocuments.required = required;
     }
+    if (this.requestFromProvinceOrCountry) {
+      validations.fromProvinceOrCountry.required = required;
+    }
     if (this.requestLivedInBCSinceBirth) {
       validations.hasLivedInBCSinceBirth.required = required;
     }
     if (this.requestPermanentMoveInfo) {
       validations.isMovedToBCPermanently.required = required;
-      validations.isMovedToBCPermanently.yesValidator = yesValidator;
+      if (this.citizenshipStatus === StatusInCanada.Citizen
+        || this.citizenshipStatus === StatusInCanada.PermanentResident) {
+        validations.isMovedToBCPermanently.yesValidator = yesValidator;
+      }
     }
     if (this.requestCountryMoveInfo || this.requestProvinceMoveInfo) {
       validations.moveFromOrigin.required = required;
@@ -822,6 +844,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_NAME_CHANGED}`, this.isNameChanged);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE}`, this.nameChangeSupportDocumentType);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_NAME_CHANGE_SUPPORT_DOCUMENTS}`, this.nameChangeSupportDocuments);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_FROM_PROVINCE_OR_COUNTRY}`, this.fromProvinceOrCountry);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_HAS_LIVED_IN_BC_SINCE_BIRTH}`, this.hasLivedInBCSinceBirth);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_MOVED_TO_BC_PERMANENTLY}`, this.isMovedToBCPermanently);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_MOVE_FROM_ORIGIN}`, this.moveFromOrigin);
@@ -864,6 +887,9 @@ export default {
       return this.$store.state.enrolmentModule.isApplyingForFPCare
           || this.$store.state.enrolmentModule.isApplyingForSuppBen;
     },
+    requestFromProvinceOrCountry() {
+      return this.citizenshipStatus === StatusInCanada.TemporaryResident
+    },
     requestLivedInBCSinceBirth() {
       return this.citizenshipStatus === StatusInCanada.Citizen
           && this.citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP;
@@ -879,10 +905,10 @@ export default {
     },
     requestProvinceMoveInfo() {
       return (this.citizenshipStatus === StatusInCanada.Citizen
-          && (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
-            || ( this.citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP
-              && this.hasLivedInBCSinceBirth === 'N')
-            )
+            && (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
+              || ( this.citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP
+                && this.hasLivedInBCSinceBirth === 'N')
+              )
           )
           || ( this.citizenshipStatus === StatusInCanada.PermanentResident
             && this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince);
@@ -896,15 +922,19 @@ export default {
       return ((this.citizenshipStatus === StatusInCanada.Citizen
             || this.citizenshipStatus === StatusInCanada.PermanentResident
           ) && (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
-            || this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry)
+            || this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry
+            || (this.citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP
+              && this.hasLivedInBCSinceBirth === 'N')
+            )
           )
           || this.citizenshipStatus === StatusInCanada.TemporaryResident;
     },
     requestArrivalInCanadaInfo() {
-      if (this.requestLivedInBCSinceBirth) {
-        return this.hasLivedInBCSinceBirth === 'N';
+      if (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
+        || this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry) {
+        return true;
       }
-      return true;
+      return false;
     },
     requestProvHealthNumber() {
       return this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
@@ -915,7 +945,8 @@ export default {
       return this.citizenshipStatus === StatusInCanada.Citizen;
     },
     requestIsStudent() {
-      return this.isMovedToBCPermanently === 'Y';
+      return this.isMovedToBCPermanently === 'Y'
+          || this.citizenshipStatus === StatusInCanada.TemporaryResident;
     },
     isMovingInformationShown() {
       return !!this.citizenshipStatus
@@ -962,9 +993,11 @@ export default {
     citizenshipStatus() {
       if (this.isPageLoaded) {
         this.citizenshipStatusReason = null;
+        this.fromProvinceOrCountry = null;
         this.hasLivedInBCSinceBirth = null;
         this.previousHealthNumber = null;
         this.$v.citizenshipStatusReason.$reset();
+        this.$v.fromProvinceOrCountry.$reset();
         this.$v.hasLivedInBCSinceBirth.$reset();
         this.$v.previousHealthNumber.$reset();
       }
@@ -973,12 +1006,14 @@ export default {
       if (this.isPageLoaded) {
         this.citizenshipSupportDocumentType = null;
         this.isNameChanged = null;
+        this.isMovedToBCPermanently = null;
         this.moveFromOrigin = null;
         this.arrivalDateInBC = null;
         this.arrivalDateInCanada = null;
         this.previousHealthNumber = null;
         this.$v.citizenshipSupportDocumentType.$reset();
         this.$v.isNameChanged.$reset();
+        this.$v.isMovedToBCPermanently.$reset();
         this.$v.moveFromOrigin.$reset();
         this.$v.arrivalDateInBC.$reset();
         this.$v.arrivalDateInCanada.$reset();
@@ -1013,22 +1048,26 @@ export default {
     },
     isMovedToBCPermanently() {
       if (this.isPageLoaded) {
-        this.moveFromOrigin = null;
-        this.arrivalDateInBC = null;
-        this.arrivalDateInCanada = null;
-        this.previousHealthNumber = null;
-        this.isOutsideBCInLast12Months = null;
-        this.hasPreviousPHN = null;
-        this.isReleasedFromArmedForces = null;
-        this.isStudent = null;
-        this.$v.moveFromOrigin.$reset();
-        this.$v.arrivalDateInBC.$reset();
-        this.$v.arrivalDateInCanada.$reset();
-        this.$v.previousHealthNumber.$reset();
-        this.$v.isOutsideBCInLast12Months.$reset();
-        this.$v.hasPreviousPHN.$reset();
-        this.$v.isReleasedFromArmedForces.$reset();
-        this.$v.isStudent.$reset();
+        if (this.citizenshipStatus === null
+          || this.citizenshipStatus === StatusInCanada.Citizen
+          || this.citizenshipStatus === StatusInCanada.PermanentResident) {
+          this.moveFromOrigin = null;
+          this.arrivalDateInBC = null;
+          this.arrivalDateInCanada = null;
+          this.previousHealthNumber = null;
+          this.isOutsideBCInLast12Months = null;
+          this.hasPreviousPHN = null;
+          this.isReleasedFromArmedForces = null;
+          this.isStudent = null;
+          this.$v.moveFromOrigin.$reset();
+          this.$v.arrivalDateInBC.$reset();
+          this.$v.arrivalDateInCanada.$reset();
+          this.$v.previousHealthNumber.$reset();
+          this.$v.isOutsideBCInLast12Months.$reset();
+          this.$v.hasPreviousPHN.$reset();
+          this.$v.isReleasedFromArmedForces.$reset();
+          this.$v.isStudent.$reset();
+        }
       }
     },
     isOutsideBCInLast12Months() {
