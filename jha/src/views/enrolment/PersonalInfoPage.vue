@@ -496,6 +496,10 @@
       </div>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
+    <portal v-if="isInfoCollectionNoticeOpen"
+      to="modal">
+      <ConsentModal @close="handleCloseConsentModal"/>
+    </portal>
   </div>
 </template>
 
@@ -515,6 +519,7 @@ import {
 } from '@/helpers/url';
 import {
   MODULE_NAME as enrolmentModule,
+  SET_IS_INFO_COLLECTION_NOTICE_OPEN,
   SET_AH_FIRST_NAME,
   SET_AH_MIDDLE_NAME,
   SET_AH_LAST_NAME,
@@ -596,6 +601,7 @@ import {
   CanadianStatusReasons,
   StatusInCanada,
 } from '@/constants/immigration-status-types';
+import ConsentModal from '@/components/ConsentModal.vue';
 import TipBox from '@/components/TipBox.vue';
 import {
   isAfter,
@@ -632,6 +638,7 @@ export default {
   name: 'PersonalInfoPage',
   mixins: [pageContentMixin],
   components: {
+    ConsentModal,
     ContinueBar,
     CountrySelect,
     DateInput,
@@ -931,8 +938,14 @@ export default {
     handleProcessDateDepartureReturn(data) {
       this.departureReturnDateData = data;
     },
+    handleCloseConsentModal() {
+      this.$store.dispatch(`${enrolmentModule}/${SET_IS_INFO_COLLECTION_NOTICE_OPEN}`, false);
+    },
   },
   computed: {
+    isInfoCollectionNoticeOpen() {
+      return this.$store.state.enrolmentModule.isInfoCollectionNoticeOpen;
+    },
     requestSocialInsuranceNumber() {
       return this.$store.state.enrolmentModule.isApplyingForFPCare
           || this.$store.state.enrolmentModule.isApplyingForSuppBen;
