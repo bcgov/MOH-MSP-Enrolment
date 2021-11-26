@@ -372,20 +372,38 @@
                     id="departure-begin-date"
                     class="mt-3"
                     v-model="departureBeginDate"
-                    @blur="handleBlurField($v.departureBeginDate)" />
+                    @blur="handleBlurField($v.departureBeginDate)"
+                    @processDate="handleProcessDateDepartureBegin($event)" />
                   <div class="text-danger"
                     v-if="$v.departureBeginDate.$dirty
                       && !$v.departureBeginDate.required"
                     aria-live="assertive">Departure date is required.</div>
+                  <div class="text-danger"
+                    v-if="$v.departureBeginDate.$dirty
+                      && !$v.departureBeginDate.dateDataValidator"
+                    aria-live="assertive">Invalid departure date.</div>
+                  <div class="text-danger"
+                    v-if="$v.departureBeginDate.$dirty
+                      && !$v.departureBeginDate.departureBeginDateValidator"
+                    aria-live="assertive">Departure date must be within the last 12 months and prior to return date.</div>
                   <DateInput label="Return date"
                     id="departure-return-date"
                     class="mt-3"
                     v-model="departureReturnDate"
-                    @blur="handleBlurField($v.departureReturnDate)" />
+                    @blur="handleBlurField($v.departureReturnDate)"
+                    @processDate="handleProcessDateDepartureReturn($event)" />
                   <div class="text-danger"
                     v-if="$v.departureReturnDate.$dirty
                       && !$v.departureReturnDate.required"
                     aria-live="assertive">Return date is required.</div>
+                  <div class="text-danger"
+                    v-if="$v.departureReturnDate.$dirty
+                      && !$v.departureReturnDate.dateDataValidator"
+                    aria-live="assertive">Invalid return date.</div>
+                  <div class="text-danger"
+                    v-if="$v.departureReturnDate.$dirty
+                      && !$v.departureReturnDate.departureReturnDateValidator"
+                    aria-live="assertive">Return date must be within the last 12 months and after return date.</div>
                 </div>
                 <div>
                   <Radio label="Do you have a previous B.C. Personal Health Number?"
@@ -406,6 +424,7 @@
                     id="previous-phn"
                     class="mt-3"
                     v-model="previousPHN"
+                    placeholder="1111 111 111"
                     @blur="handleBlurField($v.previousPHN)"/>
                   <div class="text-danger"
                     v-if="$v.previousPHN.$dirty
@@ -579,15 +598,34 @@ import {
 } from '@/constants/immigration-status-types';
 import TipBox from '@/components/TipBox.vue';
 import {
+  isAfter,
   isBefore,
   isSameDay,
+  addDays,
   startOfToday,
+  subDays,
   subYears,
 } from 'date-fns';
 
 const birthdate16YearsValidator = (value) => {
   const sixteenYearsAgo = subYears(startOfToday(), 16);
   return isSameDay(sixteenYearsAgo, value) || isBefore(value, sixteenYearsAgo);
+};
+
+const departureBeginDateValidator = (value, vm) => {
+  const past12Months = subYears(subDays(startOfToday(), 1), 1);
+  const returnDate = vm.departureReturnDate;
+  return isAfter(value, past12Months) // Is within the last 12 months.
+      && (!returnDate || isBefore(value, addDays(returnDate, 1))) // Is before or equal to return date.
+      && isBefore(value, addDays(startOfToday(), 1)); // Is before or equal to date today.
+};
+
+const departureReturnDateValidator = (value, vm) => {
+  const past12Months = subYears(subDays(startOfToday(), 1), 1);
+  const beginDate = vm.departureBeginDate;
+  return isAfter(value, past12Months) // Is within the last 12 months.
+      && (!beginDate || isAfter(value, subDays(beginDate, 1))) // Is after or equal to begin date.
+      && isBefore(value, addDays(startOfToday(), 1)); // Is before or equal to date today.
 };
 
 export default {
@@ -655,6 +693,8 @@ export default {
 
       // Date data which is processed by date validators:
       birthdateData: null,
+      departureBeginDateData: null,
+      departureReturnDateData: null,
     };
   },
   created() {
@@ -802,8 +842,12 @@ export default {
     if (this.isOutsideBCInLast12Months === 'Y') {
       validations.departureReason.required = required;
       validations.departureLocation.required = required;
-      validations.departureBeginDate.required = required;
-      validations.departureReturnDate.required = required;
+      validations.departureBeginDate.required = dateDataRequiredValidator(this.departureBeginDateData);
+      validations.departureBeginDate.dateDataValidator = dateDataValidator(this.departureBeginDateData);
+      validations.departureBeginDate.departureBeginDateValidator = optionalValidator(departureBeginDateValidator);
+      validations.departureReturnDate.required = dateDataRequiredValidator(this.departureReturnDateData);
+      validations.departureReturnDate.dateDataValidator = dateDataValidator(this.departureReturnDateData);
+      validations.departureReturnDate.departureReturnDateValidator = optionalValidator(departureReturnDateValidator);
     }
     if (this.requestArmedForceInfo) {
       validations.isReleasedFromArmedForces.required = required;
@@ -880,6 +924,12 @@ export default {
     },
     handleProcessBirthdate(data) {
       this.birthdateData = data;
+    },
+    handleProcessDateDepartureBegin(data) {
+      this.departureBeginDateData = data;
+    },
+    handleProcessDateDepartureReturn(data) {
+      this.departureReturnDateData = data;
     },
   },
   computed: {
