@@ -97,7 +97,9 @@
                 maxlength="25"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.mailAddressLine1)" />
-              <div class="text-danger" v-if="$v.mailAddressLine1.$dirty && !$v.mailAddressLine1.required" aria-live="assertive">Mailing address is required.</div>
+              <div class="text-danger" v-if="$v.mailAddressLine1.$dirty && !$v.mailAddressLine1.required" aria-live="assertive">
+                Full street address, rural route, PO box, or general delivery is required.
+              </div>
               <div class="text-danger"
                 v-if="$v.mailAddressLine1.$dirty && !$v.mailAddressLine1.specialCharacterValidator"
                 aria-live="assertive">Mailing address cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
@@ -147,7 +149,7 @@
                 maxlength="25"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.mailProvince)" />
-              <div class="text-danger" v-if="$v.mailProvince.$dirty && !$v.mailProvince.required" aria-live="assertive">Province is required.</div>
+              <div class="text-danger" v-if="$v.mailProvince.$dirty && !$v.mailProvince.required" aria-live="assertive">Province or state is required.</div>
               <div class="text-danger"
                 v-if="$v.mailProvince.$dirty && !$v.mailProvince.specialCharacterValidator"
                 aria-live="assertive">Province cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
@@ -168,7 +170,7 @@
                 maxlength="25"
                 :inputStyle='smallStyles'
                 @blur="handleBlurField($v.mailPostalCode)" />
-              <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal code is required.</div>
+              <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal code or Zip code is required.</div>
               <div class="text-danger"
                 v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.specialCharacterValidator"
                 aria-live="assertive">Postal Code cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
