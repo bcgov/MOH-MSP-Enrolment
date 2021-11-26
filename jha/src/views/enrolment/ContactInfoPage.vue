@@ -162,7 +162,7 @@
                 v-if="$v.mailCountry.$dirty && !$v.mailCountry.specialCharacterValidator"
                 aria-live="assertive">Country cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
               <Input class="mt-3"
-                label="Postal Code"
+                label="Postal Code or Zip Code"
                 id="mail-postal-code"
                 v-model="mailPostalCode"
                 maxlength="25"
