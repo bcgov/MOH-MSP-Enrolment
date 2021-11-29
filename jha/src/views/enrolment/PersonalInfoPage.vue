@@ -10,6 +10,7 @@
           id="first-name"
           v-model="firstName"
           maxlength="30"
+          :inputStyle="mediumStyles"
           @blur="handleBlurField($v.firstName)" />
         <div class="text-danger"
           v-if="$v.firstName.$dirty
@@ -24,6 +25,7 @@
           class="mt-3"
           v-model="middleName"
           maxlength="30"
+          :inputStyle="mediumStyles"
           @blur="handleBlurField($v.middleName)" />
         <div class="text-danger"
           v-if="$v.middleName.$dirty
@@ -34,6 +36,7 @@
           class="mt-3"
           v-model="lastName"
           maxlength="30"
+          :inputStyle="mediumStyles"
           @blur="handleBlurField($v.lastName)" />
         <div class="text-danger"
           v-if="$v.lastName.$dirty
@@ -69,6 +72,7 @@
           <DigitInput label="Social Insurance Number (SIN)"
             id="social-insurance-number"
             class="mt-3"
+            :inputStyle="smallStyles"
             v-model="socialInsuranceNumber"
             @blur="handleBlurField($v.socialInsuranceNumber)" />
           <div class="text-danger"
@@ -95,6 +99,7 @@
           id="immigration-status"
           v-model="citizenshipStatus"
           :options="citizenshipStatusOptions"
+          :inputStyle="mediumStyles"
           @blur="handleBlurField($v.citizenshipStatus)"/>
         <div class="text-danger"
           v-if="$v.citizenshipStatus.$dirty
@@ -132,6 +137,7 @@
             id="citizen-support-document-type"
             v-model="citizenshipSupportDocumentType"
             :options="citizenshipSupportDocumentsOptions"
+            :inputStyle="mediumStyles"
             @blur="handleBlurField($v.citizenshipSupportDocumentType)" />
           <div class="text-danger"
             v-if="$v.citizenshipSupportDocumentType.$dirty
@@ -450,11 +456,29 @@
                     id="armed-forces-discharge-date"
                     class="mt-3"
                     v-model="armedForcesDischargeDate"
-                    @blur="handleBlurField($v.armedForcesDischargeDate)"/>
+                    @blur="handleBlurField($v.armedForcesDischargeDate)"
+                    @processDate="handleProcessDateArmedForcesDischarge($event)"/>
                   <div class="text-danger"
                     v-if="$v.armedForcesDischargeDate.$dirty
                       && !$v.armedForcesDischargeDate.required"
                     aria-live="assertive">Discharge date is required.</div>
+                  <div class="text-danger"
+                    v-if="$v.armedForcesDischargeDate.$dirty
+                      && !$v.armedForcesDischargeDate.dateDataValidator"
+                    aria-live="assertive">Invalid discharge date.</div>
+                  <div class="text-danger"
+                    v-if="$v.armedForcesDischargeDate.$dirty
+                      && !$v.armedForcesDischargeDate.distantPastValidator"
+                    aria-live="assertive">Invalid discharge date.</div>
+                  <div class="text-danger"
+                    v-if="$v.armedForcesDischargeDate.$dirty
+                      && !$v.armedForcesDischargeDate.pastDateValidator"
+                    aria-live="assertive">Discharge date cannot be in the future.</div>
+                  <div class="text-danger"
+                    v-if="$v.armedForcesDischargeDate.$dirty
+                      && $v.armedForcesDischargeDate.distantPastValidator
+                      && !$v.armedForcesDischargeDate.afterBirthdateValidator"
+                    aria-live="assertive">Discharge date cannot be before the applicant's date of birth.</div>
                 </div>
                 <div v-if="requestIsStudent">
                   <Radio label="Are you a full-time student in B.C.?"
@@ -587,6 +611,10 @@ import {
   selectOptionVisitorVisaSupportDocument,
 } from '@/constants/select-options';
 import {
+  mediumStyles,
+  smallStyles,
+} from '@/constants/input-styles';
+import {
   required,
   requiredIf,
 } from 'vuelidate/lib/validators';
@@ -595,6 +623,7 @@ import {
   dateDataValidator,
   nameValidator,
   nonBCValidator,
+  pastDateValidator,
   yesValidator,
 } from '@/helpers/validators';
 import {
@@ -634,6 +663,11 @@ const departureReturnDateValidator = (value, vm) => {
       && isBefore(value, addDays(startOfToday(), 1)); // Is before or equal to date today.
 };
 
+const afterBirthdateValidator = (value, vm) => {
+  const birthdate = vm.birthdate;
+  return !birthdate || isAfter(value, subDays(birthdate, 1))
+}
+
 export default {
   name: 'PersonalInfoPage',
   mixins: [pageContentMixin],
@@ -658,6 +692,8 @@ export default {
       // Constants.
       StatusInCanada,
       CanadianStatusReasons,
+      smallStyles,
+      mediumStyles,
       // Radio and Select options.
       genderOptions: radioOptionsGender,
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
@@ -702,6 +738,7 @@ export default {
       birthdateData: null,
       departureBeginDateData: null,
       departureReturnDateData: null,
+      armedForcesDischargeDateData: null,
     };
   },
   created() {
@@ -860,7 +897,11 @@ export default {
       validations.isReleasedFromArmedForces.required = required;
     }
     if (this.isReleasedFromArmedForces === 'Y') {
-      validations.armedForcesDischargeDate.required = required;
+      validations.armedForcesDischargeDate.required = dateDataRequiredValidator(this.armedForcesDischargeDateData);
+      validations.armedForcesDischargeDate.dateDataValidator = dateDataValidator(this.armedForcesDischargeDateData);
+      validations.armedForcesDischargeDate.distantPastValidator = optionalValidator(distantPastValidator);
+      validations.armedForcesDischargeDate.pastDateValidator = optionalValidator(pastDateValidator);
+      validations.armedForcesDischargeDate.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
     }
     if (this.requestIsStudent) {
       validations.isStudent.required = required;
@@ -937,6 +978,9 @@ export default {
     },
     handleProcessDateDepartureReturn(data) {
       this.departureReturnDateData = data;
+    },
+    handleProcessDateArmedForcesDischarge(data) {
+      this.armedForcesDischargeDateData = data;
     },
     handleCloseConsentModal() {
       this.$store.dispatch(`${enrolmentModule}/${SET_IS_INFO_COLLECTION_NOTICE_OPEN}`, false);

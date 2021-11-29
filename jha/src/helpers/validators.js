@@ -2,6 +2,11 @@ import {
   getISODateString,
   isValidISODateString,
 } from 'common-lib-vue';
+import {
+  addDays,
+  isBefore,
+  startOfToday,
+} from 'date-fns';
 
 export const bcPostalCodeValidator = (value) => {
   const criteria = RegExp('^[Vv]\\d[A-Za-z][ ]?\\d[A-Za-z]\\d$');
@@ -47,3 +52,7 @@ export const dateDataValidator = (dateData) => {
     return isValidISODateString(isoDateString);
   };
 };
+
+export const pastDateValidator = (value) => {
+  return isBefore(value, addDays(startOfToday(), 1));
+}
