@@ -503,9 +503,13 @@
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField($v.willStudentResideInBC)"/>
                   <div class="text-danger"
-                  v-if="$v.willStudentResideInBC.$dirty
-                    && !$v.willStudentResideInBC.required"
-                  aria-live="assertive">This field is required.</div>
+                    v-if="$v.willStudentResideInBC.$dirty
+                      && !$v.willStudentResideInBC.required"
+                    aria-live="assertive">This field is required.</div>
+                  <div class="text-danger"
+                    v-if="$v.willStudentResideInBC.$dirty
+                      && !$v.willStudentResideInBC.yesValidator"
+                    aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for Medical Services Plan coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
                 </div>
               </div>
             </div>
@@ -908,6 +912,7 @@ export default {
     }
     if (this.isStudent === 'Y') {
       validations.willStudentResideInBC.required = required;
+      validations.willStudentResideInBC.yesValidator = optionalValidator(yesValidator);
     }
     return validations;
   },
