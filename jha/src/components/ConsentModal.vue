@@ -11,10 +11,10 @@
             <h2 class="modal-title" id="exampleModalLabel">Information collection notice</h2>
           </div>
           <div class="modal-body">
-            <p><b>Keep your personal information secure - especially when using a shared device like a computer at a library, school or café.</b> To delete any information that was entered, either complete the application and submit it or, if you don't finish, close the web browser.</p>
-            <p><b>Need to take a break and come back later?</b> The data you enter on this form is saved locally to the computer or device you are using until you close the web browser or submit your application.</p>
-            <p class="mb-4">Personal information is collected under the authority of the <em>Medicare Protection Act</em> and section 26 (a), (c) and (e) of the <em>Freedom of Information and Protection of Privacy Act</em> for the purposes of administration of the Medical Services Plan. If you have any questions about the collection and use of your personal information, please contact <a href="https://www2.gov.bc.ca/gov/content/health/about-bc-s-health-care-system/partners/health-insurance-bc" target="_blank">Health Insurance BC</a>.</p>
+            <p v-if="isMSPNoticeShown"><b>{{mspNoticeTitle}}:</b> Personal information is collected under the authority of the Medicare Protection Act and section 26 (a), (c) and (e) of the Freedom of Information and Protection of Privacy Act (FOIPPA) for the purposes of administration of the Medical Services Plan. Information may be disclosed pursuant to section 33 of FOIPPA. If you have any questions about the collection and use of your personal information, please contact the Health Insurance BC Chief Privacy Office at Health Insurance BC, Chief Privacy Office, PO Box 9035 STN PROV GOVT, Victoria, BC V8W 9E3 or call 604 683-7151 (Vancouver) or 1 800 663-7100 (toll-free).</p>
+            <p v-if="isFPCNoticeShown"><b>FAIR PHARMACARE:</b> Personal information is collected, used, disclosed and provided security in accordance with the British Columbia Freedom of Information and Protection of Privacy Act. If you have any questions about the collection or use of this information, contact Health Insurance BC or the Health Insurance BC Chief Privacy Office.</p>
             <Captcha v-if="!isCaptchaValid"
+                    class="mt-4"
                     :apiBasePath="captchaAPIBasePath"
                     :nonce="applicationUuid"
                     @captchaLoaded="handleCaptchaLoaded()"
@@ -47,6 +47,10 @@ import {
   Button,
   Captcha,
 } from "common-lib-vue";
+import {
+  MODULE_NAME as enrolmentModule,
+  SET_CAPTCHA_TOKEN
+} from '../store/modules/enrolment-module';
 
 export default {
   name: "ConsentModal",
@@ -54,23 +58,18 @@ export default {
     Button,
     Captcha,
   },
-  props: {
-    applicationUuid: {
-      type: String,
-      default: '',
-      required: true,
-    },
-  },
   data: () => {
     return {
       focusableEls: [],
       focusedEl: null,
+      applicationUuid: null,
       captchaAPIBasePath: '/jha/api/captcha',
       isCaptchaValid: false,
       isTermsAccepted: false,
     };
   },
   created() {
+    this.applicationUuid = this.$store.state.enrolmentModule.applicationUuid;
     window.addEventListener('keydown', this.handleKeyDown);
     document.body.classList.add('no-scroll');
   },
@@ -90,7 +89,7 @@ export default {
       this.focusableEls = this.getFocusableEls();
     },
     handleCaptchaVerified(captchaToken) {
-      this.$emit('captchaVerified', captchaToken);
+      this.$store.dispatch(`${enrolmentModule}/${SET_CAPTCHA_TOKEN}`, captchaToken);
       this.isCaptchaValid = true;
       setTimeout(() => {
         this.focusableEls = this.getFocusableEls();
@@ -141,6 +140,26 @@ export default {
       }
       this.focusedEl.focus();
     },
+  },
+  computed: {
+    isMSPNoticeShown() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP
+          || this.$store.state.enrolmentModule.isApplyingForSuppBen;
+    },
+    isFPCNoticeShown() {
+      return this.$store.state.enrolmentModule.isApplyingForFPCare;
+    },
+    mspNoticeTitle() {
+      if (this.$store.state.enrolmentModule.isApplyingForMSP
+        && this.$store.state.enrolmentModule.isApplyingForSuppBen) {
+        return 'MEDICAL SERVIES PLAN (MSP) AND MSP SUPPLEMENTARY BENEFITS';
+      } else if (this.$store.state.enrolmentModule.isApplyingForMSP) {
+        return 'MEDICAL SERVIES PLAN (MSP)';
+      } else if (this.$store.state.enrolmentModule.isApplyingForSuppBen) {
+        return 'MSP SUPPLEMENTARY BENEFITS';
+      }
+      return '';
+    }
   }
 };
 </script>

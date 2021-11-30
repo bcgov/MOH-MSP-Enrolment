@@ -30,12 +30,6 @@
           aria-live="assertive">You must select at least one program.</div>
       </div>
     </PageContent>
-    <portal v-if="isInfoCollectionNoticeOpen"
-      to="modal">
-      <ConsentModal :applicationUuid="applicationUuid"
-        @close="handleCloseConsentModal"
-        @captchaVerified="handleCaptchaVerified"/>
-    </portal>
     <ContinueBar @continue="validateFields()" />
   </div>
 </template>
@@ -55,14 +49,11 @@ import {
 import {
   getConvertedPath,
 } from '@/helpers/url';
-import ConsentModal from '@/components/ConsentModal.vue';
 import {
   MODULE_NAME as enrolmentModule,
-  SET_CAPTCHA_TOKEN,
   SET_IS_APPLYING_FOR_MSP,
   SET_IS_APPLYING_FOR_FPCARE,
   SET_IS_APPLYING_FOR_SUPP_BEN,
-  SET_IS_INFO_COLLECTION_NOTICE_OPEN,
 } from '@/store/modules/enrolment-module';
 import {
   Checkbox,
@@ -84,7 +75,6 @@ export default {
     Checkbox,
     ContinueBar,
     PageContent,
-    ConsentModal,
   },
   data: () => {
     return {
@@ -134,18 +124,7 @@ export default {
     };
     return validations;
   },
-  computed: {
-    isInfoCollectionNoticeOpen() {
-      return this.$store.state.enrolmentModule.isInfoCollectionNoticeOpen;
-    }
-  },
   methods: {
-    handleCaptchaVerified(captchaToken) {
-      this.$store.dispatch(`${enrolmentModule}/${SET_CAPTCHA_TOKEN}`, captchaToken);
-    },
-    handleCloseConsentModal() {
-      this.$store.dispatch(`${enrolmentModule}/${SET_IS_INFO_COLLECTION_NOTICE_OPEN}`, false);
-    },
     validateFields() {
       this.$v.$touch()
       if (this.$v.$invalid) {
