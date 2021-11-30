@@ -198,6 +198,7 @@
             class="mt-3"
             v-model="nameChangeSupportDocumentType"
             :options="nameChangeSupportDocumentOptions"
+            :inputStyle="mediumStyles"
             @blur="handleBlurField($v.nameChangeSupportDocumentType)"/>
           <div class="text-danger"
             v-if="$v.nameChangeSupportDocumentType.$dirty
@@ -241,6 +242,7 @@
                   class="mt-3"
                   maxlength="25"
                   v-model="fromProvinceOrCountry"
+                  :inputStyle="mediumStyles"
                   @blur="handleBlurField($v.fromProvinceOrCountry)"/>
                 <div class="text-danger"
                   v-if="$v.fromProvinceOrCountry.$dirty
@@ -284,6 +286,7 @@
                     country="Canada"
                     defaultOptionLabel="Please select a province"
                     v-model="moveFromOrigin"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.moveFromOrigin)"/>
                   <div class="text-danger"
                     v-if="$v.moveFromOrigin.$dirty
@@ -300,6 +303,7 @@
                     class="mt-3"
                     defaultOptionLabel="Please select a country"
                     v-model="moveFromOrigin"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.moveFromOrigin)"/>
                   <div class="text-danger"
                     v-if="$v.moveFromOrigin.$dirty
@@ -333,6 +337,7 @@
                     id="previous-health-number"
                     class="mt-3"
                     v-model="previousHealthNumber"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.previousHealthNumber)" />
                 </div>
                 <div>
@@ -359,6 +364,7 @@
                     class="mt-3"
                     v-model="departureReason"
                     maxlength="20"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.departureReason)" />
                   <div class="text-danger"
                     v-if="$v.departureReason.$dirty
@@ -369,6 +375,7 @@
                     class="mt-3"
                     v-model="departureLocation"
                     maxlength="20"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.departureLocation)" />
                   <div class="text-danger"
                     v-if="$v.departureLocation.$dirty
@@ -431,6 +438,7 @@
                     class="mt-3"
                     v-model="previousPHN"
                     placeholder="1111 111 111"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.previousPHN)"/>
                   <div class="text-danger"
                     v-if="$v.previousPHN.$dirty
