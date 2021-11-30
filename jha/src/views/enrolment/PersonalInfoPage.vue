@@ -315,22 +315,49 @@
                     id="arrival-date-in-bc"
                     class="mt-3"
                     v-model="arrivalDateInBC"
-                    @blur="handleBlurField($v.arrivalDateInBC)" />
+                    @blur="handleBlurField($v.arrivalDateInBC)"
+                    @processDate="handleProcessDateArrivalInBC($event)" />
                   <div class="text-danger"
                     v-if="$v.arrivalDateInBC.$dirty
                       && !$v.arrivalDateInBC.required"
                     aria-live="assertive">{{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'Most recent move to B.C.' : 'Arrival date in B.C.'}} is required.</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInBC.$dirty
+                      && !$v.arrivalDateInBC.dateDataValidator"
+                    aria-live="assertive">Invalid {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C.' : 'arrival date in B.C.'}}</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInBC.$dirty
+                      && !$v.arrivalDateInBC.pastDateValidator"
+                    aria-live="assertive">{{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'Most recent move to B.C.' : 'Arrival date in B.C.'}} cannot be in the future.</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInBC.$dirty
+                      && !$v.arrivalDateInBC.afterBirthdateValidator"
+                    aria-live="assertive">The applicant's {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C.' : 'arrival date in B.C.'}} cannot be before the applicant's date of birth.</div>
                 </div>
                 <div v-if="requestArrivalInCanadaInfo">
                   <DateInput :label="`Arrival date in Canada${citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry ? '' : ' (optional)'}`"
                     id="arrival-date-in-canada"
                     class="mt-3"
                     v-model="arrivalDateInCanada"
-                    @blur="handleBlurField($v.arrivalDateInCanada)" />
+                    @blur="handleBlurField($v.arrivalDateInCanada)"
+                    @processDate="handleProcessDateArrivalInCanada($event)" />
                   <div class="text-danger"
                     v-if="$v.arrivalDateInCanada.$dirty
                       && !$v.arrivalDateInCanada.required"
                     aria-live="assertive">Arrival date in Canada is required.</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInCanada.$dirty
+                      && !$v.arrivalDateInCanada.dateDataValidator"
+                    aria-live="assertive">Invalid arrival date in Canada.</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInCanada.$dirty
+                      && !$v.arrivalDateInCanada.pastDateValidator"
+                    aria-live="assertive">Arrival date in Canada cannot be in the future.</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInCanada.$dirty
+                      && (!$v.arrivalDateInCanada.afterBirthdateValidator || !$v.arrivalDateInCanada.beforeArrivalInBCValidator)"
+                    aria-live="assertive">The applicant's most recent move to Canada cannot be before the applicant's date of birth and cannot be after the move to B.C. date.</div>
+                
                 </div>
                 <div v-if="requestProvHealthNumber">
                   <Input label="Health Number from that province (optional)"
@@ -575,6 +602,7 @@ import {
   SET_AH_MOVE_FROM_ORIGIN,
   SET_AH_ARRIVAL_DATE_IN_BC,
   SET_AH_ARRIVAL_DATE_IN_CANADA,
+  SET_AH_PREVIOUS_HEALTH_NUMBER,
   SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS,
   SET_AH_OUTSIDE_BC_LAST_12_MONTHS_REASON,
   SET_AH_OUTSIDE_BC_LAST_12_MONTHS_LOCATION,
@@ -628,7 +656,6 @@ import {
 } from '@/constants/input-styles';
 import {
   required,
-  requiredIf,
 } from 'vuelidate/lib/validators';
 import {
   dateDataRequiredValidator,
@@ -678,6 +705,11 @@ const departureReturnDateValidator = (value, vm) => {
 const afterBirthdateValidator = (value, vm) => {
   const birthdate = vm.birthdate;
   return !birthdate || isAfter(value, subDays(birthdate, 1))
+}
+
+const beforeArrivalInBCValidator = (value, vm) => {
+  const arrivalDateInBC = vm.arrivalDateInBC;
+  return !arrivalDateInBC || isBefore(value, addDays(arrivalDateInBC, 1));
 }
 
 export default {
@@ -748,6 +780,8 @@ export default {
 
       // Date data which is processed by date validators:
       birthdateData: null,
+      arrivalDateInBCData: null,
+      arrivalDateInCanadaData: null,
       departureBeginDateData: null,
       departureReturnDateData: null,
       armedForcesDischargeDateData: null,
@@ -773,7 +807,7 @@ export default {
     this.moveFromOrigin = this.$store.state.enrolmentModule.ahMoveFromOrigin;
     this.arrivalDateInBC = this.$store.state.enrolmentModule.ahArrivalDateInBC;
     this.arrivalDateInCanada = this.$store.state.enrolmentModule.ahArrivalDateInCanada;
-    this.previousHealthNumber = this.$store.state.enrolmentModule.previousHealthNumber;
+    this.previousHealthNumber = this.$store.state.enrolmentModule.ahPreviousHealthNumber;
     this.isOutsideBCInLast12Months = this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months;
     this.departureReason = this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReason;
     this.departureLocation = this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsLocation;
@@ -888,12 +922,21 @@ export default {
       }
     }
     if (this.requestArrivalInBCInfo) {
-      validations.arrivalDateInBC.required = required;
+      validations.arrivalDateInBC.required = dateDataRequiredValidator(this.arrivalDateInBCData);
+      validations.arrivalDateInBC.dateDataValidator = dateDataValidator(this.arrivalDateInBCData);
+      validations.arrivalDateInBC.pastDateValidator = optionalValidator(pastDateValidator);
+      validations.arrivalDateInBC.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
     }
     if (this.requestArrivalInCanadaInfo) {
-      validations.arrivalDateInCanada.required = requiredIf(() => {
-        return this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry;
-      });
+      if (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry) {
+        validations.arrivalDateInCanada.required = dateDataRequiredValidator(this.arrivalDateInCanadaData);
+      } else {
+        validations.arrivalDateInCanada.required = () => true; // Validator for optional use-case.
+      }
+      validations.arrivalDateInCanada.dateDataValidator = dateDataValidator(this.arrivalDateInCanadaData);
+      validations.arrivalDateInCanada.pastDateValidator = optionalValidator(pastDateValidator);
+      validations.arrivalDateInCanada.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
+      validations.arrivalDateInCanada.beforeArrivalInBCValidator = optionalValidator(beforeArrivalInBCValidator);
     }
     if (this.isOutsideBCInLast12Months === 'Y') {
       validations.departureReason.required = required;
@@ -955,6 +998,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_MOVE_FROM_ORIGIN}`, this.moveFromOrigin);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_ARRIVAL_DATE_IN_BC}`, this.arrivalDateInBC);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_ARRIVAL_DATE_IN_CANADA}`, this.arrivalDateInCanada);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_PREVIOUS_HEALTH_NUMBER}`, this.previousHealthNumber);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS}`, this.isOutsideBCInLast12Months);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_OUTSIDE_BC_LAST_12_MONTHS_REASON}`, this.departureReason);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_OUTSIDE_BC_LAST_12_MONTHS_LOCATION}`, this.departureLocation);
@@ -985,6 +1029,12 @@ export default {
     },
     handleProcessBirthdate(data) {
       this.birthdateData = data;
+    },
+    handleProcessDateArrivalInBC(data) {
+      this.arrivalDateInBCData = data;
+    },
+    handleProcessDateArrivalInCanada(data) {
+      this.arrivalDateInCanadaData = data;
     },
     handleProcessDateDepartureBegin(data) {
       this.departureBeginDateData = data;
@@ -1166,11 +1216,9 @@ export default {
         this.$v.arrivalDateInCanada.$reset();
       }
     },
-    isMovedToBCPermanently() {
+    isMovedToBCPermanently(newValue) {
       if (this.isPageLoaded) {
-        if (this.citizenshipStatus === null
-          || this.citizenshipStatus === StatusInCanada.Citizen
-          || this.citizenshipStatus === StatusInCanada.PermanentResident) {
+        if (newValue === null) {
           this.moveFromOrigin = null;
           this.arrivalDateInBC = null;
           this.arrivalDateInCanada = null;
@@ -1208,8 +1256,8 @@ export default {
         this.$v.previousPHN.$reset();
       }
     },
-    requestArmedForceInfo() {
-      if (this.isPageLoaded) {
+    requestArmedForceInfo(newValue) {
+      if (this.isPageLoaded && newValue === false) {
         this.isReleasedFromArmedForces = null;
         this.$v.isReleasedFromArmedForces.$reset();
       }
