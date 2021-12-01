@@ -10,6 +10,7 @@
           id="first-name"
           v-model="firstName"
           maxlength="30"
+          :inputStyle="mediumStyles"
           @blur="handleBlurField($v.firstName)" />
         <div class="text-danger"
           v-if="$v.firstName.$dirty
@@ -24,6 +25,7 @@
           class="mt-3"
           v-model="middleName"
           maxlength="30"
+          :inputStyle="mediumStyles"
           @blur="handleBlurField($v.middleName)" />
         <div class="text-danger"
           v-if="$v.middleName.$dirty
@@ -34,6 +36,7 @@
           class="mt-3"
           v-model="lastName"
           maxlength="30"
+          :inputStyle="mediumStyles"
           @blur="handleBlurField($v.lastName)" />
         <div class="text-danger"
           v-if="$v.lastName.$dirty
@@ -69,6 +72,7 @@
           <DigitInput label="Social Insurance Number (SIN)"
             id="social-insurance-number"
             class="mt-3"
+            :inputStyle="smallStyles"
             v-model="socialInsuranceNumber"
             @blur="handleBlurField($v.socialInsuranceNumber)" />
           <div class="text-danger"
@@ -95,6 +99,7 @@
           id="immigration-status"
           v-model="citizenshipStatus"
           :options="citizenshipStatusOptions"
+          :inputStyle="mediumStyles"
           @blur="handleBlurField($v.citizenshipStatus)"/>
         <div class="text-danger"
           v-if="$v.citizenshipStatus.$dirty
@@ -132,6 +137,7 @@
             id="citizen-support-document-type"
             v-model="citizenshipSupportDocumentType"
             :options="citizenshipSupportDocumentsOptions"
+            :inputStyle="mediumStyles"
             @blur="handleBlurField($v.citizenshipSupportDocumentType)" />
           <div class="text-danger"
             v-if="$v.citizenshipSupportDocumentType.$dirty
@@ -192,6 +198,7 @@
             class="mt-3"
             v-model="nameChangeSupportDocumentType"
             :options="nameChangeSupportDocumentOptions"
+            :inputStyle="mediumStyles"
             @blur="handleBlurField($v.nameChangeSupportDocumentType)"/>
           <div class="text-danger"
             v-if="$v.nameChangeSupportDocumentType.$dirty
@@ -235,6 +242,7 @@
                   class="mt-3"
                   maxlength="25"
                   v-model="fromProvinceOrCountry"
+                  :inputStyle="mediumStyles"
                   @blur="handleBlurField($v.fromProvinceOrCountry)"/>
                 <div class="text-danger"
                   v-if="$v.fromProvinceOrCountry.$dirty
@@ -278,6 +286,7 @@
                     country="Canada"
                     defaultOptionLabel="Please select a province"
                     v-model="moveFromOrigin"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.moveFromOrigin)"/>
                   <div class="text-danger"
                     v-if="$v.moveFromOrigin.$dirty
@@ -294,6 +303,7 @@
                     class="mt-3"
                     defaultOptionLabel="Please select a country"
                     v-model="moveFromOrigin"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.moveFromOrigin)"/>
                   <div class="text-danger"
                     v-if="$v.moveFromOrigin.$dirty
@@ -305,28 +315,57 @@
                     id="arrival-date-in-bc"
                     class="mt-3"
                     v-model="arrivalDateInBC"
-                    @blur="handleBlurField($v.arrivalDateInBC)" />
+                    @blur="handleBlurField($v.arrivalDateInBC)"
+                    @processDate="handleProcessDateArrivalInBC($event)" />
                   <div class="text-danger"
                     v-if="$v.arrivalDateInBC.$dirty
                       && !$v.arrivalDateInBC.required"
                     aria-live="assertive">{{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'Most recent move to B.C.' : 'Arrival date in B.C.'}} is required.</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInBC.$dirty
+                      && !$v.arrivalDateInBC.dateDataValidator"
+                    aria-live="assertive">Invalid {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C.' : 'arrival date in B.C.'}}</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInBC.$dirty
+                      && !$v.arrivalDateInBC.pastDateValidator"
+                    aria-live="assertive">{{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'Most recent move to B.C.' : 'Arrival date in B.C.'}} cannot be in the future.</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInBC.$dirty
+                      && !$v.arrivalDateInBC.afterBirthdateValidator"
+                    aria-live="assertive">The applicant's {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C.' : 'arrival date in B.C.'}} cannot be before the applicant's date of birth.</div>
                 </div>
                 <div v-if="requestArrivalInCanadaInfo">
                   <DateInput :label="`Arrival date in Canada${citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry ? '' : ' (optional)'}`"
                     id="arrival-date-in-canada"
                     class="mt-3"
                     v-model="arrivalDateInCanada"
-                    @blur="handleBlurField($v.arrivalDateInCanada)" />
+                    @blur="handleBlurField($v.arrivalDateInCanada)"
+                    @processDate="handleProcessDateArrivalInCanada($event)" />
                   <div class="text-danger"
                     v-if="$v.arrivalDateInCanada.$dirty
                       && !$v.arrivalDateInCanada.required"
                     aria-live="assertive">Arrival date in Canada is required.</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInCanada.$dirty
+                      && !$v.arrivalDateInCanada.dateDataValidator"
+                    aria-live="assertive">Invalid arrival date in Canada.</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInCanada.$dirty
+                      && (!$v.arrivalDateInCanada.afterBirthdateValidator || !$v.arrivalDateInCanada.beforeArrivalInBCValidator)"
+                    aria-live="assertive">The applicant's most recent move to Canada cannot be before the applicant's date of birth and cannot be after the move to B.C. date.</div>
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInCanada.$dirty
+                      && $v.arrivalDateInCanada.afterBirthdateValidator
+                      && $v.arrivalDateInCanada.beforeArrivalInBCValidator
+                      && !$v.arrivalDateInCanada.pastDateValidator"
+                    aria-live="assertive">Arrival date in Canada cannot be in the future.</div>
                 </div>
                 <div v-if="requestProvHealthNumber">
                   <Input label="Health Number from that province (optional)"
                     id="previous-health-number"
                     class="mt-3"
                     v-model="previousHealthNumber"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.previousHealthNumber)" />
                 </div>
                 <div>
@@ -353,6 +392,7 @@
                     class="mt-3"
                     v-model="departureReason"
                     maxlength="20"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.departureReason)" />
                   <div class="text-danger"
                     v-if="$v.departureReason.$dirty
@@ -363,6 +403,7 @@
                     class="mt-3"
                     v-model="departureLocation"
                     maxlength="20"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.departureLocation)" />
                   <div class="text-danger"
                     v-if="$v.departureLocation.$dirty
@@ -425,6 +466,7 @@
                     class="mt-3"
                     v-model="previousPHN"
                     placeholder="1111 111 111"
+                    :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.previousPHN)"/>
                   <div class="text-danger"
                     v-if="$v.previousPHN.$dirty
@@ -450,11 +492,29 @@
                     id="armed-forces-discharge-date"
                     class="mt-3"
                     v-model="armedForcesDischargeDate"
-                    @blur="handleBlurField($v.armedForcesDischargeDate)"/>
+                    @blur="handleBlurField($v.armedForcesDischargeDate)"
+                    @processDate="handleProcessDateArmedForcesDischarge($event)"/>
                   <div class="text-danger"
                     v-if="$v.armedForcesDischargeDate.$dirty
                       && !$v.armedForcesDischargeDate.required"
                     aria-live="assertive">Discharge date is required.</div>
+                  <div class="text-danger"
+                    v-if="$v.armedForcesDischargeDate.$dirty
+                      && !$v.armedForcesDischargeDate.dateDataValidator"
+                    aria-live="assertive">Invalid discharge date.</div>
+                  <div class="text-danger"
+                    v-if="$v.armedForcesDischargeDate.$dirty
+                      && !$v.armedForcesDischargeDate.distantPastValidator"
+                    aria-live="assertive">Invalid discharge date.</div>
+                  <div class="text-danger"
+                    v-if="$v.armedForcesDischargeDate.$dirty
+                      && !$v.armedForcesDischargeDate.pastDateValidator"
+                    aria-live="assertive">Discharge date cannot be in the future.</div>
+                  <div class="text-danger"
+                    v-if="$v.armedForcesDischargeDate.$dirty
+                      && $v.armedForcesDischargeDate.distantPastValidator
+                      && !$v.armedForcesDischargeDate.afterBirthdateValidator"
+                    aria-live="assertive">Discharge date cannot be before the applicant's date of birth.</div>
                 </div>
                 <div v-if="requestIsStudent">
                   <Radio label="Are you a full-time student in B.C.?"
@@ -479,9 +539,12 @@
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField($v.willStudentResideInBC)"/>
                   <div class="text-danger"
-                  v-if="$v.willStudentResideInBC.$dirty
-                    && !$v.willStudentResideInBC.required"
-                  aria-live="assertive">This field is required.</div>
+                    v-if="$v.willStudentResideInBC.$dirty
+                      && !$v.willStudentResideInBC.required"
+                    aria-live="assertive">This field is required.</div>
+                  <div class="text-danger"
+                    v-if="willStudentResideInBC === 'N'"
+                    aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for Medical Services Plan coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
                 </div>
               </div>
             </div>
@@ -539,6 +602,7 @@ import {
   SET_AH_MOVE_FROM_ORIGIN,
   SET_AH_ARRIVAL_DATE_IN_BC,
   SET_AH_ARRIVAL_DATE_IN_CANADA,
+  SET_AH_PREVIOUS_HEALTH_NUMBER,
   SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS,
   SET_AH_OUTSIDE_BC_LAST_12_MONTHS_REASON,
   SET_AH_OUTSIDE_BC_LAST_12_MONTHS_LOCATION,
@@ -587,14 +651,18 @@ import {
   selectOptionVisitorVisaSupportDocument,
 } from '@/constants/select-options';
 import {
+  mediumStyles,
+  smallStyles,
+} from '@/constants/input-styles';
+import {
   required,
-  requiredIf,
 } from 'vuelidate/lib/validators';
 import {
   dateDataRequiredValidator,
   dateDataValidator,
   nameValidator,
   nonBCValidator,
+  pastDateValidator,
   yesValidator,
 } from '@/helpers/validators';
 import {
@@ -634,6 +702,16 @@ const departureReturnDateValidator = (value, vm) => {
       && isBefore(value, addDays(startOfToday(), 1)); // Is before or equal to date today.
 };
 
+const afterBirthdateValidator = (value, vm) => {
+  const birthdate = vm.birthdate;
+  return !birthdate || isAfter(value, subDays(birthdate, 1))
+}
+
+const beforeArrivalInBCValidator = (value, vm) => {
+  const arrivalDateInBC = vm.arrivalDateInBC;
+  return !arrivalDateInBC || isBefore(value, addDays(arrivalDateInBC, 1));
+}
+
 export default {
   name: 'PersonalInfoPage',
   mixins: [pageContentMixin],
@@ -658,6 +736,8 @@ export default {
       // Constants.
       StatusInCanada,
       CanadianStatusReasons,
+      smallStyles,
+      mediumStyles,
       // Radio and Select options.
       genderOptions: radioOptionsGender,
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
@@ -700,8 +780,11 @@ export default {
 
       // Date data which is processed by date validators:
       birthdateData: null,
+      arrivalDateInBCData: null,
+      arrivalDateInCanadaData: null,
       departureBeginDateData: null,
       departureReturnDateData: null,
+      armedForcesDischargeDateData: null,
     };
   },
   created() {
@@ -724,7 +807,7 @@ export default {
     this.moveFromOrigin = this.$store.state.enrolmentModule.ahMoveFromOrigin;
     this.arrivalDateInBC = this.$store.state.enrolmentModule.ahArrivalDateInBC;
     this.arrivalDateInCanada = this.$store.state.enrolmentModule.ahArrivalDateInCanada;
-    this.previousHealthNumber = this.$store.state.enrolmentModule.previousHealthNumber;
+    this.previousHealthNumber = this.$store.state.enrolmentModule.ahPreviousHealthNumber;
     this.isOutsideBCInLast12Months = this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months;
     this.departureReason = this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReason;
     this.departureLocation = this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsLocation;
@@ -839,12 +922,21 @@ export default {
       }
     }
     if (this.requestArrivalInBCInfo) {
-      validations.arrivalDateInBC.required = required;
+      validations.arrivalDateInBC.required = dateDataRequiredValidator(this.arrivalDateInBCData);
+      validations.arrivalDateInBC.dateDataValidator = dateDataValidator(this.arrivalDateInBCData);
+      validations.arrivalDateInBC.pastDateValidator = optionalValidator(pastDateValidator);
+      validations.arrivalDateInBC.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
     }
     if (this.requestArrivalInCanadaInfo) {
-      validations.arrivalDateInCanada.required = requiredIf(() => {
-        return this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry;
-      });
+      if (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry) {
+        validations.arrivalDateInCanada.required = dateDataRequiredValidator(this.arrivalDateInCanadaData);
+      } else {
+        validations.arrivalDateInCanada.required = () => true; // Validator for optional use-case.
+      }
+      validations.arrivalDateInCanada.dateDataValidator = dateDataValidator(this.arrivalDateInCanadaData);
+      validations.arrivalDateInCanada.pastDateValidator = optionalValidator(pastDateValidator);
+      validations.arrivalDateInCanada.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
+      validations.arrivalDateInCanada.beforeArrivalInBCValidator = optionalValidator(beforeArrivalInBCValidator);
     }
     if (this.isOutsideBCInLast12Months === 'Y') {
       validations.departureReason.required = required;
@@ -860,13 +952,18 @@ export default {
       validations.isReleasedFromArmedForces.required = required;
     }
     if (this.isReleasedFromArmedForces === 'Y') {
-      validations.armedForcesDischargeDate.required = required;
+      validations.armedForcesDischargeDate.required = dateDataRequiredValidator(this.armedForcesDischargeDateData);
+      validations.armedForcesDischargeDate.dateDataValidator = dateDataValidator(this.armedForcesDischargeDateData);
+      validations.armedForcesDischargeDate.distantPastValidator = optionalValidator(distantPastValidator);
+      validations.armedForcesDischargeDate.pastDateValidator = optionalValidator(pastDateValidator);
+      validations.armedForcesDischargeDate.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
     }
     if (this.requestIsStudent) {
       validations.isStudent.required = required;
     }
     if (this.isStudent === 'Y') {
       validations.willStudentResideInBC.required = required;
+      validations.willStudentResideInBC.yesValidator = optionalValidator(yesValidator);
     }
     return validations;
   },
@@ -901,6 +998,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_MOVE_FROM_ORIGIN}`, this.moveFromOrigin);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_ARRIVAL_DATE_IN_BC}`, this.arrivalDateInBC);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_ARRIVAL_DATE_IN_CANADA}`, this.arrivalDateInCanada);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_PREVIOUS_HEALTH_NUMBER}`, this.previousHealthNumber);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS}`, this.isOutsideBCInLast12Months);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_OUTSIDE_BC_LAST_12_MONTHS_REASON}`, this.departureReason);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_OUTSIDE_BC_LAST_12_MONTHS_LOCATION}`, this.departureLocation);
@@ -932,11 +1030,20 @@ export default {
     handleProcessBirthdate(data) {
       this.birthdateData = data;
     },
+    handleProcessDateArrivalInBC(data) {
+      this.arrivalDateInBCData = data;
+    },
+    handleProcessDateArrivalInCanada(data) {
+      this.arrivalDateInCanadaData = data;
+    },
     handleProcessDateDepartureBegin(data) {
       this.departureBeginDateData = data;
     },
     handleProcessDateDepartureReturn(data) {
       this.departureReturnDateData = data;
+    },
+    handleProcessDateArmedForcesDischarge(data) {
+      this.armedForcesDischargeDateData = data;
     },
     handleCloseConsentModal() {
       this.$store.dispatch(`${enrolmentModule}/${SET_IS_INFO_COLLECTION_NOTICE_OPEN}`, false);
@@ -1109,11 +1216,9 @@ export default {
         this.$v.arrivalDateInCanada.$reset();
       }
     },
-    isMovedToBCPermanently() {
+    isMovedToBCPermanently(newValue) {
       if (this.isPageLoaded) {
-        if (this.citizenshipStatus === null
-          || this.citizenshipStatus === StatusInCanada.Citizen
-          || this.citizenshipStatus === StatusInCanada.PermanentResident) {
+        if (newValue === null) {
           this.moveFromOrigin = null;
           this.arrivalDateInBC = null;
           this.arrivalDateInCanada = null;
@@ -1151,8 +1256,8 @@ export default {
         this.$v.previousPHN.$reset();
       }
     },
-    requestArmedForceInfo() {
-      if (this.isPageLoaded) {
+    requestArmedForceInfo(newValue) {
+      if (this.isPageLoaded && newValue === false) {
         this.isReleasedFromArmedForces = null;
         this.$v.isReleasedFromArmedForces.$reset();
       }

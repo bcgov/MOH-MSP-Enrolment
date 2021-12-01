@@ -66,7 +66,7 @@ export const enrolmentRoutes = {
   },
   SUBMISSION_PAGE: {
     path: '/submission',
-    title: 'Submission',
+    title: 'Submit',
     name: 'SubmissionPage',
   },
   SUBMISSION_ERROR_PAGE: {

@@ -34,6 +34,7 @@ export const SET_AH_IS_MOVED_TO_BC_PERMANENTLY = 'setAHIsMovedToBCPermanently';
 export const SET_AH_MOVE_FROM_ORIGIN = 'setAHMoveFromOrigin';
 export const SET_AH_ARRIVAL_DATE_IN_BC = 'setAHArrivalDateInBC';
 export const SET_AH_ARRIVAL_DATE_IN_CANADA = 'setAHArrivalDateInCanada';
+export const SET_AH_PREVIOUS_HEALTH_NUMBER = 'setAHPreviousHealthNumber';
 export const SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS = 'setAHOutsideBCLast12Months';
 export const SET_AH_OUTSIDE_BC_LAST_12_MONTHS_REASON = 'setAHOutsideBCLast12MonthsReason';
 export const SET_AH_OUTSIDE_BC_LAST_12_MONTHS_LOCATION = 'setAHOutsideBCLast12MonthsLocation';
@@ -166,6 +167,7 @@ export default {
       ahMoveFromOrigin: null,
       ahArrivalDateInBC: null,
       ahArrivalDateInCanada: null,
+      ahPreviousHealthNumber: null,
       ahIsOutsideBCLast12Months: null,
       ahOutsideBCLast12MonthsReason: null,
       ahOutsideBCLast12MonthsLocation: null,
@@ -353,6 +355,9 @@ export default {
     },
     [SET_AH_ARRIVAL_DATE_IN_CANADA](state, payload) {
       state.ahArrivalDateInCanada = payload;
+    },
+    [SET_AH_PREVIOUS_HEALTH_NUMBER](state, payload) {
+      state.ahPreviousHealthNumber = payload;
     },
     [SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS](state, payload) {
       state.ahIsOutsideBCLast12Months = payload;
@@ -670,6 +675,7 @@ export default {
       commit(SET_AH_MOVE_FROM_ORIGIN, null);
       commit(SET_AH_ARRIVAL_DATE_IN_BC, null);
       commit(SET_AH_ARRIVAL_DATE_IN_CANADA, null);
+      commit(SET_AH_PREVIOUS_HEALTH_NUMBER, null);
       commit(SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS, null);
       commit(SET_AH_OUTSIDE_BC_LAST_12_MONTHS_REASON, null);
       commit(SET_AH_OUTSIDE_BC_LAST_12_MONTHS_LOCATION, null);
@@ -851,6 +857,9 @@ export default {
     },
     [SET_AH_ARRIVAL_DATE_IN_CANADA]({ commit }, payload) {
       commit(SET_AH_ARRIVAL_DATE_IN_CANADA, payload);
+    },
+    [SET_AH_PREVIOUS_HEALTH_NUMBER]({ commit }, payload) {
+      commit(SET_AH_PREVIOUS_HEALTH_NUMBER, payload);
     },
     [SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS]({ commit }, payload) {
       commit(SET_AH_IS_OUTSIDE_BC_LAST_12_MONTHS, payload);
