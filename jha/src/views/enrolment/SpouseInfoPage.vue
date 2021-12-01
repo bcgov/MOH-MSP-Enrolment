@@ -49,7 +49,7 @@
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="$v.spouseMiddleName.$dirty && !$v.spouseMiddleName.nameValidator"
-            aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>First name must be a letter.</div>
+            aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Middle name must be a letter.</div>
           <Input label='Last name:'
             id='last-name'
             className='mt-3'
@@ -62,7 +62,7 @@
             aria-live="assertive">Last name is required.</div>
           <div class="text-danger"
             v-if="$v.spouseLastName.$dirty && $v.spouseLastName.required && !$v.spouseLastName.nameValidator"
-            aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>First name must be a letter.</div>
+            aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Last name must be a letter.</div>
           <DateInput label='Birth date:'
             id='birth-date'
             className='mt-3'
