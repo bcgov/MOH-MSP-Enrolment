@@ -172,7 +172,7 @@
               <div v-if="mailCountry === 'Canada'">
                 <PostalCodeInput 
                   class="mt-3"
-                  label="Postal Code or Zip Code"
+                  label="Postal Code"
                   id="mail-postal-code"
                   v-model="mailPostalCode"
                   maxlength="25"
@@ -181,6 +181,7 @@
                 <div class="text-danger" v-if="$v.mailPostalCode.$dirty
                                             && $v.mailPostalCode.required
                                             && !$v.mailPostalCode.completePostalCodeValidator" aria-live="assertive">Must be in the format A1A 1A1.</div>
+                <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal code is required.</div>
               </div>
               <div v-else>
                 <Input
@@ -194,8 +195,9 @@
                 <div class="text-danger"
                   v-if="$v.mailPostalCode.$dirty && $v.mailPostalCode.required && !$v.mailPostalCode.specialCharacterValidator"
                   aria-live="assertive">Postal Code cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
+                <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal code or Zip Code is required.</div>
               </div>
-              <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal code or Zip code is required.</div>
+              
             </div>
           </div>
         </div>
