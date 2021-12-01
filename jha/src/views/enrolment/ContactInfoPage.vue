@@ -166,9 +166,7 @@
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.mailCountry)" />
               <div class="text-danger" v-if="$v.mailCountry.$dirty && !$v.mailCountry.required" aria-live="assertive">Country is required.</div>
-              
-              
-              
+
               <div v-if="mailCountry === 'Canada'">
                 <PostalCodeInput 
                   class="mt-3"
