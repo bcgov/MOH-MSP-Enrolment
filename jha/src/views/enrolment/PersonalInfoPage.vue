@@ -351,13 +351,14 @@
                     aria-live="assertive">Invalid arrival date in Canada.</div>
                   <div class="text-danger"
                     v-if="$v.arrivalDateInCanada.$dirty
-                      && !$v.arrivalDateInCanada.pastDateValidator"
-                    aria-live="assertive">Arrival date in Canada cannot be in the future.</div>
-                  <div class="text-danger"
-                    v-if="$v.arrivalDateInCanada.$dirty
                       && (!$v.arrivalDateInCanada.afterBirthdateValidator || !$v.arrivalDateInCanada.beforeArrivalInBCValidator)"
                     aria-live="assertive">The applicant's most recent move to Canada cannot be before the applicant's date of birth and cannot be after the move to B.C. date.</div>
-                
+                  <div class="text-danger"
+                    v-if="$v.arrivalDateInCanada.$dirty
+                      && $v.arrivalDateInCanada.afterBirthdateValidator
+                      && $v.arrivalDateInCanada.beforeArrivalInBCValidator
+                      && !$v.arrivalDateInCanada.pastDateValidator"
+                    aria-live="assertive">Arrival date in Canada cannot be in the future.</div>
                 </div>
                 <div v-if="requestProvHealthNumber">
                   <Input label="Health Number from that province (optional)"
@@ -542,8 +543,7 @@
                       && !$v.willStudentResideInBC.required"
                     aria-live="assertive">This field is required.</div>
                   <div class="text-danger"
-                    v-if="$v.willStudentResideInBC.$dirty
-                      && !$v.willStudentResideInBC.yesValidator"
+                    v-if="willStudentResideInBC === 'N'"
                     aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for Medical Services Plan coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
                 </div>
               </div>
