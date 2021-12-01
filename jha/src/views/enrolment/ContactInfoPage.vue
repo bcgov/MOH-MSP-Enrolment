@@ -179,7 +179,7 @@
                 <div class="text-danger" v-if="$v.mailPostalCode.$dirty
                                             && $v.mailPostalCode.required
                                             && !$v.mailPostalCode.completePostalCodeValidator" aria-live="assertive">Must be in the format A1A 1A1.</div>
-                <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal code is required.</div>
+                <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal Code is required.</div>
               </div>
               <div v-else>
                 <Input
@@ -192,8 +192,8 @@
                   @blur="handleBlurField($v.mailPostalCode)" />
                 <div class="text-danger"
                   v-if="$v.mailPostalCode.$dirty && $v.mailPostalCode.required && !$v.mailPostalCode.specialCharacterValidator"
-                  aria-live="assertive">Postal Code cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-                <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal code or Zip Code is required.</div>
+                  aria-live="assertive">Postal Code or Zip Code cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
+                <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal Code or Zip Code is required.</div>
               </div>
               
             </div>
