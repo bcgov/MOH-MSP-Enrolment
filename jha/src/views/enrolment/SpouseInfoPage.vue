@@ -29,7 +29,7 @@
           <Input label='First name:'
             id='first-name'
             className='mt-3'
-            maxlength="18"
+            maxlength="30"
             v-model='spouseFirstName'
             :inputStyle='mediumStyles' />
           <div class="text-danger"
@@ -41,7 +41,7 @@
           <Input label='Middle name (optional):'
             id='middle-name'
             className='mt-3'
-            maxlength="18"
+            maxlength="30"
             v-model='spouseMiddleName'
             :inputStyle='mediumStyles' />
           <div class="text-danger"
@@ -50,7 +50,7 @@
           <Input label='Last name:'
             id='last-name'
             className='mt-3'
-            maxlength="18"
+            maxlength="30"
             v-model='spouseLastName'
             :inputStyle='mediumStyles' />
           <div class="text-danger"
@@ -255,7 +255,7 @@
                   aria-live="assertive">Please indicate whether your spouse has made a permanent move to BC.</div>
                 <div class="text-danger"
                   v-if="$v.spouseMadePermanentMove.$dirty && $v.spouseMadePermanentMove.required && !$v.spouseMadePermanentMove.permanentMoveValidator"
-                  aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your spouse is not eligible for enrolment in the Medical Services Plan. Please contact <a href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.</div>
+                  aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your spouse is not eligible for enrolment in the Medical Services Plan. Please contact <a target="_blank" href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.</div>
                 <div v-if="spouseMadePermanentMove !== 'N' || spouseStatus === statusOptions.TemporaryResident">
                   <div v-if="showProvinceSelector">
                     <RegionSelect
@@ -382,6 +382,7 @@
                       className="mt-3"
                       label="Your spouse's previous B.C. Personal Health Number (optional)" 
                       v-model="spousePreviousBCHealthNumber"
+                      placeholder="1111 111 111"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
                       v-if="$v.spousePreviousBCHealthNumber.$dirty && !$v.spousePreviousBCHealthNumber.phnValidator"
