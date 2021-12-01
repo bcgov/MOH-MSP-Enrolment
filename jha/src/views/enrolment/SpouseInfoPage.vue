@@ -415,7 +415,7 @@
                     <div class="text-danger"
                       v-if="$v.spouseOutsideBCLast12MonthsReturnDate.$dirty
                         && !$v.spouseOutsideBCLast12MonthsReturnDate.returnDateValidator"
-                      aria-live="assertive">Return date must be within the last 12 months and after return date.</div>
+                      aria-live="assertive">Return date must be within the last 12 months and after departure date.</div>
                   </div>
                   <Radio
                     label='Does your spouse have a previous B.C. Personal Health Number?'
@@ -612,7 +612,7 @@ const departureDateValidator = (value, vm) => {
   const returnDate = vm.spouseOutsideBCLast12MonthsReturnDate;
   return isAfter(value, past12Months) // Is within the last 12 months
       && (!returnDate || isBefore(value, addDays(returnDate, 1))) // Is before or equal to return date
-      && isBefore(value, addDays(startOfToday(), 1)); // Is before or equal to date today
+      && isBefore(value, startOfToday()); // Is before or equal to date today
 };
 
 const returnDateValidator = (value, vm) => {
@@ -620,7 +620,7 @@ const returnDateValidator = (value, vm) => {
   const departureDate = vm.spouseOutsideBCLast12MonthsDepartureDate;
   return isAfter(value, past12Months) // Is within the last 12 months
       && (!departureDate || isAfter(value, subDays(departureDate, 1))) // Is after or equal to departure date
-      && isBefore(value, addDays(startOfToday(), 1)); // Is before or equal to date today
+      && isBefore(value, startOfToday()); // Is before or equal to date today
 };
 
 const dateOrderValidator = (value, vm) => {
