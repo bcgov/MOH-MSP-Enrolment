@@ -55,4 +55,13 @@ export const dateDataValidator = (dateData) => {
 
 export const pastDateValidator = (value) => {
   return isBefore(value, addDays(startOfToday(), 1));
-}
+};
+
+export const optionalInvalidDateValidator = (validator) => {
+  return (value, vm) => {
+    if (!(value instanceof Date) || isNaN(value)) {
+      return true;
+    }
+    return validator(value, vm);
+  };
+};
