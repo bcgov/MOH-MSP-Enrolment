@@ -337,7 +337,7 @@
                     aria-live="assertive">The applicant's {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C.' : 'arrival date in B.C.'}} cannot be before the applicant's date of birth.</div>
                 </div>
                 <div v-if="requestArrivalInCanadaInfo">
-                  <DateInput :label="`Arrival date in Canada${citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry ? '' : ' (optional)'}`"
+                  <DateInput :label="`Arrival date in Canada${isArrivalDateInCanadaRequired ? '' : ' (optional)'}`"
                     id="arrival-date-in-canada"
                     class="mt-3"
                     v-model="arrivalDateInCanada"
@@ -931,7 +931,7 @@ export default {
       validations.arrivalDateInBC.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
     }
     if (this.requestArrivalInCanadaInfo) {
-      if (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry) {
+      if (this.isArrivalDateInCanadaRequired) {
         validations.arrivalDateInCanada.required = dateDataRequiredValidator(this.arrivalDateInCanadaData);
       } else {
         validations.arrivalDateInCanada.required = () => true; // Validator for optional use-case.
@@ -1092,22 +1092,26 @@ export default {
           && this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry;
     },
     requestArrivalInBCInfo() {
-      return ((this.citizenshipStatus === StatusInCanada.Citizen
-            || this.citizenshipStatus === StatusInCanada.PermanentResident
-          ) && (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
+      return (this.citizenshipStatus === StatusInCanada.Citizen
+          && (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
             || this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry
             || (this.citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP
               && this.hasLivedInBCSinceBirth === 'N')
             )
           )
+          || this.citizenshipStatus === StatusInCanada.PermanentResident
           || this.citizenshipStatus === StatusInCanada.TemporaryResident;
     },
     requestArrivalInCanadaInfo() {
-      if (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
-        || this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry) {
-        return true;
-      }
-      return false;
+      return (this.citizenshipStatus === StatusInCanada.Citizen
+          && (this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
+            || this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry
+            || (this.citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP
+              && this.hasLivedInBCSinceBirth === 'N')
+            )
+          )
+          || this.citizenshipStatus === StatusInCanada.PermanentResident
+          || this.citizenshipStatus === StatusInCanada.TemporaryResident;
     },
     requestProvHealthNumber() {
       return this.citizenshipStatusReason === CanadianStatusReasons.MovingFromProvince
@@ -1129,6 +1133,9 @@ export default {
     },
     isCitizenshipDocsShown() {
       return !!this.citizenshipStatusReason;
+    },
+    isArrivalDateInCanadaRequired() {
+      return this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry;
     },
     citizenshipSupportDocumentsOptions() {
       if (this.citizenshipStatus === StatusInCanada.PermanentResident) {
