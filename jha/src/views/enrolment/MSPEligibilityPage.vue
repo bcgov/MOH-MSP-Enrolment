@@ -95,6 +95,14 @@ import {
   Radio,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
+import {
+  MODULE_NAME as enrolmentModule,
+  SET_IS_APPLYING_FOR_MSP,
+  SET_LIVE_IN_BC,
+  SET_AWAY_OVER_30,
+  SET_STUDENT_MINOR_REFUGEE,
+  SET_HAS_DOCUMENTS,
+} from '@/store/modules/enrolment-module';
 
 const validateQuestionsAnswered = (_value, vm) => {
         if(!vm.applyMSP
@@ -123,7 +131,6 @@ export default {
       awayOver30: null,
       studentMinorRefugee: null,
       hasDocuments: null,
-
       radioOptionsNoYes: radioOptionsNoYes,
       radioOptionsApplyMSP: null,
     };
@@ -134,6 +141,15 @@ export default {
       enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path,
       enrolmentRoutes.MSP_ELIGIBILITY_PAGE.title
     );
+    const isApplyingForMSP = this.$store.state.enrolmentModule.isApplyingForMSP;
+    if (isApplyingForMSP !== null) {
+      isApplyingForMSP ? this.applyMSP = "Y" : this.applyMSP = "N";
+    }
+    this.liveInBC = this.$store.state.enrolmentModule.liveInBC;
+    this.awayOver30 = this.$store.state.enrolmentModule.awayOver30;
+    this.studentMinorRefugee = this.$store.state.enrolmentModule.studentMinorRefugee;
+    this.hasDocuments = this.$store.state.enrolmentModule.hasDocuments;
+
     this.radioOptionsApplyMSP = [
       {
         id: 'no',
@@ -162,12 +178,21 @@ export default {
   },
   methods: {
     validateFields() {
+      this.saveData();
       this.$v.$touch()
       if (this.$v.$invalid) {
         scrollToError();
         return;
       }
+      this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_MSP, this.applyMSP === "Y");
       this.navigateToNextPage();
+    },
+    saveData() {
+      this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_MSP, this.applyMSP === "Y");
+      this.$store.dispatch(enrolmentModule + '/' + SET_LIVE_IN_BC, this.liveInBC);
+      this.$store.dispatch(enrolmentModule + '/' + SET_AWAY_OVER_30, this.awayOver30);
+      this.$store.dispatch(enrolmentModule + '/' + SET_STUDENT_MINOR_REFUGEE, this.studentMinorRefugee);
+      this.$store.dispatch(enrolmentModule + '/' + SET_HAS_DOCUMENTS, this.hasDocuments);
     },
     navigateToNextPage() {
       // Navigate to next path.

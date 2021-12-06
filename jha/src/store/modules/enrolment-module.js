@@ -10,6 +10,11 @@ export const SET_CAPTCHA_TOKEN = 'setCaptchaToken';
 export const SET_SUBMISSION_DATE = 'setSubmissionDate';
 export const SET_REFERENCE_NUMBER = 'setReferenceNumber';
 export const SET_IS_INFO_COLLECTION_NOTICE_OPEN = 'setIsInfoCollectionNoticeOpen';
+// Eligibility Questionnaires
+export const SET_LIVE_IN_BC = 'setLiveInBC';
+export const SET_AWAY_OVER_30 = 'setAwayOver30';
+export const SET_STUDENT_MINOR_REFUGEE = 'setStudentMinorRefugee';
+export const SET_HAS_DOCUMENTS = 'setHasDocuments';
 // Form selections
 export const SET_IS_APPLYING_FOR_MSP = 'setIsApplyingForMSP';
 export const SET_IS_APPLYING_FOR_FPCARE = 'setIsApplyingForFPCare';
@@ -143,10 +148,15 @@ export default {
       submissionDate: null,
       referenceNumber: null,
       isInfoCollectionNoticeOpen: true,
+      // Eligibility Questionnaires
+      liveInBC: null,
+      awayOver30: null,
+      studentMinorRefugee: null,
+      hasDocuments: null,
       // Form selections
-      isApplyingForMSP: false,
-      isApplyingForFPCare: false,
-      isApplyingForSuppBen: false,
+      isApplyingForMSP: null,
+      isApplyingForFPCare: null,
+      isApplyingForSuppBen: null,
       // Account Holder info.
       ahFirstName: null,
       ahMiddleName: null,
@@ -287,6 +297,19 @@ export default {
     },
     [SET_IS_INFO_COLLECTION_NOTICE_OPEN](state, payload) {
       state.isInfoCollectionNoticeOpen = payload;
+    },
+    // Eligibility Questionnaires
+    [SET_LIVE_IN_BC](state, payload) {
+      state.liveInBC = payload;
+    },
+    [SET_AWAY_OVER_30](state, payload) {
+      state.awayOver30 = payload;
+    },
+    [SET_STUDENT_MINOR_REFUGEE](state, payload) {
+      state.studentMinorRefugee = payload;
+    },
+    [SET_HAS_DOCUMENTS](state, payload) {
+      state.hasDocuments = payload;
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP](state, payload) {
@@ -651,6 +674,11 @@ export default {
       commit(SET_SUBMISSION_DATE, null);
       commit(SET_REFERENCE_NUMBER, null);
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, true);
+      // Eligibility Questionnaires
+      commit(SET_LIVE_IN_BC, null);
+      commit(SET_AWAY_OVER_30, null);
+      commit(SET_STUDENT_MINOR_REFUGEE, null);
+      commit(SET_HAS_DOCUMENTS, null);
       // Form selections
       commit(SET_IS_APPLYING_FOR_MSP, false);
       commit(SET_IS_APPLYING_FOR_FPCARE, false);
@@ -789,6 +817,19 @@ export default {
     },
     [SET_IS_INFO_COLLECTION_NOTICE_OPEN]({ commit }, payload) {
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, payload);
+    },
+    // Eligibility Questionnaires
+    [SET_LIVE_IN_BC]({commit}, payload) {
+      commit(SET_LIVE_IN_BC, payload);
+    },
+    [SET_AWAY_OVER_30]({commit}, payload) {
+      commit(SET_AWAY_OVER_30, payload);
+    },
+    [SET_STUDENT_MINOR_REFUGEE]({commit}, payload) {
+      commit(SET_STUDENT_MINOR_REFUGEE, payload);
+    },
+    [SET_HAS_DOCUMENTS]({commit}, payload) {
+      commit(SET_HAS_DOCUMENTS, payload);
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP]({commit}, payload) {
