@@ -10,6 +10,15 @@ export const SET_CAPTCHA_TOKEN = 'setCaptchaToken';
 export const SET_SUBMISSION_DATE = 'setSubmissionDate';
 export const SET_REFERENCE_NUMBER = 'setReferenceNumber';
 export const SET_IS_INFO_COLLECTION_NOTICE_OPEN = 'setIsInfoCollectionNoticeOpen';
+// Eligibility Questionnaires
+export const SET_EQ_MSP_LIVE_IN_BC = 'setEqMSPLiveInBC';
+export const SET_EQ_MSP_AWAY_OVER_30 = 'setEqMSPAwayOver30';
+export const SET_EQ_MSP_STUDENT_MINOR_REFUGEE = 'setEqMSPStudentMinorRefugee';
+export const SET_EQ_MSP_HAS_DOCUMENTS = 'setEqMSPHasDocuments';
+export const SET_EQ_FPC_MEETS_CRITERIA = 'setEqFPCMeetsCriteria';
+export const SET_EQ_FPC_HAS_INFO = 'setEqFPCHasInfo';
+export const SET_EQ_SB_MEETS_CRITERIA = 'setEqSBMeetsCriteria';
+export const SET_EQ_SB_HAS_INFO = 'setEqSBhasInfo';
 // Form selections
 export const SET_IS_APPLYING_FOR_MSP = 'setIsApplyingForMSP';
 export const SET_IS_APPLYING_FOR_FPCARE = 'setIsApplyingForFPCare';
@@ -143,10 +152,19 @@ export default {
       submissionDate: null,
       referenceNumber: null,
       isInfoCollectionNoticeOpen: true,
+      // Eligibility Questionnaires
+      eqMSPLiveInBC: null,
+      eqMSPAwayOver30: null,
+      eqMSPStudentMinorRefugee: null,
+      eqMSPHasDocuments: null,
+      eqFPCMeetsCriteria: null,
+      eqFPCHasInfo: null,
+      eqSBMeetsCriteria: null,
+      eqSBhasInfo: null,
       // Form selections
-      isApplyingForMSP: false,
-      isApplyingForFPCare: false,
-      isApplyingForSuppBen: false,
+      isApplyingForMSP: null,
+      isApplyingForFPCare: null,
+      isApplyingForSuppBen: null,
       // Account Holder info.
       ahFirstName: null,
       ahMiddleName: null,
@@ -287,6 +305,31 @@ export default {
     },
     [SET_IS_INFO_COLLECTION_NOTICE_OPEN](state, payload) {
       state.isInfoCollectionNoticeOpen = payload;
+    },
+    // Eligibility Questionnaires
+    [SET_EQ_MSP_LIVE_IN_BC](state, payload) {
+      state.eqMSPLiveInBC = payload;
+    },
+    [SET_EQ_MSP_AWAY_OVER_30](state, payload) {
+      state.eqMSPAwayOver30 = payload;
+    },
+    [SET_EQ_MSP_STUDENT_MINOR_REFUGEE](state, payload) {
+      state.eqMSPStudentMinorRefugee = payload;
+    },
+    [SET_EQ_MSP_HAS_DOCUMENTS](state, payload) {
+      state.eqMSPHasDocuments = payload;
+    },
+    [SET_EQ_FPC_MEETS_CRITERIA](state, payload) {
+      state.eqFPCMeetsCriteria = payload;
+    },
+    [SET_EQ_FPC_HAS_INFO](state, payload) {
+      state.eqFPCHasInfo = payload;
+    },
+    [SET_EQ_SB_MEETS_CRITERIA](state, payload) {
+      state.eqSBMeetsCriteria = payload;
+    },
+    [SET_EQ_SB_HAS_INFO](state, payload) {
+      state.eqSBhasInfo = payload;
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP](state, payload) {
@@ -651,6 +694,15 @@ export default {
       commit(SET_SUBMISSION_DATE, null);
       commit(SET_REFERENCE_NUMBER, null);
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, true);
+      // Eligibility Questionnaires
+      commit(SET_EQ_MSP_LIVE_IN_BC, null);
+      commit(SET_EQ_MSP_AWAY_OVER_30, null);
+      commit(SET_EQ_MSP_STUDENT_MINOR_REFUGEE, null);
+      commit(SET_EQ_MSP_HAS_DOCUMENTS, null);
+      commit(SET_EQ_FPC_MEETS_CRITERIA, null);
+      commit(SET_EQ_FPC_HAS_INFO, null);
+      commit(SET_EQ_SB_MEETS_CRITERIA, null);
+      commit(SET_EQ_SB_HAS_INFO, null);
       // Form selections
       commit(SET_IS_APPLYING_FOR_MSP, false);
       commit(SET_IS_APPLYING_FOR_FPCARE, false);
@@ -789,6 +841,31 @@ export default {
     },
     [SET_IS_INFO_COLLECTION_NOTICE_OPEN]({ commit }, payload) {
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, payload);
+    },
+    // Eligibility Questionnaires
+    [SET_EQ_MSP_LIVE_IN_BC]({commit}, payload) {
+      commit(SET_EQ_MSP_LIVE_IN_BC, payload);
+    },
+    [SET_EQ_MSP_AWAY_OVER_30]({commit}, payload) {
+      commit(SET_EQ_MSP_AWAY_OVER_30, payload);
+    },
+    [SET_EQ_MSP_STUDENT_MINOR_REFUGEE]({commit}, payload) {
+      commit(SET_EQ_MSP_STUDENT_MINOR_REFUGEE, payload);
+    },
+    [SET_EQ_MSP_HAS_DOCUMENTS]({commit}, payload) {
+      commit(SET_EQ_MSP_HAS_DOCUMENTS, payload);
+    },
+    [SET_EQ_FPC_MEETS_CRITERIA]({commit}, payload) {
+      commit(SET_EQ_FPC_MEETS_CRITERIA, payload);
+    },
+    [SET_EQ_FPC_HAS_INFO]({commit}, payload) {
+      commit(SET_EQ_FPC_HAS_INFO, payload);
+    },
+    [SET_EQ_SB_MEETS_CRITERIA]({commit}, payload) {
+      commit(SET_EQ_SB_MEETS_CRITERIA, payload);
+    },
+    [SET_EQ_SB_HAS_INFO]({commit}, payload) {
+      commit(SET_EQ_SB_HAS_INFO, payload);
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP]({commit}, payload) {
