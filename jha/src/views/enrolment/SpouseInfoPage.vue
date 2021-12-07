@@ -180,16 +180,18 @@
                 </div>
             </div>
 
-            <Radio label="Has your spouse's name changed since your ID was issued due to marriage or legal name change?"
-              id="name-change"
-              name="name-change"
-              class="mt-3 mb-3"
-              v-model="spouseIsNameChanged"
-              @blur="handleBlurField($v.spouseIsNameChanged)"
-              :items="radioOptionsNoYes" />
-            <div class="text-danger"
-              v-if="$v.spouseIsNameChanged.$dirty && !$v.spouseIsNameChanged.required"
-              aria-live="assertive">Please indicate if your spouse's name changed.</div>
+            <div v-if="spouseCitizenshipSupportDocumentType">
+              <Radio label="Has your spouse's name changed since your ID was issued due to marriage or legal name change?"
+                id="name-change"
+                name="name-change"
+                class="mt-3 mb-3"
+                v-model="spouseIsNameChanged"
+                @blur="handleBlurField($v.spouseIsNameChanged)"
+                :items="radioOptionsNoYes" />
+              <div class="text-danger"
+                v-if="$v.spouseIsNameChanged.$dirty && !$v.spouseIsNameChanged.required"
+                aria-live="assertive">Please indicate if your spouse's name changed.</div>
+            </div>
             <div v-if="spouseIsNameChanged === 'Y'"
               class="tabbed-section">
               <h2>Additional Documents</h2>
@@ -270,7 +272,7 @@
                   v-if="$v.spouseMadePermanentMove.$dirty && !$v.spouseMadePermanentMove.required"
                   aria-live="assertive">Please indicate whether your spouse has made a permanent move to BC.</div>
                 <div class="text-danger"
-                  v-if="$v.spouseMadePermanentMove.$dirty && $v.spouseMadePermanentMove.required && !$v.spouseMadePermanentMove.permanentMoveValidator"
+                  v-if="spouseMadePermanentMove === 'N' && spouseStatus !== statusOptions.TemporaryResident"
                   aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your spouse is not eligible for enrolment in the Medical Services Plan. Please contact <a target="_blank" href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.</div>
                 <div v-if="spouseMadePermanentMove !== 'N' || spouseStatus === statusOptions.TemporaryResident">
                   <div v-if="showProvinceSelector">
@@ -888,15 +890,115 @@ export default {
       if (this.pageLoaded) {
         this.spouseStatusReason = null;
         this.spouseCitizenshipSupportDocumentType = null;
+        this.spouseMovedFromCountry = null;
+        this.spouseMovedFromProvince = null;
+        this.spouseLivedInBCSinceBirth = null;
+        this.$v.spouseStatusReason.$reset();
+        this.$v.spouseMovedFromCountry.$reset();
+        this.$v.spouseMovedFromProvince.$reset();
+        this.$v.spouseLivedInBCSinceBirth.$reset();
         this.spouseCitizenshipSupportDocuments = [];
+        this.$v.spouseCitizenshipSupportDocuments.$reset();
       }
     },
     spouseStatusReason() {
       if (this.pageLoaded) {
         this.spouseCitizenshipSupportDocumentType = null;
         this.spouseCitizenshipSupportDocuments = [];
+        this.spouseIsNameChanged = null;
+        this.spouseMadePermanentMove = null;
+        this.spouseMovedFromCountry = null;
+        this.spouseMovedFromProvince = null;
+        this.spouseRecentBCMoveDate = null;
+        this.spouseCanadaArrivalDate = null;
+        this.$v.spouseCitizenshipSupportDocumentType.$reset();
+        this.$v.spouseCitizenshipSupportDocuments.$reset();
+        this.$v.spouseIsNameChanged.$reset();
+        this.$v.spouseMadePermanentMove.$reset();
+        this.$v.spouseMovedFromCountry.$reset();
+        this.$v.spouseMovedFromProvince.$reset();
+        this.$v.spouseRecentBCMoveDate.$reset();
+        this.$v.spouseCanadaArrivalDate.$reset();
       }
-    }
+    },
+    spouseCitizenshipSupportDocumentType() {
+      if (this.isPageLoaded) {
+        this.spouseCitizenshipSupportDocuments = [];
+        this.$v.spouseCitizenshipSupportDocuments.$reset();
+      }
+    },
+    spouseIsNameChanged() {
+      if (this.isPageLoaded) {
+        this.spouseNameChangeSupportDocumentType = null;
+        this.$v.spouseNameChangeSupportDocumentType.$reset();
+      }
+    },
+    spouseNameChangeSupportDocumentType() {
+      if (this.isPageLoaded) {
+        this.spouseNameChangeSupportDocuments = [];
+        this.$v.spouseNameChangeSupportDocuments.$reset();
+      }
+    },
+    spouseLivedInBCSinceBirth() {
+      if (this.isPageLoaded) {
+        this.spouseMovedFromCountry = null;
+        this.spouseMovedFromProvince = null;
+        this.spouseCanadaArrivalDate = null;
+        this.$v.spouseMovedFromCountry.$reset();
+        this.$v.spouseMovedFromProvince.$reset();
+        this.$v.spouseCanadaArrivalDate.$reset();
+      }
+    },
+    spouseMadePermanentMove(newValue) {
+      if (this.isPageLoaded) {
+        if (newValue === null) {
+          this.spouseMovedFromCountry = null;
+          this.spouseMovedFromProvince = null;
+          this.spouseRecentBCMoveDate = null;
+          this.spouseCanadaArrivalDate = null;
+          this.spouseOutsideBCLast12Months = null;
+          this.spouseHasPreviousBCHealthNumber = null;
+          this.spouseBeenReleasedFromInstitution = null;
+          this.$v.spouseMovedFromCountry.$reset();
+          this.$v.spouseMovedFromProvince.$reset();
+          this.$v.spouseRecentBCMoveDate.$reset();
+          this.$v.spouseCanadaArrivalDate.$reset();
+          this.$v.spouseOutsideBCLast12Months.$reset();
+          this.$v.spouseHasPreviousBCHealthNumber.$reset();
+          this.$v.spouseBeenReleasedFromInstitution.$reset();
+        }
+      }
+    },
+    spouseOutsideBCLast12Months() {
+      if (this.isPageLoaded) {
+        this.spouseOutsideBCLast12MonthsReason = null;
+        this.spouseOutsideBCLast12MonthsDestination = null;
+        this.spouseOutsideBCLast12MonthsDepartureDate = null;
+        this.spouseOutsideBCLast12MonthsReturnDate = null;
+        this.$v.spouseOutsideBCLast12MonthsReason.$reset();
+        this.$v.spouseOutsideBCLast12MonthsDestination.$reset();
+        this.$v.spouseOutsideBCLast12MonthsDepartureDate.$reset();
+        this.$v.spouseOutsideBCLast12MonthsReturnDate.$reset();
+      }
+    },
+    spouseHasPreviousBCHealthNumber() {
+      if (this.isPageLoaded) {
+        this.spousePreviousBCHealthNumber = null;
+        this.$v.spousePreviousBCHealthNumber.$reset();
+      }
+    },
+    showDischargeInputs(newValue) {
+      if (this.isPageLoaded && newValue === false) {
+        this.spouseBeenReleasedFromInstitution = null;
+        this.$v.spouseBeenReleasedFromInstitution.$reset();
+      }
+    },
+    spouseBeenReleasedFromInstitution() {
+      if (this.isPageLoaded) {
+        this.spouseDischargeDate = null;
+        this.$v.spouseDischargeDate.$reset();
+      }
+    },
   },
   methods: {
     removeSpouse() {
