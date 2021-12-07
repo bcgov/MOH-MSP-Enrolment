@@ -162,7 +162,6 @@ export default {
         value: 'Y',
       }
     ];
-    
 
     this.$nextTick(() => {
       this.isPageLoaded = true;
@@ -184,7 +183,6 @@ export default {
         scrollToError();
         return;
       }
-      this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_MSP, this.applyMSP === "Y");
       this.navigateToNextPage();
     },
     saveData() {

@@ -15,6 +15,8 @@ export const SET_LIVE_IN_BC = 'setLiveInBC';
 export const SET_AWAY_OVER_30 = 'setAwayOver30';
 export const SET_STUDENT_MINOR_REFUGEE = 'setStudentMinorRefugee';
 export const SET_HAS_DOCUMENTS = 'setHasDocuments';
+export const SET_MEETS_FPC_CRITERIA = 'setMeetsFPCCriteria';
+export const SET_HAS_FPC_INFO = 'setHasFPCInfo';
 // Form selections
 export const SET_IS_APPLYING_FOR_MSP = 'setIsApplyingForMSP';
 export const SET_IS_APPLYING_FOR_FPCARE = 'setIsApplyingForFPCare';
@@ -153,6 +155,8 @@ export default {
       awayOver30: null,
       studentMinorRefugee: null,
       hasDocuments: null,
+      meetsFPCCriteria: null,
+      hasFPCInfo: null,
       // Form selections
       isApplyingForMSP: null,
       isApplyingForFPCare: null,
@@ -310,6 +314,12 @@ export default {
     },
     [SET_HAS_DOCUMENTS](state, payload) {
       state.hasDocuments = payload;
+    },
+    [SET_MEETS_FPC_CRITERIA](state, payload) {
+      state.meetsFPCCriteria = payload;
+    },
+    [SET_HAS_FPC_INFO](state, payload) {
+      state.hasFPCInfo = payload;
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP](state, payload) {
@@ -679,6 +689,8 @@ export default {
       commit(SET_AWAY_OVER_30, null);
       commit(SET_STUDENT_MINOR_REFUGEE, null);
       commit(SET_HAS_DOCUMENTS, null);
+      commit(SET_MEETS_FPC_CRITERIA, null);
+      commit(SET_HAS_FPC_INFO, null);
       // Form selections
       commit(SET_IS_APPLYING_FOR_MSP, false);
       commit(SET_IS_APPLYING_FOR_FPCARE, false);
@@ -830,6 +842,12 @@ export default {
     },
     [SET_HAS_DOCUMENTS]({commit}, payload) {
       commit(SET_HAS_DOCUMENTS, payload);
+    },
+    [SET_MEETS_FPC_CRITERIA]({commit}, payload) {
+      commit(SET_MEETS_FPC_CRITERIA, payload);
+    },
+    [SET_HAS_FPC_INFO]({commit}, payload) {
+      commit(SET_HAS_FPC_INFO, payload);
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP]({commit}, payload) {
