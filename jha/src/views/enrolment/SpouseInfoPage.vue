@@ -67,7 +67,7 @@
             id='birth-date'
             className='mt-3'
             v-model='spouseBirthDate'
-            @blur="handleBlurField($v.birthdate)"
+            @blur="handleBlurField($v.spouseBirthDate)"
             @processDate="handleProcessBirthdate($event)" />
           <div class="text-danger"
             v-if="$v.spouseBirthDate.$dirty && !$v.spouseBirthDate.required"
@@ -260,6 +260,19 @@
                     v-if="$v.spouseLivedInBCSinceBirth.$dirty && !$v.spouseLivedInBCSinceBirth.required"
                     aria-live="assertive">Please indicate whether your spouse has lived in BC since birth.</div>
                 </div>
+                <div v-if="showOriginTextField">
+                  <Input 
+                      className="mt-3"
+                      label="From which province or country?"
+                      maxlength="25"
+                      v-model="spouseMoveFromOrigin"
+                      @blur="handleBlurField($v.spouseMoveFromOrigin)"
+                      :inputStyle='mediumStyles' />
+                  <div class="text-danger"
+                      v-if="$v.spouseMoveFromOrigin.$dirty
+                        && !$v.spouseMoveFromOrigin.required"
+                      aria-live="assertive">Province or country of origin is required.</div>
+                </div>
                 <Radio
                   label='Has your spouse moved to B.C. permanently?'
                   id='permanent-move'
@@ -279,23 +292,32 @@
                     <RegionSelect
                       className="mt-3"
                       label="Which province is your spouse moving from?" 
-                      v-model="spouseMovedFromProvince"
-                      @blur="handleBlurField($v.spouseMovedFromProvince)"
+                      v-model="spouseMoveFromOrigin"
+                      defaultOptionLabel="Please select a province"
+                      @blur="handleBlurField($v.spouseMoveFromOrigin)"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
-                      v-if="$v.spouseMovedFromProvince.$dirty && !$v.spouseMovedFromProvince.required"
-                      aria-live="assertive">Please indicate where your spouse moved from.</div>
+                      v-if="$v.spouseMoveFromOrigin.$dirty
+                        && !$v.spouseMoveFromOrigin.required"
+                      aria-live="assertive">Province of origin is required.</div>
+                    <div class="text-danger"
+                      v-if="spouseMoveFromOrigin === 'BC' || spouseMoveFromOrigin === 'British Columbia'"
+                      aria-live="assertive">Province of origin cannot be British Columbia.</div>
                   </div>
                   <div v-if="showCountrySelector">
                     <CountrySelect 
                       className="mt-3"
                       label="Which country is your spouse moving from?" 
-                      v-model="spouseMovedFromCountry"
-                      @blur="handleBlurField($v.spouseMovedFromCountry)"
+                      v-model="spouseMoveFromOrigin"
+                      defaultOptionLabel="Please select a country"
+                      @blur="handleBlurField($v.spouseMoveFromOrigin)"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
-                      v-if="$v.spouseMovedFromCountry.$dirty && !$v.spouseMovedFromCountry.required"
-                      aria-live="assertive">Please indicate where your spouse moved from.</div>
+                      v-if="$v.spouseMoveFromOrigin.$dirty && !$v.spouseMoveFromOrigin.required"
+                      aria-live="assertive">Country of origin is required.</div>
+                    <div class="text-danger"
+                      v-if="spouseMoveFromOrigin === 'Canada'"
+                      aria-live="assertive">Country of origin cannot be Canada.</div>
                   </div>
                   <div v-if="showMoveDateInputs">
                     <DateInput 
@@ -351,6 +373,14 @@
                             && $v.spouseCanadaArrivalDate.pastDateValidator
                             && !$v.spouseCanadaArrivalDate.dateOrderValidator"
                       aria-live="assertive">The spouse's most recent move to Canada cannot be before the spouse's date of birth and cannot be after the move to B.C. date.</div>
+                  </div>
+                  <div v-if="showPreviousHealthNumber">
+                    <Input 
+                      className="mt-3"
+                      label="Health Number from that province (optional)"
+                      maxlength="50"
+                      v-model="spousePreviousHealthNumber"
+                      :inputStyle='mediumStyles' />
                   </div>
                   <Radio
                     label='Has your spouse been outside B.C. for more than 30 days in total in the past 12 months?'
@@ -512,8 +542,8 @@ import {
   dateDataRequiredValidator,
   dateDataValidator,
   nameValidator,
-  // nonBCValidator,
-  // yesValidator,
+  nonBCValidator,
+  nonCanadaValidator,
 } from '@/helpers/validators';
 import logService from '@/services/log-service';
 import {
@@ -585,8 +615,7 @@ import {
   SET_SPOUSE_GENDER,
   SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH,
   SET_SPOUSE_MADE_PERMANENT_MOVE,
-  SET_SPOUSE_MOVED_FROM_PROVINCE,
-  SET_SPOUSE_MOVED_FROM_COUNTRY,
+  SET_SPOUSE_MOVE_FROM_ORIGIN,
   SET_SPOUSE_RECENT_BC_MOVE_DATE,
   SET_SPOUSE_CANADA_ARRIVAL_DATE,
   SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS,
@@ -701,8 +730,7 @@ export default {
       spouseGender: null,
       spouseLivedInBCSinceBirth: null,
       spouseMadePermanentMove: null,
-      spouseMovedFromProvince: null,
-      spouseMovedFromCountry: null,
+      spouseMoveFromOrigin: null,
       spouseRecentBCMoveDate: null,
       spouseCanadaArrivalDate: null,
       spouseOutsideBCLast12Months: null,
@@ -710,6 +738,7 @@ export default {
       spouseOutsideBCLast12MonthsDestination: null,
       spouseOutsideBCLast12MonthsDepartureDate: null,
       spouseOutsideBCLast12MonthsReturnDate: null,
+      spousePreviousHealthNumber: null,
       spouseHasPreviousBCHealthNumber: null,
       spousePreviousBCHealthNumber: null,
       spouseBeenReleasedFromInstitution: null,
@@ -739,8 +768,7 @@ export default {
     this.spouseGender = this.$store.state.enrolmentModule.spouseGender;
     this.spouseLivedInBCSinceBirth = this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth;
     this.spouseMadePermanentMove = this.$store.state.enrolmentModule.spouseMadePermanentMove;
-    this.spouseMovedFromProvince = this.$store.state.enrolmentModule.spouseMovedFromProvince;
-    this.spouseMovedFromCountry = this.$store.state.enrolmentModule.spouseMovedFromCountry;
+    this.spouseMoveFromOrigin = this.$store.state.enrolmentModule.spouseMoveFromOrigin;
     this.spouseRecentBCMoveDate = this.$store.state.enrolmentModule.spouseRecentBCMoveDate;
     this.spouseCanadaArrivalDate = this.$store.state.enrolmentModule.spouseCanadaArrivalDate;
     this.spouseOutsideBCLast12Months = this.$store.state.enrolmentModule.spouseOutsideBCLast12Months;
@@ -748,6 +776,7 @@ export default {
     this.spouseOutsideBCLast12MonthsDestination = this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsDestination;
     this.spouseOutsideBCLast12MonthsDepartureDate = this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsDepartureDate;
     this.spouseOutsideBCLast12MonthsReturnDate = this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsReturnDate;
+    this.spousePreviousHealthNumber = this.$store.state.enrolmentModule.spousePreviousHealthNumber;
     this.spouseHasPreviousBCHealthNumber = this.$store.state.enrolmentModule.spouseHasPreviousBCHealthNumber;
     this.spousePreviousBCHealthNumber = this.$store.state.enrolmentModule.spousePreviousBCHealthNumber;
     this.spouseBeenReleasedFromInstitution = this.$store.state.enrolmentModule.spouseBeenReleasedFromInstitution;
@@ -826,11 +855,15 @@ export default {
     }
 
     if (this.showProvinceSelector) {
-      validations.spouseMovedFromProvince = { required };
+      validations.spouseMoveFromOrigin = { required, nonBCValidator };
     }
 
     if (this.showCountrySelector) {
-      validations.spouseMovedFromCountry = { required };
+      validations.spouseMoveFromOrigin = { required, nonCanadaValidator };
+    }
+
+    if (this.showOriginTextField) {
+      validations.spouseMoveFromOrigin = { required };
     }
 
     if (this.showMoveDateInputs) {
@@ -842,7 +875,7 @@ export default {
       };
       validations.spouseCanadaArrivalDate = {
         required: this.canadaArrivalDateLabel === 'Arrival date in Canada' ? dateDataRequiredValidator(this.canadaArrivalDateData) : () => true,
-        dateDataValidator: optionalValidator(dateDataValidator(this.canadaArrivalDateData)),
+        dateDataValidator: dateDataValidator(this.canadaArrivalDateData),
         dateOrderValidator: optionalValidator(dateOrderValidator),
         pastDateValidator: optionalValidator(pastDateValidator),
       };
@@ -890,12 +923,10 @@ export default {
       if (this.pageLoaded) {
         this.spouseStatusReason = null;
         this.spouseCitizenshipSupportDocumentType = null;
-        this.spouseMovedFromCountry = null;
-        this.spouseMovedFromProvince = null;
+        this.spouseMoveFromOrigin = null;
         this.spouseLivedInBCSinceBirth = null;
         this.$v.spouseStatusReason.$reset();
-        this.$v.spouseMovedFromCountry.$reset();
-        this.$v.spouseMovedFromProvince.$reset();
+        this.$v.spouseMoveFromOrigin.$reset();
         this.$v.spouseLivedInBCSinceBirth.$reset();
         this.spouseCitizenshipSupportDocuments = [];
         this.$v.spouseCitizenshipSupportDocuments.$reset();
@@ -907,16 +938,14 @@ export default {
         this.spouseCitizenshipSupportDocuments = [];
         this.spouseIsNameChanged = null;
         this.spouseMadePermanentMove = null;
-        this.spouseMovedFromCountry = null;
-        this.spouseMovedFromProvince = null;
+        this.spouseMoveFromOrigin = null;
         this.spouseRecentBCMoveDate = null;
         this.spouseCanadaArrivalDate = null;
         this.$v.spouseCitizenshipSupportDocumentType.$reset();
         this.$v.spouseCitizenshipSupportDocuments.$reset();
         this.$v.spouseIsNameChanged.$reset();
         this.$v.spouseMadePermanentMove.$reset();
-        this.$v.spouseMovedFromCountry.$reset();
-        this.$v.spouseMovedFromProvince.$reset();
+        this.$v.spouseMoveFromOrigin.$reset();
         this.$v.spouseRecentBCMoveDate.$reset();
         this.$v.spouseCanadaArrivalDate.$reset();
       }
@@ -941,26 +970,22 @@ export default {
     },
     spouseLivedInBCSinceBirth() {
       if (this.isPageLoaded) {
-        this.spouseMovedFromCountry = null;
-        this.spouseMovedFromProvince = null;
+        this.spouseMoveFromOrigin = null;
         this.spouseCanadaArrivalDate = null;
-        this.$v.spouseMovedFromCountry.$reset();
-        this.$v.spouseMovedFromProvince.$reset();
+        this.$v.spouseMoveFromOrigin.$reset();
         this.$v.spouseCanadaArrivalDate.$reset();
       }
     },
     spouseMadePermanentMove(newValue) {
       if (this.isPageLoaded) {
         if (newValue === null) {
-          this.spouseMovedFromCountry = null;
-          this.spouseMovedFromProvince = null;
+          this.spouseMoveFromOrigin = null;
           this.spouseRecentBCMoveDate = null;
           this.spouseCanadaArrivalDate = null;
           this.spouseOutsideBCLast12Months = null;
           this.spouseHasPreviousBCHealthNumber = null;
           this.spouseBeenReleasedFromInstitution = null;
-          this.$v.spouseMovedFromCountry.$reset();
-          this.$v.spouseMovedFromProvince.$reset();
+          this.$v.spouseMoveFromOrigin.$reset();
           this.$v.spouseRecentBCMoveDate.$reset();
           this.$v.spouseCanadaArrivalDate.$reset();
           this.$v.spouseOutsideBCLast12Months.$reset();
@@ -1036,8 +1061,7 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_GENDER, this.spouseGender);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, this.spouseLivedInBCSinceBirth);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MADE_PERMANENT_MOVE, this.spouseMadePermanentMove);
-      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MOVED_FROM_PROVINCE, this.spouseMovedFromProvince);
-      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MOVED_FROM_COUNTRY, this.spouseMovedFromCountry);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MOVE_FROM_ORIGIN, this.spouseMoveFromOrigin);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_RECENT_BC_MOVE_DATE, this.spouseRecentBCMoveDate);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_CANADA_ARRIVAL_DATE, this.spouseCanadaArrivalDate);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS, this.spouseOutsideBCLast12Months);
@@ -1119,6 +1143,9 @@ export default {
       }
       return 'Arrival date in Canada';
     },
+    showPreviousHealthNumber() {
+      return this.spouseStatusReason === this.canadianStatusReasons.MovingFromProvince;
+    },
     showLivedInBCSinceBirth() {
       return this.spouseStatus === this.statusOptions.Citizen 
         && this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP
@@ -1126,6 +1153,9 @@ export default {
     showMoveDateInputs() {
       return !(this.spouseStatus === this.statusOptions.Citizen
         && this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP && this.spouseLivedInBCSinceBirth === 'Y');
+    },
+    showOriginTextField() {
+      return this.spouseStatus === this.statusOptions.TemporaryResident;
     },
     showProvinceSelector() {
       if (this.spouseStatus === this.statusOptions.Citizen) {
