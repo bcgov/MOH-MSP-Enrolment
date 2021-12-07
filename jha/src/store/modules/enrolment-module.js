@@ -17,6 +17,8 @@ export const SET_STUDENT_MINOR_REFUGEE = 'setStudentMinorRefugee';
 export const SET_HAS_DOCUMENTS = 'setHasDocuments';
 export const SET_MEETS_FPC_CRITERIA = 'setMeetsFPCCriteria';
 export const SET_HAS_FPC_INFO = 'setHasFPCInfo';
+export const SET_MEETS_SB_CRITERIA = 'setMeetsSBCriteria';
+export const SET_HAS_SB_INFO = 'setHasSBInfo';
 // Form selections
 export const SET_IS_APPLYING_FOR_MSP = 'setIsApplyingForMSP';
 export const SET_IS_APPLYING_FOR_FPCARE = 'setIsApplyingForFPCare';
@@ -157,6 +159,8 @@ export default {
       hasDocuments: null,
       meetsFPCCriteria: null,
       hasFPCInfo: null,
+      meetsSBCriteria: null,
+      hasSBInfo: null,
       // Form selections
       isApplyingForMSP: null,
       isApplyingForFPCare: null,
@@ -320,6 +324,12 @@ export default {
     },
     [SET_HAS_FPC_INFO](state, payload) {
       state.hasFPCInfo = payload;
+    },
+    [SET_MEETS_SB_CRITERIA](state, payload) {
+      state.meetsSBCriteria = payload;
+    },
+    [SET_HAS_SB_INFO](state, payload) {
+      state.hasSBInfo = payload;
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP](state, payload) {
@@ -691,6 +701,8 @@ export default {
       commit(SET_HAS_DOCUMENTS, null);
       commit(SET_MEETS_FPC_CRITERIA, null);
       commit(SET_HAS_FPC_INFO, null);
+      commit(SET_MEETS_SB_CRITERIA, null);
+      commit(SET_HAS_SB_INFO, null);
       // Form selections
       commit(SET_IS_APPLYING_FOR_MSP, false);
       commit(SET_IS_APPLYING_FOR_FPCARE, false);
@@ -848,6 +860,12 @@ export default {
     },
     [SET_HAS_FPC_INFO]({commit}, payload) {
       commit(SET_HAS_FPC_INFO, payload);
+    },
+    [SET_MEETS_SB_CRITERIA]({commit}, payload) {
+      commit(SET_MEETS_SB_CRITERIA, payload);
+    },
+    [SET_HAS_SB_INFO]({commit}, payload) {
+      commit(SET_HAS_SB_INFO, payload);
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP]({commit}, payload) {
