@@ -51,7 +51,7 @@
                       aria-live="assertive">Please complete the questionnaire to continue.</div>
       </div>
     </PageContent>
-    <ContinueBar disabled
+    <ContinueBar
     @continue="validateFields()" />
   </div>
 </template>
