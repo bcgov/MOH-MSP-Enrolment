@@ -17,8 +17,8 @@
           <p class="mb-0">2. To register for Fair PharmaCare, you must:</p>
           <div class="ml-5">
             <p class="mb-0">1. have been a resident of British Columbia for at least three months;</p>
-            <p class="mb-0">2. be registered with the Medical Services Plan(MSP); and</p>
-            <p>3. have filed an income tax return with the Canada Revenue Agency(CRA) for the relevant taxation year(two years before the current year).</p>
+            <p class="mb-0">2. be registered with the Medical Services Plan (MSP); and</p>
+            <p>3. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
           </div>
           <Radio
             id='meets-fpc-criteria'
@@ -30,9 +30,9 @@
           <div v-if="eqFPCMeetsCriteria === 'Y'">
             <p class="mb-0">3. To register for Fair PharmaCare, you must include the following with your application:</p>
             <div class="ml-5">
-              <p class="mb-0">1. Social Insurance Number(SIN) for you and (if applicable) your spouse;</p>
+              <p class="mb-0">1. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
               <p class="mb-0">2. Net Income shown on Line 23600 of your and if applicable, your spouse's CRA Notice of Assessment or federal income tax return for the relevant taxation year (two years before the current year); and</p>
-              <p>3. if you recieved income form a Registered Disability Savings Plan(RDSP), income shown on Line 12500 of your and if applicable, your spouse's CRA Notice of Assessment or federal income tax return for the relevant taxation year (two years before the current year). If you did not recieve RDSP income, you will enter $0.</p>
+              <p>3. if you recieved income form a Registered Disability Savings Plan (RDSP), income shown on Line 12500 of your and if applicable, your spouse's CRA Notice of Assessment or federal income tax return for the relevant taxation year (two years before the current year). If you did not recieve RDSP income, you will enter $0.</p>
             </div>
             <Radio
               id='has-fpc-info'

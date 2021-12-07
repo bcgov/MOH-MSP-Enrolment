@@ -153,7 +153,7 @@ export default {
     this.radioOptionsApplyMSP = [
       {
         id: 'no',
-        label: 'No: I am already enrolled(continue to Fair PharmaCare). (you will be Required to provide your MSP Personal Health Number.)',
+        label: 'No: I am already enrolled (continue to Fair PharmaCare). (You will be required to provide your MSP Personal Health Number.)',
         value: 'N',
       },
       {
