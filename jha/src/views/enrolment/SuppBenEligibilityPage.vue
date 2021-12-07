@@ -40,10 +40,10 @@
               label='Do you have the above documents and information to include with your application?'
               v-model='hasSBInfo'
               :items='radioOptionsNoYes' />
-            <div class="font-weight-bold" v-if="hasSBInfo === 'N'">
-              <p>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new Resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</p>
-              <p>If you (or your spouse) did not submit a tax return for a valid taxation year: file an income tax return with the Canada Revenue Agency for the required year as soon as possible. When you have recieved an NOA/NORA, apply for supplementary benefits.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</p>
-            </div>
+            <ul class="font-weight-bold pl-4" v-if="hasSBInfo === 'N'">
+              <li class="ml-0">If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new Resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
+              <li class="ml-0">If you (or your spouse) did not submit a tax return for a valid taxation year: file an income tax return with the Canada Revenue Agency for the required year as soon as possible. When you have recieved an NOA/NORA, apply for supplementary benefits.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
+            </ul>
           </div>
         </div>
         <div class="text-danger"

@@ -40,10 +40,10 @@
               label='Do you have the above information to include with your application?'
               v-model='hasFPCInfo'
               :items='radioOptionsNoYes' />
-            <div class="font-weight-bold" v-if="hasFPCInfo === 'N'">
-              <p>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new Resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</p>
-              <p>If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible. When you have submitted your tax return(s), register your family for Fari PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</p>
-            </div>
+            <ul class="font-weight-bold pl-4" v-if="hasFPCInfo === 'N'">
+              <li>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new Resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
+              <li>If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible. When you have submitted your tax return(s), register your family for Fari PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
+            </ul>
           </div>
         </div>
         <div class="text-danger"
