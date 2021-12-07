@@ -24,10 +24,10 @@
             id='meets-sb-criteria'
             name='meets-sb-criteria'
             label='Do you meet the above eligibility criteria?'
-            v-model='meetsSBCriteria'
+            v-model='eqSBMeetsCriteria'
             :items='radioOptionsNoYes' />
-          <p class="font-weight-bold" v-if="meetsSBCriteria === 'N'">You are not eligible to apply for MSP supplementary benefits at this time. Please submit an application when you meet the sesidency requirements.  For assistance, please contact Health Insurance BC.  For more information on eligibility requirements, see Applying for Supplementary Benefits.</p>
-          <div v-if="meetsSBCriteria === 'Y'">
+          <p class="font-weight-bold" v-if="eqSBMeetsCriteria === 'N'">You are not eligible to apply for MSP supplementary benefits at this time. Please submit an application when you meet the sesidency requirements.  For assistance, please contact Health Insurance BC.  For more information on eligibility requirements, see Applying for Supplementary Benefits.</p>
+          <div v-if="eqSBMeetsCriteria === 'Y'">
             <p class="mb-0">3. To apply for MSP supplementary benefits, you must include the following with your application:</p>
             <div class="ml-5">
               <p class="mb-0">1. Social Insurance Number(SIN) for you and (if applicable) your spouse;</p>
@@ -38,9 +38,9 @@
               id='has-sb-info'
               name='has-sb-info'
               label='Do you have the above documents and information to include with your application?'
-              v-model='hasSBInfo'
+              v-model='eqSBhasInfo'
               :items='radioOptionsNoYes' />
-            <ul class="font-weight-bold pl-4" v-if="hasSBInfo === 'N'">
+            <ul class="font-weight-bold pl-4" v-if="eqSBhasInfo === 'N'">
               <li class="ml-0">If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new Resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
               <li class="ml-0">If you (or your spouse) did not submit a tax return for a valid taxation year: file an income tax return with the Canada Revenue Agency for the required year as soon as possible. When you have recieved an NOA/NORA, apply for supplementary benefits.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
             </ul>
@@ -82,14 +82,14 @@ import pageContentMixin from '@/mixins/page-content-mixin';
 import {
   MODULE_NAME as enrolmentModule,
   SET_IS_APPLYING_FOR_SUPP_BEN,
-  SET_MEETS_SB_CRITERIA,
-  SET_HAS_SB_INFO,
+  SET_EQ_SB_MEETS_CRITERIA,
+  SET_EQ_SB_HAS_INFO,
 } from '@/store/modules/enrolment-module';
 
 const validateQuestionsAnswered = (_value, vm) => {
         if(!vm.applySB
-          || (vm.applySB === 'Y' && !vm.meetsSBCriteria)
-          || (vm.applySB === 'Y' && vm.meetsSBCriteria === 'Y' && !vm.hasSBInfo)) {
+          || (vm.applySB === 'Y' && !vm.eqSBMeetsCriteria)
+          || (vm.applySB === 'Y' && vm.eqSBMeetsCriteria === 'Y' && !vm.eqSBhasInfo)) {
         return false;
       }
       return true;
@@ -107,8 +107,8 @@ export default {
     return {
       isPageLoaded: false,
       applySB: null,
-      meetsSBCriteria: null,
-      hasSBInfo: null,
+      eqSBMeetsCriteria: null,
+      eqSBhasInfo: null,
       radioOptionsNoYes: radioOptionsNoYes,
     };
   },
@@ -122,10 +122,8 @@ export default {
     if (isApplyingForFPCare !== null) {
       isApplyingForFPCare ? this.applySB = "Y" : this.applySB = "N";
     }
-    this.meetsSBCriteria = this.$store.state.enrolmentModule.meetsSBCriteria;
-    this.hasSBInfo = this.$store.state.enrolmentModule.hasSBInfo;
-    this.studentMinorRefugee = this.$store.state.enrolmentModule.studentMinorRefugee;
-    this.hasDocuments = this.$store.state.enrolmentModule.hasDocuments;
+    this.eqSBMeetsCriteria = this.$store.state.enrolmentModule.eqSBMeetsCriteria;
+    this.eqSBhasInfo = this.$store.state.enrolmentModule.eqSBhasInfo;
 
     this.$nextTick(() => {
       this.isPageLoaded = true;
@@ -151,8 +149,8 @@ export default {
     },
     saveData() {
       this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_SUPP_BEN, this.applySB === "Y");
-      this.$store.dispatch(enrolmentModule + '/' + SET_MEETS_SB_CRITERIA, this.meetsSBCriteria);
-      this.$store.dispatch(enrolmentModule + '/' + SET_HAS_SB_INFO, this.hasSBInfo);
+      this.$store.dispatch(enrolmentModule + '/' + SET_EQ_SB_MEETS_CRITERIA, this.eqSBMeetsCriteria);
+      this.$store.dispatch(enrolmentModule + '/' + SET_EQ_SB_HAS_INFO, this.eqSBhasInfo);
     },
     navigateToNextPage() {
       // Navigate to next path.

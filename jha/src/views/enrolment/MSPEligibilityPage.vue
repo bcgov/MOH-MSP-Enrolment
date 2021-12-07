@@ -18,30 +18,30 @@
             id='live-in-bc'
             name='live-in-bc'
             label='Do you currently live in British Columbia? (i.e. Do you have an address here?)'
-            v-model='liveInBC'
+            v-model='eqMSPLiveInBC'
             :items='radioOptionsNoYes' />
-          <p class="font-weight-bold" v-if="liveInBC === 'N'">You might not qualify for MSP or related income-based programs if you do not live in B.C. Contact Health Insurance BC for more information.</p>
-          <div v-if="liveInBC === 'Y'">
+          <p class="font-weight-bold" v-if="eqMSPLiveInBC === 'N'">You might not qualify for MSP or related income-based programs if you do not live in B.C. Contact Health Insurance BC for more information.</p>
+          <div v-if="eqMSPLiveInBC === 'Y'">
             <Radio
               id='away-over-30'
               name='away-over-30'
               label='Will you or anyone in your immediate family (included on this application) be away from B.C. for more than 30 days in total over the next six months?'
-              v-model='awayOver30'
+              v-model='eqMSPAwayOver30'
               :items='radioOptionsNoYes' />
-            <p class="font-weight-bold" v-if="awayOver30 === 'Y'">You or your family member might not qualify for MSP or related income-based programs if you leave the province for more than 30 days in total during the first six months after you apply - doing this could mean you are no longer considered a B.C. resident.  Find out more by contacting Health Insurance BC.</p>
-            <div v-if="awayOver30 === 'N'">
+            <p class="font-weight-bold" v-if="eqMSPAwayOver30 === 'Y'">You or your family member might not qualify for MSP or related income-based programs if you leave the province for more than 30 days in total during the first six months after you apply - doing this could mean you are no longer considered a B.C. resident.  Find out more by contacting Health Insurance BC.</p>
+            <div v-if="eqMSPAwayOver30 === 'N'">
               <Radio
                 id='student-minor-refugee'
                 name='student-minor-refugee'
                 label='Is anyone included in this application (yourself, spouse, or child): a student returning to a home province outside B.C. at the end of a course or program; a minor (under the age of 16); or a person seeking refugee status who has not yet been approved?'
-                v-model='studentMinorRefugee'
+                v-model='eqMSPStudentMinorRefugee'
                 :items='radioOptionsNoYes' />
-              <div class="font-weight-bold" v-if="studentMinorRefugee === 'Y'">
+              <div class="font-weight-bold" v-if="eqMSPStudentMinorRefugee === 'Y'">
                 <p class="mb-0">You can submit an application with some assistance from one of out representatives - please contact Health Insurance BC:</p>
                 <p class="mb-0">(604)683-7151 (Lower Mainland)</p>
                 <p class="mb-0">1-800-663-7100 (Elsewhere in B.C.)</p>
               </div>
-              <div v-if="studentMinorRefugee === 'N'">
+              <div v-if="eqMSPStudentMinorRefugee === 'N'">
                 <p>When applying for MSP coverage, you are required to submit digital copies (pdf, jpeg, png) of the following documents for yourself and (if applicable) your spouse.  For more information see ID Requirements for Online MSP Enrolment - Province of British Columbia.</p>
                 <div class="ml-5">
                   <p>Canadian Citizens: Canadian Birth Certificate, Canadian Passport, or Canadian Citizenship Card/Certificate</p>
@@ -54,9 +54,9 @@
                   id='has-documents'
                   name='has-documents'
                   label='Do you have copies of the above documents to include with your application?'
-                  v-model='hasDocuments'
+                  v-model='eqMSPHasDocuments'
                   :items='radioOptionsNoYes' />
-                <p class="font-weight-bold" v-if="hasDocuments === 'N'">Make sure you have digital copies of the above documents before completing your Joint Health Application. You will not be able to apply for MSP enrolment without these documents.</p>
+                <p class="font-weight-bold" v-if="eqMSPHasDocuments === 'N'">Make sure you have digital copies of the above documents before completing your Joint Health Application. You will not be able to apply for MSP enrolment without these documents.</p>
               </div>
             </div>
           </div>
@@ -98,18 +98,18 @@ import pageContentMixin from '@/mixins/page-content-mixin';
 import {
   MODULE_NAME as enrolmentModule,
   SET_IS_APPLYING_FOR_MSP,
-  SET_LIVE_IN_BC,
-  SET_AWAY_OVER_30,
-  SET_STUDENT_MINOR_REFUGEE,
-  SET_HAS_DOCUMENTS,
+  SET_EQ_MSP_LIVE_IN_BC,
+  SET_EQ_MSP_AWAY_OVER_30,
+  SET_EQ_MSP_STUDENT_MINOR_REFUGEE,
+  SET_EQ_MSP_HAS_DOCUMENTS,
 } from '@/store/modules/enrolment-module';
 
 const validateQuestionsAnswered = (_value, vm) => {
         if(!vm.applyMSP
-          || (vm.applyMSP === 'Y' && !vm.liveInBC)
-          || (vm.applyMSP === 'Y' && vm.liveInBC === 'Y' && !vm.awayOver30)
-          || (vm.applyMSP === 'Y' && vm.liveInBC === 'Y' && vm.awayOver30 === 'N' && !vm.studentMinorRefugee)
-          || (vm.applyMSP === 'Y' && vm.liveInBC === 'Y' && vm.awayOver30 === 'N' && vm.studentMinorRefugee === 'N' && !vm.hasDocuments)) {
+          || (vm.applyMSP === 'Y' && !vm.eqMSPLiveInBC)
+          || (vm.applyMSP === 'Y' && vm.eqMSPLiveInBC === 'Y' && !vm.eqMSPAwayOver30)
+          || (vm.applyMSP === 'Y' && vm.eqMSPLiveInBC === 'Y' && vm.eqMSPAwayOver30 === 'N' && !vm.eqMSPStudentMinorRefugee)
+          || (vm.applyMSP === 'Y' && vm.eqMSPLiveInBC === 'Y' && vm.eqMSPAwayOver30 === 'N' && vm.eqMSPStudentMinorRefugee === 'N' && !vm.eqMSPHasDocuments)) {
         return false;
       }
       return true;
@@ -127,10 +127,10 @@ export default {
     return {
       isPageLoaded: false,
       applyMSP: null,
-      liveInBC: null,
-      awayOver30: null,
-      studentMinorRefugee: null,
-      hasDocuments: null,
+      eqMSPLiveInBC: null,
+      eqMSPAwayOver30: null,
+      eqMSPStudentMinorRefugee: null,
+      eqMSPHasDocuments: null,
       radioOptionsNoYes: radioOptionsNoYes,
       radioOptionsApplyMSP: null,
     };
@@ -145,10 +145,10 @@ export default {
     if (isApplyingForMSP !== null) {
       isApplyingForMSP ? this.applyMSP = "Y" : this.applyMSP = "N";
     }
-    this.liveInBC = this.$store.state.enrolmentModule.liveInBC;
-    this.awayOver30 = this.$store.state.enrolmentModule.awayOver30;
-    this.studentMinorRefugee = this.$store.state.enrolmentModule.studentMinorRefugee;
-    this.hasDocuments = this.$store.state.enrolmentModule.hasDocuments;
+    this.eqMSPLiveInBC = this.$store.state.enrolmentModule.eqMSPLiveInBC;
+    this.eqMSPAwayOver30 = this.$store.state.enrolmentModule.eqMSPAwayOver30;
+    this.eqMSPStudentMinorRefugee = this.$store.state.enrolmentModule.eqMSPStudentMinorRefugee;
+    this.eqMSPHasDocuments = this.$store.state.enrolmentModule.eqMSPHasDocuments;
 
     this.radioOptionsApplyMSP = [
       {
@@ -187,10 +187,10 @@ export default {
     },
     saveData() {
       this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_MSP, this.applyMSP === "Y");
-      this.$store.dispatch(enrolmentModule + '/' + SET_LIVE_IN_BC, this.liveInBC);
-      this.$store.dispatch(enrolmentModule + '/' + SET_AWAY_OVER_30, this.awayOver30);
-      this.$store.dispatch(enrolmentModule + '/' + SET_STUDENT_MINOR_REFUGEE, this.studentMinorRefugee);
-      this.$store.dispatch(enrolmentModule + '/' + SET_HAS_DOCUMENTS, this.hasDocuments);
+      this.$store.dispatch(enrolmentModule + '/' + SET_EQ_MSP_LIVE_IN_BC, this.eqMSPLiveInBC);
+      this.$store.dispatch(enrolmentModule + '/' + SET_EQ_MSP_AWAY_OVER_30, this.eqMSPAwayOver30);
+      this.$store.dispatch(enrolmentModule + '/' + SET_EQ_MSP_STUDENT_MINOR_REFUGEE, this.eqMSPStudentMinorRefugee);
+      this.$store.dispatch(enrolmentModule + '/' + SET_EQ_MSP_HAS_DOCUMENTS, this.eqMSPHasDocuments);
     },
     navigateToNextPage() {
       // Navigate to next path.
