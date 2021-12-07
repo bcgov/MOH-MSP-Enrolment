@@ -50,6 +50,8 @@
           id="birthdate"
           class="mt-3"
           v-model="birthdate"
+          :watchForModelChange="true"
+          :useInvalidState="true"
           @blur="handleBlurField($v.birthdate)"
           @processDate="handleProcessBirthdate($event)" />
         <div class="text-danger"
@@ -664,6 +666,7 @@ import {
   nonBCValidator,
   pastDateValidator,
   yesValidator,
+  optionalInvalidDateValidator,
 } from '@/helpers/validators';
 import {
   CanadianStatusReasons,
@@ -846,8 +849,8 @@ export default {
       birthdate: {
         required: dateDataRequiredValidator(this.birthdateData),
         dateDataValidator: dateDataValidator(this.birthdateData),
-        distantPastValidator: optionalValidator(distantPastValidator),
-        birthdate16YearsValidator: optionalValidator(birthdate16YearsValidator),
+        distantPastValidator: optionalInvalidDateValidator(distantPastValidator),
+        birthdate16YearsValidator: optionalInvalidDateValidator(birthdate16YearsValidator),
       },
       socialInsuranceNumber: {},
       gender: {
