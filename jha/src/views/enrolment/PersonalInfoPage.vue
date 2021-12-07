@@ -173,7 +173,7 @@
           </div>
         </div>
 
-        <div v-if="isCitizenshipDocsShown">
+        <div v-if="requestIsNameChanged">
           <Radio label="Has your name changed since your ID was issued due to marriage or legal name change?"
             id="name-change"
             name="name-change"
@@ -531,7 +531,7 @@
                       && !$v.isStudent.required"
                     aria-live="assertive">This field is required.</div>
                 </div>
-                <div v-if="isStudent === 'Y'"
+                <div v-if="requestWillStudentResideInBC"
                   class="tabbed-section">
                   <Radio label="Will you reside in B.C. upon completion of your studies?"
                     id="will-student-reside-in-bc"
@@ -964,7 +964,7 @@ export default {
     if (this.requestIsStudent) {
       validations.isStudent.required = required;
     }
-    if (this.isStudent === 'Y') {
+    if (this.requestWillStudentResideInBC) {
       validations.willStudentResideInBC.required = required;
       validations.willStudentResideInBC.yesValidator = optionalValidator(yesValidator);
     }
@@ -1060,6 +1060,9 @@ export default {
       return this.$store.state.enrolmentModule.isApplyingForFPCare
           || this.$store.state.enrolmentModule.isApplyingForSuppBen;
     },
+    requestIsNameChanged() {
+      return !!this.citizenshipSupportDocumentType;
+    },
     requestFromProvinceOrCountry() {
       return this.citizenshipStatus === StatusInCanada.TemporaryResident
     },
@@ -1124,6 +1127,11 @@ export default {
     requestIsStudent() {
       return this.isMovedToBCPermanently === 'Y'
           || this.citizenshipStatus === StatusInCanada.TemporaryResident;
+    },
+    requestWillStudentResideInBC() {
+      return ( this.citizenshipStatus === StatusInCanada.Citizen
+            || this.citizenshipStatus === StatusInCanada.PermanentResident)
+          && this.isStudent === 'Y';
     },
     isMovingInformationShown() {
       return !!this.citizenshipStatus
