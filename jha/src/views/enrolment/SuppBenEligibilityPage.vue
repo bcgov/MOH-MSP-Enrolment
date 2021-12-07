@@ -141,12 +141,12 @@ export default {
   },
   methods: {
     validateFields() {
-      this.saveData();
       this.$v.$touch()
       if (this.$v.$invalid) {
         scrollToError();
         return;
       }
+      this.saveData();
       this.navigateToNextPage();
     },
     saveData() {
