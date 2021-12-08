@@ -6,6 +6,19 @@ import {
 import { ChildAgeTypes } from '../../constants/child-age-types'
 
 export default {
+  // Eligibility Questionnaires
+  eqMSPLiveInBC: 'Y',
+  eqMSPAwayOver30: 'N',
+  eqMSPStudentMinorRefugee: 'N',
+  eqMSPHasDocuments: 'Y',
+  eqFPCMeetsCriteria: 'Y',
+  eqFPCHasInfo: 'Y',
+  eqSBMeetsCriteria: 'Y',
+  eqSBhasInfo: 'Y',
+  // Form selections
+  isApplyingForMSP: true,
+  isApplyingForFPCare: true,
+  isApplyingForSuppBen: true,
   // Account Holder info.
   ahFirstName: 'John',
   ahMiddleName: 'Herbert',
