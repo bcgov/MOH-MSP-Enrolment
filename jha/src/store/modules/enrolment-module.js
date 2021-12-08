@@ -74,10 +74,10 @@ export const SET_SPOUSE_BIRTH_DATE = 'setSpouseBirthDate';
 export const SET_SPOUSE_GENDER = 'setSpouseGender';
 export const SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH = 'setSpouseLivedInBCSinceBirth';
 export const SET_SPOUSE_MADE_PERMANENT_MOVE = 'setSpouseMadePermanentMove';
-export const SET_SPOUSE_MOVED_FROM_PROVINCE = 'setSpouseMovedFromProvince';
-export const SET_SPOUSE_MOVED_FROM_COUNTRY = 'setSpouseMovedFromCountry';
+export const SET_SPOUSE_MOVE_FROM_ORIGIN = 'setSpouseMoveFromOrigin';
 export const SET_SPOUSE_RECENT_BC_MOVE_DATE = 'setSpouseRecentBCMoveDate';
 export const SET_SPOUSE_CANADA_ARRIVAL_DATE = 'setSpouseCanadaArrivalDate';
+export const SET_SPOUSE_PREVIOUS_HEALTH_NUMBER = 'setSpousePreviousHealthNumber';
 export const SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS = 'setSpouseOutsideBCLast12Months';
 export const SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_REASON = 'setSpouseOutsideBCLast12MonthsReason';
 export const SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION = 'setSpouseOutsideBCLast12MonthsDestination';
@@ -216,10 +216,10 @@ export default {
       spouseGender: null,
       spouseLivedInBCSinceBirth: null,
       spouseMadePermanentMove: null,
-      spouseMovedFromProvince: null,
-      spouseMovedFromCountry: null,
+      spouseMoveFromOrigin: null,
       spouseRecentBCMoveDate: null,
       spouseCanadaArrivalDate: null,
+      spousePreviousHealthNumber: null,
       spouseOutsideBCLast12Months: null,
       spouseOutsideBCLast12MonthsReason: null,
       spouseOutsideBCLast12MonthsDestination: null,
@@ -490,17 +490,17 @@ export default {
     [SET_SPOUSE_MADE_PERMANENT_MOVE](state, payload) {
       state.spouseMadePermanentMove = payload;
     },
-    [SET_SPOUSE_MOVED_FROM_PROVINCE](state, payload) {
-      state.spouseMovedFromProvince = payload;
-    },
-    [SET_SPOUSE_MOVED_FROM_COUNTRY](state, payload) {
-      state.spouseMovedFromCountry = payload;
+    [SET_SPOUSE_MOVE_FROM_ORIGIN](state, payload) {
+      state.spouseMoveFromOrigin = payload;
     },
     [SET_SPOUSE_RECENT_BC_MOVE_DATE](state, payload) {
       state.spouseRecentBCMoveDate = payload;
     },
     [SET_SPOUSE_CANADA_ARRIVAL_DATE](state, payload) {
       state.spouseCanadaArrivalDate = payload;
+    },
+    [SET_SPOUSE_PREVIOUS_HEALTH_NUMBER](state, payload) {
+      state.spousePreviousHealthNumber = payload;
     },
     [SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS](state, payload) {
       state.spouseOutsideBCLast12Months = payload;
@@ -758,10 +758,10 @@ export default {
       commit(SET_SPOUSE_GENDER, null);
       commit(SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, null);
       commit(SET_SPOUSE_MADE_PERMANENT_MOVE, null);
-      commit(SET_SPOUSE_MOVED_FROM_PROVINCE, null);
-      commit(SET_SPOUSE_MOVED_FROM_COUNTRY, null);
+      commit(SET_SPOUSE_MOVE_FROM_ORIGIN, null);
       commit(SET_SPOUSE_RECENT_BC_MOVE_DATE, null);
       commit(SET_SPOUSE_CANADA_ARRIVAL_DATE, null);
+      commit(SET_SPOUSE_PREVIOUS_HEALTH_NUMBER, null);
       commit(SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS, null);
       commit(SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_REASON, null);
       commit(SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION, null);
@@ -1026,17 +1026,17 @@ export default {
     [SET_SPOUSE_MADE_PERMANENT_MOVE]({ commit }, payload) {
       commit(SET_SPOUSE_MADE_PERMANENT_MOVE, payload);
     },
-    [SET_SPOUSE_MOVED_FROM_PROVINCE]({ commit }, payload) {
-      commit(SET_SPOUSE_MOVED_FROM_PROVINCE, payload);
-    },
-    [SET_SPOUSE_MOVED_FROM_COUNTRY]({ commit }, payload) {
-      commit(SET_SPOUSE_MOVED_FROM_COUNTRY, payload);
+    [SET_SPOUSE_MOVE_FROM_ORIGIN]({ commit }, payload) {
+      commit(SET_SPOUSE_MOVE_FROM_ORIGIN, payload);
     },
     [SET_SPOUSE_RECENT_BC_MOVE_DATE]({ commit }, payload) {
       commit(SET_SPOUSE_RECENT_BC_MOVE_DATE, payload);
     },
     [SET_SPOUSE_CANADA_ARRIVAL_DATE]({ commit }, payload) {
       commit(SET_SPOUSE_CANADA_ARRIVAL_DATE, payload);
+    },
+    [SET_SPOUSE_PREVIOUS_HEALTH_NUMBER]({ commit }, payload) {
+      commit(SET_SPOUSE_PREVIOUS_HEALTH_NUMBER, payload);
     },
     [SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS]({ commit }, payload) {
       commit(SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS, payload);

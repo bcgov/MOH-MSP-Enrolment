@@ -27,6 +27,10 @@ export const nonBCValidator = (value) => {
       && value !== 'British Columbia';
 };
 
+export const nonCanadaValidator = (value) => {
+  return value !== 'Canada';
+};
+
 export const dateDataRequiredValidator = (dateData) => {
   return () => {
     if (!dateData || !dateData.year || typeof dateData.month !== 'number' || !dateData.day) {
