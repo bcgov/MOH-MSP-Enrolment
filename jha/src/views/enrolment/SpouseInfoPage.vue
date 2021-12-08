@@ -832,86 +832,91 @@ export default {
       spouseIsNameChanged: {
         required,
       },
+      spouseNameChangeSupportDocumentType: {},
+      spouseNameChangeSupportDocuments: {},
       spouseMadePermanentMove: {
         required,
         permanentMoveValidator: (this.spouseStatus !== StatusInCanada.TemporaryResident) ?
             optionalValidator(permanentMoveValidator) : () => true,
       },
+      spouseMoveFromOrigin: {},
+      spouseLivedInBCSinceBirth: {},
+      spouseRecentBCMoveDate: {},
+      spouseCanadaArrivalDate: {},
       spouseOutsideBCLast12Months: {
         required,
       },
+      spouseOutsideBCLast12MonthsReason: {},
+      spouseOutsideBCLast12MonthsDestination: {},
+      spouseOutsideBCLast12MonthsDepartureDate: {},
+      spouseOutsideBCLast12MonthsReturnDate: {},
       spouseHasPreviousBCHealthNumber: {
         required,
       },
+      spousePreviousBCHealthNumber: {},
+      spouseBeenReleasedFromInstitution: {},
+      spouseDischargeDate: {},
     };
 
     if (this.spouseIsNameChanged === 'Y') {
-      validations.spouseNameChangeSupportDocumentType = { required };
-      validations.spouseNameChangeSupportDocuments = { required };
+      validations.spouseNameChangeSupportDocumentType.required = required;
+      validations.spouseNameChangeSupportDocuments.required = required;
     }
 
     if (this.showLivedInBCSinceBirth) {
-      validations.spouseLivedInBCSinceBirth = { required };
+      validations.spouseLivedInBCSinceBirth.required = required;
     }
 
     if (this.showProvinceSelector) {
-      validations.spouseMoveFromOrigin = { required, nonBCValidator };
+      validations.spouseMoveFromOrigin.required = required;
+      validations.spouseMoveFromOrigin.nonBCValidator = nonBCValidator;
     }
 
     if (this.showCountrySelector) {
-      validations.spouseMoveFromOrigin = { required, nonCanadaValidator };
+      validations.spouseMoveFromOrigin.required = required;
+      validations.spouseMoveFromOrigin.nonCanadaValidator = nonCanadaValidator;
     }
 
     if (this.showOriginTextField) {
-      validations.spouseMoveFromOrigin = { required };
+      validations.spouseMoveFromOrigin.required = required;
     }
 
     if (this.showMoveDateInputs) {
-      validations.spouseRecentBCMoveDate = {
-        required: dateDataRequiredValidator(this.recentBCMoveDateData),
-        dateDataValidator: dateDataValidator(this.recentBCMoveDateData),
-        dateOrderValidator,
-        pastDateValidator: optionalValidator(pastDateValidator),
-      };
-      validations.spouseCanadaArrivalDate = {
-        required: this.canadaArrivalDateLabel === 'Arrival date in Canada' ? dateDataRequiredValidator(this.canadaArrivalDateData) : () => true,
-        dateDataValidator: dateDataValidator(this.canadaArrivalDateData),
-        dateOrderValidator: optionalValidator(dateOrderValidator),
-        pastDateValidator: optionalValidator(pastDateValidator),
-      };
+      validations.spouseRecentBCMoveDate.required = dateDataRequiredValidator(this.recentBCMoveDateData);
+      validations.spouseRecentBCMoveDate.dateDataValidator = dateDataValidator(this.recentBCMoveDateData);
+      validations.spouseRecentBCMoveDate.dateOrderValidator = dateOrderValidator;
+      validations.spouseRecentBCMoveDate.pastDateValidator = optionalValidator(pastDateValidator);
+      
+      validations.spouseCanadaArrivalDate.required = this.canadaArrivalDateLabel === 'Arrival date in Canada' ? dateDataRequiredValidator(this.canadaArrivalDateData) : () => true,
+      validations.spouseCanadaArrivalDate.dateDataValidator = dateDataValidator(this.canadaArrivalDateData);
+      validations.spouseCanadaArrivalDate.dateOrderValidator = optionalValidator(dateOrderValidator);
+      validations.spouseCanadaArrivalDate.pastDateValidator = optionalValidator(pastDateValidator);
     }
 
     if (this.spouseOutsideBCLast12Months === 'Y') {
-      validations.spouseOutsideBCLast12MonthsReason = { required };
-      validations.spouseOutsideBCLast12MonthsDestination = { required };
-      validations.spouseOutsideBCLast12MonthsDepartureDate = { 
-        required: dateDataRequiredValidator(this.spouseOutsideBCLast12MonthsDepartureDateData),
-        dateDataValidator: dateDataValidator(this.spouseOutsideBCLast12MonthsDepartureDateData),
-        departureDateValidator: optionalValidator(departureDateValidator) 
-      };
-      validations.spouseOutsideBCLast12MonthsReturnDate = { 
-        required: dateDataRequiredValidator(this.spouseOutsideBCLast12MonthsReturnDateData),
-        dateDataValidator: dateDataValidator(this.spouseOutsideBCLast12MonthsReturnDateData),
-        returnDateValidator: optionalValidator(returnDateValidator) 
-      };
+      validations.spouseOutsideBCLast12MonthsReason.required = required;
+      validations.spouseOutsideBCLast12MonthsDestination.required = required;
+      validations.spouseOutsideBCLast12MonthsDepartureDate.required = dateDataRequiredValidator(this.spouseOutsideBCLast12MonthsDepartureDateData);
+      validations.spouseOutsideBCLast12MonthsDepartureDate.dateDataValidator = dateDataValidator(this.spouseOutsideBCLast12MonthsDepartureDateData);
+      validations.spouseOutsideBCLast12MonthsDepartureDate.departureDateValidator = optionalValidator(departureDateValidator);
+
+      validations.spouseOutsideBCLast12MonthsReturnDate.required = dateDataRequiredValidator(this.spouseOutsideBCLast12MonthsReturnDateData);
+      validations.spouseOutsideBCLast12MonthsReturnDate.dateDataValidator = dateDataValidator(this.spouseOutsideBCLast12MonthsReturnDateData);
+      validations.spouseOutsideBCLast12MonthsReturnDate.returnDateValidator = optionalValidator(returnDateValidator); 
     }
 
     if (this.spouseHasPreviousBCHealthNumber === 'Y') {
-      validations.spousePreviousBCHealthNumber = {
-        phnValidator: optionalValidator(phnValidator)
-      };
+      validations.spousePreviousBCHealthNumber.phnValidator = optionalValidator(phnValidator);
     }
 
     if (this.showDischargeInputs) {
-      validations.spouseBeenReleasedFromInstitution = { required };
+      validations.spouseBeenReleasedFromInstitution.required = required;
       
       if (this.spouseBeenReleasedFromInstitution === 'Y') {
-        validations.spouseDischargeDate = { 
-          required: dateDataRequiredValidator(this.spouseDischargeDateData),
-          dateDataValidator: dateDataValidator(this.spouseDischargeDateData),
-          dischargeDateValidator: optionalValidator(dischargeDateValidator),
-          pastDateValidator: optionalValidator(pastDateValidator),
-        };
+        validations.spouseDischargeDate.required = dateDataRequiredValidator(this.spouseDischargeDateData);
+        validations.spouseDischargeDate.dateDataValidator = dateDataValidator(this.spouseDischargeDateData);
+        validations.spouseDischargeDate.dischargeDateValidator = optionalValidator(dischargeDateValidator);
+        validations.spouseDischargeDate.pastDateValidator = optionalValidator(pastDateValidator);
       }
     }
     
