@@ -71,7 +71,7 @@
             && !$v.birthdate.birthdate16YearsValidator"
           aria-live="assertive">An applicant must be 16 years or older.</div>
         <div v-if="requestSocialInsuranceNumber">
-          <DigitInput label="Social Insurance Number (SIN)"
+          <SINInput label="Social Insurance Number (SIN)"
             id="social-insurance-number"
             class="mt-3"
             :inputStyle="smallStyles"
@@ -80,7 +80,11 @@
           <div class="text-danger"
             v-if="$v.socialInsuranceNumber.$dirty
               && !$v.socialInsuranceNumber.required"
-            aria-live="assertive">Social insurance number is required.</div>
+            aria-live="assertive">Social Insurance Number is required.</div>
+          <div class="text-danger"
+            v-if="$v.socialInsuranceNumber.$dirty
+              && !$v.socialInsuranceNumber.sinValidator"
+            aria-live="assertive">Social Insurance Number is invalid.</div>
         </div>
         <Radio label="Gender"
           id="gender"
@@ -622,7 +626,6 @@ import {
   ContinueBar,
   CountrySelect,
   DateInput,
-  DigitInput,
   FileUploader,
   Input,
   PageContent,
@@ -630,9 +633,11 @@ import {
   Radio,
   RegionSelect,
   Select,
+  SINInput,
   distantPastValidator,
   optionalValidator,
   phnValidator,
+  sinValidator,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import {
@@ -723,7 +728,6 @@ export default {
     ContinueBar,
     CountrySelect,
     DateInput,
-    DigitInput,
     FileUploader,
     Input,
     PageContent,
@@ -731,6 +735,7 @@ export default {
     Radio,
     RegionSelect,
     Select,
+    SINInput,
     TipBox,
   },
   data: () => {
@@ -900,6 +905,7 @@ export default {
     };
     if (this.requestSocialInsuranceNumber) {
       validations.socialInsuranceNumber.required = required;
+      validations.socialInsuranceNumber.sinValidator = optionalValidator(sinValidator);
     }
     if (this.isNameChanged === 'Y') {
       validations.nameChangeSupportDocumentType.required = required;
