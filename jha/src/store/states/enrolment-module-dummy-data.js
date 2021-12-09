@@ -24,7 +24,7 @@ export default {
   ahMiddleName: 'Herbert',
   ahLastName: 'Doe',
   ahBirthdate: new Date('1989-01-01'),
-  ahSIN: '123 456 789',
+  ahSIN: '123 456 782',
   ahGender: 'M',
   ahCitizenshipStatus: StatusInCanada.Citizen,
   ahCitizenshipStatusReason: CanadianStatusReasons.LivingInBCWithoutMSP,
