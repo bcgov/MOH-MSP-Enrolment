@@ -74,6 +74,7 @@
           <SINInput label="Social Insurance Number (SIN)"
             id="social-insurance-number"
             class="mt-3"
+            placeholder="111 111 111"
             :inputStyle="smallStyles"
             v-model="socialInsuranceNumber"
             @blur="handleBlurField($v.socialInsuranceNumber)" />
