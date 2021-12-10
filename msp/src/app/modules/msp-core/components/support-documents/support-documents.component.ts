@@ -131,8 +131,14 @@ export function genderDesignationChangeDocuments(): SupportDocumentTypes[] {
     SupportDocumentTypes.CanadianBirthCertificate,
     SupportDocumentTypes.ChangeGenderAdultApplication,
     SupportDocumentTypes.ChangeGenderMinorApplication,
-    SupportDocumentTypes.ChangeGenderPhysicianConfirmation,
     SupportDocumentTypes.ParentalConsentWaiver,
+    SupportDocumentTypes.CanadianCitizenCard,
+    SupportDocumentTypes.PermanentResidentCard,
+    SupportDocumentTypes.PermanentResidentConfirmation,
+    SupportDocumentTypes.RecordOfLanding,
+    SupportDocumentTypes.StudyPermit,
+    SupportDocumentTypes.WorkPermit,
+    SupportDocumentTypes.VisitorVisa,
   ];
 }
 
