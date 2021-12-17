@@ -302,7 +302,8 @@ const addressLineContentValidator = (value) => {
     return true;
   }
   const criteriaAllowedCharecters = /^[0-9a-zA-Z-.'#& /]*$/;
-  return criteriaAllowedCharecters.test(value);
+  const criteriaMustHaveLetterOrNumber = /.*[a-z0-9].*/i;
+  return criteriaAllowedCharecters.test(value) && criteriaMustHaveLetterOrNumber.test(value);
 };
 
 const cityContentValidator = (value) => {

@@ -293,6 +293,7 @@
                     country="Canada"
                     defaultOptionLabel="Please select a province"
                     v-model="moveFromOrigin"
+                    :disablePlaceholder="true"
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.moveFromOrigin)"/>
                   <div class="text-danger"
@@ -311,6 +312,7 @@
                     defaultOptionLabel="Please select a country"
                     v-model="moveFromOrigin"
                     :inputStyle="mediumStyles"
+                    :disablePlaceholder="true"
                     @blur="handleBlurField($v.moveFromOrigin)"/>
                   <div class="text-danger"
                     v-if="$v.moveFromOrigin.$dirty
@@ -372,6 +374,7 @@
                     id="previous-health-number"
                     class="mt-3"
                     v-model="previousHealthNumber"
+                    maxlength="50"
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.previousHealthNumber)" />
                 </div>
@@ -451,7 +454,7 @@
                   <div class="text-danger"
                     v-if="$v.departureReturnDate.$dirty
                       && !$v.departureReturnDate.departureReturnDateValidator"
-                    aria-live="assertive">Return date must be within the last 12 months and after return date.</div>
+                    aria-live="assertive">Return date must be within the last 12 months and after departure date.</div>
                 </div>
                 <div>
                   <Radio label="Do you have a previous B.C. Personal Health Number?"
@@ -1144,13 +1147,13 @@ export default {
       return !!this.citizenshipStatus
           && !!this.citizenshipStatusReason
           && !!this.citizenshipSupportDocuments.length > 0
-          && !!this.isNameChanged;
+          && (this.isNameChanged === 'N' || this.isNameChanged === 'Y' && this.nameChangeSupportDocuments.length > 0);
     },
     isCitizenshipDocsShown() {
       return !!this.citizenshipStatusReason;
     },
     isArrivalDateInCanadaRequired() {
-      return this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry;
+      return this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry || this.citizenshipStatus === StatusInCanada.TemporaryResident;
     },
     citizenshipSupportDocumentsOptions() {
       if (this.citizenshipStatus === StatusInCanada.PermanentResident) {
