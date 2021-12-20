@@ -334,12 +334,12 @@
                     <div v-if="bcMoveDateLabel === 'Most recent move to B.C.'">
                       <div class="text-danger"
                         v-if="$v.spouseRecentBCMoveDate.$dirty && !$v.spouseRecentBCMoveDate.required"
-                        aria-live="assertive">Most recent B.C. move date is required.</div>
+                        aria-live="assertive">Most recent move to B.C. is required.</div>
                       <div class="text-danger"
                         v-if="$v.spouseRecentBCMoveDate.$dirty
                               && $v.spouseRecentBCMoveDate.required
                               && !$v.spouseRecentBCMoveDate.dateDataValidator"
-                        aria-live="assertive">Invalid recent B.C. move date.</div>
+                        aria-live="assertive">Invalid most recent move to B.C. date.</div>
                       <div class="text-danger"
                         v-if="$v.spouseRecentBCMoveDate.$dirty
                               && $v.spouseRecentBCMoveDate.required
@@ -1236,8 +1236,8 @@ export default {
         && this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP
     },
     showMoveDateInputs() {
-      return this.spouseStatus !== this.statusOptions.Citizen || 
-        (this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP && this.spouseLivedInBCSinceBirth === 'N'); 
+      return (this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP && this.spouseLivedInBCSinceBirth === 'N') 
+        || this.spouseStatusReason !== this.canadianStatusReasons.LivingInBCWithoutMSP; 
     },
     showOriginTextField() {
       return this.spouseStatus === this.statusOptions.TemporaryResident;
