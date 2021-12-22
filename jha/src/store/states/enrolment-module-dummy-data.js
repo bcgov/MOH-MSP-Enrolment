@@ -83,7 +83,7 @@ export default {
   spouseFPCIncome: '20000',
   spouseFPCRDSP: '2000',
   // Child info
-  hasChildren: true,
+  hasChildren: 'Y',
   children: [
     {
       collapsed: false,
