@@ -65,7 +65,7 @@
               @blur="handleBlurField(v.middleName)"
               v-model='child.middleName' />
             <div class="text-danger"
-              v-if="v.middleName.$dirty && v.middleName.required && !v.middleName.nameValidator"
+              v-if="v.middleName.$dirty && !v.middleName.nameValidator"
               aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Middle name must be a letter.</div>
             <Input label='Last name'
               :id="'child-last-name-' + index"
