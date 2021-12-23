@@ -348,7 +348,7 @@ export default {
     this.ahSBIncome = this.$store.state.enrolmentModule.ahSBIncome;
     this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse;
     this.spouseSBIncome = this.$store.state.enrolmentModule.spouseSBIncome;
-    this.hasChildren = this.$store.state.enrolmentModule.hasChildren ? 'Y' : 'N';
+    this.hasChildren = this.$store.state.enrolmentModule.hasChildren;
     this.numChildren = `${this.$store.state.enrolmentModule.numChildren}`;
     this.claimedChildCareExpenses = this.$store.state.enrolmentModule.claimedChildCareExpenses;
     this.hasDisabilityCredit = this.$store.state.enrolmentModule.hasDisabilityCredit;

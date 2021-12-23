@@ -5,11 +5,17 @@
         <h1>Add child information and upload documents</h1>
         <p>Do you have a child who also needs to enrol for MSP coverage? If so, you are required to provide child information and provide supporting documents.</p>
         <hr class="mt-0"/>
-        <Button 
-          label="Add Child"
-          @click="addChild()"
-          :disabled="maximumChildrenReached"
-        />
+        <Radio v-if="hasChildren !== 'Y'"
+                label="Do you have a child who also needs to enrol for MSP coverage?"
+                :id="'has-children'"
+                :name="'has-children'"
+                class="mt-3"
+                v-model="hasChildren"
+                @blur="handleBlurField($v.hasChildren)"
+                :items="radioOptionsNoYes" />
+              <div class="text-danger"
+                v-if="$v.hasChildren.$dirty && !$v.hasChildren.required"
+                aria-live="assertive">Please indicate if your child's name changed.</div>
         <div v-for="(child, index) in children"
             :key="'child-' + index"
             :set="v = $v.children.$each[index]">
@@ -33,6 +39,7 @@
               :id="'child-age-range-' + index"
               :name="'child-age-range-' + index"
               v-model='child.ageRange'
+              @blur="handleBlurField(v.ageRange)"
               className="mt-3"
               :items='radioChildAgeOptions'
             />
@@ -43,35 +50,39 @@
               :id="'child-first-name-' + index"
               className='mt-3'
               maxlength="18"
+              @blur="handleBlurField(v.firstName)"
               v-model='child.firstName' />
             <div class="text-danger"
               v-if="v.firstName.$dirty && !v.firstName.required"
               aria-live="assertive">First name is required.</div>
             <div class="text-danger"
               v-if="v.firstName.$dirty && v.firstName.required && !v.firstName.nameValidator"
-              aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+              aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>First name must be a letter.</div>
             <Input label='Middle name (optional)'
               :id="'child-middle-name-' + index"
               className='mt-3'
               maxlength="18"
+              @blur="handleBlurField(v.middleName)"
               v-model='child.middleName' />
             <div class="text-danger"
               v-if="v.middleName.$dirty && !v.middleName.nameValidator"
-              aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+              aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Middle name must be a letter.</div>
             <Input label='Last name'
               :id="'child-last-name-' + index"
               className='mt-3'
               maxlength="18"
+              @blur="handleBlurField(v.lastName)"
               v-model='child.lastName' />
             <div class="text-danger"
               v-if="v.lastName.$dirty && !v.lastName.required"
               aria-live="assertive">Last name is required.</div>
             <div class="text-danger"
               v-if="v.lastName.$dirty && v.lastName.required && !v.lastName.nameValidator"
-              aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+              aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>First name must be a letter.</div>
             <DateInput label='Birth date'
               :id="'child-birth-date-' + index"
               className='mt-3'
+              @blur="handleBlurField(v.birthDate)"
               v-model='child.birthDate' />
             <div class="text-danger"
               v-if="v.birthDate.$dirty && !v.birthDate.required"
@@ -85,8 +96,8 @@
               :name="'child-gender-' + index"
               v-model='child.gender'
               className="mt-3"
-              :items='radioGenderOptions'
-              :horizontalAlign="true" />
+              @blur="handleBlurField(v.gender)"
+              :items='radioGenderOptions'/>
             <div class="text-danger"
               v-if="v.gender.$dirty && !v.gender.required"
               aria-live="assertive">Please indicate the child's gender.</div>
@@ -98,6 +109,7 @@
               :name="'child-status-' + index"
               label="Immigration status in Canada"
               class='mt-3'
+              @blur="handleBlurField(v.status)"
               v-model='child.status'
               :options='citizenshipStatusOptions' />
             <div class="text-danger"
@@ -109,6 +121,7 @@
                 :name="'child-status-reason-' + index"
                 label=''
                 v-model='child.statusReason'
+                @blur="handleBlurField(v.statusReason)"
                 :items='citizenshipStatusReasonOptions' />
               <div class="text-danger"
                 v-if="v.statusReason.$dirty && !v.statusReason.required"
@@ -120,6 +133,7 @@
                 :name="'child-status-reason' + index"
                 label=''
                 v-model='child.statusReason'
+                @blur="handleBlurField(v.statusReason)"
                 :items='temporaryResidentStatusReasonOptions' />
               <div class="text-danger"
                 v-if="v.statusReason.$dirty && !v.statusReason.required"
@@ -135,6 +149,7 @@
                 :id="'citizen-support-document-type-' + index"
                 class="mb-3"
                 v-model="child.citizenshipSupportDocumentType"
+                @blur="handleBlurField(v.citizenshipSupportDocumentType)"
                 :options="citizenshipSupportDocumentOptions(child)" />
               <div class="text-danger"
                 v-if="v.citizenshipSupportDocumentType.$dirty && !v.citizenshipSupportDocumentType.required"
@@ -153,6 +168,7 @@
                 :name="'name-change-' + index"
                 class="mt-3 mb-3"
                 v-model="child.isNameChanged"
+                @blur="handleBlurField(v.isNameChanged)"
                 :items="radioOptionsNoYes" />
               <div class="text-danger"
                 v-if="v.isNameChanged.$dirty && !v.isNameChanged.required"
@@ -172,6 +188,7 @@
                   :id="'name-change-doc-type-' + index"
                   class="mb-3"
                   v-model="child.nameChangeSupportDocumentType"
+                  @blur="handleBlurField(v.nameChangeSupportDocumentType)"
                   :options="nameChangeSupportDocumentOptions"/>
                 <div class="text-danger"
                   v-if="v.nameChangeSupportDocumentType.$dirty && !v.nameChangeSupportDocumentType.required"
@@ -208,7 +225,8 @@
                 <Input 
                   :id="'moved-from-' + index"
                   className="mt-3"
-                  label="From which province or country?" 
+                  label="From which province or country?"
+                  @blur="handleBlurField(v.movedFrom)"
                   v-model="child.movedFrom"/>
                 <div class="text-danger"
                   v-if="v.movedFrom.$dirty && !v.movedFrom.required"
@@ -401,7 +419,12 @@
         </div>
       </div>
     </PageContent>
-    <ContinueBar @continue="validateFields()" />
+    <ContinueBar 
+      @continue="validateFields()" 
+      @secondary="addChild()"
+      :hasSecondaryButton="hasChildren === 'Y' && !maximumChildrenReached"
+      :secondaryButtonLabel="'Add Child'"  
+    />
   </div>
 </template>
 
@@ -417,13 +440,19 @@ import {
   getTopScrollPosition
 } from '@/helpers/scroll';
 import {
+  // dateDataRequiredValidator,
+  // dateDataValidator,
+  nameValidator,
+  // nonBCValidator,
+  // nonCanadaValidator,
+} from '@/helpers/validators';
+import {
   getConvertedPath,
 } from '@/helpers/url';
 import logService from '@/services/log-service';
 import {
   ContinueBar,
   PageContent,
-  Button,
   Select,
   Radio,
   Input,
@@ -476,11 +505,6 @@ import {
 } from '@/store/modules/enrolment-module';
 import { ChildAgeTypes } from '../../constants/child-age-types';
 
-const nameValidator = (value) => {
-  const criteria = /^[a-zA-Z][a-zA-Z-.']*$/;
-  return criteria.test(value);
-};
-
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
 };
@@ -493,8 +517,6 @@ const doesRequireNameChangeDocuments = (val, vm) => {
   if (vm && vm.isNameChanged === 'Y') {
     if (Array.isArray(val)) {
       return val.length > 0;
-    } else {
-      return !!val;
     }
   } else {
     return true;
@@ -523,7 +545,6 @@ export default {
   components: {
     ContinueBar,
     PageContent,
-    Button,
     Select,
     Radio,
     Input,
@@ -546,7 +567,7 @@ export default {
       nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
       temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
       // Data to be saved
-      hasChildren: false,
+      hasChildren: null,
       children: [],
     };
   },
@@ -566,6 +587,7 @@ export default {
   },
   validations() {
     const validations = {
+      hasChildren: required,
       children: {
         $each: {
           ageRange: {
@@ -822,9 +844,16 @@ export default {
   watch: {
     children(arr) {
       if (arr.length > 0) {
-        this.hasChildren = true;
+        this.hasChildren = 'Y';
       } else {
-        this.hasChildren = false;
+        this.hasChildren = 'N';
+      }
+    },
+    hasChildren(val) {
+      if (this.pageLoaded) {
+        if (val === 'Y') {
+          this.addChild();
+        } 
       }
     }
   },
