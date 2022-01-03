@@ -1263,11 +1263,7 @@ export default {
       return false;
     },
     showDischargeInputs() {
-      if (this.spouseStatus === this.statusOptions.Citizen) {
-        return true;
-      } else {
-        return false;
-      }
+      return this.spouseStatus === this.statusOptions.Citizen;
     }
   },
   // Required in order to block back navigation.
