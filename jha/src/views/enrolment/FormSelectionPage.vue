@@ -90,9 +90,9 @@ export default {
     };
   },
   computed: mapGetters({
-    isEligibleForMSP: "enrolmentModule/isEligibleForMSP",
-    isEligibleForFPCare: "enrolmentModule/isEligibleForFPCare",
-    isEligibleForSuppBen: "enrolmentModule/isEligibleForSuppBen",
+    isEligibleForMSP: `${enrolmentModule}/isEligibleForMSP`,
+    isEligibleForFPCare: `${enrolmentModule}/isEligibleForFPCare`,
+    isEligibleForSuppBen: `${enrolmentModule}/isEligibleForSuppBen`,
   }),
   watch: {
     isApplyingForMSP(newValue) {
