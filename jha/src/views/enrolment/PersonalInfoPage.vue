@@ -99,41 +99,43 @@
             && !$v.gender.required"
           aria-live="assertive">Gender is required.</div>
         
-        <h2 class="mt-4">Your status in Canada</h2>
-        <p>Please provide you immigration status information. You will be required to upload documents to support your status in Canada.</p>
-        <hr/>
-        <Select label="Immigration status in Canada"
-          id="immigration-status"
-          v-model="citizenshipStatus"
-          :options="citizenshipStatusOptions"
-          :inputStyle="mediumStyles"
-          @blur="handleBlurField($v.citizenshipStatus)"/>
-        <div class="text-danger"
-          v-if="$v.citizenshipStatus.$dirty
-            && !$v.citizenshipStatus.required"
-          aria-live="assertive">Immigration status in Canada is required.</div>
-        <div v-if="citizenshipStatus === StatusInCanada.Citizen
-            || citizenshipStatus === StatusInCanada.PermanentResident">
-          <Radio name="citizen-status-reason"
-            class="mt-3"
-            v-model="citizenshipStatusReason"
-            :items="citizenshipStatusReasonOptions"
-            @blur="handleBlurField($v.citizenshipStatusReason)" />
+        <div v-if="requestImmigrationStatus">
+          <h2 class="mt-4">Your status in Canada</h2>
+          <p>Please provide you immigration status information. You will be required to upload documents to support your status in Canada.</p>
+          <hr/>
+          <Select label="Immigration status in Canada"
+            id="immigration-status"
+            v-model="citizenshipStatus"
+            :options="citizenshipStatusOptions"
+            :inputStyle="mediumStyles"
+            @blur="handleBlurField($v.citizenshipStatus)"/>
           <div class="text-danger"
-            v-if="$v.citizenshipStatusReason.$dirty
-              && !$v.citizenshipStatusReason.required"
-            aria-live="assertive">This field is required.</div>
-        </div>
-        <div v-if="citizenshipStatus === StatusInCanada.TemporaryResident">
-          <Radio name="citizen-status-reason"
-            class="mt-3"
-            v-model="citizenshipStatusReason"
-            :items="temporaryResidentStatusReasonOptions"
-            @blur="handleBlurField($v.citizenshipStatusReason)" />
-          <div class="text-danger"
-            v-if="$v.citizenshipStatusReason.$dirty
-              && !$v.citizenshipStatusReason.required"
-            aria-live="assertive">This field is required.</div>
+            v-if="$v.citizenshipStatus.$dirty
+              && !$v.citizenshipStatus.required"
+            aria-live="assertive">Immigration status in Canada is required.</div>
+          <div v-if="citizenshipStatus === StatusInCanada.Citizen
+              || citizenshipStatus === StatusInCanada.PermanentResident">
+            <Radio name="citizen-status-reason"
+              class="mt-3"
+              v-model="citizenshipStatusReason"
+              :items="citizenshipStatusReasonOptions"
+              @blur="handleBlurField($v.citizenshipStatusReason)" />
+            <div class="text-danger"
+              v-if="$v.citizenshipStatusReason.$dirty
+                && !$v.citizenshipStatusReason.required"
+              aria-live="assertive">This field is required.</div>
+          </div>
+          <div v-if="citizenshipStatus === StatusInCanada.TemporaryResident">
+            <Radio name="citizen-status-reason"
+              class="mt-3"
+              v-model="citizenshipStatusReason"
+              :items="temporaryResidentStatusReasonOptions"
+              @blur="handleBlurField($v.citizenshipStatusReason)" />
+            <div class="text-danger"
+              v-if="$v.citizenshipStatusReason.$dirty
+                && !$v.citizenshipStatusReason.required"
+              aria-live="assertive">This field is required.</div>
+          </div>
         </div>
         
         <div v-if="isCitizenshipDocsShown">
@@ -865,21 +867,11 @@ export default {
       gender: {
         required,
       },
-      citizenshipStatus: {
-        required,
-      },
-      citizenshipStatusReason: {
-        required,
-      },
-      citizenshipSupportDocumentType: {
-        required,
-      },
-      citizenshipSupportDocuments: {
-        required,
-      },
-      isNameChanged: {
-        required,
-      },
+      citizenshipStatus: {},
+      citizenshipStatusReason: {},
+      citizenshipSupportDocumentType: {},
+      citizenshipSupportDocuments: {},
+      isNameChanged: {},
       nameChangeSupportDocumentType: {},
       nameChangeSupportDocuments: {},
       fromProvinceOrCountry: {},
@@ -889,19 +881,13 @@ export default {
       arrivalDateInBC: {},
       arrivalDateInCanada: {},
       previousHealthNumber: {},
-      isOutsideBCInLast12Months: {
-        required,
-      },
+      isOutsideBCInLast12Months: {},
       departureReason: {},
       departureLocation: {},
       departureBeginDate: {},
       departureReturnDate: {},
-      hasPreviousPHN: {
-        required,
-      },
-      previousPHN: {
-        phnValidator: optionalValidator(phnValidator),
-      },
+      hasPreviousPHN: {},
+      previousPHN: {},
       isReleasedFromArmedForces: {},
       armedForcesDischargeDate: {},
       isStudent: {},
@@ -911,72 +897,83 @@ export default {
       validations.socialInsuranceNumber.required = required;
       validations.socialInsuranceNumber.sinValidator = optionalValidator(sinValidator);
     }
-    if (this.isNameChanged === 'Y') {
-      validations.nameChangeSupportDocumentType.required = required;
-      validations.nameChangeSupportDocuments.required = required;
-    }
-    if (this.requestFromProvinceOrCountry) {
-      validations.fromProvinceOrCountry.required = required;
-    }
-    if (this.requestLivedInBCSinceBirth) {
-      validations.hasLivedInBCSinceBirth.required = required;
-    }
-    if (this.requestPermanentMoveInfo) {
-      validations.isMovedToBCPermanently.required = required;
-      if (this.citizenshipStatus === StatusInCanada.Citizen
-        || this.citizenshipStatus === StatusInCanada.PermanentResident) {
-        validations.isMovedToBCPermanently.yesValidator = yesValidator;
+    if (this.requestImmigrationStatus) {
+      validations.citizenshipStatus.required = required;
+      validations.citizenshipStatusReason.required = required;
+      validations.citizenshipSupportDocumentType.required = required;
+      validations.citizenshipSupportDocuments.required = required;
+      validations.isNameChanged.required = required;
+      validations.isOutsideBCInLast12Months.required = required;
+      validations.hasPreviousPHN.required = required;
+      validations.previousPHN.phnValidator = optionalValidator(phnValidator);
+
+      if (this.isNameChanged === 'Y') {
+        validations.nameChangeSupportDocumentType.required = required;
+        validations.nameChangeSupportDocuments.required = required;
       }
-    }
-    if (this.requestCountryMoveInfo || this.requestProvinceMoveInfo) {
-      validations.moveFromOrigin.required = required;
-      if (this.requestProvinceMoveInfo) {
-        validations.moveFromOrigin.nonBCValidator = nonBCValidator;
+      if (this.requestFromProvinceOrCountry) {
+        validations.fromProvinceOrCountry.required = required;
       }
-    }
-    if (this.requestArrivalInBCInfo) {
-      validations.arrivalDateInBC.required = dateDataRequiredValidator(this.arrivalDateInBCData);
-      validations.arrivalDateInBC.dateDataValidator = dateDataValidator(this.arrivalDateInBCData);
-      validations.arrivalDateInBC.pastDateValidator = optionalValidator(pastDateValidator);
-      validations.arrivalDateInBC.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
-    }
-    if (this.requestArrivalInCanadaInfo) {
-      if (this.isArrivalDateInCanadaRequired) {
-        validations.arrivalDateInCanada.required = dateDataRequiredValidator(this.arrivalDateInCanadaData);
-      } else {
-        validations.arrivalDateInCanada.required = () => true; // Validator for optional use-case.
+      if (this.requestLivedInBCSinceBirth) {
+        validations.hasLivedInBCSinceBirth.required = required;
       }
-      validations.arrivalDateInCanada.dateDataValidator = dateDataValidator(this.arrivalDateInCanadaData);
-      validations.arrivalDateInCanada.pastDateValidator = optionalValidator(pastDateValidator);
-      validations.arrivalDateInCanada.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
-      validations.arrivalDateInCanada.beforeArrivalInBCValidator = optionalValidator(beforeArrivalInBCValidator);
-    }
-    if (this.isOutsideBCInLast12Months === 'Y') {
-      validations.departureReason.required = required;
-      validations.departureLocation.required = required;
-      validations.departureBeginDate.required = dateDataRequiredValidator(this.departureBeginDateData);
-      validations.departureBeginDate.dateDataValidator = dateDataValidator(this.departureBeginDateData);
-      validations.departureBeginDate.departureBeginDateValidator = optionalValidator(departureBeginDateValidator);
-      validations.departureReturnDate.required = dateDataRequiredValidator(this.departureReturnDateData);
-      validations.departureReturnDate.dateDataValidator = dateDataValidator(this.departureReturnDateData);
-      validations.departureReturnDate.departureReturnDateValidator = optionalValidator(departureReturnDateValidator);
-    }
-    if (this.requestArmedForceInfo) {
-      validations.isReleasedFromArmedForces.required = required;
-    }
-    if (this.isReleasedFromArmedForces === 'Y') {
-      validations.armedForcesDischargeDate.required = dateDataRequiredValidator(this.armedForcesDischargeDateData);
-      validations.armedForcesDischargeDate.dateDataValidator = dateDataValidator(this.armedForcesDischargeDateData);
-      validations.armedForcesDischargeDate.distantPastValidator = optionalValidator(distantPastValidator);
-      validations.armedForcesDischargeDate.pastDateValidator = optionalValidator(pastDateValidator);
-      validations.armedForcesDischargeDate.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
-    }
-    if (this.requestIsStudent) {
-      validations.isStudent.required = required;
-    }
-    if (this.requestWillStudentResideInBC) {
-      validations.willStudentResideInBC.required = required;
-      validations.willStudentResideInBC.yesValidator = optionalValidator(yesValidator);
+      if (this.requestPermanentMoveInfo) {
+        validations.isMovedToBCPermanently.required = required;
+        if (this.citizenshipStatus === StatusInCanada.Citizen
+          || this.citizenshipStatus === StatusInCanada.PermanentResident) {
+          validations.isMovedToBCPermanently.yesValidator = yesValidator;
+        }
+      }
+      if (this.requestCountryMoveInfo || this.requestProvinceMoveInfo) {
+        validations.moveFromOrigin.required = required;
+        if (this.requestProvinceMoveInfo) {
+          validations.moveFromOrigin.nonBCValidator = nonBCValidator;
+        }
+      }
+      if (this.requestArrivalInBCInfo) {
+        validations.arrivalDateInBC.required = dateDataRequiredValidator(this.arrivalDateInBCData);
+        validations.arrivalDateInBC.dateDataValidator = dateDataValidator(this.arrivalDateInBCData);
+        validations.arrivalDateInBC.pastDateValidator = optionalValidator(pastDateValidator);
+        validations.arrivalDateInBC.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
+      }
+      if (this.requestArrivalInCanadaInfo) {
+        if (this.isArrivalDateInCanadaRequired) {
+          validations.arrivalDateInCanada.required = dateDataRequiredValidator(this.arrivalDateInCanadaData);
+        } else {
+          validations.arrivalDateInCanada.required = () => true; // Validator for optional use-case.
+        }
+        validations.arrivalDateInCanada.dateDataValidator = dateDataValidator(this.arrivalDateInCanadaData);
+        validations.arrivalDateInCanada.pastDateValidator = optionalValidator(pastDateValidator);
+        validations.arrivalDateInCanada.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
+        validations.arrivalDateInCanada.beforeArrivalInBCValidator = optionalValidator(beforeArrivalInBCValidator);
+      }
+      if (this.isOutsideBCInLast12Months === 'Y') {
+        validations.departureReason.required = required;
+        validations.departureLocation.required = required;
+        validations.departureBeginDate.required = dateDataRequiredValidator(this.departureBeginDateData);
+        validations.departureBeginDate.dateDataValidator = dateDataValidator(this.departureBeginDateData);
+        validations.departureBeginDate.departureBeginDateValidator = optionalValidator(departureBeginDateValidator);
+        validations.departureReturnDate.required = dateDataRequiredValidator(this.departureReturnDateData);
+        validations.departureReturnDate.dateDataValidator = dateDataValidator(this.departureReturnDateData);
+        validations.departureReturnDate.departureReturnDateValidator = optionalValidator(departureReturnDateValidator);
+      }
+      if (this.requestArmedForceInfo) {
+        validations.isReleasedFromArmedForces.required = required;
+      }
+      if (this.isReleasedFromArmedForces === 'Y') {
+        validations.armedForcesDischargeDate.required = dateDataRequiredValidator(this.armedForcesDischargeDateData);
+        validations.armedForcesDischargeDate.dateDataValidator = dateDataValidator(this.armedForcesDischargeDateData);
+        validations.armedForcesDischargeDate.distantPastValidator = optionalValidator(distantPastValidator);
+        validations.armedForcesDischargeDate.pastDateValidator = optionalValidator(pastDateValidator);
+        validations.armedForcesDischargeDate.afterBirthdateValidator = optionalValidator(afterBirthdateValidator);
+      }
+      if (this.requestIsStudent) {
+        validations.isStudent.required = required;
+      }
+      if (this.requestWillStudentResideInBC) {
+        validations.willStudentResideInBC.required = required;
+        validations.willStudentResideInBC.yesValidator = optionalValidator(yesValidator);
+      }
     }
     return validations;
   },
@@ -1069,6 +1066,9 @@ export default {
     requestSocialInsuranceNumber() {
       return this.$store.state.enrolmentModule.isApplyingForFPCare
           || this.$store.state.enrolmentModule.isApplyingForSuppBen;
+    },
+    requestImmigrationStatus() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP;
     },
     requestIsNameChanged() {
       return !!this.citizenshipSupportDocumentType;
