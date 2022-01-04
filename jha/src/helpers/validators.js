@@ -69,33 +69,3 @@ export const optionalInvalidDateValidator = (validator) => {
     return validator(value, vm);
   };
 };
-
-export const childBirthdateRequiredValidator = () => {
-  return (value, vm) => {
-    const dateData = vm.birthdateData;
-
-    if (!dateData || !dateData.year || typeof dateData.month !== 'number' || !dateData.day) {
-      return false;
-    }
-    return true;
-  };
-};
-
-export const childBirthdateValidator = () => {
-  return (value, vm) => {
-    const dateData = vm.birthdateData;
-
-    if (!dateData || !dateData.year || typeof dateData.month !== 'number' || !dateData.day) {
-      return true;
-    }
-    const year = dateData.year;
-    const month = dateData.month;
-    const day = dateData.day;
-    if (!(year && typeof month === 'number' && day)
-      && (year || typeof month === 'number' || day)) {
-      return false;
-    }
-    const isoDateString = getISODateString(year, month + 1, day);
-    return isValidISODateString(isoDateString);
-  };
-};
