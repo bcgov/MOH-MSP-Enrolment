@@ -33,7 +33,7 @@ export const nonCanadaValidator = (value) => {
 
 export const dateDataRequiredValidator = (dateData) => {
   return () => {
-    if (!dateData || !dateData.year || typeof dateData.month !== 'number' || !dateData.day) {
+    if (!dateData || !dateData.year && typeof dateData.month !== 'number' && !dateData.day) {
       return false;
     }
     return true;
@@ -42,7 +42,7 @@ export const dateDataRequiredValidator = (dateData) => {
 
 export const dateDataValidator = (dateData) => {
   return () => {
-    if (!dateData || !dateData.year || typeof dateData.month !== 'number' || !dateData.day) {
+    if (!dateData || !dateData.year && typeof dateData.month !== 'number' && !dateData.day) {
       return true;
     }
     const year = dateData.year;
