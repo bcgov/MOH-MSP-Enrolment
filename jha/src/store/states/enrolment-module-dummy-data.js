@@ -100,7 +100,7 @@ export default {
       lastName: 'Doe',
       birthDate: new Date('2010-02-02'),
       gender: 'M',
-      movedFromOrigin: 'USA',
+      moveFromOrigin: null,
       arrivalToBCDate: new Date('2010-02-02'),
       arrivalToCanadaDate: new Date('2010-02-02'),
       livedInBCSinceBirth: 'Y',
