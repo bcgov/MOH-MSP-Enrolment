@@ -1223,5 +1223,20 @@ export default {
       commit(SET_PHONE, payload);
     },
   },
-  getters: {}
+  getters: {
+    isEligibleForMSP: state => {
+      return state.eqMSPLiveInBC === 'Y' 
+        && state.eqMSPAwayOver30 === 'N' 
+        && state.eqMSPStudentMinorRefugee === 'N'
+        && state.eqMSPHasDocuments === 'Y'; 
+    },
+    isEligibleForFPCare: state => {
+      return state.eqFPCMeetsCriteria === 'Y'
+        && state.eqFPCHasInfo === 'Y';
+    },
+    isEligibleForSuppBen: state => {
+      return state.eqSBMeetsCriteria === 'Y'
+        && state.eqSBhasInfo === 'Y';
+    }
+  }
 };
