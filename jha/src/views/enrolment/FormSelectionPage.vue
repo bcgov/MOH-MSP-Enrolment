@@ -6,6 +6,7 @@
         <hr class="mt-0"/>
         <Checkbox label="MSP Enrolment"
           id="msp"
+          :disabled="!isEligibleForMSP"
           v-model="isApplyingForMSP">
           <template v-slot:description>
             <p class="mt-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis quidem deleniti molestiae provident a veritatis nulla obcaecati assumenda iusto consequuntur.</p>
@@ -13,6 +14,7 @@
         </Checkbox>
         <Checkbox label="Fair PharmaCare"
           id="fpc"
+          :disabled="!isEligibleForFPCare"
           v-model="isApplyingForFPCare">
           <template v-slot:description>
             <p class="mt-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis quidem deleniti molestiae provident a veritatis nulla obcaecati assumenda iusto consequuntur.</p>
@@ -20,6 +22,7 @@
         </Checkbox>
         <Checkbox label="MSP Supplementary Benefits"
           id="sb"
+          :disabled="!isEligibleForSuppBen"
           v-model="isApplyingForSuppBen">
           <template v-slot:description>
             <p class="mt-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis quidem deleniti molestiae provident a veritatis nulla obcaecati assumenda iusto consequuntur.</p>
@@ -61,6 +64,7 @@ import {
   ContinueBar,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
+import { mapGetters } from 'vuex';
 
 const atLeastOne = (vm) => {
   return vm.isApplyingForMSP
@@ -85,6 +89,11 @@ export default {
       applicationUuid: null,
     };
   },
+  computed: mapGetters({
+    isEligibleForMSP: "enrolmentModule/isEligibleForMSP",
+    isEligibleForFPCare: "enrolmentModule/isEligibleForFPCare",
+    isEligibleForSuppBen: "enrolmentModule/isEligibleForSuppBen",
+  }),
   watch: {
     isApplyingForMSP(newValue) {
       if (this.isPageLoaded) {
@@ -107,6 +116,21 @@ export default {
     this.isApplyingForMSP = this.$store.state.enrolmentModule.isApplyingForMSP;
     this.isApplyingForFPCare = this.$store.state.enrolmentModule.isApplyingForFPCare;
     this.isApplyingForSuppBen = this.$store.state.enrolmentModule.isApplyingForSuppBen;
+
+    if (!this.isEligibleForMSP) {
+      this.isApplyingForMSP = false;
+      this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_MSP}`, false);
+    }
+    
+    if (!this.isEligibleForFPCare) {
+      this.isApplyingForFPCare = false;
+      this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_FPCARE}`, false);
+    }
+    
+    if (!this.isEligibleForSuppBen) {
+      this.isApplyingForSuppBen = false;
+      this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_SUPP_BEN}`, false);
+    }
 
     logService.logNavigation(
       this.applicationUuid,
