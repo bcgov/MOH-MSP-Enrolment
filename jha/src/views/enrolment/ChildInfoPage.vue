@@ -201,11 +201,6 @@ export default {
       });
       this.children = [...children];
     },
-    setChildRef(el) {
-      if (el) {
-        this.childRefs.push(el)
-      }
-    },
     handleBlurField(validationObject) {
       if (validationObject) {
         validationObject.$touch();
