@@ -15,7 +15,7 @@
       </main>
       <Footer :version='version' />
     </div>
-    <portal-target name="modal"></portal-target>
+    <portal-target id="modal-target" name="modal"></portal-target>
   </div>
 </template>
 
@@ -109,7 +109,10 @@ export default {
       return this.$store.state.appModule.showMobileStepperDetails;
     },
     isModalOpen() {
-      return Wormhole.hasContentFor('modal');
+      const modalTargetEl = document.body.querySelector('#modal-target');
+      const modalTargetHasChildren = modalTargetEl && modalTargetEl.children.length > 0;
+      return Wormhole.hasContentFor('modal')
+          || modalTargetHasChildren;
     }
   },
   methods: {

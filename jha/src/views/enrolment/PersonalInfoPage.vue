@@ -158,7 +158,9 @@
             <hr/>
             <div class="row">
               <div class="col-md-7">
-                <FileUploader v-model="citizenshipSupportDocuments" />
+                <FileUploader v-model="citizenshipSupportDocuments"
+                  :isZoomPortalEnabled="true"
+                  modalElementTarget="#modal-target" />
                 <div class="text-danger mt-3"
                   v-if="$v.citizenshipSupportDocuments.$dirty
                     && !$v.citizenshipSupportDocuments.required"
@@ -218,7 +220,9 @@
             <hr/>
             <div class="row">
               <div class="col-md-7">
-                <FileUploader v-model="nameChangeSupportDocuments"/>
+                <FileUploader v-model="nameChangeSupportDocuments"
+                  :isZoomPortalEnabled="true"
+                  modalElementTarget="#modal-target"/>
                 <div class="text-danger"
                   v-if="$v.nameChangeSupportDocuments.$dirty
                     && !$v.nameChangeSupportDocuments.required"
