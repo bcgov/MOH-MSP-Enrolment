@@ -221,12 +221,14 @@ export default {
       this.$v.$touch();
       // touch all children
       let validChildren = true;
-      for (let child of this.$refs.children) {
-        if (child.$v) {
-          child.$v.$touch();
-          
-          if (child.$v.$invalid) {
-            validChildren = false;
+      if (this.$refs && this.$refs.children) {
+        for (let child of this.$refs.children) {
+          if (child.$v) {
+            child.$v.$touch();
+            
+            if (child.$v.$invalid) {
+              validChildren = false;
+            }
           }
         }
       }

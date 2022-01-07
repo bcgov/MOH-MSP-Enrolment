@@ -149,12 +149,21 @@
               v-if="$v.citizenshipSupportDocumentType.$dirty && !$v.citizenshipSupportDocumentType.required"
               aria-live="assertive">Please select one of the above.</div>
             <div v-if="citizenshipSupportDocumentType">
-            <h2>{{citizenshipSupportDocumentType}}</h2>
-            <hr/>
-            <FileUploader v-model="citizenshipSupportDocuments" />
-            <div class="text-danger"
-                v-if="$v.citizenshipSupportDocuments.$dirty && !$v.citizenshipSupportDocuments.required"
-                aria-live="assertive">File upload required.</div>
+              <h2>{{citizenshipSupportDocumentType}}</h2>
+              <hr/>
+              <div class="row">
+                <div class="col-md-7">
+                  <FileUploader v-model="citizenshipSupportDocuments"
+                    :isZoomPortalEnabled="true"
+                    modalElementTarget="#modal-target" />
+                  <div class="text-danger"
+                      v-if="$v.citizenshipSupportDocuments.$dirty && !$v.citizenshipSupportDocuments.required"
+                      aria-live="assertive">File upload required.</div>
+                </div>
+                <div class="col-md-5">
+                  <SampleImageTipBox :documentType="citizenshipSupportDocumentType"/>
+                </div>
+              </div>
             </div>
 
             <Radio label="Has your child's name changed since their ID was issued due to marriage or legal name change?"
@@ -191,11 +200,20 @@
             <div v-if="nameChangeSupportDocumentType">
                 <h2>{{nameChangeSupportDocumentType}}</h2>
                 <hr/>
-                <FileUploader class="mb-3"
-                  v-model="nameChangeSupportDocuments"/>
-                <div class="text-danger"
-                  v-if="$v.nameChangeSupportDocuments.$dirty && !$v.nameChangeSupportDocuments.required"
-                  aria-live="assertive">File upload required.</div>
+                <div class="row">
+                  <div class="col-md-7">
+                    <FileUploader class="mb-3"
+                      v-model="nameChangeSupportDocuments"
+                      :isZoomPortalEnabled="true"
+                      modalElementTarget="#modal-target" />
+                    <div class="text-danger"
+                      v-if="$v.nameChangeSupportDocuments.$dirty && !$v.nameChangeSupportDocuments.required"
+                      aria-live="assertive">File upload required.</div>
+                  </div>
+                  <div class="col-md-5">
+                    <SampleImageTipBox :documentType="nameChangeSupportDocumentType"/>
+                  </div>
+                </div>
             </div>
             </div>
 
@@ -755,6 +773,7 @@ import {
 import { ChildAgeTypes } from '../../constants/child-age-types';
 import { isAfter, isBefore } from 'date-fns/esm';
 import TipBox from '@/components/TipBox.vue';
+import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import { mediumStyles, smallStyles } from '@/constants/input-styles'
 
 const birthDatePastValidator = (value) => {
@@ -856,6 +875,7 @@ export default {
     PhnInput,
     FileUploader,
     TipBox,
+    SampleImageTipBox,
     PostalCodeInput,
   },
   props: {
