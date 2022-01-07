@@ -167,16 +167,7 @@
                   aria-live="assertive">You must include documentation for your application.</div>
               </div>
               <div class="col-md-5">
-                <TipBox title="Tip">
-                  <p>Scan the document, or take a photo of it.</p>
-                  <p>Make sure that it's:</p>
-                  <ul>
-                    <li>The entire document, from corner to corner</li>
-                    <li>Rotated correctly (not upside down or sideways</li>
-                    <li>In focus and easy to read</li>
-                    <li>A JPG, PNG, GIF, BMP or PDF file</li>
-                  </ul>
-                </TipBox>
+                <SampleImageTipBox :documentType="citizenshipSupportDocumentType"/>
               </div>
             </div>
           </div>
@@ -229,16 +220,7 @@
                   aria-live="assertive">You must include documentation for your application.</div>
               </div>
               <div class="col-md-5">
-                <TipBox title="Tip">
-                  <p>Scan the document, or take a photo of it.</p>
-                  <p>Make sure that it's:</p>
-                  <ul>
-                    <li>The entire document, from corner to corner</li>
-                    <li>Rotated correctly (not upside down or sideways</li>
-                    <li>In focus and easy to read</li>
-                    <li>A JPG, PNG, GIF, BMP or PDF file</li>
-                  </ul>
-                </TipBox>
+                <SampleImageTipBox :documentType="nameChangeSupportDocumentType"/>
               </div>
             </div>
           </div>
@@ -689,6 +671,7 @@ import {
 } from '@/constants/immigration-status-types';
 import ConsentModal from '@/components/ConsentModal.vue';
 import TipBox from '@/components/TipBox.vue';
+import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import {
   isAfter,
   isBefore,
@@ -744,6 +727,7 @@ export default {
     PhnInput,
     Radio,
     RegionSelect,
+    SampleImageTipBox,
     Select,
     SINInput,
     TipBox,
