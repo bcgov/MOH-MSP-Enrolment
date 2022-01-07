@@ -160,22 +160,15 @@
               <hr/>
               <div class="row">
                   <div class="col-md-7">
-                    <FileUploader v-model="spouseCitizenshipSupportDocuments" />
+                    <FileUploader v-model="spouseCitizenshipSupportDocuments"
+                    :isZoomPortalEnabled="true"
+                    modalElementTarget="#modal-target" />
                     <div class="text-danger"
                       v-if="$v.spouseCitizenshipSupportDocuments.$dirty && !$v.spouseCitizenshipSupportDocuments.required"
                       aria-live="assertive">File upload required.</div>
                   </div>
                   <div class="col-md-5">
-                    <TipBox title="Tip">
-                      <p>Scan the document, or take a photo of it.</p>
-                      <p>Make sure that it's:</p>
-                      <ul>
-                        <li>The entire document, from corner to corner</li>
-                        <li>Rotated correctly (not upside down or sideways</li>
-                        <li>In focus and easy to read</li>
-                        <li>A JPG, PNG, GIF, BMP or PDF file</li>
-                      </ul>
-                    </TipBox>
+                    <SampleImageTipBox :documentType="spouseCitizenshipSupportDocumentType"/>
                   </div>
                 </div>
             </div>
@@ -219,22 +212,15 @@
                 <div class="row">
                   <div class="col-md-7">
                     <FileUploader class="mb-3"
-                        v-model="spouseNameChangeSupportDocuments"/>
-                      <div class="text-danger"
-                        v-if="$v.spouseNameChangeSupportDocuments.$dirty && !$v.spouseNameChangeSupportDocuments.required"
-                        aria-live="assertive">File upload required.</div>
+                        v-model="spouseNameChangeSupportDocuments"
+                        :isZoomPortalEnabled="true"
+                        modalElementTarget="#modal-target" />
+                    <div class="text-danger"
+                      v-if="$v.spouseNameChangeSupportDocuments.$dirty && !$v.spouseNameChangeSupportDocuments.required"
+                      aria-live="assertive">File upload required.</div>
                   </div>
                   <div class="col-md-5">
-                    <TipBox title="Tip">
-                      <p>Scan the document, or take a photo of it.</p>
-                      <p>Make sure that it's:</p>
-                      <ul>
-                        <li>The entire document, from corner to corner</li>
-                        <li>Rotated correctly (not upside down or sideways</li>
-                        <li>In focus and easy to read</li>
-                        <li>A JPG, PNG, GIF, BMP or PDF file</li>
-                      </ul>
-                    </TipBox>
+                    <SampleImageTipBox :documentType="spouseNameChangeSupportDocumentType"/>
                   </div>
                 </div>
               </div>
@@ -441,7 +427,11 @@
                     v-model='spouseOutsideBCLast12Months'
                     className="mt-3"
                     @blur="handleBlurField($v.spouseOutsideBCLast12Months)"
-                    :items='radioOptionsNoYes'/>
+                    :items='radioOptionsNoYes'>
+                    <template v-slot:description>
+                      <span class="field-description">If your spouse has been living in B.C. for less than 12 months, please indicate any absences since arrival.</span>
+                    </template>
+                  </Radio>
                   <div class="text-danger"
                     v-if="$v.spouseOutsideBCLast12Months.$dirty && !$v.spouseOutsideBCLast12Months.required"
                     aria-live="assertive">Please indicate whether your spouse has been outside BC in the past 12 months.</div>
@@ -681,6 +671,7 @@ import {
   SET_SPOUSE_DISCHARGE_DATE,
 } from '@/store/modules/enrolment-module';
 import TipBox from '@/components/TipBox.vue';
+import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -758,7 +749,8 @@ export default {
     DateInput,
     PhnInput,
     FileUploader,
-    TipBox
+    TipBox,
+    SampleImageTipBox
   },
   data: () => {
     return {
@@ -1219,6 +1211,9 @@ export default {
       if (this.spouseStatus === this.statusOptions.TemporaryResident && this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP) {
         return 'Arrival date in Canada (Optional)';
       }
+      if (this.spouseStatus === this.statusOptions.PermanentResident && this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP) {
+        return 'Arrival date in Canada (Optional)';
+      }
       return 'Arrival date in Canada';
     },
     bcMoveDateLabel() {
@@ -1236,14 +1231,17 @@ export default {
         && this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP
     },
     showMoveDateInputs() {
-      return (this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP && this.spouseLivedInBCSinceBirth === 'N') 
+      return (this.spouseStatus === this.statusOptions.PermanentResident && this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP) 
+        || (this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP && this.spouseLivedInBCSinceBirth === 'N') 
         || this.spouseStatusReason !== this.canadianStatusReasons.LivingInBCWithoutMSP; 
     },
     showOriginTextField() {
       return this.spouseStatus === this.statusOptions.TemporaryResident;
     },
     showMovedPermanentlyQuestion() {
-      return this.spouseStatusReason !== this.canadianStatusReasons.LivingInBCWithoutMSP || this.spouseLivedInBCSinceBirth === 'Y' || this.spouseLivedInBCSinceBirth === 'N';
+      return this.spouseStatusReason !== this.canadianStatusReasons.LivingInBCWithoutMSP 
+      || (this.spouseStatus === this.statusOptions.PermanentResident && this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP) 
+      || this.spouseLivedInBCSinceBirth === 'Y' || this.spouseLivedInBCSinceBirth === 'N';
     },
     showProvinceSelector() {
       if (this.spouseStatus === this.statusOptions.Citizen) {
