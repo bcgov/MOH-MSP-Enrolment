@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="container stepper">
+      <PageStepper :currentPath='$router.currentRoute.path'
+        :routes='stepRoutes'
+        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+        :isMobileStepperOpen='isMobileStepperOpen'
+        @onClickLink='handleClickStepperLink($event)'/>
+    </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Add personal information and upload documents</h1>
@@ -681,6 +688,7 @@ import {
   subDays,
   subYears,
 } from 'date-fns';
+import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 const birthdate16YearsValidator = (value) => {
   const sixteenYearsAgo = subYears(startOfToday(), 16);
@@ -715,7 +723,10 @@ const beforeArrivalInBCValidator = (value, vm) => {
 
 export default {
   name: 'PersonalInfoPage',
-  mixins: [pageContentMixin],
+  mixins: [
+    pageContentMixin,
+    pageStepperMixin,
+  ],
   components: {
     ConsentModal,
     ContinueBar,
