@@ -2,7 +2,7 @@
   <div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Suplimentary Benefits Financial Information</h1>
+        <h1>Supplementary Benefits Financial Information</h1>
         <h4 class="font-weight-normal">
           Your application must be based on income from the most recent Notice of 
           Assessment or Notice of Reassessment available from Canada Revenue Agency(CRA). 
@@ -175,7 +175,9 @@
             <div class="col-md-7">
               <FileUploader class="ml-5"
                 v-model="attendantNursingReceipts"
-                @blur="handleBlurField($v.attendantNursingReceipts)"/>
+                @blur="handleBlurField($v.attendantNursingReceipts)"
+                :isZoomPortalEnabled="true"
+                modalElementTarget="#modal-target" />
               <div class="text-danger"
                   v-if="$v.attendantNursingReceipts.$dirty && !$v.attendantNursingReceipts.required"
                     aria-live="assertive">You must upload your attendant care or nursing receipts.</div>
@@ -195,8 +197,8 @@
           </div>
         </div>
         <div class="mt-3" v-if="windowWidth < 768">
-            <SuppBenWidget :inputData="widgetData"/>
-          </div>
+          <SuppBenWidget :inputData="widgetData"/>
+        </div>
       </div>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
@@ -283,11 +285,12 @@ import {
   required,
 } from 'vuelidate/lib/validators';
 
-let validateNumChildClaims = (value, vm) => {
+const validateNumChildClaims = (value, vm) => {
   return (parseInt(value) <= vm.intNumChildren) 
       && (parseInt(value) > 0);
 };
-let validateNumChildren = (value) => {
+
+const validateNumChildren = (value) => {
   return (parseInt(value) > 0) && (parseInt(value) <= 28)
 }
 
@@ -393,21 +396,51 @@ export default {
       ahSBIncome: {
         required,
       },
+      spouseSBIncome: {},
+      numChildren: {},
+      claimedChildCareExpenses: {},
+      selectedDisabilityRecipients: {},
+      numDisabilityChildren: {},
+      sbRDSPAmount: {},
+      selectedAttendantNursingRecipients: {},
+      attendantNursingReceipts: {},
+      numAttendantNursingChildren: {},
     };
-    if (this.hasSpouse === 'Y') validations.spouseSBIncome = {required};
-    if (this.hasChildren === 'Y' && this.onlySuppBen) validations.numChildren = {required, validateNumChildren};
-    if (this.hasChildren === 'Y') validations.claimedChildCareExpenses = {required};
-    if (this.hasDisabilityCredit === 'Y') validations.selectedDisabilityRecipients = {required};
+    
+    if (this.hasSpouse === 'Y') {
+      validations.spouseSBIncome.required = required;
+    }
+
+    if (this.hasChildren === 'Y' && this.onlySuppBen) {
+      validations.numChildren.required = required; 
+      validations.numChildren.validateNumChildren = validateNumChildren;
+    }
+
+    if (this.hasChildren === 'Y') {
+      validations.claimedChildCareExpenses.required = required;
+    }
+
+    if (this.hasDisabilityCredit === 'Y') {
+      validations.selectedDisabilityRecipients.required = required;
+    }
+
     if (this.hasDisabilityCredit === 'Y' && this.selectedDisabilityRecipients.includes('child')){
-      validations.numDisabilityChildren = {required, validateNumChildClaims};
+      validations.numDisabilityChildren.required = required;
+      validations.numDisabilityChildren.validateNumChildClaims = validateNumChildClaims;
     }
-    if (this.hasRDSP === 'Y') validations.sbRDSPAmount = {required};
+
+    if (this.hasRDSP === 'Y') {
+      validations.sbRDSPAmount.required = required;
+    }
+
     if (this.hasAttendantNursingExpenses === 'Y') {
-      validations.selectedAttendantNursingRecipients = {required};
-      validations.attendantNursingReceipts = {required};
+      validations.selectedAttendantNursingRecipients.required = required;
+      validations.attendantNursingReceipts.required = required;
     }
+
     if (this.hasAttendantNursingExpenses === 'Y' && this.selectedAttendantNursingRecipients.includes('child')){
-      validations.numAttendantNursingChildren = {required, validateNumChildClaims};
+      validations.numAttendantNursingChildren.required = required;
+      validations.numAttendantNursingChildren.validateNumChildClaims = validateNumChildClaims;
     }
 
     return validations;
@@ -418,7 +451,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_SB_INCOME}`, this.ahSBIncome);
       this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_SB_INCOME}`, this.spouseSBIncome);
       if (this.onlySuppBen) {
-        this.$store.dispatch(`${enrolmentModule}/${SET_HAS_CHILDREN}`, this.hasChildren === 'Y');
+        this.$store.dispatch(`${enrolmentModule}/${SET_HAS_CHILDREN}`, this.hasChildren);
         this.$store.dispatch(`${enrolmentModule}/${SET_NUM_CHILDREN}`, this.intNumChildren);
       }
       this.$store.dispatch(`${enrolmentModule}/${SET_CLAIMED_CHILD_CARE_EXPENSES}`, this.claimedChildCareExpenses);
@@ -477,7 +510,7 @@ export default {
     },
   },
   watch: {
-    selectedNOAYear: function(value) {
+    selectedNOAYear(value) {
       if (this.$store.state.enrolmentModule.isApplyingForFPCare) {
         if (value === `${this.currentYear - 2}`) {
           this.ahSBIncome = this.$store.state.enrolmentModule.ahFPCIncome;
@@ -488,7 +521,7 @@ export default {
         }
       }
     },
-    intNumChildren: function(value) {
+    intNumChildren(value) {
       if (value === 0) {
         //the ah has no children so disable the checkbox group option for child 
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = true;
@@ -504,7 +537,7 @@ export default {
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
       }
     },
-    hasChildren: function(value) {
+    hasChildren(value) {
       if (value === 'N') {
         //the ah has no children so disable the checkbox group option for child 
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = true;
