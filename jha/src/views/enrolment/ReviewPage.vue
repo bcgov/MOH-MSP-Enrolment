@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="container stepper">
+      <PageStepper :currentPath='$router.currentRoute.path'
+        :routes='stepRoutes'
+        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+        :isMobileStepperOpen='isMobileStepperOpen'
+        @onClickLink='handleClickStepperLink($event)'/>
+    </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Review</h1>
@@ -43,10 +50,14 @@ import {
   PageContent,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
+import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 export default {
   name: 'ReviewPage',
-  mixins: [pageContentMixin],
+  mixins: [
+    pageContentMixin,
+    pageStepperMixin,
+  ],
   components: {
     PageContent,
     ContinueBar,

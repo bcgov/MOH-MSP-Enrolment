@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="container stepper">
+      <PageStepper :currentPath='$router.currentRoute.path'
+        :routes='stepRoutes'
+        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+        :isMobileStepperOpen='isMobileStepperOpen'
+        @onClickLink='handleClickStepperLink($event)'/>
+    </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Upload Supporting Documents</h1>
@@ -65,11 +72,15 @@ import {
   FileUploader,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
+import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import TipBox from '@/components/TipBox';
 
 export default {
   name: 'DocumentsPage',
-  mixins: [pageContentMixin],
+  mixins: [
+    pageContentMixin,
+    pageStepperMixin,
+  ],
   components: {
     ContinueBar,
     PageContent,

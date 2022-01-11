@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="container stepper">
+      <PageStepper :currentPath='$router.currentRoute.path'
+        :routes='stepRoutes'
+        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+        :isMobileStepperOpen='isMobileStepperOpen'
+        @onClickLink='handleClickStepperLink($event)'/>
+    </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Select the programs you want to enrol </h1>
@@ -57,6 +64,7 @@ import {
   SET_IS_APPLYING_FOR_MSP,
   SET_IS_APPLYING_FOR_FPCARE,
   SET_IS_APPLYING_FOR_SUPP_BEN,
+  SET_HAS_COMPLETED_EQ,
 } from '@/store/modules/enrolment-module';
 import {
   Checkbox,
@@ -65,6 +73,7 @@ import {
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import { mapGetters } from 'vuex';
+import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 const atLeastOne = (vm) => {
   return vm.isApplyingForMSP
@@ -74,7 +83,10 @@ const atLeastOne = (vm) => {
 
 export default {
   name: 'FormSelectionPage',
-  mixins: [pageContentMixin],
+  mixins: [
+    pageContentMixin,
+    pageStepperMixin,
+  ],
   components: {
     Checkbox,
     ContinueBar,
@@ -94,23 +106,6 @@ export default {
     isEligibleForFPCare: `${enrolmentModule}/isEligibleForFPCare`,
     isEligibleForSuppBen: `${enrolmentModule}/isEligibleForSuppBen`,
   }),
-  watch: {
-    isApplyingForMSP(newValue) {
-      if (this.isPageLoaded) {
-        this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_MSP}`, newValue);
-      }
-    },
-    isApplyingForFPCare(newValue) {
-      if (this.isPageLoaded) {
-        this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_FPCARE}`, newValue);
-      }
-    },
-    isApplyingForSuppBen(newValue) {
-      if (this.isPageLoaded) {
-        this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_SUPP_BEN}`, newValue);
-      }
-    }
-  },
   created() {
     this.applicationUuid = this.$store.state.enrolmentModule.applicationUuid;
     this.isApplyingForMSP = this.$store.state.enrolmentModule.isApplyingForMSP;
@@ -156,7 +151,14 @@ export default {
         return;
       }
 
+      this.saveData();
       this.navigateToNextPage();
+    },
+    saveData() {
+      this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_MSP}`, this.isApplyingForMSP);
+      this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_FPCARE}`, this.isApplyingForFPCare);
+      this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_SUPP_BEN}`, this.isApplyingForSuppBen);
+      this.$store.dispatch(`${enrolmentModule}/${SET_HAS_COMPLETED_EQ}`, true);
     },
     navigateToNextPage() {
       // Navigate to next path.

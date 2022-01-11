@@ -13,6 +13,16 @@ export default {
   components: {
     PageStepper,
   },
+  data: () => {
+    return {
+      eligibilityStepRoutes: [
+        {...enrolmentRoutes.MSP_ELIGIBILITY_PAGE},
+        {...enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE},
+        {...enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE},
+        {...enrolmentRoutes.FORM_SELECTION_PAGE},
+      ],
+    };
+  },
   methods: {
     handleToggleShowMobileStepperDetails(isDetailsShown) {
       this.$store.dispatch(appModule + '/' + SET_SHOW_MOBILE_STEPPER_DETAILS, isDetailsShown);
@@ -29,6 +39,23 @@ export default {
       return this.$store.state.appModule.showMobileStepperDetails;
     },
     stepRoutes() {
+      const currentPath = this.$router.currentRoute.path;
+      const hasCompletedEQ = this.$store.state.enrolmentModule.hasCompletedEQ;
+
+      switch(currentPath) {
+        case enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path:
+          return this.eligibilityStepRoutes;
+        case enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.path:
+          return this.eligibilityStepRoutes;
+        case enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path:
+          return this.eligibilityStepRoutes;
+        case enrolmentRoutes.FORM_SELECTION_PAGE.path:
+          return hasCompletedEQ ? this.mainFormStepRoutes : this.eligibilityStepRoutes;
+        default:
+          return this.mainFormStepRoutes;
+      }
+    },
+    mainFormStepRoutes() {
       const routes = [
         {...enrolmentRoutes.FORM_SELECTION_PAGE},
         {...enrolmentRoutes.PERSONAL_INFO_PAGE},

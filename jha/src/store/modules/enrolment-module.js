@@ -19,6 +19,7 @@ export const SET_EQ_FPC_MEETS_CRITERIA = 'setEqFPCMeetsCriteria';
 export const SET_EQ_FPC_HAS_INFO = 'setEqFPCHasInfo';
 export const SET_EQ_SB_MEETS_CRITERIA = 'setEqSBMeetsCriteria';
 export const SET_EQ_SB_HAS_INFO = 'setEqSBhasInfo';
+export const SET_HAS_COMPLETED_EQ = 'setHasCompletedEQ';
 // Form selections
 export const SET_IS_APPLYING_FOR_MSP = 'setIsApplyingForMSP';
 export const SET_IS_APPLYING_FOR_FPCARE = 'setIsApplyingForFPCare';
@@ -161,6 +162,7 @@ export default {
       eqFPCHasInfo: null,
       eqSBMeetsCriteria: null,
       eqSBhasInfo: null,
+      hasCompletedEQ: false,
       // Form selections
       isApplyingForMSP: null,
       isApplyingForFPCare: null,
@@ -330,6 +332,9 @@ export default {
     },
     [SET_EQ_SB_HAS_INFO](state, payload) {
       state.eqSBhasInfo = payload;
+    },
+    [SET_HAS_COMPLETED_EQ](state, payload) {
+      state.hasCompletedEQ = payload;
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP](state, payload) {
@@ -703,6 +708,7 @@ export default {
       commit(SET_EQ_FPC_HAS_INFO, null);
       commit(SET_EQ_SB_MEETS_CRITERIA, null);
       commit(SET_EQ_SB_HAS_INFO, null);
+      commit(SET_HAS_COMPLETED_EQ, false);
       // Form selections
       commit(SET_IS_APPLYING_FOR_MSP, false);
       commit(SET_IS_APPLYING_FOR_FPCARE, false);
@@ -866,6 +872,9 @@ export default {
     },
     [SET_EQ_SB_HAS_INFO]({commit}, payload) {
       commit(SET_EQ_SB_HAS_INFO, payload);
+    },
+    [SET_HAS_COMPLETED_EQ]({commit}, payload) {
+      commit(SET_HAS_COMPLETED_EQ, payload);
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP]({commit}, payload) {

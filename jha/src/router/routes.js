@@ -6,22 +6,22 @@ export const enrolmentRoutes = {
   },
   MSP_ELIGIBILITY_PAGE: {
     path: '/msp-eligibility',
-    title: 'MSP Eligibility',
+    title: 'MSP Enrolment',
     name: 'MSPEligibilityPage',
   },
   FPCARE_ELIGIBILITY_PAGE: {
     path: '/fpcare-eligibility',
-    title: 'Fair PharmaCare Eligibility',
+    title: 'Fair Pharma Care',
     name: 'FPCareEligibilityPage',
   },
   SUPP_BEN_ELIGIBILITY_PAGE: {
     path: '/supp-ben-eligibility',
-    title: 'Supplimentary Benefits Eligibility',
+    title: 'Supplimentary Benefits',
     name: 'SuppBenligibilityPage',
   },
   FORM_SELECTION_PAGE: {
     path: '/form-selection',
-    title: 'JHA Selection',
+    title: 'AHDC Start',
     name: 'FormSelectionPage',
   },
   PERSONAL_INFO_PAGE: {
