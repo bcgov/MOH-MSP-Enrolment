@@ -137,7 +137,7 @@ export default {
   hasRDSP: 'Y',
   sbRDSPAmount: '5000',
   hasAttendantNursingExpenses: 'Y',
-  selectedAttendantNursingRecipients: ['spouse', 'child'],
+  selectedAttendantNursingRecipients: ['spouse'],
   numAttendantNursingChildren: '1',
   attendantNursingReceipts: [{}],
   // ContactInfoPage

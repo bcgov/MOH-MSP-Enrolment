@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="container stepper">
+      <PageStepper :currentPath='$router.currentRoute.path'
+        :routes='stepRoutes'
+        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+        :isMobileStepperOpen='isMobileStepperOpen'
+        @onClickLink='handleClickStepperLink($event)'/>
+    </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Supplementary Benefits Financial Information</h1>
@@ -310,6 +317,7 @@ import pageContentMixin from '@/mixins/page-content-mixin';
 import {
   required,
 } from 'vuelidate/lib/validators';
+import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 const validateNumChildClaims = (value, vm) => {
   return (parseInt(value) <= vm.intNumChildren) 
@@ -333,7 +341,11 @@ const notApplyingForBoth = (value, vm) => {
 
 export default {
   name: 'SuppBenInfoPage',
-  mixins: [pageContentMixin, windowWidthMixin],
+  mixins: [
+    pageContentMixin, 
+    windowWidthMixin, 
+    pageStepperMixin
+  ],
   components: {
     ContinueBar,
     PageContent,
