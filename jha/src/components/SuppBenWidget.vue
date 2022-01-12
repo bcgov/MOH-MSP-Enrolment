@@ -148,7 +148,7 @@
     <p v-if="inputData.adjustedIncome > 0 && inputData.incomeUnderThreshold" class="text-success font-weight-bold">
       It is likely that you will qualify for Supplementary Benefits.
     </p>
-    <p v-else class="text-danger font-weight-bold" aria-live="assertive">
+    <p v-if="!inputData.incomeUnderThreshold" class="text-danger font-weight-bold" aria-live="assertive">
       You might not qualify for Supplementary Benefits.
     </p>
   </div>
