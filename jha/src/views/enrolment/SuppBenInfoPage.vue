@@ -204,7 +204,7 @@
                 @blur="handleBlurField($v.attendantNursingReceipts)"
                 :isZoomPortalEnabled="true"
                 modalElementTarget="#modal-target" />
-              <div class="text-danger"
+              <div class="text-danger ml-5"
                   v-if="$v.attendantNursingReceipts.$dirty && !$v.attendantNursingReceipts.required"
                     aria-live="assertive">You must upload your attendant care or nursing receipts.</div>
             </div>
