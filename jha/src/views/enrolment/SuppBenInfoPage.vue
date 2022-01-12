@@ -18,6 +18,9 @@
                     v-model="selectedNOAYear"
                     :items="radioOptionsNOAYears"
                     @blur="handleBlurField($v.selectedNOAYear)"/>
+            <div class="text-danger"
+                  v-if="$v.selectedNOAYear.$dirty && !$v.selectedNOAYear.required"
+                    aria-live="assertive">Please indicate which year's Notice of Assessment you are uploading.</div>
             <div v-if="selectedNOAYear === `${this.currentYear - 2}`" class="text-danger">
               <font-awesome-icon icon="exclamation-circle"/>
               Selecting this Notice of Assessment will allow you to apply for supplementary benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
@@ -50,6 +53,9 @@
                 v-model="hasChildren"
                 :items="radioOptionsNoYes"
                 @blur="handleBlurField($v.hasChildren)"/>
+              <div class="text-danger"
+                  v-if="$v.hasChildren.$dirty && !$v.hasChildren.required"
+                    aria-live="assertive">Please indicate if you have children on your Medical Services Plan account.</div>
               <div v-if="hasChildren === 'Y'">
                 <DigitInput id="num-children"
                   label="How many children do you have on your account?"
@@ -66,6 +72,7 @@
                     aria-live="assertive">This number cannot be zero or over 28.</div>
               </div>
             </div>
+
             <div v-if="intNumChildren > 0">
               <p class="mt-4 mb-1 font-weight-bolder">How much did you claim for child care expenses in {{selectedNOAYear}}?</p>
               <CurrencyInput id="child-care-expenses"
@@ -85,6 +92,10 @@
               v-model="hasDisabilityCredit"
               :items="radioOptionsNoYes"
               @blur="handleBlurField($v.hasDisabilityCredit)"/>
+            <div class="text-danger"
+                  v-if="$v.hasDisabilityCredit.$dirty && !$v.hasDisabilityCredit.required"
+                    aria-live="assertive">Please indicate if anyone on your Medical Services Plan has claimed a disability tax credit in {{selectedNOAYear}}.</div>
+
             <div class="ml-5" v-if="hasDisabilityCredit === 'Y'">
               <CheckboxGroup id="selected-disability-credit-recipients"
                 name="selected-disability-credit-recipients"
@@ -96,6 +107,9 @@
               <div class="text-danger"
                 v-if="$v.selectedDisabilityRecipients.$dirty && !$v.selectedDisabilityRecipients.required"
                   aria-live="assertive">You must select who claimed the disability tax credit.</div>
+              <div class="text-danger"
+                v-if="$v.selectedAttendantNursingRecipients.$dirty && !$v.selectedAttendantNursingRecipients.notApplyingForBoth"
+                  aria-live="assertive">You have already selected nursing home credit for this person. Please remove nursing home credit if you want to claim disability credit for them.</div>
               <div v-if="selectedDisabilityRecipients.includes('child')">
                 <DigitInput id="num-attendant-nursing-children"
                   label="How many of your children are eligible for a disability tax credit?"
@@ -112,12 +126,17 @@
                     aria-live="assertive">This number cannot be zero or exceed the number of children on your account.</div>
               </div>
             </div>
+
             <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your Medical Services Plan account have a Registered Disability Savings Plan?</p>
             <Radio id="has-disability-savings"
               name="has-disability-savings"
               v-model="hasRDSP"
               :items="radioOptionsNoYes"
               @blur="handleBlurField($v.hasRDSP)"/>
+            <div class="text-danger"
+                  v-if="$v.hasRDSP.$dirty && !$v.hasRDSP.required"
+                    aria-live="assertive">Please indicate if anyone on your Medical Services Plan has a Registered Disability Savings Plan.</div>
+
             <div class="ml-5" v-if="hasRDSP === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">How much did you report for a Registered Disability Savings Plan in {{selectedNOAYear}}?</p>
               <CurrencyInput id="disability-savings-plan"
@@ -129,6 +148,7 @@
                 v-if="$v.sbRDSPAmount.$dirty && !$v.sbRDSPAmount.required"
                   aria-live="assertive">You must enter how much you reported for a Registered Disability Savings Plan</div>
             </div>
+
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
             <Radio id="has-attendant-nursing-expenses"
               name="has-attendant-nursing-expenses"
@@ -136,6 +156,9 @@
               v-model="hasAttendantNursingExpenses"
               :items="radioOptionsNoYes"
               @blur="handleBlurField($v.hasAttendantNursingExpenses)"/>
+            <div class="text-danger"
+                  v-if="$v.hasAttendantNursingExpenses.$dirty && !$v.hasAttendantNursingExpenses.required"
+                    aria-live="assertive">Please indicate if anyone on your Medical Services Plan has claimed attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}.</div>
             <div class="ml-5" v-if="hasAttendantNursingExpenses === 'Y'">
               <CheckboxGroup id="selected-attendant-nursing-recipients"
                 name="selected-attendant-nursing-recipients"
@@ -147,6 +170,9 @@
               <div class="text-danger"
                 v-if="$v.selectedAttendantNursingRecipients.$dirty && !$v.selectedAttendantNursingRecipients.required"
                   aria-live="assertive">You must select who claimed the attendant or nursing home expenses.</div>
+              <div class="text-danger"
+                v-if="$v.selectedAttendantNursingRecipients.$dirty && !$v.selectedAttendantNursingRecipients.notApplyingForBoth"
+                  aria-live="assertive">You have already selected disability credit for this person. Please remove disability credit if you want to claim nursing home credit for them.</div>
               <div v-if="selectedAttendantNursingRecipients.includes('child')">
                 <DigitInput id="num-attendant-nursing-children"
                   label="How many children claimed attendant care expenses?"
@@ -292,7 +318,18 @@ const validateNumChildClaims = (value, vm) => {
 
 const validateNumChildren = (value) => {
   return (parseInt(value) > 0) && (parseInt(value) <= 28)
-}
+};
+
+const notApplyingForBoth = (value, vm) => {
+  if ((value.includes('child') && vm.selectedDisabilityRecipients.includes('child'))
+    || (value.includes('spouse') && vm.selectedDisabilityRecipients.includes('spouse'))
+    || (value.includes('ah') && vm.selectedDisabilityRecipients.includes('ah'))
+  ) {
+    return false
+  } else {
+    return true;
+  }
+};
 
 export default {
   name: 'SuppBenInfoPage',
@@ -393,19 +430,36 @@ export default {
   },
   validations() {
     let validations = {
+      selectedNOAYear: {
+        required,
+      },
       ahSBIncome: {
         required,
       },
       spouseSBIncome: {},
+      hasChildren: {},
       numChildren: {},
+      hasRDSP: {
+        required,
+      },
+      hasDisabilityCredit: {
+        required,
+      },
       claimedChildCareExpenses: {},
       selectedDisabilityRecipients: {},
       numDisabilityChildren: {},
       sbRDSPAmount: {},
+      hasAttendantNursingExpenses: {
+        required,
+      },
       selectedAttendantNursingRecipients: {},
       attendantNursingReceipts: {},
       numAttendantNursingChildren: {},
     };
+
+    if (this.onlySuppBen) {
+      validations.hasChildren.required = required;
+    }
     
     if (this.hasSpouse === 'Y') {
       validations.spouseSBIncome.required = required;
@@ -435,6 +489,7 @@ export default {
 
     if (this.hasAttendantNursingExpenses === 'Y') {
       validations.selectedAttendantNursingRecipients.required = required;
+      validations.selectedAttendantNursingRecipients.notApplyingForBoth = notApplyingForBoth;
       validations.attendantNursingReceipts.required = required;
     }
 

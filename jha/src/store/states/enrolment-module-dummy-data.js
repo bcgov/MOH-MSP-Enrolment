@@ -139,7 +139,7 @@ export default {
   hasAttendantNursingExpenses: 'Y',
   selectedAttendantNursingRecipients: ['spouse', 'child'],
   numAttendantNursingChildren: '1',
-  AttendantNursingReceipts: [{}],
+  attendantNursingReceipts: [{}],
   // ContactInfoPage
   resAddressLine1: '1234 White House Ln.',
   resAddressLine2: null,
