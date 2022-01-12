@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="container stepper">
+      <PageStepper :currentPath='$router.currentRoute.path'
+        :routes='stepRoutes'
+        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+        :isMobileStepperOpen='isMobileStepperOpen'
+        @onClickLink='handleClickStepperLink($event)'/>
+    </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Add Spouse / Common-law personal information and upload documents</h1>
@@ -672,6 +679,7 @@ import {
 } from '@/store/modules/enrolment-module';
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
+import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -737,7 +745,10 @@ const dischargeDateValidator = (value, vm) => {
 
 export default {
   name: 'SpouseInfoPage',
-  mixins: [pageContentMixin],
+  mixins: [
+    pageContentMixin, 
+    pageStepperMixin
+  ],
   components: {
     ContinueBar,
     CountrySelect,
