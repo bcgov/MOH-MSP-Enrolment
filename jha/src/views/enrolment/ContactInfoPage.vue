@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="container stepper">
+      <PageStepper :currentPath='$router.currentRoute.path'
+        :routes='stepRoutes'
+        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+        :isMobileStepperOpen='isMobileStepperOpen'
+        @onClickLink='handleClickStepperLink($event)'/>
+    </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Contact Information</h1>
@@ -294,6 +301,7 @@ import {
   required,
 } from 'vuelidate/lib/validators';
 import pageContentMixin from '@/mixins/page-content-mixin';
+import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import TipBox from '@/components/TipBox';
 
 const addressLineContentValidator = (value) => {
@@ -340,7 +348,10 @@ const completePostalCodeValidator = (value) => {
 
 export default {
   name: 'ContactInfoPage',
-  mixins: [pageContentMixin],
+  mixins: [
+    pageContentMixin,
+    pageStepperMixin,
+  ],
   components: {
     Button,
     Checkbox,

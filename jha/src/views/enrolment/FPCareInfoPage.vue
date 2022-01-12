@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="container stepper">
+      <PageStepper :currentPath='$router.currentRoute.path'
+        :routes='stepRoutes'
+        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+        :isMobileStepperOpen='isMobileStepperOpen'
+        @onClickLink='handleClickStepperLink($event)'/>
+    </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Fair PharmaCare Financial Information</h1>
@@ -127,11 +134,13 @@ import pageContentMixin from '@/mixins/page-content-mixin';
 import TipBox from '@/components/TipBox.vue';
 import FPCWidget from '@/components/enrolment/FPCWidget.vue';
 import { required } from 'vuelidate/lib/validators';
+import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 export default {
   name: 'FPCareInfoPage',
   mixins: [
     pageContentMixin,
+    pageStepperMixin
   ],
   components: {
     ContentModal,

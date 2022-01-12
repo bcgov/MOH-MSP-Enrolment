@@ -1,5 +1,12 @@
 <template>
   <div>
+    <div class="container stepper">
+      <PageStepper :currentPath='$router.currentRoute.path'
+        :routes='stepRoutes'
+        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
+        :isMobileStepperOpen='isMobileStepperOpen'
+        @onClickLink='handleClickStepperLink($event)'/>
+    </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Eligibility Questionnaire</h1>
@@ -103,6 +110,7 @@ import {
   SET_EQ_MSP_STUDENT_MINOR_REFUGEE,
   SET_EQ_MSP_HAS_DOCUMENTS,
 } from '@/store/modules/enrolment-module';
+import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 const validateQuestionsAnswered = (_value, vm) => {
         if(!vm.applyMSP
@@ -117,7 +125,10 @@ const validateQuestionsAnswered = (_value, vm) => {
 
 export default {
   name: 'MSPEligibilityPage',
-  mixins: [pageContentMixin],
+  mixins: [
+    pageContentMixin,
+    pageStepperMixin,
+  ],
   components: {
     ContinueBar,
     PageContent,
