@@ -57,7 +57,10 @@ export default {
     },
     mainFormStepRoutes() {
       const routes = [
-        {...enrolmentRoutes.FORM_SELECTION_PAGE},
+        {
+          ...enrolmentRoutes.FORM_SELECTION_PAGE,
+          isClickable: false,
+        },
         {...enrolmentRoutes.PERSONAL_INFO_PAGE},
         {...enrolmentRoutes.SPOUSE_INFO_PAGE},
         {...enrolmentRoutes.CHILD_INFO_PAGE},

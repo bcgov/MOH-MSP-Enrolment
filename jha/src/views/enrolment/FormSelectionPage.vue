@@ -64,7 +64,6 @@ import {
   SET_IS_APPLYING_FOR_MSP,
   SET_IS_APPLYING_FOR_FPCARE,
   SET_IS_APPLYING_FOR_SUPP_BEN,
-  SET_HAS_COMPLETED_EQ,
 } from '@/store/modules/enrolment-module';
 import {
   Checkbox,
@@ -158,7 +157,6 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_MSP}`, this.isApplyingForMSP);
       this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_FPCARE}`, this.isApplyingForFPCare);
       this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_SUPP_BEN}`, this.isApplyingForSuppBen);
-      this.$store.dispatch(`${enrolmentModule}/${SET_HAS_COMPLETED_EQ}`, true);
     },
     navigateToNextPage() {
       // Navigate to next path.
