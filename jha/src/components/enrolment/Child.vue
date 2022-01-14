@@ -24,7 +24,7 @@
             aria-live="assertive">First name is required.</div>
         <div class="text-danger"
             v-if="$v.firstName.$dirty && $v.firstName.required && !$v.firstName.nameValidator"
-            aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>First name must be a letter.</div>
+            aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
         <Input label='Middle name (optional)'
             :id="'child-middle-name-' + index"
             className='mt-3'
@@ -34,7 +34,7 @@
             :inputStyle='mediumStyles' />
         <div class="text-danger"
             v-if="$v.middleName.$dirty && !$v.middleName.nameValidator"
-            aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Middle name must be a letter.</div>
+            aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
         <Input label='Last name'
             :id="'child-last-name-' + index"
             className='mt-3'
@@ -47,7 +47,7 @@
             aria-live="assertive">Last name is required.</div>
         <div class="text-danger"
             v-if="$v.lastName.$dirty && $v.lastName.required && !$v.lastName.nameValidator"
-            aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>First name must be a letter.</div>
+            aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
         <DateInput label='Birth date'
             :id="'child-birth-date-' + index"
             className='mt-3'
@@ -247,6 +247,10 @@
                         v-if="$v.moveFromOrigin.$dirty
                         && !$v.moveFromOrigin.required"
                         aria-live="assertive">Province or country of origin is required.</div>
+                    <div class="text-danger"
+                        v-if="$v.moveFromOrigin.$dirty
+                        && !$v.moveFromOrigin.cityStateProvinceContentValidator"
+                        aria-live="assertive">Province or country of origin must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters..</div>
                 </div>
                 <div v-if="showMovedPermanentlyQuestion">
                     <Radio
@@ -392,20 +396,20 @@
                         v-if="$v.canadaArrivalDate.$dirty
                             && $v.canadaArrivalDate.dateDataValidator
                             && !$v.canadaArrivalDate.pastDateValidator"
-                        aria-live="assertive">Most recent move to Canada date cannot be in the future.</div>
+                        aria-live="assertive">Arrival date in Canada cannot be in the future.</div>
                     <div class="text-danger"
                         v-if="$v.canadaArrivalDate.$dirty 
                             && $v.canadaArrivalDate.dateDataValidator
                             && $v.canadaArrivalDate.pastDateValidator
                             && !$v.canadaArrivalDate.beforeBirthdateValidator"
-                        aria-live="assertive">The child's most recent move to Canada cannot be before the child's date of birth.</div>
+                        aria-live="assertive">The child's arrival date in Canada cannot be before the child's date of birth.</div>
                     <div class="text-danger"
                         v-if="$v.canadaArrivalDate.$dirty 
                             && $v.canadaArrivalDate.dateDataValidator
                             && $v.canadaArrivalDate.pastDateValidator
                             && $v.canadaArrivalDate.beforeBirthdateValidator
                             && !$v.canadaArrivalDate.dateOrderValidator"
-                        aria-live="assertive">The child's most recent move to Canada cannot be after the move to B.C. date.</div>
+                        aria-live="assertive">The child's arrival date in Canada cannot be after the move to B.C. date.</div>
                     </div>
                     <div v-if="showPreviousHealthNumber">
                       <Input 
@@ -418,7 +422,7 @@
                         :inputStyle='mediumStyles' />
                     </div>
                     <Radio
-                      label='Has your spouse been outside B.C. for more than 30 days in total in the past 12 months?'
+                      label='Has your child been outside B.C. for more than 30 days in total in the past 12 months?'
                       :id="'outside-bc-' + index"
                       :name="'outside-bc-' + index"
                       v-model='outsideBCLast12Months'
@@ -441,6 +445,7 @@
                       <div class="text-danger"
                           v-if="$v.outsideBCLast12MonthsReason.$dirty && !$v.outsideBCLast12MonthsReason.required"
                           aria-live="assertive">Reason for departure is required.</div>
+                      <div class="text-danger" v-if="$v.outsideBCLast12MonthsReason.$dirty && !$v.outsideBCLast12MonthsReason.reasonDestinationContentValidator" aria-live="assertive">Reason must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                       <Input 
                           className="mt-3"
                           :id="'outside-bc-destination-' + index"
@@ -453,6 +458,7 @@
                       <div class="text-danger"
                           v-if="$v.outsideBCLast12MonthsDestination.$dirty && !$v.outsideBCLast12MonthsDestination.required"
                           aria-live="assertive">Location is required.</div>
+                      <div class="text-danger" v-if="$v.outsideBCLast12MonthsDestination.$dirty && !$v.outsideBCLast12MonthsDestination.reasonDestinationContentValidator" aria-live="assertive">Location must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                       <DateInput label='Departure date'
                           :id="'outside-bc-departure-' + index"
                           :name="'outside-bc-departure-' + index"
@@ -526,7 +532,7 @@
                         :items='radioOptionsNoYes' />
                     <div class="text-danger"
                         v-if="$v.hasBeenReleasedFromInstitution.$dirty && !$v.hasBeenReleasedFromInstitution.required"
-                        aria-live="assertive">Please indicate whether your spouse has been released from an institution.</div>
+                        aria-live="assertive">Please indicate whether your child has been released from an institution.</div>
                     </div>
                     <div v-if="showDischargeInputs && hasBeenReleasedFromInstitution === 'Y'" class="tabbed-section">
                       <DateInput label='Discharge date'
@@ -567,13 +573,14 @@
                 <Input label='School name'
                   :id="'school-name-' + index"
                   className='mt-3'
-                  maxlength="18"
+                  maxlength="50"
                   v-model='schoolName'
                   @blur="handleBlurField($v.schoolName)"
                   :inputStyle='mediumStyles' />
                 <div class="text-danger"
                   v-if="$v.schoolName.$dirty && !$v.schoolName.required"
                   aria-live="assertive">School name is required.</div>
+                <div class="text-danger" v-if="$v.schoolName.$dirty && !$v.schoolName.schoolNameContentValidator" aria-live="assertive">School name must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                 <Input label="Full street address, rural route, PO box or general delivery"
                   :id="'school-address-line1-' + index"
                   className='mt-3'
@@ -583,8 +590,8 @@
                   :inputStyle='mediumStyles' />
                 <div class="text-danger" v-if="$v.schoolAddressLine1.$dirty && !$v.schoolAddressLine1.required" aria-live="assertive">Street address is required.</div>
                 <div class="text-danger"
-                    v-if="$v.schoolAddressLine1.$dirty && !$v.schoolAddressLine1.specialCharacterValidator"
-                    aria-live="assertive">Street address cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
+                    v-if="$v.schoolAddressLine1.$dirty && !$v.schoolAddressLine1.addressLineContentValidator"
+                    aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                 <Input label="Address Line 2 (optional)"
                   :id="'school-address-line2-' + index"
                   className='mt-3'
@@ -593,8 +600,8 @@
                   @blur="handleBlurField($v.schoolAddressLine2)" 
                   :inputStyle='mediumStyles' />
                 <div class="text-danger"
-                    v-if="$v.schoolAddressLine2.$dirty && !$v.schoolAddressLine2.specialCharacterValidator"
-                    aria-live="assertive">Street address cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
+                    v-if="$v.schoolAddressLine2.$dirty && !$v.schoolAddressLine2.addressLineContentValidator"
+                    aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                 <Input label="Address Line 3 (optional)"
                   :id="'school-address-line3-' + index"
                   className='mt-3'
@@ -603,8 +610,8 @@
                   @blur="handleBlurField($v.schoolAddressLine3)"
                   :inputStyle='mediumStyles' />
                 <div class="text-danger"
-                    v-if="$v.schoolAddressLine3.$dirty && !$v.schoolAddressLine3.specialCharacterValidator"
-                    aria-live="assertive">Street address cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
+                    v-if="$v.schoolAddressLine3.$dirty && !$v.schoolAddressLine3.addressLineContentValidator"
+                    aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                 <Input label="City"
                   :id="'school-city-' + index"
                   className='mt-3'
@@ -613,17 +620,17 @@
                   @blur="handleBlurField($v.schoolCity)"
                   :inputStyle='mediumStyles' />
                 <div class="text-danger" v-if="$v.schoolCity.$dirty && !$v.schoolCity.required" aria-live="assertive">City is required.</div>
-                <div class="text-danger"
-                    v-if="$v.schoolCity.$dirty && !$v.schoolCity.specialCharacterValidator"
-                    aria-live="assertive">City cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
+                <div class="text-danger" v-if="$v.schoolCity.$dirty && !$v.schoolCity.cityStateProvinceContentValidator" aria-live="assertive">City must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters.</div>
                 <div v-if="schoolCountry !== 'Canada'"> 
                   <Input label="Province or state"
                     :id="'school-province-' + index"
                     className='mt-3'
+                    maxlength="25"
                     v-model="schoolProvinceOrState"
                     @blur="handleBlurField($v.schoolProvinceOrState)"
                     :inputStyle='mediumStyles' />
                   <div class="text-danger" v-if="$v.schoolProvinceOrState.$dirty && !$v.schoolProvinceOrState.required" aria-live="assertive">Province/state is required.</div>
+                  <div class="text-danger" v-if="$v.schoolProvinceOrState.$dirty && !$v.schoolProvinceOrState.cityStateProvinceContentValidator" aria-live="assertive">Province/state must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters.</div>
                 </div>
                 <div v-else>
                    <RegionSelect
@@ -718,6 +725,8 @@ import {
   nameValidator,
   nonBCValidator,
   nonCanadaValidator,
+  reasonDestinationContentValidator,
+  pastDateValidator,
 } from '@/helpers/validators';
 import {
   CountrySelect,
@@ -730,7 +739,6 @@ import {
   PostalCodeInput,
   FileUploader,
   optionalValidator,
-  pastDateValidator,
   futureDateValidator,
   distantPastValidator,
   phnValidator,
@@ -774,7 +782,7 @@ import { ChildAgeTypes } from '../../constants/child-age-types';
 import { isAfter, isBefore } from 'date-fns/esm';
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
-import { mediumStyles, smallStyles } from '@/constants/input-styles'
+import { mediumStyles, smallStyles } from '@/constants/input-styles';
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -782,19 +790,19 @@ const birthDatePastValidator = (value) => {
 
 const birthDateYouthValidator = (value, vm) => {
   if (vm.ageRange === ChildAgeTypes.Child0To18) {
-    return isAfter(value, addYears(startOfToday(), -18));
+    return isAfter(value, addYears(startOfToday(), -19));
   }
 
   return true;
-}
+};
             
 const birthDateStudentValidator = (value, vm) => {
   if (vm.ageRange === ChildAgeTypes.Child19To24) {
-    return isAfter(value, addYears(startOfToday(), -24)) && isBefore(value, addYears(startOfToday(), -19));
+    return isAfter(value, addYears(startOfToday(), -25)) && isBefore(value, addDays(addYears(startOfToday(), -19), 1));
   }
 
   return true;
-}
+};
 
 const beforeBirthdateValidator = (value, vm) => {
   if (vm.birthDate && vm.birthDate.getTime() > value.getTime()) {
@@ -802,7 +810,7 @@ const beforeBirthdateValidator = (value, vm) => {
   } 
 
   return true;
-}
+};
 
 const dateOrderValidator = (value, vm) => {
   if (!value) {
@@ -824,7 +832,7 @@ const dateOrderValidator = (value, vm) => {
   }
 
   return true;
-}
+};
 
 const departureDateValidator = (value, vm) => {
   const past12Months = subYears(subDays(startOfToday(), 1), 1);
@@ -848,11 +856,11 @@ const dischargeDateValidator = (value, vm) => {
   }
 
   return true;
-}
+};
 
 const permanentMoveValidator = (value, vm) => {
   return value === 'Y' || (vm && vm.status === StatusInCanada.TemporaryResident);
-}
+};
 
 const completePostalCodeValidator = (value) => {
   if (value === "" || value === null) {
@@ -860,10 +868,42 @@ const completePostalCodeValidator = (value) => {
     return true;
   }
   return value.length === 7;
-}
+};
+
+const schoolNameContentValidator = (value) => {
+  if (value === "" || value === null || value === undefined) {
+    // Don't show content error if field is blank.
+    return true;
+  }
+  const criteriaAllowedCharecters = /^[0-9a-zA-Z-.'#& /]*$/;
+  const criteriaMustHaveLetter = /.*[a-z].*/i;
+  return criteriaAllowedCharecters.test(value)
+          && criteriaMustHaveLetter.test(value);
+};
+
+const addressLineContentValidator = (value) => {
+  if (value === "" || value === null || value === undefined) {
+    // Don't show content error if field is blank.
+    return true;
+  }
+  const criteriaAllowedCharecters = /^[0-9a-zA-Z-.'#& /]*$/;
+  const criteriaMustHaveLetterOrNumber = /.*[a-z0-9].*/i;
+  return criteriaAllowedCharecters.test(value) && criteriaMustHaveLetterOrNumber.test(value);
+};
+
+const cityStateProvinceContentValidator = (value) => {
+  if (value === "" || value === null || value === undefined) {
+    // Don't show content error if field is blank.
+    return true;
+  }
+  const criteriaAllowedCharecters = /^[0-9a-zA-Z-.' ]*$/;
+  const criteriaMustHaveLetter = /.*[a-z].*/i;
+  return criteriaAllowedCharecters.test(value)
+          && criteriaMustHaveLetter.test(value);
+};
 
 export default {
-  name: 'ChildInfoPage',
+  name: 'Child',
   mixins: [pageContentMixin],
   components: {
     CountrySelect,
@@ -1091,6 +1131,7 @@ export default {
 
     if (this.showOriginTextField || this.showCountrySelector || this.showProvinceSelector) {
       validations.moveFromOrigin.required = required;
+      validations.moveFromOrigin.cityStateProvinceContentValidator = cityStateProvinceContentValidator;
     }
 
     if (this.showProvinceSelector) {
@@ -1117,7 +1158,9 @@ export default {
 
     if (this.outsideBCLast12Months === 'Y') {
       validations.outsideBCLast12MonthsReason.required = required;
+      validations.outsideBCLast12MonthsReason.reasonDestinationContentValidator = reasonDestinationContentValidator;
       validations.outsideBCLast12MonthsDestination.required = required;
+      validations.outsideBCLast12MonthsDestination.reasonDestinationContentValidator = reasonDestinationContentValidator;
       validations.outsideBCLast12MonthsDepartureDate.required = dateDataRequiredValidator(this.outsideBCLast12MonthsDepartureDateData);
       validations.outsideBCLast12MonthsDepartureDate.dateDataValidator = dateDataValidator(this.outsideBCLast12MonthsDepartureDateData);
       validations.outsideBCLast12MonthsDepartureDate.departureDateValidator = optionalValidator(departureDateValidator);
@@ -1144,16 +1187,16 @@ export default {
 
     if (this.ageRange === ChildAgeTypes.Child19To24) {
       validations.schoolName.required = required;
+      validations.schoolName.schoolNameContentValidator = schoolNameContentValidator;
       validations.schoolAddressLine1.required = required;
-      validations.schoolAddressLine1.specialCharacterValidator = optionalValidator(specialCharacterValidator);
-      validations.schoolAddressLine2.specialCharacterValidator = optionalValidator(specialCharacterValidator);
-      validations.schoolAddressLine3.specialCharacterValidator = optionalValidator(specialCharacterValidator);
+      validations.schoolAddressLine1.addressLineContentValidator = addressLineContentValidator;
+      validations.schoolAddressLine2.addressLineContentValidator = addressLineContentValidator;
+      validations.schoolAddressLine3.addressLineContentValidator = addressLineContentValidator;
       validations.schoolCity.required = required;
-      validations.schoolCity.specialCharacterValidator = optionalValidator(specialCharacterValidator);
+      validations.schoolCity.cityStateProvinceContentValidator = cityStateProvinceContentValidator;
       validations.schoolProvinceOrState.required = required;
-      validations.schoolProvinceOrState.specialCharacterValidator = optionalValidator(specialCharacterValidator);
+      validations.schoolProvinceOrState.cityStateProvinceContentValidator = cityStateProvinceContentValidator;
       validations.schoolCountry.required = required;
-      validations.schoolCountry.specialCharacterValidator = optionalValidator(specialCharacterValidator);
       validations.schoolPostalCode.required = required;
 
       if (this.schoolCountry === 'Canada') {

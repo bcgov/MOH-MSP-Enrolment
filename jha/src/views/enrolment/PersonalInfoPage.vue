@@ -26,7 +26,7 @@
         <div class="text-danger"
           v-if="$v.firstName.$dirty
             && !$v.firstName.nameValidator"
-          aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>First name must be a letter.</div>
+          aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
         <Input label="Middle name (optional)"
           id="middle-name"
           class="mt-3"
@@ -37,7 +37,7 @@
         <div class="text-danger"
           v-if="$v.middleName.$dirty
             && !$v.middleName.nameValidator"
-          aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Middle name must be a letter.</div>
+          aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
         <Input label="Last name"
           id="last-name"
           class="mt-3"
@@ -52,7 +52,7 @@
         <div class="text-danger"
           v-if="$v.lastName.$dirty
             && !$v.lastName.nameValidator"
-          aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Last name must be a letter.</div>
+          aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
         <DateInput label="Birthdate"
           id="birthdate"
           class="mt-3"
@@ -403,6 +403,10 @@
                     v-if="$v.departureReason.$dirty
                       && !$v.departureReason.required"
                     aria-live="assertive">Reason for departure is required.</div>
+                  <div class="text-danger" 
+                    v-if="$v.departureReason.$dirty 
+                      && !$v.departureReason.reasonDestinationContentValidator" 
+                    aria-live="assertive">Reason must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                   <Input label="Location"
                     id="departure-location"
                     class="mt-3"
@@ -414,6 +418,10 @@
                     v-if="$v.departureLocation.$dirty
                       && !$v.departureLocation.required"
                     aria-live="assertive">Location is required.</div>
+                  <div class="text-danger" 
+                    v-if="$v.departureLocation.$dirty 
+                      && !$v.departureLocation.reasonDestinationContentValidator" 
+                    aria-live="assertive">Location must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                   <DateInput label="Departure date"
                     id="departure-begin-date"
                     class="mt-3"
@@ -671,6 +679,7 @@ import {
   pastDateValidator,
   yesValidator,
   optionalInvalidDateValidator,
+  reasonDestinationContentValidator,
 } from '@/helpers/validators';
 import {
   CanadianStatusReasons,
@@ -948,7 +957,9 @@ export default {
       }
       if (this.isOutsideBCInLast12Months === 'Y') {
         validations.departureReason.required = required;
+        validations.departureReason.reasonDestinationContentValidator = reasonDestinationContentValidator;
         validations.departureLocation.required = required;
+        validations.departureLocation.reasonDestinationContentValidator = reasonDestinationContentValidator;
         validations.departureBeginDate.required = dateDataRequiredValidator(this.departureBeginDateData);
         validations.departureBeginDate.dateDataValidator = dateDataValidator(this.departureBeginDateData);
         validations.departureBeginDate.departureBeginDateValidator = optionalValidator(departureBeginDateValidator);

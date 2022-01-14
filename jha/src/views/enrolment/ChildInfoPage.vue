@@ -144,6 +144,7 @@ export default {
   },
   methods: {
     addChild() {
+      this.collapseAllChildren();
       this.children.push({
         collapsed: false,
         
@@ -201,6 +202,13 @@ export default {
       this.children[index].collapsed = true;
       this.children = [...this.children];
     },
+    collapseAllChildren() {
+      const children = this.children;
+      children.forEach(child => {
+        child.collapsed = true;
+      });
+      this.children = [...children];
+    },
     expandChild(index) {
       this.children[index].collapsed = false;
       this.children = [...this.children];
@@ -223,7 +231,7 @@ export default {
     validateFields() {
       this.saveData();
 
-      if (!this.hasChildren) {
+      if (this.hasChildren === 'N') {
         this.navigateToNextPage();
         return;
       }
@@ -246,7 +254,10 @@ export default {
 
       // if the parent form or any children have invalid inputs
       if (this.$v.$invalid || !validChildren) {
-        this.expandAllChildren();
+        if (!validChildren) {
+          // only call this function if there are children, lest it unnecessarily triggers the watcher for this.children
+          this.expandAllChildren();
+        }
         scrollToError();
         return;
       }
@@ -282,10 +293,12 @@ export default {
   },
   watch: {
     children(arr) {
-      if (arr.length > 0) {
-        this.hasChildren = 'Y';
-      } else {
-        this.hasChildren = 'N';
+      if (this.pageLoaded) {
+        if (arr.length > 0) {
+          this.hasChildren = 'Y';
+        } else {
+          this.hasChildren = 'N';
+        }
       }
     },
     hasChildren(val) {
