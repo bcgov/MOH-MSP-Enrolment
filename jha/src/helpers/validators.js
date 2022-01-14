@@ -69,3 +69,14 @@ export const optionalInvalidDateValidator = (validator) => {
     return validator(value, vm);
   };
 };
+
+export const reasonDestinationContentValidator = (value) => {
+  if (value === "" || value === null || value === undefined) {
+    // Don't show content error if field is blank.
+    return true;
+  }
+  const criteriaAllowedCharecters = /^[0-9a-zA-Z-.'#& /]*$/;
+  const criteriaMustHaveLetter = /.*[a-z].*/i;
+  return criteriaAllowedCharecters.test(value)
+          && criteriaMustHaveLetter.test(value);
+};

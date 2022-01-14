@@ -46,7 +46,7 @@
             aria-live="assertive">First name is required.</div>
           <div class="text-danger"
             v-if="$v.spouseFirstName.$dirty && $v.spouseFirstName.required && !$v.spouseFirstName.nameValidator"
-            aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>First name must be a letter.</div>
+            aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
           <Input label='Middle name (optional)'
             id='middle-name'
             className='mt-3'
@@ -56,7 +56,7 @@
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="$v.spouseMiddleName.$dirty && !$v.spouseMiddleName.nameValidator"
-            aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Middle name must be a letter.</div>
+            aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
           <Input label='Last name'
             id='last-name'
             className='mt-3'
@@ -69,7 +69,7 @@
             aria-live="assertive">Last name is required.</div>
           <div class="text-danger"
             v-if="$v.spouseLastName.$dirty && $v.spouseLastName.required && !$v.spouseLastName.nameValidator"
-            aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.<br/>Last name must be a letter.</div>
+            aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
           <DateInput label='Birthdate'
             id='birth-date'
             className='mt-3'
@@ -453,6 +453,7 @@
                     <div class="text-danger"
                       v-if="$v.spouseOutsideBCLast12MonthsReason.$dirty && !$v.spouseOutsideBCLast12MonthsReason.required"
                       aria-live="assertive">Reason for departure is required.</div>
+                    <div class="text-danger" v-if="$v.spouseOutsideBCLast12MonthsReason.$dirty && !$v.spouseOutsideBCLast12MonthsReason.reasonDestinationContentValidator" aria-live="assertive">Reason must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                     <Input 
                       className="mt-3"
                       label="Location"
@@ -463,6 +464,7 @@
                     <div class="text-danger"
                       v-if="$v.spouseOutsideBCLast12MonthsDestination.$dirty && !$v.spouseOutsideBCLast12MonthsDestination.required"
                       aria-live="assertive">Location is required.</div>
+                    <div class="text-danger" v-if="$v.spouseOutsideBCLast12MonthsDestination.$dirty && !$v.spouseOutsideBCLast12MonthsDestination.reasonDestinationContentValidator" aria-live="assertive">Location must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                     <DateInput label='Departure date'
                       id='departure-date'
                       className='mt-3'
@@ -593,6 +595,8 @@ import {
   nameValidator,
   nonBCValidator,
   nonCanadaValidator,
+  reasonDestinationContentValidator,
+  pastDateValidator,
 } from '@/helpers/validators';
 import logService from '@/services/log-service';
 import {
@@ -608,7 +612,6 @@ import {
   FileUploader,
   optionalValidator,
   distantPastValidator,
-  pastDateValidator,
   phnValidator,
 } from 'common-lib-vue';
 import {
@@ -960,7 +963,9 @@ export default {
 
     if (this.spouseOutsideBCLast12Months === 'Y') {
       validations.spouseOutsideBCLast12MonthsReason.required = required;
+      validations.spouseOutsideBCLast12MonthsReason.reasonDestinationContentValidator = reasonDestinationContentValidator;
       validations.spouseOutsideBCLast12MonthsDestination.required = required;
+      validations.spouseOutsideBCLast12MonthsDestination.reasonDestinationContentValidator = reasonDestinationContentValidator;
       validations.spouseOutsideBCLast12MonthsDepartureDate.required = dateDataRequiredValidator(this.spouseOutsideBCLast12MonthsDepartureDateData);
       validations.spouseOutsideBCLast12MonthsDepartureDate.dateDataValidator = dateDataValidator(this.spouseOutsideBCLast12MonthsDepartureDateData);
       validations.spouseOutsideBCLast12MonthsDepartureDate.departureDateValidator = optionalValidator(departureDateValidator);
