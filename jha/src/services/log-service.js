@@ -1,8 +1,8 @@
 import axios from 'axios';
 import { getBCTimestamp } from 'common-lib-vue';
 
-const LOG_SERVICE_URL = '/jha/api/logging';
-const PROGRAM = 'jha';
+const LOG_SERVICE_URL = '/ahdc/api/logging';
+const PROGRAM = 'ahdc';
 
 class LogService {
   logSubmission(uuid, message, refNumber) {

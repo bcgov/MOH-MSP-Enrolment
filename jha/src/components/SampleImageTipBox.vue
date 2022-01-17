@@ -21,7 +21,7 @@
         size="lg"
         @close="closeModal()">
         <div class="sample-image-container text-center">
-          <img :src="`/jha/images/samples/${sampleImageFileName}`" />
+          <img :src="`/ahdc/images/samples/${sampleImageFileName}`" />
         </div>
       </ContentModal>
     </portal>

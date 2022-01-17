@@ -2,7 +2,7 @@ import axios from 'axios';
 import { v4 as uuidv4 } from 'uuid';
 import { formatISODate } from 'common-lib-vue';
 
-const BASE_API_PATH = '/jha/api/';
+const BASE_API_PATH = '/ahdc/api/';
 const SUBMIT_FORM_A_APPLICATION_URL = BASE_API_PATH + 'jhaIntegration/payPatientSubmission';
 
 class ApiService {

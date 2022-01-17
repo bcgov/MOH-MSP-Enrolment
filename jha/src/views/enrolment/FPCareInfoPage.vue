@@ -89,7 +89,7 @@
         title="Tax Documents">
         <p>Income Tax T1 General Sample</p>
         <div class="sample-image-container text-center">
-          <img src="/jha/images/income-tax-t1-sample.jpeg"
+          <img src="/ahdc/images/income-tax-t1-sample.jpeg"
             alt="Income tax T1 sample" />
         </div>
       </ContentModal>

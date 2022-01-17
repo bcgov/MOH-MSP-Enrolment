@@ -2,7 +2,7 @@
   <div id="app">
     <div :aria-hidden="isModalOpen">
       <Header :title='pageTitle'
-              imagePath='/jha/images/' />
+              imagePath='/ahdc/images/' />
       <main>
         <router-view/>
       </main>
