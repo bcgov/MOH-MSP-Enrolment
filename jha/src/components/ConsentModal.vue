@@ -63,7 +63,7 @@ export default {
       focusableEls: [],
       focusedEl: null,
       applicationUuid: null,
-      captchaAPIBasePath: '/jha/api/captcha',
+      captchaAPIBasePath: '/ahdc/api/captcha',
       isCaptchaValid: false,
       isTermsAccepted: false,
     };

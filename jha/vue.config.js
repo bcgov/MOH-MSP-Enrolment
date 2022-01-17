@@ -1,5 +1,5 @@
 module.exports = {
-  publicPath: '/jha/',
+  publicPath: '/ahdc/',
   devServer: {
     proxy: {
       '/api': {

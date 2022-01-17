@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const SPA_ENV_SERVER_URL = '/jha/api/env';
+const SPA_ENV_SERVER_URL = '/ahdc/api/env';
 
 /**
  * The list of all server envs we expect back from the spa-env-server. By adding

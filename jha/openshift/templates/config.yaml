@@ -113,7 +113,7 @@ objects:
 
             # serve our angular app here
             location / {
-              rewrite ^/jha(/.*)$ $1;
+              rewrite ^/ahdc(/.*)$ $1;
 
               root /opt/app-root/src;
 
