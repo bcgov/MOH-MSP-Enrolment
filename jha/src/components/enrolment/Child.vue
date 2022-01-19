@@ -344,7 +344,7 @@
                                 && $v.recentBCMoveDate.pastDateValidator
                                 && $v.recentBCMoveDate.beforeBirthdateValidator
                                 && !$v.recentBCMoveDate.dateOrderValidator"
-                        aria-live="assertive">The child's most recent move to B.C. cannot be before the move to Canada date.</div>
+                        aria-live="assertive">The child's most recent move to B.C. cannot be before the arrival date in Canada.</div>
                     </div>
                     <div v-else>
                         <div class="text-danger"
@@ -375,7 +375,7 @@
                                 && $v.recentBCMoveDate.pastDateValidator
                                 && $v.recentBCMoveDate.beforeBirthdateValidator
                                 && !$v.recentBCMoveDate.dateOrderValidator"
-                        aria-live="assertive">The child's arrival date in B.C. cannot be before the move to Canada date.</div>
+                        aria-live="assertive">The child's arrival date in B.C. cannot be before the arrival date in Canada.</div>
                     </div>
                     <DateInput :label='canadaArrivalDateLabel'
                         :id="'canada-arrival-date-' + index"
@@ -1219,54 +1219,58 @@ export default {
     return validations;
   },
   methods: {
-    handleBlurField(validationObject) {
-      const childData = {
-        collapsed: this.collapsed,
-        ageRange: this.ageRange,
-        firstName: this.firstName,
-        middleName: this.middleName,
-        lastName: this.lastName,
-        birthDate: this.birthDate,
-        gender: this.gender,
-        
-        status: this.status,
-        statusReason: this.statusReason,
-        citizenshipSupportDocumentType: this.citizenshipSupportDocumentType,
-        citizenshipSupportDocuments: this.citizenshipSupportDocuments,
-        isNameChanged: this.isNameChanged,
-        nameChangeSupportDocumentType: this.nameChangeSupportDocumentType,
-        nameChangeSupportDocuments: this.nameChangeSupportDocuments,
-        
-        moveFromOrigin: this.moveFromOrigin,
-        livedInBCSinceBirth: this.livedInBCSinceBirth,
-        previousHealthNumber: this.previousHealthNumber,
-        recentBCMoveDate: this.recentBCMoveDate,
-        canadaArrivalDate: this.canadaArrivalDate,
-        madePermanentMove: this.madePermanentMove,
-        outsideBCLast12Months: this.outsideBCLast12Months,
-        outsideBCLast12MonthsReason: this.outsideBCLast12MonthsReason,
-        outsideBCLast12MonthsDestination: this.outsideBCLast12MonthsDestination,
-        outsideBCLast12MonthsDepartureDate: this.outsideBCLast12MonthsDepartureDate,
-        outsideBCLast12MonthsReturnDate: this.outsideBCLast12MonthsReturnDate,
-        hasPreviousBCHealthNumber: this.hasPreviousBCHealthNumber,
-        previousBCHealthNumber: this.previousBCHealthNumber,
-        hasBeenReleasedFromInstitution: this.hasBeenReleasedFromInstitution,
-        dischargeDate: this.dischargeDate,
-        
-        schoolName: this.schoolName,
-        schoolAddressLine1: this.schoolAddressLine1,
-        schoolAddressLine2: this.schoolAddressLine2,
-        schoolAddressLine3: this.schoolAddressLine3,
-        schoolCity: this.schoolCity,
-        schoolProvinceOrState: this.schoolProvinceOrState,
-        schoolCountry: this.schoolCountry,
-        schoolPostalCode: this.schoolPostalCode,
-        schoolDepartureDate: this.schoolDepartureDate,
-        schoolCompletionDate: this.schoolCompletionDate,
-        willResideInBCAfterStudies: this.willResideInBCAfterStudies,
-      } 
+    saveData() {
+      if (this.pageLoaded) {
+        const childData = {
+          collapsed: this.collapsed,
+          ageRange: this.ageRange,
+          firstName: this.firstName,
+          middleName: this.middleName,
+          lastName: this.lastName,
+          birthDate: this.birthDate,
+          gender: this.gender,
+          
+          status: this.status,
+          statusReason: this.statusReason,
+          citizenshipSupportDocumentType: this.citizenshipSupportDocumentType,
+          citizenshipSupportDocuments: this.citizenshipSupportDocuments,
+          isNameChanged: this.isNameChanged,
+          nameChangeSupportDocumentType: this.nameChangeSupportDocumentType,
+          nameChangeSupportDocuments: this.nameChangeSupportDocuments,
+          
+          moveFromOrigin: this.moveFromOrigin,
+          livedInBCSinceBirth: this.livedInBCSinceBirth,
+          previousHealthNumber: this.previousHealthNumber,
+          recentBCMoveDate: this.recentBCMoveDate,
+          canadaArrivalDate: this.canadaArrivalDate,
+          madePermanentMove: this.madePermanentMove,
+          outsideBCLast12Months: this.outsideBCLast12Months,
+          outsideBCLast12MonthsReason: this.outsideBCLast12MonthsReason,
+          outsideBCLast12MonthsDestination: this.outsideBCLast12MonthsDestination,
+          outsideBCLast12MonthsDepartureDate: this.outsideBCLast12MonthsDepartureDate,
+          outsideBCLast12MonthsReturnDate: this.outsideBCLast12MonthsReturnDate,
+          hasPreviousBCHealthNumber: this.hasPreviousBCHealthNumber,
+          previousBCHealthNumber: this.previousBCHealthNumber,
+          hasBeenReleasedFromInstitution: this.hasBeenReleasedFromInstitution,
+          dischargeDate: this.dischargeDate,
+          
+          schoolName: this.schoolName,
+          schoolAddressLine1: this.schoolAddressLine1,
+          schoolAddressLine2: this.schoolAddressLine2,
+          schoolAddressLine3: this.schoolAddressLine3,
+          schoolCity: this.schoolCity,
+          schoolProvinceOrState: this.schoolProvinceOrState,
+          schoolCountry: this.schoolCountry,
+          schoolPostalCode: this.schoolPostalCode,
+          schoolDepartureDate: this.schoolDepartureDate,
+          schoolCompletionDate: this.schoolCompletionDate,
+          willResideInBCAfterStudies: this.willResideInBCAfterStudies,
+        };
 
-      this.$emit('updateChild', childData);  
+        this.$emit('updateChild', childData);  
+      }
+    },
+    handleBlurField(validationObject) {
       if (validationObject) {
         validationObject.$touch();
       }
@@ -1297,10 +1301,30 @@ export default {
     },
   },
   watch: {
+    ageRange() {
+      this.saveData();
+    },
+    firstName() {
+      this.saveData();
+    },
+    middleName() {
+      this.saveData();
+    },
+    lastName() {
+      this.saveData();
+    },
+    birthDate() {
+      this.saveData();
+    },
+    gender() {
+      this.saveData();
+    },
     status() {
       if (this.pageLoaded) {
         this.statusReason = null;
         this.$v.statusReason.$reset();
+
+        this.saveData();
       }
     },
     statusReason() {
@@ -1328,36 +1352,67 @@ export default {
         this.$v.outsideBCLast12Months.$reset();
         this.$v.hasPreviousBCHealthNumber.$reset();
         this.$v.hasBeenReleasedFromInstitution.$reset();
+
+        this.saveData();
       }
     },
     citizenshipSupportDocumentType() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.citizenshipSupportDocuments = [];
         this.$v.citizenshipSupportDocuments.$reset();
+        
+        this.saveData();
       }
     },
+    citizenshipSupportDocuments() {
+      this.saveData();
+    },
     isNameChanged() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.nameChangeSupportDocumentType = null;
         this.$v.nameChangeSupportDocumentType.$reset();
+      
+        this.saveData();
       }
     },
     nameChangeSupportDocumentType() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.nameChangeSupportDocuments = [];
         this.$v.nameChangeSupportDocuments.$reset();
+             
+        this.saveData();
       }
     },
+    nameChangeSupportDocuments() {
+      this.saveData();
+    },
+    moveFromOrigin() {
+      this.saveData();
+    },
     livedInBCSinceBirth() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.moveFromOrigin = null;
         this.canadaArrivalDate = null;
         this.$v.moveFromOrigin.$reset();
         this.$v.canadaArrivalDate.$reset();
+             
+        this.saveData();
       }
     },
+    previousHealthNumber() {
+      this.saveData();
+    },
+    recentBCMoveDate() {
+      this.saveData();
+    },
+    canadaArrivalDate() {
+      this.saveData();
+    },
+    madePermanentMove() {
+      this.saveData();
+    },
     outsideBCLast12Months() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.outsideBCLast12MonthsReason = null;
         this.outsideBCLast12MonthsDestination = null;
         this.outsideBCLast12MonthsDepartureDate = null;
@@ -1366,26 +1421,82 @@ export default {
         this.$v.outsideBCLast12MonthsDestination.$reset();
         this.$v.outsideBCLast12MonthsDepartureDate.$reset();
         this.$v.outsideBCLast12MonthsReturnDate.$reset();
+             
+        this.saveData();
       }
+    },
+    outsideBCLast12MonthsReason() {
+      this.saveData();
+    },
+    outsideBCLast12MonthsDestination() {
+      this.saveData();
+    },
+    outsideBCLast12MonthsDepartureDate() {
+      this.saveData();
+    },
+    outsideBCLast12MonthsReturnDate() {
+      this.saveData();
     },
     hasPreviousBCHealthNumber() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.previousBCHealthNumber = null;
         this.$v.previousBCHealthNumber.$reset();
+             
+        this.saveData();
       }
     },
+    previousBCHealthNumber() {
+      this.saveData();
+    },
     hasBeenReleasedFromInstitution() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.dischargeDate = null;
         this.$v.dischargeDate.$reset();
+             
+        this.saveData();
       }
+    },
+    dischargeDate() {
+      this.saveData();
+    },
+    schoolName() {
+      this.saveData();
+    },
+    schoolAddressLine1() {
+      this.saveData();
+    },
+    schoolAddressLine2() {
+      this.saveData();
+    },
+    schoolAddressLine3() {
+      this.saveData();
+    },
+    schoolCity() {
+      this.saveData();
+    },
+    schoolProvinceOrState() {
+      this.saveData();
     },
     schoolCountry(newVal, oldVal) {
       // If they switch to Canada and now have the province dropdown, make them select from the dropdown
       if (newVal !== oldVal && newVal === 'Canada') {
         this.schoolProvinceOrState = null;
       }
-    }
+
+      this.saveData();
+    },
+    schoolPostalCode() {
+      this.saveData();
+    },
+    schoolDepartureDate() {
+      this.saveData();
+    },
+    schoolCompletionDate() {
+      this.saveData();
+    },
+    willResideInBCAfterStudies() {
+      this.saveData();
+    },
   },
   computed: {
     citizenshipSupportDocumentOptions() {
