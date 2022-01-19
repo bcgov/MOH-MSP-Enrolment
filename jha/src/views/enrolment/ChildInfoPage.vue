@@ -299,13 +299,15 @@ export default {
         } else {
           this.hasChildren = 'N';
         }
+        this.saveData();
       }
     },
     hasChildren(val) {
       if (this.pageLoaded) {
         if (val === 'Y') {
           this.addChild();
-        } 
+        }
+        this.saveData();
       }
     }
   },
