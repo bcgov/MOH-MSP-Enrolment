@@ -4,6 +4,7 @@ import {
   stripPhoneFormatting,
   stripSpaces,
 } from 'common-lib-vue';
+import { ChildAgeTypes } from '@/constants/child-age-types';
 
 const BASE_API_PATH = '/ahdc/api/';
 const SUBMIT_APPLICATION_URL = BASE_API_PATH + 'jhaIntegration/payPatientSubmission';
@@ -45,6 +46,9 @@ class ApiService {
       };
     }
     if (formState.isApplyingForMSP) {
+      const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
+      const dependents = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child19To24);
+
       jsonPayload.medicalServicesPlan = {
         uuid: formState.MSPUUID || '',
         citizenshipType: formState.ahCitizenshipStatus || '',
@@ -66,8 +70,109 @@ class ApiService {
         isFullTimeStudent: formState.ahIsStudent || '',
         isInBCafterStudies: formState.ahWillStudentResideInBC || '',
         armedDischargeDate: formatISODate(formState.ahArmedForcesDischargeDate) || null,
-        armedForceInstitutionName: '', // Unknown field that the middleware is collecting.
       };
+      if (formState.hasSpouse === 'Y') {
+        jsonPayload.medicalServicesPlan.spouse = {
+          citizenshipType: formState.spouseStatus || '',
+          attachmentUuids: formState.spouseNameChangeSupportDocuments.map((image) => image.uuid),
+          residencyAttachmentUuids: formState.spouseCitizenshipSupportDocuments.map((image) => image.uuid),
+          hasPreviousCoverage: formState.spouseHasPreviousBCHealthNumber || '',
+          prevPHN: stripSpaces(formState.spousePreviousBCHealthNumber) || '',
+          hasLivedInBC: formState.spouseLivedInBCSinceBirth || '',
+          prevHealthNumber: formState.spousePreviousHealthNumber || '',
+          recentBCMoveDate: formatISODate(formState.spouseRecentBCMoveDate) || null,
+          recentCanadaMoveDate: formatISODate(formState.spouseCanadaArrivalDate) || null,
+          isPermanentMove: formState.spouseMadePermanentMove || '',
+          prevProvinceOrCountry: formState.spouseMoveFromOrigin || '',
+          beenOutsideBCMoreThan: formState.spouseOutsideBCLast12Months || '',
+          departureDate: formatISODate(formState.spouseOutsideBCLast12MonthsDepartureDate) || null,
+          returnDate: formatISODate(formState.spouseOutsideBCLast12MonthsReturnDate) || null,
+          familyMemberReason: formState.spouseOutsideBCLast12MonthsReason || '',
+          destination: formState.spouseOutsideBCLast12MonthsDestination || '',
+          isFullTimeStudent: null, // Not a field, but collected by the middleware.
+          isInBCafterStudies: null, // Not a field, but collected by the middleware.
+          armedDischargeDate: formatISODate(formState.spouseDischargeDate) || null,
+        };
+      }
+
+      if (formState.hasChildren === 'Y') {
+        // Children 0 to 18.
+        if (children.length > 0) {
+          jsonPayload.medicalServicesPlan.children = children.map((child) => {
+            return {
+              firstName: child.firstName || '',
+              secondName: child.middleName || '',
+              lastName: child.lastName || '',
+              gender: child.gender || '',
+              birthDate: formatISODate(child.birthDate) || null,
+              citizenshipType: child.status || '',
+              attachmentUuids: child.nameChangeSupportDocuments.map((image) => image.uuid),
+              residencyAttachmentUuids: child.citizenshipSupportDocuments.map((image) => image.uuid),
+              hasPreviousCoverage: child.hasPreviousBCHealthNumber || '',
+              prevPHN: stripSpaces(child.previousBCHealthNumber) || '',
+              hasLivedInBC: child.livedInBCSinceBirth || '',
+              prevHealthNumber: child.previousHealthNumber || '',
+              recentBCMoveDate: formatISODate(child.recentBCMoveDate) || null,
+              recentCanadaMoveDate: formatISODate(child.canadaArrivalDate) || null,
+              isPermanentMove: child.madePermanentMove || '',
+              prevProvinceOrCountry: child.moveFromOrigin || '',
+              beenOutsideBCMoreThan: child.outsideBCLast12Months || '',
+              departureDate: formatISODate(child.outsideBCLast12MonthsDepartureDate) || null,
+              returnDate: formatISODate(child.outsideBCLast12MonthsReturnDate) || null,
+              familyMemberReason: child.outsideBCLast12MonthsReason || '',
+              destination: child.outsideBCLast12MonthsDestination || '',
+              isFullTimeStudent: '', // Not a field, but is collected by the middleware,
+              isInBCafterStudies: child.willResideInBCAfterStudies || '',
+              armedDischargeDate: formatISODate(child.dischargeDate) || null,
+            };
+          });
+        }
+
+        // Dependents 19 to 24.
+        if (dependents.length > 0) {
+          jsonPayload.medicalServicesPlan.dependents = dependents.map((dependent) => {
+            return {
+              firstName: dependent.firstName || '',
+              secondName: dependent.middleName || '',
+              lastName: dependent.lastName || '',
+              gender: dependent.gender || '',
+              birthDate: formatISODate(dependent.birthDate) || null,
+              dateStudiesFinish: formatISODate(dependent.schoolCompletionDate) || null,
+              departDateSchoolOutside: formatISODate(dependent.schoolDepartureDate) || null,
+              schoolName: dependent.schoolName || '',
+              schoolAddress: {
+                addressLine1: dependent.schoolAddressLine1 || '',
+                addressLine2: dependent.schoolAddressLine2 || '',
+                addressLine3: dependent.schoolAddressLine3 || '',
+                city: dependent.schoolCity || '',
+                postalCode: dependent.schoolPostalCode || '',
+                provinceOrState: dependent.schoolProvinceOrState || '',
+                country: dependent.schoolCountry || '',
+              },
+              citizenshipType: dependent.status || '',
+              attachmentUuids: dependent.nameChangeSupportDocuments.map((image) => image.uuid),
+              residencyAttachmentUuids: dependent.citizenshipSupportDocuments.map((image) => image.uuid),
+              hasPreviousCoverage: dependent.hasPreviousBCHealthNumber || '',
+              prevPHN: stripSpaces(dependent.previousBCHealthNumber) || '',
+              hasLivedInBC: dependent.livedInBCSinceBirth || '',
+              prevHealthNumber: dependent.previousHealthNumber || '',
+              recentBCMoveDate: formatISODate(dependent.recentBCMoveDate) || null,
+              recentCanadaMoveDate: formatISODate(dependent.canadaArrivalDate) || null,
+              isPermanentMove: dependent.madePermanentMove || '',
+              prevProvinceOrCountry: dependent.moveFromOrigin || '',
+              beenOutsideBCMoreThan: dependent.outsideBCLast12Months || '',
+              departureDate: formatISODate(dependent.outsideBCLast12MonthsDepartureDate) || null,
+              returnDate: formatISODate(dependent.outsideBCLast12MonthsReturnDate) || null,
+              familyMemberReason: dependent.outsideBCLast12MonthsReason || '',
+              destination: dependent.outsideBCLast12MonthsDestination || '',
+              isFullTimeStudent: '', // Not a field, but is collected by the middleware,
+              isInBCafterStudies: dependent.willResideInBCAfterStudies || '',
+              armedDischargeDate: formatISODate(dependent.dischargeDate) || null,
+            };
+          });
+        }
+      }
+      
       // Add mailing address.
       if (!formState.isMailSame) {
         jsonPayload.medicalServicesPlan.mailingAddress = {
@@ -80,6 +185,25 @@ class ApiService {
           country: formState.mailCountry || '',
         };
       }
+
+      jsonPayload.medicalServicesPlan.attachments = this._createAttachmentDetails([
+        ...formState.ahCitizenshipSupportDocuments,
+        ...formState.ahNameChangeSupportDocuments,
+        ...formState.spouseCitizenshipSupportDocuments,
+        ...formState.spouseNameChangeSupportDocuments,
+        ...(children.map((child) => {
+          return [
+            ...child.citizenshipSupportDocuments,
+            ...child.nameChangeSupportDocuments,
+          ];
+        })),
+        ...(dependents.map((dependent) => {
+          return [
+            ...dependent.citizenshipSupportDocuments,
+            ...dependent.nameChangeSupportDocuments,
+          ];
+        })),
+      ]);
     }
     return this._sendPostRequest(SUBMIT_APPLICATION_URL, token, jsonPayload);
   }
@@ -95,6 +219,21 @@ class ApiService {
       "Response-Type": "application/json",
       "X-Authorization": "Bearer " + token
     }
+  }
+
+  _createAttachmentDetails(attachments) {
+    const results = [];
+
+    for (let i=0; i<attachments.length; i++) {
+      results.push({
+        contentType: attachments[i].contentType,
+        attachmentDocumentType: attachments[i].documentType,
+        attachmentUuid: attachments[i].uuid,
+        attachmentOrder: `${i + 1}`,
+        description: attachments[i].description,
+      });
+    }
+    return results;
   }
 }
 
