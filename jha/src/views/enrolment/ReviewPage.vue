@@ -86,62 +86,74 @@ export default {
 
       this.$store.dispatch(formModule + '/' + SET_SUBMISSION_DATE, new Date());
 
-      const token = this.$store.state.enrolmentModule.captchaToken;
       const applicationUuid = this.$store.state.enrolmentModule.applicationUuid;
       const formState = this.$store.state.enrolmentModule;
+      apiService.sendAttachments(formState)
+        .then(() => {
+          apiService.sendApplication(formState)
+            .then((response) => {
+              // Handle HTTP success.
+              const returnCode = response.data.returnCode;
+              const referenceNumber = response.data.referenceNumber;
 
-      apiService.submitEnrolmentApplication(token, formState)
-        .then((response) => {
-          // Handle HTTP success.
-          const returnCode = response.data.returnCode;
-          const referenceNumber = response.data.referenceNumber;
+              this.isLoading = false;
 
-          this.isLoading = false;
-
-          switch (returnCode) {
-            case '0': // Submission successful.
-              logService.logSubmission(applicationUuid, {
-                event: 'submission',
-                response: response.data,
-              }, referenceNumber);
-              this.$store.dispatch(formModule + '/' + SET_REFERENCE_NUMBER, referenceNumber);
-              this.navigateToSubmissionPage();
-              break;
-            case '1': // Submission failed.
-              logService.logError(applicationUuid, {
-                event: 'submission failure',
-                response: response.data,
-              });
-              this.navigateToSubmissionErrorPage();
-              break;
-            case '2': // Unknown case, but not '0', so failing the the submission.
-              logService.logError(applicationUuid, {
-                event: 'submission failure',
-                response: response.data,
-              });
-              this.navigateToSubmissionErrorPage();
-              break;
-            case '3': // System unavailable.
+              switch (returnCode) {
+                case '0': // Submission successful.
+                  logService.logSubmission(applicationUuid, {
+                    event: 'submission',
+                    response: response.data,
+                  }, referenceNumber);
+                  this.$store.dispatch(formModule + '/' + SET_REFERENCE_NUMBER, referenceNumber);
+                  this.navigateToSubmissionPage();
+                  break;
+                case '1': // Submission failed.
+                  logService.logError(applicationUuid, {
+                    event: 'submission failure',
+                    response: response.data,
+                  });
+                  this.navigateToSubmissionErrorPage();
+                  break;
+                case '2': // Unknown case, but not '0', so failing the the submission.
+                  logService.logError(applicationUuid, {
+                    event: 'submission failure',
+                    response: response.data,
+                  });
+                  this.navigateToSubmissionErrorPage();
+                  break;
+                case '3': // System unavailable.
+                  this.isSystemUnavailable = true;
+                  logService.logError(applicationUuid, {
+                    event: 'submission failure',
+                    response: response.data,
+                  });
+                  scrollToError();
+                  break;
+              }
+            })
+            .catch((error) => {
+              // Handle HTTP error.
+              const httpStatusCode = error && error.response ? error.response.status : null;
+              this.isLoading = false;
               this.isSystemUnavailable = true;
               logService.logError(applicationUuid, {
-                event: 'submission failure',
-                response: response.data,
+                event: 'HTTP error while sending application',
+                status: httpStatusCode
               });
               scrollToError();
-              break;
-          }
+            });
         })
         .catch((error) => {
           // Handle HTTP error.
           const httpStatusCode = error && error.response ? error.response.status : null;
           this.isLoading = false;
-          this.isSystemUnavailable = true;
           logService.logError(applicationUuid, {
-            event: 'HTTP error while sending application',
-            status: httpStatusCode
+            event: 'Error sending attachment',
+            status: httpStatusCode,
           });
-          scrollToError();
+          this.navigateToSubmissionErrorPage();
         });
+      
       
       // Manually navigate to submission success page when middleware/RAPID is down.
       this.navigateToSubmissionPage();

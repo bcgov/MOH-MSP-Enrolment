@@ -64,6 +64,9 @@ import {
   SET_IS_APPLYING_FOR_MSP,
   SET_IS_APPLYING_FOR_FPCARE,
   SET_IS_APPLYING_FOR_SUPP_BEN,
+  SET_MSP_UUID,
+  SET_FPC_UUID,
+  SET_SB_UUID,
 } from '@/store/modules/enrolment-module';
 import {
   Checkbox,
@@ -73,6 +76,7 @@ import {
 import pageContentMixin from '@/mixins/page-content-mixin';
 import { mapGetters } from 'vuex';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
+import { v4 as uuidv4 } from 'uuid';
 
 const atLeastOne = (vm) => {
   return vm.isApplyingForMSP
@@ -157,6 +161,9 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_MSP}`, this.isApplyingForMSP);
       this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_FPCARE}`, this.isApplyingForFPCare);
       this.$store.dispatch(`${enrolmentModule}/${SET_IS_APPLYING_FOR_SUPP_BEN}`, this.isApplyingForSuppBen);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MSP_UUID}`, uuidv4());
+      this.$store.dispatch(`${enrolmentModule}/${SET_FPC_UUID}`, uuidv4());
+      this.$store.dispatch(`${enrolmentModule}/${SET_SB_UUID}`, uuidv4());
     },
     navigateToNextPage() {
       // Navigate to next path.

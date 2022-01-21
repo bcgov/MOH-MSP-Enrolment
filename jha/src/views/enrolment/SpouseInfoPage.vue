@@ -168,8 +168,10 @@
               <div class="row">
                   <div class="col-md-7">
                     <FileUploader v-model="spouseCitizenshipSupportDocuments"
-                    :isZoomPortalEnabled="true"
-                    modalElementTarget="#modal-target" />
+                      :isZoomPortalEnabled="true"
+                      modalElementTarget="#modal-target"
+                      documentType="Spouse citizenship support documents"
+                      :description="spouseCitizenshipSupportDocumentType" />
                     <div class="text-danger"
                       v-if="$v.spouseCitizenshipSupportDocuments.$dirty && !$v.spouseCitizenshipSupportDocuments.required"
                       aria-live="assertive">File upload required.</div>
@@ -221,7 +223,9 @@
                     <FileUploader class="mb-3"
                         v-model="spouseNameChangeSupportDocuments"
                         :isZoomPortalEnabled="true"
-                        modalElementTarget="#modal-target" />
+                        modalElementTarget="#modal-target"
+                        documentType="Spouse name change support documents"
+                        :description="spouseNameChangeSupportDocumentType" />
                     <div class="text-danger"
                       v-if="$v.spouseNameChangeSupportDocuments.$dirty && !$v.spouseNameChangeSupportDocuments.required"
                       aria-live="assertive">File upload required.</div>
