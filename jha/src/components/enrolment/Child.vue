@@ -155,7 +155,9 @@
                 <div class="col-md-7">
                   <FileUploader v-model="citizenshipSupportDocuments"
                     :isZoomPortalEnabled="true"
-                    modalElementTarget="#modal-target" />
+                    modalElementTarget="#modal-target"
+                    documentType="Child citizenship support documents"
+                    :description="citizenshipSupportDocumentType" />
                   <div class="text-danger"
                       v-if="$v.citizenshipSupportDocuments.$dirty && !$v.citizenshipSupportDocuments.required"
                       aria-live="assertive">File upload required.</div>
@@ -205,7 +207,9 @@
                     <FileUploader class="mb-3"
                       v-model="nameChangeSupportDocuments"
                       :isZoomPortalEnabled="true"
-                      modalElementTarget="#modal-target" />
+                      modalElementTarget="#modal-target"
+                      documentType="Child name change support documents"
+                      :description="nameChangeSupportDocumentType" />
                     <div class="text-danger"
                       v-if="$v.nameChangeSupportDocuments.$dirty && !$v.nameChangeSupportDocuments.required"
                       aria-live="assertive">File upload required.</div>

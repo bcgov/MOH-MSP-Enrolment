@@ -133,6 +133,9 @@ app.use('/', function (req, res, next) {
         if (nounIndex < 0) {
             nounIndex = pathnameParts.indexOf("siteregIntegration");
         }
+        if (nounIndex < 0) {
+            nounIndex = pathnameParts.indexOf("jhaIntegration");
+        }
 		if (nounIndex < 0) {                                                                                                                          
             nounIndex = pathnameParts.indexOf("bcp");                                                                                  
         } 

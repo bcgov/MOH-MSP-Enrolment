@@ -6,6 +6,9 @@ export const MODULE_NAME = 'enrolmentModule';
 // Action names.
 export const RESET_FORM = 'resetForm';
 export const SET_APPLICATION_UUID = 'setApplicationUuid';
+export const SET_MSP_UUID = 'setMSPUuid';
+export const SET_FPC_UUID = 'setFPCUuid';
+export const SET_SB_UUID = 'setSBUuid';
 export const SET_CAPTCHA_TOKEN = 'setCaptchaToken';
 export const SET_SUBMISSION_DATE = 'setSubmissionDate';
 export const SET_REFERENCE_NUMBER = 'setReferenceNumber';
@@ -148,6 +151,9 @@ export default {
   state: () => {
     const state = {
       applicationUuid: null,
+      mspUuid: null,
+      fpcUuid: null,
+      sbUuid: null,
       captchaToken: null,
       submissionDate: null,
       referenceNumber: null,
@@ -293,6 +299,15 @@ export default {
   mutations: {
     [SET_APPLICATION_UUID](state, payload) {
       state.applicationUuid = payload;
+    },
+    [SET_MSP_UUID](state, payload) {
+      state.mspUuid = payload;
+    },
+    [SET_FPC_UUID](state, payload) {
+      state.fpcUuid = payload;
+    },
+    [SET_SB_UUID](state, payload) {
+      state.sbUuid = payload;
     },
     [SET_CAPTCHA_TOKEN](state, payload) {
       state.captchaToken = payload;
@@ -690,6 +705,9 @@ export default {
   actions: {
     [RESET_FORM]({ commit }) {
       commit(SET_APPLICATION_UUID, null);
+      commit(SET_MSP_UUID, null);
+      commit(SET_FPC_UUID, null);
+      commit(SET_SB_UUID, null);
       commit(SET_CAPTCHA_TOKEN, null);
       commit(SET_SUBMISSION_DATE, null);
       commit(SET_REFERENCE_NUMBER, null);
@@ -829,6 +847,15 @@ export default {
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
       commit(SET_APPLICATION_UUID, payload);
+    },
+    [SET_MSP_UUID]({ commit }, payload) {
+      commit(SET_MSP_UUID, payload);
+    },
+    [SET_FPC_UUID]({ commit }, payload) {
+      commit(SET_FPC_UUID, payload);
+    },
+    [SET_SB_UUID]({ commit }, payload) {
+      commit(SET_SB_UUID, payload);
     },
     [SET_CAPTCHA_TOKEN]({ commit }, payload) {
       commit(SET_CAPTCHA_TOKEN, payload);
