@@ -683,6 +683,7 @@
                   v-model="schoolDepartureDate"
                   @blur="handleBlurField($v.schoolDepartureDate)"
                   @processDate="handleProcessDateSchoolDeparture($event)" />
+                <div class="text-danger" v-if="schoolProvinceOrState !== 'British Columbia' && $v.schoolDepartureDate.$dirty && !$v.schoolDepartureDate.required" aria-live="assertive">School departure date is required.</div>
                 <div class="text-danger" v-if="$v.schoolDepartureDate.$dirty && !$v.schoolDepartureDate.dateDataValidator" aria-live="assertive">Invalid school departure date.</div>
                 <div class="text-danger" v-if="$v.schoolDepartureDate.$dirty && !$v.schoolDepartureDate.pastDateValidator" aria-live="assertive">School departure date cannot be in the future.</div>
                 <DateInput label="Expected school completion date"
@@ -1035,7 +1036,7 @@ export default {
     this.schoolAddressLine3 = this.childData.schoolAddressLine3;
     this.schoolCity = this.childData.schoolCity;
     this.schoolProvinceOrState = this.childData.schoolProvinceOrState;
-    this.schoolCountry = this.childData.schoolCountry;
+    this.schoolCountry = this.childData.schoolCountry ? this.childData.schoolCountry : 'Canada';
     this.schoolPostalCode = this.childData.schoolPostalCode;
     this.schoolDepartureDate = this.childData.schoolDepartureDate;
     this.schoolCompletionDate = this.childData.schoolCompletionDate;
@@ -1207,6 +1208,10 @@ export default {
 
       validations.schoolDepartureDate.dateDataValidator = dateDataValidator(this.schoolDepartureDateData);
       validations.schoolDepartureDate.pastDateValidator = optionalValidator(pastDateValidator);
+
+      if (this.schoolProvinceOrState !== 'British Columbia') {
+        validations.schoolDepartureDate.required = dateDataRequiredValidator(this.schoolDepartureDateData);
+      }
 
       validations.schoolCompletionDate.required = dateDataRequiredValidator(this.schoolCompletionDateData);
       validations.schoolCompletionDate.dateDataValidator = dateDataValidator(this.schoolCompletionDateData);
