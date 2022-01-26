@@ -156,7 +156,18 @@ app.use('/', function (req, res, next) {
                 denyAccess("resource id and nonce are not equal: " + pathnameParts[nounIndex + 2] + "; " + decoded.data.nonce, res, req);             
                 return;                                                                                                                            
             } 
-		}
+        }
+        // For "submit-attachment" API, we check that application UUID and nonce exist.
+        // We don't check that are equal because JHA has sub-programs (MSP, FPC, and SB) which have their own application UUIDs, and they won't match the nonce created by the captcha service.
+        else if (pathnameParts.indexOf('submit-attachment') > -1) {
+            if (!pathnameParts[nounIndex + 2]) {
+                denyAccess(`application UUID not included in URL: ${pathnameParts[nounIndex + 2]}`, res, req);
+                return;
+            } else if (!decoded.data.nonce) {
+                denyAccess(`nonce not included in decrypted auth token: ${decoded.data.nonce}`, res, req);
+                return;
+            }
+        }
 		else {
 			// Finally, check that resource ID against the nonce
 			if (pathnameParts[nounIndex + 1] != decoded.data.nonce) {
