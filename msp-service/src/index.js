@@ -9,8 +9,8 @@ var https = require('https'),
     url = require('url'),
     stringify = require('json-stringify-safe'),
     express = require('express'),
-    moment = require('moment');
-    proxy = require('http-proxy-middleware');
+    moment = require('moment'),
+    { createProxyMiddleware } = require('http-proxy-middleware');
 
 // verbose replacement
 function logProvider(provider) {
@@ -56,6 +56,10 @@ app.get('/status', function (req, res) {
 
 // health and readiness check
 app.get('/hello', function (req, res) {
+    res.status(200).end();
+});
+
+app.get('/health', function(req, res){
     res.status(200).end();
 });
 
@@ -180,7 +184,7 @@ if (process.env.USE_MUTUAL_TLS &&
 //
 // Create a HTTP Proxy server with a HTTPS target
 //
-var proxy = proxy({
+var proxy = createProxyMiddleware({
     target: process.env.TARGET_URL || "http://localhost:3000",
     agent: myAgent || http.globalAgent,
     secure: process.env.SECURE_MODE || false,
