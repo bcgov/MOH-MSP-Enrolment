@@ -404,20 +404,20 @@
                       v-if="$v.spouseCanadaArrivalDate.$dirty
                             && $v.spouseCanadaArrivalDate.dateDataValidator
                             && !$v.spouseCanadaArrivalDate.pastDateValidator"
-                      aria-live="assertive">Most recent move to Canada date cannot be in the future.</div>
+                      aria-live="assertive">Arrival date in Canada cannot be in the future.</div>
                     <div class="text-danger"
                       v-if="$v.spouseCanadaArrivalDate.$dirty 
                             && $v.spouseCanadaArrivalDate.dateDataValidator
                             && $v.spouseCanadaArrivalDate.pastDateValidator
                             && !$v.spouseCanadaArrivalDate.beforeBirthdateValidator"
-                      aria-live="assertive">The spouse's most recent move to Canada cannot be before the spouse's date of birth.</div>
+                      aria-live="assertive">The spouse's arrival date in Canada cannot be before the spouse's date of birth.</div>
                     <div class="text-danger"
                       v-if="$v.spouseCanadaArrivalDate.$dirty 
                             && $v.spouseCanadaArrivalDate.dateDataValidator
                             && $v.spouseCanadaArrivalDate.pastDateValidator
                             && $v.spouseCanadaArrivalDate.beforeBirthdateValidator
                             && !$v.spouseCanadaArrivalDate.dateOrderValidator"
-                      aria-live="assertive">The spouse's most recent move to Canada cannot be after the move to B.C. date.</div>
+                      aria-live="assertive">The spouse's arrival date in Canada cannot be after the move to B.C. date.</div>
                   </div>
                   <div v-if="showPreviousHealthNumber">
                     <Input 
