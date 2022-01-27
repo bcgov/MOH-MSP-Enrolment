@@ -120,7 +120,7 @@
               v-if="$v.statusReason.$dirty && !$v.statusReason.required"
               aria-live="assertive">Please select one of the above.</div>
         </div>
-        <div v-if="status === statusOptions.TemporaryResident">
+        <div v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child19To24">
             <Radio
               :id="'child-status-reason' + index"
               :name="'child-status-reason' + index"
@@ -128,6 +128,18 @@
               v-model='statusReason'
               @blur="handleBlurField($v.statusReason)"
               :items='temporaryResidentStatusReasonOptions' />
+            <div class="text-danger"
+              v-if="$v.statusReason.$dirty && !$v.statusReason.required"
+              aria-live="assertive">Please select one of the above.</div>
+        </div>
+        <div v-if="status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child19To24">
+            <Radio
+              :id="'child-status-reason' + index"
+              :name="'child-status-reason' + index"
+              label=''
+              v-model='statusReason'
+              @blur="handleBlurField($v.statusReason)"
+              :items='overageChildTemporaryResidentStatusReasonOptions' />
             <div class="text-danger"
               v-if="$v.statusReason.$dirty && !$v.statusReason.required"
               aria-live="assertive">Please select one of the above.</div>
@@ -777,6 +789,7 @@ import {
   radioOptionsChildAge,
   radioOptionsCitizenStatusReasons, 
   radioOptionsTemporaryResidentStatusReasons,
+  radioOptionsOverageChildTemporaryResidentStatusReasons,
   radioOptionsGender,
 } from '@/constants/radio-options';
 import { 
@@ -941,6 +954,7 @@ export default {
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
       nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
       temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
+      overageChildTemporaryResidentStatusReasonOptions: radioOptionsOverageChildTemporaryResidentStatusReasons,
       mediumStyles: mediumStyles,
       smallStyles: smallStyles,
       // Data to be saved
@@ -1311,7 +1325,12 @@ export default {
   },
   watch: {
     ageRange() {
-      this.saveData();
+      if (this.pageLoaded) {
+        this.statusReason = null;
+        this.$v.statusReason.$reset();
+        
+        this.saveData();
+      }
     },
     firstName() {
       this.saveData();

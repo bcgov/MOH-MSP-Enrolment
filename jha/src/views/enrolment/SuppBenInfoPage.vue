@@ -115,7 +115,7 @@
                 v-if="$v.selectedDisabilityRecipients.$dirty && !$v.selectedDisabilityRecipients.required"
                   aria-live="assertive">You must select who claimed the disability tax credit.</div>
               <div class="text-danger"
-                v-if="$v.selectedAttendantNursingRecipients.$dirty && !$v.selectedAttendantNursingRecipients.notApplyingForBoth"
+                v-if="$v.selectedDisabilityRecipients.$dirty && !$v.selectedDisabilityRecipients.notApplyingForBoth"
                   aria-live="assertive">You have already selected nursing home credit for this person. Please remove nursing home credit if you want to claim disability credit for them.</div>
               <div v-if="selectedDisabilityRecipients.includes('child')">
                 <DigitInput id="num-attendant-nursing-children"
@@ -329,14 +329,9 @@ const validateNumChildren = (value) => {
 };
 
 const notApplyingForBoth = (value, vm) => {
-  if ((value.includes('child') && vm.selectedDisabilityRecipients.includes('child'))
-    || (value.includes('spouse') && vm.selectedDisabilityRecipients.includes('spouse'))
-    || (value.includes('ah') && vm.selectedDisabilityRecipients.includes('ah'))
-  ) {
-    return false
-  } else {
-    return true;
-  }
+  return !((vm.selectedAttendantNursingRecipients.includes('child') && vm.selectedDisabilityRecipients.includes('child'))
+    || (vm.selectedAttendantNursingRecipients.includes('spouse') && vm.selectedDisabilityRecipients.includes('spouse'))
+    || (vm.selectedAttendantNursingRecipients.includes('ah') && vm.selectedDisabilityRecipients.includes('ah')));
 };
 
 export default {
@@ -366,8 +361,8 @@ export default {
       ahSBIncome: null,
       ahBirthDate: null,
       hasSpouse: null,
-      spouseSBIncome: null,
       spouseBirthDate: null,
+      spouseSBIncome: null,
       hasChildren: null,
       numChildren: null,
       claimedChildCareExpenses: null,
@@ -384,6 +379,7 @@ export default {
       extraSmallStyles: extraSmallStyles,
       radioOptionsNoYes: radioOptionsNoYes,
       selectOptionsFamilyMembers: selectOptionsFamilyMembers,
+      pageLoaded: false,
     };
   },
   created() {
@@ -397,8 +393,10 @@ export default {
     this.onlySuppBen = !this.$store.state.enrolmentModule.isApplyingForMSP
                       && !this.$store.state.enrolmentModule.isApplyingForFPCare;
     this.selectedNOAYear = this.$store.state.enrolmentModule.selectedNOAYear;
+    this.ahBirthDate = this.$store.state.enrolmentModule.ahBirthdate;
     this.ahSBIncome = this.$store.state.enrolmentModule.ahSBIncome;
     this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse;
+    this.spouseBirthDate = this.$store.state.enrolmentModule.spouseBirthDate;
     this.spouseSBIncome = this.$store.state.enrolmentModule.spouseSBIncome;
     this.hasChildren = this.$store.state.enrolmentModule.hasChildren;
     this.numChildren = `${this.$store.state.enrolmentModule.numChildren}`;
@@ -424,6 +422,8 @@ export default {
       if (this.selectedAttendantNursingRecipients.includes("spouse")){
         this.selectedAttendantNursingRecipients.splice(this.selectedAttendantNursingRecipients.indexOf("spouse"), 1);
       }
+    } else {
+      this.selectOptionsFamilyMembers.filter(option => {return option.id === 'spouse';})[0].disabled = false;
     }
     
     // set options for years
@@ -439,6 +439,10 @@ export default {
         value: `${this.currentYear - 2}`,
       }
     ];
+
+    setTimeout(() => {
+      this.pageLoaded = true;
+    }, 0);
   },
   validations() {
     let validations = {
@@ -488,6 +492,7 @@ export default {
 
     if (this.hasDisabilityCredit === 'Y') {
       validations.selectedDisabilityRecipients.required = required;
+      validations.selectedDisabilityRecipients.notApplyingForBoth = notApplyingForBoth;
     }
 
     if (this.hasDisabilityCredit === 'Y' && this.selectedDisabilityRecipients.includes('child')){
@@ -620,6 +625,16 @@ export default {
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
       }
     },
+    hasDisabilityCredit(value) {
+      if (this.pageLoaded && value === 'N') {
+        this.selectedDisabilityRecipients = [];
+      }
+    },
+    hasAttendantNursingExpenses(value) {
+      if (this.pageLoaded && value === 'N') {
+        this.selectedAttendantNursingRecipients = [];
+      }
+    }
   },
   computed: {
     intNumChildren() {
@@ -633,8 +648,9 @@ export default {
       let info = new SuppBenData();
       info.selectedNOAYear = this.selectedNOAYear;
       info.ahIncome = this.ahSBIncome;
-      info.ahBirthdate = this.ahBirthdate;
+      info.ahBirthdate = this.ahBirthDate;
       info.hasSpouse = this.hasSpouse;
+      info.spouseBirthdate = this.spouseBirthDate;
       info.spouseIncome = this.spouseSBIncome;
       info.numChildren = this.intNumChildren;
       info.claimedChildCareExpenses = this.claimedChildCareExpenses;

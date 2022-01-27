@@ -70,6 +70,24 @@ export const radioOptionsTemporaryResidentStatusReasons = [
   }
 ];
 
+export const radioOptionsOverageChildTemporaryResidentStatusReasons = [
+  {
+    id: 'working-permit',
+    label: CanadianStatusReasons.WorkingInBC,
+    value: CanadianStatusReasons.WorkingInBC,
+  },
+  {
+    id: 'study-permit',
+    label: CanadianStatusReasons.StudyingInBC,
+    value: CanadianStatusReasons.StudyingInBC,
+  },
+  {
+    id: 'diplomatic-foil',
+    label: CanadianStatusReasons.Diplomat,
+    value: CanadianStatusReasons.Diplomat,
+  },
+];
+
 export const radioOptionsGender = [
   {
     id: 'male',

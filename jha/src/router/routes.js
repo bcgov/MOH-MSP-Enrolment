@@ -11,12 +11,12 @@ export const enrolmentRoutes = {
   },
   FPCARE_ELIGIBILITY_PAGE: {
     path: '/fpcare-eligibility',
-    title: 'Fair Pharma Care',
+    title: 'Fair PharmaCare',
     name: 'FPCareEligibilityPage',
   },
   SUPP_BEN_ELIGIBILITY_PAGE: {
     path: '/supp-ben-eligibility',
-    title: 'Supplimentary Benefits',
+    title: 'Supplementary Benefits',
     name: 'SuppBenligibilityPage',
   },
   FORM_SELECTION_PAGE: {
