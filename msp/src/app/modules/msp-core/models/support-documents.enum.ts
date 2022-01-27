@@ -38,7 +38,7 @@ export const SupportDocumentList = {
   CanadianBirthCertificate: 'Canadian Birth Certificate',
   CanadianPassport: 'Canadian Passport',
   CanadianCitizenCard: 'Canadian Citizenship Card or Certificate (front and back)',
-  DriversLicense: 'BC Driver\'s License',
+  DriversLicense: 'BC Driver\'s Licence',
   RecordOfLanding: 'Record of Landing',
   PermanentResidentCard: 'Permanent Resident Card (front and back)',
   PermanentResidentConfirmation: 'Confirmation of Permanent Residence',
@@ -86,7 +86,7 @@ export const SupportDocumentSamples: SampleImageInterface[] = [
   // DriversLicense
   {
     path: 'assets/bc_drivers_license.jpg',
-    desc: 'Picture of a sample BC Driver’s License',
+    desc: 'Picture of a sample BC Driver’s Licence',
   },
   // RecordOfLanding
   {
