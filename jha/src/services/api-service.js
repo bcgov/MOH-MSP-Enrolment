@@ -256,15 +256,31 @@ class ApiService {
   _sendAttachment(image, programUuid, token) {
     const url = `${SUBMIT_ATTACHMENT_URL}/${programUuid}/attachments/${image.uuid}?programArea=ENROLMENT&attachmentDocumentType=SupportDocument&contentType=image/jpeg&imageSize=${image.size}&dpackage=msp_enrolment_pkg`;
     const headers = this._getAttachmentHeaders(token);
-    const binary = atob(image.source.split(',')[1]);
-    const chars = [];
-    for (let i=0; i<binary.length; i++) {
-      chars.push(binary.charCodeAt(i));
+    let blob;
+
+    if (image && typeof image.source === 'string') {
+      const binary = atob(image.source.split(',')[1]);
+      const chars = [];
+      for (let i=0; i<binary.length; i++) {
+        chars.push(binary.charCodeAt(i));
+      }
+      blob = new Blob([new Uint8Array(chars)], {
+        type: 'image/jpeg',
+      });
     }
-    const blob = new Blob([new Uint8Array(chars)], {
-      type: 'image/jpeg',
+    return new Promise((resolve, reject) => {
+      this._sendPostRequest(url, headers, blob)
+        .then((response) => {
+          if (response && response.data && response.data.returnCode === 'success') {
+            resolve(response.data);
+          } else {
+            reject(response.data);
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
     });
-    return this._sendPostRequest(url, headers, blob);
   }
 
   _sendPostRequest(url, headers, payload) {

@@ -168,6 +168,14 @@ app.use('/', function (req, res, next) {
                 return;
             }
         }
+        else if (pathnameParts[nounIndex] === 'jhaIntegration') {
+            if (pathnameParts[nounIndex + 1] === 'application' &&
+                pathnameParts[nounIndex + 2] !== decoded.data.nonce) {
+                denyAccess(`JHA resource ID and nonce are not equal: ${pathnameParts[nounIndex + 2]}; ${decoded.data.nonce}`, res, req);
+				return;
+            }
+            // Allow all other "jhaIntegration" calls to proxy to the middleware.
+        }
 		else {
 			// Finally, check that resource ID against the nonce
 			if (pathnameParts[nounIndex + 1] != decoded.data.nonce) {
