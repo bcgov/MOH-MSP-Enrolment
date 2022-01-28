@@ -10,6 +10,7 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Declaration and consent</h1>
+        <!-- MSP -->
         <div>
           <hr/>
           <h2>MSP Authorization: Must be signed by Applicant, and Spouse if applicable</h2>
@@ -17,6 +18,32 @@
             <li>I have received information about MSP and agree to abide by the terms and conditions of MSP. I understand that if a discrepancy exists between the information provided and the legislation, the legislation will govern.</li>
             <li>I authorize the Ministry of Health to collect my health information from practitioners who provide publicly funded health care service(s) to me under MSP and other publicly funded health care programs, and I provide consent for those practitioners to disclose such information to the Ministry of Health for the purposes of asessing eligibility for, and in regard to the administration of, MSP and other Ministry of Health publicly funded health care programs.</li>
             <li>I declare that all information provided is true and I understand that the Ministry of Health and/or Health Insurance BC may verify this information with immigration authorities, law enforcement authorities and other public authorities, agencies and persons as appropriate. I declare that all persons listed are residents of British Columbia.</li>
+          </ul>
+        </div>
+
+        <!-- FPC -->
+        <div>
+          <hr/>
+          <h2>Fair PharmaCare: Declaration and Consent - Must Be Signed</h2>
+          <p><b>Please read and sign. If you are married or living and cohabiting in a marriage-like relationship, your spouse must also sign.</b></p>
+          <ul>
+            <li>I consent to allow the Canada Revenue Agency to release information from my income tax returns and other required taxpayer information to the B.C. Ministry of Health and Health Insurance BC.</li>
+            <li>The information provided will be used solely to determine, verify and administer my and/or my family's Fair PharmaCare Plan coverage, but may be aggregated for planning and evaluation purposes.</li>
+            <li>I understand my information will be collected, used and disclosed in accordance with the British Columbia Pharmaceutical Services Act and Freedom of Information and Protection of Privacy Act. It will not be disclosed to any persons without my consent.</li>
+            <li>This consent is valid for the two taxation years before the year in which I sign this document, for the year in which I sign it and for each following taxation year in which I and/or my family am eligible for the Fair PharmaCare Plan.</li>
+            <li>I understand that I can withdraw this consent at any time by writing to Health Insurance BC, PO Box 9655 Stn Prov Govt, Victoria BC V8W 9P2.</li>
+          </ul>
+        </div>
+
+        <!-- Supp Ben -->
+        <div>
+          <hr/>
+          <h2>MSP Supplementary Benefits: Declaration and Consent - Must Be Signed</h2>
+          <p><b>Please read and sign. If you are married or living in a marriage-like relationship, your spouse must also sign.</b></p>
+          <ul>
+            <li>I (applicant) am a resident of British Columbia as defined by the Medicare Protection Act.</li>
+            <li>I (applicant) have resided in Canada as a Canadian citizen or holder of permanent resident state (landed immigrant) for at least the last 12 months immediately preceding this application. I am not exempt from liability to pay income tax by reason of any other Act.</li>
+            <li>I (applicant and, if applicable, spouse) hereby consent to the release of information from my income tax returns, and other taxpayer information, by the Canada Revenue Agency to the Ministry of Health and/or Health Insurance BC. The information obtained will be relevant to and used for the purpose of determining and verifying my initial and ongoing entitlement to the Supplementary Benefits Program under the Medicare Protection Act, and will not be disclosed to any other party. This authorization is valid for the taxation year prior to the signature of this application, the year of the signature and for each subsequent consecutive taxation year for which supplementary benefits is requested. It may be revoked by sending a written notice to Health Insurance BC.</li>
           </ul>
         </div>
         
