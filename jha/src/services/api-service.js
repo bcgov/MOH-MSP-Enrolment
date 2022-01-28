@@ -12,6 +12,7 @@ const SUBMIT_ATTACHMENT_URL = `${BASE_API_PATH}/submit-attachment`;
 
 class ApiService {
   sendApplication(formState) {
+    const headers = this._getHeaders(formState.captchaToken);
     const jsonPayload = {
       applicationUuid: formState.applicationUuid,
       firstName: formState.ahFirstName || null,
@@ -210,7 +211,7 @@ class ApiService {
     // console.log('JSON Payload:', jsonPayload);
     const jhaApplicationUuid = formState.applicationUuid;
     const url = `${SUBMIT_APPLICATION_URL}/${jhaApplicationUuid}`;
-    return this._sendPostRequest(url, formState.captchaToken, jsonPayload);
+    return this._sendPostRequest(url, headers, jsonPayload);
   }
 
   sendAttachments(formState) {
@@ -253,13 +254,37 @@ class ApiService {
   }
 
   _sendAttachment(image, programUuid, token) {
-    const url = `${SUBMIT_ATTACHMENT_URL}/${programUuid}/attachments/${image.uuid}`;
-    return this._sendPostRequest(url, token, image.source);
+    const url = `${SUBMIT_ATTACHMENT_URL}/${programUuid}/attachments/${image.uuid}?programArea=ENROLMENT&attachmentDocumentType=SupportDocument&contentType=image/jpeg&imageSize=${image.size}&dpackage=msp_enrolment_pkg`;
+    const headers = this._getAttachmentHeaders(token);
+    let blob;
+
+    if (image && typeof image.source === 'string') {
+      const binary = atob(image.source.split(',')[1]);
+      const chars = [];
+      for (let i=0; i<binary.length; i++) {
+        chars.push(binary.charCodeAt(i));
+      }
+      blob = new Blob([new Uint8Array(chars)], {
+        type: 'image/jpeg',
+      });
+    }
+    return new Promise((resolve, reject) => {
+      this._sendPostRequest(url, headers, blob)
+        .then((response) => {
+          if (response && response.data && response.data.returnCode === 'success') {
+            resolve(response.data);
+          } else {
+            reject(response.data);
+          }
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   }
 
-  _sendPostRequest(url, token, jsonPayload) {
-    const headers = this._getHeaders(token);
-    return axios.post(url, jsonPayload, { headers });
+  _sendPostRequest(url, headers, payload) {
+    return axios.post(url, payload, { headers });
   }
 
   _getHeaders(token) {
@@ -268,6 +293,15 @@ class ApiService {
       "Response-Type": "application/json",
       "X-Authorization": "Bearer " + token
     }
+  }
+
+  _getAttachmentHeaders(token) {
+    return {
+      "Content-Type": "image/jpeg",
+      "Response-Type": "application/json",
+      "X-Authorization": "Bearer " + token
+    }
+    
   }
 
   _createAttachmentDetails(attachments) {

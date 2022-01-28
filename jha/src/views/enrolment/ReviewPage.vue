@@ -156,7 +156,7 @@ export default {
       
       
       // Manually navigate to submission success page when middleware/RAPID is down.
-      this.navigateToSubmissionPage();
+      // this.navigateToSubmissionPage();
     },
     navigateToSubmissionPage() {
       const toPath = getConvertedPath(
