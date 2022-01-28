@@ -1,12 +1,5 @@
 <template>
   <div>
-    <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
-        :routes='stepRoutes'
-        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
-        :isMobileStepperOpen='isMobileStepperOpen'
-        @onClickLink='handleClickStepperLink($event)'/>
-    </div>
     <PageContent>
       <div class="container pt-3 pt-sm-5 mb-3">
         <div class="row align-items-end mt-3">
@@ -76,13 +69,11 @@ import {
 import { scrollTo } from '@/helpers/scroll';
 import logService from '@/services/log-service';
 import pageContentMixin from '@/mixins/page-content-mixin';
-import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 export default {
   name: 'SubmissionPage',
   mixins: [
     pageContentMixin,
-    pageStepperMixin,
   ],
   components: {
     PageContent,

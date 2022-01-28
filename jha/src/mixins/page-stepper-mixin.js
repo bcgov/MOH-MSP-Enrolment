@@ -74,7 +74,7 @@ export default {
       }
       routes.push({...enrolmentRoutes.CONTACT_INFO_PAGE});
       routes.push({...enrolmentRoutes.REVIEW_PAGE});
-      routes.push({...enrolmentRoutes.SUBMISSION_PAGE});
+      routes.push({...enrolmentRoutes.CONSENT_PAGE});
       return routes;
     },
   }
