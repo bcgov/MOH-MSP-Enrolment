@@ -41,6 +41,9 @@
               <div class="text-danger"
                   v-if="$v.ahSBIncome.$dirty && !$v.ahSBIncome.required"
                     aria-live="assertive">Your net income from {{selectedNOAYear}} is required.</div>
+              <div class="text-danger"
+                  v-if="$v.ahSBIncome.$dirty && !$v.ahSBIncome.positiveNumberValidator"
+                    aria-live="assertive">Your net income must be a positive number.</div>
             <div v-if="hasSpouse === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's {{selectedNOAYear}} net income.</p>
               <CurrencyInput id="spouse-net-income"
@@ -51,6 +54,9 @@
               <div class="text-danger"
                   v-if="$v.spouseSBIncome.$dirty && !$v.spouseSBIncome.required"
                     aria-live="assertive">Your spouse/common-law partner's net income from {{selectedNOAYear}} is required.</div>
+              <div class="text-danger"
+                  v-if="$v.spouseSBIncome.$dirty && !$v.spouseSBIncome.positiveNumberValidator"
+                    aria-live="assertive">Your spouse/common-law partner's net income must be a positive number.</div>
             </div>
 
             <div v-if="onlySuppBen">
@@ -310,6 +316,8 @@ import {
   DigitInput,
   CheckboxGroup,
   windowWidthMixin,
+  positiveNumberValidator,
+  optionalValidator,
 } from 'common-lib-vue';
 import TipBox from '@/components/TipBox';
 import SuppBenWidget from '@/components/SuppBenWidget';
@@ -451,6 +459,7 @@ export default {
       },
       ahSBIncome: {
         required,
+        positiveNumberValidator: optionalValidator(positiveNumberValidator),
       },
       spouseSBIncome: {},
       hasChildren: {},
@@ -479,6 +488,7 @@ export default {
     
     if (this.hasSpouse === 'Y') {
       validations.spouseSBIncome.required = required;
+      validations.spouseSBIncome.positiveNumberValidator = optionalValidator(positiveNumberValidator);
     }
 
     if (this.hasChildren === 'Y' && this.onlySuppBen) {
