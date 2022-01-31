@@ -14,7 +14,7 @@ class ApiService {
   sendApplication(formState) {
     const headers = this._getHeaders(formState.captchaToken);
     const jsonPayload = {
-      applicationUuid: formState.applicationUuid,
+      uuid: formState.applicationUuid,
       firstName: formState.ahFirstName || null,
       secondName: formState.ahMiddleName || null,
       lastName: formState.ahLastName || null,

@@ -64,6 +64,11 @@ export const enrolmentRoutes = {
     title: 'Review',
     name: 'ReviewPage',
   },
+  CONSENT_PAGE: {
+    path: '/declaration-and-consent',
+    title: 'Submit',
+    name: 'ConsentPage',
+  },
   SUBMISSION_PAGE: {
     path: '/submission',
     title: 'Submit',
