@@ -122,7 +122,7 @@
           <span v-if="inputData.totalDeductions > 0" >
             {{currencyString(inputData.totalDeductions)}}
           </span>
-          <span v-else>- - </span>
+          <span v-else> - - </span>
         </td>
       </tr>
     </table>
@@ -135,11 +135,12 @@
             <h4>Adjusted Net Income:</h4>
           </td>
           <td>
-            <span v-if="inputData.adjustedIncome > 0">
+            <span v-if="inputData.adjustedIncome === null || inputData.adjustedIncome === undefined || inputData.adjustedIncome === ''"> - - </span>
+            <span v-else-if="inputData.adjustedIncome > 0">
               {{currencyString(inputData.adjustedIncome)}}
             </span>
             <span v-else>
-              - -
+              {{currencyString(0)}}
             </span>
           </td>
         </tr>
@@ -175,6 +176,9 @@ export default {
   data: () => {
     return {
     };
+  },
+  created() {
+    console.log(this.inputData);
   },
   methods: {
     currencyString(num) {
