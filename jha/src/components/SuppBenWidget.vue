@@ -177,9 +177,6 @@ export default {
     return {
     };
   },
-  created() {
-    console.log(this.inputData);
-  },
   methods: {
     currencyString(num) {
       return (num >= 0) ?
