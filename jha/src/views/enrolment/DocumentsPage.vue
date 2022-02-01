@@ -118,10 +118,12 @@ export default {
       ahCRADocuments: {
         required,
       },
-      spouseCRADocuments: {
-        required,
-      },
+      spouseCRADocuments: {}
     };
+
+    if (this.$store.state.enrolmentModule.hasSpouse === 'Y') {
+      validations.spouseCRADocuments.required = required;
+    }
     return validations;
   },
   methods: {
