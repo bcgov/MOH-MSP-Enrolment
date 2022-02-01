@@ -198,7 +198,7 @@ export default {
       this.saveData();
 
       // Short circuit to form selection if they are ineligible for MSP but still attempting to apply
-      if (this.msgCode === 0 || this.msgCode === 5) {
+      if (this.msgCode === eqMsgCodesMSP.NotApplying || this.msgCode === eqMsgCodesMSP.EligibleAndApplying) {
         this.navigateToNextPage();
       } else {
         this.navigateToFormSelectionPage();
