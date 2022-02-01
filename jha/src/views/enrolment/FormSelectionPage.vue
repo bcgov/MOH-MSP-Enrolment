@@ -13,10 +13,19 @@
         <hr class="mt-0"/>
         <Checkbox label="MSP Enrolment"
           id="msp"
-          :disabled="!isEligibleForMSP"
+          :disabled="true"
           v-model="isApplyingForMSP">
           <template v-slot:description>
-            <p class="mt-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis quidem deleniti molestiae provident a veritatis nulla obcaecati assumenda iusto consequuntur.</p>
+            <p v-if="msgCodeMSP === eqMsgCodesMSP.NotApplying" class="mt-2">Eligibility questionnaire not answered.</p>
+            <p v-else-if="msgCodeMSP === eqMsgCodesMSP.NotLivingInBC" class="mt-2">You might not qualify for MSP or related income_based programs if you do not live in BC. Contact Health Insurance BC for more information.</p>
+            <p v-else-if="msgCodeMSP === eqMsgCodesMSP.AwayOver30" class="mt-2">You or your family member might not qualify for MSP or related income-based programs if you leave the province for more than 30 days in total during the first six months after you apply - doing this could mean you are no longer considered a B.C. resident. Find out more by contacting Health Insurance BC.</p>
+            <div v-else-if="msgCodeMSP === eqMsgCodesMSP.StudentMinorRefugee" class="mt-2">
+              <p>You can submit an application with some assistance from one of our representatives - please contact Health Insurance BC:</p>
+              <p class="mt-1">(604) 683-7151 (Lower Mainland)</p>
+              <p class="mt-1">1-800-663-7100 (Elsewhere in BC)</p>
+            </div>
+            <p v-else-if="msgCodeMSP === eqMsgCodesMSP.NotHaveDocuments" class="mt-2">Make sure you have digital copies of the above documents before completing your Joint Health Application. You will not be able to apply for MSP enrolment without these documents.</p>
+            <p v-else-if="msgCodeMSP === eqMsgCodesMSP.EligibleAndApplying" class="mt-2">In Canada, public health insurance is available to eligible residents. Canadian citizens and permanent residents can apply for provincial health insurance. The Medical Service Plan (MSP) covers the most for eligible British Columbia residents for medically-necessary insured doctor services.</p>
           </template>
         </Checkbox>
         <Checkbox label="Fair PharmaCare"
@@ -24,7 +33,13 @@
           :disabled="!isEligibleForFPCare"
           v-model="isApplyingForFPCare">
           <template v-slot:description>
-            <p class="mt-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis quidem deleniti molestiae provident a veritatis nulla obcaecati assumenda iusto consequuntur.</p>
+            <p v-if="msgCodeFPC === eqMsgCodesFPC.NotApplying" class="mt-2">Eligibility questionnaire not answered.</p>
+            <p v-else-if="msgCodeFPC === eqMsgCodesFPC.NotMeetsCriteria" class="mt-2">You are not eligible to register for Fair PharmaCare at this time. Register after you have completed the required wait period and registered with the Medical Services Plan. If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible. When you have submitted your tax return(s), register your family for Fair PharmaCare. If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</p>
+            <ul v-else-if="msgCodeFPC === eqMsgCodesFPC.NotHasInfo" class="mt-2">
+              <li>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
+              <li>If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible. When you have submitted your tax return(s), register your family for Fair PharmaCare. If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
+            </ul>
+            <p v-else-if="msgCodeFPC === eqMsgCodesFPC.EligibleAndApplying" class="mt-2">Fair PharmaCare helps B.C. families pay for eligible prescription drugs, dispending fees and some medical supplies. Fair PharmaCare is based on income: the less a family earns, the more help they get.</p>
           </template>
         </Checkbox>
         <Checkbox label="MSP Supplementary Benefits"
@@ -32,7 +47,13 @@
           :disabled="!isEligibleForSuppBen"
           v-model="isApplyingForSuppBen">
           <template v-slot:description>
-            <p class="mt-2">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nobis quidem deleniti molestiae provident a veritatis nulla obcaecati assumenda iusto consequuntur.</p>
+            <p v-if="msgCodeSB === eqMsgCodesSB.NotApplying" class="mt-2">Eligibility questionnaire not answered.</p>
+            <p v-else-if="msgCodeSB === eqMsgCodesSB.NotMeetsCriteria" class="mt-2">You are not eligible to apply for MSP supplementary benefits at this time. Please submit an application when you meet the residency requirements. For assistance, please contact Health Insurance BC. For more information on eligibility requirements, see <a target="_blank" href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits">Applying for Supplementary Benefits.</a></p>
+            <ul v-else-if="msgCodeSB === eqMsgCodesSB.NotHasInfo" class="mt-2">
+              <li>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
+              <li>If you (or your spouse) did not submit a tax return for a valid taxation year: file an income tax return with the Canada Revenue Agency for the required year as soon as possible. When you have received an NOA/NORA, apply for supplementary benefits. If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
+            </ul>
+            <p v-else-if="msgCodeSB === eqMsgCodesSB.EligibleAndApplying" class="mt-2">Medical Services Plan (MSP) supplementary benefits provide partial payment for certain medical services obtained in British Columbia and may provide access to other income-based programs.</p>
           </template>
         </Checkbox>
         <div class="text-danger mt-3"
@@ -77,6 +98,11 @@ import pageContentMixin from '@/mixins/page-content-mixin';
 import { mapGetters } from 'vuex';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { v4 as uuidv4 } from 'uuid';
+import { 
+  eqMsgCodesMSP,
+  eqMsgCodesFPC,
+  eqMsgCodesSB,
+} from '@/constants/eqMsgCodes';
 
 const atLeastOne = (vm) => {
   return vm.isApplyingForMSP
@@ -101,6 +127,12 @@ export default {
       isApplyingForMSP: false,
       isApplyingForFPCare: false,
       isApplyingForSuppBen: false,
+      eqMsgCodesMSP: eqMsgCodesMSP,
+      eqMsgCodesFPC: eqMsgCodesFPC,
+      eqMsgCodesSB: eqMsgCodesSB,
+      msgCodeMSP: eqMsgCodesMSP.NotApplying,
+      msgCodeFPC: eqMsgCodesFPC.NotApplying,
+      msgCodeSB: eqMsgCodesSB.NotApplying,
       applicationUuid: null,
     };
   },
@@ -114,6 +146,9 @@ export default {
     this.isApplyingForMSP = this.$store.state.enrolmentModule.isApplyingForMSP;
     this.isApplyingForFPCare = this.$store.state.enrolmentModule.isApplyingForFPCare;
     this.isApplyingForSuppBen = this.$store.state.enrolmentModule.isApplyingForSuppBen;
+    this.msgCodeMSP = this.$store.state.enrolmentModule.msgCodeMSP;
+    this.msgCodeFPC = this.$store.state.enrolmentModule.msgCodeFPC;
+    this.msgCodeSB = this.$store.state.enrolmentModule.msgCodeSB;
 
     if (!this.isEligibleForMSP) {
       this.isApplyingForMSP = false;

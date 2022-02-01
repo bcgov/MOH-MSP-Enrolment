@@ -1,5 +1,10 @@
 import dummyData from '@/store/states/enrolment-module-dummy-data';
 import settings from '@/settings';
+import {
+  eqMsgCodesMSP,
+  eqMsgCodesFPC,
+  eqMsgCodesSB,
+} from '@/constants/eqMsgCodes';
 
 export const MODULE_NAME = 'enrolmentModule';
 
@@ -22,6 +27,10 @@ export const SET_EQ_FPC_MEETS_CRITERIA = 'setEqFPCMeetsCriteria';
 export const SET_EQ_FPC_HAS_INFO = 'setEqFPCHasInfo';
 export const SET_EQ_SB_MEETS_CRITERIA = 'setEqSBMeetsCriteria';
 export const SET_EQ_SB_HAS_INFO = 'setEqSBhasInfo';
+// Form selection page message codes
+export const SET_MSG_CODE_MSP = 'setMsgCodeMSP';
+export const SET_MSG_CODE_FPC = 'setMsgCodeFPC';
+export const SET_MSG_CODE_SB = 'setMsgCodeSB';
 // Form selections
 export const SET_IS_APPLYING_FOR_MSP = 'setIsApplyingForMSP';
 export const SET_IS_APPLYING_FOR_FPCARE = 'setIsApplyingForFPCare';
@@ -167,6 +176,10 @@ export default {
       eqFPCHasInfo: null,
       eqSBMeetsCriteria: null,
       eqSBhasInfo: null,
+      // Form selection page message codes
+      msgCodeMSP: eqMsgCodesMSP.NotApplying,
+      msgCodeFPC: eqMsgCodesFPC.NotApplying,
+      msgCodeSB: eqMsgCodesSB.NotApplying,
       // Form selections
       isApplyingForMSP: null,
       isApplyingForFPCare: null,
@@ -345,6 +358,16 @@ export default {
     },
     [SET_EQ_SB_HAS_INFO](state, payload) {
       state.eqSBhasInfo = payload;
+    },
+    // Form selection page message codes
+    [SET_MSG_CODE_MSP](state, payload) {
+      state.msgCodeMSP = payload;
+    },
+    [SET_MSG_CODE_FPC](state, payload) {
+      state.msgCodeFPC = payload;
+    },
+    [SET_MSG_CODE_SB](state, payload) {
+      state.msgCodeSB = payload;
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP](state, payload) {
@@ -721,6 +744,10 @@ export default {
       commit(SET_EQ_FPC_HAS_INFO, null);
       commit(SET_EQ_SB_MEETS_CRITERIA, null);
       commit(SET_EQ_SB_HAS_INFO, null);
+      // Form selection page message codes
+      commit(SET_MSG_CODE_MSP, 0);
+      commit(SET_MSG_CODE_FPC, 0);
+      commit(SET_MSG_CODE_SB, 0);
       // Form selections
       commit(SET_IS_APPLYING_FOR_MSP, false);
       commit(SET_IS_APPLYING_FOR_FPCARE, false);
@@ -893,6 +920,16 @@ export default {
     },
     [SET_EQ_SB_HAS_INFO]({commit}, payload) {
       commit(SET_EQ_SB_HAS_INFO, payload);
+    },
+    // Form selection page message codes
+    [SET_MSG_CODE_MSP]({commit}, payload) {
+      commit(SET_MSG_CODE_MSP, payload);
+    },
+    [SET_MSG_CODE_FPC]({commit}, payload) {
+      commit(SET_MSG_CODE_FPC, payload);
+    },
+    [SET_MSG_CODE_SB]({commit}, payload) {
+      commit(SET_MSG_CODE_SB, payload);
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP]({commit}, payload) {

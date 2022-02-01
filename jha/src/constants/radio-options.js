@@ -101,6 +101,7 @@ export const radioOptionsGender = [
   }
 ];
 
+// For form inputs
 export const radioOptionsNoYes = [
   {
     id: 'no',
@@ -111,6 +112,20 @@ export const radioOptionsNoYes = [
     id: 'yes',
     label: 'Yes',
     value: 'Y',
+  }
+];
+
+// For eligibility questions
+export const radioOptionsYesNo = [
+  {
+    id: 'yes',
+    label: 'Yes',
+    value: 'Y',
+  },
+  {
+    id: 'no',
+    label: 'No',
+    value: 'N',
   }
 ];
 

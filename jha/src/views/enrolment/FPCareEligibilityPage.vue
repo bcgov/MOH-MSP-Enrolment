@@ -13,7 +13,7 @@
         <p class="mb-0">You can use the Joint Health Application to apply for Medical Services Plan (MSP) enrolmnent, Fair PharmaCare, and/or MSP Supplementary Benefits.</p>
         <p class="mt-0">Answering the following questions will help you determine which programs you are eligible for, and ensure you have the required documents and information to complete your application(s).</p>
         <hr class="mt-0"/>
-        <h2>Fair PharmaCare Enrolment</h2>
+        <h2>Fair PharmaCare</h2>
         <Radio
           id='apply-fpc'
           name='apply-fpc'
@@ -32,8 +32,8 @@
             name='meets-fpc-criteria'
             label='Do you meet the above eligibility criteria?'
             v-model='eqFPCMeetsCriteria'
-            :items='radioOptionsNoYes' />
-          <p class="font-weight-bold" v-if="eqFPCMeetsCriteria === 'N'">You are not eligible to register for Fair PharmaCare at this time. Register after you have completed the required wait period and registered with the Medical Services Plan.  If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation yar as soon as possible.  When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of canada, contact Health Insurance BC.</p>
+            :items='radioOptionsYesNo' />
+          <p class="font-weight-bold" v-if="eqFPCMeetsCriteria === 'N'">You are not eligible to register for Fair PharmaCare at this time. Register after you have completed the required wait period and registered with the Medical Services Plan.  If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible.  When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</p>
           <div v-if="eqFPCMeetsCriteria === 'Y'">
             <p class="mb-0">3. To register for Fair PharmaCare, you must include the following with your application:</p>
             <div class="ml-5">
@@ -46,10 +46,10 @@
               name='has-fpc-info'
               label='Do you have the above information to include with your application?'
               v-model='eqFPCHasInfo'
-              :items='radioOptionsNoYes' />
+              :items='radioOptionsYesNo' />
             <ul class="font-weight-bold pl-4" v-if="eqFPCHasInfo === 'N'">
-              <li>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new Resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
-              <li>If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible. When you have submitted your tax return(s), register your family for Fari PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
+              <li>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
+              <li>If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible. When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
             </ul>
           </div>
         </div>
@@ -79,7 +79,7 @@ import {
   getConvertedPath,
 } from '@/helpers/url';
 import { 
-  radioOptionsNoYes,
+  radioOptionsYesNo,
 } from '@/constants/radio-options';
 import {
   PageContent,
@@ -92,8 +92,10 @@ import {
   SET_IS_APPLYING_FOR_FPCARE,
   SET_EQ_FPC_MEETS_CRITERIA,
   SET_EQ_FPC_HAS_INFO,
+  SET_MSG_CODE_FPC,
 } from '@/store/modules/enrolment-module';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
+import { eqMsgCodesFPC } from '@/constants/eqMsgCodes';
 
 const validateQuestionsAnswered = (_value, vm) => {
         if(!vm.applyFPC
@@ -121,7 +123,7 @@ export default {
       applyFPC: null,
       eqFPCMeetsCriteria: null,
       eqFPCHasInfo: null,
-      radioOptionsNoYes: radioOptionsNoYes,
+      radioOptionsYesNo: radioOptionsYesNo,
       radioOptionsApplyFPC: null,
     };
   },
@@ -140,14 +142,14 @@ export default {
 
     this.radioOptionsApplyFPC = [
       {
-        id: 'no',
-        label: 'No: (continue to MSP Supplementary Benefits).',
-        value: 'N',
-      },
-      {
         id: 'yes',
         label: 'Yes',
         value: 'Y',
+      },
+      {
+        id: 'no',
+        label: 'No: (continue to MSP Supplementary Benefits).',
+        value: 'N',
       }
     ];
 
@@ -177,6 +179,7 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_FPCARE, this.applyFPC === "Y");
       this.$store.dispatch(enrolmentModule + '/' + SET_EQ_FPC_MEETS_CRITERIA, this.eqFPCMeetsCriteria);
       this.$store.dispatch(enrolmentModule + '/' + SET_EQ_FPC_HAS_INFO, this.eqFPCHasInfo);
+      this.$store.dispatch(enrolmentModule + '/' + SET_MSG_CODE_FPC, this.msgCode);
     },
     navigateToNextPage() {
       // Navigate to next path.
@@ -188,6 +191,23 @@ export default {
       pageStateService.visitPage(toPath);
       this.$router.push(toPath);
       scrollTo(0);
+    }
+  },
+  computed: {
+    msgCode(){
+      if (this.applyFPC === 'N') {
+        // Not applying for FPC
+        return eqMsgCodesFPC.NotApplying;
+      } else if (this.eqFPCMeetsCriteria === 'N') {
+        // Ineligible
+        return eqMsgCodesFPC.NotMeetsCriteria;
+      } else if (this.eqFPCHasInfo === 'N') {
+        // Ineligible
+        return eqMsgCodesFPC.NotHasInfo;
+      } else {
+        // Eligible for FPC
+        return eqMsgCodesFPC.EligibleAndApplying;
+      }
     }
   },
   // Required in order to block back navigation.
@@ -213,3 +233,9 @@ export default {
   }
 }
 </script>
+
+<style>
+.md-radio {
+  margin-left: 24px !important;
+}
+</style>
