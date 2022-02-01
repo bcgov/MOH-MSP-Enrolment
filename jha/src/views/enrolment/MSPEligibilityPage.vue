@@ -112,6 +112,7 @@ import {
   SET_MSG_CODE_MSP,
 } from '@/store/modules/enrolment-module';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
+import { eqMsgCodesMSP } from '@/constants/eqMsgCodes';
 
 const validateQuestionsAnswered = (_value, vm) => {
         if(!vm.applyMSP
@@ -238,22 +239,22 @@ export default {
     msgCode(){
       if (this.applyMSP === 'N') {
         // Not applying for MSP
-        return 0;
+        return eqMsgCodesMSP.NotApplying;
       } else if (this.eqMSPLiveInBC === 'N') {
         // Ineligible
-        return 1;
+        return eqMsgCodesMSP.NotLivingInBC;
       } else if (this.eqMSPAwayOver30 === 'Y') {
         // Ineligible
-        return 2;
+        return eqMsgCodesMSP.AwayOver30;
       } else if (this.eqMSPStudentMinorRefugee === 'Y') {
         // Ineligible
-        return 3;
+        return eqMsgCodesMSP.StudentMinorRefugee;
       } else if (this.eqMSPHasDocuments === 'N') {
         // Ineligible
-        return 4;
+        return eqMsgCodesMSP.NotHaveDocuments;
       } else {
         // Eligible for MSP
-        return 5;
+        return eqMsgCodesMSP.EligibleAndApplying;
       }
     }
   },

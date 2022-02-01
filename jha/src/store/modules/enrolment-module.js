@@ -1,5 +1,10 @@
 import dummyData from '@/store/states/enrolment-module-dummy-data';
 import settings from '@/settings';
+import {
+  eqMsgCodesMSP,
+  eqMsgCodesFPC,
+  eqMsgCodesSB,
+} from '@/constants/eqMsgCodes';
 
 export const MODULE_NAME = 'enrolmentModule';
 
@@ -172,9 +177,9 @@ export default {
       eqSBMeetsCriteria: null,
       eqSBhasInfo: null,
       // Form selection page message codes
-      msgCodeMSP: 0,
-      msgCodeFPC: 0,
-      msgCodeSB: 0,
+      msgCodeMSP: eqMsgCodesMSP.NotApplying,
+      msgCodeFPC: eqMsgCodesFPC.NotApplying,
+      msgCodeSB: eqMsgCodesSB.NotApplying,
       // Form selections
       isApplyingForMSP: null,
       isApplyingForFPCare: null,

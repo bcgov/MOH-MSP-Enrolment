@@ -95,6 +95,7 @@ import {
   SET_MSG_CODE_FPC,
 } from '@/store/modules/enrolment-module';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
+import { eqMsgCodesFPC } from '@/constants/eqMsgCodes';
 
 const validateQuestionsAnswered = (_value, vm) => {
         if(!vm.applyFPC
@@ -196,16 +197,16 @@ export default {
     msgCode(){
       if (this.applyFPC === 'N') {
         // Not applying for FPC
-        return 0;
+        return eqMsgCodesFPC.NotApplying;
       } else if (this.eqFPCMeetsCriteria === 'N') {
         // Ineligible
-        return 1;
+        return eqMsgCodesFPC.NotMeetsCriteria;
       } else if (this.eqFPCHasInfo === 'N') {
         // Ineligible
-        return 2;
+        return eqMsgCodesFPC.NotHasInfo;
       } else {
         // Eligible for FPC
-        return 3;
+        return eqMsgCodesFPC.EligibleAndApplying;
       }
     }
   },

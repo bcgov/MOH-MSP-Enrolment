@@ -94,6 +94,7 @@ import {
   SET_MSG_CODE_SB,
 } from '@/store/modules/enrolment-module';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
+import { eqMsgCodesSB } from '@/constants/eqMsgCodes';
 
 const validateQuestionsAnswered = (_value, vm) => {
         if(!vm.applySB
@@ -181,16 +182,16 @@ export default {
     msgCode(){
       if (this.applySB === 'N') {
         // Not applying for SB
-        return 0;
+        return eqMsgCodesSB.NotApplying;
       } else if (this.eqSBMeetsCriteria  === 'N') {
         // Ineligible
-        return 1;
+        return eqMsgCodesSB.NotMeetsCriteria;
       } else if (this.eqSBhasInfo === 'N') {
         // Ineligible
-        return 2;
+        return eqMsgCodesSB.NotHasInfo;
       } else {
         // Eligible for SB
-        return 3;
+        return eqMsgCodesSB.EligibleAndApplying;
       }
     }
   },
