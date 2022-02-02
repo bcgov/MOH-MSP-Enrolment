@@ -17,11 +17,17 @@
               <p class="font-weight-bold">Upload your Canada Revenue Agency Notice of Assessment or Reassessment for 2020</p>
               <hr/>
               <FileUploader v-model="ahCRADocuments" />
+              <div class="text-danger"
+                      v-if="$v.ahCRADocuments.$dirty && !$v.ahCRADocuments.required"
+                      aria-live="assertive">File upload required.</div>
             </div>
             <div v-if="hasSpouse">
               <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for 2020</p>
               <hr/>
               <FileUploader v-model="spouseCRADocuments" />
+              <div class="text-danger"
+                      v-if="$v.spouseCRADocuments.$dirty && !$v.spouseCRADocuments.required"
+                      aria-live="assertive">File upload required.</div>
             </div>
           </div>
           <div class="col-md-4">
@@ -71,6 +77,9 @@ import {
   PageContent,
   FileUploader,
 } from 'common-lib-vue';
+import {
+  required
+} from 'vuelidate/lib/validators';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import TipBox from '@/components/TipBox';
@@ -105,7 +114,16 @@ export default {
     this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse !== 'N';
   },
   validations() {
-    const validations = {};
+    const validations = {
+      ahCRADocuments: {
+        required,
+      },
+      spouseCRADocuments: {}
+    };
+
+    if (this.$store.state.enrolmentModule.hasSpouse === 'Y') {
+      validations.spouseCRADocuments.required = required;
+    }
     return validations;
   },
   methods: {
