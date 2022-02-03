@@ -1506,8 +1506,8 @@ export default {
       this.saveData();
     },
     schoolCountry(newVal, oldVal) {
-      // If they switch to Canada and now have the province dropdown, make them select from the dropdown
-      if (newVal !== oldVal && newVal === 'Canada') {
+      // If they switch countries, make them reselect province / state
+      if (newVal !== oldVal) {
         this.schoolProvinceOrState = null;
       }
 
