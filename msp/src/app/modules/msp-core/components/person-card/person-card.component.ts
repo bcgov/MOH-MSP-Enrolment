@@ -127,7 +127,7 @@ export class MspPersonCardComponent {
   get movedFromLabel(): string {
     if (this.person.status === StatusInCanada.TemporaryResident ||
       this.person.currentActivity === CanadianStatusReason.MovingFromCountry) {
-      return 'Moved from country';
+      return 'Moved from jurisdiction';
     } else {
       return 'Moved from province';
     }
