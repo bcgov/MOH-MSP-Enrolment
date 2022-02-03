@@ -461,6 +461,39 @@ export default {
     },
     suppBenData() {
       const items = [];
+      items.push({
+        label: `Account Holder net income for ${this.$store.state.enrolmentModule.ahFPCIncome}`,
+        value: "space "+this.$store.state.enrolmentModule.ahFPCIncome,
+      });
+      items.push({
+        label: `Spouse/common-law partner's net income from 2020`,
+        value: "space "+this.$store.state.enrolmentModule.setSpouseSBIncome,
+      });
+      items.push({
+        label: `Claimed disability tax credit in 2020`,
+        value: "space "+this.$store.state.enrolmentModule.setHasDisabilityCredit,
+      });
+      items.push({
+        label: `Who claimed`,
+        value: "space "+this.$store.state.enrolmentModule.setSelectedDisabilityRecipients,
+      });
+      items.push({
+        label: `Registered Disability Savings Plan?`,
+        value: "space "+this.$store.state.enrolmentModule.setHasRDSP,
+      });
+      items.push({
+        label: `Claimed attendant or nursing home expenses`,
+        value: "space "+this.$store.state.enrolmentModule.setHasAttendantNursingExpenses,
+      });
+      items.push({
+        label: `Who claimed`,
+        value: "space "+this.$store.state.enrolmentModule.setSelectedAttendantNursingRecipients,
+      });
+      items.push({
+        label: `Documents uploaded`,
+        value: "space "+this.$store.state.enrolmentModule.setAttendantNursingReceipts,
+      });
+      
       return items;
     },
     contactData() {
