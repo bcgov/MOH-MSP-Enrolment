@@ -25,12 +25,12 @@
     </div>
 
     <div *ngIf="person.livedInBCSinceBirth === false" class="form-group col-sm-6 p-sm-2">
-      <label for="movedFromProvinceOrCountry_{{objectId}}" class="control-label">From (province or country)</label>
+      <label for="movedFromProvinceOrCountry_{{objectId}}" class="control-label">From (province or jurisdiction)</label>
       <input
         type="text"
         #movedFromProvinceOrCountryRef="ngModel"
         name="movedFromProvinceOrCountry_{{objectId}}"
-        aria-label="Province or country moved from"
+        aria-label="Province or jurisdiction moved from"
         class="form-control"
         id="movedFromProvinceOrCountry"
         [(ngModel)]="person.movedFromProvinceOrCountry"
@@ -40,7 +40,7 @@
         required/>
         <common-error-container
           [displayError]="movedFromProvinceOrCountryRef.touched && !person.movedFromProvinceOrCountry">
-          Province or country is required.
+          Province or jurisdiction is required.
         </common-error-container>
     </div>
 
