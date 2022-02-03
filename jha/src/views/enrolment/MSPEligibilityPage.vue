@@ -44,8 +44,8 @@
                 v-model='eqMSPStudentMinorRefugee'
                 :items='radioOptionsYesNo' />
               <div class="font-weight-bold" v-if="eqMSPStudentMinorRefugee === 'Y'">
-                <p class="mb-0">You can submit an application with some assistance from one of out representatives - please contact Health Insurance BC:</p>
-                <p class="mb-0">(604)683-7151 (Lower Mainland)</p>
+                <p class="mb-0">You can submit an application with some assistance from one of our representatives - please contact Health Insurance BC:</p>
+                <p class="mb-0">(604) 683-7151 (Lower Mainland)</p>
                 <p class="mb-0">1-800-663-7100 (Elsewhere in B.C.)</p>
               </div>
               <div v-if="eqMSPStudentMinorRefugee === 'N'">
