@@ -463,11 +463,11 @@ export default {
       const items = [];
       items.push({
         label: `Account Holder net income for ${this.$store.state.enrolmentModule.selectedNOAYear}`,
-        value: this.$store.state.enrolmentModule.ahSBIncome,
+        value: moneyFormatter.format(this.$store.state.enrolmentModule.ahSBIncome),
       });
       items.push({
         label: `Spouse/common-law partner's net income from ${this.$store.state.enrolmentModule.selectedNOAYear}`,
-        value: this.$store.state.enrolmentModule.ahSBIncome,
+        value: moneyFormatter.format(this.$store.state.enrolmentModule.ahSBIncome),
       });
       items.push({
         label: `Claimed disability tax credit in ${this.$store.state.enrolmentModule.selectedNOAYear}`,
@@ -489,11 +489,12 @@ export default {
         label: `Who claimed`,
         value: this.$store.state.enrolmentModule.selectedAttendantNursingRecipients,
       });
+      const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length;
+      const fileLabel = (documentCount > 1) ? 's' : '';
       items.push({
-        label: `Documents uploaded`,
-        value: this.$store.state.enrolmentModule.attendantNursingReceipts,
+        label: 'Documents',
+        value: documentCount + ' file' + fileLabel
       });
-      
       return items;
     },
     contactData() {
