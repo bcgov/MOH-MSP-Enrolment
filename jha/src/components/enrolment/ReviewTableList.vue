@@ -471,7 +471,7 @@ export default {
       });
       items.push({
         label: `Claimed disability tax credit in ${this.$store.state.enrolmentModule.selectedNOAYear}`,
-        value: this.$store.state.enrolmentModule.hasDisabilityCredit,
+        value: this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y' ? 'Yes' : 'No',
       });
       items.push({
         label: `Who claimed`,
@@ -479,11 +479,11 @@ export default {
       });
       items.push({
         label: `Registered Disability Savings Plan?`,
-        value: this.$store.state.enrolmentModule.hasRDSP,
+        value: this.$store.state.enrolmentModule.hasRDSP === 'Y' ? 'Yes' : 'No',
       });
       items.push({
         label: `Claimed attendant or nursing home expenses`,
-        value: this.$store.state.enrolmentModule.hasAttendantNursingExpenses,
+        value: this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y' ?  'Yes' : 'No',
       });
       items.push({
         label: `Who claimed`,
