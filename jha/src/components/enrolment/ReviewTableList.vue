@@ -473,9 +473,31 @@ export default {
         label: `Claimed disability tax credit in ${this.$store.state.enrolmentModule.selectedNOAYear}`,
         value: this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y' ? 'Yes' : 'No',
       });
+      const disabilityRecipients = this.$store.state.enrolmentModule.selectedDisabilityRecipients;
+      let newDisabilityRecipients = "";
+      for (const [index, recipient] of disabilityRecipients.entries()) {
+        switch (recipient) {
+          case "ah":
+            newDisabilityRecipients += `Account Holder`;
+          break;
+          case "spouse":
+            newDisabilityRecipients += `Spouse`;
+          break;
+          case "child":
+            newDisabilityRecipients += `Child`;
+          break;
+        
+        default:
+          newDisabilityRecipients += `${recipient}`;
+        }
+        if (index !== disabilityRecipients.length - 1) {
+          newDisabilityRecipients += ","
+        }
+        newDisabilityRecipients += " "
+      } 
       items.push({
         label: `Who claimed`,
-        value: this.$store.state.enrolmentModule.selectedDisabilityRecipients,
+        value: newDisabilityRecipients,
       });
       items.push({
         label: `Registered Disability Savings Plan?`,
