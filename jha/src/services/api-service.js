@@ -5,6 +5,7 @@ import {
   stripSpaces,
 } from 'common-lib-vue';
 import { ChildAgeTypes } from '@/constants/child-age-types';
+import { getCitizenshipType } from '@/constants/immigration-status-types';
 
 const BASE_API_PATH = '/ahdc/api';
 const SUBMIT_APPLICATION_URL = `${BASE_API_PATH}/jhaIntegration/application`;
@@ -30,12 +31,13 @@ class ApiService {
       postalCode: formState.resPostalCode || null,
       provinceOrState: formState.resProvince || null,
       country: formState.resCountry || '',
-      authorizedByApplicant: null, // TODO.
-      authorizedByApplicantDate: null, // TODO.
-      authorizedBySpouse: null, // TODO.
-      spouse: null,
+      authorizedByApplicant: 'Y',
+      authorizedByApplicantDate: formatISODate(new Date()),
+      authorizedBySpouse: null, // Set below.
+      spouse: null, // Set below.
     };
     if (formState.hasSpouse === 'Y') {
+      jsonPayload.authorizedBySpouse = 'Y';
       jsonPayload.spouse = {
         firstName: formState.spouseFirstName || null,
         secondName: formState.spouseMiddleName || null,
@@ -46,6 +48,8 @@ class ApiService {
         sin: stripSpaces(formState.spouseSIN) || null,
         phn: stripSpaces(formState.spousePHN) || null,
       };
+    } else {
+      jsonPayload.authorizedBySpouse = 'N';
     }
     if (formState.isApplyingForMSP) {
       const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
@@ -53,7 +57,7 @@ class ApiService {
 
       jsonPayload.medicalServicesPlan = {
         uuid: formState.mspUuid || null,
-        citizenshipType: formState.ahCitizenshipStatus || null,
+        citizenshipType: getCitizenshipType(formState.ahCitizenshipStatus, formState.ahCitizenshipStatusReason) || null,
         attachmentUuids: formState.ahNameChangeSupportDocuments.map((image) => image.uuid),
         residencyAttachmentUuids: formState.ahCitizenshipSupportDocuments.map((image) => image.uuid),
         hasPreviousCoverage: formState.ahHasPreviousPHN || null,
@@ -75,7 +79,7 @@ class ApiService {
       };
       if (formState.hasSpouse === 'Y') {
         jsonPayload.medicalServicesPlan.spouse = {
-          citizenshipType: formState.spouseStatus || null,
+          citizenshipType: getCitizenshipType(formState.spouseStatus, formState.spouseStatusReason) || null,
           attachmentUuids: formState.spouseNameChangeSupportDocuments.map((image) => image.uuid),
           residencyAttachmentUuids: formState.spouseCitizenshipSupportDocuments.map((image) => image.uuid),
           hasPreviousCoverage: formState.spouseHasPreviousBCHealthNumber || null,
@@ -107,7 +111,7 @@ class ApiService {
               lastName: child.lastName || null,
               gender: child.gender || null,
               birthDate: formatISODate(child.birthDate) || null,
-              citizenshipType: child.status || null,
+              citizenshipType: getCitizenshipType(child.status, child.statusReason) || null,
               attachmentUuids: child.nameChangeSupportDocuments.map((image) => image.uuid),
               residencyAttachmentUuids: child.citizenshipSupportDocuments.map((image) => image.uuid),
               hasPreviousCoverage: child.hasPreviousBCHealthNumber || null,
@@ -310,7 +314,7 @@ class ApiService {
     for (let i=0; i<attachments.length; i++) {
       results.push({
         contentType: attachments[i].contentType,
-        attachmentDocumentType: attachments[i].documentType || null,
+        attachmentDocumentType: 'SupportDocument',
         attachmentUuid: attachments[i].uuid,
         attachmentOrder: `${i + 1}`,
         description: attachments[i].description || null,
