@@ -24,7 +24,7 @@
               <p class="mt-1">(604) 683-7151 (Lower Mainland)</p>
               <p class="mt-1">1-800-663-7100 (Elsewhere in BC)</p>
             </div>
-            <p v-else-if="msgCodeMSP === eqMsgCodesMSP.NotHaveDocuments" class="mt-2">Make sure you have digital copies of the above documents before completing your Joint Health Application. You will not be able to apply for MSP enrolment without these documents.</p>
+            <p v-else-if="msgCodeMSP === eqMsgCodesMSP.NotHaveDocuments" class="mt-2">Make sure you have digital copies of the above documents before completing your British Columbia Application for Health Drug Coverage. You will not be able to apply for MSP enrolment without these documents.</p>
             <p v-else-if="msgCodeMSP === eqMsgCodesMSP.EligibleAndApplying" class="mt-2">In Canada, public health insurance is available to eligible residents. Canadian citizens and permanent residents can apply for provincial health insurance. The Medical Service Plan (MSP) covers the most for eligible British Columbia residents for medically-necessary insured doctor services.</p>
           </template>
         </Checkbox>
