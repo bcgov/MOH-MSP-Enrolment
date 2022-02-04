@@ -473,31 +473,9 @@ export default {
         label: `Claimed disability tax credit in ${this.$store.state.enrolmentModule.selectedNOAYear}`,
         value: this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y' ? 'Yes' : 'No',
       });
-      const disabilityRecipients = this.$store.state.enrolmentModule.selectedDisabilityRecipients;
-      let newDisabilityRecipients = "";
-      for (const [index, recipient] of disabilityRecipients.entries()) {
-        switch (recipient) {
-          case "ah":
-            newDisabilityRecipients += `Account Holder`;
-          break;
-          case "spouse":
-            newDisabilityRecipients += `Spouse`;
-          break;
-          case "child":
-            newDisabilityRecipients += `Child`;
-          break;
-        
-        default:
-          newDisabilityRecipients += `${recipient}`;
-        }
-        if (index !== disabilityRecipients.length - 1) {
-          newDisabilityRecipients += ","
-        }
-        newDisabilityRecipients += " "
-      } 
       items.push({
         label: `Who claimed`,
-        value: newDisabilityRecipients,
+        value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedDisabilityRecipients),
       });
       items.push({
         label: `Registered Disability Savings Plan?`,
@@ -509,7 +487,7 @@ export default {
       });
       items.push({
         label: `Who claimed`,
-        value: this.$store.state.enrolmentModule.selectedAttendantNursingRecipients,
+        value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedAttendantNursingRecipients),
       });
       const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length;
       const fileLabel = (documentCount > 1) ? 's' : '';
@@ -646,7 +624,31 @@ export default {
         return `Child #${index + 1}`;
       }
       return 'Child';
-    }
+    },
+    getWhoClaimed(array) {
+      //takes an array containing some combination of the values ah, spouse, and child
+      //returns a new string of those same array entries but capitalized, fully spelled out, and comma separated
+      let result = "";
+      for (const [index, recipient] of array.entries()) {
+        switch (recipient) {
+          case "ah":
+            result += `Account Holder`;
+            break;
+          case "spouse":
+            result += `Spouse`;
+            break;
+          case "child":
+            result += `Child`;
+            break;
+          default:
+            result += `${recipient}`;
+        }
+        if (index !== array.length - 1) {
+          result += ", ";
+        }
+      }
+      return result;
+    },
   }
 }
 </script>
