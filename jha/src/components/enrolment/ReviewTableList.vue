@@ -462,36 +462,36 @@ export default {
     suppBenData() {
       const items = [];
       items.push({
-        label: `Account Holder net income for ${this.$store.state.enrolmentModule.ahFPCIncome}`,
-        value: "space "+this.$store.state.enrolmentModule.ahFPCIncome,
+        label: `Account Holder net income for ${this.$store.state.enrolmentModule.selectedNOAYear}`,
+        value: this.$store.state.enrolmentModule.ahSBIncome,
       });
       items.push({
-        label: `Spouse/common-law partner's net income from 2020`,
-        value: "space "+this.$store.state.enrolmentModule.setSpouseSBIncome,
+        label: `Spouse/common-law partner's net income from ${this.$store.state.enrolmentModule.selectedNOAYear}`,
+        value: this.$store.state.enrolmentModule.ahSBIncome,
       });
       items.push({
-        label: `Claimed disability tax credit in 2020`,
-        value: "space "+this.$store.state.enrolmentModule.setHasDisabilityCredit,
+        label: `Claimed disability tax credit in ${this.$store.state.enrolmentModule.selectedNOAYear}`,
+        value: this.$store.state.enrolmentModule.hasDisabilityCredit,
       });
       items.push({
         label: `Who claimed`,
-        value: "space "+this.$store.state.enrolmentModule.setSelectedDisabilityRecipients,
+        value: this.$store.state.enrolmentModule.selectedDisabilityRecipients,
       });
       items.push({
         label: `Registered Disability Savings Plan?`,
-        value: "space "+this.$store.state.enrolmentModule.setHasRDSP,
+        value: this.$store.state.enrolmentModule.hasRDSP,
       });
       items.push({
         label: `Claimed attendant or nursing home expenses`,
-        value: "space "+this.$store.state.enrolmentModule.setHasAttendantNursingExpenses,
+        value: this.$store.state.enrolmentModule.hasAttendantNursingExpenses,
       });
       items.push({
         label: `Who claimed`,
-        value: "space "+this.$store.state.enrolmentModule.setSelectedAttendantNursingRecipients,
+        value: this.$store.state.enrolmentModule.selectedAttendantNursingRecipients,
       });
       items.push({
         label: `Documents uploaded`,
-        value: "space "+this.$store.state.enrolmentModule.setAttendantNursingReceipts,
+        value: this.$store.state.enrolmentModule.attendantNursingReceipts,
       });
       
       return items;
