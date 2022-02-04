@@ -461,16 +461,17 @@ export default {
     },
     suppBenData() {
       const items = [];
+      const selectedYear = this.$store.state.enrolmentModule.selectedNOAYear;
       items.push({
-        label: `Account Holder net income for ${this.$store.state.enrolmentModule.selectedNOAYear}`,
+        label: `Account Holder net income for ${selectedYear}`,
         value: moneyFormatter.format(this.$store.state.enrolmentModule.ahSBIncome),
       });
       items.push({
-        label: `Spouse/common-law partner's net income from ${this.$store.state.enrolmentModule.selectedNOAYear}`,
-        value: moneyFormatter.format(this.$store.state.enrolmentModule.ahSBIncome),
+        label: `Spouse/common-law partner's net income from ${selectedYear}`,
+        value: moneyFormatter.format(this.$store.state.enrolmentModule.spouseSBIncome),
       });
       items.push({
-        label: `Claimed disability tax credit in ${this.$store.state.enrolmentModule.selectedNOAYear}`,
+        label: `Claimed disability tax credit in ${selectedYear}`,
         value: this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y' ? 'Yes' : 'No',
       });
       items.push({
@@ -490,10 +491,9 @@ export default {
         value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedAttendantNursingRecipients),
       });
       const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length;
-      const fileLabel = (documentCount > 1) ? 's' : '';
       items.push({
         label: 'Documents',
-        value: documentCount + ' file' + fileLabel
+        value: `${documentCount} ${this.getFilePlural(documentCount)}`,
       });
       return items;
     },
@@ -649,6 +649,10 @@ export default {
       }
       return result;
     },
+    getFilePlural(count) {
+      //takes an integer, returns single or plural form of word
+      return (count > 1) ? 'files' : 'file';
+    }
   }
 }
 </script>
