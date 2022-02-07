@@ -528,7 +528,27 @@ export default {
     return validations;
   },
   methods: {
+    correlateData() {
+      if (this.hasChildren === "N") {
+        this.numChildren = 0;
+        this.numDisabilityChildren = 0;
+        this.numAttendantNursingChildren = 0;
+        this.claimedChildCareExpenses = 0;
+      }
+
+      if (this.numChildren === 0) {
+        this.hasChildren = "N";
+        this.numDisabilityChildren = 0;
+        this.numAttendantNursingChildren = 0;
+        this.claimedChildCareExpenses = 0;
+      }
+
+      if (this.hasAttendantNursingExpenses === "N") {
+        this.attendantNursingReceipts = [];
+      }
+    },
     saveData() {
+      this.correlateData();
       this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_NOA_YEAR}`, this.selectedNOAYear);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_SB_INCOME}`, this.ahSBIncome);
       this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_SB_INCOME}`, this.spouseSBIncome);
@@ -635,14 +655,23 @@ export default {
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
       }
     },
-    hasDisabilityCredit(value) {
+    hasDisabilityCredit(value) {  
       if (this.pageLoaded && value === 'N') {
         this.selectedDisabilityRecipients = [];
+        this.numDisabilityChildren = 0;
+        this.$v.selectedDisabilityRecipients.$reset()
+        this.$v.numDisabilityChildren.$reset()
       }
     },
     hasAttendantNursingExpenses(value) {
       if (this.pageLoaded && value === 'N') {
         this.selectedAttendantNursingRecipients = [];
+        this.numAttendantNursingChildren = 0;
+        //could clear this.attendantNursingReceipts = [] if we wanted as well
+        //I'm leaving it out right now to save on the effort of re-uploading
+        this.$v.selectedAttendantNursingRecipients.$reset()
+        this.$v.numAttendantNursingChildren.$reset()
+        this.$v.attendantNursingReceipts.$reset()
       }
     }
   },
