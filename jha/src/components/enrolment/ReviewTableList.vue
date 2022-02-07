@@ -474,10 +474,12 @@ export default {
         label: `Claimed disability tax credit in ${selectedYear}`,
         value: this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y' ? 'Yes' : 'No',
       });
-      items.push({
-        label: `Who claimed`,
-        value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedDisabilityRecipients),
-      });
+      if (this.$store.state.enrolmentModule.selectedDisabilityRecipients.length > 0){
+        items.push({
+          label: `Who claimed`,
+          value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedDisabilityRecipients),
+        });
+      }
       items.push({
         label: `Registered Disability Savings Plan?`,
         value: this.$store.state.enrolmentModule.hasRDSP === 'Y' ? 'Yes' : 'No',
@@ -486,10 +488,12 @@ export default {
         label: `Claimed attendant or nursing home expenses`,
         value: this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y' ?  'Yes' : 'No',
       });
-      items.push({
-        label: `Who claimed`,
-        value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedAttendantNursingRecipients),
-      });
+      if (this.$store.state.enrolmentModule.selectedAttendantNursingRecipients.length > 0){
+          items.push({
+          label: `Who claimed`,
+          value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedAttendantNursingRecipients),
+        });
+      }
       const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length;
       items.push({
         label: 'Documents',
