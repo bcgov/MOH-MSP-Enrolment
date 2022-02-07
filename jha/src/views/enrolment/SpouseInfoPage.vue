@@ -78,20 +78,20 @@
             @processDate="handleProcessBirthdate($event)" />
           <div class="text-danger"
             v-if="$v.spouseBirthDate.$dirty && !$v.spouseBirthDate.required"
-            aria-live="assertive">Birth date is required.</div>
+            aria-live="assertive">Birthdate is required.</div>
           <div class="text-danger"
             v-if="$v.spouseBirthDate.$dirty
               && !$v.spouseBirthDate.dateDataValidator"
-            aria-live="assertive">Invalid Birthdate.</div>
+            aria-live="assertive">Invalid birthdate.</div>
           <div class="text-danger"
             v-if="$v.spouseBirthDate.$dirty
               && !$v.spouseBirthDate.distantPastValidator"
-            aria-live="assertive">Invalid Birthdate.</div>
+            aria-live="assertive">Invalid birthdate.</div>
           <div class="text-danger"
             v-if="$v.spouseBirthDate.$dirty
                   && $v.spouseBirthDate.required
                   && !$v.spouseBirthDate.birthDatePastValidator"
-            aria-live="assertive">Birth date cannot be in the future.</div>
+            aria-live="assertive">Birthdate cannot be in the future.</div>
           <Radio
             label='Gender'
             id='spouse-gender'

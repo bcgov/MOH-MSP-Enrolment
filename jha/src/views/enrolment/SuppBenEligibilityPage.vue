@@ -10,22 +10,22 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Eligibility questionnaire</h1>
-        <p class="mb-0">You can use the Joint Health Application to apply for Medical Services Plan (MSP) enrolmnent, Fair PharmaCare, and/or MSP Supplementary Benefits.</p>
+        <p class="mb-0">You can use the British Columbia Application for Health Drug Coverage to apply for Medical Services Plan (MSP) enrolmnent, Fair PharmaCare, and/or MSP Supplementary Benefits.</p>
         <p class="mt-0">Answering the following questions will help you determine which programs you are eligible for, and ensure you have the required documents and information to complete your application(s).</p>
         <hr class="mt-0"/>
         <h2>MSP Supplementary Benefits</h2>
         <Radio
           id='apply-sb'
           name='apply-sb'
-          label='1. Will you use the Joint Health Application to apply for supplementary benefits?'
+          label='1. Will you use the British Columbia Application for Health Drug Coverage to apply for supplementary benefits?'
           v-model='applySB'
           :items='radioOptionsYesNo' />
         <div v-if="applySB === 'Y'">
           <p class="mb-0">2. To register for MSP supplementary benefits, you must:</p>
-          <div class="ml-5">
-            <p class="mb-0">1. be a resident of British Columbia as defined by the Medicare Protection Act;</p>
-            <p class="mb-0">2. have resided in Canada as a Canadian citizen or holder of a permanent resident status (landed immigrant) for at least the last 12 months immediately preceding this application; and</p>
-            <p>3. not be exempt from liability to pay income tax by reason of any other act</p>
+          <div class="ml-4">
+            <p class="mb-0">a. be a resident of British Columbia as defined by the Medicare Protection Act;</p>
+            <p class="mb-0">b. have resided in Canada as a Canadian citizen or holder of a permanent resident status (landed immigrant) for at least the last 12 months immediately preceding this application; and</p>
+            <p>c. not be exempt from liability to pay income tax by reason of any other act</p>
           </div>
           <Radio
             id='meets-sb-criteria'
@@ -33,13 +33,13 @@
             label='Do you meet the above eligibility criteria?'
             v-model='eqSBMeetsCriteria'
             :items='radioOptionsYesNo' />
-          <p class="font-weight-bold" v-if="eqSBMeetsCriteria === 'N'">You are not eligible to apply for MSP supplementary benefits at this time. Please submit an application when you meet the residency requirements.  For assistance, please contact Health Insurance BC.  For more information on eligibility requirements, see Applying for Supplementary Benefits.</p>
+          <p class="font-weight-bold ml-4" v-if="eqSBMeetsCriteria === 'N'">You are not eligible to apply for MSP supplementary benefits at this time. Please submit an application when you meet the residency requirements.  For assistance, please contact Health Insurance BC.  For more information on eligibility requirements, see Applying for Supplementary Benefits.</p>
           <div v-if="eqSBMeetsCriteria === 'Y'">
             <p class="mb-0">3. To apply for MSP supplementary benefits, you must include the following with your application:</p>
-            <div class="ml-5">
-              <p class="mb-0">1. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
-              <p class="mb-0">2. a digital copy (pdf, jpg, png) of your and if applicable, your spouse's CRA Notice of Assessment (NOA) or Notice of Reassessment (NORA) for the relevant taxation year (previous year or previous two tax year to the current calendar year); and</p>
-              <p>3. Net Income (Line 23600) and Registered Disability Savings Plan (RDSP) income (Line 12500) from the above CRA NOA or NORA.</p>
+            <div class="ml-4">
+              <p class="mb-0">a. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
+              <p class="mb-0">b. a digital copy (pdf, jpg, png) of your and if applicable, your spouse's CRA Notice of Assessment (NOA) or Notice of Reassessment (NORA) for the relevant taxation year (previous year or previous two tax year to the current calendar year); and</p>
+              <p>c. Net Income (Line 23600) and Registered Disability Savings Plan (RDSP) income (Line 12500) from the above CRA NOA or NORA.</p>
             </div>
             <Radio
               id='has-sb-info'
@@ -47,7 +47,7 @@
               label='Do you have the above documents and information to include with your application?'
               v-model='eqSBhasInfo'
               :items='radioOptionsYesNo' />
-            <ul class="font-weight-bold pl-4" v-if="eqSBhasInfo === 'N'">
+            <ul class="font-weight-bold pl-4 ml-4" v-if="eqSBhasInfo === 'N'">
               <li class="ml-0">If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
               <li class="ml-0">If you (or your spouse) did not submit a tax return for a valid taxation year: file an income tax return with the Canada Revenue Agency for the required year as soon as possible. When you have recieved an NOA/NORA, apply for supplementary benefits.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
             </ul>

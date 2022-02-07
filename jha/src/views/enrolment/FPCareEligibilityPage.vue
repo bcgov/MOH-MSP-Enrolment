@@ -10,22 +10,22 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Eligibility Questionnaire</h1>
-        <p class="mb-0">You can use the Joint Health Application to apply for Medical Services Plan (MSP) enrolmnent, Fair PharmaCare, and/or MSP Supplementary Benefits.</p>
+        <p class="mb-0">You can use the British Columbia Application for Health Drug Coverage to apply for Medical Services Plan (MSP) enrolmnent, Fair PharmaCare, and/or MSP Supplementary Benefits.</p>
         <p class="mt-0">Answering the following questions will help you determine which programs you are eligible for, and ensure you have the required documents and information to complete your application(s).</p>
         <hr class="mt-0"/>
         <h2>Fair PharmaCare</h2>
         <Radio
           id='apply-fpc'
           name='apply-fpc'
-          label='1. Will you use the Joint Health Application to register for Fair PharmaCare?'
+          label='1. Will you use the British Columbia Application for Health Drug Coverage to register for Fair PharmaCare?'
           v-model='applyFPC'
           :items='radioOptionsApplyFPC' />
         <div v-if="applyFPC === 'Y'">
           <p class="mb-0">2. To register for Fair PharmaCare, you must:</p>
-          <div class="ml-5">
-            <p class="mb-0">1. have been a resident of British Columbia for at least three months;</p>
-            <p class="mb-0">2. be registered with the Medical Services Plan (MSP); and</p>
-            <p>3. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
+          <div class="ml-4">
+            <p class="mb-0">a. have been a resident of British Columbia for at least three months;</p>
+            <p class="mb-0">b. be registered with the Medical Services Plan (MSP); and</p>
+            <p>c. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
           </div>
           <Radio
             id='meets-fpc-criteria'
@@ -33,13 +33,13 @@
             label='Do you meet the above eligibility criteria?'
             v-model='eqFPCMeetsCriteria'
             :items='radioOptionsYesNo' />
-          <p class="font-weight-bold" v-if="eqFPCMeetsCriteria === 'N'">You are not eligible to register for Fair PharmaCare at this time. Register after you have completed the required wait period and registered with the Medical Services Plan.  If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible.  When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</p>
+          <p class="font-weight-bold ml-4" v-if="eqFPCMeetsCriteria === 'N'">You are not eligible to register for Fair PharmaCare at this time. Register after you have completed the required wait period and registered with the Medical Services Plan.  If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible.  When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</p>
           <div v-if="eqFPCMeetsCriteria === 'Y'">
             <p class="mb-0">3. To register for Fair PharmaCare, you must include the following with your application:</p>
-            <div class="ml-5">
-              <p class="mb-0">1. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
-              <p class="mb-0">2. Net Income shown on Line 23600 of your and if applicable, your spouse's CRA Notice of Assessment or federal income tax return for the relevant taxation year (two years before the current year); and</p>
-              <p>3. if you recieved income form a Registered Disability Savings Plan (RDSP), income shown on Line 12500 of your and if applicable, your spouse's CRA Notice of Assessment or federal income tax return for the relevant taxation year (two years before the current year). If you did not recieve RDSP income, you will enter $0.</p>
+            <div class="ml-4">
+              <p class="mb-0">a. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
+              <p class="mb-0">b. Net Income shown on Line 23600 of your and if applicable, your spouse's CRA Notice of Assessment or federal income tax return for the relevant taxation year (two years before the current year); and</p>
+              <p>c. If you received income form a Registered Disability Savings Plan (RDSP), income shown on Line 12500 of your and if applicable, your spouse's CRA Notice of Assessment or federal income tax return for the relevant taxation year (two years before the current year). If you did not receive RDSP income, you will enter $0.</p>
             </div>
             <Radio
               id='has-fpc-info'
@@ -47,7 +47,7 @@
               label='Do you have the above information to include with your application?'
               v-model='eqFPCHasInfo'
               :items='radioOptionsYesNo' />
-            <ul class="font-weight-bold pl-4" v-if="eqFPCHasInfo === 'N'">
+            <ul class="font-weight-bold pl-4 ml-4" v-if="eqFPCHasInfo === 'N'">
               <li>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
               <li>If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible. When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
             </ul>
