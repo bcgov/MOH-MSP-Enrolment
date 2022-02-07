@@ -227,7 +227,7 @@
                 <p>Make sure it's:</p>
                 <ul>
                   <li>The entire document, from corner to corner</li>
-                  <li>Rotated Correctly(not upside down or sideways)</li>
+                  <li>Rotated correctly (not upside down or sideways)</li>
                   <li>In focus and easy to read</li>
                   <li>A JPG, PNG, GIF, BMP, or PDF file</li>
                 </ul>
