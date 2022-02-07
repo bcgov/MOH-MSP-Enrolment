@@ -226,10 +226,10 @@
                 <p>Scan the document, or take a photo of it.</p>
                 <p>Make sure it's:</p>
                 <ul>
-                  <li>The entire document, from corner to corner.</li>
-                  <li>Rotated Correctly(not upside down or sideways).</li>
-                  <li>In focus and easy to read.</li>
-                  <li>A JPG, PNG, GIF, BMP, or PDF file.</li>
+                  <li>The entire document, from corner to corner</li>
+                  <li>Rotated Correctly(not upside down or sideways)</li>
+                  <li>In focus and easy to read</li>
+                  <li>A JPG, PNG, GIF, BMP, or PDF file</li>
                 </ul>
               </TipBox>
             </div>
