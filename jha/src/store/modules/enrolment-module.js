@@ -40,6 +40,7 @@ export const SET_AH_FIRST_NAME = 'setAHFirstName';
 export const SET_AH_MIDDLE_NAME = 'setAHMiddleName';
 export const SET_AH_LAST_NAME = 'setAHLastName';
 export const SET_AH_BIRTHDATE = 'setAHBirthdate';
+export const SET_AH_PHN = 'setAHPHN';
 export const SET_AH_SIN = 'setAHSIN';
 export const SET_AH_GENDER = 'setAHGender';
 export const SET_AH_CITIZENSHIP_STATUS = 'setAHCitizenshipStatus';
@@ -83,6 +84,8 @@ export const SET_SPOUSE_FIRST_NAME = 'setSpouseFirstName';
 export const SET_SPOUSE_MIDDLE_NAME = 'setSpouseMiddleName';
 export const SET_SPOUSE_LAST_NAME = 'setSpouseLastName';
 export const SET_SPOUSE_BIRTH_DATE = 'setSpouseBirthDate';
+export const SET_SPOUSE_PHN = 'setSpousePHN';
+export const SET_SPOUSE_SIN = 'setSpouseSIN';
 export const SET_SPOUSE_GENDER = 'setSpouseGender';
 export const SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH = 'setSpouseLivedInBCSinceBirth';
 export const SET_SPOUSE_MADE_PERMANENT_MOVE = 'setSpouseMadePermanentMove';
@@ -189,6 +192,7 @@ export default {
       ahMiddleName: null,
       ahLastName: null,
       ahBirthdate: null,
+      ahPHN: null,
       ahSIN: null,
       ahGender: null,
       ahCitizenshipStatus: null,
@@ -232,6 +236,8 @@ export default {
       spouseMiddleName: null,
       spouseLastName: null,
       spouseBirthDate: null,
+      spousePHN: null,
+      spouseSIN: null,
       spouseGender: null,
       spouseLivedInBCSinceBirth: null,
       spouseMadePermanentMove: null,
@@ -392,6 +398,9 @@ export default {
     [SET_AH_BIRTHDATE](state, payload) {
       state.ahBirthdate = payload;
     },
+    [SET_AH_PHN](state, payload) {
+      state.ahPHN = payload;
+    },
     [SET_AH_SIN](state, payload) {
       state.ahSIN = payload;
     },
@@ -518,6 +527,12 @@ export default {
     },
     [SET_SPOUSE_BIRTH_DATE](state, payload) {
       state.spouseBirthDate = payload;
+    },
+    [SET_SPOUSE_PHN](state, payload) {
+      state.spousePHN = payload;
+    },
+    [SET_SPOUSE_SIN](state, payload) {
+      state.spouseSIN = payload;
     },
     [SET_SPOUSE_GENDER](state, payload) {
       state.spouseGender = payload;
@@ -757,6 +772,7 @@ export default {
       commit(SET_AH_MIDDLE_NAME, null);
       commit(SET_AH_LAST_NAME, null);
       commit(SET_AH_BIRTHDATE, null);
+      commit(SET_AH_PHN, null);
       commit(SET_AH_SIN, null);
       commit(SET_AH_GENDER, null);
       commit(SET_AH_CITIZENSHIP_STATUS, null);
@@ -800,6 +816,8 @@ export default {
       commit(SET_SPOUSE_MIDDLE_NAME, null);
       commit(SET_SPOUSE_LAST_NAME, null);
       commit(SET_SPOUSE_BIRTH_DATE, null);
+      commit(SET_SPOUSE_PHN, null);
+      commit(SET_SPOUSE_SIN, null);
       commit(SET_SPOUSE_GENDER, null);
       commit(SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, null);
       commit(SET_SPOUSE_MADE_PERMANENT_MOVE, null);
@@ -954,6 +972,9 @@ export default {
     [SET_AH_BIRTHDATE]({ commit }, payload) {
       commit(SET_AH_BIRTHDATE, payload);
     },
+    [SET_AH_PHN]({ commit }, payload) {
+      commit(SET_AH_PHN, payload);
+    },
     [SET_AH_SIN]({ commit }, payload) {
       commit(SET_AH_SIN, payload);
     },
@@ -1080,6 +1101,12 @@ export default {
     },
     [SET_SPOUSE_BIRTH_DATE]({ commit }, payload) {
       commit(SET_SPOUSE_BIRTH_DATE, payload);
+    },
+    [SET_SPOUSE_PHN]({ commit }, payload) {
+      commit(SET_SPOUSE_PHN, payload);
+    },
+    [SET_SPOUSE_SIN]({ commit }, payload) {
+      commit(SET_SPOUSE_SIN, payload);
     },
     [SET_SPOUSE_GENDER]({ commit }, payload) {
       commit(SET_SPOUSE_GENDER, payload);

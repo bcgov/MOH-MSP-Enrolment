@@ -14,6 +14,7 @@ const SUBMIT_ATTACHMENT_URL = `${BASE_API_PATH}/submit-attachment`;
 class ApiService {
   sendApplication(formState) {
     const headers = this._getHeaders(formState.captchaToken);
+    const dateToday = new Date();
     const jsonPayload = {
       uuid: formState.applicationUuid,
       firstName: formState.ahFirstName || null,
@@ -32,7 +33,7 @@ class ApiService {
       provinceOrState: formState.resProvince || null,
       country: formState.resCountry || '',
       authorizedByApplicant: 'Y',
-      authorizedByApplicantDate: formatISODate(new Date()),
+      authorizedByApplicantDate: formatISODate(dateToday),
       authorizedBySpouse: null, // Set below.
       spouse: null, // Set below.
     };
@@ -211,6 +212,37 @@ class ApiService {
           ];
         }),
       ]);
+    }
+
+    // FPC
+    if (formState.isApplyingForFPCare) {
+      const postalCode = formState.isMailSame && formState.resPostalCode ? stripSpaces(formState.resPostalCode) : stripSpaces(formState.mailPostalCode);
+      const persons = [
+        {
+          givenName: formState.ahFirstName,
+          surname: formState.ahLastName,
+          postalCode: postalCode,
+          perType: "0", // 0 is applicant, 1 is spouse, 2 is children only.
+          dateOfBirth: formatISODate(formState.ahBirthdate),
+          phn: stripSpaces(formState.ahPHN) || null,
+        }
+      ];
+      
+      jsonPayload.fairPharmaCare = {
+        uuid: formState.fpcUuid,
+        clientName: null,
+        processDate: formatISODate(dateToday),
+        accountHolderNetIncome: formState.ahFPCIncome,
+        accountHolderRDSP: formState.ahFPCRDSP,
+        spouseNetIncome: formState.ahFPCIncome,
+        spouseRDSP: formState.ahFPCRDSP,
+        spousePostalCode: postalCode,
+        persons: persons, // Does this contain spouse and children/dependents
+        familyNumber: null,
+        deductibleAmount: null, // TODO.
+        annualMaximumAmount: null, // TODO.
+        copayPercentage: null
+      };
     }
     // console.log('JSON Payload:', jsonPayload);
     const jhaApplicationUuid = formState.applicationUuid;
