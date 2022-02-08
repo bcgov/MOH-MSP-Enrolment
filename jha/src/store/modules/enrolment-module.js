@@ -16,7 +16,9 @@ export const SET_FPC_UUID = 'setFPCUuid';
 export const SET_SB_UUID = 'setSBUuid';
 export const SET_CAPTCHA_TOKEN = 'setCaptchaToken';
 export const SET_SUBMISSION_DATE = 'setSubmissionDate';
-export const SET_REFERENCE_NUMBER = 'setReferenceNumber';
+export const SET_MSP_REFERENCE_NUMBER = 'setMSPReferenceNumber';
+export const SET_FPC_REFERENCE_NUMBER = 'setFPCReferenceNumber';
+export const SET_SB_REFERENCE_NUMBER = 'setSBReferenceNumber';
 export const SET_IS_INFO_COLLECTION_NOTICE_OPEN = 'setIsInfoCollectionNoticeOpen';
 // Eligibility Questionnaires
 export const SET_EQ_MSP_LIVE_IN_BC = 'setEqMSPLiveInBC';
@@ -168,7 +170,9 @@ export default {
       sbUuid: null,
       captchaToken: null,
       submissionDate: null,
-      referenceNumber: null,
+      mspReferenceNumber: null,
+      fpcReferenceNumber: null,
+      sbReferenceNumber: null,
       isInfoCollectionNoticeOpen: true,
       // Eligibility Questionnaires
       eqMSPLiveInBC: null,
@@ -334,8 +338,14 @@ export default {
     [SET_SUBMISSION_DATE](state, payload) {
       state.submissionDate = payload;
     },
-    [SET_REFERENCE_NUMBER](state, payload) {
-      state.referenceNumber = payload;
+    [SET_MSP_REFERENCE_NUMBER](state, payload) {
+      state.mspReferenceNumber = payload;
+    },
+    [SET_FPC_REFERENCE_NUMBER](state, payload) {
+      state.fpcReferenceNumber = payload;
+    },
+    [SET_SB_REFERENCE_NUMBER](state, payload) {
+      state.sbReferenceNumber = payload;
     },
     [SET_IS_INFO_COLLECTION_NOTICE_OPEN](state, payload) {
       state.isInfoCollectionNoticeOpen = payload;
@@ -748,7 +758,9 @@ export default {
       commit(SET_SB_UUID, null);
       commit(SET_CAPTCHA_TOKEN, null);
       commit(SET_SUBMISSION_DATE, null);
-      commit(SET_REFERENCE_NUMBER, null);
+      commit(SET_MSP_REFERENCE_NUMBER, null);
+      commit(SET_FPC_REFERENCE_NUMBER, null);
+      commit(SET_SB_REFERENCE_NUMBER, null);
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, true);
       // Eligibility Questionnaires
       commit(SET_EQ_MSP_LIVE_IN_BC, null);
@@ -908,8 +920,14 @@ export default {
     [SET_SUBMISSION_DATE]({ commit }, payload) {
       commit(SET_SUBMISSION_DATE, payload);
     },
-    [SET_REFERENCE_NUMBER]({ commit }, payload) {
-      commit(SET_REFERENCE_NUMBER, payload);
+    [SET_MSP_REFERENCE_NUMBER]({ commit }, payload) {
+      commit(SET_MSP_REFERENCE_NUMBER, payload);
+    },
+    [SET_FPC_REFERENCE_NUMBER]({ commit }, payload) {
+      commit(SET_FPC_REFERENCE_NUMBER, payload);
+    },
+    [SET_SB_REFERENCE_NUMBER]({ commit }, payload) {
+      commit(SET_SB_REFERENCE_NUMBER, payload);
     },
     [SET_IS_INFO_COLLECTION_NOTICE_OPEN]({ commit }, payload) {
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, payload);

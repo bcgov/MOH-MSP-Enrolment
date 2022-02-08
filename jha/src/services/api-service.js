@@ -15,6 +15,9 @@ class ApiService {
   sendApplication(formState) {
     const headers = this._getHeaders(formState.captchaToken);
     const dateToday = new Date();
+    const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
+    const dependents = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child19To24);
+    
     const jsonPayload = {
       uuid: formState.applicationUuid,
       firstName: formState.ahFirstName || null,
@@ -53,9 +56,6 @@ class ApiService {
       jsonPayload.authorizedBySpouse = 'N';
     }
     if (formState.isApplyingForMSP) {
-      const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
-      const dependents = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child19To24);
-
       jsonPayload.medicalServicesPlan = {
         uuid: formState.mspUuid || null,
         citizenshipType: getCitizenshipType(formState.ahCitizenshipStatus, formState.ahCitizenshipStatusReason) || null,
@@ -222,11 +222,31 @@ class ApiService {
           givenName: formState.ahFirstName,
           surname: formState.ahLastName,
           postalCode: postalCode,
-          perType: "0", // 0 is applicant, 1 is spouse, 2 is children only.
+          perType: '0', // 0 is applicant, 1 is spouse, 2 is children only.
           dateOfBirth: formatISODate(formState.ahBirthdate),
           phn: stripSpaces(formState.ahPHN) || null,
         }
       ];
+      if (formState.hasSpouse) {
+        persons.push({
+          givenName: formState.spouseFirstName,
+          surname: formState.spouseLastName,
+          postalCode: postalCode,
+          perType: '1', // 0 is applicant, 1 is spouse, 2 is children only.
+          dateOfBirth: formatISODate(formState.spouseBirthDate),
+          phn: stripSpaces(formState.spousePHN) || null,
+        });
+      }
+      children.forEach((child) => {
+        persons.push({
+          givenName: child.firstName,
+          surname: child.lastName,
+          postalCode: postalCode,
+          perType: '2', // 0 is applicant, 1 is spouse, 2 is children only.
+          dateOfBirth: formatISODate(child.birthDate),
+          phn: stripSpaces(child.phn) || null,
+        });
+      });
       
       jsonPayload.fairPharmaCare = {
         uuid: formState.fpcUuid,
@@ -237,7 +257,7 @@ class ApiService {
         spouseNetIncome: formState.ahFPCIncome,
         spouseRDSP: formState.ahFPCRDSP,
         spousePostalCode: postalCode,
-        persons: persons, // Does this contain spouse and children/dependents
+        persons, // Contains account holder, spouse, and children.
         familyNumber: null,
         deductibleAmount: null, // TODO.
         annualMaximumAmount: null, // TODO.
