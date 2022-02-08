@@ -471,6 +471,16 @@ export default {
         value: moneyFormatter.format(this.$store.state.enrolmentModule.spouseSBIncome),
       });
       items.push({
+        label: `Number of children on MSP account`,
+        value: this.$store.state.enrolmentModule.numChildren,
+      });
+      if (this.$store.state.enrolmentModule.hasChildren === "Y") {
+          items.push({
+          label: `Claimed childcare expenses`,
+          value: moneyFormatter.format(this.$store.state.enrolmentModule.claimedChildCareExpenses),
+        });
+      }
+      items.push({
         label: `Claimed disability tax credit in ${selectedYear}`,
         value: this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y' ? 'Yes' : 'No',
       });
@@ -480,10 +490,23 @@ export default {
           value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedDisabilityRecipients),
         });
       }
+      if (this.$store.state.enrolmentModule.hasChildren === "Y" && this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y') {
+          items.push({
+          label: `Number of children eligible for a disability tax credit`,
+          value: this.$store.state.enrolmentModule.numDisabilityChildren,
+        });
+      }
       items.push({
         label: `Registered Disability Savings Plan?`,
-        value: this.$store.state.enrolmentModule.hasRDSP === 'Y' ? 'Yes' : 'No',
+        value: this.$store.state.enrolmentModule.hasRDSP === "Y" ? "Yes" : "No",
       });
+      if (this.$store.state.enrolmentModule.hasRDSP === "Y") {
+        items.push({
+          label: `RDSP amount`,
+          value: moneyFormatter.format(this.$store.state.enrolmentModule.sbRDSPAmount),
+        });
+      }
+      
       items.push({
         label: `Claimed attendant or nursing home expenses`,
         value: this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y' ?  'Yes' : 'No',
@@ -492,6 +515,12 @@ export default {
           items.push({
           label: `Who claimed`,
           value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedAttendantNursingRecipients),
+        });
+      }
+      if (this.$store.state.enrolmentModule.hasChildren === "Y" && this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y') {
+        items.push({
+          label: `Number of children claiming attendant care expenses`,
+          value: this.$store.state.enrolmentModule.numAttendantNursingChildren,
         });
       }
       const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length;
@@ -655,7 +684,7 @@ export default {
     },
     getFilePlural(count) {
       //takes an integer, returns single or plural form of word
-      return (count > 1) ? 'files' : 'file';
+      return (count === 1) ? 'file' : 'files';
     }
   }
 }
