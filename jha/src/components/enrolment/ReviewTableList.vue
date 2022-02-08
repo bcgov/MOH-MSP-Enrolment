@@ -466,10 +466,12 @@ export default {
         label: `Account Holder net income for ${selectedYear}`,
         value: moneyFormatter.format(this.$store.state.enrolmentModule.ahSBIncome),
       });
-      items.push({
-        label: `Spouse/common-law partner's net income from ${selectedYear}`,
-        value: moneyFormatter.format(this.$store.state.enrolmentModule.spouseSBIncome),
-      });
+      if (this.$store.state.enrolmentModule.hasSpouse === "Y"){
+        items.push({
+          label: `Spouse/common-law partner's net income from ${selectedYear}`,
+          value: moneyFormatter.format(this.$store.state.enrolmentModule.spouseSBIncome),
+        });
+      }
       items.push({
         label: `Number of children on MSP account`,
         value: this.$store.state.enrolmentModule.numChildren,
