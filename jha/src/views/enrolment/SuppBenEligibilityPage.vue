@@ -33,7 +33,7 @@
             label='Do you meet the above eligibility criteria?'
             v-model='eqSBMeetsCriteria'
             :items='radioOptionsYesNo' />
-          <p class="font-weight-bold ml-4" v-if="eqSBMeetsCriteria === 'N'">You are not eligible to apply for MSP supplementary benefits at this time. Please submit an application when you meet the residency requirements.  For assistance, please contact Health Insurance BC.  For more information on eligibility requirements, see Applying for Supplementary Benefits.</p>
+          <p class="font-weight-bold ml-4" v-if="eqSBMeetsCriteria === 'N'">You are not eligible to apply for MSP supplementary benefits at this time. Please submit an application when you meet the residency requirements.  For assistance, please contact Health Insurance BC.  For more information on eligibility requirements, see <a target="_blank" href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits">Applying for Supplementary Benefits.</a></p>
           <div v-if="eqSBMeetsCriteria === 'Y'">
             <p class="mb-0">3. To apply for MSP supplementary benefits, you must include the following with your application:</p>
             <div class="ml-4">

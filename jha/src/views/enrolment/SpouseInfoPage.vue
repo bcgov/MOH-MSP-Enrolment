@@ -1162,11 +1162,20 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_DISCHARGE_DATE, this.spouseDischargeDate);
     },
     navigateToNextPage() {
+      // Determine which page to navigate to next
+      let routePath;
+      if (this.$store.state.enrolmentModule.isApplyingForFPCare || this.$store.state.enrolmentModule.isApplyingForMSP) {
+        routePath = enrolmentRoutes.CHILD_INFO_PAGE.path;
+      } else {
+        routePath = enrolmentRoutes.SUPP_BEN_INFO_PAGE.path;
+      }
+      
       // Navigate to next path.
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.CHILD_INFO_PAGE.path
+        routePath
       );
+
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
       this.$router.push(toPath);
