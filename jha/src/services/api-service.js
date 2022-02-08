@@ -14,6 +14,10 @@ const SUBMIT_ATTACHMENT_URL = `${BASE_API_PATH}/submit-attachment`;
 class ApiService {
   sendApplication(formState) {
     const headers = this._getHeaders(formState.captchaToken);
+    const dateToday = new Date();
+    const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
+    const dependents = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child19To24);
+    
     const jsonPayload = {
       uuid: formState.applicationUuid,
       firstName: formState.ahFirstName || null,
@@ -32,7 +36,7 @@ class ApiService {
       provinceOrState: formState.resProvince || null,
       country: formState.resCountry || '',
       authorizedByApplicant: 'Y',
-      authorizedByApplicantDate: formatISODate(new Date()),
+      authorizedByApplicantDate: formatISODate(dateToday),
       authorizedBySpouse: null, // Set below.
       spouse: null, // Set below.
     };
@@ -52,9 +56,6 @@ class ApiService {
       jsonPayload.authorizedBySpouse = 'N';
     }
     if (formState.isApplyingForMSP) {
-      const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
-      const dependents = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child19To24);
-
       jsonPayload.medicalServicesPlan = {
         uuid: formState.mspUuid || null,
         citizenshipType: getCitizenshipType(formState.ahCitizenshipStatus, formState.ahCitizenshipStatusReason) || null,
@@ -211,6 +212,57 @@ class ApiService {
           ];
         }),
       ]);
+    }
+
+    // FPC
+    if (formState.isApplyingForFPCare) {
+      const postalCode = formState.isMailSame && formState.resPostalCode ? stripSpaces(formState.resPostalCode) : stripSpaces(formState.mailPostalCode);
+      const persons = [
+        {
+          givenName: formState.ahFirstName,
+          surname: formState.ahLastName,
+          postalCode: postalCode,
+          perType: '0', // 0 is applicant, 1 is spouse, 2 is children only.
+          dateOfBirth: formatISODate(formState.ahBirthdate),
+          phn: stripSpaces(formState.ahPHN) || null,
+        }
+      ];
+      if (formState.hasSpouse) {
+        persons.push({
+          givenName: formState.spouseFirstName,
+          surname: formState.spouseLastName,
+          postalCode: postalCode,
+          perType: '1', // 0 is applicant, 1 is spouse, 2 is children only.
+          dateOfBirth: formatISODate(formState.spouseBirthDate),
+          phn: stripSpaces(formState.spousePHN) || null,
+        });
+      }
+      children.forEach((child) => {
+        persons.push({
+          givenName: child.firstName,
+          surname: child.lastName,
+          postalCode: postalCode,
+          perType: '2', // 0 is applicant, 1 is spouse, 2 is children only.
+          dateOfBirth: formatISODate(child.birthDate),
+          phn: stripSpaces(child.phn) || null,
+        });
+      });
+      
+      jsonPayload.fairPharmaCare = {
+        uuid: formState.fpcUuid,
+        clientName: null,
+        processDate: formatISODate(dateToday),
+        accountHolderNetIncome: formState.ahFPCIncome,
+        accountHolderRDSP: formState.ahFPCRDSP,
+        spouseNetIncome: formState.ahFPCIncome,
+        spouseRDSP: formState.ahFPCRDSP,
+        spousePostalCode: postalCode,
+        persons, // Contains account holder, spouse, and children.
+        familyNumber: null,
+        deductibleAmount: null, // TODO.
+        annualMaximumAmount: null, // TODO.
+        copayPercentage: null
+      };
     }
     // console.log('JSON Payload:', jsonPayload);
     const jhaApplicationUuid = formState.applicationUuid;

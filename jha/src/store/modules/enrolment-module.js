@@ -16,7 +16,9 @@ export const SET_FPC_UUID = 'setFPCUuid';
 export const SET_SB_UUID = 'setSBUuid';
 export const SET_CAPTCHA_TOKEN = 'setCaptchaToken';
 export const SET_SUBMISSION_DATE = 'setSubmissionDate';
-export const SET_REFERENCE_NUMBER = 'setReferenceNumber';
+export const SET_MSP_REFERENCE_NUMBER = 'setMSPReferenceNumber';
+export const SET_FPC_REFERENCE_NUMBER = 'setFPCReferenceNumber';
+export const SET_SB_REFERENCE_NUMBER = 'setSBReferenceNumber';
 export const SET_IS_INFO_COLLECTION_NOTICE_OPEN = 'setIsInfoCollectionNoticeOpen';
 // Eligibility Questionnaires
 export const SET_EQ_MSP_LIVE_IN_BC = 'setEqMSPLiveInBC';
@@ -40,6 +42,7 @@ export const SET_AH_FIRST_NAME = 'setAHFirstName';
 export const SET_AH_MIDDLE_NAME = 'setAHMiddleName';
 export const SET_AH_LAST_NAME = 'setAHLastName';
 export const SET_AH_BIRTHDATE = 'setAHBirthdate';
+export const SET_AH_PHN = 'setAHPHN';
 export const SET_AH_SIN = 'setAHSIN';
 export const SET_AH_GENDER = 'setAHGender';
 export const SET_AH_CITIZENSHIP_STATUS = 'setAHCitizenshipStatus';
@@ -83,6 +86,8 @@ export const SET_SPOUSE_FIRST_NAME = 'setSpouseFirstName';
 export const SET_SPOUSE_MIDDLE_NAME = 'setSpouseMiddleName';
 export const SET_SPOUSE_LAST_NAME = 'setSpouseLastName';
 export const SET_SPOUSE_BIRTH_DATE = 'setSpouseBirthDate';
+export const SET_SPOUSE_PHN = 'setSpousePHN';
+export const SET_SPOUSE_SIN = 'setSpouseSIN';
 export const SET_SPOUSE_GENDER = 'setSpouseGender';
 export const SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH = 'setSpouseLivedInBCSinceBirth';
 export const SET_SPOUSE_MADE_PERMANENT_MOVE = 'setSpouseMadePermanentMove';
@@ -165,7 +170,9 @@ export default {
       sbUuid: null,
       captchaToken: null,
       submissionDate: null,
-      referenceNumber: null,
+      mspReferenceNumber: null,
+      fpcReferenceNumber: null,
+      sbReferenceNumber: null,
       isInfoCollectionNoticeOpen: true,
       // Eligibility Questionnaires
       eqMSPLiveInBC: null,
@@ -189,6 +196,7 @@ export default {
       ahMiddleName: null,
       ahLastName: null,
       ahBirthdate: null,
+      ahPHN: null,
       ahSIN: null,
       ahGender: null,
       ahCitizenshipStatus: null,
@@ -232,6 +240,8 @@ export default {
       spouseMiddleName: null,
       spouseLastName: null,
       spouseBirthDate: null,
+      spousePHN: null,
+      spouseSIN: null,
       spouseGender: null,
       spouseLivedInBCSinceBirth: null,
       spouseMadePermanentMove: null,
@@ -328,8 +338,14 @@ export default {
     [SET_SUBMISSION_DATE](state, payload) {
       state.submissionDate = payload;
     },
-    [SET_REFERENCE_NUMBER](state, payload) {
-      state.referenceNumber = payload;
+    [SET_MSP_REFERENCE_NUMBER](state, payload) {
+      state.mspReferenceNumber = payload;
+    },
+    [SET_FPC_REFERENCE_NUMBER](state, payload) {
+      state.fpcReferenceNumber = payload;
+    },
+    [SET_SB_REFERENCE_NUMBER](state, payload) {
+      state.sbReferenceNumber = payload;
     },
     [SET_IS_INFO_COLLECTION_NOTICE_OPEN](state, payload) {
       state.isInfoCollectionNoticeOpen = payload;
@@ -391,6 +407,9 @@ export default {
     },
     [SET_AH_BIRTHDATE](state, payload) {
       state.ahBirthdate = payload;
+    },
+    [SET_AH_PHN](state, payload) {
+      state.ahPHN = payload;
     },
     [SET_AH_SIN](state, payload) {
       state.ahSIN = payload;
@@ -518,6 +537,12 @@ export default {
     },
     [SET_SPOUSE_BIRTH_DATE](state, payload) {
       state.spouseBirthDate = payload;
+    },
+    [SET_SPOUSE_PHN](state, payload) {
+      state.spousePHN = payload;
+    },
+    [SET_SPOUSE_SIN](state, payload) {
+      state.spouseSIN = payload;
     },
     [SET_SPOUSE_GENDER](state, payload) {
       state.spouseGender = payload;
@@ -733,7 +758,9 @@ export default {
       commit(SET_SB_UUID, null);
       commit(SET_CAPTCHA_TOKEN, null);
       commit(SET_SUBMISSION_DATE, null);
-      commit(SET_REFERENCE_NUMBER, null);
+      commit(SET_MSP_REFERENCE_NUMBER, null);
+      commit(SET_FPC_REFERENCE_NUMBER, null);
+      commit(SET_SB_REFERENCE_NUMBER, null);
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, true);
       // Eligibility Questionnaires
       commit(SET_EQ_MSP_LIVE_IN_BC, null);
@@ -757,6 +784,7 @@ export default {
       commit(SET_AH_MIDDLE_NAME, null);
       commit(SET_AH_LAST_NAME, null);
       commit(SET_AH_BIRTHDATE, null);
+      commit(SET_AH_PHN, null);
       commit(SET_AH_SIN, null);
       commit(SET_AH_GENDER, null);
       commit(SET_AH_CITIZENSHIP_STATUS, null);
@@ -800,6 +828,8 @@ export default {
       commit(SET_SPOUSE_MIDDLE_NAME, null);
       commit(SET_SPOUSE_LAST_NAME, null);
       commit(SET_SPOUSE_BIRTH_DATE, null);
+      commit(SET_SPOUSE_PHN, null);
+      commit(SET_SPOUSE_SIN, null);
       commit(SET_SPOUSE_GENDER, null);
       commit(SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, null);
       commit(SET_SPOUSE_MADE_PERMANENT_MOVE, null);
@@ -890,8 +920,14 @@ export default {
     [SET_SUBMISSION_DATE]({ commit }, payload) {
       commit(SET_SUBMISSION_DATE, payload);
     },
-    [SET_REFERENCE_NUMBER]({ commit }, payload) {
-      commit(SET_REFERENCE_NUMBER, payload);
+    [SET_MSP_REFERENCE_NUMBER]({ commit }, payload) {
+      commit(SET_MSP_REFERENCE_NUMBER, payload);
+    },
+    [SET_FPC_REFERENCE_NUMBER]({ commit }, payload) {
+      commit(SET_FPC_REFERENCE_NUMBER, payload);
+    },
+    [SET_SB_REFERENCE_NUMBER]({ commit }, payload) {
+      commit(SET_SB_REFERENCE_NUMBER, payload);
     },
     [SET_IS_INFO_COLLECTION_NOTICE_OPEN]({ commit }, payload) {
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, payload);
@@ -953,6 +989,9 @@ export default {
     },
     [SET_AH_BIRTHDATE]({ commit }, payload) {
       commit(SET_AH_BIRTHDATE, payload);
+    },
+    [SET_AH_PHN]({ commit }, payload) {
+      commit(SET_AH_PHN, payload);
     },
     [SET_AH_SIN]({ commit }, payload) {
       commit(SET_AH_SIN, payload);
@@ -1080,6 +1119,12 @@ export default {
     },
     [SET_SPOUSE_BIRTH_DATE]({ commit }, payload) {
       commit(SET_SPOUSE_BIRTH_DATE, payload);
+    },
+    [SET_SPOUSE_PHN]({ commit }, payload) {
+      commit(SET_SPOUSE_PHN, payload);
+    },
+    [SET_SPOUSE_SIN]({ commit }, payload) {
+      commit(SET_SPOUSE_SIN, payload);
     },
     [SET_SPOUSE_GENDER]({ commit }, payload) {
       commit(SET_SPOUSE_GENDER, payload);

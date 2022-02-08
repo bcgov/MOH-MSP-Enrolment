@@ -134,7 +134,9 @@ import { getConvertedPath } from '@/helpers/url';
 import {
   MODULE_NAME as formModule,
   RESET_FORM,
-  SET_REFERENCE_NUMBER,
+  SET_MSP_REFERENCE_NUMBER,
+  SET_FPC_REFERENCE_NUMBER,
+  SET_SB_REFERENCE_NUMBER,
   SET_SUBMISSION_DATE
 } from '@/store/modules/enrolment-module';
 import apiService from '@/services/api-service';
@@ -222,42 +224,50 @@ export default {
           apiService.sendApplication(formState)
             .then((response) => {
               // Handle HTTP success.
-              const returnCode = response.data.returnCode;
-              const referenceNumber = response.data.referenceNumber;
+              let isSuccess = true;
 
               this.isLoading = false;
 
-              switch (returnCode) {
-                case '0': // Submission successful.
-                  logService.logSubmission(applicationUuid, {
-                    event: 'submission',
-                    response: response.data,
-                  }, referenceNumber);
-                  this.$store.dispatch(formModule + '/' + SET_REFERENCE_NUMBER, referenceNumber);
-                  this.navigateToSubmissionPage();
-                  break;
-                case '1': // Submission failed.
-                  logService.logError(applicationUuid, {
-                    event: 'submission failure',
-                    response: response.data,
-                  });
-                  this.navigateToSubmissionErrorPage();
-                  break;
-                case '2': // Unknown case, but not '0', so failing the the submission.
-                  logService.logError(applicationUuid, {
-                    event: 'submission failure',
-                    response: response.data,
-                  });
-                  this.navigateToSubmissionErrorPage();
-                  break;
-                case '3': // System unavailable.
-                  this.isSystemUnavailable = true;
-                  logService.logError(applicationUuid, {
-                    event: 'submission failure',
-                    response: response.data,
-                  });
-                  scrollToError();
-                  break;
+              // MSP.
+              if (response.data.msp) {
+                if (response.data.msp.returnCode !== '0') {
+                  isSuccess = false;
+                }
+                if (response.data.msp.referenceNumber) {
+                  this.$store.dispatch(formModule + '/' + SET_MSP_REFERENCE_NUMBER, response.data.msp.referenceNumber);
+                }
+              }
+              // FPC.
+              if (response.data.fpc) {
+                if (response.data.fpc.returnCode !== '0') {
+                  isSuccess = false;
+                }
+                if (response.data.fpc.referenceNumber) {
+                  this.$store.dispatch(formModule + '/' + SET_FPC_REFERENCE_NUMBER, response.data.fpc.referenceNumber);
+                }
+              }
+              // SB.
+              if (response.data.sb) {
+                if (response.data.sb.returnCode !== '0') {
+                  isSuccess = false;
+                }
+                if (response.data.sb.referenceNumber) {
+                  this.$store.dispatch(formModule + '/' + SET_SB_REFERENCE_NUMBER, response.data.sb.referenceNumber);
+                }
+              }
+
+              if (isSuccess) {
+                logService.logSubmission(applicationUuid, {
+                  event: 'submission',
+                  response: response.data,
+                });
+                this.navigateToSubmissionPage();
+              } else {
+                logService.logError(applicationUuid, {
+                  event: 'submission failure',
+                  response: response.data,
+                });
+                this.navigateToSubmissionErrorPage();
               }
             })
             .catch((error) => {
