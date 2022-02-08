@@ -533,18 +533,22 @@ export default {
         this.numChildren = 0;
         this.numDisabilityChildren = 0;
         this.numAttendantNursingChildren = 0;
-        this.claimedChildCareExpenses = 0;
+        this.claimedChildCareExpenses = "0";
       }
 
       if (this.numChildren === 0) {
         this.hasChildren = "N";
         this.numDisabilityChildren = 0;
         this.numAttendantNursingChildren = 0;
-        this.claimedChildCareExpenses = 0;
+        this.claimedChildCareExpenses = "0";
       }
 
       if (this.hasAttendantNursingExpenses === "N") {
         this.attendantNursingReceipts = [];
+      }
+
+      if (this.$store.state.enrolmentModule.hasRDSP === "N") {
+        this.$store.state.enrolmentModule.sbRDSPAmount = "0";
       }
     },
     saveData() {
