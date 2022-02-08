@@ -214,7 +214,7 @@ class ApiService {
       ]);
     }
 
-    // FPC
+    // FPC.
     if (formState.isApplyingForFPCare) {
       const postalCode = formState.isMailSame && formState.resPostalCode ? stripSpaces(formState.resPostalCode) : stripSpaces(formState.mailPostalCode);
       const persons = [
@@ -262,6 +262,45 @@ class ApiService {
         deductibleAmount: null, // TODO.
         annualMaximumAmount: null, // TODO.
         copayPercentage: null
+      };
+    }
+
+    // SB.
+    if (formState.isApplyingForSuppBen) {
+      jsonPayload.supplementaryBenefits = {
+        uuid: formState.sbUuid,
+        "powerOfAttorney": "Y", // Can this be null?
+        "assistanceYear": "2019", // Is this the same as "taxYear"?
+        taxYear: formState.selectedNOAYear,
+        numberOfTaxYears: 1,
+        adjustedNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
+        childDeduction: parseInt(formState.childDeduction) || 0,
+        "deductions": parseInt(formState.sbTotalDeductions) || 0, // Is this the same as "totalDeductions"?
+        "disabilityDeduction": parseInt(formState.ahDisabilityCreditDeduction) || 0, // Does this include account holder and spouse?
+        sixtyFiveDeduction: parseInt(formState.ah65Deduction) || 0,
+        "totalDeductions": parseInt(formState.sbTotalDeductions) || 0, // Is this the same as "deductions"?
+        totalNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
+        childCareExpense: parseInt(formState.claimedChildCareExpenses) || 0,
+        "netIncomeLastYear": 70000, // Is this used for JHA?
+        "numChildren": 0,
+        numDisabled: parseInt(formState.numDisabilityChildren) || 0,
+        spouseIncomeLine236: parseInt(formState.spouseSBIncome) || 0,
+        reportedUCCBenefit: parseInt(formState.childDisabilityCreditDeduction) || 0,
+        spouseDSPAmount: parseInt(formState.spouseDisabilityCreditDeduction) || 0,
+        spouseDeduction: parseInt(formState.spouseDeduction) || 0,
+        applicantAttendantCareExpense: parseInt(formState.ahAttendantNursingDeduction) || 0,
+        spouseAttendantCareExpense: parseInt(formState.spouseAttendantNursingDeduction) || 0,
+        childAttendantCareExpense: parseInt(formState.childAttendantNursingDeduction) || 0,
+        spouseSixtyFiveDeduction: parseInt(formState.spouse65Deduction) || 0,
+        "attachments": [
+          {
+            "contentType": "IMAGE_JPEG",
+            "attachmentDocumentType": "SupportDocument",
+            "attachmentOrder": "1",
+            "description": "",
+            "attachmentUuid": "c1a8951a-3bbe-f31c-ba9d-7585691260ac"
+          }
+        ]
       };
     }
     // console.log('JSON Payload:', jsonPayload);
@@ -348,7 +387,7 @@ class ApiService {
       "Content-Type": "application/json",
       "Response-Type": "application/json",
       "X-Authorization": "Bearer " + token
-    }
+    };
   }
 
   _getAttachmentHeaders(token) {
@@ -356,8 +395,7 @@ class ApiService {
       "Content-Type": "image/jpeg",
       "Response-Type": "application/json",
       "X-Authorization": "Bearer " + token
-    }
-    
+    };
   }
 
   _createAttachmentDetails(attachments) {
