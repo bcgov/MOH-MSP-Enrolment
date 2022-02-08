@@ -547,8 +547,12 @@ export default {
         this.attendantNursingReceipts = [];
       }
 
-      if (this.$store.state.enrolmentModule.hasRDSP === "N") {
-        this.$store.state.enrolmentModule.sbRDSPAmount = "0";
+      if (this.hasRDSP === "N") {
+        this.sbRDSPAmount = "0";
+      }
+
+      if (this.hasSpouse === "N") {
+        this.spouseSBIncome = "0";
       }
     },
     saveData() {
