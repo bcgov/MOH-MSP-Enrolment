@@ -367,35 +367,29 @@ export default {
             value: formatDate(child.canadaArrivalDate),
           });
         // }
-        // if (child.movedFrom) {
-          childData.push({
-            label: 'Moved from province/country',
-            value: `${child.movedFrom}`,
-          });
-        // }
         childData.push({
           label: 'Name changed?',
-          value: child.isNameChanged,
+          value: child.isNameChanged === 'Y' ? 'Yes' : 'No',
         });
         childData.push({
-          label: 'Name Change document type',
+          label: 'Name change document type',
           value: child.nameChangeSupportDocumentType,
         });
         childData.push({
           label: 'Lived in BC since birth?',
-          value: `${child.livedInBCSinceBirth}`,
+          value: child.livedInBCSinceBirth === 'Y' ? 'Yes' : 'No',
         });
         childData.push({
           label: 'Location child moved from:',
-          value: `${child.moveFromOrigin}`,
+          value: child.moveFromOrigin,
         });
         childData.push({
           label: 'Most recent date child moved to BC:',
-          value: child.recentBCMoveDate,
+          value: formatDate(child.recentBCMoveDate),
         });
         childData.push({
           label: 'Date child arrived in Canada:',
-          value: child.canadaArrivalDate,
+          value: formatDate(child.canadaArrivalDate),
         });
         childData.push({
           label: 'Health number from previous residence:',
@@ -403,7 +397,7 @@ export default {
         });
         // if (child.outsideBCLast12Months === 'Y') {
           childData.push({
-            label: 'Outside B.C. for more than 30 days',
+            label: 'Outside B.C. for more than 30 days in the last year?',
             value: 'Yes',
           });
           childData.push({
@@ -425,7 +419,7 @@ export default {
         // }
         childData.push({
           label: 'Has previous BC Health number?',
-          value: child.hasPreviousBCHealthNumber,
+          value: child.hasPreviousBCHealthNumber === 'Y' ? 'Yes' : 'No',
         });
         childData.push({
           label: 'Previous BC Health number?',
@@ -433,11 +427,11 @@ export default {
         });
         childData.push({
           label: 'Has child been released from institution?',
-          value: child.hasBeenReleasedFromInstitution,
+          value: child.hasBeenReleasedFromInstitution === 'Y' ? 'Yes' : 'No',
         });
         childData.push({
           label: 'Discharge date:',
-          value: child.dischargeDate,
+          value: formatDate(child.dischargeDate),
         });
         const isFullTimeStudent = child.ageRange === ChildAgeTypes.Child19To24;
         console.log("(ignore me)",isFullTimeStudent); //this is temporary. it keeps the IDE happy while I comment out the next line
