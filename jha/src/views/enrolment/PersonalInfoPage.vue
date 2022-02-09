@@ -77,6 +77,23 @@
           v-if="$v.birthdate.$dirty
             && !$v.birthdate.birthdate16YearsValidator"
           aria-live="assertive">An applicant must be 16 years or older.</div>
+        <div v-if="requestPersonalHealthNumber">
+          <PhnInput label="Personal Health Number (PHN)"
+            id="personal-health-number"
+            class="mt-3"
+            placeholder="1111 111 111"
+            :inputStyle="smallStyles"
+            v-model="personalHealthNumber"
+            @blur="handleBlurField($v.personalHealthNumber)" />
+          <div class="text-danger"
+            v-if="$v.personalHealthNumber.$dirty
+              && !$v.personalHealthNumber.required"
+            aria-live="assertive">Personal Health Number is required.</div>
+          <div class="text-danger"
+            v-if="$v.personalHealthNumber.$dirty
+              && !$v.personalHealthNumber.phnValidator"
+            aria-live="assertive">Personal Health Number is invalid.</div>
+        </div>
         <div v-if="requestSocialInsuranceNumber">
           <SINInput label="Social Insurance Number (SIN)"
             id="social-insurance-number"
@@ -604,6 +621,7 @@ import {
   SET_AH_MIDDLE_NAME,
   SET_AH_LAST_NAME,
   SET_AH_BIRTHDATE,
+  SET_AH_PHN,
   SET_AH_SIN,
   SET_AH_GENDER,
   SET_AH_CITIZENSHIP_STATUS,
@@ -776,6 +794,7 @@ export default {
       middleName: null,
       lastName: null,
       birthdate: null,
+      personalHealthNumber: null,
       socialInsuranceNumber: null,
       gender: null,
       citizenshipStatus: null,
@@ -818,6 +837,7 @@ export default {
     this.middleName = this.$store.state.enrolmentModule.ahMiddleName;
     this.lastName = this.$store.state.enrolmentModule.ahLastName;
     this.birthdate = this.$store.state.enrolmentModule.ahBirthdate;
+    this.personalHealthNumber = this.$store.state.enrolmentModule.ahPHN;
     this.socialInsuranceNumber = this.$store.state.enrolmentModule.ahSIN;
     this.gender = this.$store.state.enrolmentModule.ahGender;
     this.citizenshipStatus = this.$store.state.enrolmentModule.ahCitizenshipStatus;
@@ -875,6 +895,7 @@ export default {
         distantPastValidator: optionalInvalidDateValidator(distantPastValidator),
         birthdate16YearsValidator: optionalInvalidDateValidator(birthdate16YearsValidator),
       },
+      personalHealthNumber: {},
       socialInsuranceNumber: {},
       gender: {
         required,
@@ -905,6 +926,12 @@ export default {
       isStudent: {},
       willStudentResideInBC: {},
     };
+
+    if (this.requestPersonalHealthNumber) {
+      validations.personalHealthNumber.required = required;
+      validations.personalHealthNumber.phnValidator = optionalValidator(phnValidator);
+    }
+
     if (this.requestSocialInsuranceNumber) {
       validations.socialInsuranceNumber.required = required;
       validations.socialInsuranceNumber.sinValidator = optionalValidator(sinValidator);
@@ -1007,6 +1034,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_MIDDLE_NAME}`, this.middleName);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_LAST_NAME}`, this.lastName);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_BIRTHDATE}`, this.birthdate);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_PHN}`, this.personalHealthNumber);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_SIN}`, this.socialInsuranceNumber);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_GENDER}`, this.gender);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_STATUS}`, this.citizenshipStatus);
@@ -1076,6 +1104,11 @@ export default {
   computed: {
     isInfoCollectionNoticeOpen() {
       return this.$store.state.enrolmentModule.isInfoCollectionNoticeOpen;
+    },
+    requestPersonalHealthNumber() {
+      return (this.$store.state.enrolmentModule.isApplyingForFPCare
+          || this.$store.state.enrolmentModule.isApplyingForSuppBen)
+          && !this.$store.state.enrolmentModule.isApplyingForMSP;
     },
     requestSocialInsuranceNumber() {
       return this.$store.state.enrolmentModule.isApplyingForFPCare
