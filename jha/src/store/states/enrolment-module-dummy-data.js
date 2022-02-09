@@ -64,6 +64,7 @@ export default {
   spouseMiddleName: null,
   spouseLastName: 'Herbert',
   spouseBirthDate: new Date('1990-04-03'),
+  spouseSIN: '999 999 998',
   spouseGender: 'F',
   spouseLivedInBCSinceBirth: 'Y',
   spouseMadePermanentMove: 'Y',

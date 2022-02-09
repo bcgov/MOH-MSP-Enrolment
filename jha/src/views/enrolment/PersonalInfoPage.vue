@@ -111,17 +111,19 @@
               && !$v.socialInsuranceNumber.sinValidator"
             aria-live="assertive">Social Insurance Number is invalid.</div>
         </div>
-        <Radio label="Gender"
-          id="gender"
-          name="gender"
-          class="mt-3"
-          v-model="gender"
-          :items="genderOptions"
-          @blur="handleBlurField($v.gender)" />
-        <div class="text-danger"
-          v-if="$v.gender.$dirty
-            && !$v.gender.required"
-          aria-live="assertive">Gender is required.</div>
+        <div v-if="requestGender">
+          <Radio label="Gender"
+            id="gender"
+            name="gender"
+            class="mt-3"
+            v-model="gender"
+            :items="genderOptions"
+            @blur="handleBlurField($v.gender)" />
+          <div class="text-danger"
+            v-if="$v.gender.$dirty
+              && !$v.gender.required"
+            aria-live="assertive">Gender is required.</div>
+        </div>
         
         <div v-if="requestImmigrationStatus">
           <h2 class="mt-4">Your status in Canada</h2>
@@ -897,9 +899,7 @@ export default {
       },
       personalHealthNumber: {},
       socialInsuranceNumber: {},
-      gender: {
-        required,
-      },
+      gender: {},
       citizenshipStatus: {},
       citizenshipStatusReason: {},
       citizenshipSupportDocumentType: {},
@@ -926,6 +926,10 @@ export default {
       isStudent: {},
       willStudentResideInBC: {},
     };
+
+    if (this.requestGender) {
+      validations.gender.required = required;
+    }
 
     if (this.requestPersonalHealthNumber) {
       validations.personalHealthNumber.required = required;
@@ -1105,10 +1109,11 @@ export default {
     isInfoCollectionNoticeOpen() {
       return this.$store.state.enrolmentModule.isInfoCollectionNoticeOpen;
     },
+    requestGender() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP
+    },
     requestPersonalHealthNumber() {
-      return (this.$store.state.enrolmentModule.isApplyingForFPCare
-          || this.$store.state.enrolmentModule.isApplyingForSuppBen)
-          && !this.$store.state.enrolmentModule.isApplyingForMSP;
+      return !this.$store.state.enrolmentModule.isApplyingForMSP;
     },
     requestSocialInsuranceNumber() {
       return this.$store.state.enrolmentModule.isApplyingForFPCare
