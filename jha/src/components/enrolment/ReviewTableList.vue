@@ -355,51 +355,49 @@ export default {
           label: 'Support Document Type',
           value: child.citizenshipSupportDocumentType,
         });
-        // if (child.arrivalToBCDate) {
+        if (child.recentBCMoveDate) {
           childData.push({
             label: 'Date arrived in B.C.',
             value: formatDate(child.recentBCMoveDate),
           });
-        // }
-        // if (child.arrivalToCanadaDate) {
+        }
+        if (child.canadaArrivalDate) {
           childData.push({
             label: 'Date arrived in Canada',
             value: formatDate(child.canadaArrivalDate),
           });
-        // }
+        }
         childData.push({
           label: 'Name changed?',
           value: child.isNameChanged === 'Y' ? 'Yes' : 'No',
         });
-        childData.push({
-          label: 'Name change document type',
-          value: child.nameChangeSupportDocumentType,
-        });
+        if(child.isNameChanged === 'Y') {
+            childData.push({
+            label: 'Name change document type',
+            value: child.nameChangeSupportDocumentType,
+          });
+        }        
         childData.push({
           label: 'Lived in BC since birth?',
           value: child.livedInBCSinceBirth === 'Y' ? 'Yes' : 'No',
         });
-        childData.push({
-          label: 'Location child moved from:',
-          value: child.moveFromOrigin,
-        });
-        childData.push({
-          label: 'Most recent date child moved to BC:',
-          value: formatDate(child.recentBCMoveDate),
-        });
-        childData.push({
-          label: 'Date child arrived in Canada:',
-          value: formatDate(child.canadaArrivalDate),
-        });
-        childData.push({
-          label: 'Health number from previous residence:',
-          value: child.previousHealthNumber,
-        });
-        // if (child.outsideBCLast12Months === 'Y') {
-          childData.push({
-            label: 'Outside B.C. for more than 30 days in the last year?',
-            value: 'Yes',
+        if (child.livedInBCSinceBirth !== 'Y') {
+            childData.push({
+            label: 'Location child moved from:',
+            value: child.moveFromOrigin,
           });
+          if (child.previousHealthNumber) {
+            childData.push({
+              label: 'Health number from previous residence:',
+              value: child.previousHealthNumber,
+            });
+          }
+        }
+        childData.push({
+          label: 'Outside B.C. for more than 30 days in the last year?',
+          value: child.outsideBCLast12Months === 'Y' ? 'Yes' : 'No',
+        });
+        if (child.outsideBCLast12Months === 'Y') {
           childData.push({
             label: 'Reason for leaving',
             value: child.outsideBCLast12MonthsReason,
@@ -416,30 +414,33 @@ export default {
             label: 'Return date',
             value: formatDate(child.outsideBCLast12MonthsReturnDate),
           });
-        // }
+        }
         childData.push({
           label: 'Has previous BC Health number?',
           value: child.hasPreviousBCHealthNumber === 'Y' ? 'Yes' : 'No',
         });
-        childData.push({
-          label: 'Previous BC Health number?',
-          value: child.previousBCHealthNumber,
-        });
+        if (child.hasPreviousBCHealthNumber === 'Y') {
+            childData.push({
+            label: 'Previous BC Health number?',
+            value: child.previousBCHealthNumber,
+          });
+        }        
         childData.push({
           label: 'Has child been released from institution?',
           value: child.hasBeenReleasedFromInstitution === 'Y' ? 'Yes' : 'No',
         });
-        childData.push({
+        if (child.hasBeenReleasedFromInstitution === 'Y') {
+          childData.push({
           label: 'Discharge date:',
           value: formatDate(child.dischargeDate),
         });
+        }        
         const isFullTimeStudent = child.ageRange === ChildAgeTypes.Child19To24;
-        console.log("(ignore me)",isFullTimeStudent); //this is temporary. it keeps the IDE happy while I comment out the next line
-        // if (isFullTimeStudent) {
-          childData.push({
-            label: 'Full-time student',
-            value: 'Yes',
-          });
+        childData.push({
+          label: 'Full-time student',
+          value: isFullTimeStudent ? 'Yes' : 'No',
+        });
+        if (isFullTimeStudent) {
           const willResideInBC = child.willResideInBCAfterStudies === 'Y';
           childData.push({
             label: 'Will you reside in BC upon completion of your studies',
@@ -479,18 +480,17 @@ export default {
           });
           childData.push({
             label: 'School departure date:',
-            value: child.schoolDepartureDate,
+            value: formatDate(child.schoolDepartureDate),
           });
           childData.push({
             label: 'Estimated school completion date:',
-            value: child.schoolCompletionDate,
+            value: formatDate(child.schoolCompletionDate),
           });
-        // }
+        }
         const documentCount = child.citizenshipSupportDocuments.length + child.nameChangeSupportDocuments.length;
-        const fileLabel = ' file' + documentCount > 1 ? 's' : '';
         childData.push({
           label: 'Documents',
-          value: documentCount + fileLabel,
+          value: `${documentCount} ${this.getFilePlural(documentCount)}`,
         });
         chldrnData.push(childData);
       }
