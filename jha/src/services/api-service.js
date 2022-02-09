@@ -275,14 +275,14 @@ class ApiService {
         numberOfTaxYears: 1,
         adjustedNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childDeduction: parseInt(formState.childDeduction) || 0,
-        "deductions": parseInt(formState.sbTotalDeductions) || 0, // Is this the same as "totalDeductions"?
+        "deductions": 0, // Is this the same as "totalDeductions"?
         "disabilityDeduction": parseInt(formState.ahDisabilityCreditDeduction) || 0, // Does this include account holder and spouse?
         sixtyFiveDeduction: parseInt(formState.ah65Deduction) || 0,
         "totalDeductions": parseInt(formState.sbTotalDeductions) || 0, // Is this the same as "deductions"?
         totalNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childCareExpense: parseInt(formState.claimedChildCareExpenses) || 0,
         "netIncomeLastYear": 70000, // Is this used for JHA?
-        "numChildren": 0,
+        numChildren: parseInt(formState.numChildren) || 0,
         numDisabled: parseInt(formState.numDisabilityChildren) || 0,
         spouseIncomeLine236: parseInt(formState.spouseSBIncome) || 0,
         reportedUCCBenefit: parseInt(formState.childDisabilityCreditDeduction) || 0,
@@ -292,15 +292,11 @@ class ApiService {
         spouseAttendantCareExpense: parseInt(formState.spouseAttendantNursingDeduction) || 0,
         childAttendantCareExpense: parseInt(formState.childAttendantNursingDeduction) || 0,
         spouseSixtyFiveDeduction: parseInt(formState.spouse65Deduction) || 0,
-        "attachments": [
-          {
-            "contentType": "IMAGE_JPEG",
-            "attachmentDocumentType": "SupportDocument",
-            "attachmentOrder": "1",
-            "description": "",
-            "attachmentUuid": "c1a8951a-3bbe-f31c-ba9d-7585691260ac"
-          }
-        ]
+        attachments: this._createAttachmentDetails([
+          ...formState.attendantNursingReceipts,
+          ...formState.ahCRADocuments,
+          ...formState.spouseCRADocuments,
+        ]),
       };
     }
     // console.log('JSON Payload:', jsonPayload);
@@ -332,7 +328,8 @@ class ApiService {
       }),
     ];
 
-    const fpcImages = [
+    const sbImages = [
+      ...formState.attendantNursingReceipts,
       ...formState.ahCRADocuments,
       ...formState.spouseCRADocuments,
     ];
@@ -342,7 +339,7 @@ class ApiService {
     mspImages.forEach((image) => {
       promises.push(this._sendAttachment(image, formState.mspUuid, formState.captchaToken));
     });
-    fpcImages.forEach((image) => {
+    sbImages.forEach((image) => {
       promises.push(this._sendAttachment(image, formState.fpcUuid, formState.captchaToken));
     });
     return Promise.all(promises);
