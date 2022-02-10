@@ -228,6 +228,9 @@ export default {
 
               this.isLoading = false;
 
+              if (response.data.exception === true) {
+                isSuccess = false;
+              }
               // MSP.
               if (response.data.msp) {
                 if (response.data.msp.returnCode !== '0') {
