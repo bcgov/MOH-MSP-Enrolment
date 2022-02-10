@@ -77,6 +77,23 @@
           v-if="$v.birthdate.$dirty
             && !$v.birthdate.birthdate16YearsValidator"
           aria-live="assertive">An applicant must be 16 years or older.</div>
+        <div v-if="requestPersonalHealthNumber">
+          <PhnInput label="Personal Health Number (PHN)"
+            id="personal-health-number"
+            class="mt-3"
+            placeholder="1111 111 111"
+            :inputStyle="smallStyles"
+            v-model="personalHealthNumber"
+            @blur="handleBlurField($v.personalHealthNumber)" />
+          <div class="text-danger"
+            v-if="$v.personalHealthNumber.$dirty
+              && !$v.personalHealthNumber.required"
+            aria-live="assertive">Personal Health Number is required.</div>
+          <div class="text-danger"
+            v-if="$v.personalHealthNumber.$dirty
+              && !$v.personalHealthNumber.phnValidator"
+            aria-live="assertive">Personal Health Number is invalid.</div>
+        </div>
         <div v-if="requestSocialInsuranceNumber">
           <SINInput label="Social Insurance Number (SIN)"
             id="social-insurance-number"
@@ -94,17 +111,19 @@
               && !$v.socialInsuranceNumber.sinValidator"
             aria-live="assertive">Social Insurance Number is invalid.</div>
         </div>
-        <Radio label="Gender"
-          id="gender"
-          name="gender"
-          class="mt-3"
-          v-model="gender"
-          :items="genderOptions"
-          @blur="handleBlurField($v.gender)" />
-        <div class="text-danger"
-          v-if="$v.gender.$dirty
-            && !$v.gender.required"
-          aria-live="assertive">Gender is required.</div>
+        <div v-if="requestGender">
+          <Radio label="Gender"
+            id="gender"
+            name="gender"
+            class="mt-3"
+            v-model="gender"
+            :items="genderOptions"
+            @blur="handleBlurField($v.gender)" />
+          <div class="text-danger"
+            v-if="$v.gender.$dirty
+              && !$v.gender.required"
+            aria-live="assertive">Gender is required.</div>
+        </div>
         
         <div v-if="requestImmigrationStatus">
           <h2 class="mt-4">Your status in Canada</h2>
@@ -112,6 +131,8 @@
           <hr/>
           <Select label="Immigration status in Canada"
             id="immigration-status"
+            defaultOptionLabel="Please select"
+            :disablePlaceholder="true"
             v-model="citizenshipStatus"
             :options="citizenshipStatusOptions"
             :inputStyle="mediumStyles"
@@ -151,6 +172,8 @@
           <hr/>
           <Select label="Document Type"
             id="citizen-support-document-type"
+            defaultOptionLabel="Please select"
+            :disablePlaceholder="true"
             v-model="citizenshipSupportDocumentType"
             :options="citizenshipSupportDocumentsOptions"
             :inputStyle="mediumStyles"
@@ -206,6 +229,8 @@
           <hr/>
           <Select label="Document Type"
             id="name-change-doc-type"
+            defaultOptionLabel="Please select"
+            :disablePlaceholder="true"
             class="mt-3"
             v-model="nameChangeSupportDocumentType"
             :options="nameChangeSupportDocumentOptions"
@@ -604,6 +629,7 @@ import {
   SET_AH_MIDDLE_NAME,
   SET_AH_LAST_NAME,
   SET_AH_BIRTHDATE,
+  SET_AH_PHN,
   SET_AH_SIN,
   SET_AH_GENDER,
   SET_AH_CITIZENSHIP_STATUS,
@@ -776,6 +802,7 @@ export default {
       middleName: null,
       lastName: null,
       birthdate: null,
+      personalHealthNumber: null,
       socialInsuranceNumber: null,
       gender: null,
       citizenshipStatus: null,
@@ -818,6 +845,7 @@ export default {
     this.middleName = this.$store.state.enrolmentModule.ahMiddleName;
     this.lastName = this.$store.state.enrolmentModule.ahLastName;
     this.birthdate = this.$store.state.enrolmentModule.ahBirthdate;
+    this.personalHealthNumber = this.$store.state.enrolmentModule.ahPHN;
     this.socialInsuranceNumber = this.$store.state.enrolmentModule.ahSIN;
     this.gender = this.$store.state.enrolmentModule.ahGender;
     this.citizenshipStatus = this.$store.state.enrolmentModule.ahCitizenshipStatus;
@@ -875,10 +903,9 @@ export default {
         distantPastValidator: optionalInvalidDateValidator(distantPastValidator),
         birthdate16YearsValidator: optionalInvalidDateValidator(birthdate16YearsValidator),
       },
+      personalHealthNumber: {},
       socialInsuranceNumber: {},
-      gender: {
-        required,
-      },
+      gender: {},
       citizenshipStatus: {},
       citizenshipStatusReason: {},
       citizenshipSupportDocumentType: {},
@@ -905,6 +932,16 @@ export default {
       isStudent: {},
       willStudentResideInBC: {},
     };
+
+    if (this.requestGender) {
+      validations.gender.required = required;
+    }
+
+    if (this.requestPersonalHealthNumber) {
+      validations.personalHealthNumber.required = required;
+      validations.personalHealthNumber.phnValidator = optionalValidator(phnValidator);
+    }
+
     if (this.requestSocialInsuranceNumber) {
       validations.socialInsuranceNumber.required = required;
       validations.socialInsuranceNumber.sinValidator = optionalValidator(sinValidator);
@@ -1007,6 +1044,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_MIDDLE_NAME}`, this.middleName);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_LAST_NAME}`, this.lastName);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_BIRTHDATE}`, this.birthdate);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_PHN}`, this.personalHealthNumber);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_SIN}`, this.socialInsuranceNumber);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_GENDER}`, this.gender);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_STATUS}`, this.citizenshipStatus);
@@ -1076,6 +1114,12 @@ export default {
   computed: {
     isInfoCollectionNoticeOpen() {
       return this.$store.state.enrolmentModule.isInfoCollectionNoticeOpen;
+    },
+    requestGender() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP
+    },
+    requestPersonalHealthNumber() {
+      return !this.$store.state.enrolmentModule.isApplyingForMSP;
     },
     requestSocialInsuranceNumber() {
       return this.$store.state.enrolmentModule.isApplyingForFPCare

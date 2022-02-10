@@ -5,6 +5,7 @@ import {
   stripSpaces,
 } from 'common-lib-vue';
 import { ChildAgeTypes } from '@/constants/child-age-types';
+import { getCitizenshipType } from '@/constants/immigration-status-types';
 
 const BASE_API_PATH = '/ahdc/api';
 const SUBMIT_APPLICATION_URL = `${BASE_API_PATH}/jhaIntegration/application`;
@@ -13,6 +14,10 @@ const SUBMIT_ATTACHMENT_URL = `${BASE_API_PATH}/submit-attachment`;
 class ApiService {
   sendApplication(formState) {
     const headers = this._getHeaders(formState.captchaToken);
+    const dateToday = new Date();
+    const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
+    const dependents = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child19To24);
+    
     const jsonPayload = {
       uuid: formState.applicationUuid,
       firstName: formState.ahFirstName || null,
@@ -30,12 +35,13 @@ class ApiService {
       postalCode: formState.resPostalCode || null,
       provinceOrState: formState.resProvince || null,
       country: formState.resCountry || '',
-      authorizedByApplicant: null, // TODO.
-      authorizedByApplicantDate: null, // TODO.
-      authorizedBySpouse: null, // TODO.
-      spouse: null,
+      authorizedByApplicant: 'Y',
+      authorizedByApplicantDate: formatISODate(dateToday),
+      authorizedBySpouse: null, // Set below.
+      spouse: null, // Set below.
     };
     if (formState.hasSpouse === 'Y') {
+      jsonPayload.authorizedBySpouse = 'Y';
       jsonPayload.spouse = {
         firstName: formState.spouseFirstName || null,
         secondName: formState.spouseMiddleName || null,
@@ -46,14 +52,13 @@ class ApiService {
         sin: stripSpaces(formState.spouseSIN) || null,
         phn: stripSpaces(formState.spousePHN) || null,
       };
+    } else {
+      jsonPayload.authorizedBySpouse = 'N';
     }
     if (formState.isApplyingForMSP) {
-      const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
-      const dependents = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child19To24);
-
       jsonPayload.medicalServicesPlan = {
         uuid: formState.mspUuid || null,
-        citizenshipType: formState.ahCitizenshipStatus || null,
+        citizenshipType: getCitizenshipType(formState.ahCitizenshipStatus, formState.ahCitizenshipStatusReason) || null,
         attachmentUuids: formState.ahNameChangeSupportDocuments.map((image) => image.uuid),
         residencyAttachmentUuids: formState.ahCitizenshipSupportDocuments.map((image) => image.uuid),
         hasPreviousCoverage: formState.ahHasPreviousPHN || null,
@@ -75,7 +80,7 @@ class ApiService {
       };
       if (formState.hasSpouse === 'Y') {
         jsonPayload.medicalServicesPlan.spouse = {
-          citizenshipType: formState.spouseStatus || null,
+          citizenshipType: getCitizenshipType(formState.spouseStatus, formState.spouseStatusReason) || null,
           attachmentUuids: formState.spouseNameChangeSupportDocuments.map((image) => image.uuid),
           residencyAttachmentUuids: formState.spouseCitizenshipSupportDocuments.map((image) => image.uuid),
           hasPreviousCoverage: formState.spouseHasPreviousBCHealthNumber || null,
@@ -107,7 +112,7 @@ class ApiService {
               lastName: child.lastName || null,
               gender: child.gender || null,
               birthDate: formatISODate(child.birthDate) || null,
-              citizenshipType: child.status || null,
+              citizenshipType: getCitizenshipType(child.status, child.statusReason) || null,
               attachmentUuids: child.nameChangeSupportDocuments.map((image) => image.uuid),
               residencyAttachmentUuids: child.citizenshipSupportDocuments.map((image) => image.uuid),
               hasPreviousCoverage: child.hasPreviousBCHealthNumber || null,
@@ -207,6 +212,57 @@ class ApiService {
           ];
         }),
       ]);
+    }
+
+    // FPC
+    if (formState.isApplyingForFPCare) {
+      const postalCode = formState.isMailSame && formState.resPostalCode ? stripSpaces(formState.resPostalCode) : stripSpaces(formState.mailPostalCode);
+      const persons = [
+        {
+          givenName: formState.ahFirstName,
+          surname: formState.ahLastName,
+          postalCode: postalCode,
+          perType: '0', // 0 is applicant, 1 is spouse, 2 is children only.
+          dateOfBirth: formatISODate(formState.ahBirthdate),
+          phn: stripSpaces(formState.ahPHN) || null,
+        }
+      ];
+      if (formState.hasSpouse) {
+        persons.push({
+          givenName: formState.spouseFirstName,
+          surname: formState.spouseLastName,
+          postalCode: postalCode,
+          perType: '1', // 0 is applicant, 1 is spouse, 2 is children only.
+          dateOfBirth: formatISODate(formState.spouseBirthDate),
+          phn: stripSpaces(formState.spousePHN) || null,
+        });
+      }
+      children.forEach((child) => {
+        persons.push({
+          givenName: child.firstName,
+          surname: child.lastName,
+          postalCode: postalCode,
+          perType: '2', // 0 is applicant, 1 is spouse, 2 is children only.
+          dateOfBirth: formatISODate(child.birthDate),
+          phn: stripSpaces(child.phn) || null,
+        });
+      });
+      
+      jsonPayload.fairPharmaCare = {
+        uuid: formState.fpcUuid,
+        clientName: null,
+        processDate: formatISODate(dateToday),
+        accountHolderNetIncome: formState.ahFPCIncome,
+        accountHolderRDSP: formState.ahFPCRDSP,
+        spouseNetIncome: formState.ahFPCIncome,
+        spouseRDSP: formState.ahFPCRDSP,
+        spousePostalCode: postalCode,
+        persons, // Contains account holder, spouse, and children.
+        familyNumber: null,
+        deductibleAmount: null, // TODO.
+        annualMaximumAmount: null, // TODO.
+        copayPercentage: null
+      };
     }
     // console.log('JSON Payload:', jsonPayload);
     const jhaApplicationUuid = formState.applicationUuid;
@@ -310,7 +366,7 @@ class ApiService {
     for (let i=0; i<attachments.length; i++) {
       results.push({
         contentType: attachments[i].contentType,
-        attachmentDocumentType: attachments[i].documentType || null,
+        attachmentDocumentType: 'SupportDocument',
         attachmentUuid: attachments[i].uuid,
         attachmentOrder: `${i + 1}`,
         description: attachments[i].description || null,
