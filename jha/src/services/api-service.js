@@ -275,13 +275,13 @@ class ApiService {
         numberOfTaxYears: 1, // This should always be 1? Possibly 2.
         adjustedNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childDeduction: parseInt(formState.childDeduction) || 0,
-        "deductions": 0, // Is this the same as "totalDeductions"?
-        "disabilityDeduction": parseInt(formState.ahDisabilityCreditDeduction) || 0, // Does this include account holder and spouse?
+        deductions: 0, // Is this the same as "totalDeductions"?
+        disabilityDeduction: parseInt(formState.ahDisabilityCreditDeduction) || 0, // Does this include account holder and spouse?
         sixtyFiveDeduction: parseInt(formState.ah65Deduction) || 0,
-        "totalDeductions": parseInt(formState.sbTotalDeductions) || 0, // Is this the same as "deductions"?
+        totalDeductions: parseInt(formState.sbTotalDeductions) || 0, // Is this the same as "deductions"?
         totalNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childCareExpense: parseInt(formState.claimedChildCareExpenses) || 0,
-        "netIncomeLastYear": 70000, // Is this used for JHA? Fallback to 0.
+        netIncomeLastYear: 70000, // Is this used for JHA? Fallback to 0.
         numChildren: parseInt(formState.numChildren) || 0,
         numDisabled: parseInt(formState.numDisabilityChildren) || 0,
         spouseIncomeLine236: parseInt(formState.spouseSBIncome) || 0,
