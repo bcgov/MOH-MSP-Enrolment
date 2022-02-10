@@ -32,7 +32,7 @@ class ApiService {
       addressLine2: formState.resAddressLine2 || null,
       addressLine3: formState.resAddressLine3 || null,
       city: formState.resCity || null,
-      postalCode: formState.resPostalCode || null,
+      postalCode: stripSpaces(formState.resPostalCode) || null,
       provinceOrState: formState.resProvince || null,
       country: formState.resCountry || '',
       authorizedByApplicant: 'Y',
@@ -59,8 +59,10 @@ class ApiService {
       jsonPayload.medicalServicesPlan = {
         uuid: formState.mspUuid || null,
         citizenshipType: getCitizenshipType(formState.ahCitizenshipStatus, formState.ahCitizenshipStatusReason) || null,
-        attachmentUuids: formState.ahNameChangeSupportDocuments.map((image) => image.uuid),
-        residencyAttachmentUuids: formState.ahCitizenshipSupportDocuments.map((image) => image.uuid),
+        attachmentUuids: [
+          ...formState.ahNameChangeSupportDocuments.map((image) => image.uuid),
+          ...formState.ahCitizenshipSupportDocuments.map((image) => image.uuid)
+        ],
         hasPreviousCoverage: formState.ahHasPreviousPHN || null,
         prevPHN: formState.ahPreviousPHN || null,
         hasLivedInBC: formState.ahHasLivedInBCSinceBirth || null,
@@ -81,8 +83,10 @@ class ApiService {
       if (formState.hasSpouse === 'Y') {
         jsonPayload.medicalServicesPlan.spouse = {
           citizenshipType: getCitizenshipType(formState.spouseStatus, formState.spouseStatusReason) || null,
-          attachmentUuids: formState.spouseNameChangeSupportDocuments.map((image) => image.uuid),
-          residencyAttachmentUuids: formState.spouseCitizenshipSupportDocuments.map((image) => image.uuid),
+          attachmentUuids: [
+            ...formState.spouseNameChangeSupportDocuments.map((image) => image.uuid),
+            ...formState.spouseCitizenshipSupportDocuments.map((image) => image.uuid)
+          ],
           hasPreviousCoverage: formState.spouseHasPreviousBCHealthNumber || null,
           prevPHN: stripSpaces(formState.spousePreviousBCHealthNumber) || null,
           hasLivedInBC: formState.spouseLivedInBCSinceBirth || null,
@@ -113,8 +117,10 @@ class ApiService {
               gender: child.gender || null,
               birthDate: formatISODate(child.birthDate) || null,
               citizenshipType: getCitizenshipType(child.status, child.statusReason) || null,
-              attachmentUuids: child.nameChangeSupportDocuments.map((image) => image.uuid),
-              residencyAttachmentUuids: child.citizenshipSupportDocuments.map((image) => image.uuid),
+              attachmentUuids: [
+                ...child.nameChangeSupportDocuments.map((image) => image.uuid),
+                ...child.citizenshipSupportDocuments.map((image) => image.uuid)
+              ],
               hasPreviousCoverage: child.hasPreviousBCHealthNumber || null,
               prevPHN: stripSpaces(child.previousBCHealthNumber) || null,
               hasLivedInBC: child.livedInBCSinceBirth || null,
@@ -157,8 +163,10 @@ class ApiService {
                 country: dependent.schoolCountry || null,
               },
               citizenshipType: dependent.status || null,
-              attachmentUuids: dependent.nameChangeSupportDocuments.map((image) => image.uuid),
-              residencyAttachmentUuids: dependent.citizenshipSupportDocuments.map((image) => image.uuid),
+              attachmentUuids: [
+                ...dependent.nameChangeSupportDocuments.map((image) => image.uuid),
+                ...dependent.citizenshipSupportDocuments.map((image) => image.uuid)
+              ],
               hasPreviousCoverage: dependent.hasPreviousBCHealthNumber || null,
               prevPHN: stripSpaces(dependent.previousBCHealthNumber) || null,
               hasLivedInBC: dependent.livedInBCSinceBirth || null,
@@ -193,50 +201,42 @@ class ApiService {
         };
       }
 
-
-      jsonPayload.medicalServicesPlan.attachments = this._createAttachmentDetails([
+      let documents = [
         ...formState.ahCitizenshipSupportDocuments,
-        ...formState.ahNameChangeSupportDocuments,
-        ...formState.spouseCitizenshipSupportDocuments,
-        ...formState.spouseNameChangeSupportDocuments,
-        ...children.flatMap((child) => {
-          return [
-            ...child.citizenshipSupportDocuments,
-            ...child.nameChangeSupportDocuments,
-          ];
-        }),
-        ...dependents.flatMap((dependent) => {
-          return [
-            ...dependent.citizenshipSupportDocuments,
-            ...dependent.nameChangeSupportDocuments,
-          ];
-        }),
-      ]);
+        ...formState.ahNameChangeSupportDocuments
+      ];
+      if (formState.hasSpouse === 'Y') {
+        documents = [
+          ...documents,
+          ...formState.spouseCitizenshipSupportDocuments,
+          ...formState.spouseNameChangeSupportDocuments,
+        ];
+      }
+      if (formState.hasChildren === 'Y') {
+        documents = [
+          ...documents,
+          ...children.flatMap((child) => {
+            return [
+              ...child.citizenshipSupportDocuments,
+              ...child.nameChangeSupportDocuments,
+            ];
+          }),
+          ...dependents.flatMap((dependent) => {
+            return [
+              ...dependent.citizenshipSupportDocuments,
+              ...dependent.nameChangeSupportDocuments,
+            ];
+          }),
+        ];
+      }
+
+      jsonPayload.medicalServicesPlan.attachments = this._createAttachmentDetails(documents);
     }
 
     // FPC.
     if (formState.isApplyingForFPCare) {
       const postalCode = formState.isMailSame && formState.resPostalCode ? stripSpaces(formState.resPostalCode) : stripSpaces(formState.mailPostalCode);
-      const persons = [
-        {
-          givenName: formState.ahFirstName,
-          surname: formState.ahLastName,
-          postalCode: postalCode,
-          perType: '0', // 0 is applicant, 1 is spouse, 2 is children only.
-          dateOfBirth: formatISODate(formState.ahBirthdate),
-          phn: stripSpaces(formState.ahPHN) || null,
-        }
-      ];
-      if (formState.hasSpouse) {
-        persons.push({
-          givenName: formState.spouseFirstName,
-          surname: formState.spouseLastName,
-          postalCode: postalCode,
-          perType: '1', // 0 is applicant, 1 is spouse, 2 is children only.
-          dateOfBirth: formatISODate(formState.spouseBirthDate),
-          phn: stripSpaces(formState.spousePHN) || null,
-        });
-      }
+      const persons = [];
       children.forEach((child) => {
         persons.push({
           givenName: child.firstName,
@@ -269,10 +269,10 @@ class ApiService {
     if (formState.isApplyingForSuppBen) {
       jsonPayload.supplementaryBenefits = {
         uuid: formState.sbUuid,
-        "powerOfAttorney": "Y", // Can this be null?
-        "assistanceYear": "2019", // Is this the same as "taxYear"?
+        powerOfAttorney: 'N',
+        assistanceYear: `${new Date().getFullYear()}`, // Should this always be the current year?
         taxYear: formState.selectedNOAYear,
-        numberOfTaxYears: 1,
+        numberOfTaxYears: 1, // This should always be 1? Possibly 2.
         adjustedNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childDeduction: parseInt(formState.childDeduction) || 0,
         "deductions": 0, // Is this the same as "totalDeductions"?
@@ -281,7 +281,7 @@ class ApiService {
         "totalDeductions": parseInt(formState.sbTotalDeductions) || 0, // Is this the same as "deductions"?
         totalNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childCareExpense: parseInt(formState.claimedChildCareExpenses) || 0,
-        "netIncomeLastYear": 70000, // Is this used for JHA?
+        "netIncomeLastYear": 70000, // Is this used for JHA? Fallback to 0.
         numChildren: parseInt(formState.numChildren) || 0,
         numDisabled: parseInt(formState.numDisabilityChildren) || 0,
         spouseIncomeLine236: parseInt(formState.spouseSBIncome) || 0,
@@ -309,24 +309,34 @@ class ApiService {
     const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
     const dependents = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child19To24);
 
-    const mspImages = [
+    let mspImages = [
       ...formState.ahCitizenshipSupportDocuments,
-      ...formState.ahNameChangeSupportDocuments,
-      ...formState.spouseCitizenshipSupportDocuments,
-      ...formState.spouseNameChangeSupportDocuments,
-      ...children.flatMap((child) => {
-        return [
-          ...child.citizenshipSupportDocuments,
-          ...child.nameChangeSupportDocuments,
-        ];
-      }),
-      ...dependents.flatMap((dependent) => {
-        return [
-          ...dependent.citizenshipSupportDocuments,
-          ...dependent.nameChangeSupportDocuments,
-        ];
-      }),
+      ...formState.ahNameChangeSupportDocuments
     ];
+    if (formState.hasSpouse === 'Y') {
+      mspImages = [
+        ...mspImages,
+        ...formState.spouseCitizenshipSupportDocuments,
+        ...formState.spouseNameChangeSupportDocuments,
+      ];
+    }
+    if (formState.hasChildren === 'Y') {
+      mspImages = [
+        ...mspImages,
+        ...children.flatMap((child) => {
+          return [
+            ...child.citizenshipSupportDocuments,
+            ...child.nameChangeSupportDocuments,
+          ];
+        }),
+        ...dependents.flatMap((dependent) => {
+          return [
+            ...dependent.citizenshipSupportDocuments,
+            ...dependent.nameChangeSupportDocuments,
+          ];
+        }),
+      ];
+    }
 
     const sbImages = [
       ...formState.attendantNursingReceipts,
@@ -336,12 +346,16 @@ class ApiService {
     
     // Send attachments.
     const promises = [];
-    mspImages.forEach((image) => {
-      promises.push(this._sendAttachment(image, formState.mspUuid, formState.captchaToken));
-    });
-    sbImages.forEach((image) => {
-      promises.push(this._sendAttachment(image, formState.fpcUuid, formState.captchaToken));
-    });
+    if (formState.isApplyingForMSP) {
+      mspImages.forEach((image) => {
+        promises.push(this._sendAttachment(image, formState.mspUuid, formState.captchaToken));
+      });
+    }
+    if (formState.isApplyingForSuppBen) {
+      sbImages.forEach((image) => {
+        promises.push(this._sendAttachment(image, formState.fpcUuid, formState.captchaToken));
+      });
+    }
     return Promise.all(promises);
   }
 
