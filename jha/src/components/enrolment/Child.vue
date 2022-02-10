@@ -1536,7 +1536,7 @@ export default {
     },
     schoolCountry(newVal, oldVal) {
       // If they switch countries, make them reselect province / state
-      if (newVal !== oldVal) {
+      if (this.pageLoaded && newVal !== oldVal) {
         this.schoolProvinceOrState = null;
       }
 
