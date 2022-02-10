@@ -1,222 +1,239 @@
 <template>
     <div>
+      <div v-if="requestAgeRange">
         <Radio
-            label='How old is the child?'
-            :id="'child-age-range-' + index"
-            :name="'child-age-range-' + index"
-            v-model='ageRange'
-            @blur="handleBlurField($v.ageRange)"
-            className="mt-3"
-            :items='radioChildAgeOptions'
+          label='How old is the child?'
+          :id="'child-age-range-' + index"
+          :name="'child-age-range-' + index"
+          v-model='ageRange'
+          @blur="handleBlurField($v.ageRange)"
+          className="mt-3"
+          :items='radioChildAgeOptions'
         />
         <div class="text-danger"
-            v-if="$v.ageRange.$dirty && !$v.ageRange.required"
-            aria-live="assertive">Please indicate the child's age range.</div>
-        <Input label='First name'
-            :id="'child-first-name-' + index"
-            className='mt-3'
-            maxlength="30"
-            @blur="handleBlurField($v.firstName)"
-            v-model='firstName'
-            :inputStyle='mediumStyles' />
+          v-if="$v.ageRange.$dirty && !$v.ageRange.required"
+          aria-live="assertive">Please indicate the child's age range.</div>
+      </div>
+      <Input label='First name'
+        :id="'child-first-name-' + index"
+        className='mt-3'
+        maxlength="30"
+        @blur="handleBlurField($v.firstName)"
+        v-model='firstName'
+        :inputStyle='mediumStyles' />
+      <div class="text-danger"
+        v-if="$v.firstName.$dirty && !$v.firstName.required"
+        aria-live="assertive">First name is required.</div>
+      <div class="text-danger"
+        v-if="$v.firstName.$dirty && $v.firstName.required && !$v.firstName.nameValidator"
+        aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+      <Input label='Middle name (optional)'
+        :id="'child-middle-name-' + index"
+        className='mt-3'
+        maxlength="30"
+        @blur="handleBlurField($v.middleName)"
+        v-model='middleName'
+        :inputStyle='mediumStyles' />
+      <div class="text-danger"
+        v-if="$v.middleName.$dirty && !$v.middleName.nameValidator"
+        aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+      <Input label='Last name'
+        :id="'child-last-name-' + index"
+        className='mt-3'
+        maxlength="30"
+        @blur="handleBlurField($v.lastName)"
+        v-model='lastName'
+        :inputStyle='mediumStyles' />
+      <div class="text-danger"
+        v-if="$v.lastName.$dirty && !$v.lastName.required"
+        aria-live="assertive">Last name is required.</div>
+      <div class="text-danger"
+        v-if="$v.lastName.$dirty && $v.lastName.required && !$v.lastName.nameValidator"
+        aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+      <DateInput label='Birthdate'
+        :id="'child-birth-date-' + index"
+        className='mt-3'
+        @blur="handleBlurField($v.birthDate)"
+        @processDate="handleProcessBirthdate($event)"
+        v-model='birthDate' />
+      <div class="text-danger"
+        v-if="$v.birthDate.$dirty && !$v.birthDate.required"
+        aria-live="assertive">Birthate is required.</div>
+      <div class="text-danger"
+        v-if="$v.birthDate.$dirty && !$v.birthDate.dateDataValidator"
+        aria-live="assertive">Invalid birthdate.</div>
+      <div class="text-danger"
+        v-if="$v.birthDate.$dirty && !$v.birthDate.distantPastValidator"
+        aria-live="assertive">Invalid birthdate.</div>
+      <div class="text-danger"
+        v-if="$v.birthDate.$dirty
+          && $v.birthDate.required
+          && !$v.birthDate.birthDatePastValidator"
+        aria-live="assertive">Birthdate cannot be in the future.</div>
+      <div class="text-danger"
+        v-if="$v.birthDate.$dirty
+          && $v.birthDate.required
+          && $v.birthDate.birthDatePastValidator
+          && !$v.birthDate.birthDateYouthValidator"
+        aria-live="assertive">A child must be less than 19 years old.</div>
+      <div class="text-danger"
+        v-if="$v.birthDate.$dirty
+          && $v.birthDate.required
+          && $v.birthDate.birthDatePastValidator
+          && !$v.birthDate.birthDateStudentValidator"
+        aria-live="assertive">A post-secondary student must be between 19 and 24 years.</div>
+      <div v-if="requestPersonalHealthNumber">
+        <PhnInput label="Personal Health Number (PHN)"
+          :id="'personal-health-number-' + index"
+          class="mt-3"
+          placeholder="1111 111 111"
+          :inputStyle="smallStyles"
+          v-model="personalHealthNumber"
+          @blur="handleBlurField($v.personalHealthNumber)" />
         <div class="text-danger"
-            v-if="$v.firstName.$dirty && !$v.firstName.required"
-            aria-live="assertive">First name is required.</div>
+          v-if="$v.personalHealthNumber.$dirty && !$v.personalHealthNumber.required"
+          aria-live="assertive">Personal Health Number is required.</div>
         <div class="text-danger"
-            v-if="$v.firstName.$dirty && $v.firstName.required && !$v.firstName.nameValidator"
-            aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-        <Input label='Middle name (optional)'
-            :id="'child-middle-name-' + index"
-            className='mt-3'
-            maxlength="30"
-            @blur="handleBlurField($v.middleName)"
-            v-model='middleName'
-            :inputStyle='mediumStyles' />
-        <div class="text-danger"
-            v-if="$v.middleName.$dirty && !$v.middleName.nameValidator"
-            aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-        <Input label='Last name'
-            :id="'child-last-name-' + index"
-            className='mt-3'
-            maxlength="30"
-            @blur="handleBlurField($v.lastName)"
-            v-model='lastName'
-            :inputStyle='mediumStyles' />
-        <div class="text-danger"
-            v-if="$v.lastName.$dirty && !$v.lastName.required"
-            aria-live="assertive">Last name is required.</div>
-        <div class="text-danger"
-            v-if="$v.lastName.$dirty && $v.lastName.required && !$v.lastName.nameValidator"
-            aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-        <DateInput label='Birthdate'
-            :id="'child-birth-date-' + index"
-            className='mt-3'
-            @blur="handleBlurField($v.birthDate)"
-            @processDate="handleProcessBirthdate($event)"
-            v-model='birthDate' />
-        <div class="text-danger"
-            v-if="$v.birthDate.$dirty && !$v.birthDate.required"
-            aria-live="assertive">Birthate is required.</div>
-        <div class="text-danger"
-            v-if="$v.birthDate.$dirty
-            && !$v.birthDate.dateDataValidator"
-            aria-live="assertive">Invalid birthdate.</div>
-        <div class="text-danger"
-            v-if="$v.birthDate.$dirty
-            && !$v.birthDate.distantPastValidator"
-            aria-live="assertive">Invalid birthdate.</div>
-        <div class="text-danger"
-            v-if="$v.birthDate.$dirty
-                && $v.birthDate.required
-                && !$v.birthDate.birthDatePastValidator"
-            aria-live="assertive">Birthdate cannot be in the future.</div>
-        <div class="text-danger"
-            v-if="$v.birthDate.$dirty
-                && $v.birthDate.required
-                && $v.birthDate.birthDatePastValidator
-                && !$v.birthDate.birthDateYouthValidator"
-            aria-live="assertive">A child must be less than 19 years old.</div>
-        <div class="text-danger"
-            v-if="$v.birthDate.$dirty
-                && $v.birthDate.required
-                && $v.birthDate.birthDatePastValidator
-                && !$v.birthDate.birthDateStudentValidator"
-            aria-live="assertive">A post-secondary student must be between 19 and 24 years.</div>
+          v-if="$v.personalHealthNumber.$dirty && !$v.personalHealthNumber.phnValidator"
+          aria-live="assertive">Personal Health Number is invalid.</div>
+      </div>
+      <div v-if="requestGender">
         <Radio
-            label='Gender'
-            :id="'child-gender-' + index"
-            :name="'child-gender-' + index"
-            v-model='gender'
-            className="mt-3"
-            @blur="handleBlurField($v.gender)"
-            :items='radioGenderOptions'/>
+          label='Gender'
+          :id="'child-gender-' + index"
+          :name="'child-gender-' + index"
+          v-model='gender'
+          className="mt-3"
+          @blur="handleBlurField($v.gender)"
+          :items='radioGenderOptions'/>
         <div class="text-danger"
-            v-if="$v.gender.$dirty && !$v.gender.required"
-            aria-live="assertive">Please indicate the child's gender.</div>
+          v-if="$v.gender.$dirty && !$v.gender.required"
+          aria-live="assertive">Please indicate the child's gender.</div>
+      </div>
+      <div v-if="requestImmigrationStatus">
         <h2 class="mt-3">Child's status in Canada</h2>
         <p>Please provide child immigration status information. You will be required to upload documents to support your status in Canada.</p>
         <hr />
         <Select 
-            :id="'child-status-' + index"
-            :name="'child-status-' + index"
-            label="Immigration status in Canada"
-            class='mt-3'
-            defaultOptionLabel="Please select"
-            :disablePlaceholder="true"
-            @blur="handleBlurField($v.status)"
-            v-model='status'
-            :options='citizenshipStatusOptions'
-            :inputStyle='mediumStyles'/>
+          :id="'child-status-' + index"
+          :name="'child-status-' + index"
+          label="Immigration status in Canada"
+          class='mt-3'
+          defaultOptionLabel="Please select"
+          :disablePlaceholder="true"
+          @blur="handleBlurField($v.status)"
+          v-model='status'
+          :options='citizenshipStatusOptions'
+          :inputStyle='mediumStyles'/>
         <div class="text-danger"
-            v-if="$v.status.$dirty && !$v.status.required"
-            aria-live="assertive">Please select the child's immigration status.</div>
+          v-if="$v.status.$dirty && !$v.status.required"
+          aria-live="assertive">Please select the child's immigration status.</div>
         <div v-if="status === statusOptions.Citizen || status === statusOptions.PermanentResident">
-            <Radio
-              :id="'child-status-reason-' + index"
-              :name="'child-status-reason-' + index"
-              label=''
-              v-model='statusReason'
-              @blur="handleBlurField($v.statusReason)"
-              :items='citizenshipStatusReasonOptions' />
-            <div class="text-danger"
-              v-if="$v.statusReason.$dirty && !$v.statusReason.required"
-              aria-live="assertive">Please select one of the above.</div>
+          <Radio
+            :id="'child-status-reason-' + index"
+            :name="'child-status-reason-' + index"
+            label=''
+            v-model='statusReason'
+            @blur="handleBlurField($v.statusReason)"
+            :items='citizenshipStatusReasonOptions' />
+          <div class="text-danger"
+            v-if="$v.statusReason.$dirty && !$v.statusReason.required"
+            aria-live="assertive">Please select one of the above.</div>
         </div>
         <div v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child19To24">
-            <Radio
-              :id="'child-status-reason' + index"
-              :name="'child-status-reason' + index"
-              label=''
-              v-model='statusReason'
-              @blur="handleBlurField($v.statusReason)"
-              :items='temporaryResidentStatusReasonOptions' />
-            <div class="text-danger"
-              v-if="$v.statusReason.$dirty && !$v.statusReason.required"
-              aria-live="assertive">Please select one of the above.</div>
+          <Radio
+            :id="'child-status-reason' + index"
+            :name="'child-status-reason' + index"
+            label=''
+            v-model='statusReason'
+            @blur="handleBlurField($v.statusReason)"
+            :items='temporaryResidentStatusReasonOptions' />
+          <div class="text-danger"
+            v-if="$v.statusReason.$dirty && !$v.statusReason.required"
+            aria-live="assertive">Please select one of the above.</div>
         </div>
         <div v-if="status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child19To24">
-            <Radio
-              :id="'child-status-reason' + index"
-              :name="'child-status-reason' + index"
-              label=''
-              v-model='statusReason'
-              @blur="handleBlurField($v.statusReason)"
-              :items='overageChildTemporaryResidentStatusReasonOptions' />
-            <div class="text-danger"
-              v-if="$v.statusReason.$dirty && !$v.statusReason.required"
-              aria-live="assertive">Please select one of the above.</div>
+          <Radio
+            :id="'child-status-reason' + index"
+            :name="'child-status-reason' + index"
+            label=''
+            v-model='statusReason'
+            @blur="handleBlurField($v.statusReason)"
+            :items='overageChildTemporaryResidentStatusReasonOptions' />
+          <div class="text-danger"
+            v-if="$v.statusReason.$dirty && !$v.statusReason.required"
+            aria-live="assertive">Please select one of the above.</div>
         </div>
         <div v-if="statusReason !== null && statusReason !== undefined" class="mt-3">
-            <h2>Documents</h2>
-            <p>Provide one of the following documents to support your status in Canada. If the child's name has changed since your ID was issued you are also required to upload document to support the name change.</p>
+          <h2>Documents</h2>
+          <p>Provide one of the following documents to support your status in Canada. If the child's name has changed since your ID was issued you are also required to upload document to support the name change.</p>
+          <hr/>
+          <Select 
+            label="Document Type"
+            :name="'citizen-support-document-type-' + index"
+            :id="'citizen-support-document-type-' + index"
+            class="mb-3"
+            defaultOptionLabel="Please select"
+            :disablePlaceholder="true"
+            v-model="citizenshipSupportDocumentType"
+            @blur="handleBlurField($v.citizenshipSupportDocumentType)"
+            :options="citizenshipSupportDocumentOptions"
+            :inputStyle='mediumStyles' />
+          <div class="text-danger"
+            v-if="$v.citizenshipSupportDocumentType.$dirty && !$v.citizenshipSupportDocumentType.required"
+            aria-live="assertive">Please select one of the above.</div>
+          <div v-if="citizenshipSupportDocumentType">
+            <h2>{{citizenshipSupportDocumentType}}</h2>
             <hr/>
-            <Select 
-              label="Document Type"
-              :name="'citizen-support-document-type-' + index"
-              :id="'citizen-support-document-type-' + index"
-              class="mb-3"
-              defaultOptionLabel="Please select"
-              :disablePlaceholder="true"
-              v-model="citizenshipSupportDocumentType"
-              @blur="handleBlurField($v.citizenshipSupportDocumentType)"
-              :options="citizenshipSupportDocumentOptions"
-              :inputStyle='mediumStyles' />
-            <div class="text-danger"
-              v-if="$v.citizenshipSupportDocumentType.$dirty && !$v.citizenshipSupportDocumentType.required"
-              aria-live="assertive">Please select one of the above.</div>
-            <div v-if="citizenshipSupportDocumentType">
-              <h2>{{citizenshipSupportDocumentType}}</h2>
-              <hr/>
-              <div class="row">
-                <div class="col-md-7">
-                  <FileUploader v-model="citizenshipSupportDocuments"
-                    :isZoomPortalEnabled="true"
-                    modalElementTarget="#modal-target"
-                    documentType="Child citizenship support documents"
-                    :description="citizenshipSupportDocumentType" />
-                  <div class="text-danger"
-                      v-if="$v.citizenshipSupportDocuments.$dirty && !$v.citizenshipSupportDocuments.required"
-                      aria-live="assertive">File upload required.</div>
-                </div>
-                <div class="col-md-5">
-                  <SampleImageTipBox :documentType="citizenshipSupportDocumentType"/>
-                </div>
+            <div class="row">
+              <div class="col-md-7">
+                <FileUploader v-model="citizenshipSupportDocuments"
+                  :isZoomPortalEnabled="true"
+                  modalElementTarget="#modal-target"
+                  documentType="Child citizenship support documents"
+                  :description="citizenshipSupportDocumentType" />
+                <div class="text-danger"
+                  v-if="$v.citizenshipSupportDocuments.$dirty && !$v.citizenshipSupportDocuments.required"
+                  aria-live="assertive">File upload required.</div>
+              </div>
+              <div class="col-md-5">
+                <SampleImageTipBox :documentType="citizenshipSupportDocumentType"/>
               </div>
             </div>
+          </div>
 
-            <Radio label="Has the child's name changed since their ID was issued due to marriage or legal name change?"
-              :id="'name-change-' + index"
-              :name="'name-change-' + index"
-              class="mt-3 mb-3"
-              v-model="isNameChanged"
-              @blur="handleBlurField($v.isNameChanged)"
-              :items="radioOptionsNoYes" />
-            <div class="text-danger"
-              v-if="$v.isNameChanged.$dirty && !$v.isNameChanged.required"
-              aria-live="assertive">Please indicate if the child's name changed.</div>
-            <div v-if="isNameChanged === 'Y'"
-              class="tabbed-section">
+          <Radio label="Has the child's name changed since their ID was issued due to marriage or legal name change?"
+            :id="'name-change-' + index"
+            :name="'name-change-' + index"
+            class="mt-3 mb-3"
+            v-model="isNameChanged"
+            @blur="handleBlurField($v.isNameChanged)"
+            :items="radioOptionsNoYes" />
+          <div class="text-danger"
+            v-if="$v.isNameChanged.$dirty && !$v.isNameChanged.required"
+            aria-live="assertive">Please indicate if the child's name changed.</div>
+          <div v-if="isNameChanged === 'Y'" class="tabbed-section">
             <h2>Additional Documents</h2>
             <p>Provide one of the required documents to support the child's name change.</p>
             <ul>
-                <li>Marriage Certificate</li>
-                <li>Legal Name Change Certificate</li>
+              <li>Marriage Certificate</li>
+              <li>Legal Name Change Certificate</li>
             </ul>
             <hr/>
             <Select 
-                label="Document Type"
-                :name="'name-change-doc-type-' + index"
-                :id="'name-change-doc-type-' + index"
-                class="mb-3"
-                defaultOptionLabel="Please select"
-                :disablePlaceholder="true"
-                v-model="nameChangeSupportDocumentType"
-                @blur="handleBlurField($v.nameChangeSupportDocumentType)"
-                :options="nameChangeSupportDocumentOptions"
-                :inputStyle='mediumStyles' />
+              label="Document Type"
+              :name="'name-change-doc-type-' + index"
+              :id="'name-change-doc-type-' + index"
+              class="mb-3"
+              defaultOptionLabel="Please select"
+              :disablePlaceholder="true"
+              v-model="nameChangeSupportDocumentType"
+              @blur="handleBlurField($v.nameChangeSupportDocumentType)"
+              :options="nameChangeSupportDocumentOptions"
+              :inputStyle='mediumStyles' />
             <div class="text-danger"
-                v-if="$v.nameChangeSupportDocumentType.$dirty && !$v.nameChangeSupportDocumentType.required"
-                aria-live="assertive">Please select one of the above.</div>
+              v-if="$v.nameChangeSupportDocumentType.$dirty && !$v.nameChangeSupportDocumentType.required"
+              aria-live="assertive">Please select one of the above.</div>
             <div v-if="nameChangeSupportDocumentType">
                 <h2>{{nameChangeSupportDocumentType}}</h2>
                 <hr/>
@@ -237,15 +254,16 @@
                   </div>
                 </div>
             </div>
-            </div>
+          </div>
+        </div>
 
-            <div v-if="citizenshipSupportDocuments.length > 0 && (isNameChanged === 'N' || nameChangeSupportDocuments.length > 0)">
-            <h2 class="mt-4">Moving Information</h2>
-            <hr/>
-            <div class="row">
-                <div class="col-md-7">
-                <div v-if="showLivedInBCSinceBirth">
-                    <Radio 
+        <div v-if="requestMovingInfo">
+          <h2 class="mt-4">Moving Information</h2>
+          <hr/>
+          <div class="row">
+              <div class="col-md-7">
+              <div v-if="showLivedInBCSinceBirth">
+                  <Radio 
                     label='Has the child lived in B.C. since birth?'
                     :id="'lived-in-bc-' + index"
                     :name="'lived-in-bc-' + index"
@@ -253,29 +271,27 @@
                     className="mt-3"
                     @blur="handleBlurField($v.livedInBCSinceBirth)"
                     :items='radioOptionsNoYes' />
-                    <div class="text-danger"
+                  <div class="text-danger"
                     v-if="$v.livedInBCSinceBirth.$dirty && !$v.livedInBCSinceBirth.required"
                     aria-live="assertive">Please indicate whether the child has lived in B.C. since birth.</div>
-                </div>
-                <div v-if="showOriginTextField">
-                    <Input 
-                        className="mt-3"
-                        label="From which province or country?"
-                        maxlength="25"
-                        v-model="moveFromOrigin"
-                        @blur="handleBlurField($v.moveFromOrigin)"
-                        :inputStyle='mediumStyles' />
-                    <div class="text-danger"
-                        v-if="$v.moveFromOrigin.$dirty
-                        && !$v.moveFromOrigin.required"
-                        aria-live="assertive">Province or country of origin is required.</div>
-                    <div class="text-danger"
-                        v-if="$v.moveFromOrigin.$dirty
-                        && !$v.moveFromOrigin.cityStateProvinceContentValidator"
-                        aria-live="assertive">Province or country of origin must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters..</div>
-                </div>
-                <div v-if="showMovedPermanentlyQuestion">
-                    <Radio
+              </div>
+              <div v-if="showOriginTextField">
+                  <Input 
+                    className="mt-3"
+                    label="From which province or country?"
+                    maxlength="25"
+                    v-model="moveFromOrigin"
+                    @blur="handleBlurField($v.moveFromOrigin)"
+                    :inputStyle='mediumStyles' />
+                  <div class="text-danger"
+                    v-if="$v.moveFromOrigin.$dirty && !$v.moveFromOrigin.required"
+                    aria-live="assertive">Province or country of origin is required.</div>
+                  <div class="text-danger"
+                    v-if="$v.moveFromOrigin.$dirty && !$v.moveFromOrigin.cityStateProvinceContentValidator"
+                    aria-live="assertive">Province or country of origin must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters..</div>
+              </div>
+              <div v-if="showMovedPermanentlyQuestion">
+                  <Radio
                     label='Has the child moved to B.C. permanently?'
                     :id="'permanent-move-' + index"
                     :name="'permanent-move-' + index"
@@ -283,465 +299,457 @@
                     className="mt-3"
                     @blur="handleBlurField($v.madePermanentMove)"
                     :items='radioOptionsNoYes'/>
-                    <div class="text-danger"
+                  <div class="text-danger"
                     v-if="$v.madePermanentMove.$dirty && !$v.madePermanentMove.required"
                     aria-live="assertive">Please indicate whether the child has made a permanent move to B.C.</div>
-                    <div class="text-danger"
+                  <div class="text-danger"
                     v-if="madePermanentMove === 'N' && status !== statusOptions.TemporaryResident"
                     aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, the child is not eligible for enrolment in the Medical Services Plan. Please contact <a target="_blank" href="http://www2.go$v.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.</div>
-                </div>
-                <div v-if="madePermanentMove !== 'N' || status === statusOptions.TemporaryResident">
-                    <div v-if="showProvinceSelector">
-                    <RegionSelect
-                        className="mt-3"
-                        :id="'province-select-' + index"
-                        :name="'province-select-' + index"
-                        label="Which province is the child moving from?" 
-                        v-model="moveFromOrigin"
-                        :disablePlaceholder="true"
-                        defaultOptionLabel="Please select a province"
-                        @blur="handleBlurField($v.moveFromOrigin)"
-                        :inputStyle='mediumStyles' />
-                    <div class="text-danger"
-                        v-if="$v.moveFromOrigin.$dirty
-                        && !$v.moveFromOrigin.required"
-                        aria-live="assertive">Province of origin is required.</div>
-                    <div class="text-danger"
-                        v-if="moveFromOrigin === 'BC' || moveFromOrigin === 'British Columbia'"
-                        aria-live="assertive">Province of origin cannot be British Columbia.</div>
-                    </div>
-                    <div v-if="showCountrySelector">
+              </div>
+              <div v-if="madePermanentMove !== 'N' || status === statusOptions.TemporaryResident">
+                  <div v-if="showProvinceSelector">
+                  <RegionSelect
+                    className="mt-3"
+                    :id="'province-select-' + index"
+                    :name="'province-select-' + index"
+                    label="Which province is the child moving from?" 
+                    v-model="moveFromOrigin"
+                    :disablePlaceholder="true"
+                    defaultOptionLabel="Please select a province"
+                    @blur="handleBlurField($v.moveFromOrigin)"
+                    :inputStyle='mediumStyles' />
+                  <div class="text-danger"
+                    v-if="$v.moveFromOrigin.$dirty && !$v.moveFromOrigin.required"
+                    aria-live="assertive">Province of origin is required.</div>
+                  <div class="text-danger"
+                    v-if="moveFromOrigin === 'BC' || moveFromOrigin === 'British Columbia'"
+                    aria-live="assertive">Province of origin cannot be British Columbia.</div>
+                  </div>
+                  <div v-if="showCountrySelector">
                     <CountrySelect 
-                        className="mt-3"
-                        :id="'country-select-' + index"
-                        :name="'country-select-' + index"
-                        label="Which country is the child moving from?" 
-                        v-model="moveFromOrigin"
-                        :disablePlaceholder="true"
-                        defaultOptionLabel="Please select a country"
-                        @blur="handleBlurField($v.moveFromOrigin)"
-                        :inputStyle='mediumStyles' />
+                      className="mt-3"
+                      :id="'country-select-' + index"
+                      :name="'country-select-' + index"
+                      label="Which country is the child moving from?" 
+                      v-model="moveFromOrigin"
+                      :disablePlaceholder="true"
+                      defaultOptionLabel="Please select a country"
+                      @blur="handleBlurField($v.moveFromOrigin)"
+                      :inputStyle='mediumStyles' />
                     <div class="text-danger"
-                        v-if="$v.moveFromOrigin.$dirty && !$v.moveFromOrigin.required"
-                        aria-live="assertive">Country of origin is required.</div>
+                      v-if="$v.moveFromOrigin.$dirty && !$v.moveFromOrigin.required"
+                      aria-live="assertive">Country of origin is required.</div>
                     <div class="text-danger"
-                        v-if="moveFromOrigin === 'Canada'"
-                        aria-live="assertive">Country of origin cannot be Canada.</div>
-                    </div>
-                    <div v-if="showMoveDateInputs">
+                      v-if="moveFromOrigin === 'Canada'"
+                      aria-live="assertive">Country of origin cannot be Canada.</div>
+                  </div>
+                  <div v-if="showMoveDateInputs">
                     <DateInput 
-                        :label='bcMoveDateLabel'
-                        :id="'bc-move-' + index"
-                        :name="'bc-move-' + index"
-                        className='mt-3'
-                        v-model='recentBCMoveDate'
-                        @blur="handleBlurField($v.recentBCMoveDate)"
-                        @processDate="handleProcessDateBCMove($event)" />
+                      :label='bcMoveDateLabel'
+                      :id="'bc-move-' + index"
+                      :name="'bc-move-' + index"
+                      className='mt-3'
+                      v-model='recentBCMoveDate'
+                      @blur="handleBlurField($v.recentBCMoveDate)"
+                      @processDate="handleProcessDateBCMove($event)" />
                     <div v-if="bcMoveDateLabel === 'Most recent move to B.C.'">
-                        <div class="text-danger"
+                      <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty && !$v.recentBCMoveDate.required"
                         aria-live="assertive">Most recent move to B.C. is required.</div>
-                        <div class="text-danger"
+                      <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty
-                                && $v.recentBCMoveDate.required
-                                && !$v.recentBCMoveDate.dateDataValidator"
+                          && $v.recentBCMoveDate.required
+                          && !$v.recentBCMoveDate.dateDataValidator"
                         aria-live="assertive">Invalid most recent move to B.C. date.</div>
-                        <div class="text-danger"
+                      <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty
-                                && $v.recentBCMoveDate.required
-                                && $v.recentBCMoveDate.dateDataValidator
-                                && !$v.recentBCMoveDate.pastDateValidator"
+                          && $v.recentBCMoveDate.required
+                          && $v.recentBCMoveDate.dateDataValidator
+                          && !$v.recentBCMoveDate.pastDateValidator"
                         aria-live="assertive">Most recent move to B.C. date cannot be in the future.</div>
-                        <div class="text-danger"
+                      <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty
-                                && $v.recentBCMoveDate.required
-                                && $v.recentBCMoveDate.dateDataValidator
-                                && $v.recentBCMoveDate.pastDateValidator
-                                && !$v.recentBCMoveDate.beforeBirthdateValidator"
+                          && $v.recentBCMoveDate.required
+                          && $v.recentBCMoveDate.dateDataValidator
+                          && $v.recentBCMoveDate.pastDateValidator
+                          && !$v.recentBCMoveDate.beforeBirthdateValidator"
                         aria-live="assertive">The child's most recent move to B.C. cannot be before the child's date of birth.</div>
-                        <div class="text-danger"
+                      <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty
-                                && $v.recentBCMoveDate.required
-                                && $v.recentBCMoveDate.dateDataValidator
-                                && $v.recentBCMoveDate.pastDateValidator
-                                && $v.recentBCMoveDate.beforeBirthdateValidator
-                                && !$v.recentBCMoveDate.dateOrderValidator"
+                          && $v.recentBCMoveDate.required
+                          && $v.recentBCMoveDate.dateDataValidator
+                          && $v.recentBCMoveDate.pastDateValidator
+                          && $v.recentBCMoveDate.beforeBirthdateValidator
+                          && !$v.recentBCMoveDate.dateOrderValidator"
                         aria-live="assertive">The child's most recent move to B.C. cannot be before the arrival date in Canada.</div>
                     </div>
                     <div v-else>
-                        <div class="text-danger"
+                      <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty && !$v.recentBCMoveDate.required"
                         aria-live="assertive">Arrival date in B.C. is required.</div>
-                        <div class="text-danger"
+                      <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty
-                                && $v.recentBCMoveDate.required
-                                && !$v.recentBCMoveDate.dateDataValidator"
+                          && $v.recentBCMoveDate.required
+                          && !$v.recentBCMoveDate.dateDataValidator"
                         aria-live="assertive">Invalid arrival date in BC.</div>
-                        <div class="text-danger"
+                      <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty
-                                && $v.recentBCMoveDate.required
-                                && $v.recentBCMoveDate.dateDataValidator
-                                && !$v.recentBCMoveDate.pastDateValidator"
+                          && $v.recentBCMoveDate.required
+                          && $v.recentBCMoveDate.dateDataValidator
+                          && !$v.recentBCMoveDate.pastDateValidator"
                         aria-live="assertive">Arrival date in B.C. cannot be in the future.</div>
-                        <div class="text-danger"
+                      <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty
-                                && $v.recentBCMoveDate.required
-                                && $v.recentBCMoveDate.dateDataValidator
-                                && $v.recentBCMoveDate.pastDateValidator
-                                && !$v.recentBCMoveDate.beforeBirthdateValidator"
+                          && $v.recentBCMoveDate.required
+                          && $v.recentBCMoveDate.dateDataValidator
+                          && $v.recentBCMoveDate.pastDateValidator
+                          && !$v.recentBCMoveDate.beforeBirthdateValidator"
                         aria-live="assertive">The child's arrival date in B.C. cannot be before the child's date of birth.</div>
-                        <div class="text-danger"
+                      <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty
-                                && $v.recentBCMoveDate.required
-                                && $v.recentBCMoveDate.dateDataValidator
-                                && $v.recentBCMoveDate.pastDateValidator
-                                && $v.recentBCMoveDate.beforeBirthdateValidator
-                                && !$v.recentBCMoveDate.dateOrderValidator"
+                          && $v.recentBCMoveDate.required
+                          && $v.recentBCMoveDate.dateDataValidator
+                          && $v.recentBCMoveDate.pastDateValidator
+                          && $v.recentBCMoveDate.beforeBirthdateValidator
+                          && !$v.recentBCMoveDate.dateOrderValidator"
                         aria-live="assertive">The child's arrival date in B.C. cannot be before the arrival date in Canada.</div>
                     </div>
                     <DateInput :label='canadaArrivalDateLabel'
-                        :id="'canada-arrival-date-' + index"
-                        :name="'canada-arrival-date-' + index"
-                        className='mt-3'
-                        v-model='canadaArrivalDate'
-                        @blur="handleBlurField($v.canadaArrivalDate)"
-                        @processDate="handleProcessDateCanadaArrival($event)" />
+                      :id="'canada-arrival-date-' + index"
+                      :name="'canada-arrival-date-' + index"
+                      className='mt-3'
+                      v-model='canadaArrivalDate'
+                      @blur="handleBlurField($v.canadaArrivalDate)"
+                      @processDate="handleProcessDateCanadaArrival($event)" />
                     <div class="text-danger"
-                        v-if="canadaArrivalDateLabel === 'Arrival date in Canada'
+                      v-if="canadaArrivalDateLabel === 'Arrival date in Canada'
                         && $v.canadaArrivalDate.$dirty
                         && !$v.canadaArrivalDate.required"
-                        aria-live="assertive">Arrival date in Canada is required.</div>
+                      aria-live="assertive">Arrival date in Canada is required.</div>
                     <div class="text-danger"
-                        v-if="$v.canadaArrivalDate.$dirty && !$v.canadaArrivalDate.dateDataValidator"
-                        aria-live="assertive">Invalid Arrival date in Canada.</div>
+                      v-if="$v.canadaArrivalDate.$dirty && !$v.canadaArrivalDate.dateDataValidator"
+                      aria-live="assertive">Invalid Arrival date in Canada.</div>
                     <div class="text-danger"
-                        v-if="$v.canadaArrivalDate.$dirty
-                            && $v.canadaArrivalDate.dateDataValidator
-                            && !$v.canadaArrivalDate.pastDateValidator"
-                        aria-live="assertive">Arrival date in Canada cannot be in the future.</div>
+                      v-if="$v.canadaArrivalDate.$dirty
+                        && $v.canadaArrivalDate.dateDataValidator
+                        && !$v.canadaArrivalDate.pastDateValidator"
+                      aria-live="assertive">Arrival date in Canada cannot be in the future.</div>
                     <div class="text-danger"
-                        v-if="$v.canadaArrivalDate.$dirty 
-                            && $v.canadaArrivalDate.dateDataValidator
-                            && $v.canadaArrivalDate.pastDateValidator
-                            && !$v.canadaArrivalDate.beforeBirthdateValidator"
-                        aria-live="assertive">The child's arrival date in Canada cannot be before the child's date of birth.</div>
+                      v-if="$v.canadaArrivalDate.$dirty 
+                        && $v.canadaArrivalDate.dateDataValidator
+                        && $v.canadaArrivalDate.pastDateValidator
+                        && !$v.canadaArrivalDate.beforeBirthdateValidator"
+                      aria-live="assertive">The child's arrival date in Canada cannot be before the child's date of birth.</div>
                     <div class="text-danger"
-                        v-if="$v.canadaArrivalDate.$dirty 
-                            && $v.canadaArrivalDate.dateDataValidator
-                            && $v.canadaArrivalDate.pastDateValidator
-                            && $v.canadaArrivalDate.beforeBirthdateValidator
-                            && !$v.canadaArrivalDate.dateOrderValidator"
-                        aria-live="assertive">The child's arrival date in Canada cannot be after the move to B.C. date.</div>
-                    </div>
-                    <div v-if="showPreviousHealthNumber">
-                      <Input 
-                        className="mt-3"
-                        :id="'health-number-' + index"
-                        :name="'health-number-' + index"
-                        label="Health Number from that province (optional)"
-                        maxlength="50"
-                        v-model="previousHealthNumber"
-                        :inputStyle='mediumStyles' />
-                    </div>
-                    <Radio
-                      label='Has the child been outside B.C. for more than 30 days in total in the past 12 months?'
-                      :id="'outside-bc-' + index"
-                      :name="'outside-bc-' + index"
-                      v-model='outsideBCLast12Months'
+                      v-if="$v.canadaArrivalDate.$dirty 
+                        && $v.canadaArrivalDate.dateDataValidator
+                        && $v.canadaArrivalDate.pastDateValidator
+                        && $v.canadaArrivalDate.beforeBirthdateValidator
+                        && !$v.canadaArrivalDate.dateOrderValidator"
+                      aria-live="assertive">The child's arrival date in Canada cannot be after the move to B.C. date.</div>
+                  </div>
+                  <div v-if="showPreviousHealthNumber">
+                    <Input 
                       className="mt-3"
-                      @blur="handleBlurField($v.outsideBCLast12Months)"
-                      :items='radioOptionsNoYes'>
-                       <template v-slot:description>
-                        <span class="field-description">If the child has been living in B.C. for less than 12 months, please indicate any absences since arrival.</span>
-                      </template>
-                    </Radio>
-                    <div class="text-danger"
-                      v-if="$v.outsideBCLast12Months.$dirty && !$v.outsideBCLast12Months.required"
-                      aria-live="assertive">Please indicate whether the child has been outside BC in the past 12 months.</div>
-                    <div v-if="outsideBCLast12Months === 'Y'" class="tabbed-section">
-                      <Input 
-                          className="mt-3"
-                          :id="'outside-bc-reason-' + index"
-                          :name="'outside-bc-reason-' + index"
-                          label="Reason for departure"
-                          maxlength="20"
-                          v-model="outsideBCLast12MonthsReason"
-                          @blur="handleBlurField($v.outsideBCLast12MonthsReason)"
-                          :inputStyle='mediumStyles' />
-                      <div class="text-danger"
-                          v-if="$v.outsideBCLast12MonthsReason.$dirty && !$v.outsideBCLast12MonthsReason.required"
-                          aria-live="assertive">Reason for departure is required.</div>
-                      <div class="text-danger" v-if="$v.outsideBCLast12MonthsReason.$dirty && !$v.outsideBCLast12MonthsReason.reasonDestinationContentValidator" aria-live="assertive">Reason must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-                      <Input 
-                          className="mt-3"
-                          :id="'outside-bc-destination-' + index"
-                          :name="'outside-bc-destination-' + index"
-                          label="Location"
-                          maxlength="20" 
-                          v-model="outsideBCLast12MonthsDestination"
-                          @blur="handleBlurField($v.outsideBCLast12MonthsDestination)"
-                          :inputStyle='mediumStyles' />
-                      <div class="text-danger"
-                          v-if="$v.outsideBCLast12MonthsDestination.$dirty && !$v.outsideBCLast12MonthsDestination.required"
-                          aria-live="assertive">Location is required.</div>
-                      <div class="text-danger" v-if="$v.outsideBCLast12MonthsDestination.$dirty && !$v.outsideBCLast12MonthsDestination.reasonDestinationContentValidator" aria-live="assertive">Location must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-                      <DateInput label='Departure date'
-                          :id="'outside-bc-departure-' + index"
-                          :name="'outside-bc-departure-' + index"
-                          className='mt-3'
-                          @blur="handleBlurField($v.outsideBCLast12MonthsDepartureDate)"
-                          @processDate="handleProcessDate12MonthsDeparture($event)"
-                          v-model='outsideBCLast12MonthsDepartureDate' />
-                      <div class="text-danger"
-                          v-if="$v.outsideBCLast12MonthsDepartureDate.$dirty && !$v.outsideBCLast12MonthsDepartureDate.required"
-                          aria-live="assertive">Departure date is required.</div>
-                      <div class="text-danger"
-                          v-if="$v.outsideBCLast12MonthsDepartureDate.$dirty
-                          && !$v.outsideBCLast12MonthsDepartureDate.dateDataValidator"
-                          aria-live="assertive">Invalid departure date.</div>
-                      <div class="text-danger"
-                          v-if="$v.outsideBCLast12MonthsDepartureDate.$dirty
-                          && !$v.outsideBCLast12MonthsDepartureDate.departureDateValidator"
-                          aria-live="assertive">Departure date must be within the last 12 months and prior to return date.</div>
-                      <DateInput label='Return date'
-                          :id="'outside-bc-return-' + index"
-                          :name="'outside-bc-return-' + index"
-                          className='mt-3'
-                          @blur="handleBlurField($v.outsideBCLast12MonthsReturnDate)"
-                          @processDate="handleProcessDate12MonthsReturn($event)"
-                          v-model='outsideBCLast12MonthsReturnDate' />
-                      <div class="text-danger"
-                          v-if="$v.outsideBCLast12MonthsReturnDate.$dirty && !$v.outsideBCLast12MonthsReturnDate.required"
-                          aria-live="assertive">Return date is required.</div>
-                      <div class="text-danger"
-                          v-if="$v.outsideBCLast12MonthsReturnDate.$dirty
-                          && !$v.outsideBCLast12MonthsReturnDate.dateDataValidator"
-                          aria-live="assertive">Invalid return date.</div>
-                      <div class="text-danger"
-                          v-if="$v.outsideBCLast12MonthsReturnDate.$dirty
-                          && !$v.outsideBCLast12MonthsReturnDate.returnDateValidator"
-                          aria-live="assertive">Return date must be within the last 12 months and after departure date.</div>
-                    </div>
-                    <Radio
-                      label='Does the child have a previous B.C. Personal Health Number?'
-                      :id="'has-bc-health-number-' + index"
-                      :name="'has-bc-health-number-' + index"
-                      v-model='hasPreviousBCHealthNumber'
-                      className="mt-3"
-                      @blur="handleBlurField($v.hasPreviousBCHealthNumber)"
-                      :items='radioOptionsNoYes'/>
-                    <div class="text-danger"
-                      v-if="$v.hasPreviousBCHealthNumber.$dirty && !$v.hasPreviousBCHealthNumber.required"
-                      aria-live="assertive">Please indicate whether the child has a previous BC Personal Health Number.</div>
-                    <div v-if="hasPreviousBCHealthNumber === 'Y'" class="tabbed-section">
-                      <PhnInput 
-                        className="mt-3"
-                        :id="'bc-phn-' + index"
-                        :name="'bc-phn-' + index"
-                        label="The child's previous B.C. Personal Health Number (optional)" 
-                        v-model="previousBCHealthNumber"
-                        placeholder="1111 111 111"
-                        @blur="handleBlurField($v.previousBCHealthNumber)"
-                        :inputStyle='mediumStyles' />
-                    <div class="text-danger"
-                        v-if="$v.previousBCHealthNumber.$dirty && !$v.previousBCHealthNumber.phnValidator"
-                        aria-live="assertive">Invalid Personal Health Number</div>
-                    </div>
-                    <div v-if="showDischargeInputs">
-                      <Radio
-                        label='Has the child been released from the Canadian Armed Forces or an institution?'
-                        :id="'been-released-' + index"
-                        :name="'been-released-' + index"
-                        v-model='hasBeenReleasedFromInstitution'
-                        className="mt-3"
-                        @blur="handleBlurField($v.hasBeenReleasedFromInstitution)"
-                        :items='radioOptionsNoYes' />
-                    <div class="text-danger"
-                        v-if="$v.hasBeenReleasedFromInstitution.$dirty && !$v.hasBeenReleasedFromInstitution.required"
-                        aria-live="assertive">Please indicate whether the child has been released from an institution.</div>
-                    </div>
-                    <div v-if="showDischargeInputs && hasBeenReleasedFromInstitution === 'Y'" class="tabbed-section">
-                      <DateInput label='Discharge date'
-                        :id="'discharge-date-' + index"
-                        :name="'discharge-date-' + index"
-                        className='mt-3'
-                        @blur="handleBlurField($v.dischargeDate)"
-                        @processDate="handleProcessDateDischarge($event)"
-                        v-model='dischargeDate' />
-                      <div class="text-danger"
-                          v-if="$v.dischargeDate.$dirty && !$v.dischargeDate.required"
-                          aria-live="assertive">Discharge date is required.</div>
-                      <div class="text-danger"
-                          v-if="$v.dischargeDate.$dirty
-                          && !$v.dischargeDate.dateDataValidator"
-                          aria-live="assertive">Invalid discharge date.</div>
-                      <div class="text-danger"
-                          v-if="$v.dischargeDate.$dirty
-                          && !$v.dischargeDate.dischargeDateValidator"
-                          aria-live="assertive">Discharge date cannot be before the child's date of birth.</div>
-                      <div class="text-danger"
-                          v-if="$v.dischargeDate.$dirty
-                          && !$v.dischargeDate.pastDateValidator"
-                          aria-live="assertive">Discharge date cannot be in the future.</div>
-                    </div>
-                </div>
-                </div>
-                <div class="col-md-5 mt-3">
-                <TipBox>
-                    <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer.</p>
-                </TipBox>
-                </div>
-            </div>
-            <div v-if="ageRange === childAgeTypes.Child19To24">
-                <h2 class="mt-3">School Information</h2>
-                <p class="m-0">Enter information of the school that this child is attending (must be in full time attendance)</p>
-                <hr/>
-                <Input label='School name'
-                  :id="'school-name-' + index"
-                  className='mt-3'
-                  maxlength="50"
-                  v-model='schoolName'
-                  @blur="handleBlurField($v.schoolName)"
-                  :inputStyle='mediumStyles' />
-                <div class="text-danger"
-                  v-if="$v.schoolName.$dirty && !$v.schoolName.required"
-                  aria-live="assertive">School name is required.</div>
-                <div class="text-danger" v-if="$v.schoolName.$dirty && !$v.schoolName.schoolNameContentValidator" aria-live="assertive">School name must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-                <Input label="Full street address, rural route, PO box or general delivery"
-                  :id="'school-address-line1-' + index"
-                  className='mt-3'
-                  v-model="schoolAddressLine1"
-                  maxlength="25"
-                  @blur="handleBlurField($v.schoolAddressLine1)"
-                  :inputStyle='mediumStyles' />
-                <div class="text-danger" v-if="$v.schoolAddressLine1.$dirty && !$v.schoolAddressLine1.required" aria-live="assertive">Street address is required.</div>
-                <div class="text-danger"
-                    v-if="$v.schoolAddressLine1.$dirty && !$v.schoolAddressLine1.addressLineContentValidator"
-                    aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-                <Input label="Address Line 2 (optional)"
-                  :id="'school-address-line2-' + index"
-                  className='mt-3'
-                  v-model="schoolAddressLine2"
-                  maxlength="25"
-                  @blur="handleBlurField($v.schoolAddressLine2)" 
-                  :inputStyle='mediumStyles' />
-                <div class="text-danger"
-                    v-if="$v.schoolAddressLine2.$dirty && !$v.schoolAddressLine2.addressLineContentValidator"
-                    aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-                <Input label="Address Line 3 (optional)"
-                  :id="'school-address-line3-' + index"
-                  className='mt-3'
-                  v-model="schoolAddressLine3"
-                  maxlength="25"
-                  @blur="handleBlurField($v.schoolAddressLine3)"
-                  :inputStyle='mediumStyles' />
-                <div class="text-danger"
-                    v-if="$v.schoolAddressLine3.$dirty && !$v.schoolAddressLine3.addressLineContentValidator"
-                    aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-                <Input label="City"
-                  :id="'school-city-' + index"
-                  className='mt-3'
-                  v-model="schoolCity"
-                  maxlength="25"
-                  @blur="handleBlurField($v.schoolCity)"
-                  :inputStyle='mediumStyles' />
-                <div class="text-danger" v-if="$v.schoolCity.$dirty && !$v.schoolCity.required" aria-live="assertive">City is required.</div>
-                <div class="text-danger" v-if="$v.schoolCity.$dirty && !$v.schoolCity.cityStateProvinceContentValidator" aria-live="assertive">City must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters.</div>
-                <div v-if="schoolCountry !== 'Canada'"> 
-                  <Input label="Province or state"
-                    :id="'school-province-' + index"
-                    className='mt-3'
-                    maxlength="25"
-                    v-model="schoolProvinceOrState"
-                    @blur="handleBlurField($v.schoolProvinceOrState)"
-                    :inputStyle='mediumStyles' />
-                  <div class="text-danger" v-if="$v.schoolProvinceOrState.$dirty && !$v.schoolProvinceOrState.required" aria-live="assertive">Province/state is required.</div>
-                  <div class="text-danger" v-if="$v.schoolProvinceOrState.$dirty && !$v.schoolProvinceOrState.cityStateProvinceContentValidator" aria-live="assertive">Province/state must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters.</div>
-                </div>
-                <div v-else>
-                   <RegionSelect
-                      className="mt-3"
-                      :id="'school-province-select-' + index"
-                      :name="'school-province-select-' + index"
-                      label="Province" 
-                      v-model="schoolProvinceOrState"
-                      :disablePlaceholder="true"
-                      defaultOptionLabel="Please select a province"
-                      @blur="handleBlurField($v.schoolProvinceOrState)"
+                      :id="'health-number-' + index"
+                      :name="'health-number-' + index"
+                      label="Health Number from that province (optional)"
+                      maxlength="50"
+                      v-model="previousHealthNumber"
                       :inputStyle='mediumStyles' />
-                  <div class="text-danger" v-if="$v.schoolProvinceOrState.$dirty && !$v.schoolProvinceOrState.required" aria-live="assertive">Province is required.</div>
-                </div>
-                <CountrySelect 
-                  className="mt-3"
-                  :id="'school-country-select-' + index"
-                  :name="'school-country-select-' + index"
-                  label="Country" 
-                  v-model="schoolCountry"
-                  :disablePlaceholder="true"
-                  defaultOptionLabel="Please select a country"
-                  @blur="handleBlurField($v.schoolCountry)"
-                  :inputStyle='mediumStyles' />
-                <div class="text-danger" v-if="$v.schoolCountry.$dirty && !$v.schoolCountry.required" aria-live="assertive">Country is required.</div>
-                <div v-if="schoolCountry === 'Canada'">
-                  <PostalCodeInput label="Postal Code"
-                    :id="'school-postal-code-' + index"
-                    className='mt-3'
-                    v-model="schoolPostalCode"
-                    @blur="handleBlurField($v.schoolPostalCode)"
-                    :inputStyle='smallStyles' />
-                  <div class="text-danger" v-if="$v.schoolPostalCode.$dirty && !$v.schoolPostalCode.required" aria-live="assertive">Postal Code is required.</div>
-                  <div class="text-danger" v-if="$v.schoolPostalCode.$dirty && !$v.schoolPostalCode.completePostalCodeValidator" aria-live="assertive">Must be in the format A1A 1A1.</div>
-                </div>
-                <div v-else>
-                  <Input label="Postal Code or Zip Code"
-                    :id="'school-zip-code-' + index"
-                    className='mt-3'
-                    maxlength="20"
-                    v-model="schoolPostalCode"
-                    @blur="handleBlurField($v.schoolPostalCode)"
-                    :inputStyle='mediumStyles' />
-                  <div class="text-danger" v-if="$v.schoolPostalCode.$dirty && !$v.schoolPostalCode.required" aria-live="assertive">Postal/Zip Code is required.</div>
-                  <div class="text-danger" v-if="$v.schoolPostalCode.$dirty && !$v.schoolPostalCode.specialCharacterValidator" aria-live="assertive">Postal/Zip Code cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-                </div>
-                <DateInput label="Original departure date from B.C. (if school is outside B.C.)"
-                  :id="'school-departure-date-' + index"
-                  class="mt-3"
-                  v-model="schoolDepartureDate"
-                  @blur="handleBlurField($v.schoolDepartureDate)"
-                  @processDate="handleProcessDateSchoolDeparture($event)" />
-                <div class="text-danger" v-if="schoolProvinceOrState !== 'British Columbia' && $v.schoolDepartureDate.$dirty && !$v.schoolDepartureDate.required" aria-live="assertive">School departure date is required.</div>
-                <div class="text-danger" v-if="$v.schoolDepartureDate.$dirty && !$v.schoolDepartureDate.dateDataValidator" aria-live="assertive">Invalid school departure date.</div>
-                <div class="text-danger" v-if="$v.schoolDepartureDate.$dirty && !$v.schoolDepartureDate.pastDateValidator" aria-live="assertive">School departure date cannot be in the future.</div>
-                <DateInput label="Expected school completion date"
-                  :id="'school-completion-date-' + index"
-                  class="mt-3"
-                  v-model="schoolCompletionDate"
-                  @blur="handleBlurField($v.schoolCompletionDate)"
-                  @processDate="handleProcessDateSchoolCompletion($event)" />
-                <div class="text-danger"
-                  v-if="$v.schoolCompletionDate.$dirty
-                      && !$v.schoolCompletionDate.required"
-                  aria-live="assertive">Expected school completion date is required.</div>
-                <div class="text-danger" v-if="$v.schoolCompletionDate.$dirty && !$v.schoolCompletionDate.dateDataValidator" aria-live="assertive">Invalid estimated school completion date.</div>
-                <div class="text-danger" v-if="$v.schoolCompletionDate.$dirty && !$v.schoolCompletionDate.futureDateValidator" aria-live="assertive">Estimated school completion date cannot be in the past.</div>
-                <Radio label="Will the child reside in BC after completing their studies?"
-                  class="mt-3"
-                  :id="'will-reside-in-bc-after-studies-' + index"
-                  :name="'will-reside-in-bc-after-studies-' + index"
-                  v-model="willResideInBCAfterStudies"
-                  :items="radioOptionsNoYes"
-                  @blur="handleBlurField($v.willResideInBCAfterStudies)"/>
-                <div class="text-danger"
-                  v-if="$v.willResideInBCAfterStudies.$dirty
-                      && !$v.willResideInBCAfterStudies.required"
-                  aria-live="assertive">This field is required.</div>
-                <div class="text-danger"
-                  v-if="$v.willResideInBCAfterStudies.$dirty
-                      && !$v.willResideInBCAfterStudies.permanentMoveValidator"
-                  aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for Medical Services Plan coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
+                  </div>
+                  <Radio
+                    label='Has the child been outside B.C. for more than 30 days in total in the past 12 months?'
+                    :id="'outside-bc-' + index"
+                    :name="'outside-bc-' + index"
+                    v-model='outsideBCLast12Months'
+                    className="mt-3"
+                    @blur="handleBlurField($v.outsideBCLast12Months)"
+                    :items='radioOptionsNoYes'>
+                    <template v-slot:description>
+                      <span class="field-description">If the child has been living in B.C. for less than 12 months, please indicate any absences since arrival.</span>
+                    </template>
+                  </Radio>
+                  <div class="text-danger"
+                    v-if="$v.outsideBCLast12Months.$dirty && !$v.outsideBCLast12Months.required"
+                    aria-live="assertive">Please indicate whether the child has been outside BC in the past 12 months.</div>
+                  <div v-if="outsideBCLast12Months === 'Y'" class="tabbed-section">
+                    <Input 
+                      className="mt-3"
+                      :id="'outside-bc-reason-' + index"
+                      :name="'outside-bc-reason-' + index"
+                      label="Reason for departure"
+                      maxlength="20"
+                      v-model="outsideBCLast12MonthsReason"
+                      @blur="handleBlurField($v.outsideBCLast12MonthsReason)"
+                      :inputStyle='mediumStyles' />
+                    <div class="text-danger"
+                      v-if="$v.outsideBCLast12MonthsReason.$dirty && !$v.outsideBCLast12MonthsReason.required"
+                      aria-live="assertive">Reason for departure is required.</div>
+                    <div class="text-danger" v-if="$v.outsideBCLast12MonthsReason.$dirty && !$v.outsideBCLast12MonthsReason.reasonDestinationContentValidator" aria-live="assertive">Reason must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+                    <Input 
+                      className="mt-3"
+                      :id="'outside-bc-destination-' + index"
+                      :name="'outside-bc-destination-' + index"
+                      label="Location"
+                      maxlength="20" 
+                      v-model="outsideBCLast12MonthsDestination"
+                      @blur="handleBlurField($v.outsideBCLast12MonthsDestination)"
+                      :inputStyle='mediumStyles' />
+                    <div class="text-danger"
+                      v-if="$v.outsideBCLast12MonthsDestination.$dirty && !$v.outsideBCLast12MonthsDestination.required"
+                      aria-live="assertive">Location is required.</div>
+                    <div class="text-danger" v-if="$v.outsideBCLast12MonthsDestination.$dirty && !$v.outsideBCLast12MonthsDestination.reasonDestinationContentValidator" aria-live="assertive">Location must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+                    <DateInput label='Departure date'
+                      :id="'outside-bc-departure-' + index"
+                      :name="'outside-bc-departure-' + index"
+                      className='mt-3'
+                      @blur="handleBlurField($v.outsideBCLast12MonthsDepartureDate)"
+                      @processDate="handleProcessDate12MonthsDeparture($event)"
+                      v-model='outsideBCLast12MonthsDepartureDate' />
+                    <div class="text-danger"
+                      v-if="$v.outsideBCLast12MonthsDepartureDate.$dirty && !$v.outsideBCLast12MonthsDepartureDate.required"
+                      aria-live="assertive">Departure date is required.</div>
+                    <div class="text-danger"
+                      v-if="$v.outsideBCLast12MonthsDepartureDate.$dirty && !$v.outsideBCLast12MonthsDepartureDate.dateDataValidator"
+                      aria-live="assertive">Invalid departure date.</div>
+                    <div class="text-danger"
+                      v-if="$v.outsideBCLast12MonthsDepartureDate.$dirty && !$v.outsideBCLast12MonthsDepartureDate.departureDateValidator"
+                      aria-live="assertive">Departure date must be within the last 12 months and prior to return date.</div>
+                    <DateInput label='Return date'
+                      :id="'outside-bc-return-' + index"
+                      :name="'outside-bc-return-' + index"
+                      className='mt-3'
+                      @blur="handleBlurField($v.outsideBCLast12MonthsReturnDate)"
+                      @processDate="handleProcessDate12MonthsReturn($event)"
+                      v-model='outsideBCLast12MonthsReturnDate' />
+                    <div class="text-danger"
+                      v-if="$v.outsideBCLast12MonthsReturnDate.$dirty && !$v.outsideBCLast12MonthsReturnDate.required"
+                      aria-live="assertive">Return date is required.</div>
+                    <div class="text-danger"
+                      v-if="$v.outsideBCLast12MonthsReturnDate.$dirty && !$v.outsideBCLast12MonthsReturnDate.dateDataValidator"
+                      aria-live="assertive">Invalid return date.</div>
+                    <div class="text-danger"
+                      v-if="$v.outsideBCLast12MonthsReturnDate.$dirty && !$v.outsideBCLast12MonthsReturnDate.returnDateValidator"
+                      aria-live="assertive">Return date must be within the last 12 months and after departure date.</div>
+                  </div>
+                  <Radio
+                    label='Does the child have a previous B.C. Personal Health Number?'
+                    :id="'has-bc-health-number-' + index"
+                    :name="'has-bc-health-number-' + index"
+                    v-model='hasPreviousBCHealthNumber'
+                    className="mt-3"
+                    @blur="handleBlurField($v.hasPreviousBCHealthNumber)"
+                    :items='radioOptionsNoYes'/>
+                  <div class="text-danger"
+                    v-if="$v.hasPreviousBCHealthNumber.$dirty && !$v.hasPreviousBCHealthNumber.required"
+                    aria-live="assertive">Please indicate whether the child has a previous BC Personal Health Number.</div>
+                  <div v-if="hasPreviousBCHealthNumber === 'Y'" class="tabbed-section">
+                    <PhnInput 
+                      className="mt-3"
+                      :id="'bc-phn-' + index"
+                      :name="'bc-phn-' + index"
+                      label="The child's previous B.C. Personal Health Number (optional)" 
+                      v-model="previousBCHealthNumber"
+                      placeholder="1111 111 111"
+                      @blur="handleBlurField($v.previousBCHealthNumber)"
+                      :inputStyle='mediumStyles' />
+                    <div class="text-danger"
+                      v-if="$v.previousBCHealthNumber.$dirty && !$v.previousBCHealthNumber.phnValidator"
+                      aria-live="assertive">Invalid Personal Health Number</div>
+                  </div>
+                  <div v-if="showDischargeInputs">
+                    <Radio
+                      label='Has the child been released from the Canadian Armed Forces or an institution?'
+                      :id="'been-released-' + index"
+                      :name="'been-released-' + index"
+                      v-model='hasBeenReleasedFromInstitution'
+                      className="mt-3"
+                      @blur="handleBlurField($v.hasBeenReleasedFromInstitution)"
+                      :items='radioOptionsNoYes' />
+                    <div class="text-danger"
+                      v-if="$v.hasBeenReleasedFromInstitution.$dirty && !$v.hasBeenReleasedFromInstitution.required"
+                      aria-live="assertive">Please indicate whether the child has been released from an institution.</div>
+                  </div>
+                  <div v-if="showDischargeInputs && hasBeenReleasedFromInstitution === 'Y'" class="tabbed-section">
+                    <DateInput label='Discharge date'
+                      :id="'discharge-date-' + index"
+                      :name="'discharge-date-' + index"
+                      className='mt-3'
+                      @blur="handleBlurField($v.dischargeDate)"
+                      @processDate="handleProcessDateDischarge($event)"
+                      v-model='dischargeDate' />
+                    <div class="text-danger"
+                      v-if="$v.dischargeDate.$dirty && !$v.dischargeDate.required"
+                      aria-live="assertive">Discharge date is required.</div>
+                    <div class="text-danger"
+                      v-if="$v.dischargeDate.$dirty && !$v.dischargeDate.dateDataValidator"
+                      aria-live="assertive">Invalid discharge date.</div>
+                    <div class="text-danger"
+                      v-if="$v.dischargeDate.$dirty && !$v.dischargeDate.dischargeDateValidator"
+                      aria-live="assertive">Discharge date cannot be before the child's date of birth.</div>
+                    <div class="text-danger"
+                      v-if="$v.dischargeDate.$dirty && !$v.dischargeDate.pastDateValidator"
+                      aria-live="assertive">Discharge date cannot be in the future.</div>
+                  </div>
+              </div>
             </div>
+            <div class="col-md-5 mt-3">
+              <TipBox>
+                  <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer.</p>
+              </TipBox>
             </div>
         </div>
+        <div v-if="requestSchoolInfo">
+          <h2 class="mt-3">School Information</h2>
+          <p class="m-0">Enter information of the school that this child is attending (must be in full time attendance)</p>
+          <hr/>
+          <Input label='School name'
+            :id="'school-name-' + index"
+            className='mt-3'
+            maxlength="50"
+            v-model='schoolName'
+            @blur="handleBlurField($v.schoolName)"
+            :inputStyle='mediumStyles' />
+          <div class="text-danger"
+            v-if="$v.schoolName.$dirty && !$v.schoolName.required"
+            aria-live="assertive">School name is required.</div>
+          <div class="text-danger" v-if="$v.schoolName.$dirty && !$v.schoolName.schoolNameContentValidator" aria-live="assertive">School name must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+          <Input label="Full street address, rural route, PO box or general delivery"
+            :id="'school-address-line1-' + index"
+            className='mt-3'
+            v-model="schoolAddressLine1"
+            maxlength="25"
+            @blur="handleBlurField($v.schoolAddressLine1)"
+            :inputStyle='mediumStyles' />
+          <div class="text-danger" v-if="$v.schoolAddressLine1.$dirty && !$v.schoolAddressLine1.required" aria-live="assertive">Street address is required.</div>
+          <div class="text-danger"
+              v-if="$v.schoolAddressLine1.$dirty && !$v.schoolAddressLine1.addressLineContentValidator"
+              aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+          <Input label="Address Line 2 (optional)"
+            :id="'school-address-line2-' + index"
+            className='mt-3'
+            v-model="schoolAddressLine2"
+            maxlength="25"
+            @blur="handleBlurField($v.schoolAddressLine2)" 
+            :inputStyle='mediumStyles' />
+          <div class="text-danger"
+              v-if="$v.schoolAddressLine2.$dirty && !$v.schoolAddressLine2.addressLineContentValidator"
+              aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+          <Input label="Address Line 3 (optional)"
+            :id="'school-address-line3-' + index"
+            className='mt-3'
+            v-model="schoolAddressLine3"
+            maxlength="25"
+            @blur="handleBlurField($v.schoolAddressLine3)"
+            :inputStyle='mediumStyles' />
+          <div class="text-danger"
+              v-if="$v.schoolAddressLine3.$dirty && !$v.schoolAddressLine3.addressLineContentValidator"
+              aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+          <Input label="City"
+            :id="'school-city-' + index"
+            className='mt-3'
+            v-model="schoolCity"
+            maxlength="25"
+            @blur="handleBlurField($v.schoolCity)"
+            :inputStyle='mediumStyles' />
+          <div class="text-danger" v-if="$v.schoolCity.$dirty && !$v.schoolCity.required" aria-live="assertive">City is required.</div>
+          <div class="text-danger" v-if="$v.schoolCity.$dirty && !$v.schoolCity.cityStateProvinceContentValidator" aria-live="assertive">City must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters.</div>
+          <div v-if="schoolCountry !== 'Canada'"> 
+            <Input label="Province or state"
+              :id="'school-province-' + index"
+              className='mt-3'
+              maxlength="25"
+              v-model="schoolProvinceOrState"
+              @blur="handleBlurField($v.schoolProvinceOrState)"
+              :inputStyle='mediumStyles' />
+            <div class="text-danger" v-if="$v.schoolProvinceOrState.$dirty && !$v.schoolProvinceOrState.required" aria-live="assertive">Province/state is required.</div>
+            <div class="text-danger" v-if="$v.schoolProvinceOrState.$dirty && !$v.schoolProvinceOrState.cityStateProvinceContentValidator" aria-live="assertive">Province/state must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters.</div>
+          </div>
+          <div v-else>
+              <RegionSelect
+                className="mt-3"
+                :id="'school-province-select-' + index"
+                :name="'school-province-select-' + index"
+                label="Province" 
+                v-model="schoolProvinceOrState"
+                :disablePlaceholder="true"
+                defaultOptionLabel="Please select a province"
+                @blur="handleBlurField($v.schoolProvinceOrState)"
+                :inputStyle='mediumStyles' />
+            <div class="text-danger" v-if="$v.schoolProvinceOrState.$dirty && !$v.schoolProvinceOrState.required" aria-live="assertive">Province is required.</div>
+          </div>
+          <CountrySelect 
+            className="mt-3"
+            :id="'school-country-select-' + index"
+            :name="'school-country-select-' + index"
+            label="Country" 
+            v-model="schoolCountry"
+            :disablePlaceholder="true"
+            defaultOptionLabel="Please select a country"
+            @blur="handleBlurField($v.schoolCountry)"
+            :inputStyle='mediumStyles' />
+          <div class="text-danger" v-if="$v.schoolCountry.$dirty && !$v.schoolCountry.required" aria-live="assertive">Country is required.</div>
+          <div v-if="schoolCountry === 'Canada'">
+            <PostalCodeInput label="Postal Code"
+              :id="'school-postal-code-' + index"
+              className='mt-3'
+              v-model="schoolPostalCode"
+              @blur="handleBlurField($v.schoolPostalCode)"
+              :inputStyle='smallStyles' />
+            <div class="text-danger" v-if="$v.schoolPostalCode.$dirty && !$v.schoolPostalCode.required" aria-live="assertive">Postal Code is required.</div>
+            <div class="text-danger" v-if="$v.schoolPostalCode.$dirty && !$v.schoolPostalCode.completePostalCodeValidator" aria-live="assertive">Must be in the format A1A 1A1.</div>
+          </div>
+          <div v-else>
+            <Input label="Postal Code or Zip Code"
+              :id="'school-zip-code-' + index"
+              className='mt-3'
+              maxlength="20"
+              v-model="schoolPostalCode"
+              @blur="handleBlurField($v.schoolPostalCode)"
+              :inputStyle='mediumStyles' />
+            <div class="text-danger" v-if="$v.schoolPostalCode.$dirty && !$v.schoolPostalCode.required" aria-live="assertive">Postal/Zip Code is required.</div>
+            <div class="text-danger" v-if="$v.schoolPostalCode.$dirty && !$v.schoolPostalCode.specialCharacterValidator" aria-live="assertive">Postal/Zip Code cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
+          </div>
+          <DateInput label="Original departure date from B.C. (if school is outside B.C.)"
+            :id="'school-departure-date-' + index"
+            class="mt-3"
+            v-model="schoolDepartureDate"
+            @blur="handleBlurField($v.schoolDepartureDate)"
+            @processDate="handleProcessDateSchoolDeparture($event)" />
+          <div class="text-danger" v-if="schoolProvinceOrState !== 'British Columbia' && $v.schoolDepartureDate.$dirty && !$v.schoolDepartureDate.required" aria-live="assertive">School departure date is required.</div>
+          <div class="text-danger" v-if="$v.schoolDepartureDate.$dirty && !$v.schoolDepartureDate.dateDataValidator" aria-live="assertive">Invalid school departure date.</div>
+          <div class="text-danger" v-if="$v.schoolDepartureDate.$dirty && !$v.schoolDepartureDate.pastDateValidator" aria-live="assertive">School departure date cannot be in the future.</div>
+          <DateInput label="Expected school completion date"
+            :id="'school-completion-date-' + index"
+            class="mt-3"
+            v-model="schoolCompletionDate"
+            @blur="handleBlurField($v.schoolCompletionDate)"
+            @processDate="handleProcessDateSchoolCompletion($event)" />
+          <div class="text-danger"
+            v-if="$v.schoolCompletionDate.$dirty
+                && !$v.schoolCompletionDate.required"
+            aria-live="assertive">Expected school completion date is required.</div>
+          <div class="text-danger" v-if="$v.schoolCompletionDate.$dirty && !$v.schoolCompletionDate.dateDataValidator" aria-live="assertive">Invalid estimated school completion date.</div>
+          <div class="text-danger" v-if="$v.schoolCompletionDate.$dirty && !$v.schoolCompletionDate.futureDateValidator" aria-live="assertive">Estimated school completion date cannot be in the past.</div>
+          <Radio label="Will the child reside in BC after completing their studies?"
+            class="mt-3"
+            :id="'will-reside-in-bc-after-studies-' + index"
+            :name="'will-reside-in-bc-after-studies-' + index"
+            v-model="willResideInBCAfterStudies"
+            :items="radioOptionsNoYes"
+            @blur="handleBlurField($v.willResideInBCAfterStudies)"/>
+          <div class="text-danger"
+            v-if="$v.willResideInBCAfterStudies.$dirty
+                && !$v.willResideInBCAfterStudies.required"
+            aria-live="assertive">This field is required.</div>
+            <div class="text-danger"
+              v-if="$v.willResideInBCAfterStudies.$dirty
+                  && !$v.willResideInBCAfterStudies.permanentMoveValidator"
+              aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for Medical Services Plan coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
+        </div>
+        </div>
+      </div>
     </div>
 </template>
 
@@ -976,6 +984,7 @@ export default {
       lastName: null,
       birthDate: null,
       birthDateData: null,
+      personalHealthNumber: null,
       gender: null,
       
       status: null,
@@ -1033,6 +1042,7 @@ export default {
     this.middleName = this.childData.middleName;
     this.lastName = this.childData.lastName;
     this.birthDate = this.childData.birthDate;
+    this.personalHealthNumber = this.childData.personalHealthNumber;
     this.gender = this.childData.gender;
     this.status = this.childData.status;
     this.statusReason = this.childData.statusReason;
@@ -1072,9 +1082,7 @@ export default {
   },
   validations() {
     const validations = {
-      ageRange: {
-        required,
-      },
+      ageRange: {},
       firstName: {
         required,
         nameValidator,
@@ -1094,45 +1102,27 @@ export default {
         birthDateYouthValidator: optionalValidator(birthDateYouthValidator),
         birthDateStudentValidator: optionalValidator(birthDateStudentValidator),
       },
-      gender: {
-        required,
-      },
-      status: {
-        required,
-      },
-      statusReason: {
-        required,
-      },
-      citizenshipSupportDocumentType: {
-        required,
-      },
-      citizenshipSupportDocuments: {
-        required,
-      },
-      isNameChanged: {
-        required,
-      },
+      personalHealthNumber: {},
+      gender: {},
+      status: {},
+      statusReason: {},
+      citizenshipSupportDocumentType: {},
+      citizenshipSupportDocuments: {},
+      isNameChanged: {},
       nameChangeSupportDocumentType: {},
       nameChangeSupportDocuments: {},
       livedInBCSinceBirth: {},
-      madePermanentMove: { 
-        required,
-        permanentMoveValidator: optionalValidator(permanentMoveValidator),
-      },
+      madePermanentMove: {},
       moveFromOrigin: {},
       previousHealthNumber: {},
       recentBCMoveDate: {},
       canadaArrivalDate: {},
-      outsideBCLast12Months: {
-        required,
-      },
+      outsideBCLast12Months: {},
       outsideBCLast12MonthsReason: {},
       outsideBCLast12MonthsDestination: {},
       outsideBCLast12MonthsDepartureDate: {},
       outsideBCLast12MonthsReturnDate: {},
-      hasPreviousBCHealthNumber: {
-        required,
-      },
+      hasPreviousBCHealthNumber: {},
       previousBCHealthNumber: {},
       hasBeenReleasedFromInstitution: {},
       dischargeDate: {},
@@ -1149,72 +1139,97 @@ export default {
       willResideInBCAfterStudies: {},
     }
 
-    if (this.isNameChanged === 'Y') {
-      validations.nameChangeSupportDocumentType.required = required;
-      validations.nameChangeSupportDocuments.required = required;
+    if (this.requestAgeRange) {
+      validations.ageRange.required = required;
     }
 
-    if (this.showLivedInBCSinceBirth) {
-      validations.livedInBCSinceBirth.required = required;
-    }
-
-    if (this.showOriginTextField || this.showCountrySelector || this.showProvinceSelector) {
-      validations.moveFromOrigin.required = required;
-      validations.moveFromOrigin.cityStateProvinceContentValidator = cityStateProvinceContentValidator;
-    }
-
-    if (this.showProvinceSelector) {
-      validations.moveFromOrigin.nonBCValidator = nonBCValidator;
+    if (this.requestPersonalHealthNumber) {
+      validations.personalHealthNumber.required = required;
+      validations.personalHealthNumber.phnValidator = optionalValidator(phnValidator);
     }
     
-    if (this.showCountrySelector) {
-      validations.moveFromOrigin.nonCanadaValidator = nonCanadaValidator;
+    if (this.requestGender) {
+      validations.gender.required = required;
     }
 
-    if (this.showMoveDateInputs) {
-      validations.recentBCMoveDate.required = dateDataRequiredValidator(this.recentBCMoveDateData);
-      validations.recentBCMoveDate.dateDataValidator = dateDataValidator(this.recentBCMoveDateData);
-      validations.recentBCMoveDate.dateOrderValidator = dateOrderValidator;
-      validations.recentBCMoveDate.beforeBirthdateValidator = beforeBirthdateValidator;
-      validations.recentBCMoveDate.pastDateValidator = optionalValidator(pastDateValidator);
+    if (this.requestImmigrationStatus) {
+      validations.status.required = required;
+      validations.statusReason.required = required;
+      validations.citizenshipSupportDocumentType.required = required;
+      validations.citizenshipSupportDocuments.required = required;
+      validations.isNameChanged.required = required;
+      validations.madePermanentMove.required = required;
+      validations.madePermanentMove.permanentMoveValidator = optionalValidator(permanentMoveValidator);
+      validations.outsideBCLast12Months.required = required;
+      validations.hasPreviousBCHealthNumber.required = required;
+
+      if (this.isNameChanged === 'Y') {
+        validations.nameChangeSupportDocumentType.required = required;
+        validations.nameChangeSupportDocuments.required = required;
+      }
+
+      if (this.showLivedInBCSinceBirth) {
+        validations.livedInBCSinceBirth.required = required;
+      }
+
+      if (this.showOriginTextField || this.showCountrySelector || this.showProvinceSelector) {
+        validations.moveFromOrigin.required = required;
+        validations.moveFromOrigin.cityStateProvinceContentValidator = cityStateProvinceContentValidator;
+      }
+
+      if (this.showProvinceSelector) {
+        validations.moveFromOrigin.nonBCValidator = nonBCValidator;
+      }
       
-      validations.canadaArrivalDate.required = this.canadaArrivalDateLabel === 'Arrival date in Canada' ? dateDataRequiredValidator(this.canadaArrivalDateData) : () => true,
-      validations.canadaArrivalDate.dateDataValidator = dateDataValidator(this.canadaArrivalDateData);
-      validations.canadaArrivalDate.dateOrderValidator = optionalValidator(dateOrderValidator);
-      validations.canadaArrivalDate.beforeBirthdateValidator = optionalValidator(beforeBirthdateValidator);
-      validations.canadaArrivalDate.pastDateValidator = optionalValidator(pastDateValidator);
-    }
+      if (this.showCountrySelector) {
+        validations.moveFromOrigin.nonCanadaValidator = nonCanadaValidator;
+      }
 
-    if (this.outsideBCLast12Months === 'Y') {
-      validations.outsideBCLast12MonthsReason.required = required;
-      validations.outsideBCLast12MonthsReason.reasonDestinationContentValidator = reasonDestinationContentValidator;
-      validations.outsideBCLast12MonthsDestination.required = required;
-      validations.outsideBCLast12MonthsDestination.reasonDestinationContentValidator = reasonDestinationContentValidator;
-      validations.outsideBCLast12MonthsDepartureDate.required = dateDataRequiredValidator(this.outsideBCLast12MonthsDepartureDateData);
-      validations.outsideBCLast12MonthsDepartureDate.dateDataValidator = dateDataValidator(this.outsideBCLast12MonthsDepartureDateData);
-      validations.outsideBCLast12MonthsDepartureDate.departureDateValidator = optionalValidator(departureDateValidator);
+      if (this.showMoveDateInputs) {
+        validations.recentBCMoveDate.required = dateDataRequiredValidator(this.recentBCMoveDateData);
+        validations.recentBCMoveDate.dateDataValidator = dateDataValidator(this.recentBCMoveDateData);
+        validations.recentBCMoveDate.dateOrderValidator = dateOrderValidator;
+        validations.recentBCMoveDate.beforeBirthdateValidator = beforeBirthdateValidator;
+        validations.recentBCMoveDate.pastDateValidator = optionalValidator(pastDateValidator);
+        
+        validations.canadaArrivalDate.required = this.canadaArrivalDateLabel === 'Arrival date in Canada' ? dateDataRequiredValidator(this.canadaArrivalDateData) : () => true,
+        validations.canadaArrivalDate.dateDataValidator = dateDataValidator(this.canadaArrivalDateData);
+        validations.canadaArrivalDate.dateOrderValidator = optionalValidator(dateOrderValidator);
+        validations.canadaArrivalDate.beforeBirthdateValidator = optionalValidator(beforeBirthdateValidator);
+        validations.canadaArrivalDate.pastDateValidator = optionalValidator(pastDateValidator);
+      }
 
-      validations.outsideBCLast12MonthsReturnDate.required = dateDataRequiredValidator(this.outsideBCLast12MonthsReturnDateData);
-      validations.outsideBCLast12MonthsReturnDate.dateDataValidator = dateDataValidator(this.outsideBCLast12MonthsReturnDateData);
-      validations.outsideBCLast12MonthsReturnDate.returnDateValidator = optionalValidator(returnDateValidator); 
-    }
+      if (this.outsideBCLast12Months === 'Y') {
+        validations.outsideBCLast12MonthsReason.required = required;
+        validations.outsideBCLast12MonthsReason.reasonDestinationContentValidator = reasonDestinationContentValidator;
+        validations.outsideBCLast12MonthsDestination.required = required;
+        validations.outsideBCLast12MonthsDestination.reasonDestinationContentValidator = reasonDestinationContentValidator;
+        validations.outsideBCLast12MonthsDepartureDate.required = dateDataRequiredValidator(this.outsideBCLast12MonthsDepartureDateData);
+        validations.outsideBCLast12MonthsDepartureDate.dateDataValidator = dateDataValidator(this.outsideBCLast12MonthsDepartureDateData);
+        validations.outsideBCLast12MonthsDepartureDate.departureDateValidator = optionalValidator(departureDateValidator);
 
-    if (this.hasPreviousBCHealthNumber === 'Y') {
-      validations.previousBCHealthNumber.phnValidator = optionalValidator(phnValidator);
-    }
+        validations.outsideBCLast12MonthsReturnDate.required = dateDataRequiredValidator(this.outsideBCLast12MonthsReturnDateData);
+        validations.outsideBCLast12MonthsReturnDate.dateDataValidator = dateDataValidator(this.outsideBCLast12MonthsReturnDateData);
+        validations.outsideBCLast12MonthsReturnDate.returnDateValidator = optionalValidator(returnDateValidator); 
+      }
 
-    if (this.showDischargeInputs) {
-      validations.hasBeenReleasedFromInstitution.required = required;
-      
-      if (this.hasBeenReleasedFromInstitution === 'Y') {
-        validations.dischargeDate.required = dateDataRequiredValidator(this.dischargeDateData);
-        validations.dischargeDate.dateDataValidator = dateDataValidator(this.dischargeDateData);
-        validations.dischargeDate.dischargeDateValidator = optionalValidator(dischargeDateValidator);
-        validations.dischargeDate.pastDateValidator = optionalValidator(pastDateValidator);
+      if (this.hasPreviousBCHealthNumber === 'Y') {
+        validations.previousBCHealthNumber.phnValidator = optionalValidator(phnValidator);
+      }
+
+      if (this.showDischargeInputs) {
+        validations.hasBeenReleasedFromInstitution.required = required;
+        
+        if (this.hasBeenReleasedFromInstitution === 'Y') {
+          validations.dischargeDate.required = dateDataRequiredValidator(this.dischargeDateData);
+          validations.dischargeDate.dateDataValidator = dateDataValidator(this.dischargeDateData);
+          validations.dischargeDate.dischargeDateValidator = optionalValidator(dischargeDateValidator);
+          validations.dischargeDate.pastDateValidator = optionalValidator(pastDateValidator);
+        }
       }
     }
 
-    if (this.ageRange === ChildAgeTypes.Child19To24) {
+    if (this.requestSchoolInfo) {
       validations.schoolName.required = required;
       validations.schoolName.schoolNameContentValidator = schoolNameContentValidator;
       validations.schoolAddressLine1.required = required;
@@ -1261,6 +1276,7 @@ export default {
           middleName: this.middleName,
           lastName: this.lastName,
           birthDate: this.birthDate,
+          personalHealthNumber: this.personalHealthNumber,
           gender: this.gender,
           
           status: this.status,
@@ -1352,6 +1368,9 @@ export default {
       this.saveData();
     },
     birthDate() {
+      this.saveData();
+    },
+    personalHealthNumber() {
       this.saveData();
     },
     gender() {
@@ -1537,6 +1556,27 @@ export default {
     },
   },
   computed: {
+    requestAgeRange() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP;
+    },
+    requestGender() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP;
+    },
+    requestPersonalHealthNumber() {
+      return !this.$store.state.enrolmentModule.isApplyingForMSP;
+    },
+    requestImmigrationStatus() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP;
+    },
+    requestMovingInfo() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP
+        && this.citizenshipSupportDocuments.length > 0 
+        && (this.isNameChanged === 'N' || this.nameChangeSupportDocuments.length > 0);
+    },
+    requestSchoolInfo() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP
+        && this.ageRange === this.childAgeTypes.Child19To24;
+    },
     citizenshipSupportDocumentOptions() {
       let options;
 

@@ -153,6 +153,7 @@ export default {
         middleName: null,
         lastName: null,
         birthDate: null,
+        personalHealthNumber: null,
         gender: null,
         
         status: null,
