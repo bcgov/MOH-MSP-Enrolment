@@ -168,13 +168,13 @@
                 v-if="$v.mailProvince.$dirty && !$v.mailProvince.provinceContentValidator"
                 aria-live="assertive">Province or State must contain letters and may include special characters such as hyphens, periods, apostrophes, and blank characters.</div>
               <CountrySelect class="mt-3"
-                label="Country"
+                label="Jurisdiction"
                 id="mail-country"
                 v-model="mailCountry"
                 :inputStyle='mediumStyles'
                 :disablePlaceholder="true"
                 @blur="handleBlurField($v.mailCountry)" />
-              <div class="text-danger" v-if="$v.mailCountry.$dirty && !$v.mailCountry.required" aria-live="assertive">Country is required.</div>
+              <div class="text-danger" v-if="$v.mailCountry.$dirty && !$v.mailCountry.required" aria-live="assertive">Jurisdiction is required.</div>
 
               <div v-if="mailCountry === 'Canada'">
                 <PostalCodeInput 

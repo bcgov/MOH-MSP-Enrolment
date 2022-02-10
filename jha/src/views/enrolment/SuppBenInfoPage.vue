@@ -528,7 +528,53 @@ export default {
     return validations;
   },
   methods: {
+    setEmptyFields() {
+      //No Spouse
+      if (this.hasSpouse === "N") {
+        this.spouseSBIncome = "0";
+      }
+
+      //No children
+      if (this.hasChildren === "N") {
+        this.numChildren = "0";
+        this.numDisabilityChildren = "0";
+        this.numAttendantNursingChildren = "0";
+        this.claimedChildCareExpenses = "0";
+      }
+
+      if (this.numChildren === 0) {
+        this.hasChildren = "N";
+        this.numDisabilityChildren = "0";
+        this.numAttendantNursingChildren = "0";
+        this.claimedChildCareExpenses = "0";
+      }
+
+      //No children in recipients list
+      if (!this.selectedDisabilityRecipients.includes("child")) {
+        this.numDisabilityChildren = "0";
+      }
+
+      if (!this.selectedAttendantNursingRecipients.includes("child")) {
+        this.numAttendantNursingChildren = "0";
+      }
+
+      //No expenses/credits
+      if (this.hasAttendantNursingExpenses === "N") {
+        this.attendantNursingReceipts = [];
+        this.selectedAttendantNursingRecipients = [];
+      }
+
+      if (this.hasDisabilityCredit === "N") {
+        this.selectedDisabilityRecipients = [];
+      }
+
+      //No RDSP
+      if (this.hasRDSP === "N") {
+        this.sbRDSPAmount = "0";
+      }
+    },
     saveData() {
+      this.setEmptyFields();
       this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_NOA_YEAR}`, this.selectedNOAYear);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_SB_INCOME}`, this.ahSBIncome);
       this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_SB_INCOME}`, this.spouseSBIncome);
@@ -636,13 +682,22 @@ export default {
       }
     },
     hasDisabilityCredit(value) {
-      if (this.pageLoaded && value === 'N') {
+      if (this.pageLoaded && value === "N") {
         this.selectedDisabilityRecipients = [];
+        this.numDisabilityChildren = 0;
+        this.$v.selectedDisabilityRecipients.$reset();
+        this.$v.numDisabilityChildren.$reset();
       }
     },
     hasAttendantNursingExpenses(value) {
-      if (this.pageLoaded && value === 'N') {
+      if (this.pageLoaded && value === "N") {
         this.selectedAttendantNursingRecipients = [];
+        this.numAttendantNursingChildren = 0;
+        //could clear this.attendantNursingReceipts = [] if we wanted as well
+        //I'm leaving it out right now to save on the effort of re-uploading
+        this.$v.selectedAttendantNursingRecipients.$reset();
+        this.$v.numAttendantNursingChildren.$reset();
+        this.$v.attendantNursingReceipts.$reset();
       }
     }
   },

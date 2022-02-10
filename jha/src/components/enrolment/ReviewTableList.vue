@@ -351,29 +351,53 @@ export default {
           label: 'Status in Canada',
           value: statusInCanada,
         });
-        if (child.arrivalToBCDate) {
+        childData.push({
+          label: 'Support Document Type',
+          value: child.citizenshipSupportDocumentType,
+        });
+        if (child.recentBCMoveDate) {
           childData.push({
             label: 'Date arrived in B.C.',
-            value: formatDate(child.arrivalToBCDate),
+            value: formatDate(child.recentBCMoveDate),
           });
         }
-        if (child.arrivalToCanadaDate) {
+        if (child.canadaArrivalDate) {
           childData.push({
             label: 'Date arrived in Canada',
-            value: formatDate(child.arrivalToCanadaDate),
+            value: formatDate(child.canadaArrivalDate),
           });
         }
-        if (child.movedFrom) {
-          childData.push({
-            label: 'Moved from province/country',
-            value: child.movedFrom,
+        childData.push({
+          label: 'Name changed?',
+          value: child.isNameChanged === 'Y' ? 'Yes' : 'No',
+        });
+        if(child.isNameChanged === 'Y') {
+            childData.push({
+            label: 'Name change document type',
+            value: child.nameChangeSupportDocumentType,
           });
+        }        
+        childData.push({
+          label: 'Lived in BC since birth?',
+          value: child.livedInBCSinceBirth === 'Y' ? 'Yes' : 'No',
+        });
+        if (child.livedInBCSinceBirth !== 'Y') {
+            childData.push({
+            label: 'Location child moved from:',
+            value: child.moveFromOrigin,
+          });
+          if (child.previousHealthNumber) {
+            childData.push({
+              label: 'Health number from previous residence:',
+              value: child.previousHealthNumber,
+            });
+          }
         }
+        childData.push({
+          label: 'Outside B.C. for more than 30 days in the last year?',
+          value: child.outsideBCLast12Months === 'Y' ? 'Yes' : 'No',
+        });
         if (child.outsideBCLast12Months === 'Y') {
-          childData.push({
-            label: 'Outside B.C. for more than 30 days',
-            value: 'Yes',
-          });
           childData.push({
             label: 'Reason for leaving',
             value: child.outsideBCLast12MonthsReason,
@@ -391,12 +415,32 @@ export default {
             value: formatDate(child.outsideBCLast12MonthsReturnDate),
           });
         }
-        const isFullTimeStudent = child.ageRange === ChildAgeTypes.Child19To24;
-        if (isFullTimeStudent) {
-          childData.push({
-            label: 'Full-time student',
-            value: 'Yes',
+        childData.push({
+          label: 'Has previous BC Health number?',
+          value: child.hasPreviousBCHealthNumber === 'Y' ? 'Yes' : 'No',
+        });
+        if (child.hasPreviousBCHealthNumber === 'Y') {
+            childData.push({
+            label: 'Previous BC Health number?',
+            value: child.previousBCHealthNumber,
           });
+        }        
+        childData.push({
+          label: 'Has child been released from institution?',
+          value: child.hasBeenReleasedFromInstitution === 'Y' ? 'Yes' : 'No',
+        });
+        if (child.hasBeenReleasedFromInstitution === 'Y') {
+          childData.push({
+          label: 'Discharge date:',
+          value: formatDate(child.dischargeDate),
+        });
+        }        
+        const isFullTimeStudent = child.ageRange === ChildAgeTypes.Child19To24;
+        childData.push({
+          label: 'Full-time student',
+          value: isFullTimeStudent ? 'Yes' : 'No',
+        });
+        if (isFullTimeStudent) {
           const willResideInBC = child.willResideInBCAfterStudies === 'Y';
           childData.push({
             label: 'Will you reside in BC upon completion of your studies',
@@ -434,12 +478,19 @@ export default {
             label: 'Country',
             value: child.schoolCountry,
           });
+          childData.push({
+            label: 'School departure date:',
+            value: formatDate(child.schoolDepartureDate),
+          });
+          childData.push({
+            label: 'Estimated school completion date:',
+            value: formatDate(child.schoolCompletionDate),
+          });
         }
         const documentCount = child.citizenshipSupportDocuments.length + child.nameChangeSupportDocuments.length;
-        const fileLabel = ' file' + documentCount > 1 ? 's' : '';
         childData.push({
           label: 'Documents',
-          value: documentCount + fileLabel,
+          value: `${documentCount} ${this.getFilePlural(documentCount)}`,
         });
         chldrnData.push(childData);
       }
@@ -461,6 +512,75 @@ export default {
     },
     suppBenData() {
       const items = [];
+      const selectedYear = this.$store.state.enrolmentModule.selectedNOAYear;
+      items.push({
+        label: `Account Holder net income for ${selectedYear}`,
+        value: moneyFormatter.format(this.$store.state.enrolmentModule.ahSBIncome),
+      });
+      if (this.$store.state.enrolmentModule.hasSpouse === "Y"){
+        items.push({
+          label: `Spouse/common-law partner's net income from ${selectedYear}`,
+          value: moneyFormatter.format(this.$store.state.enrolmentModule.spouseSBIncome),
+        });
+      }
+      items.push({
+        label: `Number of children on MSP account`,
+        value: this.$store.state.enrolmentModule.numChildren,
+      });
+      if (this.$store.state.enrolmentModule.hasChildren === "Y") {
+          items.push({
+          label: `Claimed childcare expenses`,
+          value: moneyFormatter.format(this.$store.state.enrolmentModule.claimedChildCareExpenses),
+        });
+      }
+      items.push({
+        label: `Claimed disability tax credit in ${selectedYear}`,
+        value: this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y' ? 'Yes' : 'No',
+      });
+      if (this.$store.state.enrolmentModule.selectedDisabilityRecipients.length > 0){
+        items.push({
+          label: `Who claimed`,
+          value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedDisabilityRecipients),
+        });
+      }
+      if (this.$store.state.enrolmentModule.hasChildren === "Y" && this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y') {
+          items.push({
+          label: `Number of children eligible for a disability tax credit`,
+          value: this.$store.state.enrolmentModule.numDisabilityChildren,
+        });
+      }
+      items.push({
+        label: `Registered Disability Savings Plan?`,
+        value: this.$store.state.enrolmentModule.hasRDSP === "Y" ? "Yes" : "No",
+      });
+      if (this.$store.state.enrolmentModule.hasRDSP === "Y") {
+        items.push({
+          label: `RDSP amount`,
+          value: moneyFormatter.format(this.$store.state.enrolmentModule.sbRDSPAmount),
+        });
+      }
+      
+      items.push({
+        label: `Claimed attendant or nursing home expenses`,
+        value: this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y' ?  'Yes' : 'No',
+      });
+      if (this.$store.state.enrolmentModule.selectedAttendantNursingRecipients.length > 0){
+          items.push({
+          label: `Who claimed`,
+          value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedAttendantNursingRecipients),
+        });
+      }
+      if (this.$store.state.enrolmentModule.hasChildren === "Y" && this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y') {
+        items.push({
+          label: `Number of children claiming attendant care expenses`,
+          value: this.$store.state.enrolmentModule.numAttendantNursingChildren,
+        });
+      }
+      const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length;
+      items.push({
+        label: 'Documents',
+        value: `${documentCount} ${this.getFilePlural(documentCount)}`,
+      });
       return items;
     },
     contactData() {
@@ -531,6 +651,12 @@ export default {
           value: this.$store.state.enrolmentModule.mailCountry,
         });
       }
+      if (this.$store.state.enrolmentModule.phone) {
+          items.push({
+          label: 'Phone',
+          value: this.$store.state.enrolmentModule.phone,
+        });
+      } 
       return items;
     },
   },
@@ -590,6 +716,34 @@ export default {
         return `Child #${index + 1}`;
       }
       return 'Child';
+    },
+    getWhoClaimed(array) {
+      //takes an array containing some combination of the values ah, spouse, and child
+      //returns a new string of those same array entries but capitalized, fully spelled out, and comma separated
+      let result = "";
+      for (const [index, recipient] of array.entries()) {
+        switch (recipient) {
+          case "ah":
+            result += `Account Holder`;
+            break;
+          case "spouse":
+            result += `Spouse`;
+            break;
+          case "child":
+            result += `Child`;
+            break;
+          default:
+            result += `${recipient}`;
+        }
+        if (index !== array.length - 1) {
+          result += ", ";
+        }
+      }
+      return result;
+    },
+    getFilePlural(count) {
+      //takes an integer, returns single or plural form of word
+      return (count === 1) ? 'file' : 'files';
     }
   }
 }
