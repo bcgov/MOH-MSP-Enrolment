@@ -529,30 +529,48 @@ export default {
   },
   methods: {
     correlateData() {
+      //No Spouse
+      if (this.hasSpouse === "N") {
+        this.spouseSBIncome = "0";
+      }
+
+      //No children
       if (this.hasChildren === "N") {
-        this.numChildren = 0;
-        this.numDisabilityChildren = 0;
-        this.numAttendantNursingChildren = 0;
+        this.numChildren = "0";
+        this.numDisabilityChildren = "0";
+        this.numAttendantNursingChildren = "0";
         this.claimedChildCareExpenses = "0";
       }
 
       if (this.numChildren === 0) {
         this.hasChildren = "N";
-        this.numDisabilityChildren = 0;
-        this.numAttendantNursingChildren = 0;
+        this.numDisabilityChildren = "0";
+        this.numAttendantNursingChildren = "0";
         this.claimedChildCareExpenses = "0";
       }
 
+      //No children in recipients list
+      if (!this.selectedDisabilityRecipients.includes("child")) {
+        this.numDisabilityChildren = "0";
+      }
+
+      if (!this.selectedAttendantNursingRecipients.includes("child")) {
+        this.numAttendantNursingChildren = "0";
+      }
+
+      //No expenses/credits
       if (this.hasAttendantNursingExpenses === "N") {
         this.attendantNursingReceipts = [];
+        this.selectedAttendantNursingRecipients = [];
       }
 
+      if (this.hasDisabilityCredit === "N") {
+        this.selectedDisabilityRecipients = [];
+      }
+
+      //No RDSP
       if (this.hasRDSP === "N") {
         this.sbRDSPAmount = "0";
-      }
-
-      if (this.hasSpouse === "N") {
-        this.spouseSBIncome = "0";
       }
     },
     saveData() {
