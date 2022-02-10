@@ -649,7 +649,7 @@ export default {
         items.push({
           label: 'Country',
           value: this.$store.state.enrolmentModule.mailCountry,
-        });       
+        });
       }
       if (this.$store.state.enrolmentModule.phone) {
           items.push({
