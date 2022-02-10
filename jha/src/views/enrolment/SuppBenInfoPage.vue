@@ -528,7 +528,7 @@ export default {
     return validations;
   },
   methods: {
-    correlateData() {
+    setEmptyFields() {
       //No Spouse
       if (this.hasSpouse === "N") {
         this.spouseSBIncome = "0";
@@ -574,7 +574,7 @@ export default {
       }
     },
     saveData() {
-      this.correlateData();
+      this.setEmptyFields();
       this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_NOA_YEAR}`, this.selectedNOAYear);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_SB_INCOME}`, this.ahSBIncome);
       this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_SB_INCOME}`, this.spouseSBIncome);
