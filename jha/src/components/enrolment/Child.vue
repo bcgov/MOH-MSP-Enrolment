@@ -101,6 +101,8 @@
             :name="'child-status-' + index"
             label="Immigration status in Canada"
             class='mt-3'
+            defaultOptionLabel="Please select"
+            :disablePlaceholder="true"
             @blur="handleBlurField($v.status)"
             v-model='status'
             :options='citizenshipStatusOptions'
@@ -153,6 +155,8 @@
               :name="'citizen-support-document-type-' + index"
               :id="'citizen-support-document-type-' + index"
               class="mb-3"
+              defaultOptionLabel="Please select"
+              :disablePlaceholder="true"
               v-model="citizenshipSupportDocumentType"
               @blur="handleBlurField($v.citizenshipSupportDocumentType)"
               :options="citizenshipSupportDocumentOptions"
@@ -204,6 +208,8 @@
                 :name="'name-change-doc-type-' + index"
                 :id="'name-change-doc-type-' + index"
                 class="mb-3"
+                defaultOptionLabel="Please select"
+                :disablePlaceholder="true"
                 v-model="nameChangeSupportDocumentType"
                 @blur="handleBlurField($v.nameChangeSupportDocumentType)"
                 :options="nameChangeSupportDocumentOptions"

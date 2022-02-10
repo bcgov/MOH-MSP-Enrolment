@@ -152,6 +152,8 @@
             <Select 
               id='spouse-status'
               name='spouse-status'
+              defaultOptionLabel="Please select"
+              :disablePlaceholder="true"
               label="Immigration status in Canada"
               class='mt-3'
               v-model='spouseStatus'
@@ -193,6 +195,8 @@
                 label="Document Type"
                 name="citizen-support-document-type"
                 id="citizen-support-document-type"
+                defaultOptionLabel="Please select"
+                :disablePlaceholder="true"
                 class="mb-3"
                 v-model="spouseCitizenshipSupportDocumentType"
                 :options="citizenshipSupportDocumentOptions"
@@ -246,6 +250,8 @@
                   label="Document Type"
                   name="name-change-doc-type"
                   id="name-change-doc-type"
+                  defaultOptionLabel="Please select"
+                  :disablePlaceholder="true"
                   class="mb-3"
                   v-model="spouseNameChangeSupportDocumentType"
                   :options="nameChangeSupportDocumentOptions"

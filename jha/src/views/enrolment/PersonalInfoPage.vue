@@ -131,6 +131,8 @@
           <hr/>
           <Select label="Immigration status in Canada"
             id="immigration-status"
+            defaultOptionLabel="Please select"
+            :disablePlaceholder="true"
             v-model="citizenshipStatus"
             :options="citizenshipStatusOptions"
             :inputStyle="mediumStyles"
@@ -170,6 +172,8 @@
           <hr/>
           <Select label="Document Type"
             id="citizen-support-document-type"
+            defaultOptionLabel="Please select"
+            :disablePlaceholder="true"
             v-model="citizenshipSupportDocumentType"
             :options="citizenshipSupportDocumentsOptions"
             :inputStyle="mediumStyles"
@@ -225,6 +229,8 @@
           <hr/>
           <Select label="Document Type"
             id="name-change-doc-type"
+            defaultOptionLabel="Please select"
+            :disablePlaceholder="true"
             class="mt-3"
             v-model="nameChangeSupportDocumentType"
             :options="nameChangeSupportDocumentOptions"
