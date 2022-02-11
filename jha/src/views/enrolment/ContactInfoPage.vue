@@ -68,7 +68,7 @@
                 @blur="handleBlurField($v.resProvince)"
                 :disabled='true' />
               <CountrySelect class="mt-3"
-                label="Country"
+                label="Jurisdiction"
                 id="res-country"
                 v-model="resCountry"
                 :inputStyle='mediumStyles'
