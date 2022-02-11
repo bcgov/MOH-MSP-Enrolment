@@ -1634,7 +1634,9 @@ export default {
        || this.status !== this.statusOptions.Citizen || this.livedInBCSinceBirth === 'N';
     },
     showOriginTextField() {
-      return this.status === this.statusOptions.TemporaryResident;
+      return this.status === this.statusOptions.TemporaryResident
+        || (this.status === this.statusOptions.PermanentResident 
+        && this.statusReason === this.canadianStatusReasons.LivingInBCWithoutMSP);
     },
     showMovedPermanentlyQuestion() {
       // Not sure if this always shows but it seems like it so far
