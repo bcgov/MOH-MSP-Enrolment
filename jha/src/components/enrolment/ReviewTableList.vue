@@ -357,10 +357,9 @@ export default {
         });
       //}
       const documentCount = this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments.length + this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments.length;
-      const fileLabel = ' file' + documentCount > 1 ? 's' : '';
       items.push({
         label: 'Documents',
-        value: documentCount + fileLabel,
+        value: `${documentCount} ${this.getFilePlural(documentCount)}`,
       });
       return items;
     },
