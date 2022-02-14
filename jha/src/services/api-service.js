@@ -270,7 +270,7 @@ class ApiService {
       jsonPayload.supplementaryBenefits = {
         uuid: formState.sbUuid,
         powerOfAttorney: 'N',
-        assistanceYear: formState.selectedNOAYear, // Not always the same as "taxYear". Goes to INF026.
+        assistanceYear: formState.selectedNOAYear, // TBD. Not always the same as "taxYear". Goes to INF026.
         taxYear: formState.selectedNOAYear,
         numberOfTaxYears: 1, // This should always be 1 for JHA.
         adjustedNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
@@ -281,7 +281,7 @@ class ApiService {
         totalDeductions: parseInt(formState.sbTotalDeductions) || 0,
         totalNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childCareExpense: parseInt(formState.claimedChildCareExpenses) || 0,
-        netIncomeLastYear: 0, // Account holder net income. Fallback to 0. DB as "netIncome".
+        netIncomeLastYear: parseInt(formState.ahSBIncome) || 0, // Account holder net income. Fallback to 0. DB as "netIncome".
         numChildren: parseInt(formState.numChildren) || 0,
         numDisabled: parseInt(formState.numDisabilityChildren) || 0,
         spouseIncomeLine236: parseInt(formState.spouseSBIncome) || 0,
