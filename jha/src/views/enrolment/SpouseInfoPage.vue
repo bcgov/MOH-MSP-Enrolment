@@ -1349,7 +1349,9 @@ export default {
         || this.spouseStatusReason !== this.canadianStatusReasons.LivingInBCWithoutMSP; 
     },
     showOriginTextField() {
-      return this.spouseStatus === this.statusOptions.TemporaryResident;
+      return this.spouseStatus === this.statusOptions.TemporaryResident
+        || (this.spouseStatus === this.statusOptions.PermanentResident
+        && this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP);
     },
     showMovedPermanentlyQuestion() {
       return this.spouseStatusReason !== this.canadianStatusReasons.LivingInBCWithoutMSP 

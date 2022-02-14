@@ -1133,6 +1133,8 @@ export default {
     },
     requestFromProvinceOrCountry() {
       return this.citizenshipStatus === StatusInCanada.TemporaryResident
+        || (this.citizenshipStatus === StatusInCanada.PermanentResident 
+        && this.citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP)
     },
     requestLivedInBCSinceBirth() {
       return this.citizenshipStatus === StatusInCanada.Citizen
