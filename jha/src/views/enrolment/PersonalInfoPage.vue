@@ -268,7 +268,7 @@
           <div class="row">
             <div class="col-md-7">
               <div v-if="requestFromProvinceOrCountry">
-                <Input label="From which province or country?"
+                <Input label="From which province or jurisdiction?"
                   id="from-province-or-country"
                   class="mt-3"
                   maxlength="25"
@@ -330,10 +330,10 @@
                     aria-live="assertive">Province of origin cannot be British Columbia.</div>
                 </div>
                 <div v-else-if="requestCountryMoveInfo">
-                  <CountrySelect label="Which country are you moving from?"
+                  <CountrySelect label="Which jurisdiction are you moving from?"
                     id="country-of-origin"
                     class="mt-3"
-                    defaultOptionLabel="Please select a country"
+                    defaultOptionLabel="Please select a jurisdiction"
                     v-model="moveFromOrigin"
                     :inputStyle="mediumStyles"
                     :disablePlaceholder="true"
@@ -341,7 +341,7 @@
                   <div class="text-danger"
                     v-if="$v.moveFromOrigin.$dirty
                       && !$v.moveFromOrigin.required"
-                    aria-live="assertive">Country of origin is required.</div>
+                    aria-live="assertive">Jurisdiction of origin is required.</div>
                 </div>
                 <div v-if="requestArrivalInBCInfo">
                   <DateInput :label="`${citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'Most recent move to B.C.' : 'Arrival date in B.C.'}`"
