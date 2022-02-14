@@ -71,6 +71,7 @@ export default {
   spouseMoveFromOrigin: 'Alberta',
   spouseRecentBCMoveDate: new Date('2020-04-03'),
   spouseCanadaArrivalDate: new Date('2019-04-03'),
+  spousePreviousHealthNumber: '1234567',
   spouseOutsideBCLast12Months: 'Y',
   spouseOutsideBCLast12MonthsReason: 'Vacation',
   spouseOutsideBCLast12MonthsDestination: 'Florida',

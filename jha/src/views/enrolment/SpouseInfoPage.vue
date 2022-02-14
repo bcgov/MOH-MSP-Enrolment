@@ -723,6 +723,7 @@ import {
   SET_SPOUSE_MOVE_FROM_ORIGIN,
   SET_SPOUSE_RECENT_BC_MOVE_DATE,
   SET_SPOUSE_CANADA_ARRIVAL_DATE,
+  SET_SPOUSE_PREVIOUS_HEALTH_NUMBER,
   SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS,
   SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_REASON,
   SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION,
@@ -1218,6 +1219,7 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MOVE_FROM_ORIGIN, this.spouseMoveFromOrigin);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_RECENT_BC_MOVE_DATE, this.spouseRecentBCMoveDate);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_CANADA_ARRIVAL_DATE, this.spouseCanadaArrivalDate);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_PREVIOUS_HEALTH_NUMBER, this.spousePreviousHealthNumber);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS, this.spouseOutsideBCLast12Months);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_REASON, this.spouseOutsideBCLast12MonthsReason);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION, this.spouseOutsideBCLast12MonthsDestination);
