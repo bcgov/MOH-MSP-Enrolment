@@ -270,18 +270,18 @@ class ApiService {
       jsonPayload.supplementaryBenefits = {
         uuid: formState.sbUuid,
         powerOfAttorney: 'N',
-        assistanceYear: `${new Date().getFullYear()}`, // Should this always be the current year?
+        assistanceYear: formState.selectedNOAYear, // TBD. Not always the same as "taxYear". Goes to INF026.
         taxYear: formState.selectedNOAYear,
-        numberOfTaxYears: 1, // This should always be 1? Possibly 2.
+        numberOfTaxYears: 1, // This should always be 1 for JHA.
         adjustedNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childDeduction: parseInt(formState.childDeduction) || 0,
-        deductions: 0, // Is this the same as "totalDeductions"?
+        deductions: 0, // TBD. Stored as "deductionsDifference" in DB.
         disabilityDeduction: parseInt(formState.ahDisabilityCreditDeduction) || 0, // Does this include account holder and spouse?
         sixtyFiveDeduction: parseInt(formState.ah65Deduction) || 0,
-        totalDeductions: parseInt(formState.sbTotalDeductions) || 0, // Is this the same as "deductions"?
+        totalDeductions: parseInt(formState.sbTotalDeductions) || 0,
         totalNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childCareExpense: parseInt(formState.claimedChildCareExpenses) || 0,
-        netIncomeLastYear: 70000, // Is this used for JHA? Fallback to 0.
+        netIncomeLastYear: parseInt(formState.ahSBIncome) || 0, // Account holder net income. Fallback to 0. DB as "netIncome".
         numChildren: parseInt(formState.numChildren) || 0,
         numDisabled: parseInt(formState.numDisabilityChildren) || 0,
         spouseIncomeLine236: parseInt(formState.spouseSBIncome) || 0,
@@ -353,7 +353,7 @@ class ApiService {
     }
     if (formState.isApplyingForSuppBen) {
       sbImages.forEach((image) => {
-        promises.push(this._sendAttachment(image, formState.fpcUuid, formState.captchaToken));
+        promises.push(this._sendAttachment(image, formState.sbUuid, formState.captchaToken));
       });
     }
     return Promise.all(promises);
