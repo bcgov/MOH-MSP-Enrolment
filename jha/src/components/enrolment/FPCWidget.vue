@@ -66,6 +66,18 @@ const BLUE = '#036';
 const YELLOW = '#f3cd65';
 const GREEN = '#486446';
 
+const formatCurrencyNumber = (value) => {
+  if (typeof value !== 'number') {
+    return '$0';
+  }
+  const formatterOptions = {
+    style: 'currency',
+    currency: 'USD',
+  };
+  const formatter = new Intl.NumberFormat('en-US', formatterOptions);
+  return formatter.format(value).replace('.00', '');
+};
+
 export default {
   name: 'FPCWidget',
   components: {
@@ -84,6 +96,8 @@ export default {
     return {
       isLoading: false,
       isSystemDown: false,
+      deductibleTiers: [],
+      pre1939DeductibleTiers: [],
     };
   },
   async created() {
@@ -123,10 +137,10 @@ export default {
       return adjustedIncome;
     },
     distributionBarItems() {
-      if (this.isLoading) {
-        return null;
-      }
       const tier = this.getCoverageTier();
+      if (!tier) {
+        return [];
+      }
       if (tier.maximum === 0) {
         return [
           {
@@ -139,26 +153,26 @@ export default {
         return [
           {
             color: YELLOW,
-            barLabel: this.formatCurrencyNumber(tier.maximum),
-            label: `PharmaCare pays ${tier.pharmaCarePortion}% and you pay ${100 - tier.pharmaCarePortion}% of eligible drug costs (between ${this.formatCurrencyNumber(tier.deductible)} and ${this.formatCurrencyNumber(tier.maximum)})`
+            barLabel: formatCurrencyNumber(tier.maximum),
+            label: `PharmaCare pays ${tier.pharmaCarePortion}% and you pay ${100 - tier.pharmaCarePortion}% of eligible drug costs (between ${formatCurrencyNumber(tier.deductible)} and ${formatCurrencyNumber(tier.maximum)})`
           },
           {
             color: GREEN,
             barLabel: '&infin;',
-            label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${this.formatCurrencyNumber(tier.maximum)})`
+            label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${formatCurrencyNumber(tier.maximum)})`
           }
         ];
       } else if (tier.pharmaCarePortion === 100) {
         return [
           {
             color: BLUE,
-            barLabel: this.formatCurrencyNumber(tier.deductible),
-            label: `You pay 100% of eligible drug costs (between $0 and ${this.formatCurrencyNumber(tier.deductible)})`
+            barLabel: formatCurrencyNumber(tier.deductible),
+            label: `You pay 100% of eligible drug costs (between $0 and ${formatCurrencyNumber(tier.deductible)})`
           },
           {
             color: GREEN,
             barLabel: '&infin;',
-            label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${this.formatCurrencyNumber(tier.maximum)})`
+            label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${formatCurrencyNumber(tier.maximum)})`
           },
         ];
       } else {
@@ -170,30 +184,19 @@ export default {
           },
           {
             color: YELLOW,
-            barLabel: this.formatCurrencyNumber(tier.maximum),
-            label: `PharmaCare pays ${tier.pharmaCarePortion}% and you pay ${100 - tier.pharmaCarePortion}% of eligible drug costs (between ${this.formatCurrencyNumber(tier.deductible)} and ${this.formatCurrencyNumber(tier.maximum)})`
+            barLabel: formatCurrencyNumber(tier.maximum),
+            label: `PharmaCare pays ${tier.pharmaCarePortion}% and you pay ${100 - tier.pharmaCarePortion}% of eligible drug costs (between ${formatCurrencyNumber(tier.deductible)} and ${formatCurrencyNumber(tier.maximum)})`
           },
           {
             color: GREEN,
             barLabel: '&infin;',
-            label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${this.formatCurrencyNumber(tier.maximum)})`
+            label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${formatCurrencyNumber(tier.maximum)})`
           },
         ];
       }
     }
   },
   methods: {
-    formatCurrencyNumber(value) {
-      if (typeof value !== 'number') {
-        return '$0';
-      }
-      const formatterOptions = {
-        style: 'currency',
-        currency: 'USD',
-      };
-      const formatter = new Intl.NumberFormat('en-US', formatterOptions);
-      return formatter.format(value).replace('.00', '');
-    },
     fetchCoverageData() {
       const formState = this.$store.state.enrolmentModule;
       this.isLoading = true;
@@ -214,14 +217,33 @@ export default {
     },
     getCoverageTier() {
       const ahBirthdate = this.value.ahBirthdate;
-      if (isBefore(ahBirthdate, parseISO('1939-01-01'))) {
-        return this.pre1939DeductibleTiers.find((item) => {
+      if (isBefore(ahBirthdate, parseISO('1939-01-01'))
+        && Array.isArray(this.pre1939DeductibleTiers)
+        && this.pre1939DeductibleTiers.length > 0) {
+        let maxCoverageTier = this.pre1939DeductibleTiers[0];
+        this.pre1939DeductibleTiers.forEach((item) => {
+          if (parseFloat(item.endRange) > parseFloat(maxCoverageTier.endRange)) {
+            maxCoverageTier = item;
+          }
+        });
+        const coverageTier = this.pre1939DeductibleTiers.find((item) => {
           return this.adjustedIncome >= item.startRange && this.adjustedIncome <= item.endRange;
         });
+        return coverageTier ? coverageTier : maxCoverageTier;
+      } else if (Array.isArray(this.deductibleTiers)
+        && this.deductibleTiers.length > 0) {
+        let maxCoverageTier = this.deductibleTiers[0];
+        this.deductibleTiers.forEach((item) => {
+          if (parseFloat(item.endRange) > parseFloat(maxCoverageTier.endRange)) {
+            maxCoverageTier = item;
+          }
+        });
+        const coverageTier = this.deductibleTiers.find((item) => {
+          return this.adjustedIncome >= item.startRange && this.adjustedIncome <= item.endRange;
+        });
+        return coverageTier ? coverageTier : maxCoverageTier;
       } else {
-        return this.deductibleTiers.find((item) => {
-          return this.adjustedIncome >= item.startRange && this.adjustedIncome <= item.endRange;
-        });
+        return null;
       }
     },
     formatServerData(arr) {
@@ -237,8 +259,8 @@ export default {
     }
   },
   filters: {
-    currencyFilter() {
-      //this.formatCurrencyNumber(value);
+    currencyFilter(value) {
+      return formatCurrencyNumber(value);
     }
   }
 }
