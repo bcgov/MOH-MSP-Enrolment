@@ -723,6 +723,7 @@ import {
   SET_SPOUSE_MOVE_FROM_ORIGIN,
   SET_SPOUSE_RECENT_BC_MOVE_DATE,
   SET_SPOUSE_CANADA_ARRIVAL_DATE,
+  SET_SPOUSE_PREVIOUS_HEALTH_NUMBER,
   SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS,
   SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_REASON,
   SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION,
@@ -1198,6 +1199,7 @@ export default {
       this.navigateToNextPage();
     },
     saveData() {
+      this.setEmptyFields();
       this.$store.dispatch(enrolmentModule + '/' + SET_HAS_SPOUSE, this.hasSpouse);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_STATUS, this.spouseStatus);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_STATUS_REASON, this.spouseStatusReason);
@@ -1218,6 +1220,7 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MOVE_FROM_ORIGIN, this.spouseMoveFromOrigin);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_RECENT_BC_MOVE_DATE, this.spouseRecentBCMoveDate);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_CANADA_ARRIVAL_DATE, this.spouseCanadaArrivalDate);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_PREVIOUS_HEALTH_NUMBER, this.spousePreviousHealthNumber);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS, this.spouseOutsideBCLast12Months);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_REASON, this.spouseOutsideBCLast12MonthsReason);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION, this.spouseOutsideBCLast12MonthsDestination);
@@ -1270,6 +1273,72 @@ export default {
     },
     handleProcessDateDischarge(data) {
       this.spouseDischargeDateData = data;
+    },
+    setEmptyFields() {
+      //No spouse
+      if (this.hasSpouse !== "Y") {
+        this.spouseStatus = null;
+        this.spouseStatusReason = null;
+        this.spouseCitizenshipSupportDocumentType = null;
+        this.spouseCitizenshipSupportDocuments = [];
+        this.spouseIsNameChanged = null;
+        this.spouseNameChangeSupportDocumentType = null;
+        this.spouseNameChangeSupportDocuments = [];
+        this.spouseFirstName = null;
+        this.spouseMiddleName = null;
+        this.spouseLastName = null;
+        this.spouseBirthDate = null;
+        this.spousePersonalHealthNumber = null;
+        this.spouseSocialInsuranceNumber = null;
+        this.spouseGender = null;
+        this.spouseLivedInBCSinceBirth = null;
+        this.spouseMadePermanentMove = null;
+        this.spouseMoveFromOrigin = null;
+        this.spouseRecentBCMoveDate = null;
+        this.spouseCanadaArrivalDate = null;
+        this.spouseOutsideBCLast12Months = null;
+        this.spouseOutsideBCLast12MonthsReason = null;
+        this.spouseOutsideBCLast12MonthsDestination = null;
+        this.spouseOutsideBCLast12MonthsDepartureDate = null;
+        this.spouseOutsideBCLast12MonthsReturnDate = null;
+        this.spousePreviousHealthNumber = null;
+        this.spouseHasPreviousBCHealthNumber = null;
+        this.spousePreviousBCHealthNumber = null;
+        this.spouseBeenReleasedFromInstitution = null;
+        this.spouseDischargeDate = null;
+      }
+
+      //Name change
+      if (this.spouseIsNameChanged !== "Y") {
+        this.spouseNameChangeSupportDocumentType = null;
+        this.spouseNameChangeSupportDocuments = [];
+      }
+
+      //Moved to BC
+      if (this.spouseLivedInBCSinceBirth === "Y") {
+        this.spouseMoveFromOrigin = null;
+        this.spouseRecentBCMoveDate = null;
+        this.spouseCanadaArrivalDate = null;
+        this.spousePreviousHealthNumber = null;
+      }
+
+      //Left BC
+      if (this.spouseOutsideBCLast12Months !== "Y") {
+        this.spouseOutsideBCLast12MonthsReason = null;
+        this.spouseOutsideBCLast12MonthsDestination = null;
+        this.spouseOutsideBCLast12MonthsDepartureDate = null;
+        this.spouseOutsideBCLast12MonthsReturnDate = null;
+      }
+
+      //BC Health Number
+      if (this.spouseHasPreviousBCHealthNumber !== "Y") {
+        this.spousePreviousBCHealthNumber = null;
+      }
+
+      //Discharged from army/institution
+      if (this.spouseBeenReleasedFromInstitution !== "Y") {
+        this.spouseDischargeDate = null;
+      }
     }
   },
   computed: {
