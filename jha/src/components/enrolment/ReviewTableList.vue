@@ -250,9 +250,9 @@ export default {
         value: hasSpouse ? 'Yes' : 'No',
       });
 
-      // if (!hasSpouse) {
-      //   return items;
-      // }
+      if (!hasSpouse) {
+        return items;
+      }
 
       const firstName = this.$store.state.enrolmentModule.spouseFirstName;
       const middleName = this.$store.state.enrolmentModule.spouseMiddleName ? this.$store.state.enrolmentModule.spouseMiddleName + ' ' : '';
@@ -266,10 +266,12 @@ export default {
         label: 'Is Name Changed',
         value: this.$store.state.enrolmentModule.spouseIsNameChanged === "Y" ? 'Yes' : 'No',
       });
-      items.push({
-        label: 'Name Change Support Document Type',
-        value: this.$store.state.enrolmentModule.spouseNameChangeSupportDocumentType,
-      });
+      if (this.$store.state.enrolmentModule.spouseIsNameChanged === "Y") {
+        items.push({
+          label: 'Name Change Support Document Type',
+          value: this.$store.state.enrolmentModule.spouseNameChangeSupportDocumentType,
+        });
+      }
       const gender = this.$store.state.enrolmentModule.spouseGender === 'F' ? 'Female' : 'Male';
       items.push({
         label: 'Gender',
@@ -293,7 +295,7 @@ export default {
           label: 'Lived in BC Since Birth',
           value: this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth === 'Y' ? 'Yes' : 'No',
         });
-      //if (this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth !== 'Y') {
+      if (this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth !== 'Y') {
         items.push({
           label: 'Date arrived in B.C.',
           value: formatDate(this.$store.state.enrolmentModule.spouseRecentBCMoveDate),
@@ -306,20 +308,22 @@ export default {
           label: 'Moved from province/country',
           value: this.$store.state.enrolmentModule.spouseMoveFromOrigin,
         });
-        items.push({
-          label: 'Has spouse moved permanently?',
-          value: this.$store.state.enrolmentModule.spouseMadePermanentMove === "Y" ? 'Yes' : 'No',
-        });
-      //}
+      }
       items.push({
-          label: 'Previous health number',
-          value: this.$store.state.enrolmentModule.spousePreviousHealthNumber,
-        });
+        label: 'Has spouse moved permanently?',
+        value: this.$store.state.enrolmentModule.spouseMadePermanentMove === "Y" ? 'Yes' : 'No',
+      });
+      if (this.$store.state.enrolmentModule.spousePreviousHealthNumber) {
+        items.push({
+            label: 'Previous health number',
+            value: this.$store.state.enrolmentModule.spousePreviousHealthNumber,
+          });
+      }
       items.push({
           label: 'Outside B.C. for more than 30 days',
           value: this.$store.state.enrolmentModule.spouseOutsideBCLast12Months === "Y" ? 'Yes' : 'No',
         });
-      //if (this.$store.state.enrolmentModule.spouseOutsideBCLast12Months === 'Y') {        
+      if (this.$store.state.enrolmentModule.spouseOutsideBCLast12Months === 'Y') {        
         items.push({
           label: 'Reason for leaving',
           value: this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsReason,
@@ -336,26 +340,28 @@ export default {
           label: 'Return date',
           value: formatDate(this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsReturnDate),
         });
-      //}
+      }
       items.push({
           label: 'Has Previous BC Health Number',
-          value: formatDate(this.$store.state.enrolmentModule.spouseHasPreviousBCHealthNumber === "Y" ? 'Yes' : 'No'),
+          value: this.$store.state.enrolmentModule.spouseHasPreviousBCHealthNumber === "Y" ? 'Yes' : 'No',
         });
-      items.push({
-          label: 'Previous BC Health Number',
-          value: formatDate(this.$store.state.enrolmentModule.spousePreviousBCHealthNumber),
-        });
+      if (this.$store.state.enrolmentModule.spouseHasPreviousBCHealthNumber === 'Y' || this.$store.state.enrolmentModule.spousePreviousBCHealthNumber) {
+        items.push({
+            label: 'Previous BC Health Number',
+            value: this.$store.state.enrolmentModule.spousePreviousBCHealthNumber,
+          });
+      }
       const releasedFromForces = this.$store.state.enrolmentModule.spouseBeenReleasedFromInstitution === 'Y';
       items.push({
         label: 'Released from Canadian Forces',
         value: releasedFromForces ? 'Yes' : 'No',
       });
-      //if (releasedFromForces) {
+      if (releasedFromForces) {
         items.push({
           label: 'Date discharged',
           value: formatDate(this.$store.state.enrolmentModule.spouseDischargeDate),
         });
-      //}
+      }
       const documentCount = this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments.length + this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments.length;
       items.push({
         label: 'Documents',
