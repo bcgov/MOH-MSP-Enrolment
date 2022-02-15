@@ -278,17 +278,17 @@
               <div v-if="showOriginTextField">
                   <Input 
                     className="mt-3"
-                    label="From which province or country?"
+                    label="From which province or jurisdiction?"
                     maxlength="25"
                     v-model="moveFromOrigin"
                     @blur="handleBlurField($v.moveFromOrigin)"
                     :inputStyle='mediumStyles' />
                   <div class="text-danger"
                     v-if="$v.moveFromOrigin.$dirty && !$v.moveFromOrigin.required"
-                    aria-live="assertive">Province or country of origin is required.</div>
+                    aria-live="assertive">Province or jurisdiction of origin is required.</div>
                   <div class="text-danger"
                     v-if="$v.moveFromOrigin.$dirty && !$v.moveFromOrigin.cityStateProvinceContentValidator"
-                    aria-live="assertive">Province or country of origin must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters..</div>
+                    aria-live="assertive">Province or jurisdiction of origin must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters.</div>
               </div>
               <div v-if="showMovedPermanentlyQuestion">
                   <Radio
@@ -330,18 +330,18 @@
                       className="mt-3"
                       :id="'country-select-' + index"
                       :name="'country-select-' + index"
-                      label="Which country is the child moving from?" 
+                      label="Which jurisdiction is the child moving from?" 
                       v-model="moveFromOrigin"
                       :disablePlaceholder="true"
-                      defaultOptionLabel="Please select a country"
+                      defaultOptionLabel="Please select a jurisdiction"
                       @blur="handleBlurField($v.moveFromOrigin)"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
                       v-if="$v.moveFromOrigin.$dirty && !$v.moveFromOrigin.required"
-                      aria-live="assertive">Country of origin is required.</div>
+                      aria-live="assertive">Jursidiction of origin is required.</div>
                     <div class="text-danger"
                       v-if="moveFromOrigin === 'Canada'"
-                      aria-live="assertive">Country of origin cannot be Canada.</div>
+                      aria-live="assertive">Jursidiction of origin cannot be Canada.</div>
                   </div>
                   <div v-if="showMoveDateInputs">
                     <DateInput 
@@ -683,13 +683,13 @@
             className="mt-3"
             :id="'school-country-select-' + index"
             :name="'school-country-select-' + index"
-            label="Country" 
+            label="Jurisdiction" 
             v-model="schoolCountry"
             :disablePlaceholder="true"
-            defaultOptionLabel="Please select a country"
+            defaultOptionLabel="Please select a jurisdiction"
             @blur="handleBlurField($v.schoolCountry)"
             :inputStyle='mediumStyles' />
-          <div class="text-danger" v-if="$v.schoolCountry.$dirty && !$v.schoolCountry.required" aria-live="assertive">Country is required.</div>
+          <div class="text-danger" v-if="$v.schoolCountry.$dirty && !$v.schoolCountry.required" aria-live="assertive">Jurisdiction is required.</div>
           <div v-if="schoolCountry === 'Canada'">
             <PostalCodeInput label="Postal Code"
               :id="'school-postal-code-' + index"
@@ -1634,7 +1634,9 @@ export default {
        || this.status !== this.statusOptions.Citizen || this.livedInBCSinceBirth === 'N';
     },
     showOriginTextField() {
-      return this.status === this.statusOptions.TemporaryResident;
+      return this.status === this.statusOptions.TemporaryResident
+        || (this.status === this.statusOptions.PermanentResident 
+        && this.statusReason === this.canadianStatusReasons.LivingInBCWithoutMSP);
     },
     showMovedPermanentlyQuestion() {
       // Not sure if this always shows but it seems like it so far

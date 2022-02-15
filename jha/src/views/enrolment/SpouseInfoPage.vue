@@ -305,7 +305,7 @@
                 <div v-if="showOriginTextField">
                   <Input 
                       className="mt-3"
-                      label="From which province or country?"
+                      label="From which province or jurisdiction?"
                       maxlength="25"
                       v-model="spouseMoveFromOrigin"
                       @blur="handleBlurField($v.spouseMoveFromOrigin)"
@@ -313,7 +313,7 @@
                   <div class="text-danger"
                       v-if="$v.spouseMoveFromOrigin.$dirty
                         && !$v.spouseMoveFromOrigin.required"
-                      aria-live="assertive">Province or country of origin is required.</div>
+                      aria-live="assertive">Province or jurisdiction of origin is required.</div>
                 </div>
                 <div v-if="showMovedPermanentlyQuestion">
                   <Radio
@@ -352,18 +352,18 @@
                   <div v-if="showCountrySelector">
                     <CountrySelect 
                       className="mt-3"
-                      label="Which country is your spouse moving from?" 
+                      label="Which jurisdiction is your spouse moving from?" 
                       v-model="spouseMoveFromOrigin"
                       :disablePlaceholder="true"
-                      defaultOptionLabel="Please select a country"
+                      defaultOptionLabel="Please select a jurisdiction"
                       @blur="handleBlurField($v.spouseMoveFromOrigin)"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
                       v-if="$v.spouseMoveFromOrigin.$dirty && !$v.spouseMoveFromOrigin.required"
-                      aria-live="assertive">Country of origin is required.</div>
+                      aria-live="assertive">Jurisdiction of origin is required.</div>
                     <div class="text-danger"
                       v-if="spouseMoveFromOrigin === 'Canada'"
-                      aria-live="assertive">Country of origin cannot be Canada.</div>
+                      aria-live="assertive">Jurisdiction of origin cannot be Canada.</div>
                   </div>
                   <div v-if="showMoveDateInputs">
                     <DateInput 
@@ -1418,7 +1418,9 @@ export default {
         || this.spouseStatusReason !== this.canadianStatusReasons.LivingInBCWithoutMSP; 
     },
     showOriginTextField() {
-      return this.spouseStatus === this.statusOptions.TemporaryResident;
+      return this.spouseStatus === this.statusOptions.TemporaryResident
+        || (this.spouseStatus === this.statusOptions.PermanentResident
+        && this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP);
     },
     showMovedPermanentlyQuestion() {
       return this.spouseStatusReason !== this.canadianStatusReasons.LivingInBCWithoutMSP 

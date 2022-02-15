@@ -10,6 +10,8 @@ import { getCitizenshipType } from '@/constants/immigration-status-types';
 const BASE_API_PATH = '/ahdc/api';
 const SUBMIT_APPLICATION_URL = `${BASE_API_PATH}/jhaIntegration/application`;
 const SUBMIT_ATTACHMENT_URL = `${BASE_API_PATH}/submit-attachment`;
+const GET_DEDUCTIBLES_URL = `${BASE_API_PATH}/jhaIntegration/getDeductibles`;
+const MIDDLEWARE_VERSION_URL = `${BASE_API_PATH}/jhaIntegration/version`;
 
 class ApiService {
   sendApplication(formState) {
@@ -270,18 +272,18 @@ class ApiService {
       jsonPayload.supplementaryBenefits = {
         uuid: formState.sbUuid,
         powerOfAttorney: 'N',
-        assistanceYear: `${new Date().getFullYear()}`, // Should this always be the current year?
+        assistanceYear: `${new Date().getFullYear()}`,
         taxYear: formState.selectedNOAYear,
-        numberOfTaxYears: 1, // This should always be 1? Possibly 2.
+        numberOfTaxYears: 0,
         adjustedNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childDeduction: parseInt(formState.childDeduction) || 0,
-        deductions: 0, // Is this the same as "totalDeductions"?
-        disabilityDeduction: parseInt(formState.ahDisabilityCreditDeduction) || 0, // Does this include account holder and spouse?
+        deductions: parseInt(formState.childAdjustedDeduction) || 0, // Stored as "deductionsDifference" in DB.
+        disabilityDeduction: parseInt(formState.ahDisabilityCreditDeduction) || 0,
         sixtyFiveDeduction: parseInt(formState.ah65Deduction) || 0,
-        totalDeductions: parseInt(formState.sbTotalDeductions) || 0, // Is this the same as "deductions"?
+        totalDeductions: parseInt(formState.sbTotalDeductions) || 0,
         totalNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childCareExpense: parseInt(formState.claimedChildCareExpenses) || 0,
-        netIncomeLastYear: 70000, // Is this used for JHA? Fallback to 0.
+        netIncomeLastYear: parseInt(formState.ahSBIncome) || 0, // Account holder net income. DB as "netIncome".
         numChildren: parseInt(formState.numChildren) || 0,
         numDisabled: parseInt(formState.numDisabilityChildren) || 0,
         spouseIncomeLine236: parseInt(formState.spouseSBIncome) || 0,
@@ -353,7 +355,7 @@ class ApiService {
     }
     if (formState.isApplyingForSuppBen) {
       sbImages.forEach((image) => {
-        promises.push(this._sendAttachment(image, formState.fpcUuid, formState.captchaToken));
+        promises.push(this._sendAttachment(image, formState.sbUuid, formState.captchaToken));
       });
     }
     return Promise.all(promises);
@@ -387,6 +389,21 @@ class ApiService {
           reject(error);
         });
     });
+  }
+
+  getDeductibles(formState) {
+    const headers = this._getHeaders(formState.captchaToken);
+    const payload = {
+      uuid: formState.fpcUuid,
+      benefitYear: `${new Date().getFullYear()}`,
+      taxYear: `${new Date().getFullYear() - 1}`
+    };
+    return this._sendPostRequest(GET_DEDUCTIBLES_URL, headers, payload);
+  }
+
+  getMiddlewareVersion(token) {
+    const headers = this._getHeaders(token);
+    return axios.get(MIDDLEWARE_VERSION_URL, { headers });
   }
 
   _sendPostRequest(url, headers, payload) {

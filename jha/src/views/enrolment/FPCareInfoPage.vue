@@ -242,6 +242,7 @@ export default {
     },
     widgetData() {
       return {
+        ahBirthdate: this.$store.state.enrolmentModule.ahBirthdate,
         ahIncome: this.ahIncome,
         ahRDSP: this.ahRDSP,
         spouseIncome: this.spouseIncome,

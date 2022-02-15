@@ -184,7 +184,7 @@ export default {
           value: formatDate(this.$store.state.enrolmentModule.ahArrivalDateInCanada),
         });
         items.push({
-          label: 'Moved from province/country',
+          label: 'Moved from province/jurisdiction',
           value: this.$store.state.enrolmentModule.ahMoveFromOrigin,
         });
       }
@@ -305,7 +305,7 @@ export default {
           value: formatDate(this.$store.state.enrolmentModule.spouseCanadaArrivalDate),
         });
         items.push({
-          label: 'Moved from province/country',
+          label: 'Moved from province/jurisdiction',
           value: this.$store.state.enrolmentModule.spouseMoveFromOrigin,
         });
       }
@@ -522,7 +522,7 @@ export default {
             value: child.schoolPostalCode,
           });
           childData.push({
-            label: 'Country',
+            label: 'Jurisdiction',
             value: child.schoolCountry,
           });
           childData.push({
@@ -661,7 +661,7 @@ export default {
         value: this.$store.state.enrolmentModule.resPostalCode,
       });
       items.push({
-        label: 'Country',
+        label: 'Jurisdiction',
         value: this.$store.state.enrolmentModule.resCountry,
       });
       if (!this.$store.state.enrolmentModule.isMailSame) {
@@ -694,7 +694,7 @@ export default {
           value: this.$store.state.enrolmentModule.mailPostalCode,
         });
         items.push({
-          label: 'Country',
+          label: 'Jurisdiction',
           value: this.$store.state.enrolmentModule.mailCountry,
         });
       }
