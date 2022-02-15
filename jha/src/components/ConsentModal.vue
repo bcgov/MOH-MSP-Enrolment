@@ -50,7 +50,8 @@ import {
 import {
   MODULE_NAME as enrolmentModule,
   SET_CAPTCHA_TOKEN
-} from '../store/modules/enrolment-module';
+} from '@/store/modules/enrolment-module';
+import apiService from '@/services/api-service';
 
 export default {
   name: "ConsentModal",
@@ -91,9 +92,18 @@ export default {
     handleCaptchaVerified(captchaToken) {
       this.$store.dispatch(`${enrolmentModule}/${SET_CAPTCHA_TOKEN}`, captchaToken);
       this.isCaptchaValid = true;
+      this.logMiddlewareVersion();
+
       setTimeout(() => {
         this.focusableEls = this.getFocusableEls();
       }, 0);
+    },
+    logMiddlewareVersion() {
+      const captchaToken = this.$store.state.enrolmentModule.captchaToken;
+      apiService.getMiddlewareVersion(captchaToken)
+        .then((response) => {
+          console.log(`Middleware version: ${response.data}`);
+        });
     },
     closeModal() {
       this.$emit('close', true);

@@ -10,6 +10,8 @@ import { getCitizenshipType } from '@/constants/immigration-status-types';
 const BASE_API_PATH = '/ahdc/api';
 const SUBMIT_APPLICATION_URL = `${BASE_API_PATH}/jhaIntegration/application`;
 const SUBMIT_ATTACHMENT_URL = `${BASE_API_PATH}/submit-attachment`;
+const GET_DEDUCTIBLES_URL = `${BASE_API_PATH}/jhaIntegration/getDeductibles`;
+const MIDDLEWARE_VERSION_URL = `${BASE_API_PATH}/jhaIntegration/version`;
 
 class ApiService {
   sendApplication(formState) {
@@ -387,6 +389,23 @@ class ApiService {
           reject(error);
         });
     });
+  }
+
+  getDeductibles(formState) {
+    const headers = this._getHeaders(formState.captchaToken);
+    const payload = {
+      uuid: formState.applicationUuid,
+      clientName: 'ppiweb',
+      processDate: '20200204',
+      benefitYear: `${new Date().getFullYear()}`,
+      taxYear: `${new Date().getFullYear() - 1}`
+    };
+    return this._sendPostRequest(GET_DEDUCTIBLES_URL, headers, payload);
+  }
+
+  getMiddlewareVersion(token) {
+    const headers = this._getHeaders(token);
+    return axios.get(MIDDLEWARE_VERSION_URL, { headers });
   }
 
   _sendPostRequest(url, headers, payload) {
