@@ -14,17 +14,25 @@
         <div class="row">
           <div class="col-md-8">
             <div>
-              <p class="font-weight-bold">Upload your Canada Revenue Agency Notice of Assessment or Reassessment for 2020</p>
+              <p class="font-weight-bold">Upload your Canada Revenue Agency Notice of Assessment or Reassessment for {{selectedNOAYear}}</p>
               <hr/>
-              <FileUploader v-model="ahCRADocuments" />
+              <FileUploader v-model="ahCRADocuments"
+                :isZoomPortalEnabled="true"
+                modalElementTarget="#modal-target"
+                documentType="Account holder NOA/NOR support documents"
+                description="Account holder NOA/NOR" />
               <div class="text-danger"
                       v-if="$v.ahCRADocuments.$dirty && !$v.ahCRADocuments.required"
                       aria-live="assertive">File upload required.</div>
             </div>
             <div v-if="hasSpouse">
-              <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for 2020</p>
+              <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for {{selectedNOAYear}}</p>
               <hr/>
-              <FileUploader v-model="spouseCRADocuments" />
+              <FileUploader v-model="spouseCRADocuments"
+                :isZoomPortalEnabled="true"
+                modalElementTarget="#modal-target"
+                documentType="Spouse NOA/NOR support documents"
+                description="Spouse NOA/NOR" />
               <div class="text-danger"
                       v-if="$v.spouseCRADocuments.$dirty && !$v.spouseCRADocuments.required"
                       aria-live="assertive">File upload required.</div>
@@ -101,6 +109,7 @@ export default {
       ahCRADocuments: [],
       spouseCRADocuments: [],
       hasSpouse: false,
+      selectedNOAYear: null,
     };
   },
   created() {
@@ -112,6 +121,7 @@ export default {
     this.ahCRADocuments = this.$store.state.enrolmentModule.ahCRADocuments;
     this.spouseCRADocuments = this.$store.state.enrolmentModule.spouseCRADocuments;
     this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse !== 'N';
+    this.selectedNOAYear = this.$store.state.enrolmentModule.selectedNOAYear;
   },
   validations() {
     const validations = {
