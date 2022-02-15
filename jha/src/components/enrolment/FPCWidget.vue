@@ -206,7 +206,6 @@ export default {
         apiService.getDeductibles(formState)
           .then((response) => {
             this.isLoading = false;
-            console.log(response.data);
             resolve(response.data);
           })
           .catch((error) => {

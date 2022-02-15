@@ -394,9 +394,7 @@ class ApiService {
   getDeductibles(formState) {
     const headers = this._getHeaders(formState.captchaToken);
     const payload = {
-      uuid: formState.applicationUuid,
-      clientName: 'ppiweb',
-      processDate: '20200204',
+      uuid: formState.fpcUuid,
       benefitYear: `${new Date().getFullYear()}`,
       taxYear: `${new Date().getFullYear() - 1}`
     };
