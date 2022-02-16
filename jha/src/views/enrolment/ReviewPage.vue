@@ -13,9 +13,6 @@
         <hr/>
         <ReviewTableList :showEditButtons='true' 
                         tableBackgroundColor='#EEE'/>
-        <div v-if="isSystemUnavailable"
-            class="text-danger mt-3 mb-5"
-            aria-live="assertive">Unable to continue, system unavailable. Please try again later.</div>
       </div>
     </PageContent>
     <ContinueBar @continue='continueHandler()'/>
@@ -53,12 +50,6 @@ export default {
     PageContent,
     ContinueBar,
     ReviewTableList,
-  },
-  data: () => {
-    return {
-      isLoading: false,
-      isSystemUnavailable: false,
-    }
   },
   created() {
     logService.logNavigation(

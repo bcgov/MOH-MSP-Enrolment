@@ -41,7 +41,10 @@
       <Loader color="#000"
         size="24px" />
     </div>
-    <DistributionBar v-if="!isLoading"
+    <div v-if="isSystemUnavailable"
+      class="text-danger mt-3 mb-3"
+      aria-live="assertive">Unable to retrieve assistance levels, system unavailable.</div>
+    <DistributionBar v-if="!isLoading && !isSystemUnavailable"
       startingLabel="$0"
       :items="distributionBarItems"/>
   </div>
@@ -95,7 +98,7 @@ export default {
   data: () => {
     return {
       isLoading: false,
-      isSystemDown: false,
+      isSystemUnavailable: false,
       deductibleTiers: [],
       pre1939DeductibleTiers: [],
     };
@@ -105,14 +108,15 @@ export default {
     try {
       if (!apiData) {
         apiData = await this.fetchCoverageData();
+        if (!apiData || !apiData.assistanceLevels || !apiData.pre1939AssistanceLevels) {
+          throw new Error('response data does not include assistance levels.');
+        }
         this.$store.dispatch(`${appModule}/${SET_DEDUCTIBLES_API_DATA}`, apiData);
       }
       this.deductibleTiers = this.formatServerData(apiData.assistanceLevels) || [];
       this.pre1939DeductibleTiers = this.formatServerData(apiData.pre1939AssistanceLevels) || [];
     } catch (error) {
-      this.isSystemDown = true;
-      this.deductibleTiers = [];
-      this.pre1939DeductibleTiers = [];
+      this.isSystemUnavailable = true;
     }
   },
   computed: {
