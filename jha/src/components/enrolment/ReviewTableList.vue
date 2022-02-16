@@ -719,21 +719,25 @@ export default {
     contactData() {
       const items = [];
       items.push({
-        label: 'Residential Address',
+        label: 'Residential Address:',
         value: '',
       });
       items.push({
         label: 'Street Address 1',
         value: this.$store.state.enrolmentModule.resAddressLine1,
       });
-      items.push({
-        label: 'Street Address 2',
-        value: this.$store.state.enrolmentModule.resAddressLine2,
-      });
-      items.push({
-        label: 'Street Address 3',
-        value: this.$store.state.enrolmentModule.resAddressLine3,
-      });
+      if(this.$store.state.enrolmentModule.resAddressLine2) {
+        items.push({
+          label: 'Street Address 2',
+          value: this.$store.state.enrolmentModule.resAddressLine2,
+        });
+      }
+      if(this.$store.state.enrolmentModule.resAddressLine3) {
+        items.push({
+          label: 'Street Address 3',
+          value: this.$store.state.enrolmentModule.resAddressLine3,
+        });
+      }
       items.push({
         label: 'City',
         value: this.$store.state.enrolmentModule.resCity,
@@ -752,21 +756,25 @@ export default {
       });
       if (!this.$store.state.enrolmentModule.isMailSame) {
         items.push({
-          label: 'Mailing Address',
+          label: 'Mailing Address:',
           value: '',
         });
         items.push({
           label: 'Street Address 1',
           value: this.$store.state.enrolmentModule.mailAddressLine1,
         });
-        items.push({
-          label: 'Street Address 2',
-          value: this.$store.state.enrolmentModule.mailAddressLine2,
-        });
-        items.push({
-          label: 'Street Address 3',
-          value: this.$store.state.enrolmentModule.mailAddressLine3,
-        });
+        if(this.$store.state.enrolmentModule.mailAddressLine2) {
+          items.push({
+            label: 'Street Address 2',
+            value: this.$store.state.enrolmentModule.mailAddressLine2,
+          });
+        }
+        if (this.$store.state.enrolmentModule.mailAddressLine3) {
+          items.push({
+            label: 'Street Address 3',
+            value: this.$store.state.enrolmentModule.mailAddressLine3,
+          });
+        }
         items.push({
           label: 'City',
           value: this.$store.state.enrolmentModule.mailCity,
