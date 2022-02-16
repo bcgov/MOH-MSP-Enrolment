@@ -174,7 +174,23 @@ export default {
         label: 'Status in Canada',
         value: statusInCanada,
       });
-      if (this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth !== 'Y') {
+      items.push({
+        label: 'Support document type',
+        value: this.$store.state.enrolmentModule.ahCitizenshipSupportDocumentType,
+      });
+      items.push({
+        label: 'Is Name Changed',
+        value: this.$store.state.enrolmentModule.ahIsNameChanged === "Y" ? "Yes" : "No",
+      });
+      items.push({
+        label: 'Name Change Support Document Type',
+        value: this.$store.state.enrolmentModule.ahNameChangeSupportDocumentType,
+      });
+      items.push({
+          label: 'Lived in BC since birth?',
+          value: this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth === "Y" ? "Yes" : "No",
+        });
+      // if (this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth !== 'Y') {
         items.push({
           label: 'Date arrived in B.C.',
           value: formatDate(this.$store.state.enrolmentModule.ahArrivalDateInBC),
@@ -187,8 +203,20 @@ export default {
           label: 'Moved from province/jurisdiction',
           value: this.$store.state.enrolmentModule.ahMoveFromOrigin,
         });
-      }
-      if (this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months === 'Y') {
+        items.push({
+          label: 'Previous Health number',
+          value: this.$store.state.enrolmentModule.ahPreviousHealthNumber,
+        });
+      // }
+      items.push({
+        label: 'Has previous PHN?',
+        value: this.$store.state.enrolmentModule.ahHasPreviousPHN === "Y" ? "Yes" : "No",
+      });
+      items.push({
+        label: 'Previous PHN?',
+        value: this.$store.state.enrolmentModule.ahPreviousPHN,
+      });      
+      // if (this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months === 'Y') {
         items.push({
           label: 'Outside B.C. for more than 30 days',
           value: 'Yes',
@@ -209,7 +237,7 @@ export default {
           label: 'Return date',
           value: formatDate(this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReturnDate),
         });
-      }
+      // }
       const releasedFromForces = this.$store.state.enrolmentModule.ahIsReleasedFromArmedForces === 'Y';
       items.push({
         label: 'Released from Canadian Forces',
