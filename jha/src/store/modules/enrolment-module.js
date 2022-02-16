@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from 'uuid';
 import dummyData from '@/store/states/enrolment-module-dummy-data';
 import settings from '@/settings';
 import {
@@ -164,7 +165,7 @@ export default {
   namespaced: true,
   state: () => {
     const state = {
-      applicationUuid: null,
+      applicationUuid: uuidv4(),
       mspUuid: null,
       fpcUuid: null,
       sbUuid: null,
@@ -752,7 +753,7 @@ export default {
   },
   actions: {
     [RESET_FORM]({ commit }) {
-      commit(SET_APPLICATION_UUID, null);
+      commit(SET_APPLICATION_UUID, uuidv4());
       commit(SET_MSP_UUID, null);
       commit(SET_FPC_UUID, null);
       commit(SET_SB_UUID, null);
@@ -776,9 +777,9 @@ export default {
       commit(SET_MSG_CODE_FPC, 0);
       commit(SET_MSG_CODE_SB, 0);
       // Form selections
-      commit(SET_IS_APPLYING_FOR_MSP, false);
-      commit(SET_IS_APPLYING_FOR_FPCARE, false);
-      commit(SET_IS_APPLYING_FOR_SUPP_BEN, false);
+      commit(SET_IS_APPLYING_FOR_MSP, null);
+      commit(SET_IS_APPLYING_FOR_FPCARE, null);
+      commit(SET_IS_APPLYING_FOR_SUPP_BEN, null);
       // Account Holder info.
       commit(SET_AH_FIRST_NAME, null);
       commit(SET_AH_MIDDLE_NAME, null);
@@ -889,15 +890,15 @@ export default {
       commit(SET_RES_ADDRESS_LINE_2, null);
       commit(SET_RES_ADDRESS_LINE_3, null);
       commit(SET_RES_CITY, null);
-      commit(SET_RES_PROVINCE, null);
-      commit(SET_RES_COUNTRY, null);
+      commit(SET_RES_PROVINCE, 'British Columbia');
+      commit(SET_RES_COUNTRY, 'Canada');
       commit(SET_RES_POSTAL_CODE, null);
       commit(SET_MAIL_ADDRESS_LINE_1, null);
       commit(SET_MAIL_ADDRESS_LINE_2, null);
       commit(SET_MAIL_ADDRESS_LINE_3, null);
       commit(SET_MAIL_CITY, null);
-      commit(SET_MAIL_PROVINCE, null);
-      commit(SET_MAIL_COUNTRY, null);
+      commit(SET_MAIL_PROVINCE, 'British Columbia');
+      commit(SET_MAIL_COUNTRY, 'Canada');
       commit(SET_MAIL_POSTAL_CODE, null);
       commit(SET_IS_MAIL_SAME, true);
       commit(SET_PHONE, null);

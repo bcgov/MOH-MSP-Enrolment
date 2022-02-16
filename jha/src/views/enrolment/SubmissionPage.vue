@@ -63,7 +63,7 @@ import { getConvertedPath } from '@/helpers/url';
 import pageStateService from '@/services/page-state-service';
 import { enrolmentRoutes } from '@/router/routes';
 import {
-  MODULE_NAME as formModule,
+  MODULE_NAME as enrolmentModule,
   RESET_FORM
 } from '@/store/modules/enrolment-module';
 import { scrollTo } from '@/helpers/scroll';
@@ -103,14 +103,14 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    this.$store.dispatch(formModule + '/' + RESET_FORM);
-    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
+    this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
+    if (to.path === enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path) {
       next();
     } else {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.HOME_PAGE.path
-      )
+        enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path
+      );
       next({ path: toPath });
     }
     setTimeout(() => {
