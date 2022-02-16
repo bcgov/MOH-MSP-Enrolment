@@ -248,6 +248,7 @@
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
+  isEQPath,
   isPastPath,
 } from '@/router/routes';
 import {
@@ -280,7 +281,6 @@ import {
   SET_MAIL_COUNTRY,
   SET_MAIL_POSTAL_CODE,
   SET_IS_MAIL_SAME,
-  RESET_FORM,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
@@ -555,10 +555,8 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
-      next();
-    } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
+    if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)
+      && !isEQPath(to.path)) {
       next();
     } else {
       // Navigate to self.

@@ -248,6 +248,7 @@
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
+  isEQPath,
   isPastPath,
 } from '@/router/routes';
 import {
@@ -272,7 +273,6 @@ import SuppBenData from '@/data-types/supp-ben-data';
 
 import {
   MODULE_NAME as enrolmentModule,
-  RESET_FORM,
   SET_HAS_CHILDREN,
   SET_NUM_CHILDREN,
   SET_SELECTED_NOA_YEAR,
@@ -735,10 +735,8 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
-      next();
-    } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
+    if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)
+      && !isEQPath(to.path)) {
       next();
     } else {
       // Navigate to self.
