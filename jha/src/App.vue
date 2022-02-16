@@ -22,14 +22,9 @@ import {
   Header,
   Footer,
 } from 'common-lib-vue';
-import {
-  MODULE_NAME as enrolmentModule,
-  SET_APPLICATION_UUID,
-} from '@/store/modules/enrolment-module';
 import pageStateService from '@/services/page-state-service';
 import { commonRoutes } from '@/router/routes';
 import { Wormhole } from 'portal-vue';
-import { v4 as uuidv4 } from 'uuid';
 import spaEnvService from '@/services/spa-env-service';
 import logService from '@/services/log-service';
 
@@ -48,8 +43,7 @@ export default {
   created() {
     document.title = this.pageTitle;
 
-    this.applicationUuid = uuidv4();
-    this.$store.dispatch(enrolmentModule + '/' + SET_APPLICATION_UUID, this.applicationUuid);
+    const applicationUuid = this.$store.state.enrolmentModule.applicationUuid;
 
     // Load environment variables, and route to maintenance page.
     spaEnvService.loadEnvs()
@@ -62,7 +56,7 @@ export default {
         }
       })
       .catch((error) => {
-        logService.logError(this.applicationUuid, {
+        logService.logError(applicationUuid, {
           event: 'HTTP error getting values from spa-env-server',
           status: error.response.status,
         });

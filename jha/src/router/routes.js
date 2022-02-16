@@ -102,12 +102,20 @@ export const enrolmentRouteStepOrder = [
   enrolmentRoutes.PERSONAL_INFO_PAGE,
   enrolmentRoutes.SPOUSE_INFO_PAGE,
   enrolmentRoutes.CHILD_INFO_PAGE,
-  enrolmentRoutes.CONTACT_INFO_PAGE,
   enrolmentRoutes.FPCARE_INFO_PAGE,
   enrolmentRoutes.SUPP_BEN_INFO_PAGE,
   enrolmentRoutes.DOCUMENTS_PAGE,
+  enrolmentRoutes.CONTACT_INFO_PAGE,
   enrolmentRoutes.REVIEW_PAGE,
+  enrolmentRoutes.CONSENT_PAGE,
   enrolmentRoutes.SUBMISSION_PAGE
+];
+
+const eqRoutes = [
+  enrolmentRoutes.MSP_ELIGIBILITY_PAGE,
+  enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE,
+  enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE,
+  enrolmentRoutes.FORM_SELECTION_PAGE
 ];
 
 export const isPastPath = (toPath, fromPath) => {
@@ -124,3 +132,8 @@ export const isPastPath = (toPath, fromPath) => {
   }
   return false;
 };
+
+export const isEQPath = (path) => {
+  const eqRoute = eqRoutes.find((route) => route.path === path);
+  return !!eqRoute;
+}

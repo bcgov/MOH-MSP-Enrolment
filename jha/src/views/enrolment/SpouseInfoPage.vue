@@ -628,6 +628,7 @@
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
+  isEQPath,
   isPastPath,
 } from '@/router/routes';
 import {
@@ -702,7 +703,6 @@ import {
 import { smallStyles, mediumStyles } from '@/constants/input-styles'
 import {
   MODULE_NAME as enrolmentModule,
-  RESET_FORM,
   SET_HAS_SPOUSE,
   SET_SPOUSE_STATUS,
   SET_SPOUSE_STATUS_REASON,
@@ -1451,10 +1451,8 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
-      next();
-    } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
+    if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)
+      && !isEQPath(to.path)) {
       next();
     } else {
       // Navigate to self.
