@@ -91,7 +91,7 @@
             aria-live="assertive">Personal Health Number is required.</div>
           <div class="text-danger"
             v-if="$v.personalHealthNumber.$dirty
-              && !$v.personalHealthNumber.phnValidator"
+              && (!$v.personalHealthNumber.phnValidator || !$v.personalHealthNumber.phnFirstDigitValidator)"
             aria-live="assertive">Personal Health Number is invalid.</div>
         </div>
         <div v-if="requestSocialInsuranceNumber">
@@ -708,6 +708,7 @@ import {
   nameValidator,
   nonBCValidator,
   pastDateValidator,
+  phnFirstDigitValidator,
   yesValidator,
   optionalInvalidDateValidator,
   reasonDestinationContentValidator,
@@ -904,7 +905,9 @@ export default {
         distantPastValidator: optionalInvalidDateValidator(distantPastValidator),
         birthdate16YearsValidator: optionalInvalidDateValidator(birthdate16YearsValidator),
       },
-      personalHealthNumber: {},
+      personalHealthNumber: {
+        phnFirstDigitValidator: optionalValidator(phnFirstDigitValidator),
+      },
       socialInsuranceNumber: {},
       gender: {},
       citizenshipStatus: {},

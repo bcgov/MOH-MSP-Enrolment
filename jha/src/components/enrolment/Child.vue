@@ -94,7 +94,7 @@
           v-if="$v.personalHealthNumber.$dirty && !$v.personalHealthNumber.required"
           aria-live="assertive">Personal Health Number is required.</div>
         <div class="text-danger"
-          v-if="$v.personalHealthNumber.$dirty && !$v.personalHealthNumber.phnValidator"
+          v-if="$v.personalHealthNumber.$dirty && (!$v.personalHealthNumber.phnValidator || !$v.personalHealthNumber.phnFirstDigitValidator)"
           aria-live="assertive">Personal Health Number is invalid.</div>
       </div>
       <div v-if="requestGender">
@@ -762,6 +762,7 @@ import {
   nonCanadaValidator,
   reasonDestinationContentValidator,
   pastDateValidator,
+  phnFirstDigitValidator,
 } from '@/helpers/validators';
 import {
   CountrySelect,
@@ -1102,7 +1103,9 @@ export default {
         birthDateYouthValidator: optionalValidator(birthDateYouthValidator),
         birthDateStudentValidator: optionalValidator(birthDateStudentValidator),
       },
-      personalHealthNumber: {},
+      personalHealthNumber: {
+        phnFirstDigitValidator: optionalValidator(phnFirstDigitValidator)
+      },
       gender: {},
       status: {},
       statusReason: {},

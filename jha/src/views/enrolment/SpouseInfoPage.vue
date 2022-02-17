@@ -107,7 +107,7 @@
               aria-live="assertive">Personal Health Number is required.</div>
             <div class="text-danger"
               v-if="$v.spousePersonalHealthNumber.$dirty
-                && !$v.spousePersonalHealthNumber.phnValidator"
+                && (!$v.spousePersonalHealthNumber.phnValidator || !$v.spousePersonalHealthNumber.phnFirstDigitValidator)"
               aria-live="assertive">Personal Health Number is invalid.</div>
           </div>
           <div v-if="requestSocialInsuranceNumber">
@@ -647,6 +647,7 @@ import {
   nonCanadaValidator,
   reasonDestinationContentValidator,
   pastDateValidator,
+  phnFirstDigitValidator
 } from '@/helpers/validators';
 import logService from '@/services/log-service';
 import {
@@ -939,7 +940,9 @@ export default {
         distantPastValidator: optionalValidator(distantPastValidator),
         birthDatePastValidator: optionalValidator(birthDatePastValidator),
       },
-      spousePersonalHealthNumber: {},
+      spousePersonalHealthNumber: {
+        phnFirstDigitValidator: optionalValidator(phnFirstDigitValidator)
+      },
       spouseSocialInsuranceNumber: {},
       spouseGender: {},
       spouseStatus: {},
