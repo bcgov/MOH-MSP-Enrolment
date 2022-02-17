@@ -152,94 +152,178 @@ export default {
     accountHolderData() {
       const items = [];
       const firstName = this.$store.state.enrolmentModule.ahFirstName;
-      const middleName = this.$store.state.enrolmentModule.ahMiddleName ? this.$store.state.enrolmentModule.ahMiddleName + ' ' : '';
+      const middleName = this.$store.state.enrolmentModule.ahMiddleName
+        ? this.$store.state.enrolmentModule.ahMiddleName + " "
+        : "";
       const lastName = this.$store.state.enrolmentModule.ahLastName;
       const name = `${firstName} ${middleName}${lastName} `;
       items.push({
-        label: 'Name',
+        label: "Name",
         value: name,
       });
-      const gender = this.$store.state.enrolmentModule.ahGender === 'F' ? 'Female' : 'Male';
+      const gender =
+        this.$store.state.enrolmentModule.ahGender === "F" ? "Female" : "Male";
       items.push({
-        label: 'Gender',
+        label: "Gender",
         value: gender,
       });
-      const birthdate = formatDate(this.$store.state.enrolmentModule.ahBirthdate);
+      const birthdate = formatDate(
+        this.$store.state.enrolmentModule.ahBirthdate
+      );
       items.push({
-        label: 'Birthdate',
+        label: "Birthdate",
         value: birthdate,
       });
-      const statusInCanada = this.$store.state.enrolmentModule.ahCitizenshipStatus + ' > ' + this.$store.state.enrolmentModule.ahCitizenshipStatusReason;
+      if (this.$store.state.enrolmentModule.ahPHN) {
+        items.push({
+          label: "Account holder PHN",
+          value: this.$store.state.enrolmentModule.ahPHN,
+        });
+      }
+      if (this.$store.state.enrolmentModule.ahSIN) {
+        items.push({
+          label: "Account holder SIN",
+          value: this.$store.state.enrolmentModule.ahSIN,
+        });
+      }
+      const statusInCanada =
+        this.$store.state.enrolmentModule.ahCitizenshipStatus +
+        " > " +
+        this.$store.state.enrolmentModule.ahCitizenshipStatusReason;
       items.push({
-        label: 'Status in Canada',
+        label: "Status in Canada",
         value: statusInCanada,
       });
-      if (this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth !== 'Y') {
+      items.push({
+        label: "Support document type",
+        value: this.$store.state.enrolmentModule
+          .ahCitizenshipSupportDocumentType,
+      });
+      items.push({
+        label: "Is Name Changed",
+        value:
+          this.$store.state.enrolmentModule.ahIsNameChanged === "Y"
+            ? "Yes"
+            : "No",
+      });
+      if (this.$store.state.enrolmentModule.ahIsNameChanged === "Y") {
         items.push({
-          label: 'Date arrived in B.C.',
-          value: formatDate(this.$store.state.enrolmentModule.ahArrivalDateInBC),
+          label: "Name Change Support Document Type",
+          value: this.$store.state.enrolmentModule
+            .ahNameChangeSupportDocumentType,
+        });
+      }
+      items.push({
+        label: "Lived in BC since birth?",
+        value:
+          this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth === "Y"
+            ? "Yes"
+            : "No",
+      });
+      if (this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth !== "Y") {
+        items.push({
+          label: "Date arrived in B.C.",
+          value: formatDate(
+            this.$store.state.enrolmentModule.ahArrivalDateInBC
+          ),
         });
         items.push({
-          label: 'Date arrived in Canada',
-          value: formatDate(this.$store.state.enrolmentModule.ahArrivalDateInCanada),
+          label: "Date arrived in Canada",
+          value: formatDate(
+            this.$store.state.enrolmentModule.ahArrivalDateInCanada
+          ),
         });
         items.push({
-          label: 'Moved from province/jurisdiction',
+          label: "Moved from province/jurisdiction",
           value: this.$store.state.enrolmentModule.ahMoveFromOrigin,
         });
+        if (this.$store.state.enrolmentModule.ahPreviousHealthNumber) {
+          items.push({
+            label: "Previous Health number",
+            value: this.$store.state.enrolmentModule.ahPreviousHealthNumber,
+          });
+        }
       }
-      if (this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months === 'Y') {
-        items.push({
-          label: 'Outside B.C. for more than 30 days',
-          value: 'Yes',
-        });
-        items.push({
-          label: 'Reason for leaving',
-          value: this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReason,
-        });
-        items.push({
-          label: 'Location',
-          value: this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsLocation,
-        });
-        items.push({
-          label: 'Departure date',
-          value: formatDate(this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsDepartureDate),
-        });
-        items.push({
-          label: 'Return date',
-          value: formatDate(this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReturnDate),
-        });
-      }
-      const releasedFromForces = this.$store.state.enrolmentModule.ahIsReleasedFromArmedForces === 'Y';
       items.push({
-        label: 'Released from Canadian Forces',
-        value: releasedFromForces ? 'Yes' : 'No',
+        label: "Has previous BC PHN?",
+        value:
+          this.$store.state.enrolmentModule.ahHasPreviousPHN === "Y"
+            ? "Yes"
+            : "No",
+      });
+      if (this.$store.state.enrolmentModule.ahHasPreviousPHN === "Y") {
+        items.push({
+          label: "Previous BC PHN?",
+          value: this.$store.state.enrolmentModule.ahPreviousPHN,
+        });
+      }
+      items.push({
+        label: "Outside B.C. for more than 30 days",
+        value:
+          this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months === "Y"
+            ? "Yes"
+            : "No",
+      });
+      if (this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months === "Y") {
+        items.push({
+          label: "Reason for leaving",
+          value: this.$store.state.enrolmentModule
+            .ahOutsideBCLast12MonthsReason,
+        });
+        items.push({
+          label: "Location",
+          value: this.$store.state.enrolmentModule
+            .ahOutsideBCLast12MonthsLocation,
+        });
+        items.push({
+          label: "Departure date",
+          value: formatDate(
+            this.$store.state.enrolmentModule
+              .ahOutsideBCLast12MonthsDepartureDate
+          ),
+        });
+        items.push({
+          label: "Return date",
+          value: formatDate(
+            this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReturnDate
+          ),
+        });
+      }
+      const releasedFromForces =
+        this.$store.state.enrolmentModule.ahIsReleasedFromArmedForces === "Y";
+      items.push({
+        label: "Released from Canadian Forces",
+        value: releasedFromForces ? "Yes" : "No",
       });
       if (releasedFromForces) {
         items.push({
-          label: 'Date discharged',
-          value: formatDate(this.$store.state.enrolmentModule.ahArmedForcesDischargeDate),
+          label: "Date discharged",
+          value: formatDate(
+            this.$store.state.enrolmentModule.ahArmedForcesDischargeDate
+          ),
         });
       }
-      const isFullTimeStudent = this.$store.state.enrolmentModule.ahIsStudent === 'Y';
+      const isFullTimeStudent =
+        this.$store.state.enrolmentModule.ahIsStudent === "Y";
       items.push({
-        label: 'Full-time student',
-        value: isFullTimeStudent ? 'Yes' : 'No',
+        label: "Full-time student",
+        value: isFullTimeStudent ? "Yes" : "No",
       });
       if (isFullTimeStudent) {
-        const willResideInBC = this.$store.state.enrolmentModule.ahWillStudentResideInBC === 'Y';
+        const willResideInBC =
+          this.$store.state.enrolmentModule.ahWillStudentResideInBC === "Y";
         items.push({
-          label: 'Will you reside in BC upon completion of your studies',
-          value: willResideInBC ? 'Yes' : 'No',
+          label: "Will you reside in BC upon completion of your studies",
+          value: willResideInBC ? "Yes" : "No",
         });
       }
-      const documentCount = this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments.length + this.$store.state.enrolmentModule.ahNameChangeSupportDocuments.length;
-      const fileLabel = ' file' + documentCount > 1 ? 's' : '';
+      const documentCount =
+        this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments.length +
+        this.$store.state.enrolmentModule.ahNameChangeSupportDocuments.length;
       items.push({
-        label: 'Documents',
-        value: documentCount + fileLabel,
+        label: "Documents",
+        value: `${documentCount} ${this.getFilePlural(documentCount)}`,
       });
-
       return items;
     },
     spouseData() {
@@ -293,6 +377,18 @@ export default {
         label: "Birthdate",
         value: birthdate,
       });
+      if (this.$store.state.enrolmentModule.spousePHN) {
+        items.push({
+          label: "Spouse PHN",
+          value: this.$store.state.enrolmentModule.spousePHN,
+        });
+      }
+      if (this.$store.state.enrolmentModule.spouseSIN) {
+        items.push({
+          label: "Spouse SIN",
+          value: this.$store.state.enrolmentModule.spouseSIN,
+        });
+      }
       const statusInCanada =
         this.$store.state.enrolmentModule.spouseStatus +
         " > " +
@@ -430,167 +526,175 @@ export default {
       for (let child of children) {
         const childData = [];
         const firstName = child.firstName;
-        const middleName = child.middleName ? child.middleName + ' ' : '';
+        const middleName = child.middleName ? child.middleName + " " : "";
         const lastName = child.lastName;
         const name = `${firstName} ${middleName}${lastName}`;
         childData.push({
-          label: 'Name',
+          label: "Name",
           value: name,
         });
-        const gender = child.gender === 'F' ? 'Female' : 'Male';
+        const gender = child.gender === "F" ? "Female" : "Male";
         childData.push({
-          label: 'Gender',
+          label: "Gender",
           value: gender,
         });
         const birthdate = formatDate(child.birthDate);
         childData.push({
-          label: 'Birthdate',
+          label: "Birthdate",
           value: birthdate,
         });
-        const statusInCanada = child.status + ' > ' + child.statusReason;
+        if (child.personalHealthNumber) {
+          childData.push({
+            label: "Child PHN",
+            value: child.personalHealthNumber,
+          });
+        }
+        const statusInCanada = child.status + " > " + child.statusReason;
         childData.push({
-          label: 'Status in Canada',
+          label: "Status in Canada",
           value: statusInCanada,
         });
         childData.push({
-          label: 'Support Document Type',
+          label: "Support Document Type",
           value: child.citizenshipSupportDocumentType,
         });
         if (child.recentBCMoveDate) {
           childData.push({
-            label: 'Date arrived in B.C.',
+            label: "Date arrived in B.C.",
             value: formatDate(child.recentBCMoveDate),
           });
         }
         if (child.canadaArrivalDate) {
           childData.push({
-            label: 'Date arrived in Canada',
+            label: "Date arrived in Canada",
             value: formatDate(child.canadaArrivalDate),
           });
         }
         childData.push({
-          label: 'Name changed?',
-          value: child.isNameChanged === 'Y' ? 'Yes' : 'No',
+          label: "Name changed?",
+          value: child.isNameChanged === "Y" ? "Yes" : "No",
         });
-        if(child.isNameChanged === 'Y') {
-            childData.push({
-            label: 'Name change document type',
+        if (child.isNameChanged === "Y") {
+          childData.push({
+            label: "Name change document type",
             value: child.nameChangeSupportDocumentType,
           });
-        }        
+        }
         childData.push({
-          label: 'Lived in BC since birth?',
-          value: child.livedInBCSinceBirth === 'Y' ? 'Yes' : 'No',
+          label: "Lived in BC since birth?",
+          value: child.livedInBCSinceBirth === "Y" ? "Yes" : "No",
         });
-        if (child.livedInBCSinceBirth !== 'Y') {
-            childData.push({
-            label: 'Location child moved from:',
+        if (child.livedInBCSinceBirth !== "Y") {
+          childData.push({
+            label: "Location child moved from:",
             value: child.moveFromOrigin,
           });
           if (child.previousHealthNumber) {
             childData.push({
-              label: 'Health number from previous residence:',
+              label: "Health number from previous residence:",
               value: child.previousHealthNumber,
             });
           }
         }
         childData.push({
-          label: 'Outside B.C. for more than 30 days in the last year?',
-          value: child.outsideBCLast12Months === 'Y' ? 'Yes' : 'No',
+          label: "Outside B.C. for more than 30 days in the last year?",
+          value: child.outsideBCLast12Months === "Y" ? "Yes" : "No",
         });
-        if (child.outsideBCLast12Months === 'Y') {
+        if (child.outsideBCLast12Months === "Y") {
           childData.push({
-            label: 'Reason for leaving',
+            label: "Reason for leaving",
             value: child.outsideBCLast12MonthsReason,
           });
           childData.push({
-            label: 'Location',
+            label: "Location",
             value: child.outsideBCLast12MonthsDestination,
           });
           childData.push({
-            label: 'Departure date',
+            label: "Departure date",
             value: formatDate(child.outsideBCLast12MonthsDepartureDate),
           });
           childData.push({
-            label: 'Return date',
+            label: "Return date",
             value: formatDate(child.outsideBCLast12MonthsReturnDate),
           });
         }
         childData.push({
-          label: 'Has previous BC Health number?',
-          value: child.hasPreviousBCHealthNumber === 'Y' ? 'Yes' : 'No',
+          label: "Has previous BC Health number?",
+          value: child.hasPreviousBCHealthNumber === "Y" ? "Yes" : "No",
         });
-        if (child.hasPreviousBCHealthNumber === 'Y') {
-            childData.push({
-            label: 'Previous BC Health number?',
+        if (child.hasPreviousBCHealthNumber === "Y") {
+          childData.push({
+            label: "Previous BC Health number?",
             value: child.previousBCHealthNumber,
           });
-        }        
+        }
         childData.push({
-          label: 'Has child been released from institution?',
-          value: child.hasBeenReleasedFromInstitution === 'Y' ? 'Yes' : 'No',
+          label: "Has child been released from institution?",
+          value: child.hasBeenReleasedFromInstitution === "Y" ? "Yes" : "No",
         });
-        if (child.hasBeenReleasedFromInstitution === 'Y') {
+        if (child.hasBeenReleasedFromInstitution === "Y") {
           childData.push({
-          label: 'Discharge date:',
-          value: formatDate(child.dischargeDate),
-        });
-        }        
+            label: "Discharge date:",
+            value: formatDate(child.dischargeDate),
+          });
+        }
         const isFullTimeStudent = child.ageRange === ChildAgeTypes.Child19To24;
         childData.push({
-          label: 'Full-time student',
-          value: isFullTimeStudent ? 'Yes' : 'No',
+          label: "Full-time student",
+          value: isFullTimeStudent ? "Yes" : "No",
         });
         if (isFullTimeStudent) {
-          const willResideInBC = child.willResideInBCAfterStudies === 'Y';
+          const willResideInBC = child.willResideInBCAfterStudies === "Y";
           childData.push({
-            label: 'Will you reside in BC upon completion of your studies',
-            value: willResideInBC ? 'Yes' : 'No',
+            label: "Will you reside in BC upon completion of your studies",
+            value: willResideInBC ? "Yes" : "No",
           });
           childData.push({
-            label: 'School name',
+            label: "School name",
             value: child.schoolName,
           });
           childData.push({
-            label: 'Street address 1',
+            label: "Street address 1",
             value: child.schoolAddressLine1,
           });
           childData.push({
-            label: 'Street address 2',
+            label: "Street address 2",
             value: child.schoolAddressLine2,
           });
           childData.push({
-            label: 'Street address 3',
+            label: "Street address 3",
             value: child.schoolAddressLine3,
           });
           childData.push({
-            label: 'City',
+            label: "City",
             value: child.schoolCity,
           });
           childData.push({
-            label: 'Province/State',
+            label: "Province/State",
             value: child.schoolProvinceOrState,
           });
           childData.push({
-            label: 'Postal code',
+            label: "Postal code",
             value: child.schoolPostalCode,
           });
           childData.push({
-            label: 'Jurisdiction',
+            label: "Jurisdiction",
             value: child.schoolCountry,
           });
           childData.push({
-            label: 'School departure date:',
+            label: "School departure date:",
             value: formatDate(child.schoolDepartureDate),
           });
           childData.push({
-            label: 'Estimated school completion date:',
+            label: "Estimated school completion date:",
             value: formatDate(child.schoolCompletionDate),
           });
         }
-        const documentCount = child.citizenshipSupportDocuments.length + child.nameChangeSupportDocuments.length;
+        const documentCount =
+          child.citizenshipSupportDocuments.length +
+          child.nameChangeSupportDocuments.length;
         childData.push({
-          label: 'Documents',
+          label: "Documents",
           value: `${documentCount} ${this.getFilePlural(documentCount)}`,
         });
         chldrnData.push(childData);
@@ -687,21 +791,25 @@ export default {
     contactData() {
       const items = [];
       items.push({
-        label: 'Residential Address',
+        label: 'Residential Address:',
         value: '',
       });
       items.push({
         label: 'Street Address 1',
         value: this.$store.state.enrolmentModule.resAddressLine1,
       });
-      items.push({
-        label: 'Street Address 2',
-        value: this.$store.state.enrolmentModule.resAddressLine2,
-      });
-      items.push({
-        label: 'Street Address 3',
-        value: this.$store.state.enrolmentModule.resAddressLine3,
-      });
+      if(this.$store.state.enrolmentModule.resAddressLine2) {
+        items.push({
+          label: 'Street Address 2',
+          value: this.$store.state.enrolmentModule.resAddressLine2,
+        });
+      }
+      if(this.$store.state.enrolmentModule.resAddressLine3) {
+        items.push({
+          label: 'Street Address 3',
+          value: this.$store.state.enrolmentModule.resAddressLine3,
+        });
+      }
       items.push({
         label: 'City',
         value: this.$store.state.enrolmentModule.resCity,
@@ -720,21 +828,25 @@ export default {
       });
       if (!this.$store.state.enrolmentModule.isMailSame) {
         items.push({
-          label: 'Mailing Address',
+          label: 'Mailing Address:',
           value: '',
         });
         items.push({
           label: 'Street Address 1',
           value: this.$store.state.enrolmentModule.mailAddressLine1,
         });
-        items.push({
-          label: 'Street Address 2',
-          value: this.$store.state.enrolmentModule.mailAddressLine2,
-        });
-        items.push({
-          label: 'Street Address 3',
-          value: this.$store.state.enrolmentModule.mailAddressLine3,
-        });
+        if(this.$store.state.enrolmentModule.mailAddressLine2) {
+          items.push({
+            label: 'Street Address 2',
+            value: this.$store.state.enrolmentModule.mailAddressLine2,
+          });
+        }
+        if (this.$store.state.enrolmentModule.mailAddressLine3) {
+          items.push({
+            label: 'Street Address 3',
+            value: this.$store.state.enrolmentModule.mailAddressLine3,
+          });
+        }
         items.push({
           label: 'City',
           value: this.$store.state.enrolmentModule.mailCity,
