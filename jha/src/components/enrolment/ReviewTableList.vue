@@ -175,6 +175,12 @@ export default {
           value: this.$store.state.enrolmentModule.ahPHN,
         });
       }
+      if (this.$store.state.enrolmentModule.ahSIN) {
+        items.push({
+          label: 'Account holder SIN',
+          value: this.$store.state.enrolmentModule.ahSIN,
+        });
+      }
       const statusInCanada = this.$store.state.enrolmentModule.ahCitizenshipStatus + ' > ' + this.$store.state.enrolmentModule.ahCitizenshipStatusReason;
       items.push({
         label: 'Status in Canada',
@@ -335,6 +341,12 @@ export default {
         items.push({
           label: 'Spouse PHN',
           value: this.$store.state.enrolmentModule.spousePHN,
+        });
+      }
+      if (this.$store.state.enrolmentModule.spouseSIN) {
+        items.push({
+          label: 'Spouse SIN',
+          value: this.$store.state.enrolmentModule.spouseSIN,
         });
       }
       const statusInCanada =
