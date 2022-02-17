@@ -322,7 +322,9 @@
                     v-if="$v.moveFromOrigin.$dirty && !$v.moveFromOrigin.required"
                     aria-live="assertive">Province of origin is required.</div>
                   <div class="text-danger"
-                    v-if="moveFromOrigin === 'BC' || moveFromOrigin === 'British Columbia'"
+                    v-if="$v.moveFromOrigin.$dirty
+                      && $v.moveFromOrigin.required
+                      && !$v.moveFromOrigin.nonBCValidator"
                     aria-live="assertive">Province of origin cannot be British Columbia.</div>
                   </div>
                   <div v-if="showCountrySelector">
@@ -340,7 +342,9 @@
                       v-if="$v.moveFromOrigin.$dirty && !$v.moveFromOrigin.required"
                       aria-live="assertive">Jursidiction of origin is required.</div>
                     <div class="text-danger"
-                      v-if="moveFromOrigin === 'Canada'"
+                      v-if="$v.moveFromOrigin.$dirty
+                        && $v.moveFromOrigin.required
+                        && !$v.moveFromOrigin.nonCanadaValidator"
                       aria-live="assertive">Jursidiction of origin cannot be Canada.</div>
                   </div>
                   <div v-if="showMoveDateInputs">
@@ -1172,16 +1176,18 @@ export default {
         validations.livedInBCSinceBirth.required = required;
       }
 
-      if (this.showOriginTextField || this.showCountrySelector || this.showProvinceSelector) {
+      if (this.showOriginTextField) {
         validations.moveFromOrigin.required = required;
         validations.moveFromOrigin.cityStateProvinceContentValidator = cityStateProvinceContentValidator;
       }
 
       if (this.showProvinceSelector) {
+        validations.moveFromOrigin.required = required;
         validations.moveFromOrigin.nonBCValidator = nonBCValidator;
       }
       
       if (this.showCountrySelector) {
+        validations.moveFromOrigin.required = required;
         validations.moveFromOrigin.nonCanadaValidator = nonCanadaValidator;
       }
 
@@ -1316,7 +1322,7 @@ export default {
           willResideInBCAfterStudies: this.willResideInBCAfterStudies,
         };
 
-        this.$emit('updateChild', childData);  
+        this.$emit('updateChild', childData);
       }
     },
     handleBlurField(validationObject) {
