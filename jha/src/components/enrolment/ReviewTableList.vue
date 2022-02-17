@@ -169,6 +169,12 @@ export default {
         label: 'Birthdate',
         value: birthdate,
       });
+      if (this.$store.state.enrolmentModule.ahPHN) {
+        items.push({
+          label: 'Account holder PHN',
+          value: this.$store.state.enrolmentModule.ahPHN,
+        });
+      }
       const statusInCanada = this.$store.state.enrolmentModule.ahCitizenshipStatus + ' > ' + this.$store.state.enrolmentModule.ahCitizenshipStatusReason;
       items.push({
         label: 'Status in Canada',
@@ -325,6 +331,12 @@ export default {
         label: "Birthdate",
         value: birthdate,
       });
+      if (this.$store.state.enrolmentModule.spousePHN) {
+        items.push({
+          label: 'Spouse PHN',
+          value: this.$store.state.enrolmentModule.spousePHN,
+        });
+      }
       const statusInCanada =
         this.$store.state.enrolmentModule.spouseStatus +
         " > " +
@@ -479,6 +491,12 @@ export default {
           label: 'Birthdate',
           value: birthdate,
         });
+        if (child.personalHealthNumber) {
+          childData.push({
+            label: 'Child PHN',
+            value: child.personalHealthNumber,
+          })
+        }
         const statusInCanada = child.status + ' > ' + child.statusReason;
         childData.push({
           label: 'Status in Canada',
