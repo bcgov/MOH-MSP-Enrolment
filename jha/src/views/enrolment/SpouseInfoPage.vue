@@ -940,9 +940,7 @@ export default {
         distantPastValidator: optionalValidator(distantPastValidator),
         birthDatePastValidator: optionalValidator(birthDatePastValidator),
       },
-      spousePersonalHealthNumber: {
-        phnFirstDigitValidator: optionalValidator(phnFirstDigitValidator)
-      },
+      spousePersonalHealthNumber: {},
       spouseSocialInsuranceNumber: {},
       spouseGender: {},
       spouseStatus: {},
@@ -971,6 +969,7 @@ export default {
     if (this.requestPersonalHealthNumber) {
       validations.spousePersonalHealthNumber.required = required;
       validations.spousePersonalHealthNumber.phnValidator = optionalValidator(phnValidator);
+      validations.spousePersonalHealthNumber.phnFirstDigitValidator = optionalValidator(phnFirstDigitValidator);
     }
     
     if (this.requestSocialInsuranceNumber) {

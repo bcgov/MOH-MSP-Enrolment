@@ -1103,9 +1103,7 @@ export default {
         birthDateYouthValidator: optionalValidator(birthDateYouthValidator),
         birthDateStudentValidator: optionalValidator(birthDateStudentValidator),
       },
-      personalHealthNumber: {
-        phnFirstDigitValidator: optionalValidator(phnFirstDigitValidator)
-      },
+      personalHealthNumber: {},
       gender: {},
       status: {},
       statusReason: {},
@@ -1149,6 +1147,7 @@ export default {
     if (this.requestPersonalHealthNumber) {
       validations.personalHealthNumber.required = required;
       validations.personalHealthNumber.phnValidator = optionalValidator(phnValidator);
+      validations.personalHealthNumber.phnFirstDigitValidator = optionalValidator(phnFirstDigitValidator);
     }
     
     if (this.requestGender) {

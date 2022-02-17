@@ -905,9 +905,7 @@ export default {
         distantPastValidator: optionalInvalidDateValidator(distantPastValidator),
         birthdate16YearsValidator: optionalInvalidDateValidator(birthdate16YearsValidator),
       },
-      personalHealthNumber: {
-        phnFirstDigitValidator: optionalValidator(phnFirstDigitValidator),
-      },
+      personalHealthNumber: {},
       socialInsuranceNumber: {},
       gender: {},
       citizenshipStatus: {},
@@ -944,6 +942,7 @@ export default {
     if (this.requestPersonalHealthNumber) {
       validations.personalHealthNumber.required = required;
       validations.personalHealthNumber.phnValidator = optionalValidator(phnValidator);
+      validations.personalHealthNumber.phnFirstDigitValidator = optionalValidator(phnFirstDigitValidator);
     }
 
     if (this.requestSocialInsuranceNumber) {
