@@ -45,6 +45,7 @@
               ref="children"
               :index="index"
               :childData="child"
+              :usedPHNs="usedPHNs"
               @updateChild="handleChildUpdate($event, index)" />
           </div>
         </div>
@@ -117,11 +118,13 @@ export default {
       // Data to be saved
       hasChildren: null,
       children: [],
+      usedPHNs: [],
     };
   },
   created() {
     this.hasChildren = this.$store.state.enrolmentModule.hasChildren;
     this.children = this.$store.state.enrolmentModule.children ? cloneDeep(this.$store.state.enrolmentModule.children) : [];
+    this.calculateUsedPHNs();
     
     setTimeout(() => {
       this.pageLoaded = true;
@@ -228,6 +231,7 @@ export default {
     },
     handleChildUpdate(data, index) {
       this.children[index] = data;
+      this.calculateUsedPHNs();
     },
     validateFields() {
       this.saveData();
@@ -291,6 +295,21 @@ export default {
       this.$router.push(toPath);
       scrollTo(0);
     },
+    calculateUsedPHNs() {
+      const phns = [];
+      if (this.$store.state.enrolmentModule.ahPHN) {
+        phns.push(this.$store.state.enrolmentModule.ahPHN);
+      }
+      if (this.$store.state.enrolmentModule.spousePHN) {
+        phns.push(this.$store.state.enrolmentModule.spousePHN);
+      }
+      this.children.forEach((child) => {
+        if (child.personalHealthNumber) {
+          phns.push(child.personalHealthNumber);
+        }
+      });
+      this.usedPHNs = phns;
+    }
   },
   watch: {
     children(arr) {
