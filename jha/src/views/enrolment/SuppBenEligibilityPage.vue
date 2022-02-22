@@ -18,9 +18,9 @@
           id='apply-sb'
           name='apply-sb'
           label='1. Will you use the British Columbia Application for Health Drug Coverage to apply for supplementary benefits?'
-          v-model='applySB'
+          v-model='eqSBIsApplying'
           :items='radioOptionsYesNo' />
-        <div v-if="applySB === 'Y'">
+        <div v-if="eqSBIsApplying === 'Y'">
           <p class="mb-0">2. To register for MSP supplementary benefits, you must:</p>
           <div class="ml-4">
             <p class="mb-0">a. be a resident of British Columbia as defined by the Medicare Protection Act;</p>
@@ -89,6 +89,7 @@ import pageContentMixin from '@/mixins/page-content-mixin';
 import {
   MODULE_NAME as enrolmentModule,
   SET_IS_APPLYING_FOR_SUPP_BEN,
+  SET_EQ_SB_IS_APPLYING,
   SET_EQ_SB_MEETS_CRITERIA,
   SET_EQ_SB_HAS_INFO,
   SET_MSG_CODE_SB,
@@ -97,9 +98,9 @@ import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesSB } from '@/constants/eqMsgCodes';
 
 const validateQuestionsAnswered = (_value, vm) => {
-        if(!vm.applySB
-          || (vm.applySB === 'Y' && !vm.eqSBMeetsCriteria)
-          || (vm.applySB === 'Y' && vm.eqSBMeetsCriteria === 'Y' && !vm.eqSBhasInfo)) {
+      if(!vm.eqSBIsApplying
+        || (vm.eqSBIsApplying === 'Y' && !vm.eqSBMeetsCriteria)
+        || (vm.eqSBIsApplying === 'Y' && vm.eqSBMeetsCriteria === 'Y' && !vm.eqSBhasInfo)) {
         return false;
       }
       return true;
@@ -119,7 +120,7 @@ export default {
   data: () => {
     return {
       isPageLoaded: false,
-      applySB: null,
+      eqSBIsApplying: null,
       eqSBMeetsCriteria: null,
       eqSBhasInfo: null,
       radioOptionsYesNo: radioOptionsYesNo,
@@ -131,10 +132,7 @@ export default {
       enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path,
       enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.title
     );
-    const isApplyingForFPCare = this.$store.state.enrolmentModule.isApplyingForSuppBen;
-    if (isApplyingForFPCare !== null) {
-      isApplyingForFPCare ? this.applySB = "Y" : this.applySB = "N";
-    }
+    this.eqSBIsApplying = this.$store.state.enrolmentModule.eqSBIsApplying;
     this.eqSBMeetsCriteria = this.$store.state.enrolmentModule.eqSBMeetsCriteria;
     this.eqSBhasInfo = this.$store.state.enrolmentModule.eqSBhasInfo;
 
@@ -161,7 +159,8 @@ export default {
       this.navigateToNextPage();
     },
     saveData() {
-      this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_SUPP_BEN, this.applySB === "Y");
+      this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_SUPP_BEN, this.eqSBIsApplying === "Y");
+      this.$store.dispatch(enrolmentModule + '/' + SET_EQ_SB_IS_APPLYING, this.eqSBIsApplying);
       this.$store.dispatch(enrolmentModule + '/' + SET_EQ_SB_MEETS_CRITERIA, this.eqSBMeetsCriteria);
       this.$store.dispatch(enrolmentModule + '/' + SET_EQ_SB_HAS_INFO, this.eqSBhasInfo);
       this.$store.dispatch(enrolmentModule + '/' + SET_MSG_CODE_SB, this.msgCode);
@@ -180,7 +179,7 @@ export default {
   },
   computed: {
     msgCode(){
-      if (this.applySB === 'N') {
+      if (this.eqSBIsApplying === 'N') {
         // Not applying for SB
         return eqMsgCodesSB.NotApplying;
       } else if (this.eqSBMeetsCriteria  === 'N') {
@@ -194,6 +193,18 @@ export default {
         return eqMsgCodesSB.EligibleAndApplying;
       }
     }
+  },
+  watch: {
+    eqSBIsApplying() {
+      if (this.isPageLoaded) {
+        this.eqSBMeetsCriteria = null;
+      }
+    },
+    eqSBMeetsCriteria() {
+      if (this.isPageLoaded) {
+        this.eqSBhasInfo = null;
+      }
+    },
   },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {

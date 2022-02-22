@@ -22,12 +22,15 @@ export const SET_FPC_REFERENCE_NUMBER = 'setFPCReferenceNumber';
 export const SET_SB_REFERENCE_NUMBER = 'setSBReferenceNumber';
 export const SET_IS_INFO_COLLECTION_NOTICE_OPEN = 'setIsInfoCollectionNoticeOpen';
 // Eligibility Questionnaires
+export const SET_EQ_MSP_IS_APPLYING = 'setEqMSPIsApplying';
 export const SET_EQ_MSP_LIVE_IN_BC = 'setEqMSPLiveInBC';
 export const SET_EQ_MSP_AWAY_OVER_30 = 'setEqMSPAwayOver30';
 export const SET_EQ_MSP_STUDENT_MINOR_REFUGEE = 'setEqMSPStudentMinorRefugee';
 export const SET_EQ_MSP_HAS_DOCUMENTS = 'setEqMSPHasDocuments';
+export const SET_EQ_FPC_IS_APPLYING = 'setEqFPCIsApplying';
 export const SET_EQ_FPC_MEETS_CRITERIA = 'setEqFPCMeetsCriteria';
 export const SET_EQ_FPC_HAS_INFO = 'setEqFPCHasInfo';
+export const SET_EQ_SB_IS_APPLYING = 'setEqSBIsApplying';
 export const SET_EQ_SB_MEETS_CRITERIA = 'setEqSBMeetsCriteria';
 export const SET_EQ_SB_HAS_INFO = 'setEqSBhasInfo';
 // Form selection page message codes
@@ -176,12 +179,15 @@ export default {
       sbReferenceNumber: null,
       isInfoCollectionNoticeOpen: true,
       // Eligibility Questionnaires
+      eqMSPIsApplying: null,
       eqMSPLiveInBC: null,
       eqMSPAwayOver30: null,
       eqMSPStudentMinorRefugee: null,
       eqMSPHasDocuments: null,
+      eqFPCIsApplying: null,
       eqFPCMeetsCriteria: null,
       eqFPCHasInfo: null,
+      eqSBIsApplying: null,
       eqSBMeetsCriteria: null,
       eqSBhasInfo: null,
       // Form selection page message codes
@@ -352,6 +358,9 @@ export default {
       state.isInfoCollectionNoticeOpen = payload;
     },
     // Eligibility Questionnaires
+    [SET_EQ_MSP_IS_APPLYING](state, payload) {
+      state.eqMSPIsApplying = payload;
+    },
     [SET_EQ_MSP_LIVE_IN_BC](state, payload) {
       state.eqMSPLiveInBC = payload;
     },
@@ -364,11 +373,17 @@ export default {
     [SET_EQ_MSP_HAS_DOCUMENTS](state, payload) {
       state.eqMSPHasDocuments = payload;
     },
+    [SET_EQ_FPC_IS_APPLYING](state, payload) {
+      state.eqFPCIsApplying = payload;
+    },
     [SET_EQ_FPC_MEETS_CRITERIA](state, payload) {
       state.eqFPCMeetsCriteria = payload;
     },
     [SET_EQ_FPC_HAS_INFO](state, payload) {
       state.eqFPCHasInfo = payload;
+    },
+    [SET_EQ_SB_IS_APPLYING](state, payload) {
+      state.eqSBIsApplying = payload;
     },
     [SET_EQ_SB_MEETS_CRITERIA](state, payload) {
       state.eqSBMeetsCriteria = payload;
@@ -764,12 +779,15 @@ export default {
       commit(SET_SB_REFERENCE_NUMBER, null);
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, true);
       // Eligibility Questionnaires
+      commit(SET_EQ_MSP_IS_APPLYING, null);
       commit(SET_EQ_MSP_LIVE_IN_BC, null);
       commit(SET_EQ_MSP_AWAY_OVER_30, null);
       commit(SET_EQ_MSP_STUDENT_MINOR_REFUGEE, null);
       commit(SET_EQ_MSP_HAS_DOCUMENTS, null);
+      commit(SET_EQ_FPC_IS_APPLYING, null);
       commit(SET_EQ_FPC_MEETS_CRITERIA, null);
       commit(SET_EQ_FPC_HAS_INFO, null);
+      commit(SET_EQ_SB_IS_APPLYING, null);
       commit(SET_EQ_SB_MEETS_CRITERIA, null);
       commit(SET_EQ_SB_HAS_INFO, null);
       // Form selection page message codes
@@ -934,6 +952,9 @@ export default {
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, payload);
     },
     // Eligibility Questionnaires
+    [SET_EQ_MSP_IS_APPLYING]({commit}, payload) {
+      commit(SET_EQ_MSP_IS_APPLYING, payload);
+    },
     [SET_EQ_MSP_LIVE_IN_BC]({commit}, payload) {
       commit(SET_EQ_MSP_LIVE_IN_BC, payload);
     },
@@ -946,11 +967,17 @@ export default {
     [SET_EQ_MSP_HAS_DOCUMENTS]({commit}, payload) {
       commit(SET_EQ_MSP_HAS_DOCUMENTS, payload);
     },
+    [SET_EQ_FPC_IS_APPLYING]({commit}, payload) {
+      commit(SET_EQ_FPC_IS_APPLYING, payload);
+    },
     [SET_EQ_FPC_MEETS_CRITERIA]({commit}, payload) {
       commit(SET_EQ_FPC_MEETS_CRITERIA, payload);
     },
     [SET_EQ_FPC_HAS_INFO]({commit}, payload) {
       commit(SET_EQ_FPC_HAS_INFO, payload);
+    },
+    [SET_EQ_SB_IS_APPLYING]({commit}, payload) {
+      commit(SET_EQ_SB_IS_APPLYING, payload);
     },
     [SET_EQ_SB_MEETS_CRITERIA]({commit}, payload) {
       commit(SET_EQ_SB_MEETS_CRITERIA, payload);

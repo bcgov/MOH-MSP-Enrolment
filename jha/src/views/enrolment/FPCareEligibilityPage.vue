@@ -18,9 +18,9 @@
           id='apply-fpc'
           name='apply-fpc'
           label='1. Will you use the British Columbia Application for Health Drug Coverage to register for Fair PharmaCare?'
-          v-model='applyFPC'
+          v-model='eqFPCIsApplying'
           :items='radioOptionsApplyFPC' />
-        <div v-if="applyFPC === 'Y'">
+        <div v-if="eqFPCIsApplying === 'Y'">
           <p class="mb-0">2. To register for Fair PharmaCare, you must:</p>
           <div class="ml-4">
             <p class="mb-0">a. have been a resident of British Columbia for at least three months;</p>
@@ -54,8 +54,8 @@
           </div>
         </div>
         <div class="text-danger"
-                      v-if="$v.applyFPC.$dirty && !$v.applyFPC.validateQuestionsAnswered"
-                      aria-live="assertive">Please complete the questionnaire to continue.</div>
+          v-if="$v.eqFPCIsApplying.$dirty && !$v.eqFPCIsApplying.validateQuestionsAnswered"
+          aria-live="assertive">Please complete the questionnaire to continue.</div>
       </div>
     </PageContent>
     <ContinueBar
@@ -90,6 +90,7 @@ import pageContentMixin from '@/mixins/page-content-mixin';
 import {
   MODULE_NAME as enrolmentModule,
   SET_IS_APPLYING_FOR_FPCARE,
+  SET_EQ_FPC_IS_APPLYING,
   SET_EQ_FPC_MEETS_CRITERIA,
   SET_EQ_FPC_HAS_INFO,
   SET_MSG_CODE_FPC,
@@ -98,9 +99,9 @@ import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesFPC } from '@/constants/eqMsgCodes';
 
 const validateQuestionsAnswered = (_value, vm) => {
-        if(!vm.applyFPC
-          || (vm.applyFPC === 'Y' && !vm.eqFPCMeetsCriteria)
-          || (vm.applyFPC === 'Y' && vm.eqFPCMeetsCriteria === 'Y' && !vm.eqFPCHasInfo)) {
+        if(!vm.eqFPCIsApplying
+          || (vm.eqFPCIsApplying === 'Y' && !vm.eqFPCMeetsCriteria)
+          || (vm.eqFPCIsApplying === 'Y' && vm.eqFPCMeetsCriteria === 'Y' && !vm.eqFPCHasInfo)) {
         return false;
       }
       return true;
@@ -120,7 +121,7 @@ export default {
   data: () => {
     return {
       isPageLoaded: false,
-      applyFPC: null,
+      eqFPCIsApplying: null,
       eqFPCMeetsCriteria: null,
       eqFPCHasInfo: null,
       radioOptionsYesNo: radioOptionsYesNo,
@@ -133,10 +134,7 @@ export default {
       enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.path,
       enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.title
     );
-    const isApplyingForFPCare = this.$store.state.enrolmentModule.isApplyingForFPCare;
-    if (isApplyingForFPCare !== null) {
-      isApplyingForFPCare ? this.applyFPC = "Y" : this.applyFPC = "N";
-    }
+    this.eqFPCIsApplying = this.$store.state.enrolmentModule.eqFPCIsApplying;
     this.eqFPCMeetsCriteria = this.$store.state.enrolmentModule.eqFPCMeetsCriteria;
     this.eqFPCHasInfo = this.$store.state.enrolmentModule.eqFPCHasInfo;
 
@@ -159,7 +157,7 @@ export default {
   },
   validations() {
     const validations = {
-      applyFPC: {
+      eqFPCIsApplying: {
         validateQuestionsAnswered,
       }
     };
@@ -176,7 +174,8 @@ export default {
       this.navigateToNextPage();
     },
     saveData() {
-      this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_FPCARE, this.applyFPC === "Y");
+      this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_FPCARE, this.eqFPCIsApplying === "Y");
+      this.$store.dispatch(enrolmentModule + '/' + SET_EQ_FPC_IS_APPLYING, this.eqFPCIsApplying);
       this.$store.dispatch(enrolmentModule + '/' + SET_EQ_FPC_MEETS_CRITERIA, this.eqFPCMeetsCriteria);
       this.$store.dispatch(enrolmentModule + '/' + SET_EQ_FPC_HAS_INFO, this.eqFPCHasInfo);
       this.$store.dispatch(enrolmentModule + '/' + SET_MSG_CODE_FPC, this.msgCode);
@@ -195,7 +194,7 @@ export default {
   },
   computed: {
     msgCode(){
-      if (this.applyFPC === 'N') {
+      if (this.eqFPCIsApplying === 'N') {
         // Not applying for FPC
         return eqMsgCodesFPC.NotApplying;
       } else if (this.eqFPCMeetsCriteria === 'N') {
@@ -209,6 +208,18 @@ export default {
         return eqMsgCodesFPC.EligibleAndApplying;
       }
     }
+  },
+  watch: {
+    eqFPCIsApplying() {
+      if (this.isPageLoaded) {
+        this.eqFPCMeetsCriteria = null;
+      }
+    },
+    eqFPCMeetsCriteria() {
+      if (this.isPageLoaded) {
+        this.eqFPCHasInfo = null;
+      }
+    },
   },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {

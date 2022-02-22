@@ -18,9 +18,9 @@
           id='apply-msp'
           name='apply-msp'
           label='1. Will you use the British Columbia Application for Health Drug Coverage to apply for MSP coverage?'
-          v-model='applyMSP'
+          v-model='eqMSPIsApplying'
           :items='radioOptionsApplyMSP' />
-        <div v-if="applyMSP === 'Y'">
+        <div v-if="eqMSPIsApplying === 'Y'">
           <Radio
             id='live-in-bc'
             name='live-in-bc'
@@ -69,8 +69,8 @@
           </div>
         </div>
         <div class="text-danger"
-                      v-if="$v.applyMSP.$dirty && !$v.applyMSP.validateQuestionsAnswered"
-                      aria-live="assertive">Please complete the questionnaire to continue.</div>
+          v-if="$v.eqMSPIsApplying.$dirty && !$v.eqMSPIsApplying.validateQuestionsAnswered"
+          aria-live="assertive">Please complete the questionnaire to continue.</div>
       </div>
     </PageContent>
     <ContinueBar
@@ -105,6 +105,7 @@ import pageContentMixin from '@/mixins/page-content-mixin';
 import {
   MODULE_NAME as enrolmentModule,
   SET_IS_APPLYING_FOR_MSP,
+  SET_EQ_MSP_IS_APPLYING,
   SET_EQ_MSP_LIVE_IN_BC,
   SET_EQ_MSP_AWAY_OVER_30,
   SET_EQ_MSP_STUDENT_MINOR_REFUGEE,
@@ -115,11 +116,11 @@ import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesMSP } from '@/constants/eqMsgCodes';
 
 const validateQuestionsAnswered = (_value, vm) => {
-        if(!vm.applyMSP
-          || (vm.applyMSP === 'Y' && !vm.eqMSPLiveInBC)
-          || (vm.applyMSP === 'Y' && vm.eqMSPLiveInBC === 'Y' && !vm.eqMSPAwayOver30)
-          || (vm.applyMSP === 'Y' && vm.eqMSPLiveInBC === 'Y' && vm.eqMSPAwayOver30 === 'N' && !vm.eqMSPStudentMinorRefugee)
-          || (vm.applyMSP === 'Y' && vm.eqMSPLiveInBC === 'Y' && vm.eqMSPAwayOver30 === 'N' && vm.eqMSPStudentMinorRefugee === 'N' && !vm.eqMSPHasDocuments)) {
+        if(!vm.eqMSPIsApplying
+          || (vm.eqMSPIsApplying === 'Y' && !vm.eqMSPLiveInBC)
+          || (vm.eqMSPIsApplying === 'Y' && vm.eqMSPLiveInBC === 'Y' && !vm.eqMSPAwayOver30)
+          || (vm.eqMSPIsApplying === 'Y' && vm.eqMSPLiveInBC === 'Y' && vm.eqMSPAwayOver30 === 'N' && !vm.eqMSPStudentMinorRefugee)
+          || (vm.eqMSPIsApplying === 'Y' && vm.eqMSPLiveInBC === 'Y' && vm.eqMSPAwayOver30 === 'N' && vm.eqMSPStudentMinorRefugee === 'N' && !vm.eqMSPHasDocuments)) {
         return false;
       }
       return true;
@@ -139,7 +140,7 @@ export default {
   data: () => {
     return {
       isPageLoaded: false,
-      applyMSP: null,
+      eqMSPIsApplying: null,
       eqMSPLiveInBC: null,
       eqMSPAwayOver30: null,
       eqMSPStudentMinorRefugee: null,
@@ -154,10 +155,7 @@ export default {
       enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path,
       enrolmentRoutes.MSP_ELIGIBILITY_PAGE.title
     );
-    const isApplyingForMSP = this.$store.state.enrolmentModule.isApplyingForMSP;
-    if (isApplyingForMSP !== null) {
-      isApplyingForMSP ? this.applyMSP = "Y" : this.applyMSP = "N";
-    }
+    this.eqMSPIsApplying = this.$store.state.enrolmentModule.eqMSPIsApplying;
     this.eqMSPLiveInBC = this.$store.state.enrolmentModule.eqMSPLiveInBC;
     this.eqMSPAwayOver30 = this.$store.state.enrolmentModule.eqMSPAwayOver30;
     this.eqMSPStudentMinorRefugee = this.$store.state.enrolmentModule.eqMSPStudentMinorRefugee;
@@ -182,7 +180,7 @@ export default {
   },
   validations() {
     const validations = {
-      applyMSP: {
+      eqMSPIsApplying: {
         validateQuestionsAnswered,
       }
     };
@@ -205,7 +203,8 @@ export default {
       }
     },
     saveData() {
-      this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_MSP, this.applyMSP === "Y");
+      this.$store.dispatch(enrolmentModule + '/' + SET_IS_APPLYING_FOR_MSP, this.eqMSPIsApplying === "Y");
+      this.$store.dispatch(enrolmentModule + '/' + SET_EQ_MSP_IS_APPLYING, this.eqMSPIsApplying);
       this.$store.dispatch(enrolmentModule + '/' + SET_EQ_MSP_LIVE_IN_BC, this.eqMSPLiveInBC);
       this.$store.dispatch(enrolmentModule + '/' + SET_EQ_MSP_AWAY_OVER_30, this.eqMSPAwayOver30);
       this.$store.dispatch(enrolmentModule + '/' + SET_EQ_MSP_STUDENT_MINOR_REFUGEE, this.eqMSPStudentMinorRefugee);
@@ -237,7 +236,7 @@ export default {
   },
   computed: {
     msgCode(){
-      if (this.applyMSP === 'N') {
+      if (this.eqMSPIsApplying === 'N') {
         // Not applying for MSP
         return eqMsgCodesMSP.NotApplying;
       } else if (this.eqMSPLiveInBC === 'N') {
@@ -257,6 +256,28 @@ export default {
         return eqMsgCodesMSP.EligibleAndApplying;
       }
     }
+  },
+  watch: {
+    eqMSPIsApplying() {
+      if (this.isPageLoaded) {
+        this.eqMSPLiveInBC = null;
+      }
+    },
+    eqMSPLiveInBC() {
+      if (this.isPageLoaded) {
+        this.eqMSPAwayOver30 = null;
+      }
+    },
+    eqMSPAwayOver30() {
+      if (this.isPageLoaded) {
+        this.eqMSPStudentMinorRefugee = null;
+      }
+    },
+    eqMSPStudentMinorRefugee() {
+      if (this.isPageLoaded) {
+        this.eqMSPHasDocuments = null;
+      }
+    },
   },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
