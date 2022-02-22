@@ -96,6 +96,9 @@
         <div class="text-danger"
           v-if="$v.personalHealthNumber.$dirty && (!$v.personalHealthNumber.phnValidator || !$v.personalHealthNumber.phnFirstDigitValidator)"
           aria-live="assertive">Personal Health Number is invalid.</div>
+        <div class="text-danger"
+          v-if="$v.personalHealthNumber.$dirty && !$v.personalHealthNumber.uniquePHNValidator"
+          aria-live="assertive">This Personal Health Number (PHN) was already used for another family member. Please provide the PHN that is listed on the family member's PHN card/letter.</div>
       </div>
       <div v-if="requestGender">
         <Radio
@@ -943,6 +946,11 @@ const cityStateProvinceContentValidator = (value) => {
           && criteriaMustHaveLetter.test(value);
 };
 
+const uniquePHNValidator = (value, vm) => {
+  const phns = vm.usedPHNs.filter((phn) => phn === value);
+  return !!value && phns.length <= 1;
+};
+
 export default {
   name: 'Child',
   mixins: [pageContentMixin],
@@ -962,6 +970,12 @@ export default {
   props: {
       childData: Object,
       index: Number,
+      usedPHNs: {
+        type: Array,
+        default: () => {
+          return [];
+        }
+      }
   },
   data: () => {
     return {
@@ -1152,6 +1166,7 @@ export default {
       validations.personalHealthNumber.required = required;
       validations.personalHealthNumber.phnValidator = optionalValidator(phnValidator);
       validations.personalHealthNumber.phnFirstDigitValidator = optionalValidator(phnFirstDigitValidator);
+      validations.personalHealthNumber.uniquePHNValidator = optionalValidator(uniquePHNValidator);
     }
     
     if (this.requestGender) {

@@ -109,6 +109,9 @@
               v-if="$v.spousePersonalHealthNumber.$dirty
                 && (!$v.spousePersonalHealthNumber.phnValidator || !$v.spousePersonalHealthNumber.phnFirstDigitValidator)"
               aria-live="assertive">Personal Health Number is invalid.</div>
+            <div class="text-danger"
+              v-if="$v.spousePersonalHealthNumber.$dirty && !$v.spousePersonalHealthNumber.uniquePHNValidator"
+              aria-live="assertive">This Personal Health Number (PHN) was already used for another family member. Please provide the PHN that is listed on the family member's PHN card/letter.</div>
           </div>
           <div v-if="requestSocialInsuranceNumber">
             <SINInput label="Social Insurance Number (SIN)"
@@ -126,6 +129,10 @@
               v-if="$v.spouseSocialInsuranceNumber.$dirty
                 && !$v.spouseSocialInsuranceNumber.sinValidator"
               aria-live="assertive">Social Insurance Number is invalid.</div>
+            <div class="text-danger"
+              v-if="$v.spouseSocialInsuranceNumber.$dirty
+                && !$v.spouseSocialInsuranceNumber.uniqueSINValidator"
+              aria-live="assertive">This Social Insurance Number (SIN) was already used for another family member. Please provide the SIN that is listed on the family member's SIN card/letter.</div>
           </div>
 
           <div v-if="requestGender">
@@ -801,6 +808,14 @@ const dischargeDateValidator = (value, vm) => {
   return true;
 }
 
+const uniquePHNValidator = (value, vm) => {
+  return value !== vm.ahPHN;
+};
+
+const uniqueSINValidator = (value, vm) => {
+  return value !== vm.ahSIN;
+}
+
 export default {
   name: 'SpouseInfoPage',
   mixins: [
@@ -874,6 +889,8 @@ export default {
       spouseOutsideBCLast12MonthsDepartureDateData: null,
       spouseOutsideBCLast12MonthsReturnDateData: null,
       spouseDischargeDateData: null,
+      ahPHN: null,
+      ahSIN: null,
     };
   },
   created() {
@@ -907,6 +924,8 @@ export default {
     this.spousePreviousBCHealthNumber = this.$store.state.enrolmentModule.spousePreviousBCHealthNumber;
     this.spouseBeenReleasedFromInstitution = this.$store.state.enrolmentModule.spouseBeenReleasedFromInstitution;
     this.spouseDischargeDate = this.$store.state.enrolmentModule.spouseDischargeDate;
+    this.ahPHN = this.$store.state.enrolmentModule.ahPHN;
+    this.ahSIN = this.$store.state.enrolmentModule.ahSIN;
     
     setTimeout(() => {
       this.pageLoaded = true;
@@ -970,11 +989,13 @@ export default {
       validations.spousePersonalHealthNumber.required = required;
       validations.spousePersonalHealthNumber.phnValidator = optionalValidator(phnValidator);
       validations.spousePersonalHealthNumber.phnFirstDigitValidator = optionalValidator(phnFirstDigitValidator);
+      validations.spousePersonalHealthNumber.uniquePHNValidator = optionalValidator(uniquePHNValidator);
     }
     
     if (this.requestSocialInsuranceNumber) {
       validations.spouseSocialInsuranceNumber.required = required;
       validations.spouseSocialInsuranceNumber.sinValidator = optionalValidator(sinValidator);
+      validations.spouseSocialInsuranceNumber.uniqueSINValidator = optionalValidator(uniqueSINValidator);
     }
 
     if (this.requestGender) {
