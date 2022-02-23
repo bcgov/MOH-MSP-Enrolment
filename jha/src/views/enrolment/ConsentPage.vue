@@ -261,7 +261,7 @@ export default {
 
               if (isSuccess) {
                 logService.logSubmission(applicationUuid, {
-                  event: 'submission',
+                  event: 'submission success',
                   response: response.data,
                 });
                 this.navigateToSubmissionPage();

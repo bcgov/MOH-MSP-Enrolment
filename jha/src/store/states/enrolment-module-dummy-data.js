@@ -101,7 +101,7 @@ export default {
       citizenshipSupportDocuments: [{}],
       isNameChanged: 'N',
       nameChangeSupportDocumentType: null,
-      nameChangeSupportDocuments: [{}],
+      nameChangeSupportDocuments: [],
       firstName: 'Timothy',
       middleName: null,
       lastName: 'Doe',
