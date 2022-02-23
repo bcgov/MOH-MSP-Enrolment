@@ -25,7 +25,7 @@
         <div v-if='showEditButtons'
             class="col-3 text-right">
           <a href="javascript:void(0)"
-            @click="navigateToMainFormPage()">Edit 
+            @click="navigateToSpouseInfoPage()">Edit 
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
@@ -890,6 +890,7 @@ export default {
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);
+      scrollTo();
     },
     navigateToChildInfoPage() {
         const toPath = getConvertedPath(
@@ -898,6 +899,7 @@ export default {
         );
         pageStateService.setPageComplete(toPath);
         this.$router.push(toPath);
+        scrollTo();
     },
     navigateToFPCInfoPage() {
       const toPath = getConvertedPath(
@@ -906,6 +908,7 @@ export default {
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);
+      scrollTo();
     },
     navigateToSuppBenInfoPage() {
       const toPath = getConvertedPath(
@@ -914,6 +917,7 @@ export default {
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);
+      scrollTo();
     },
     navigateToContactInfoPage() {
       const toPath = getConvertedPath(
@@ -922,6 +926,7 @@ export default {
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);
+      scrollTo();
     },
     getChildTitle(index) {
       const children = this.$store.state.enrolmentModule.children;
