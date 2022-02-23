@@ -183,8 +183,8 @@ export default {
         return [
           {
             color: BLUE,
-            barLabel: this.formatCurrencyNumber(tier.deductible),
-            label: `You pay 100% of eligible drug costs (between $0 and ${this.formatCurrencyNumber(tier.deductible)})`
+            barLabel: formatCurrencyNumber(tier.deductible),
+            label: `You pay 100% of eligible drug costs (between $0 and ${formatCurrencyNumber(tier.deductible)})`
           },
           {
             color: YELLOW,
