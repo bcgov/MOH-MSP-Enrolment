@@ -146,10 +146,10 @@
         </tr>
       </tbody>
     </table>
-    <p v-if="inputData.adjustedIncome > 0 && inputData.incomeUnderThreshold" class="text-success font-weight-bold">
+    <p v-if="inputData.adjustedIncome >= 0 && inputData.incomeUnderThreshold" class="result-message-success">
       It is likely that you will qualify for Supplementary Benefits.
     </p>
-    <p v-if="!inputData.incomeUnderThreshold" class="text-danger font-weight-bold" aria-live="assertive">
+    <p v-if="!inputData.incomeUnderThreshold" class="result-message-failure" aria-live="assertive">
       You might not qualify for Supplementary Benefits.
     </p>
   </div>
@@ -190,5 +190,15 @@ export default {
 <style scoped>
 .widget-container {
   background: #f2f2f2;
+}
+.result-message-success {
+  color: rgb(0, 128, 0);
+  font-size: 1rem;
+  font-weight: 400;
+}
+.result-message-failure {
+  color: #cc5900;
+  font-size: 1rem;
+  font-weight: 700;
 }
 </style>
