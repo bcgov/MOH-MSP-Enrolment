@@ -720,11 +720,11 @@ export default {
       // }
       items.push({
         label: 'Account holder RDSP amount',
-        value: 'placeholder',
+        value: moneyFormatter.format(this.$store.state.enrolmentModule.ahFPCRDSP),
       });
       items.push({
         label: 'Spouse RDSP amount',
-        value: 'placeholder',
+        value: moneyFormatter.format(this.$store.state.enrolmentModule.spouseFPCRDSP),
       });
       items.push({
         label: 'Widget data',
