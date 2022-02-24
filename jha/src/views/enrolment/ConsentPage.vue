@@ -137,7 +137,8 @@ import {
   SET_MSP_REFERENCE_NUMBER,
   SET_FPC_REFERENCE_NUMBER,
   SET_SB_REFERENCE_NUMBER,
-  SET_SUBMISSION_DATE
+  SET_SUBMISSION_DATE,
+  SET_SUBMISSION_API_RESPONSE,
 } from '@/store/modules/enrolment-module';
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
@@ -227,35 +228,27 @@ export default {
               let isSuccess = true;
 
               this.isLoading = false;
+              this.$store.dispatch(`${formModule}/${SET_SUBMISSION_API_RESPONSE}`, response.data);
 
               if (response.data.exception === true) {
                 isSuccess = false;
               }
               // MSP.
               if (response.data.msp) {
-                if (response.data.msp.returnCode !== '0') {
-                  isSuccess = false;
-                }
                 if (response.data.msp.referenceNumber) {
-                  this.$store.dispatch(formModule + '/' + SET_MSP_REFERENCE_NUMBER, response.data.msp.referenceNumber);
+                  this.$store.dispatch(`${formModule}/${SET_MSP_REFERENCE_NUMBER}`, response.data.msp.referenceNumber);
                 }
               }
               // FPC.
               if (response.data.fpc) {
-                if (response.data.fpc.returnCode !== '0') {
-                  isSuccess = false;
-                }
                 if (response.data.fpc.referenceNumber) {
-                  this.$store.dispatch(formModule + '/' + SET_FPC_REFERENCE_NUMBER, response.data.fpc.referenceNumber);
+                  this.$store.dispatch(`${formModule}/${SET_FPC_REFERENCE_NUMBER}`, response.data.fpc.referenceNumber);
                 }
               }
               // SB.
               if (response.data.sb) {
-                if (response.data.sb.returnCode !== '0') {
-                  isSuccess = false;
-                }
                 if (response.data.sb.referenceNumber) {
-                  this.$store.dispatch(formModule + '/' + SET_SB_REFERENCE_NUMBER, response.data.sb.referenceNumber);
+                  this.$store.dispatch(`${formModule}/${SET_SB_REFERENCE_NUMBER}`, response.data.sb.referenceNumber);
                 }
               }
 

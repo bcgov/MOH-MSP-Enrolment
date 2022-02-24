@@ -26,7 +26,7 @@ class ApiService {
       secondName: formState.ahMiddleName || null,
       lastName: formState.ahLastName || null,
       sin: stripSpaces(formState.ahSIN) || null,
-      phn: null,
+      phn: stripSpaces(formState.ahPHN) || null,
       gender: formState.ahGender || null,
       birthDate: formatISODate(formState.ahBirthdate) || null,
       telephone: stripPhoneFormatting(formState.phone) || null,

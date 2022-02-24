@@ -20,23 +20,64 @@
         </div>
         <hr/>
 
-        <div class="success-box container">
-          <div class="row align-items-center">
-            <div class="col-md-1 pr-0 icon-container text-center">
-              <font-awesome-icon icon="check-circle" size="3x" />
+        <div v-if="mspApplicationResult"
+          class="mb-4">
+          <SuccessBox v-if="mspApplicationResult.returnCode === '0'">
+            <p>Your Medical Services Plan application has been submitted.</p>
+            <div class="row">
+              <div class="col-md-4 col-lg-3">Date of Submission:</div>
+              <div class="col-md-8 col-lg-9"><b>{{ submissionDate }}</b></div>
             </div>
-            <div class="col-md-10 pt-2 pb-2">
-              <p>Your application has been submitted.</p>
-              <div class="row">
-                <div class="col-md-4 col-lg-3">Date of Submission:</div>
-                <div class="col-md-8 col-lg-9"><b>{{ submissionDate }}</b></div>
-              </div>
-              <div class="row">
-                <div class="col-md-4 col-lg-3">Reference Number:</div>
-                <div class="col-md-8 col-lg-9"><b>{{referenceNumber}}</b></div>
-              </div>
+            <div v-if="mspApplicationResult.referenceNumber"
+              class="row">
+              <div class="col-md-4 col-lg-3">Reference Number:</div>
+              <div class="col-md-8 col-lg-9"><b>{{mspApplicationResult.referenceNumber}}</b></div>
             </div>
-          </div>
+          </SuccessBox>
+          <ErrorBox v-else>
+            <p>There was an issue with your MSP submission. Your application was not submitted.</p>
+            <p v-if="mspApplicationResult.message">{{mspApplicationResult.message}}</p>
+          </ErrorBox>
+        </div>
+
+        <div v-if="fpcApplicationResult"
+          class="mb-4">
+          <SuccessBox v-if="fpcApplicationResult.returnCode === '0'">
+            <p>Your Fair PharmaCare application has been submitted.</p>
+            <div class="row">
+              <div class="col-md-4 col-lg-3">Date of Submission:</div>
+              <div class="col-md-8 col-lg-9"><b>{{ submissionDate }}</b></div>
+            </div>
+            <div v-if="fpcApplicationResult.referenceNumber"
+              class="row">
+              <div class="col-md-4 col-lg-3">Reference Number:</div>
+              <div class="col-md-8 col-lg-9"><b>{{fpcApplicationResult.referenceNumber}}</b></div>
+            </div>
+          </SuccessBox>
+          <ErrorBox v-else>
+            <p>There was an issue with your Fair PharmaCare submission. Your application was not submitted.</p>
+            <p v-if="fpcApplicationResult.message">{{fpcApplicationResult.message}}</p>
+          </ErrorBox>
+        </div>
+
+        <div v-if="sbApplicationResult"
+          class="mb-4">
+          <SuccessBox v-if="sbApplicationResult.returnCode === '0'">
+            <p>Your Supplementary Benefits application has been submitted.</p>
+            <div class="row">
+              <div class="col-md-4 col-lg-3">Date of Submission:</div>
+              <div class="col-md-8 col-lg-9"><b>{{ submissionDate }}</b></div>
+            </div>
+            <div v-if="sbApplicationResult.referenceNumber"
+              class="row">
+              <div class="col-md-4 col-lg-3">Reference Number:</div>
+              <div class="col-md-8 col-lg-9"><b>{{sbApplicationResult.referenceNumber}}</b></div>
+            </div>
+          </SuccessBox>
+          <ErrorBox v-else>
+            <p>There was an issue with your Supplementary Benefits submission. Your application was not submitted.</p>
+            <p v-if="sbApplicationResult.message">{{sbApplicationResult.message}}</p>
+          </ErrorBox>
         </div>
 
         <h3 class="mt-4">Next Steps</h3>
@@ -54,6 +95,8 @@
 </template>
 
 <script>
+import SuccessBox from '@/components/SuccessBox.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
 import ReviewTableList from '@/components/enrolment/ReviewTableList.vue';
 import {
   PageContent,
@@ -76,18 +119,26 @@ export default {
     pageContentMixin,
   ],
   components: {
+    ErrorBox,
     PageContent,
     ReviewTableList,
+    SuccessBox,
   },
   data: () => {
     return {
       submissionDate: '',
       referenceNumber: '',
+      mspApplicationResult: null,
+      fpcApplicationResult: null,
+      sbApplicationResult: null,
     };
   },
   created() {
     this.submissionDate = formatDate(this.$store.state.enrolmentModule.submissionDate);
     this.referenceNumber = this.$store.state.enrolmentModule.referenceNumber || 'Unknown';
+    this.mspApplicationResult = this.$store.state.enrolmentModule.submissionAPIResponse.msp;
+    this.fpcApplicationResult = this.$store.state.enrolmentModule.submissionAPIResponse.fpc;
+    this.sbApplicationResult = this.$store.state.enrolmentModule.submissionAPIResponse.sb;
 
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
@@ -154,12 +205,6 @@ export default {
   visibility: visible;
 }
 
-.success-box {
-  border-radius: 10px;
-  border: 5px solid rgba(46, 133, 64, 1);
-  padding: 10px;
-}
-
 .print-btn {
   text-decoration: none;
 }
@@ -167,11 +212,4 @@ export default {
   text-decoration: none;
   font-weight: bold;
 }
-.box-border {
-  border-width: 4px !important;
-}
-.status-icon {
-  font-size: 32px;
-}
-
 </style>

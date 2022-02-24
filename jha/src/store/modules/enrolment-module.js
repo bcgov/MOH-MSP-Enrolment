@@ -17,6 +17,7 @@ export const SET_FPC_UUID = 'setFPCUuid';
 export const SET_SB_UUID = 'setSBUuid';
 export const SET_CAPTCHA_TOKEN = 'setCaptchaToken';
 export const SET_SUBMISSION_DATE = 'setSubmissionDate';
+export const SET_SUBMISSION_API_RESPONSE = 'setSubmissionAPIResponse';
 export const SET_MSP_REFERENCE_NUMBER = 'setMSPReferenceNumber';
 export const SET_FPC_REFERENCE_NUMBER = 'setFPCReferenceNumber';
 export const SET_SB_REFERENCE_NUMBER = 'setSBReferenceNumber';
@@ -174,6 +175,7 @@ export default {
       sbUuid: null,
       captchaToken: null,
       submissionDate: null,
+      submissionAPIResponse: null,
       mspReferenceNumber: null,
       fpcReferenceNumber: null,
       sbReferenceNumber: null,
@@ -344,6 +346,9 @@ export default {
     },
     [SET_SUBMISSION_DATE](state, payload) {
       state.submissionDate = payload;
+    },
+    [SET_SUBMISSION_API_RESPONSE](state, payload) {
+      state.submissionAPIResponse = payload;
     },
     [SET_MSP_REFERENCE_NUMBER](state, payload) {
       state.mspReferenceNumber = payload;
@@ -774,6 +779,7 @@ export default {
       commit(SET_SB_UUID, null);
       commit(SET_CAPTCHA_TOKEN, null);
       commit(SET_SUBMISSION_DATE, null);
+      commit(SET_SUBMISSION_API_RESPONSE, null);
       commit(SET_MSP_REFERENCE_NUMBER, null);
       commit(SET_FPC_REFERENCE_NUMBER, null);
       commit(SET_SB_REFERENCE_NUMBER, null);
@@ -938,6 +944,9 @@ export default {
     },
     [SET_SUBMISSION_DATE]({ commit }, payload) {
       commit(SET_SUBMISSION_DATE, payload);
+    },
+    [SET_SUBMISSION_API_RESPONSE]({ commit }, payload) {
+      commit(SET_SUBMISSION_API_RESPONSE, payload);
     },
     [SET_MSP_REFERENCE_NUMBER]({ commit }, payload) {
       commit(SET_MSP_REFERENCE_NUMBER, payload);
