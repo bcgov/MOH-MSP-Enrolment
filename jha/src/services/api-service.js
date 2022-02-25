@@ -11,6 +11,7 @@ const BASE_API_PATH = '/ahdc/api';
 const SUBMIT_APPLICATION_URL = `${BASE_API_PATH}/jhaIntegration/application`;
 const SUBMIT_ATTACHMENT_URL = `${BASE_API_PATH}/submit-attachment`;
 const GET_DEDUCTIBLES_URL = `${BASE_API_PATH}/jhaIntegration/getDeductibles`;
+const CHECK_ELIGIBILITY_URL = `${BASE_API_PATH}/jhaIntegration/forwardCheckEligibility`;
 const MIDDLEWARE_VERSION_URL = `${BASE_API_PATH}/jhaIntegration/version`;
 
 class ApiService {
@@ -399,6 +400,42 @@ class ApiService {
       taxYear: `${new Date().getFullYear() - 1}`
     };
     return this._sendPostRequest(GET_DEDUCTIBLES_URL, headers, payload);
+  }
+
+  checkEligibility(formState) {
+    const headers = this._getHeaders(formState.captchaToken);
+    const postalCode = formState.isMailSame && formState.resPostalCode ? stripSpaces(formState.resPostalCode) : stripSpaces(formState.mailPostalCode);
+    const payload = {
+      uuid: formState.fpcUuid,
+      persons: [
+        {
+          perType: '0',
+          phn: stripSpaces(formState.ahPHN),
+          dateOfBirth: formatISODate(formState.ahBirthdate),// Sample: "19490430",
+          postalCode: stripSpaces(postalCode),
+          givenName: formState.ahFirstName,
+          surname: formState.ahLastName,
+          sin: stripSpaces(formState.ahSIN),
+          netIncome: formState.ahFPCIncome,
+          rdsp: formState.ahFPCRDSP,
+        }
+      ],
+      dependentMandatory: '0.00' // Legacy field (not used for JHA), but required by the middleware.
+    };
+    if (formState.hasSpouse === 'Y') {
+      payload.persons.push({
+        perType: '1',
+        phn: stripSpaces(formState.spousePHN),
+        dateOfBirth: formatISODate(formState.spouseBirthDate),// Sample: "19490430",
+        postalCode: stripSpaces(postalCode),
+        givenName: formState.spouseFirstName,
+        surname: formState.spouseLastName,
+        sin: stripSpaces(formState.spouseSIN),
+        netIncome: formState.spouseFPCIncome,
+        rdsp: formState.spouseFPCRDSP,
+      });
+    }
+    return this._sendPostRequest(CHECK_ELIGIBILITY_URL, headers, payload);
   }
 
   getMiddlewareVersion(token) {

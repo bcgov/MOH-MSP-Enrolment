@@ -81,6 +81,9 @@
             </TipBox>
           </div>
         </div>
+        <div v-if="isSystemUnavailable"
+          class="text-danger mt-3 mb-5"
+          aria-live="assertive">Unable to continue, system unavailable. Please try again later.</div>
       </div>
     </PageContent>
     <portal v-if="isSampleModalOpen"
@@ -95,6 +98,7 @@
       </ContentModal>
     </portal>
     <ContinueBar @continue="validateFields()"
+      :hasLoader='isLoading'
       class="continue-bar" />
   </div>
 </template>
@@ -122,6 +126,7 @@ import {
   SET_SPOUSE_FPC_RDSP,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
+import apiService from '@/services/api-service';
 import {
   ContentModal,
   ContinueBar,
@@ -158,6 +163,8 @@ export default {
       spouseIncome: null,
       spouseRDSP: null,
       isSampleModalOpen: false,
+      isLoading: false,
+      isSystemUnavailable: false,
     };
   },
   created() {
@@ -204,7 +211,25 @@ export default {
       }
 
       this.saveData();
-      this.navigateToNextPage();
+
+      if (this.shouldCheckEligibility) {
+        this.isLoading = true;
+        this.isSystemUnavailable = false;
+
+        apiService.checkEligibility(this.$store.state.enrolmentModule)
+          .then(() => {
+            this.isLoading = false;
+            // TODO: Check response data and compare with stored field data.
+            this.navigateToNextPage();
+          })
+          .catch(() => {
+            this.isLoading = false;
+            this.isSystemUnavailable = true;
+            scrollToError();
+          });
+      } else {
+        this.navigateToNextPage();
+      }
     },
     saveData() {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_FPC_INCOME}`, this.ahIncome);
@@ -248,6 +273,9 @@ export default {
         spouseIncome: this.spouseIncome,
         spouseRDSP: this.spouseRDSP,
       };
+    },
+    shouldCheckEligibility() {
+      return !this.$store.state.enrolmentModule.isApplyingForMSP;
     }
   },
   // Required in order to block back navigation.
