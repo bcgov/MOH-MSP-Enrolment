@@ -218,7 +218,7 @@
               && !$v.isNameChanged.required"
             aria-live="assertive">This field is required.</div>
         </div>
-        <div v-if="isNameChanged === 'Y'"
+        <div v-if="requestNameChangedDocs"
           class="tabbed-section mt-3">
           <h2 class="mt-4">Additional Documents</h2>
           <p>Provide one of the required documents to support your name change.</p>
@@ -1140,7 +1140,12 @@ export default {
       return this.$store.state.enrolmentModule.isApplyingForMSP;
     },
     requestIsNameChanged() {
-      return !!this.citizenshipSupportDocumentType;
+      return this.$store.state.enrolmentModule.isApplyingForMSP
+        && !!this.citizenshipSupportDocumentType;
+    },
+    requestNameChangedDocs() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP
+          && this.isNameChanged === 'Y'
     },
     requestFromProvinceOrCountry() {
       return this.citizenshipStatus === StatusInCanada.TemporaryResident
@@ -1215,13 +1220,15 @@ export default {
           && this.isStudent === 'Y';
     },
     isMovingInformationShown() {
-      return !!this.citizenshipStatus
+      return this.$store.state.enrolmentModule.isApplyingForMSP
+          && !!this.citizenshipStatus
           && !!this.citizenshipStatusReason
           && !!this.citizenshipSupportDocuments.length > 0
           && (this.isNameChanged === 'N' || this.isNameChanged === 'Y' && this.nameChangeSupportDocuments.length > 0);
     },
     isCitizenshipDocsShown() {
-      return !!this.citizenshipStatusReason;
+      return this.$store.state.enrolmentModule.isApplyingForMSP
+        && !!this.citizenshipStatusReason;
     },
     isArrivalDateInCanadaRequired() {
       return this.citizenshipStatusReason === CanadianStatusReasons.MovingFromCountry || this.citizenshipStatus === StatusInCanada.TemporaryResident;

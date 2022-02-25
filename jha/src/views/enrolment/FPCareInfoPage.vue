@@ -84,6 +84,10 @@
         <div v-if="isSystemUnavailable"
           class="text-danger mt-3 mb-5"
           aria-live="assertive">Unable to continue, system unavailable. Please try again later.</div>
+        <div v-if="checkEligibilityErrorMessage"
+          class="text-danger mt-3 mb-5"
+          aria-live="assertive"
+          v-html="checkEligibilityErrorMessage"></div>
       </div>
     </PageContent>
     <portal v-if="isSampleModalOpen"
@@ -165,6 +169,7 @@ export default {
       isSampleModalOpen: false,
       isLoading: false,
       isSystemUnavailable: false,
+      checkEligibilityErrorMessage: null,
     };
   },
   created() {
@@ -215,12 +220,18 @@ export default {
       if (this.shouldCheckEligibility) {
         this.isLoading = true;
         this.isSystemUnavailable = false;
+        this.checkEligibilityErrorMessage = null;
 
         apiService.checkEligibility(this.$store.state.enrolmentModule)
-          .then(() => {
+          .then((response) => {
             this.isLoading = false;
-            // TODO: Check response data and compare with stored field data.
-            this.navigateToNextPage();
+            
+            if (response.data && response.data.regStatusCode === '0') {
+              this.navigateToNextPage();
+            } else {
+              this.checkEligibilityErrorMessage = response.data.regStatusMsg;
+              scrollToError();
+            }
           })
           .catch(() => {
             this.isLoading = false;
@@ -275,7 +286,8 @@ export default {
       };
     },
     shouldCheckEligibility() {
-      return !this.$store.state.enrolmentModule.isApplyingForMSP;
+      return this.$store.state.enrolmentModule.isApplyingForFPCare
+          && !this.$store.state.enrolmentModule.isApplyingForMSP;
     }
   },
   // Required in order to block back navigation.

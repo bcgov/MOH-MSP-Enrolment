@@ -404,35 +404,25 @@ class ApiService {
 
   checkEligibility(formState) {
     const headers = this._getHeaders(formState.captchaToken);
-    const postalCode = formState.isMailSame && formState.resPostalCode ? stripSpaces(formState.resPostalCode) : stripSpaces(formState.mailPostalCode);
     const payload = {
       uuid: formState.fpcUuid,
       persons: [
         {
           perType: '0',
           phn: stripSpaces(formState.ahPHN),
-          dateOfBirth: formatISODate(formState.ahBirthdate),// Sample: "19490430",
-          postalCode: stripSpaces(postalCode),
-          givenName: formState.ahFirstName,
+          dateOfBirth: formatISODate(formState.ahBirthdate),
           surname: formState.ahLastName,
           sin: stripSpaces(formState.ahSIN),
-          netIncome: formState.ahFPCIncome,
-          rdsp: formState.ahFPCRDSP,
         }
       ],
-      dependentMandatory: '0.00' // Legacy field (not used for JHA), but required by the middleware.
     };
     if (formState.hasSpouse === 'Y') {
       payload.persons.push({
         perType: '1',
         phn: stripSpaces(formState.spousePHN),
-        dateOfBirth: formatISODate(formState.spouseBirthDate),// Sample: "19490430",
-        postalCode: stripSpaces(postalCode),
-        givenName: formState.spouseFirstName,
+        dateOfBirth: formatISODate(formState.spouseBirthDate),
         surname: formState.spouseLastName,
         sin: stripSpaces(formState.spouseSIN),
-        netIncome: formState.spouseFPCIncome,
-        rdsp: formState.spouseFPCRDSP,
       });
     }
     return this._sendPostRequest(CHECK_ELIGIBILITY_URL, headers, payload);
