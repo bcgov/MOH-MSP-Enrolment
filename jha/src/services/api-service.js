@@ -11,6 +11,7 @@ const BASE_API_PATH = '/ahdc/api';
 const SUBMIT_APPLICATION_URL = `${BASE_API_PATH}/jhaIntegration/application`;
 const SUBMIT_ATTACHMENT_URL = `${BASE_API_PATH}/submit-attachment`;
 const GET_DEDUCTIBLES_URL = `${BASE_API_PATH}/jhaIntegration/getDeductibles`;
+const CHECK_ELIGIBILITY_URL = `${BASE_API_PATH}/jhaIntegration/forwardCheckEligibility`;
 const MIDDLEWARE_VERSION_URL = `${BASE_API_PATH}/jhaIntegration/version`;
 
 class ApiService {
@@ -399,6 +400,32 @@ class ApiService {
       taxYear: `${new Date().getFullYear() - 1}`
     };
     return this._sendPostRequest(GET_DEDUCTIBLES_URL, headers, payload);
+  }
+
+  checkEligibility(formState) {
+    const headers = this._getHeaders(formState.captchaToken);
+    const payload = {
+      uuid: formState.fpcUuid,
+      persons: [
+        {
+          perType: '0',
+          phn: stripSpaces(formState.ahPHN),
+          dateOfBirth: formatISODate(formState.ahBirthdate),
+          surname: formState.ahLastName,
+          sin: stripSpaces(formState.ahSIN),
+        }
+      ],
+    };
+    if (formState.hasSpouse === 'Y') {
+      payload.persons.push({
+        perType: '1',
+        phn: stripSpaces(formState.spousePHN),
+        dateOfBirth: formatISODate(formState.spouseBirthDate),
+        surname: formState.spouseLastName,
+        sin: stripSpaces(formState.spouseSIN),
+      });
+    }
+    return this._sendPostRequest(CHECK_ELIGIBILITY_URL, headers, payload);
   }
 
   getMiddlewareVersion(token) {
