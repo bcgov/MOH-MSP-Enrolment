@@ -717,24 +717,30 @@ export default {
     },
     fpcData() {
       const items = [];
+      const ahFPCIncome = this.$store.state.enrolmentModule.ahFPCIncome;
       items.push({
         label: 'Account holder net income for 2019',
-        value: moneyFormatter.format(this.$store.state.enrolmentModule.ahFPCIncome),
+        value: ahFPCIncome ? moneyFormatter.format(ahFPCIncome) : moneyFormatter.format("0"),
       });
-      // if (this.$store.state.enrolmentModule.hasSpouse === 'Y') {
+      if (this.$store.state.enrolmentModule.hasSpouse === 'Y') {
+        const spouseFPCIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
         items.push({
           label: 'Spouse/common-law partner net income for 2019',
-          value: moneyFormatter.format(this.$store.state.enrolmentModule.spouseFPCIncome),
+          value: spouseFPCIncome ? moneyFormatter.format(this.$store.state.enrolmentModule.spouseFPCIncome) : moneyFormatter.format("0"),
         });
-      // }
+      }
+      const ahFPCRDSP = this.$store.state.enrolmentModule.ahFPCRDSP;
       items.push({
         label: 'Account holder RDSP amount',
-        value: moneyFormatter.format(this.$store.state.enrolmentModule.ahFPCRDSP),
+        value: ahFPCRDSP ? moneyFormatter.format(ahFPCRDSP) : moneyFormatter.format("0"),
       });
-      items.push({
-        label: 'Spouse RDSP amount',
-        value: moneyFormatter.format(this.$store.state.enrolmentModule.spouseFPCRDSP),
-      });
+      if (this.$store.state.enrolmentModule.hasSpouse === 'Y') {
+        const spouseFPCRDSP = this.$store.state.enrolmentModule.spouseFPCRDSP;
+        items.push({
+          label: 'Spouse RDSP amount',
+          value: spouseFPCRDSP ? moneyFormatter.format(spouseFPCRDSP) : moneyFormatter.format("0"),
+        });
+      }
       items.push({
         label: 'Widget data',
         value: 'placeholder',
