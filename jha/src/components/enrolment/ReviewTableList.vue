@@ -537,18 +537,30 @@ export default {
           label: "Name",
           value: name,
         });
+        if (this.isApplyingForMSP) {
+          childData.push({
+              label: "Name changed?",
+              value: child.isNameChanged === "Y" ? "Yes" : "No",
+            });
+          if (child.isNameChanged === "Y") {
+            childData.push({
+              label: "Name change document type",
+              value: child.nameChangeSupportDocumentType,
+            });
+          }
+        }
         const birthdate = formatDate(child.birthDate);
         childData.push({
           label: "Birthdate",
           value: birthdate,
         });
-        // if (child.personalHealthNumber) {
+        if (!this.isApplyingForMSP) {
           childData.push({
             label: "Child PHN",
             value: child.personalHealthNumber,
           });
-        // }
-        // if (this.isApplyingForMSP) {
+        }
+        if (this.isApplyingForMSP) {
           const gender = child.gender === "F" ? "Female" : "Male";
           childData.push({
             label: "Gender",
@@ -563,49 +575,39 @@ export default {
             label: "Support Document Type",
             value: child.citizenshipSupportDocumentType,
           });
-          // if (child.recentBCMoveDate) {
-            childData.push({
-              label: "Date arrived in B.C.",
-              value: formatDate(child.recentBCMoveDate),
-            });
-          // }
-          // if (child.canadaArrivalDate) {
-            childData.push({
-              label: "Date arrived in Canada",
-              value: formatDate(child.canadaArrivalDate),
-            });
-          // }
-          childData.push({
-            label: "Name changed?",
-            value: child.isNameChanged === "Y" ? "Yes" : "No",
-          });
-          // if (child.isNameChanged === "Y") {
-            childData.push({
-              label: "Name change document type",
-              value: child.nameChangeSupportDocumentType,
-            });
-          // }
           childData.push({
             label: "Lived in BC since birth?",
             value: child.livedInBCSinceBirth === "Y" ? "Yes" : "No",
           });
-          // if (child.livedInBCSinceBirth !== "Y") {
+          childData.push({
+            label: "Has child moved to BC permanently",
+            value: child.madePermanentMove === "Y" ? "Yes" : "No",
+          });
+          if (child.livedInBCSinceBirth !== "Y") {
+            childData.push({
+              label: "Date arrived in B.C.",
+              value: formatDate(child.recentBCMoveDate),
+            });
+            childData.push({
+              label: "Date arrived in Canada",
+              value: formatDate(child.canadaArrivalDate),
+            });
             childData.push({
               label: "Location child moved from:",
               value: child.moveFromOrigin,
             });
-            // if (child.previousHealthNumber) {
+            if (child.previousHealthNumber) {
               childData.push({
                 label: "Health number from previous residence:",
-                value: child.previousHealthNumber,
+                value: child.previousHealthNumber ? child.previousHealthNumber : "No",
               });
-            // }
-          // }
+            }
+          }
           childData.push({
             label: "Outside B.C. for more than 30 days in the last year?",
             value: child.outsideBCLast12Months === "Y" ? "Yes" : "No",
           });
-          // if (child.outsideBCLast12Months === "Y") {
+          if (child.outsideBCLast12Months === "Y") {
             childData.push({
               label: "Reason for leaving",
               value: child.outsideBCLast12MonthsReason,
@@ -622,33 +624,35 @@ export default {
               label: "Return date",
               value: formatDate(child.outsideBCLast12MonthsReturnDate),
             });
-          // }
+          }
           childData.push({
             label: "Has previous BC Health number?",
             value: child.hasPreviousBCHealthNumber === "Y" ? "Yes" : "No",
           });
-          // if (child.hasPreviousBCHealthNumber === "Y") {
+          if (child.hasPreviousBCHealthNumber === "Y") {
             childData.push({
               label: "Previous BC Health number?",
               value: child.previousBCHealthNumber,
             });
-          // }
-          childData.push({
-            label: "Has child been released from institution?",
-            value: child.hasBeenReleasedFromInstitution === "Y" ? "Yes" : "No",
-          });
-          // if (child.hasBeenReleasedFromInstitution === "Y") {
+          }
+          if(child.status === "Canadian Citizen") {
             childData.push({
-              label: "Discharge date:",
-              value: formatDate(child.dischargeDate),
+              label: "Has child been released from institution?",
+              value: child.hasBeenReleasedFromInstitution === "Y" ? "Yes" : "No",
             });
-          // }
+            if (child.hasBeenReleasedFromInstitution === "Y") {
+              childData.push({
+                label: "Discharge date:",
+                value: formatDate(child.dischargeDate),
+              });
+            }
+          }
           const isFullTimeStudent = child.ageRange === ChildAgeTypes.Child19To24;
-          childData.push({
-            label: "Full-time student",
-            value: isFullTimeStudent ? "Yes" : "No",
-          });
-          // if (isFullTimeStudent) {
+          if (isFullTimeStudent) {
+            childData.push({
+              label: "Full-time student",
+              value: isFullTimeStudent ? "Yes" : "No",
+            });
             const willResideInBC = child.willResideInBCAfterStudies === "Y";
             childData.push({
               label: "Will you reside in BC upon completion of your studies",
@@ -694,15 +698,19 @@ export default {
               label: "Estimated school completion date:",
               value: formatDate(child.schoolCompletionDate),
             });
-          // }
-          const documentCount =
-            child.citizenshipSupportDocuments.length +
-            child.nameChangeSupportDocuments.length;
-          childData.push({
-            label: "Documents",
-            value: `${documentCount} ${this.getFilePlural(documentCount)}`,
-          });
-        // }
+          }
+        }
+        let documentCount = 0;
+        if (child.citizenshipSupportDocuments.length > 0) {
+          documentCount += 1;
+        }
+        if (child.nameChangeSupportDocuments.length > 0) {
+          documentCount += 1;
+        }
+        childData.push({
+          label: "Documents",
+          value: `${documentCount} ${this.getFilePlural(documentCount)}`,
+        });
         chldrnData.push(childData);
       }
       return chldrnData;
