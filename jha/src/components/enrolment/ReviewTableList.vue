@@ -164,7 +164,9 @@ export default {
       });
       if (this.isApplyingForMSP) {
         const gender =
-          this.$store.state.enrolmentModule.ahGender === "F" ? "Female" : "Male";
+          this.$store.state.enrolmentModule.ahGender === "F"
+            ? "Female"
+            : "Male";
         items.push({
           label: "Gender",
           value: gender,
@@ -222,7 +224,9 @@ export default {
               ? "Yes"
               : "No",
         });
-        if (this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth !== "Y") {
+        if (
+          this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth !== "Y"
+        ) {
           items.push({
             label: "Date arrived in B.C.",
             value: formatDate(
@@ -237,14 +241,18 @@ export default {
           });
           items.push({
             label: "Has account holder moved permanently to BC?",
-            value: this.$store.state.enrolmentModule.ahIsMovedToBCPermanently === "Y" ? "Yes" : "No"
+            value:
+              this.$store.state.enrolmentModule.ahIsMovedToBCPermanently === "Y"
+                ? "Yes"
+                : "No",
           });
           items.push({
             label: "Moved from province/jurisdiction",
             value: this.$store.state.enrolmentModule.ahMoveFromOrigin,
           });
         }
-        const ahPreviousHealthNumber = this.$store.state.enrolmentModule.ahPreviousHealthNumber;
+        const ahPreviousHealthNumber = this.$store.state.enrolmentModule
+          .ahPreviousHealthNumber;
         items.push({
           label: "Previous Health number",
           value: ahPreviousHealthNumber ? ahPreviousHealthNumber : "No",
@@ -269,7 +277,9 @@ export default {
               ? "Yes"
               : "No",
         });
-        if (this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months === "Y") {
+        if (
+          this.$store.state.enrolmentModule.ahIsOutsideBCLast12Months === "Y"
+        ) {
           items.push({
             label: "Reason for leaving",
             value: this.$store.state.enrolmentModule
@@ -290,13 +300,18 @@ export default {
           items.push({
             label: "Return date",
             value: formatDate(
-              this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReturnDate
+              this.$store.state.enrolmentModule
+                .ahOutsideBCLast12MonthsReturnDate
             ),
           });
         }
-        if (this.$store.state.enrolmentModule.ahCitizenshipStatus === "Canadian Citizen") {
+        if (
+          this.$store.state.enrolmentModule.ahCitizenshipStatus ===
+          "Canadian Citizen"
+        ) {
           const releasedFromForces =
-            this.$store.state.enrolmentModule.ahIsReleasedFromArmedForces === "Y";
+            this.$store.state.enrolmentModule.ahIsReleasedFromArmedForces ===
+            "Y";
           items.push({
             label: "Released from Canadian Forces",
             value: releasedFromForces ? "Yes" : "No",
@@ -326,10 +341,16 @@ export default {
         }
       }
       let documentCount = 0;
-      if (this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments.length > 0) {
+      if (
+        this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments.length >
+        0
+      ) {
         documentCount += 1;
       }
-      if (this.$store.state.enrolmentModule.ahNameChangeSupportDocuments.length > 0) {
+      if (
+        this.$store.state.enrolmentModule.ahNameChangeSupportDocuments.length >
+        0
+      ) {
         documentCount += 1;
       }
       items.push({
@@ -413,7 +434,9 @@ export default {
               ? "Yes"
               : "No",
         });
-        if (this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth !== "Y") {
+        if (
+          this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth !== "Y"
+        ) {
           items.push({
             label: "Date arrived in B.C.",
             value: formatDate(
@@ -438,7 +461,8 @@ export default {
               ? "Yes"
               : "No",
         });
-        const spousePreviousHealthNumber = this.$store.state.enrolmentModule.spousePreviousHealthNumber;
+        const spousePreviousHealthNumber = this.$store.state.enrolmentModule
+          .spousePreviousHealthNumber;
         items.push({
           label: "Previous health number",
           value: spousePreviousHealthNumber ? spousePreviousHealthNumber : "No",
@@ -446,11 +470,14 @@ export default {
         items.push({
           label: "Outside B.C. for more than 30 days",
           value:
-            this.$store.state.enrolmentModule.spouseOutsideBCLast12Months === "Y"
+            this.$store.state.enrolmentModule.spouseOutsideBCLast12Months ===
+            "Y"
               ? "Yes"
               : "No",
         });
-        if (this.$store.state.enrolmentModule.spouseOutsideBCLast12Months === "Y") {
+        if (
+          this.$store.state.enrolmentModule.spouseOutsideBCLast12Months === "Y"
+        ) {
           items.push({
             label: "Reason for leaving",
             value: this.$store.state.enrolmentModule
@@ -479,22 +506,24 @@ export default {
         items.push({
           label: "Has Previous BC Health Number",
           value:
-            this.$store.state.enrolmentModule.spouseHasPreviousBCHealthNumber ===
-            "Y"
+            this.$store.state.enrolmentModule
+              .spouseHasPreviousBCHealthNumber === "Y"
               ? "Yes"
               : "No",
         });
         if (
           this.$store.state.enrolmentModule.spouseHasPreviousBCHealthNumber ===
-            "Y" ) {
+          "Y"
+        ) {
           items.push({
             label: "Previous BC Health Number",
-            value: this.$store.state.enrolmentModule.spousePreviousBCHealthNumber,
+            value: this.$store.state.enrolmentModule
+              .spousePreviousBCHealthNumber,
           });
         }
         const releasedFromForces =
-          this.$store.state.enrolmentModule.spouseBeenReleasedFromInstitution ===
-          "Y";
+          this.$store.state.enrolmentModule
+            .spouseBeenReleasedFromInstitution === "Y";
         items.push({
           label: "Released from Canadian Forces",
           value: releasedFromForces ? "Yes" : "No",
@@ -509,10 +538,16 @@ export default {
         }
       }
       let documentCount = 0;
-      if (this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments.length > 0) {
+      if (
+        this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments
+          .length > 0
+      ) {
         documentCount += 1;
       }
-      if (this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments.length > 0) {
+      if (
+        this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments
+          .length > 0
+      ) {
         documentCount += 1;
       }
       items.push({
@@ -537,9 +572,9 @@ export default {
         });
         if (this.isApplyingForMSP) {
           childData.push({
-              label: "Name changed?",
-              value: child.isNameChanged === "Y" ? "Yes" : "No",
-            });
+            label: "Name changed?",
+            value: child.isNameChanged === "Y" ? "Yes" : "No",
+          });
           if (child.isNameChanged === "Y") {
             childData.push({
               label: "Name change document type",
@@ -597,7 +632,9 @@ export default {
             if (child.previousHealthNumber) {
               childData.push({
                 label: "Health number from previous residence:",
-                value: child.previousHealthNumber ? child.previousHealthNumber : "No",
+                value: child.previousHealthNumber
+                  ? child.previousHealthNumber
+                  : "No",
               });
             }
           }
@@ -633,10 +670,11 @@ export default {
               value: child.previousBCHealthNumber,
             });
           }
-          if(child.status === "Canadian Citizen") {
+          if (child.status === "Canadian Citizen") {
             childData.push({
               label: "Has child been released from institution?",
-              value: child.hasBeenReleasedFromInstitution === "Y" ? "Yes" : "No",
+              value:
+                child.hasBeenReleasedFromInstitution === "Y" ? "Yes" : "No",
             });
             if (child.hasBeenReleasedFromInstitution === "Y") {
               childData.push({
@@ -645,7 +683,8 @@ export default {
               });
             }
           }
-          const isFullTimeStudent = child.ageRange === ChildAgeTypes.Child19To24;
+          const isFullTimeStudent =
+            child.ageRange === ChildAgeTypes.Child19To24;
           if (isFullTimeStudent) {
             childData.push({
               label: "Full-time student",
@@ -717,31 +756,42 @@ export default {
       const items = [];
       const ahFPCIncome = this.$store.state.enrolmentModule.ahFPCIncome;
       items.push({
-        label: 'Account holder net income for 2019',
-        value: ahFPCIncome ? moneyFormatter.format(ahFPCIncome) : moneyFormatter.format("0"),
+        label: "Account holder net income for 2019",
+        value: ahFPCIncome
+          ? moneyFormatter.format(ahFPCIncome)
+          : moneyFormatter.format("0"),
       });
-      if (this.$store.state.enrolmentModule.hasSpouse === 'Y') {
-        const spouseFPCIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
+      if (this.$store.state.enrolmentModule.hasSpouse === "Y") {
+        const spouseFPCIncome = this.$store.state.enrolmentModule
+          .spouseFPCIncome;
         items.push({
-          label: 'Spouse/common-law partner net income for 2019',
-          value: spouseFPCIncome ? moneyFormatter.format(this.$store.state.enrolmentModule.spouseFPCIncome) : moneyFormatter.format("0"),
+          label: "Spouse/common-law partner net income for 2019",
+          value: spouseFPCIncome
+            ? moneyFormatter.format(
+                this.$store.state.enrolmentModule.spouseFPCIncome
+              )
+            : moneyFormatter.format("0"),
         });
       }
       const ahFPCRDSP = this.$store.state.enrolmentModule.ahFPCRDSP;
       items.push({
-        label: 'Account holder RDSP amount',
-        value: ahFPCRDSP ? moneyFormatter.format(ahFPCRDSP) : moneyFormatter.format("0"),
+        label: "Account holder RDSP amount",
+        value: ahFPCRDSP
+          ? moneyFormatter.format(ahFPCRDSP)
+          : moneyFormatter.format("0"),
       });
-      if (this.$store.state.enrolmentModule.hasSpouse === 'Y') {
+      if (this.$store.state.enrolmentModule.hasSpouse === "Y") {
         const spouseFPCRDSP = this.$store.state.enrolmentModule.spouseFPCRDSP;
         items.push({
-          label: 'Spouse RDSP amount',
-          value: spouseFPCRDSP ? moneyFormatter.format(spouseFPCRDSP) : moneyFormatter.format("0"),
+          label: "Spouse RDSP amount",
+          value: spouseFPCRDSP
+            ? moneyFormatter.format(spouseFPCRDSP)
+            : moneyFormatter.format("0"),
         });
       }
       items.push({
-        label: 'Widget data',
-        value: 'placeholder',
+        label: "Widget data",
+        value: "placeholder",
       });
       return items;
     },
@@ -750,35 +800,55 @@ export default {
       const selectedYear = this.$store.state.enrolmentModule.selectedNOAYear;
       items.push({
         label: `Account Holder net income for ${selectedYear}`,
-        value: moneyFormatter.format(this.$store.state.enrolmentModule.ahSBIncome),
+        value: moneyFormatter.format(
+          this.$store.state.enrolmentModule.ahSBIncome
+        ),
       });
-      if (this.$store.state.enrolmentModule.hasSpouse === "Y"){
+      if (this.$store.state.enrolmentModule.hasSpouse === "Y") {
         items.push({
           label: `Spouse/common-law partner's net income from ${selectedYear}`,
-          value: moneyFormatter.format(this.$store.state.enrolmentModule.spouseSBIncome),
+          value: moneyFormatter.format(
+            this.$store.state.enrolmentModule.spouseSBIncome
+          ),
         });
       }
       items.push({
         label: `Number of children on MSP account`,
-        value: this.$store.state.enrolmentModule.numChildren ? this.$store.state.enrolmentModule.numChildren : "0",
+        value: this.$store.state.enrolmentModule.numChildren
+          ? this.$store.state.enrolmentModule.numChildren
+          : "0",
       });
       if (this.$store.state.enrolmentModule.hasChildren === "Y") {
-        const claimedChildCareExpenses = this.$store.state.enrolmentModule.claimedChildCareExpenses;
-          items.push({
+        const claimedChildCareExpenses = this.$store.state.enrolmentModule
+          .claimedChildCareExpenses;
+        items.push({
           label: `Claimed childcare expenses`,
-          value: claimedChildCareExpenses ? moneyFormatter.format(claimedChildCareExpenses) : moneyFormatter.format("0"),
+          value: claimedChildCareExpenses
+            ? moneyFormatter.format(claimedChildCareExpenses)
+            : moneyFormatter.format("0"),
         });
       }
       items.push({
         label: `Claimed disability tax credit in ${selectedYear}`,
-        value: this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y' ? 'Yes' : 'No',
+        value:
+          this.$store.state.enrolmentModule.hasDisabilityCredit === "Y"
+            ? "Yes"
+            : "No",
       });
-      if (this.$store.state.enrolmentModule.selectedDisabilityRecipients.length > 0){
-        const selectedDisabilityRecipients = this.$store.state.enrolmentModule.selectedDisabilityRecipients;
-        const numDisabilityChildren = this.$store.state.enrolmentModule.numDisabilityChildren;
+      if (
+        this.$store.state.enrolmentModule.selectedDisabilityRecipients.length >
+        0
+      ) {
+        const selectedDisabilityRecipients = this.$store.state.enrolmentModule
+          .selectedDisabilityRecipients;
+        const numDisabilityChildren = this.$store.state.enrolmentModule
+          .numDisabilityChildren;
         items.push({
           label: `Who claimed`,
-          value: this.getWhoClaimed(selectedDisabilityRecipients, numDisabilityChildren),
+          value: this.getWhoClaimed(
+            selectedDisabilityRecipients,
+            numDisabilityChildren
+          ),
         });
       }
       items.push({
@@ -788,23 +858,36 @@ export default {
       if (this.$store.state.enrolmentModule.hasRDSP === "Y") {
         items.push({
           label: `RDSP amount`,
-          value: moneyFormatter.format(this.$store.state.enrolmentModule.sbRDSPAmount),
+          value: moneyFormatter.format(
+            this.$store.state.enrolmentModule.sbRDSPAmount
+          ),
         });
       }
       items.push({
         label: `Claimed attendant or nursing home expenses`,
-        value: this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y' ?  'Yes' : 'No',
+        value:
+          this.$store.state.enrolmentModule.hasAttendantNursingExpenses === "Y"
+            ? "Yes"
+            : "No",
       });
-      if (this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y'){
-        const selectedAttendantNursingRecipients = this.$store.state.enrolmentModule.selectedAttendantNursingRecipients;
-        const numAttendantNursingChildren = this.$store.state.enrolmentModule.numAttendantNursingChildren;
+      if (
+        this.$store.state.enrolmentModule.hasAttendantNursingExpenses === "Y"
+      ) {
+        const selectedAttendantNursingRecipients = this.$store.state
+          .enrolmentModule.selectedAttendantNursingRecipients;
+        const numAttendantNursingChildren = this.$store.state.enrolmentModule
+          .numAttendantNursingChildren;
         items.push({
           label: `Who claimed`,
-          value: this.getWhoClaimed(selectedAttendantNursingRecipients, numAttendantNursingChildren),
+          value: this.getWhoClaimed(
+            selectedAttendantNursingRecipients,
+            numAttendantNursingChildren
+          ),
         });
-        const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length;
+        const documentCount = this.$store.state.enrolmentModule
+          .attendantNursingReceipts.length;
         items.push({
-          label: 'Documents',
+          label: "Documents",
           value: `${documentCount} ${this.getFilePlural(documentCount)}`,
         });
       }
@@ -813,74 +896,74 @@ export default {
     contactData() {
       const items = [];
       items.push({
-        label: 'Residential Address:',
-        value: '',
+        label: "Residential Address:",
+        value: "",
       });
       items.push({
-        label: 'Street Address 1',
+        label: "Street Address 1",
         value: this.$store.state.enrolmentModule.resAddressLine1,
       });
       items.push({
-        label: 'Street Address 2',
+        label: "Street Address 2",
         value: this.$store.state.enrolmentModule.resAddressLine2,
       });
       items.push({
-        label: 'Street Address 3',
+        label: "Street Address 3",
         value: this.$store.state.enrolmentModule.resAddressLine3,
       });
       items.push({
-        label: 'City',
+        label: "City",
         value: this.$store.state.enrolmentModule.resCity,
       });
       items.push({
-        label: 'Province',
+        label: "Province",
         value: this.$store.state.enrolmentModule.resProvince,
       });
       items.push({
-        label: 'Postal Code',
+        label: "Postal Code",
         value: this.$store.state.enrolmentModule.resPostalCode,
       });
       items.push({
-        label: 'Jurisdiction',
+        label: "Jurisdiction",
         value: this.$store.state.enrolmentModule.resCountry,
       });
       if (!this.$store.state.enrolmentModule.isMailSame) {
         items.push({
-          label: 'Mailing Address:',
-          value: '',
+          label: "Mailing Address:",
+          value: "",
         });
         items.push({
-          label: 'Street Address 1',
+          label: "Street Address 1",
           value: this.$store.state.enrolmentModule.mailAddressLine1,
         });
         items.push({
-          label: 'Street Address 2',
+          label: "Street Address 2",
           value: this.$store.state.enrolmentModule.mailAddressLine2,
         });
         items.push({
-          label: 'Street Address 3',
+          label: "Street Address 3",
           value: this.$store.state.enrolmentModule.mailAddressLine3,
         });
         items.push({
-          label: 'City',
+          label: "City",
           value: this.$store.state.enrolmentModule.mailCity,
         });
         items.push({
-          label: 'Province',
+          label: "Province",
           value: this.$store.state.enrolmentModule.mailProvince,
         });
         items.push({
-          label: 'Postal Code',
+          label: "Postal Code",
           value: this.$store.state.enrolmentModule.mailPostalCode,
         });
         items.push({
-          label: 'Jurisdiction',
+          label: "Jurisdiction",
           value: this.$store.state.enrolmentModule.mailCountry,
         });
         items.push({
-          label: 'Phone',
+          label: "Phone",
           value: this.$store.state.enrolmentModule.phone,
-      });
+        });
       }
       return items;
     },
