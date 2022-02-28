@@ -237,9 +237,7 @@ export default {
           });
           items.push({
             label: "Has account holder moved permanently to BC?",
-            value: formatDate(
-              this.$store.state.enrolmentModule.ahIsMovedToBCPermanently
-            ),
+            value: this.$store.state.enrolmentModule.ahIsMovedToBCPermanently === "Y" ? "Yes" : "No"
           });
           items.push({
             label: "Moved from province/jurisdiction",
@@ -260,7 +258,7 @@ export default {
         });
         if (this.$store.state.enrolmentModule.ahHasPreviousPHN === "Y") {
           items.push({
-            label: "Previous BC PHN?",
+            label: "Previous BC PHN:",
             value: this.$store.state.enrolmentModule.ahPreviousPHN,
           });
         }
@@ -415,7 +413,7 @@ export default {
               ? "Yes"
               : "No",
         });
-        if (this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth !== "Y" && this.isApplyingForMSP) {
+        if (this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth !== "Y") {
           items.push({
             label: "Date arrived in B.C.",
             value: formatDate(
@@ -452,7 +450,7 @@ export default {
               ? "Yes"
               : "No",
         });
-        // if (this.$store.state.enrolmentModule.spouseOutsideBCLast12Months === "Y") {
+        if (this.$store.state.enrolmentModule.spouseOutsideBCLast12Months === "Y") {
           items.push({
             label: "Reason for leaving",
             value: this.$store.state.enrolmentModule
@@ -477,7 +475,7 @@ export default {
                 .spouseOutsideBCLast12MonthsReturnDate
             ),
           });
-        // }
+        }
         items.push({
           label: "Has Previous BC Health Number",
           value:
@@ -822,18 +820,14 @@ export default {
         label: 'Street Address 1',
         value: this.$store.state.enrolmentModule.resAddressLine1,
       });
-      // if(this.$store.state.enrolmentModule.resAddressLine2) {
-        items.push({
-          label: 'Street Address 2',
-          value: this.$store.state.enrolmentModule.resAddressLine2,
-        });
-      // }
-      // if(this.$store.state.enrolmentModule.resAddressLine3) {
-        items.push({
-          label: 'Street Address 3',
-          value: this.$store.state.enrolmentModule.resAddressLine3,
-        });
-      // }
+      items.push({
+        label: 'Street Address 2',
+        value: this.$store.state.enrolmentModule.resAddressLine2,
+      });
+      items.push({
+        label: 'Street Address 3',
+        value: this.$store.state.enrolmentModule.resAddressLine3,
+      });
       items.push({
         label: 'City',
         value: this.$store.state.enrolmentModule.resCity,
@@ -850,7 +844,7 @@ export default {
         label: 'Jurisdiction',
         value: this.$store.state.enrolmentModule.resCountry,
       });
-      // if (!this.$store.state.enrolmentModule.isMailSame) {
+      if (!this.$store.state.enrolmentModule.isMailSame) {
         items.push({
           label: 'Mailing Address:',
           value: '',
@@ -859,18 +853,14 @@ export default {
           label: 'Street Address 1',
           value: this.$store.state.enrolmentModule.mailAddressLine1,
         });
-        // if(this.$store.state.enrolmentModule.mailAddressLine2) {
-          items.push({
-            label: 'Street Address 2',
-            value: this.$store.state.enrolmentModule.mailAddressLine2,
-          });
-        // }
-        // if (this.$store.state.enrolmentModule.mailAddressLine3) {
-          items.push({
-            label: 'Street Address 3',
-            value: this.$store.state.enrolmentModule.mailAddressLine3,
-          });
-        // }
+        items.push({
+          label: 'Street Address 2',
+          value: this.$store.state.enrolmentModule.mailAddressLine2,
+        });
+        items.push({
+          label: 'Street Address 3',
+          value: this.$store.state.enrolmentModule.mailAddressLine3,
+        });
         items.push({
           label: 'City',
           value: this.$store.state.enrolmentModule.mailCity,
@@ -887,13 +877,11 @@ export default {
           label: 'Jurisdiction',
           value: this.$store.state.enrolmentModule.mailCountry,
         });
-      // }
-      // if (this.$store.state.enrolmentModule.phone) {
-          items.push({
+        items.push({
           label: 'Phone',
           value: this.$store.state.enrolmentModule.phone,
-        });
-      // } 
+      });
+      }
       return items;
     },
     getIfHasSpouse() {
