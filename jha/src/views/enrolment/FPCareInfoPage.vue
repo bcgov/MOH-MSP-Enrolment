@@ -225,9 +225,12 @@ export default {
         apiService.checkEligibility(this.$store.state.enrolmentModule)
           .then((response) => {
             this.isLoading = false;
-            
+
             if (response.data && response.data.regStatusCode === '0') {
               this.navigateToNextPage();
+            } else if (response.data && response.data.exception) {
+              this.isSystemUnavailable = true;
+              scrollToError();
             } else {
               this.checkEligibilityErrorMessage = response.data.regStatusMsg;
               scrollToError();
