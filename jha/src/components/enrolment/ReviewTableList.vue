@@ -754,74 +754,62 @@ export default {
         label: `Account Holder net income for ${selectedYear}`,
         value: moneyFormatter.format(this.$store.state.enrolmentModule.ahSBIncome),
       });
-      // if (this.$store.state.enrolmentModule.hasSpouse === "Y"){
+      if (this.$store.state.enrolmentModule.hasSpouse === "Y"){
         items.push({
           label: `Spouse/common-law partner's net income from ${selectedYear}`,
           value: moneyFormatter.format(this.$store.state.enrolmentModule.spouseSBIncome),
         });
-      // }
-      items.push({
-        label: `Has children on account`,
-        value: "placeholder",
-      });
+      }
       items.push({
         label: `Number of children on MSP account`,
-        value: this.$store.state.enrolmentModule.numChildren,
+        value: this.$store.state.enrolmentModule.numChildren ? this.$store.state.enrolmentModule.numChildren : "0",
       });
-      // if (this.$store.state.enrolmentModule.hasChildren === "Y") {
+      if (this.$store.state.enrolmentModule.hasChildren === "Y") {
+        const claimedChildCareExpenses = this.$store.state.enrolmentModule.claimedChildCareExpenses;
           items.push({
           label: `Claimed childcare expenses`,
-          value: moneyFormatter.format(this.$store.state.enrolmentModule.claimedChildCareExpenses),
+          value: claimedChildCareExpenses ? moneyFormatter.format(claimedChildCareExpenses) : moneyFormatter.format("0"),
         });
-      // }
+      }
       items.push({
         label: `Claimed disability tax credit in ${selectedYear}`,
         value: this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y' ? 'Yes' : 'No',
       });
-      // if (this.$store.state.enrolmentModule.selectedDisabilityRecipients.length > 0){
+      if (this.$store.state.enrolmentModule.selectedDisabilityRecipients.length > 0){
+        const selectedDisabilityRecipients = this.$store.state.enrolmentModule.selectedDisabilityRecipients;
+        const numDisabilityChildren = this.$store.state.enrolmentModule.numDisabilityChildren;
         items.push({
           label: `Who claimed`,
-          value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedDisabilityRecipients),
+          value: this.getWhoClaimed(selectedDisabilityRecipients, numDisabilityChildren),
         });
-      // }
-      // if (this.$store.state.enrolmentModule.hasChildren === "Y" && this.$store.state.enrolmentModule.hasDisabilityCredit === 'Y') {
-          items.push({
-          label: `Number of children eligible for a disability tax credit`,
-          value: this.$store.state.enrolmentModule.numDisabilityChildren,
-        });
-      // }
+      }
       items.push({
         label: `Registered Disability Savings Plan?`,
         value: this.$store.state.enrolmentModule.hasRDSP === "Y" ? "Yes" : "No",
       });
-      // if (this.$store.state.enrolmentModule.hasRDSP === "Y") {
+      if (this.$store.state.enrolmentModule.hasRDSP === "Y") {
         items.push({
           label: `RDSP amount`,
           value: moneyFormatter.format(this.$store.state.enrolmentModule.sbRDSPAmount),
         });
-      // }
-      
+      }
       items.push({
         label: `Claimed attendant or nursing home expenses`,
         value: this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y' ?  'Yes' : 'No',
       });
-      // if (this.$store.state.enrolmentModule.selectedAttendantNursingRecipients.length > 0){
-          items.push({
-          label: `Who claimed`,
-          value: this.getWhoClaimed(this.$store.state.enrolmentModule.selectedAttendantNursingRecipients),
-        });
-      // }
-      // if (this.$store.state.enrolmentModule.hasChildren === "Y" && this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y') {
+      if (this.$store.state.enrolmentModule.hasAttendantNursingExpenses === 'Y'){
+        const selectedAttendantNursingRecipients = this.$store.state.enrolmentModule.selectedAttendantNursingRecipients;
+        const numAttendantNursingChildren = this.$store.state.enrolmentModule.numAttendantNursingChildren;
         items.push({
-          label: `Number of children claiming attendant care expenses`,
-          value: this.$store.state.enrolmentModule.numAttendantNursingChildren,
+          label: `Who claimed`,
+          value: this.getWhoClaimed(selectedAttendantNursingRecipients, numAttendantNursingChildren),
         });
-      // }
-      const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length;
-      items.push({
-        label: 'Documents',
-        value: `${documentCount} ${this.getFilePlural(documentCount)}`,
-      });
+        const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length;
+        items.push({
+          label: 'Documents',
+          value: `${documentCount} ${this.getFilePlural(documentCount)}`,
+        });
+      }
       return items;
     },
     contactData() {
@@ -969,7 +957,7 @@ export default {
       }
       return 'Child';
     },
-    getWhoClaimed(array) {
+    getWhoClaimed(array, numberOfChildren) {
       //takes an array containing some combination of the values ah, spouse, and child
       //returns a new string of those same array entries but capitalized, fully spelled out, and comma separated
       let result = "";
@@ -982,7 +970,13 @@ export default {
             result += `Spouse`;
             break;
           case "child":
-            result += `Child`;
+            if (numberOfChildren === "1") {
+              result += `${numberOfChildren} Child`;
+            } else if (!numberOfChildren) {
+              result += `0 children`;
+            } else {
+              result += `${numberOfChildren} Children`;
+            }
             break;
           default:
             result += `${recipient}`;
