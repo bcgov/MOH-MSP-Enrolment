@@ -622,7 +622,18 @@
             v-if="$v.schoolName.$dirty && !$v.schoolName.required"
             aria-live="assertive">School name is required.</div>
           <div class="text-danger" v-if="$v.schoolName.$dirty && !$v.schoolName.schoolNameContentValidator" aria-live="assertive">School name must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-          <Input label="Full street address, rural route, PO box or general delivery"
+          <AddressDoctorInput v-if="isAddressValidatorEnabled && schoolCountry === 'Canada'"
+            label="Full street address, rural route, PO box or general delivery"
+            v-model="schoolAddressLine1"
+            :id="`school-address-line1-${index}`"
+            class="mt-3"
+            maxlength="25"
+            serviceUrl="/ahdc/api/address"
+            :inputStyle='mediumStyles'
+            @addressSelected="handleSchoolAddressSelected($event)"
+            @blur="handleBlurField($v.schoolAddressLine1)" />
+          <Input v-else
+            label="Full street address, rural route, PO box or general delivery"
             :id="'school-address-line1-' + index"
             className='mt-3'
             v-model="schoolAddressLine1"
@@ -772,6 +783,7 @@ import {
   phnFirstDigitValidator,
 } from '@/helpers/validators';
 import {
+  AddressDoctorInput,
   CountrySelect,
   RegionSelect,
   Select,
@@ -784,8 +796,11 @@ import {
   optionalValidator,
   futureDateValidator,
   distantPastValidator,
+  getProvinceNameByCode,
   phnValidator,
+  replaceSpecialCharacters,
   specialCharacterValidator,
+  truncateAddressLines,
 } from 'common-lib-vue';
 import {
   required
@@ -827,6 +842,7 @@ import { isAfter, isBefore } from 'date-fns/esm';
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import { mediumStyles, smallStyles } from '@/constants/input-styles';
+import spaEnvService from '@/services/spa-env-service';
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -955,6 +971,7 @@ export default {
   name: 'Child',
   mixins: [pageContentMixin],
   components: {
+    AddressDoctorInput,
     CountrySelect,
     RegionSelect,
     Select,
@@ -1371,6 +1388,22 @@ export default {
     handleProcessDateSchoolCompletion(data) {
       this.schoolCompletionDateData = data;
     },
+    handleSchoolAddressSelected(address) {
+      const addressLines = truncateAddressLines(address.addressLines, 25);
+
+      // Remove all address lines.
+      for (let i=0; i<3; i++) {
+        this[`schoolAddressLine${i+1}`] = null;
+      }
+      // Add new address lines.
+      for (let i=0; i<(addressLines.length <= 3 ? addressLines.length : 3); i++) {
+        this[`schoolAddressLine${i+1}`] = replaceSpecialCharacters(addressLines[i]);
+      }
+      this.schoolCountry = replaceSpecialCharacters(address.country);
+      this.schoolProvinceOrState = getProvinceNameByCode(address.province);
+      this.schoolCity = replaceSpecialCharacters(address.city);
+      this.schoolPostalCode = replaceSpecialCharacters(address.postalCode);
+    }
   },
   watch: {
     ageRange() {
@@ -1687,6 +1720,9 @@ export default {
     showDischargeInputs() {
       return this.status === this.statusOptions.Citizen;
     },
+    isAddressValidatorEnabled() {
+      return spaEnvService.values.SPA_ENV_JHA_ENABLE_ADDRESS_VALIDATOR === 'true';
+    }
   },
 }
 </script>

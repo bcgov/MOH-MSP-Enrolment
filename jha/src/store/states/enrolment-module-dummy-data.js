@@ -57,6 +57,7 @@ export default {
   ahWillStudentResideInBC: 'Y',
   ahFPCIncome: '0',
   ahFPCRDSP: '0',
+  ahCRADocuments: [{}],
   // Spouse info
   hasSpouse: 'Y',
   spouseStatus: StatusInCanada.Citizen,
@@ -90,6 +91,7 @@ export default {
   spouseDischargeDate: parseISO('2022-01-04'),
   spouseFPCIncome: '20000',
   spouseFPCRDSP: '2000',
+  spouseCRADocuments: [{}],
   // Child info
   hasChildren: 'Y',
   children: [
