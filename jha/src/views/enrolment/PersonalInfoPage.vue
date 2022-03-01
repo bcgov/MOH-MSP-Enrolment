@@ -343,9 +343,9 @@
                       && !$v.moveFromOrigin.required"
                     aria-live="assertive">Jurisdiction of origin is required.</div>
                   <div class="text-danger"
-                      v-if="$v.moveFromOrigin.$dirty
+                    v-if="$v.moveFromOrigin.$dirty
                       && !$v.moveFromOrigin.nonCanadaValidator"
-                      aria-live="assertive">Jurisdiction of origin cannot be Canada.</div>
+                    aria-live="assertive">Jurisdiction of origin cannot be Canada.</div>
                 </div>
                 <div v-if="requestArrivalInBCInfo">
                   <DateInput :label="`${citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'Most recent move to B.C.' : 'Arrival date in B.C.'}`"
