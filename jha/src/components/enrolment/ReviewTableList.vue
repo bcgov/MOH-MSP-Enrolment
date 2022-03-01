@@ -17,7 +17,7 @@
                   :backgroundColor='tableBackgroundColor'/>
     </div>
     
-    <div class="col-lg-6" v-if='getIfHasSpouse'>
+    <div class="col-lg-6" v-if='hasSpouse'>
       <div class="row align-items-end mt-3">
         <div class="col-9">
           <h2 class="mb-2">Spouse</h2>
@@ -967,7 +967,7 @@ export default {
       }
       return items;
     },
-    getIfHasSpouse() {
+    hasSpouse() {
       return (this.$store.state.enrolmentModule.hasSpouse === "Y")
     }
   },
