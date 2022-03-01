@@ -246,9 +246,15 @@ export default {
                 ? "Yes"
                 : "No",
           });
+          let displayMoveFromLocation = "";
+          if (this.$store.state.enrolmentModule.ahMoveFromOrigin) {
+            displayMoveFromLocation = this.$store.state.enrolmentModule.ahMoveFromOrigin;
+          } else if (this.$store.state.enrolmentModule.ahFromProvinceOrCountry) {
+            displayMoveFromLocation = this.$store.state.enrolmentModule.ahFromProvinceOrCountry;
+          }
           items.push({
             label: "Moved from province/jurisdiction",
-            value: this.$store.state.enrolmentModule.ahMoveFromOrigin,
+            value: displayMoveFromLocation,
           });
         }
         const ahPreviousHealthNumber = this.$store.state.enrolmentModule
