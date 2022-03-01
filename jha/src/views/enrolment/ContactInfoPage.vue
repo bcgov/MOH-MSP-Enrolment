@@ -18,7 +18,18 @@
                 <p class="address-description">Enter your residential address - that's the address you currently live at in B.C.</p>
               </div>
               <hr class="mt-0"/>
-              <Input class="mt-3"
+              <AddressDoctorInput v-if="isAddressValidatorEnabled"
+                label="Full street address, rural route, or general delivery"
+                v-model="resAddressLine1"
+                id="res-address-line1"
+                class="mt-3"
+                maxlength="25"
+                serviceUrl="/ahdc/api/address"
+                :inputStyle='mediumStyles'
+                @addressSelected="handleResAddressSelected($event)"
+                @blur="handleBlurField($v.resAddressLine1)" />
+              <Input v-else
+                class="mt-3"
                 label="Full street address, rural route, or general delivery"
                 id="res-address-line1"
                 v-model="resAddressLine1"
@@ -103,7 +114,18 @@
                 class='different-address'/>
             </div>
             <div v-else>
-              <Input class="mt-3"
+              <AddressDoctorInput v-if="isAddressValidatorEnabled && mailCountry === 'Canada'"
+                label="Full street address, rural route, or general delivery"
+                v-model="mailAddressLine1"
+                id="mail-address-line1"
+                class="mt-3"
+                maxlength="25"
+                serviceUrl="/ahdc/api/address"
+                :inputStyle='mediumStyles'
+                @addressSelected="handleMailAddressSelected($event)"
+                @blur="handleBlurField($v.mailAddressLine1)" />
+              <Input v-else
+                class="mt-3"
                 label="Full street address, rural route, PO box, or general delivery"
                 id="mail-address-line1"
                 v-model="mailAddressLine1"
@@ -284,6 +306,7 @@ import {
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
 import {
+  AddressDoctorInput,
   Button,
   Checkbox,
   ContinueBar,
@@ -294,8 +317,11 @@ import {
   PostalCodeInput,
   RegionSelect,
   bcPostalCodeValidator,
+  getProvinceNameByCode,
   phoneValidator,
+  replaceSpecialCharacters,
   specialCharacterValidator,
+  truncateAddressLines,
 } from 'common-lib-vue';
 import {
   required,
@@ -303,6 +329,7 @@ import {
 import pageContentMixin from '@/mixins/page-content-mixin';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import TipBox from '@/components/TipBox';
+import spaEnvService from '@/services/spa-env-service';
 
 const addressLineContentValidator = (value) => {
   if (value === "" || value === null) {
@@ -353,6 +380,7 @@ export default {
     pageStepperMixin,
   ],
   components: {
+    AddressDoctorInput,
     Button,
     Checkbox,
     ContinueBar,
@@ -534,6 +562,42 @@ export default {
     handleClickDifferentAddress(){
       this.isMailSame = false;
     },
+    handleResAddressSelected(address) {
+      // Display error message when province isn't BC.
+      if (address.province !== 'BC') {
+        this.resAddressLine1 = null;
+        alert('Please select a valid BC address.');
+        return;
+      }
+      const addressLines = truncateAddressLines(address.addressLines, 25);
+
+      // Remove all address lines.
+      for (let i=0; i<3; i++) {
+        this[`resAddressLine${i+1}`] = null;
+      }
+      // Add new address lines.
+      for (let i=0; i<(addressLines.length <= 3 ? addressLines.length : 3); i++) {
+        this[`resAddressLine${i+1}`] = replaceSpecialCharacters(addressLines[i]);
+      }
+      this.resCity = replaceSpecialCharacters(address.city);
+      this.resPostalCode = replaceSpecialCharacters(address.postalCode);
+    },
+    handleMailAddressSelected(address) {
+      const addressLines = truncateAddressLines(address.addressLines, 25);
+
+      // Remove all address lines.
+      for (let i=0; i<3; i++) {
+        this[`mailAddressLine${i+1}`] = null;
+      }
+      // Add new address lines.
+      for (let i=0; i<(addressLines.length <= 3 ? addressLines.length : 3); i++) {
+        this[`mailAddressLine${i+1}`] = replaceSpecialCharacters(addressLines[i]);
+      }
+      this.mailCountry = replaceSpecialCharacters(address.country);
+      this.mailProvince = getProvinceNameByCode(address.province);
+      this.mailCity = replaceSpecialCharacters(address.city);
+      this.mailPostalCode = replaceSpecialCharacters(address.postalCode);
+    },
   },
   watch: {
     mailCountry: function(value, oldValue) {
@@ -551,7 +615,11 @@ export default {
       }
     }
   },
-  computed: {},
+  computed: {
+    isAddressValidatorEnabled() {
+      return spaEnvService.values.SPA_ENV_JHA_ENABLE_ADDRESS_VALIDATOR === 'true';
+    }
+  },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
