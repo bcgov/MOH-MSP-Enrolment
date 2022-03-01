@@ -171,7 +171,7 @@ parameters:
   displayName: Resources Memory Limit
   name: MEMORY_LIMIT
   required: true
-  value: 4Gi
+  value: 8Gi
 - description: The resources CPU request (in cores) for this build.
   displayName: Resources CPU Request
   name: CPU_REQUEST
@@ -181,4 +181,4 @@ parameters:
   displayName: Resources Memory Request
   name: MEMORY_REQUEST
   required: true
-  value: 2Gi
+  value: 4Gi
