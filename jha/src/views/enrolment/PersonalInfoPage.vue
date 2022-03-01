@@ -343,7 +343,8 @@
                       && !$v.moveFromOrigin.required"
                     aria-live="assertive">Jurisdiction of origin is required.</div>
                   <div class="text-danger"
-                      v-if="moveFromOrigin === 'Canada'"
+                      v-if="$v.moveFromOrigin.$dirty
+                      && !$v.moveFromOrigin.nonCanadaValidator"
                       aria-live="assertive">Jurisdiction of origin cannot be Canada.</div>
                 </div>
                 <div v-if="requestArrivalInBCInfo">

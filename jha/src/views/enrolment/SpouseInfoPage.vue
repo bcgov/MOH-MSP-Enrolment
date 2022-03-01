@@ -353,7 +353,8 @@
                         && !$v.spouseMoveFromOrigin.required"
                       aria-live="assertive">Province of origin is required.</div>
                     <div class="text-danger"
-                      v-if="spouseMoveFromOrigin === 'BC' || spouseMoveFromOrigin === 'British Columbia'"
+                      v-if="$v.spouseMoveFromOrigin.$dirty
+                        && !$v.spouseMoveFromOrigin.nonBCValidator"
                       aria-live="assertive">Province of origin cannot be British Columbia.</div>
                   </div>
                   <div v-if="showCountrySelector">
@@ -369,7 +370,8 @@
                       v-if="$v.spouseMoveFromOrigin.$dirty && !$v.spouseMoveFromOrigin.required"
                       aria-live="assertive">Jurisdiction of origin is required.</div>
                     <div class="text-danger"
-                      v-if="spouseMoveFromOrigin === 'Canada'"
+                      v-if="$v.spouseMoveFromOrigin.$dirty
+                        && !$v.spouseMoveFromOrigin.nonCanadaValidator"
                       aria-live="assertive">Jurisdiction of origin cannot be Canada.</div>
                   </div>
                   <div v-if="showMoveDateInputs">
