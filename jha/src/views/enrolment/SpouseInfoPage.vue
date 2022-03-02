@@ -502,6 +502,7 @@
                     aria-live="assertive">Please indicate whether your spouse has been outside BC in the past 12 months.</div>
                   <div v-if="spouseOutsideBCLast12Months === 'Y'" class="tabbed-section">
                     <Input 
+                      id="departure-reason"
                       className="mt-3"
                       label="Reason for departure"
                       maxlength="20"
@@ -513,6 +514,7 @@
                       aria-live="assertive">Reason for departure is required.</div>
                     <div class="text-danger" v-if="$v.spouseOutsideBCLast12MonthsReason.$dirty && !$v.spouseOutsideBCLast12MonthsReason.reasonDestinationContentValidator" aria-live="assertive">Reason must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
                     <Input 
+                      id="departure-location"
                       className="mt-3"
                       label="Location"
                       maxlength="20" 
@@ -571,6 +573,7 @@
                     aria-live="assertive">Please indicate whether your spouse has a previous BC Personal Health Number.</div>
                   <div v-if="spouseHasPreviousBCHealthNumber === 'Y'" class="tabbed-section">
                     <PhnInput 
+                      id="previous-bc-phn"
                       className="mt-3"
                       label="Your spouse's previous B.C. Personal Health Number (optional)" 
                       v-model="spousePreviousBCHealthNumber"
