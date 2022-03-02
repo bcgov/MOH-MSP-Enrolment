@@ -163,6 +163,20 @@ export default {
         value: name,
       });
       if (this.isApplyingForMSP) {
+        items.push({
+          label: "Is Name Changed",
+          value:
+            this.$store.state.enrolmentModule.ahIsNameChanged === "Y"
+              ? "Yes"
+              : "No",
+        });
+        if (this.$store.state.enrolmentModule.ahIsNameChanged === "Y") {
+          items.push({
+            label: "Name Change Support Document Type",
+            value: this.$store.state.enrolmentModule
+              .ahNameChangeSupportDocumentType,
+          });
+        }
         const gender =
           this.$store.state.enrolmentModule.ahGender === "F"
             ? "Female"
@@ -203,20 +217,6 @@ export default {
           value: this.$store.state.enrolmentModule
             .ahCitizenshipSupportDocumentType,
         });
-        items.push({
-          label: "Is Name Changed",
-          value:
-            this.$store.state.enrolmentModule.ahIsNameChanged === "Y"
-              ? "Yes"
-              : "No",
-        });
-        if (this.$store.state.enrolmentModule.ahIsNameChanged === "Y") {
-          items.push({
-            label: "Name Change Support Document Type",
-            value: this.$store.state.enrolmentModule
-              .ahNameChangeSupportDocumentType,
-          });
-        }
         items.push({
           label: "Lived in BC since birth?",
           value:
