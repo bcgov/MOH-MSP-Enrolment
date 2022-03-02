@@ -1401,7 +1401,7 @@ export default {
       }
       this.schoolCountry = replaceSpecialCharacters(address.country);
       this.schoolProvinceOrState = getProvinceNameByCode(address.province);
-      this.schoolCity = replaceSpecialCharacters(address.city);
+      this.schoolCity = typeof address.city === 'string' ? replaceSpecialCharacters(address.city).substring(0, 25) : null;
       this.schoolPostalCode = replaceSpecialCharacters(address.postalCode);
     }
   },

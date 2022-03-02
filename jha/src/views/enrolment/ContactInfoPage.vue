@@ -579,7 +579,7 @@ export default {
       for (let i=0; i<(addressLines.length <= 3 ? addressLines.length : 3); i++) {
         this[`resAddressLine${i+1}`] = replaceSpecialCharacters(addressLines[i]);
       }
-      this.resCity = replaceSpecialCharacters(address.city);
+      this.resCity = typeof address.city === 'string' ? replaceSpecialCharacters(address.city).substring(0, 25) : null;
       this.resPostalCode = replaceSpecialCharacters(address.postalCode);
     },
     handleMailAddressSelected(address) {
@@ -595,7 +595,7 @@ export default {
       }
       this.mailCountry = replaceSpecialCharacters(address.country);
       this.mailProvince = getProvinceNameByCode(address.province);
-      this.mailCity = replaceSpecialCharacters(address.city);
+      this.mailCity = typeof address.city === 'string' ? replaceSpecialCharacters(address.city).substring(0, 25) : null;
       this.mailPostalCode = replaceSpecialCharacters(address.postalCode);
     },
   },
