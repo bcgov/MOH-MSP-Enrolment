@@ -1263,7 +1263,6 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_DISCHARGE_DATE, this.spouseDischargeDate);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_FPC_INCOME, this.spouseIncome);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_FPC_RDSP, this.spouseRDSP);
-
     },
     navigateToNextPage() {
       // Determine which page to navigate to next
