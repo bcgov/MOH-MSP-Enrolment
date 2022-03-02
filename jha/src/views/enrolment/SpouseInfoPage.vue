@@ -930,8 +930,8 @@ export default {
     this.spousePreviousBCHealthNumber = this.$store.state.enrolmentModule.spousePreviousBCHealthNumber;
     this.spouseBeenReleasedFromInstitution = this.$store.state.enrolmentModule.spouseBeenReleasedFromInstitution;
     this.spouseDischargeDate = this.$store.state.enrolmentModule.spouseDischargeDate;
-    this.spouseIncome = this.$store.state.enrolmentModule.spouseIncome;
-    this.spouseRDSP = this.$store.state.enrolmentModule.spouseRDSP;
+    this.spouseIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
+    this.spouseRDSP = this.$store.state.enrolmentModule.spouseFPCRDSP;
     this.ahPHN = this.$store.state.enrolmentModule.ahPHN;
     this.ahSIN = this.$store.state.enrolmentModule.ahSIN;
     
