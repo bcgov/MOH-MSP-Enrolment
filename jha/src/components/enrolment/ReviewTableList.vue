@@ -217,13 +217,15 @@ export default {
           value: this.$store.state.enrolmentModule
             .ahCitizenshipSupportDocumentType,
         });
-        items.push({
-          label: "Lived in BC since birth?",
-          value:
-            this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth === "Y"
-              ? "Yes"
-              : "No",
-        });
+        if (this.$store.state.enrolmentModule.ahCitizenshipStatusReason === 'Not new to B.C. but needs to apply for MSP') {
+          items.push({
+            label: "Lived in BC since birth?",
+            value:
+              this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth === "Y"
+                ? "Yes"
+                : "No",
+          });
+        }
         if (
           this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth !== "Y"
         ) {
