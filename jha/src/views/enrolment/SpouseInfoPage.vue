@@ -745,7 +745,6 @@ import {
   SET_SPOUSE_DISCHARGE_DATE,
   SET_SPOUSE_FPC_INCOME,
   SET_SPOUSE_FPC_RDSP,
-
 } from '@/store/modules/enrolment-module';
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
