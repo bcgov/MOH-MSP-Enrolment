@@ -57,6 +57,7 @@ import {
 } from 'common-lib-vue';
 import {
   isBefore,
+  isValid as isDateValid,
   parseISO,
 } from 'date-fns';
 import apiService from '@/services/api-service';
@@ -220,7 +221,11 @@ export default {
     },
     getCoverageTier() {
       const ahBirthdate = this.value.ahBirthdate;
-      if (isBefore(ahBirthdate, parseISO('1939-01-01'))
+      const spouseBirthdate = this.value.spouseBirthdate;
+      if ((
+          (isDateValid(ahBirthdate) && isBefore(ahBirthdate, parseISO('1940-01-01'))) ||
+          (isDateValid(spouseBirthdate) && isBefore(spouseBirthdate, parseISO('1940-01-01')))
+        )
         && Array.isArray(this.pre1939DeductibleTiers)
         && this.pre1939DeductibleTiers.length > 0) {
         let maxCoverageTier = this.pre1939DeductibleTiers[0];
