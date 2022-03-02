@@ -743,6 +743,8 @@ import {
   SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER,
   SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION,
   SET_SPOUSE_DISCHARGE_DATE,
+  SET_SPOUSE_FPC_INCOME,
+  SET_SPOUSE_FPC_RDSP,
 } from '@/store/modules/enrolment-module';
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
@@ -884,6 +886,8 @@ export default {
       spousePreviousBCHealthNumber: null,
       spouseBeenReleasedFromInstitution: null,
       spouseDischargeDate: null,
+      spouseIncome: null,
+      spouseRDSP: null,
       // Date data which is processed by date validators:
       birthdateData: null,
       canadaArrivalDateData: null,
@@ -926,6 +930,8 @@ export default {
     this.spousePreviousBCHealthNumber = this.$store.state.enrolmentModule.spousePreviousBCHealthNumber;
     this.spouseBeenReleasedFromInstitution = this.$store.state.enrolmentModule.spouseBeenReleasedFromInstitution;
     this.spouseDischargeDate = this.$store.state.enrolmentModule.spouseDischargeDate;
+    this.spouseIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
+    this.spouseRDSP = this.$store.state.enrolmentModule.spouseFPCRDSP;
     this.ahPHN = this.$store.state.enrolmentModule.ahPHN;
     this.ahSIN = this.$store.state.enrolmentModule.ahSIN;
     
@@ -1255,6 +1261,8 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER, this.spousePreviousBCHealthNumber);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION, this.spouseBeenReleasedFromInstitution);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_DISCHARGE_DATE, this.spouseDischargeDate);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_FPC_INCOME, this.spouseIncome);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_FPC_RDSP, this.spouseRDSP);
     },
     navigateToNextPage() {
       // Determine which page to navigate to next
@@ -1331,6 +1339,8 @@ export default {
         this.spousePreviousBCHealthNumber = null;
         this.spouseBeenReleasedFromInstitution = null;
         this.spouseDischargeDate = null;
+        this.spouseIncome = null;
+        this.spouseRDSP = null;
       }
 
       //Name change
