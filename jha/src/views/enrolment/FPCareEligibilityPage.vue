@@ -130,7 +130,7 @@ export default {
   },
   created() {
     logService.logNavigation(
-      this.applicationUuid,
+      this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.path,
       enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.title
     );
