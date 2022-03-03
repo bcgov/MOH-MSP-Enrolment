@@ -41,7 +41,7 @@
           <div class="col-md-4">
             <TipBox title="Tip">
               <p>
-                If you are uploading a copy of a Notice of Assessment of Reassessment from the Canada Revenue Agency website, make sure the image contains:
+                If you are uploading a copy of a Notice of Assessment or Reassessment from the Canada Revenue Agency website, make sure the image contains:
               </p>
               <ul>
                 <li>Your name</li>
