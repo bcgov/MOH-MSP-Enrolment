@@ -1065,19 +1065,22 @@ export default {
       return (count === 1) ? 'file' : 'files';
     },
     getFormattedGender(genderInitial) {
+      if (!genderInitial) {
+        return "";
+      }
       let result = "";
-        switch(genderInitial) {
-          case "F":
-            result = "Female"
-            break;
-          case "M":
-            result = "Male"
-            break;
-          default:
-            result = "Another Gender (X)"
-        }
+      switch (genderInitial) {
+        case "F":
+          result = "Female";
+          break;
+        case "M":
+          result = "Male";
+          break;
+        default:
+          result = "Another Gender (X)";
+      }
       return result;
-    }
+    },
   }
 }
 </script>
