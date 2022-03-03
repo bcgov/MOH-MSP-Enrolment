@@ -114,6 +114,7 @@ import pageStateService from '@/services/page-state-service';
 import { formatDate } from 'common-lib-vue';
 import { getConvertedPath } from '@/helpers/url';
 import { ChildAgeTypes } from '../../constants/child-age-types';
+import { StatusInCanada, CanadianStatusReasons } from '../../constants/immigration-status-types';
 
 const moneyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -217,7 +218,8 @@ export default {
           value: this.$store.state.enrolmentModule
             .ahCitizenshipSupportDocumentType,
         });
-        if (this.$store.state.enrolmentModule.ahCitizenshipStatusReason === 'Not new to B.C. but needs to apply for MSP') {
+        if (this.$store.state.enrolmentModule.ahCitizenshipStatus === StatusInCanada.Citizen
+          && this.$store.state.enrolmentModule.ahCitizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP) {
           items.push({
             label: "Lived in BC since birth?",
             value:
@@ -315,7 +317,7 @@ export default {
         }
         if (
           this.$store.state.enrolmentModule.ahCitizenshipStatus ===
-          "Canadian Citizen"
+          StatusInCanada.Citizen
         ) {
           const releasedFromForces =
             this.$store.state.enrolmentModule.ahIsReleasedFromArmedForces ===
@@ -435,13 +437,16 @@ export default {
           value: this.$store.state.enrolmentModule
             .spouseCitizenshipSupportDocumentType,
         });
-        items.push({
-          label: "Lived in BC since birth?",
-          value:
-            this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth === "Y"
-              ? "Yes"
-              : "No",
-        });
+        if (this.$store.state.enrolmentModule.spouseStatus === StatusInCanada.Citizen
+        && this.$store.state.enrolmentModule.spouseStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ) {
+          items.push({
+            label: "Lived in BC since birth?",
+            value:
+              this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth === "Y"
+                ? "Yes"
+                : "No",
+          });
+        }
         if (
           this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth !== "Y"
         ) {
@@ -531,7 +536,7 @@ export default {
         }
         if (
           this.$store.state.enrolmentModule.spouseStatus ===
-          "Canadian Citizen"
+          StatusInCanada.Citizen
         ) {
           const releasedFromForces =
             this.$store.state.enrolmentModule
@@ -621,10 +626,12 @@ export default {
             label: "Support Document Type",
             value: child.citizenshipSupportDocumentType,
           });
-          childData.push({
-            label: "Lived in BC since birth?",
-            value: child.livedInBCSinceBirth === "Y" ? "Yes" : "No",
-          });
+          if (child.status === StatusInCanada.Citizen && child.statusReason === CanadianStatusReasons.LivingInBCWithoutMSP ) {
+            childData.push({
+              label: "Lived in BC since birth?",
+              value: child.livedInBCSinceBirth === "Y" ? "Yes" : "No",
+            });
+          }
           if (child.livedInBCSinceBirth !== "Y") {
             childData.push({
               label: "Date arrived in B.C.",
@@ -683,7 +690,7 @@ export default {
               value: formatDate(child.outsideBCLast12MonthsReturnDate),
             });
           }
-          if (child.status === "Canadian Citizen") {
+          if (child.status === StatusInCanada.Citizen) {
             childData.push({
               label: "Released from Canadian Forces?",
               value:
