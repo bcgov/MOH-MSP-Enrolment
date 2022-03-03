@@ -114,6 +114,7 @@ import pageStateService from '@/services/page-state-service';
 import { formatDate } from 'common-lib-vue';
 import { getConvertedPath } from '@/helpers/url';
 import { ChildAgeTypes } from '../../constants/child-age-types';
+import { radioOptionsGender } from '../../constants/radio-options'
 
 const moneyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -1068,18 +1069,12 @@ export default {
       if (!genderInitial) {
         return "";
       }
-      let result = "";
-      switch (genderInitial) {
-        case "F":
-          result = "Female";
-          break;
-        case "M":
-          result = "Male";
-          break;
-        default:
-          result = "Another Gender (X)";
+      for (const option of radioOptionsGender) {
+        if (genderInitial === option.value) {
+          return option.label;
+        }
       }
-      return result;
+      return "";
     },
   }
 }
