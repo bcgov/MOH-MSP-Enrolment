@@ -163,13 +163,9 @@ export default {
         value: name,
       });
       if (this.isApplyingForMSP) {
-        const gender =
-          this.$store.state.enrolmentModule.ahGender === "F"
-            ? "Female"
-            : "Male";
         items.push({
           label: "Gender",
-          value: gender,
+          value: this.getFormattedGender(this.$store.state.enrolmentModule.ahGender),
         });
       }
       const birthdate = formatDate(
@@ -393,13 +389,9 @@ export default {
               .spouseNameChangeSupportDocumentType,
           });
         }
-        const gender =
-          this.$store.state.enrolmentModule.spouseGender === "F"
-            ? "Female"
-            : "Male";
         items.push({
           label: "Gender",
-          value: gender,
+          value: this.getFormattedGender(this.$store.state.enrolmentModule.spouseGender),
         });
       }
       const birthdate = formatDate(
@@ -600,10 +592,9 @@ export default {
           });
         }
         if (this.isApplyingForMSP) {
-          const gender = child.gender === "F" ? "Female" : "Male";
           childData.push({
             label: "Gender",
-            value: gender,
+            value: this.getFormattedGender(child.gender),
           });
           const statusInCanada = child.status + " > " + child.statusReason;
           childData.push({
@@ -1072,6 +1063,20 @@ export default {
     getFilePlural(count) {
       //takes an integer, returns single or plural form of word
       return (count === 1) ? 'file' : 'files';
+    },
+    getFormattedGender(genderInitial) {
+      let result = "";
+        switch(genderInitial) {
+          case "F":
+            result = "Female"
+            break;
+          case "M":
+            result = "Male"
+            break;
+          default:
+            result = "Another Gender (X)"
+        }
+      return result;
     }
   }
 }
