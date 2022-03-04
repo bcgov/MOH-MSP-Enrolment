@@ -760,6 +760,7 @@ import {
   SET_SPOUSE_DISCHARGE_DATE,
   SET_SPOUSE_FPC_INCOME,
   SET_SPOUSE_FPC_RDSP,
+  SET_SPOUSE_CRA_DOCUMENTS,
 } from '@/store/modules/enrolment-module';
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
@@ -903,6 +904,7 @@ export default {
       spouseDischargeDate: null,
       spouseIncome: null,
       spouseRDSP: null,
+      spouseCRADocuments: [],
       // Date data which is processed by date validators:
       birthdateData: null,
       canadaArrivalDateData: null,
@@ -947,6 +949,7 @@ export default {
     this.spouseDischargeDate = this.$store.state.enrolmentModule.spouseDischargeDate;
     this.spouseIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
     this.spouseRDSP = this.$store.state.enrolmentModule.spouseFPCRDSP;
+    this.spouseCRADocuments = this.$store.state.enrolmentModule.spouseCRADocuments;
     this.ahPHN = this.$store.state.enrolmentModule.ahPHN;
     this.ahSIN = this.$store.state.enrolmentModule.ahSIN;
     
@@ -1278,6 +1281,7 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_DISCHARGE_DATE, this.spouseDischargeDate);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_FPC_INCOME, this.spouseIncome);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_FPC_RDSP, this.spouseRDSP);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_CRA_DOCUMENTS, this.spouseCRADocuments);
     },
     navigateToNextPage() {
       // Determine which page to navigate to next
@@ -1356,6 +1360,7 @@ export default {
         this.spouseDischargeDate = null;
         this.spouseIncome = null;
         this.spouseRDSP = null;
+        this.spouseCRADocuments = [];
       }
 
       //Name change
