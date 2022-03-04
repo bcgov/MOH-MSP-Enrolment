@@ -127,6 +127,19 @@
                   && !$v.gender.required"
                 aria-live="assertive">Gender is required.</div>
             </div>
+            <div v-if="requestGender">
+              <Radio label="Does your gender match your documents?"
+                id="ahgendermatch"
+                name="ahgendermatch"
+                class="mt-3"
+                v-model="ahgendermatch"
+                :items="radioOptionsNoYes"
+                @blur="handleBlurField($v.ahgendermatch)" />
+              <div class="text-danger"
+                v-if="$v.gender.$dirty
+                  && !$v.gender.required"
+                aria-live="assertive">Gender match is required.</div>
+            </div>
           </div>
           <div class="col-md-5 d-flex align-items-end">
             <TipBox v-if="requestGender">
