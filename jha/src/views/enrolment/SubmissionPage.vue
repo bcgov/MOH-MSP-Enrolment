@@ -49,7 +49,7 @@
             class="mb-4">
             <SuccessBox v-if="fpcApplicationResult.returnCode === '0'">
               <p><b>Your Fair PharmaCare form has been submitted.</b></p>
-              <p v-if="fpcApplicationResult.referenceNumber"><b>Reference number is: {{fpcApplicationResult.referenceNumber}}</b></p>
+              <p v-if="fpcApplicationResult.familyNumber"><b>Reference number is: {{fpcApplicationResult.familyNumber}}</b></p>
             </SuccessBox>
             <ErrorBox v-else>
               <p><b>There was an issue with your Fair PharmaCare submission. Your form was not submitted.</b></p>
