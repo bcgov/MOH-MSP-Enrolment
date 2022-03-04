@@ -34,119 +34,130 @@
           </div>
           <hr class="mt-0"/>
           <!-- Spouse personal information -->
-          <Input label='First name'
-            id='first-name'
-            className='mt-3'
-            maxlength="30"
-            v-model='spouseFirstName'
-            @blur="handleBlurField($v.spouseFirstName)"
-            :inputStyle='mediumStyles' />
-          <div class="text-danger"
-            v-if="$v.spouseFirstName.$dirty && !$v.spouseFirstName.required"
-            aria-live="assertive">First name is required.</div>
-          <div class="text-danger"
-            v-if="$v.spouseFirstName.$dirty && $v.spouseFirstName.required && !$v.spouseFirstName.nameValidator"
-            aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-          <Input label='Middle name (optional)'
-            id='middle-name'
-            className='mt-3'
-            maxlength="30"
-            v-model='spouseMiddleName'
-            @blur="handleBlurField($v.spouseMiddleName)"
-            :inputStyle='mediumStyles' />
-          <div class="text-danger"
-            v-if="$v.spouseMiddleName.$dirty && !$v.spouseMiddleName.nameValidator"
-            aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-          <Input label='Last name'
-            id='last-name'
-            className='mt-3'
-            maxlength="30"
-            v-model='spouseLastName'
-            @blur="handleBlurField($v.spouseLastName)"
-            :inputStyle='mediumStyles' />
-          <div class="text-danger"
-            v-if="$v.spouseLastName.$dirty && !$v.spouseLastName.required"
-            aria-live="assertive">Last name is required.</div>
-          <div class="text-danger"
-            v-if="$v.spouseLastName.$dirty && $v.spouseLastName.required && !$v.spouseLastName.nameValidator"
-            aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-          <DateInput label='Birthdate'
-            id='birth-date'
-            className='mt-3'
-            v-model='spouseBirthDate'
-            @blur="handleBlurField($v.spouseBirthDate)"
-            @processDate="handleProcessBirthdate($event)" />
-          <div class="text-danger"
-            v-if="$v.spouseBirthDate.$dirty && !$v.spouseBirthDate.required"
-            aria-live="assertive">Birthdate is required.</div>
-          <div class="text-danger"
-            v-if="$v.spouseBirthDate.$dirty
-              && !$v.spouseBirthDate.dateDataValidator"
-            aria-live="assertive">Invalid birthdate.</div>
-          <div class="text-danger"
-            v-if="$v.spouseBirthDate.$dirty
-              && !$v.spouseBirthDate.distantPastValidator"
-            aria-live="assertive">Invalid birthdate.</div>
-          <div class="text-danger"
-            v-if="$v.spouseBirthDate.$dirty
-                  && $v.spouseBirthDate.required
-                  && !$v.spouseBirthDate.birthDatePastValidator"
-            aria-live="assertive">Birthdate cannot be in the future.</div>
+          <div class="row">
+            <div class="col-md-7">
+              <Input label='First name'
+                id='first-name'
+                className='mt-3'
+                maxlength="30"
+                v-model='spouseFirstName'
+                @blur="handleBlurField($v.spouseFirstName)"
+                :inputStyle='mediumStyles' />
+              <div class="text-danger"
+                v-if="$v.spouseFirstName.$dirty && !$v.spouseFirstName.required"
+                aria-live="assertive">First name is required.</div>
+              <div class="text-danger"
+                v-if="$v.spouseFirstName.$dirty && $v.spouseFirstName.required && !$v.spouseFirstName.nameValidator"
+                aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+              <Input label='Middle name (optional)'
+                id='middle-name'
+                className='mt-3'
+                maxlength="30"
+                v-model='spouseMiddleName'
+                @blur="handleBlurField($v.spouseMiddleName)"
+                :inputStyle='mediumStyles' />
+              <div class="text-danger"
+                v-if="$v.spouseMiddleName.$dirty && !$v.spouseMiddleName.nameValidator"
+                aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+              <Input label='Last name'
+                id='last-name'
+                className='mt-3'
+                maxlength="30"
+                v-model='spouseLastName'
+                @blur="handleBlurField($v.spouseLastName)"
+                :inputStyle='mediumStyles' />
+              <div class="text-danger"
+                v-if="$v.spouseLastName.$dirty && !$v.spouseLastName.required"
+                aria-live="assertive">Last name is required.</div>
+              <div class="text-danger"
+                v-if="$v.spouseLastName.$dirty && $v.spouseLastName.required && !$v.spouseLastName.nameValidator"
+                aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+              <DateInput label='Birthdate'
+                id='birth-date'
+                className='mt-3'
+                v-model='spouseBirthDate'
+                @blur="handleBlurField($v.spouseBirthDate)"
+                @processDate="handleProcessBirthdate($event)" />
+              <div class="text-danger"
+                v-if="$v.spouseBirthDate.$dirty && !$v.spouseBirthDate.required"
+                aria-live="assertive">Birthdate is required.</div>
+              <div class="text-danger"
+                v-if="$v.spouseBirthDate.$dirty
+                  && !$v.spouseBirthDate.dateDataValidator"
+                aria-live="assertive">Invalid birthdate.</div>
+              <div class="text-danger"
+                v-if="$v.spouseBirthDate.$dirty
+                  && !$v.spouseBirthDate.distantPastValidator"
+                aria-live="assertive">Invalid birthdate.</div>
+              <div class="text-danger"
+                v-if="$v.spouseBirthDate.$dirty
+                      && $v.spouseBirthDate.required
+                      && !$v.spouseBirthDate.birthDatePastValidator"
+                aria-live="assertive">Birthdate cannot be in the future.</div>
 
-          <div v-if="requestPersonalHealthNumber">
-            <PhnInput label="Personal Health Number (PHN)"
-              id="personal-health-number"
-              class="mt-3"
-              placeholder="1111 111 111"
-              :inputStyle="smallStyles"
-              v-model="spousePersonalHealthNumber"
-              @blur="handleBlurField($v.spousePersonalHealthNumber)" />
-            <div class="text-danger"
-              v-if="$v.spousePersonalHealthNumber.$dirty
-                && !$v.spousePersonalHealthNumber.required"
-              aria-live="assertive">Personal Health Number is required.</div>
-            <div class="text-danger"
-              v-if="$v.spousePersonalHealthNumber.$dirty
-                && (!$v.spousePersonalHealthNumber.phnValidator || !$v.spousePersonalHealthNumber.phnFirstDigitValidator)"
-              aria-live="assertive">Personal Health Number is invalid.</div>
-            <div class="text-danger"
-              v-if="$v.spousePersonalHealthNumber.$dirty && !$v.spousePersonalHealthNumber.uniquePHNValidator"
-              aria-live="assertive">This Personal Health Number (PHN) was already used for another family member. Please provide the PHN that is listed on the family member's PHN card/letter.</div>
-          </div>
-          <div v-if="requestSocialInsuranceNumber">
-            <SINInput label="Social Insurance Number (SIN)"
-              id="social-insurance-number"
-              class="mt-3"
-              placeholder="111 111 111"
-              :inputStyle="smallStyles"
-              v-model="spouseSocialInsuranceNumber"
-              @blur="handleBlurField($v.spouseSocialInsuranceNumber)" />
-            <div class="text-danger"
-              v-if="$v.spouseSocialInsuranceNumber.$dirty
-                && !$v.spouseSocialInsuranceNumber.required"
-              aria-live="assertive">Social Insurance Number is required.</div>
-            <div class="text-danger"
-              v-if="$v.spouseSocialInsuranceNumber.$dirty
-                && !$v.spouseSocialInsuranceNumber.sinValidator"
-              aria-live="assertive">Social Insurance Number is invalid.</div>
-            <div class="text-danger"
-              v-if="$v.spouseSocialInsuranceNumber.$dirty
-                && !$v.spouseSocialInsuranceNumber.uniqueSINValidator"
-              aria-live="assertive">This Social Insurance Number (SIN) was already used for another family member. Please provide the SIN that is listed on the family member's SIN card/letter.</div>
-          </div>
+              <div v-if="requestPersonalHealthNumber">
+                <PhnInput label="Personal Health Number (PHN)"
+                  id="personal-health-number"
+                  class="mt-3"
+                  placeholder="1111 111 111"
+                  :inputStyle="smallStyles"
+                  v-model="spousePersonalHealthNumber"
+                  @blur="handleBlurField($v.spousePersonalHealthNumber)" />
+                <div class="text-danger"
+                  v-if="$v.spousePersonalHealthNumber.$dirty
+                    && !$v.spousePersonalHealthNumber.required"
+                  aria-live="assertive">Personal Health Number is required.</div>
+                <div class="text-danger"
+                  v-if="$v.spousePersonalHealthNumber.$dirty
+                    && (!$v.spousePersonalHealthNumber.phnValidator || !$v.spousePersonalHealthNumber.phnFirstDigitValidator)"
+                  aria-live="assertive">Personal Health Number is invalid.</div>
+                <div class="text-danger"
+                  v-if="$v.spousePersonalHealthNumber.$dirty && !$v.spousePersonalHealthNumber.uniquePHNValidator"
+                  aria-live="assertive">This Personal Health Number (PHN) was already used for another family member. Please provide the PHN that is listed on the family member's PHN card/letter.</div>
+              </div>
+              <div v-if="requestSocialInsuranceNumber">
+                <SINInput label="Social Insurance Number (SIN)"
+                  id="social-insurance-number"
+                  class="mt-3"
+                  placeholder="111 111 111"
+                  :inputStyle="smallStyles"
+                  v-model="spouseSocialInsuranceNumber"
+                  @blur="handleBlurField($v.spouseSocialInsuranceNumber)" />
+                <div class="text-danger"
+                  v-if="$v.spouseSocialInsuranceNumber.$dirty
+                    && !$v.spouseSocialInsuranceNumber.required"
+                  aria-live="assertive">Social Insurance Number is required.</div>
+                <div class="text-danger"
+                  v-if="$v.spouseSocialInsuranceNumber.$dirty
+                    && !$v.spouseSocialInsuranceNumber.sinValidator"
+                  aria-live="assertive">Social Insurance Number is invalid.</div>
+                <div class="text-danger"
+                  v-if="$v.spouseSocialInsuranceNumber.$dirty
+                    && !$v.spouseSocialInsuranceNumber.uniqueSINValidator"
+                  aria-live="assertive">This Social Insurance Number (SIN) was already used for another family member. Please provide the SIN that is listed on the family member's SIN card/letter.</div>
+              </div>
 
-          <div v-if="requestGender">
-            <Radio
-              label='Gender'
-              id='spouse-gender'
-              name='spouse-gender'
-              v-model='spouseGender'
-              className="mt-3"
-              @blur="handleBlurField($v.spouseGender)"
-              :items='radioGenderOptions' />
-            <div class="text-danger"
-              v-if="$v.spouseGender.$dirty && !$v.spouseGender.required"
-              aria-live="assertive">Please indicate your spouse's gender.</div>
+              <div v-if="requestGender">
+                <Radio
+                  label='Gender'
+                  id='spouse-gender'
+                  name='spouse-gender'
+                  v-model='spouseGender'
+                  className="mt-3"
+                  @blur="handleBlurField($v.spouseGender)"
+                  :items='radioGenderOptions' />
+                <div class="text-danger"
+                  v-if="$v.spouseGender.$dirty && !$v.spouseGender.required"
+                  aria-live="assertive">Please indicate your spouse's gender.</div>
+              </div>
+            </div>
+            <div class="col-md-5 d-flex align-items-end">
+              <TipBox v-if="requestGender">
+                <p>Tip</p>
+                <p>If the gender you select does not match the gender on your supporting document(s), you must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
+                <p>For more information see BC Services Card: <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
+              </TipBox>
+            </div>
           </div>
           
           <!-- Spouse citizenship information  -->

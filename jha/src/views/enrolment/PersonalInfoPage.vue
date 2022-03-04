@@ -13,116 +13,127 @@
         <h2>Account Holder basic information</h2>
         <p>After enrolment, the main applicant will be the Medical Services Plan Account Holder, and will be responsible for maintaining the Medical Services Plan account and requesting any changes.</p>
         <hr class="mt-0"/>
-        <Input label="First name"
-          id="first-name"
-          v-model="firstName"
-          maxlength="30"
-          :inputStyle="mediumStyles"
-          @blur="handleBlurField($v.firstName)" />
-        <div class="text-danger"
-          v-if="$v.firstName.$dirty
-            && !$v.firstName.required"
-          aria-live="assertive">First name is required.</div>
-        <div class="text-danger"
-          v-if="$v.firstName.$dirty
-            && !$v.firstName.nameValidator"
-          aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-        <Input label="Middle name (optional)"
-          id="middle-name"
-          class="mt-3"
-          v-model="middleName"
-          maxlength="30"
-          :inputStyle="mediumStyles"
-          @blur="handleBlurField($v.middleName)" />
-        <div class="text-danger"
-          v-if="$v.middleName.$dirty
-            && !$v.middleName.nameValidator"
-          aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-        <Input label="Last name"
-          id="last-name"
-          class="mt-3"
-          v-model="lastName"
-          maxlength="30"
-          :inputStyle="mediumStyles"
-          @blur="handleBlurField($v.lastName)" />
-        <div class="text-danger"
-          v-if="$v.lastName.$dirty
-            && !$v.lastName.required"
-          aria-live="assertive">Last name is required.</div>
-        <div class="text-danger"
-          v-if="$v.lastName.$dirty
-            && !$v.lastName.nameValidator"
-          aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-        <DateInput label="Birthdate"
-          id="birthdate"
-          class="mt-3"
-          v-model="birthdate"
-          :watchForModelChange="true"
-          :useInvalidState="true"
-          @blur="handleBlurField($v.birthdate)"
-          @processDate="handleProcessBirthdate($event)" />
-        <div class="text-danger"
-          v-if="$v.birthdate.$dirty
-            && !$v.birthdate.required"
-          aria-live="assertive">Birthdate is required.</div>
-        <div class="text-danger"
-          v-if="$v.birthdate.$dirty
-            && !$v.birthdate.dateDataValidator"
-          aria-live="assertive">Invalid Birthdate.</div>
-        <div class="text-danger"
-          v-if="$v.birthdate.$dirty
-            && !$v.birthdate.distantPastValidator"
-          aria-live="assertive">Invalid Birthdate.</div>
-        <div class="text-danger"
-          v-if="$v.birthdate.$dirty
-            && !$v.birthdate.birthdate16YearsValidator"
-          aria-live="assertive">An applicant must be 16 years or older.</div>
-        <div v-if="requestPersonalHealthNumber">
-          <PhnInput label="Personal Health Number (PHN)"
-            id="personal-health-number"
-            class="mt-3"
-            placeholder="1111 111 111"
-            :inputStyle="smallStyles"
-            v-model="personalHealthNumber"
-            @blur="handleBlurField($v.personalHealthNumber)" />
-          <div class="text-danger"
-            v-if="$v.personalHealthNumber.$dirty
-              && !$v.personalHealthNumber.required"
-            aria-live="assertive">Personal Health Number is required.</div>
-          <div class="text-danger"
-            v-if="$v.personalHealthNumber.$dirty
-              && (!$v.personalHealthNumber.phnValidator || !$v.personalHealthNumber.phnFirstDigitValidator)"
-            aria-live="assertive">Personal Health Number is invalid.</div>
-        </div>
-        <div v-if="requestSocialInsuranceNumber">
-          <SINInput label="Social Insurance Number (SIN)"
-            id="social-insurance-number"
-            class="mt-3"
-            placeholder="111 111 111"
-            :inputStyle="smallStyles"
-            v-model="socialInsuranceNumber"
-            @blur="handleBlurField($v.socialInsuranceNumber)" />
-          <div class="text-danger"
-            v-if="$v.socialInsuranceNumber.$dirty
-              && !$v.socialInsuranceNumber.required"
-            aria-live="assertive">Social Insurance Number is required.</div>
-          <div class="text-danger"
-            v-if="$v.socialInsuranceNumber.$dirty
-              && !$v.socialInsuranceNumber.sinValidator"
-            aria-live="assertive">Social Insurance Number is invalid.</div>
-        </div>
-        <div v-if="requestGender">
-          <Radio label="Gender"
-            id="gender"
-            name="gender"
-            class="mt-3"
-            v-model="gender"
-            :items="genderOptions"
-            @blur="handleBlurField($v.gender)" />
-          <div class="text-danger"
-            v-if="$v.gender.$dirty
-              && !$v.gender.required"
-            aria-live="assertive">Gender is required.</div>
+        <div class="row">
+          <div class="col-md-7">
+            <Input label="First name"
+              id="first-name"
+              v-model="firstName"
+              maxlength="30"
+              :inputStyle="mediumStyles"
+              @blur="handleBlurField($v.firstName)" />
+            <div class="text-danger"
+              v-if="$v.firstName.$dirty
+                && !$v.firstName.required"
+              aria-live="assertive">First name is required.</div>
+            <div class="text-danger"
+              v-if="$v.firstName.$dirty
+                && !$v.firstName.nameValidator"
+              aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+            <Input label="Middle name (optional)"
+              id="middle-name"
+              class="mt-3"
+              v-model="middleName"
+              maxlength="30"
+              :inputStyle="mediumStyles"
+              @blur="handleBlurField($v.middleName)" />
+            <div class="text-danger"
+              v-if="$v.middleName.$dirty
+                && !$v.middleName.nameValidator"
+              aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+            <Input label="Last name"
+              id="last-name"
+              class="mt-3"
+              v-model="lastName"
+              maxlength="30"
+              :inputStyle="mediumStyles"
+              @blur="handleBlurField($v.lastName)" />
+            <div class="text-danger"
+              v-if="$v.lastName.$dirty
+                && !$v.lastName.required"
+              aria-live="assertive">Last name is required.</div>
+            <div class="text-danger"
+              v-if="$v.lastName.$dirty
+                && !$v.lastName.nameValidator"
+              aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
+            <DateInput label="Birthdate"
+              id="birthdate"
+              class="mt-3"
+              v-model="birthdate"
+              :watchForModelChange="true"
+              :useInvalidState="true"
+              @blur="handleBlurField($v.birthdate)"
+              @processDate="handleProcessBirthdate($event)" />
+            <div class="text-danger"
+              v-if="$v.birthdate.$dirty
+                && !$v.birthdate.required"
+              aria-live="assertive">Birthdate is required.</div>
+            <div class="text-danger"
+              v-if="$v.birthdate.$dirty
+                && !$v.birthdate.dateDataValidator"
+              aria-live="assertive">Invalid Birthdate.</div>
+            <div class="text-danger"
+              v-if="$v.birthdate.$dirty
+                && !$v.birthdate.distantPastValidator"
+              aria-live="assertive">Invalid Birthdate.</div>
+            <div class="text-danger"
+              v-if="$v.birthdate.$dirty
+                && !$v.birthdate.birthdate16YearsValidator"
+              aria-live="assertive">An applicant must be 16 years or older.</div>
+            <div v-if="requestPersonalHealthNumber">
+              <PhnInput label="Personal Health Number (PHN)"
+                id="personal-health-number"
+                class="mt-3"
+                placeholder="1111 111 111"
+                :inputStyle="smallStyles"
+                v-model="personalHealthNumber"
+                @blur="handleBlurField($v.personalHealthNumber)" />
+              <div class="text-danger"
+                v-if="$v.personalHealthNumber.$dirty
+                  && !$v.personalHealthNumber.required"
+                aria-live="assertive">Personal Health Number is required.</div>
+              <div class="text-danger"
+                v-if="$v.personalHealthNumber.$dirty
+                  && (!$v.personalHealthNumber.phnValidator || !$v.personalHealthNumber.phnFirstDigitValidator)"
+                aria-live="assertive">Personal Health Number is invalid.</div>
+            </div>
+            <div v-if="requestSocialInsuranceNumber">
+              <SINInput label="Social Insurance Number (SIN)"
+                id="social-insurance-number"
+                class="mt-3"
+                placeholder="111 111 111"
+                :inputStyle="smallStyles"
+                v-model="socialInsuranceNumber"
+                @blur="handleBlurField($v.socialInsuranceNumber)" />
+              <div class="text-danger"
+                v-if="$v.socialInsuranceNumber.$dirty
+                  && !$v.socialInsuranceNumber.required"
+                aria-live="assertive">Social Insurance Number is required.</div>
+              <div class="text-danger"
+                v-if="$v.socialInsuranceNumber.$dirty
+                  && !$v.socialInsuranceNumber.sinValidator"
+                aria-live="assertive">Social Insurance Number is invalid.</div>
+            </div>
+            <div v-if="requestGender">
+              <Radio label="Gender"
+                id="gender"
+                name="gender"
+                class="mt-3"
+                v-model="gender"
+                :items="genderOptions"
+                @blur="handleBlurField($v.gender)" />
+              <div class="text-danger"
+                v-if="$v.gender.$dirty
+                  && !$v.gender.required"
+                aria-live="assertive">Gender is required.</div>
+            </div>
+          </div>
+          <div class="col-md-5 d-flex align-items-end">
+            <TipBox v-if="requestGender">
+              <p>Tip</p>
+              <p>If the gender you select does not match the gender on your supporting document(s), you must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
+              <p>For more information see BC Services Card: <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
+            </TipBox>
+          </div>
         </div>
         
         <div v-if="requestImmigrationStatus">
