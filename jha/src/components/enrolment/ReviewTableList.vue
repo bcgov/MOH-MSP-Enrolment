@@ -350,23 +350,25 @@ export default {
           });
         }
       }
-      let documentCount = 0;
-      if (
-        this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments.length >
-        0
-      ) {
-        documentCount += 1;
+      if (this.isApplyingForMSP) {
+        let documentCount = 0;
+        if (
+          this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments.length >
+          0
+        ) {
+          documentCount += 1;
+        }
+        if (
+          this.$store.state.enrolmentModule.ahNameChangeSupportDocuments.length >
+          0
+        ) {
+          documentCount += 1;
+        }
+        items.push({
+          label: "Documents",
+          value: `${documentCount} ${this.getFilePlural(documentCount)}`,
+        });
       }
-      if (
-        this.$store.state.enrolmentModule.ahNameChangeSupportDocuments.length >
-        0
-      ) {
-        documentCount += 1;
-      }
-      items.push({
-        label: "Documents",
-        value: `${documentCount} ${this.getFilePlural(documentCount)}`,
-      });
       return items;
     },
     spouseData() {
@@ -555,23 +557,25 @@ export default {
           }
         }
       }
-      let documentCount = 0;
-      if (
-        this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments
-          .length > 0
-      ) {
-        documentCount += 1;
+      if (this.isApplyingForMSP) {
+        let documentCount = 0;
+        if (
+          this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments
+            .length > 0
+        ) {
+          documentCount += 1;
+        }
+        if (
+          this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments
+            .length > 0
+        ) {
+          documentCount += 1;
+        }
+        items.push({
+          label: "Documents",
+          value: `${documentCount} ${this.getFilePlural(documentCount)}`,
+        });
       }
-      if (
-        this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments
-          .length > 0
-      ) {
-        documentCount += 1;
-      }
-      items.push({
-        label: "Documents",
-        value: `${documentCount} ${this.getFilePlural(documentCount)}`,
-      });
       return items;
     },
     childrenData() {
@@ -757,17 +761,19 @@ export default {
             });
           }
         }
-        let documentCount = 0;
-        if (child.citizenshipSupportDocuments.length > 0) {
-          documentCount += 1;
+        if (this.isApplyingForMSP) {
+          let documentCount = 0;
+          if (child.citizenshipSupportDocuments.length > 0) {
+            documentCount += 1;
+          }
+          if (child.nameChangeSupportDocuments.length > 0) {
+            documentCount += 1;
+          }
+          childData.push({
+            label: "Documents",
+            value: `${documentCount} ${this.getFilePlural(documentCount)}`,
+          });
         }
-        if (child.nameChangeSupportDocuments.length > 0) {
-          documentCount += 1;
-        }
-        childData.push({
-          label: "Documents",
-          value: `${documentCount} ${this.getFilePlural(documentCount)}`,
-        });
         chldrnData.push(childData);
       }
       return chldrnData;
