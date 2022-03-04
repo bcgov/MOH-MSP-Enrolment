@@ -904,13 +904,21 @@ export default {
             numAttendantNursingChildren
           ),
         });
-        const documentCount = this.$store.state.enrolmentModule
-          .attendantNursingReceipts.length;
-        items.push({
-          label: "Documents",
-          value: `${documentCount} ${this.getFilePlural(documentCount)}`,
-        });
       }
+      let documentCount = 0;
+      if (this.$store.state.enrolmentModule.attendantNursingReceipts.length > 0) {
+        documentCount += 1;
+      }
+      if (this.$store.state.enrolmentModule.ahCRADocuments.length > 0) {
+        documentCount += 1;
+      }
+      if (this.$store.state.enrolmentModule.spouseCRADocuments.length > 0) {
+        documentCount += 1;
+      }
+      items.push({
+        label: "Documents",
+        value: `${documentCount} ${this.getFilePlural(documentCount)}`,
+      });
       return items;
     },
     contactData() {
