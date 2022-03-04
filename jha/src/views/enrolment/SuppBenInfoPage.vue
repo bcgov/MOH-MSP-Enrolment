@@ -36,6 +36,7 @@
             <CurrencyInput id="ah-net-income"
               label="See line 23600 of your Notice of Assessment or Reassessment."
               v-model="ahSBIncome"
+              maxlength="9"
               :inputStyle='mediumStyles'
               @blur="handleBlurField($v.ahSBIncome)"/>
               <div class="text-danger"
@@ -49,6 +50,7 @@
               <CurrencyInput id="spouse-net-income"
                 label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
                 v-model="spouseSBIncome"
+                maxlength="9"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.spouseSBIncome)"/>
               <div class="text-danger"
@@ -91,6 +93,7 @@
               <CurrencyInput id="child-care-expenses"
                 label="See line 21400 of your Notice of Assessment or Reassessment."
                 v-model="claimedChildCareExpenses"
+                maxlength="9"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.claimedChildCareExpenses)"/>
               <div class="text-danger"
@@ -155,6 +158,7 @@
               <CurrencyInput id="disability-savings-plan"
                 label="See Line 12500 of the Notice of Assessment or Reassessment"
                 v-model="sbRDSPAmount"
+                maxlength="9"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.sbRDSPAmount)"/>
               <div class="text-danger"
