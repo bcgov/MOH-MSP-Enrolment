@@ -34,6 +34,7 @@
           </div>
           <hr class="mt-0"/>
           <!-- Spouse personal information -->
+          <!-- Bootstrap row and column classes for gender tipbox placement -->
           <div class="row">
             <div class="col-md-7">
               <Input label='First name'

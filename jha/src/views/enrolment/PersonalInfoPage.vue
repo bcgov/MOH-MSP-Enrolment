@@ -13,6 +13,7 @@
         <h2>Account Holder basic information</h2>
         <p>After enrolment, the main applicant will be the Medical Services Plan Account Holder, and will be responsible for maintaining the Medical Services Plan account and requesting any changes.</p>
         <hr class="mt-0"/>
+        <!-- Bootstrap row and column classes for gender tipbox placement -->
         <div class="row">
           <div class="col-md-7">
             <Input label="First name"
