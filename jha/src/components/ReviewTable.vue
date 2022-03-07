@@ -59,6 +59,7 @@ export default {
 .bcgov-table-cell.value {
   width: 50%;
   padding-left: 6px;
+  word-break: break-word;
 }
 .table-cell-max {
   max-width: 350px;
