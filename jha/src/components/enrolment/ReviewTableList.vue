@@ -932,6 +932,7 @@ export default {
       items.push({
         label: "Residential Address:",
         value: "",
+        underlined: true
       });
       items.push({
         label: "Street Address 1",
@@ -965,6 +966,7 @@ export default {
         items.push({
           label: "Mailing Address:",
           value: "",
+          underlined: true
         });
         items.push({
           label: "Street Address 1",

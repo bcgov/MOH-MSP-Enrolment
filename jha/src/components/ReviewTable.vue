@@ -5,7 +5,7 @@
         :key="element.label + '-' + index"
         class="bcgov-row d-flex">
       <div class="bcgov-table-cell label">
-        <div class="table-cell-max">{{element.label}}</div>
+        <div :class="'table-cell-max '  + isUnderlined(element)">{{element.label}}</div>
       </div>
       <div class="bcgov-table-cell value"><b>{{element.value}}</b></div>
     </div>
@@ -22,6 +22,14 @@ export default {
     backgroundColor: {
       type: String,
       default: 'white',
+    }
+  },
+  methods: {
+    isUnderlined(element) {
+      if(element.underlined) {
+        return 'underlined'
+      }
+      return '';
     }
   }
 }
@@ -55,5 +63,8 @@ export default {
 .table-cell-max {
   max-width: 350px;
   display: inline-block;
+}
+.underlined {
+  text-decoration: underline;
 }
 </style>
