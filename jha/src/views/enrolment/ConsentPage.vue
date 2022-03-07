@@ -198,8 +198,8 @@ export default {
 
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
-      enrolmentRoutes.REVIEW_PAGE.path,
-      enrolmentRoutes.REVIEW_PAGE.title
+      enrolmentRoutes.CONSENT_PAGE.path,
+      enrolmentRoutes.CONSENT_PAGE.title
     );
   },
   methods: {

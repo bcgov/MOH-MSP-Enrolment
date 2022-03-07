@@ -128,7 +128,7 @@ export default {
   },
   created() {
     logService.logNavigation(
-      this.applicationUuid,
+      this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path,
       enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.title
     );

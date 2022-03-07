@@ -91,13 +91,18 @@ export const radioOptionsOverageChildTemporaryResidentStatusReasons = [
 export const radioOptionsGender = [
   {
     id: 'male',
-    label: 'Male',
+    label: 'Male (M)',
     value: 'M',
   },
   {
     id: 'female',
-    label: 'Female',
+    label: 'Female (F)',
     value: 'F',
+  },
+  {
+    id: 'anothergender',
+    label: 'Another gender (X)',
+    value: 'X',
   }
 ];
 

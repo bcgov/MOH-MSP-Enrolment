@@ -151,7 +151,7 @@ export default {
   },
   created() {
     logService.logNavigation(
-      this.applicationUuid,
+      this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path,
       enrolmentRoutes.MSP_ELIGIBILITY_PAGE.title
     );

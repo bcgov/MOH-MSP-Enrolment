@@ -115,6 +115,7 @@ import { formatDate } from 'common-lib-vue';
 import { getConvertedPath } from '@/helpers/url';
 import { ChildAgeTypes } from '../../constants/child-age-types';
 import { StatusInCanada, CanadianStatusReasons } from '../../constants/immigration-status-types';
+import { radioOptionsGender } from '../../constants/radio-options'
 
 const moneyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -184,7 +185,7 @@ export default {
             : "Male";
         items.push({
           label: "Gender",
-          value: gender,
+          value: this.getFormattedGender(this.$store.state.enrolmentModule.ahGender),
         });
       }
       const birthdate = formatDate(
@@ -399,13 +400,9 @@ export default {
               .spouseNameChangeSupportDocumentType,
           });
         }
-        const gender =
-          this.$store.state.enrolmentModule.spouseGender === "F"
-            ? "Female"
-            : "Male";
         items.push({
           label: "Gender",
-          value: gender,
+          value: this.getFormattedGender(this.$store.state.enrolmentModule.spouseGender),
         });
       }
       const birthdate = formatDate(
@@ -621,6 +618,10 @@ export default {
           });
         }
         if (this.isApplyingForMSP) {
+          childData.push({
+            label: "Gender",
+            value: this.getFormattedGender(child.gender),
+          });
           const statusInCanada = child.status + " > " + child.statusReason;
           childData.push({
             label: "Status in Canada",
@@ -1102,7 +1103,18 @@ export default {
     getFilePlural(count) {
       //takes an integer, returns single or plural form of word
       return (count === 1) ? 'file' : 'files';
-    }
+    },
+    getFormattedGender(genderInitial) {
+      if (!genderInitial) {
+        return "";
+      }
+      for (const option of radioOptionsGender) {
+        if (genderInitial === option.value) {
+          return option.label;
+        }
+      }
+      return "";
+    },
   }
 }
 </script>

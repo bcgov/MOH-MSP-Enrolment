@@ -41,14 +41,14 @@
           <div class="col-md-4">
             <TipBox title="Tip">
               <p>
-                If you are uploading a copy of a Notice of Assessment of Reassessment from the Canada Revenue Agency website, make sure the image contains:
+                If you are uploading a copy of a Notice of Assessment or Reassessment from the Canada Revenue Agency website, make sure the image contains:
               </p>
               <ul>
-                <li>Your Name</li>
-                <li>The Tax Year</li>
-                <li>Your Net Income(line 23600)</li>
-                <li>If you have a Regisered Disability Savings Plan(line 12500)</li>
-                <li>A JPG, PNG, GIF, BMP, or PDF file.</li>
+                <li>Your name</li>
+                <li>The tax year</li>
+                <li>Your net income (line 23600)</li>
+                <li>If you have a Regisered Disability Savings Plan (line 12500)</li>
+                <li>A JPG, PNG, GIF, BMP or PDF file</li>
               </ul>
             </TipBox>
           </div>
