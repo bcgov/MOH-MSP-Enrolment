@@ -150,10 +150,23 @@
                 <div class="text-danger"
                   v-if="$v.spouseGender.$dirty && !$v.spouseGender.required"
                   aria-live="assertive">Please indicate your spouse's gender.</div>
+
+                <Radio 
+                  label="Does your gender match your documents?"
+                  id="spouse-gender-match"
+                  name="spouse-gender-match"
+                  class="mt-3"
+                  v-model="spouseGenderMatch"
+                  :items="radioOptionsNoYes"
+                  @blur="handleBlurField($v.spouseGenderMatch)" />
+                <div class="text-danger"
+                  v-if="$v.spouseGenderMatch.$dirty
+                    && !$v.spouseGenderMatch.required"
+                  aria-live="assertive">Gender match is required.</div>
               </div>
             </div>
             <div class="col-md-5 d-flex align-items-end">
-              <TipBox v-if="requestGender">
+              <TipBox v-if="requestGenderUploader">
                 <p>Tip</p>
                 <p>If the gender you select does not match the gender on your supporting document(s), you must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
                 <p>For more information see BC Services Card: <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
@@ -743,6 +756,7 @@ import {
   SET_SPOUSE_PHN,
   SET_SPOUSE_SIN,
   SET_SPOUSE_GENDER,
+  SET_SPOUSE_GENDER_MATCH,
   SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH,
   SET_SPOUSE_MADE_PERMANENT_MOVE,
   SET_SPOUSE_MOVE_FROM_ORIGIN,
@@ -886,6 +900,7 @@ export default {
       spousePersonalHealthNumber: null,
       spouseSocialInsuranceNumber: null,
       spouseGender: null,
+      spouseGenderMatch: null,
       spouseLivedInBCSinceBirth: null,
       spouseMadePermanentMove: null,
       spouseMoveFromOrigin: null,
@@ -930,6 +945,7 @@ export default {
     this.spousePersonalHealthNumber = this.$store.state.enrolmentModule.spousePHN;
     this.spouseSocialInsuranceNumber = this.$store.state.enrolmentModule.spouseSIN;
     this.spouseGender = this.$store.state.enrolmentModule.spouseGender;
+    this.spouseGenderMatch = this.$store.state.enrolmentModule.spouseGenderMatch;
     this.spouseLivedInBCSinceBirth = this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth;
     this.spouseMadePermanentMove = this.$store.state.enrolmentModule.spouseMadePermanentMove;
     this.spouseMoveFromOrigin = this.$store.state.enrolmentModule.spouseMoveFromOrigin;
@@ -985,6 +1001,7 @@ export default {
       spousePersonalHealthNumber: {},
       spouseSocialInsuranceNumber: {},
       spouseGender: {},
+      spouseGenderMatch: {},
       spouseStatus: {},
       spouseStatusReason: {},
       spouseCitizenshipSupportDocumentType: {},
@@ -1023,6 +1040,7 @@ export default {
 
     if (this.requestGender) {
       validations.spouseGender.required = required;
+      validations.spouseGenderMatch.required = required;
     }
 
     if (this.requestImmigrationStatus) {
@@ -1261,6 +1279,7 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_PHN, this.spousePersonalHealthNumber);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_SIN, this.spouseSocialInsuranceNumber);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_GENDER, this.spouseGender);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_GENDER_MATCH, this.spouseGenderMatch);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, this.spouseLivedInBCSinceBirth);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MADE_PERMANENT_MOVE, this.spouseMadePermanentMove);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_MOVE_FROM_ORIGIN, this.spouseMoveFromOrigin);
@@ -1394,6 +1413,9 @@ export default {
   computed: {
     requestGender() {
       return this.$store.state.enrolmentModule.isApplyingForMSP;
+    },
+    requestGenderUploader() {
+      return this.spouseGenderMatch === 'N';
     },
     requestPersonalHealthNumber() {
       return !this.$store.state.enrolmentModule.isApplyingForMSP;

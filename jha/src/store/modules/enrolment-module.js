@@ -50,6 +50,7 @@ export const SET_AH_BIRTHDATE = 'setAHBirthdate';
 export const SET_AH_PHN = 'setAHPHN';
 export const SET_AH_SIN = 'setAHSIN';
 export const SET_AH_GENDER = 'setAHGender';
+export const SET_AH_GENDER_MATCH = 'setAHGenderMatch';
 export const SET_AH_CITIZENSHIP_STATUS = 'setAHCitizenshipStatus';
 export const SET_AH_CITIZENSHIP_STATUS_REASON = 'setAHCitizenshipStatusReason';
 export const SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE = 'setAHCitizenshipSupportDocumentType';
@@ -94,6 +95,7 @@ export const SET_SPOUSE_BIRTH_DATE = 'setSpouseBirthDate';
 export const SET_SPOUSE_PHN = 'setSpousePHN';
 export const SET_SPOUSE_SIN = 'setSpouseSIN';
 export const SET_SPOUSE_GENDER = 'setSpouseGender';
+export const SET_SPOUSE_GENDER_MATCH = 'setSpouseGenderMatch';
 export const SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH = 'setSpouseLivedInBCSinceBirth';
 export const SET_SPOUSE_MADE_PERMANENT_MOVE = 'setSpouseMadePermanentMove';
 export const SET_SPOUSE_MOVE_FROM_ORIGIN = 'setSpouseMoveFromOrigin';
@@ -208,6 +210,7 @@ export default {
       ahPHN: null,
       ahSIN: null,
       ahGender: null,
+      ahGenderMatch: null,
       ahCitizenshipStatus: null,
       ahCitizenshipStatusReason: null,
       ahCitizenshipSupportDocumentType: null,
@@ -252,6 +255,7 @@ export default {
       spousePHN: null,
       spouseSIN: null,
       spouseGender: null,
+      spouseGenderMatch: null,
       spouseLivedInBCSinceBirth: null,
       spouseMadePermanentMove: null,
       spouseMoveFromOrigin: null,
@@ -438,6 +442,9 @@ export default {
     [SET_AH_GENDER](state, payload) {
       state.ahGender = payload;
     },
+    [SET_AH_GENDER_MATCH](state, payload) {
+      state.ahGenderMatch = payload;
+    },
     [SET_AH_CITIZENSHIP_STATUS](state, payload) {
       state.ahCitizenshipStatus = payload;
     },
@@ -567,6 +574,9 @@ export default {
     },
     [SET_SPOUSE_GENDER](state, payload) {
       state.spouseGender = payload;
+    },
+    [SET_SPOUSE_GENDER_MATCH](state, payload) {
+      state.spouseGenderMatch = payload;
     },
     [SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH](state, payload) {
       state.spouseLivedInBCSinceBirth = payload;
@@ -812,6 +822,7 @@ export default {
       commit(SET_AH_PHN, null);
       commit(SET_AH_SIN, null);
       commit(SET_AH_GENDER, null);
+      commit(SET_AH_GENDER_MATCH, null);
       commit(SET_AH_CITIZENSHIP_STATUS, null);
       commit(SET_AH_CITIZENSHIP_STATUS_REASON, null);
       commit(SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE, null);
@@ -856,6 +867,7 @@ export default {
       commit(SET_SPOUSE_PHN, null);
       commit(SET_SPOUSE_SIN, null);
       commit(SET_SPOUSE_GENDER, null);
+      commit(SET_SPOUSE_GENDER_MATCH, null);
       commit(SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, null);
       commit(SET_SPOUSE_MADE_PERMANENT_MOVE, null);
       commit(SET_SPOUSE_MOVE_FROM_ORIGIN, null);
@@ -1036,6 +1048,9 @@ export default {
     [SET_AH_GENDER]({ commit }, payload) {
       commit(SET_AH_GENDER, payload);
     },
+    [SET_AH_GENDER_MATCH]({ commit }, payload) {
+      commit(SET_AH_GENDER_MATCH, payload);
+    },
     [SET_AH_CITIZENSHIP_STATUS]({ commit }, payload) {
       commit(SET_AH_CITIZENSHIP_STATUS, payload);
     },
@@ -1165,6 +1180,9 @@ export default {
     },
     [SET_SPOUSE_GENDER]({ commit }, payload) {
       commit(SET_SPOUSE_GENDER, payload);
+    },
+    [SET_SPOUSE_GENDER_MATCH]({ commit }, payload) {
+      commit(SET_SPOUSE_GENDER_MATCH, payload);
     },
     [SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH]({ commit }, payload) {
       commit(SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, payload);

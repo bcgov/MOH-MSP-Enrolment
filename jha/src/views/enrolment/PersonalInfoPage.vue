@@ -126,22 +126,21 @@
                 v-if="$v.gender.$dirty
                   && !$v.gender.required"
                 aria-live="assertive">Gender is required.</div>
-            </div>
-            <div v-if="requestGender">
+
               <Radio label="Does your gender match your documents?"
-                id="ahgendermatch"
-                name="ahgendermatch"
+                id="ah-gender-match"
+                name="ah-gender-match"
                 class="mt-3"
-                v-model="ahgendermatch"
+                v-model="ahGenderMatch"
                 :items="radioOptionsNoYes"
-                @blur="handleBlurField($v.ahgendermatch)" />
+                @blur="handleBlurField($v.ahGenderMatch)" />
               <div class="text-danger"
-                v-if="$v.gender.$dirty
-                  && !$v.gender.required"
+                v-if="$v.ahGenderMatch.$dirty
+                  && !$v.ahGenderMatch.required"
                 aria-live="assertive">Gender match is required.</div>
             </div>
           </div>
-          <div class="col-md-5 d-flex align-items-end">
+          <div v-if="requestGenderUploader" class="col-md-5 d-flex align-items-end">
             <TipBox v-if="requestGender">
               <p>Tip</p>
               <p>If the gender you select does not match the gender on your supporting document(s), you must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
@@ -672,6 +671,7 @@ import {
   SET_AH_PHN,
   SET_AH_SIN,
   SET_AH_GENDER,
+  SET_AH_GENDER_MATCH,
   SET_AH_CITIZENSHIP_STATUS,
   SET_AH_CITIZENSHIP_STATUS_REASON,
   SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE,
@@ -852,6 +852,7 @@ export default {
       personalHealthNumber: null,
       socialInsuranceNumber: null,
       gender: null,
+      ahGenderMatch: null,
       citizenshipStatus: null,
       citizenshipStatusReason: null,
       citizenshipSupportDocumentType: null,
@@ -895,6 +896,7 @@ export default {
     this.personalHealthNumber = this.$store.state.enrolmentModule.ahPHN;
     this.socialInsuranceNumber = this.$store.state.enrolmentModule.ahSIN;
     this.gender = this.$store.state.enrolmentModule.ahGender;
+    this.ahGenderMatch = this.$store.state.enrolmentModule.ahGenderMatch;
     this.citizenshipStatus = this.$store.state.enrolmentModule.ahCitizenshipStatus;
     this.citizenshipStatusReason = this.$store.state.enrolmentModule.ahCitizenshipStatusReason;
     this.citizenshipSupportDocumentType = this.$store.state.enrolmentModule.ahCitizenshipSupportDocumentType;
@@ -953,6 +955,7 @@ export default {
       personalHealthNumber: {},
       socialInsuranceNumber: {},
       gender: {},
+      ahGenderMatch: {},
       citizenshipStatus: {},
       citizenshipStatusReason: {},
       citizenshipSupportDocumentType: {},
@@ -982,6 +985,7 @@ export default {
 
     if (this.requestGender) {
       validations.gender.required = required;
+      validations.ahGenderMatch.required = required;
     }
 
     if (this.requestPersonalHealthNumber) {
@@ -1099,6 +1103,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_PHN}`, this.personalHealthNumber);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_SIN}`, this.socialInsuranceNumber);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_GENDER}`, this.gender);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_GENDER_MATCH}`, this.ahGenderMatch);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_STATUS}`, this.citizenshipStatus);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_STATUS_REASON}`, this.citizenshipStatusReason);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE}`, this.citizenshipSupportDocumentType);
@@ -1169,6 +1174,9 @@ export default {
     },
     requestGender() {
       return this.$store.state.enrolmentModule.isApplyingForMSP
+    },
+    requestGenderUploader() {
+      return this.ahGenderMatch === 'N';
     },
     requestPersonalHealthNumber() {
       return !this.$store.state.enrolmentModule.isApplyingForMSP;

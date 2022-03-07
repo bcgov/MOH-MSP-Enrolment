@@ -168,6 +168,10 @@ export default {
           label: "Gender",
           value: this.getFormattedGender(this.$store.state.enrolmentModule.ahGender),
         });
+        items.push({
+          label: "Does your gender match your documents?",
+          value: this.$store.state.enrolmentModule.ahGenderMatch === "Y" ? "Yes" : "No",
+        });
       }
       const birthdate = formatDate(
         this.$store.state.enrolmentModule.ahBirthdate
@@ -393,6 +397,10 @@ export default {
         items.push({
           label: "Gender",
           value: this.getFormattedGender(this.$store.state.enrolmentModule.spouseGender),
+        });
+        items.push({
+          label: "Does your gender match your documents?",
+          value: this.$store.state.enrolmentModule.spouseGenderMatch === "Y" ? "Yes" : "No",
         });
       }
       const birthdate = formatDate(
