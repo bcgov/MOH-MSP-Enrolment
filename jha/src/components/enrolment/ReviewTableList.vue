@@ -179,10 +179,6 @@ export default {
               .ahNameChangeSupportDocumentType,
           });
         }
-        const gender =
-          this.$store.state.enrolmentModule.ahGender === "F"
-            ? "Female"
-            : "Male";
         items.push({
           label: "Gender",
           value: this.getFormattedGender(this.$store.state.enrolmentModule.ahGender),
