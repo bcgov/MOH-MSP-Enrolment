@@ -721,17 +721,21 @@ export default {
               value: child.schoolName,
             });
             childData.push({
-              label: "Street address 1",
+              label: "Street address",
               value: child.schoolAddressLine1,
             });
-            childData.push({
-              label: "Street address 2",
-              value: child.schoolAddressLine2,
-            });
-            childData.push({
-              label: "Street address 3",
-              value: child.schoolAddressLine3,
-            });
+            if (child.schoolAddressLine2) {
+              childData.push({
+                label: "",
+                value: child.schoolAddressLine2,
+              });
+            }
+            if (child.schoolAddressLine3) {
+              childData.push({
+                label: "",
+                value: child.schoolAddressLine3,
+              });
+            }
             childData.push({
               label: "City",
               value: child.schoolCity,
@@ -932,17 +936,21 @@ export default {
         underlined: true
       });
       items.push({
-        label: "Street Address 1",
+        label: "Street Address",
         value: this.$store.state.enrolmentModule.resAddressLine1,
       });
-      items.push({
-        label: "Street Address 2",
-        value: this.$store.state.enrolmentModule.resAddressLine2,
-      });
-      items.push({
-        label: "Street Address 3",
-        value: this.$store.state.enrolmentModule.resAddressLine3,
-      });
+      if (this.$store.state.enrolmentModule.resAddressLine2) {
+        items.push({
+          label: "",
+          value: this.$store.state.enrolmentModule.resAddressLine2,
+        });
+      }
+      if (this.$store.state.enrolmentModule.resAddressLine3) {
+        items.push({
+          label: "",
+          value: this.$store.state.enrolmentModule.resAddressLine3,
+        });
+      }
       items.push({
         label: "City",
         value: this.$store.state.enrolmentModule.resCity,
@@ -966,17 +974,21 @@ export default {
           underlined: true
         });
         items.push({
-          label: "Street Address 1",
+          label: "Street Address",
           value: this.$store.state.enrolmentModule.mailAddressLine1,
         });
-        items.push({
-          label: "Street Address 2",
-          value: this.$store.state.enrolmentModule.mailAddressLine2,
-        });
-        items.push({
-          label: "Street Address 3",
-          value: this.$store.state.enrolmentModule.mailAddressLine3,
-        });
+        if (this.$store.state.enrolmentModule.mailAddressLine2) {
+          items.push({
+            label: "",
+            value: this.$store.state.enrolmentModule.mailAddressLine2,
+          });
+        }
+        if (this.$store.state.enrolmentModule.mailAddressLine3) {
+          items.push({
+            label: "",
+            value: this.$store.state.enrolmentModule.mailAddressLine3,
+          });
+        }
         items.push({
           label: "City",
           value: this.$store.state.enrolmentModule.mailCity,
