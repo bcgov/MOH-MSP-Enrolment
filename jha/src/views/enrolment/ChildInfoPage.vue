@@ -165,6 +165,7 @@ export default {
         citizenshipSupportDocuments: [],
         isNameChanged: null,
         nameChangeSupportDocumentType: null,
+        genderMatches: null,
         nameChangeSupportDocuments: [],
         
         moveFromOrigin: null,

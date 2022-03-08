@@ -224,8 +224,20 @@
               <div class="text-danger"
                 v-if="$v.spouseCitizenshipSupportDocumentType.$dirty && !$v.spouseCitizenshipSupportDocumentType.required"
                 aria-live="assertive">Please select one of the above.</div>
-              <div v-if="spouseCitizenshipSupportDocumentType">
-                <h2>{{spouseCitizenshipSupportDocumentType}}</h2>
+              <Radio
+                label="Does your spouse's document that supports their status in Canada include their selected gender designation?" 
+                name="spouse-gender-matches"
+                id="spouse-gender-matches"
+                class="mt-3"
+                v-model="spouseGenderMatches"
+                :items="radioOptionsNoYes"
+                @blur="handleBlurField($v.spouseGenderMatches)" />
+              <div class="text-danger"
+                v-if="$v.spouseGenderMatches.$dirty
+                  && !$v.spouseGenderMatches.required"
+                aria-live="assertive">This field is required.</div>
+              <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
+                <h2>{{spouseCitizenshipSupportDocumentType }} {{ spouseGenderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
                 <hr/>
                 <div class="row">
                     <div class="col-md-7">
@@ -244,7 +256,7 @@
                   </div>
               </div>
 
-              <div v-if="spouseCitizenshipSupportDocumentType">
+              <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
                 <Radio label="Has your spouse's name changed since your ID was issued due to marriage or legal name change?"
                   id="name-change"
                   name="name-change"
@@ -732,6 +744,7 @@ import {
   SET_SPOUSE_STATUS,
   SET_SPOUSE_STATUS_REASON,
   SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE,
+  SET_SPOUSE_GENDER_MATCHES,
   SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS,
   SET_SPOUSE_IS_NAME_CHANGED,
   SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE,
@@ -876,6 +889,7 @@ export default {
       spouseStatus: null,
       spouseStatusReason: null,
       spouseCitizenshipSupportDocumentType: null,
+      spouseGenderMatches: null,
       spouseCitizenshipSupportDocuments: [],
       spouseIsNameChanged: null,
       spouseNameChangeSupportDocumentType: null,
@@ -921,6 +935,7 @@ export default {
     this.spouseStatus = this.$store.state.enrolmentModule.spouseStatus;
     this.spouseStatusReason = this.$store.state.enrolmentModule.spouseStatusReason;
     this.spouseCitizenshipSupportDocumentType = this.$store.state.enrolmentModule.spouseCitizenshipSupportDocumentType;
+    this.spouseGenderMatches = this.$store.state.enrolmentModule.spouseGenderMatches;
     this.spouseCitizenshipSupportDocuments = this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments;
     this.spouseIsNameChanged = this.$store.state.enrolmentModule.spouseIsNameChanged;
     this.spouseNameChangeSupportDocumentType = this.$store.state.enrolmentModule.spouseNameChangeSupportDocumentType;
@@ -991,6 +1006,7 @@ export default {
       spouseStatus: {},
       spouseStatusReason: {},
       spouseCitizenshipSupportDocumentType: {},
+      spouseGenderMatches: {},
       spouseCitizenshipSupportDocuments: {},
       spouseIsNameChanged: {},
       spouseNameChangeSupportDocumentType: {},
@@ -1032,6 +1048,7 @@ export default {
       validations.spouseStatus.required = required;
       validations.spouseStatusReason.required = required;
       validations.spouseCitizenshipSupportDocumentType.required = required;
+      validations.spouseGenderMatches.required = required;
       validations.spouseCitizenshipSupportDocuments.required = required;
       validations.spouseIsNameChanged.required = required;
 
@@ -1128,6 +1145,7 @@ export default {
     },
     spouseStatusReason() {
       if (this.pageLoaded) {
+        this.spouseGenderMatches = null;
         this.spouseCitizenshipSupportDocumentType = null;
         this.spouseCitizenshipSupportDocuments = [];
         this.spouseIsNameChanged = null;
@@ -1139,6 +1157,7 @@ export default {
         this.spouseOutsideBCLast12Months = null;
         this.spouseHasPreviousBCHealthNumber = null;
         this.spouseBeenReleasedFromInstitution = null;
+        this.$v.spouseGenderMatches.$reset();
         this.$v.spouseCitizenshipSupportDocumentType.$reset();
         this.$v.spouseCitizenshipSupportDocuments.$reset();
         this.$v.spouseIsNameChanged.$reset();
@@ -1253,6 +1272,7 @@ export default {
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_STATUS, this.spouseStatus);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_STATUS_REASON, this.spouseStatusReason);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE, this.spouseCitizenshipSupportDocumentType);
+      this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_GENDER_MATCHES, this.spouseGenderMatches);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS, this.spouseCitizenshipSupportDocuments);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_IS_NAME_CHANGED, this.spouseIsNameChanged);
       this.$store.dispatch(enrolmentModule + '/' + SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, this.spouseNameChangeSupportDocumentType);
@@ -1332,6 +1352,7 @@ export default {
         this.spouseStatus = null;
         this.spouseStatusReason = null;
         this.spouseCitizenshipSupportDocumentType = null;
+        this.spouseGenderMatches = null;
         this.spouseCitizenshipSupportDocuments = [];
         this.spouseIsNameChanged = null;
         this.spouseNameChangeSupportDocumentType = null;
