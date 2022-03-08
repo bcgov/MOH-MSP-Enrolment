@@ -5,7 +5,7 @@
         :key="element.label + '-' + index"
         class="bcgov-row d-flex">
       <div class="bcgov-table-cell label">
-        <div class="table-cell-max">{{element.label}}</div>
+        <div :class="['table-cell-max', {'underlined': element.underlined}]">{{element.label}}</div>
       </div>
       <div class="bcgov-table-cell value"><b>{{element.value}}</b></div>
     </div>
@@ -23,7 +23,7 @@ export default {
       type: String,
       default: 'white',
     }
-  }
+  },
 }
 </script>
 
@@ -34,6 +34,7 @@ export default {
   flex-direction: column;
   /* background-color: #EEE; */
   border-top: 1px solid rgba(0,0,0,0.3);
+  line-height: 1.5rem;
 }
 
 .bcgov-row {
@@ -50,9 +51,13 @@ export default {
 .bcgov-table-cell.value {
   width: 50%;
   padding-left: 6px;
+  word-break: break-word;
 }
 .table-cell-max {
   max-width: 350px;
   display: inline-block;
+}
+.underlined {
+  text-decoration: underline;
 }
 </style>
