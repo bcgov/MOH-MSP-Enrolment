@@ -194,9 +194,21 @@
             v-if="$v.citizenshipSupportDocumentType.$dirty
               && !$v.citizenshipSupportDocumentType.required"
             aria-live="assertive">Document Type is required.</div>
-          <div v-if="citizenshipSupportDocumentType"
+          <Radio
+            label="Does your document that supports your status in Canada include your selected gender designation?" 
+            name="gender-matches"
+            id="gender-matches"
+            class="mt-3"
+            v-model="genderMatches"
+            :items="radioOptionsNoYes"
+            @blur="handleBlurField($v.genderMatches)" />
+          <div class="text-danger"
+            v-if="$v.genderMatches.$dirty
+              && !$v.genderMatches.required"
+            aria-live="assertive">This field is required.</div>
+          <div v-if="citizenshipSupportDocumentType && genderMatches"
             class="mt-3">
-            <h2 class="mt-4">{{citizenshipSupportDocumentType}}</h2>
+            <h2 class="mt-4">{{citizenshipSupportDocumentType}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
             <hr/>
             <div class="row">
               <div class="col-md-7">
@@ -662,6 +674,7 @@ import {
   SET_AH_CITIZENSHIP_STATUS,
   SET_AH_CITIZENSHIP_STATUS_REASON,
   SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE,
+  SET_AH_GENDER_MATCHES,
   SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS,
   SET_AH_IS_NAME_CHANGED,
   SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE,
@@ -839,6 +852,7 @@ export default {
       personalHealthNumber: null,
       socialInsuranceNumber: null,
       gender: null,
+      genderMatches: null,
       citizenshipStatus: null,
       citizenshipStatusReason: null,
       citizenshipSupportDocumentType: null,
@@ -885,6 +899,7 @@ export default {
     this.citizenshipStatus = this.$store.state.enrolmentModule.ahCitizenshipStatus;
     this.citizenshipStatusReason = this.$store.state.enrolmentModule.ahCitizenshipStatusReason;
     this.citizenshipSupportDocumentType = this.$store.state.enrolmentModule.ahCitizenshipSupportDocumentType;
+    this.genderMatches = this.$store.state.enrolmentModule.ahGenderMatches;
     this.citizenshipSupportDocuments = this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments;
     this.isNameChanged = this.$store.state.enrolmentModule.ahIsNameChanged;
     this.nameChangeSupportDocumentType = this.$store.state.enrolmentModule.ahNameChangeSupportDocumentType;
@@ -943,6 +958,7 @@ export default {
       citizenshipStatus: {},
       citizenshipStatusReason: {},
       citizenshipSupportDocumentType: {},
+      genderMatches: {},
       citizenshipSupportDocuments: {},
       isNameChanged: {},
       nameChangeSupportDocumentType: {},
@@ -985,6 +1001,7 @@ export default {
       validations.citizenshipStatus.required = required;
       validations.citizenshipStatusReason.required = required;
       validations.citizenshipSupportDocumentType.required = required;
+      validations.genderMatches.required = required;
       validations.citizenshipSupportDocuments.required = required;
       validations.isNameChanged.required = required;
       validations.isOutsideBCInLast12Months.required = required;
@@ -1089,6 +1106,7 @@ export default {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_STATUS}`, this.citizenshipStatus);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_STATUS_REASON}`, this.citizenshipStatusReason);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE}`, this.citizenshipSupportDocumentType);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_GENDER_MATCHES}`, this.genderMatches);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS}`, this.citizenshipSupportDocuments);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_IS_NAME_CHANGED}`, this.isNameChanged);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE}`, this.nameChangeSupportDocumentType);
@@ -1169,7 +1187,8 @@ export default {
     },
     requestIsNameChanged() {
       return this.$store.state.enrolmentModule.isApplyingForMSP
-        && !!this.citizenshipSupportDocumentType;
+        && !!this.citizenshipSupportDocumentType
+        && !!this.genderMatches;
     },
     requestNameChangedDocs() {
       return this.$store.state.enrolmentModule.isApplyingForMSP
@@ -1308,6 +1327,7 @@ export default {
     },
     citizenshipStatusReason() {
       if (this.isPageLoaded) {
+        this.genderMatches = null;
         this.citizenshipSupportDocumentType = null;
         this.isNameChanged = null;
         this.isMovedToBCPermanently = null;
@@ -1315,6 +1335,7 @@ export default {
         this.arrivalDateInBC = null;
         this.arrivalDateInCanada = null;
         this.previousHealthNumber = null;
+        this.$v.genderMatches.$reset();
         this.$v.citizenshipSupportDocumentType.$reset();
         this.$v.isNameChanged.$reset();
         this.$v.isMovedToBCPermanently.$reset();

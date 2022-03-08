@@ -53,6 +53,7 @@ export const SET_AH_GENDER = 'setAHGender';
 export const SET_AH_CITIZENSHIP_STATUS = 'setAHCitizenshipStatus';
 export const SET_AH_CITIZENSHIP_STATUS_REASON = 'setAHCitizenshipStatusReason';
 export const SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE = 'setAHCitizenshipSupportDocumentType';
+export const SET_AH_GENDER_MATCHES = 'setAHGenderMatches';
 export const SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS = 'setAHCitizenshipSupportDocuments';
 export const SET_AH_IS_NAME_CHANGED = 'setAHIsNameChanged';
 export const SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE = 'setAHNameChangeSupportDocumentType';
@@ -83,6 +84,7 @@ export const SET_HAS_SPOUSE = 'setHasSpouse';
 export const SET_SPOUSE_STATUS = 'setSpouseStatus';
 export const SET_SPOUSE_STATUS_REASON = 'setSpouseStatusReason';
 export const SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE = 'setSpouseCitizenshipSupportDocumentType';
+export const SET_SPOUSE_GENDER_MATCHES = 'setSpouseGenderMatches';
 export const SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS = 'setSpouseCitizenshipSupportDocuments';
 export const SET_SPOUSE_IS_NAME_CHANGED = 'setSpouseIsNameChanged';
 export const SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE = 'setSpouseNameChangeSupportDocumentType';
@@ -211,6 +213,7 @@ export default {
       ahCitizenshipStatus: null,
       ahCitizenshipStatusReason: null,
       ahCitizenshipSupportDocumentType: null,
+      ahGenderMatches: null,
       ahCitizenshipSupportDocuments: [],
       ahIsNameChanged: null,
       ahNameChangeSupportDocumentType: null,
@@ -241,6 +244,7 @@ export default {
       spouseStatus: null,
       spouseStatusReason: null,
       spouseCitizenshipSupportDocumentType: null,
+      spouseGenderMatches: null,
       spouseCitizenshipSupportDocuments: [],
       spouseIsNameChanged: null,
       spouseNameChangeSupportDocumentType: null,
@@ -447,6 +451,9 @@ export default {
     [SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE](state, payload) {
       state.ahCitizenshipSupportDocumentType = payload;
     },
+    [SET_AH_GENDER_MATCHES](state, payload) {
+      state.ahGenderMatches = payload;
+    },
     [SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS](state, payload) {
       state.ahCitizenshipSupportDocuments = payload;
     },
@@ -534,6 +541,9 @@ export default {
     },
     [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE](state, payload) {
       state.spouseCitizenshipSupportDocumentType = payload;
+    },
+    [SET_SPOUSE_GENDER_MATCHES](state, payload) {
+      state.spouseGenderMatches = payload;
     },
     [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS](state, payload) {
       state.spouseCitizenshipSupportDocuments = payload;
@@ -815,6 +825,7 @@ export default {
       commit(SET_AH_CITIZENSHIP_STATUS, null);
       commit(SET_AH_CITIZENSHIP_STATUS_REASON, null);
       commit(SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE, null);
+      commit(SET_AH_GENDER_MATCHES, null);
       commit(SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS, []);
       commit(SET_AH_IS_NAME_CHANGED, null);
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, null);
@@ -848,6 +859,7 @@ export default {
       commit(SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS, []);
       commit(SET_SPOUSE_IS_NAME_CHANGED, null);
       commit(SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, null);
+      commit(SET_SPOUSE_GENDER_MATCHES, null);
       commit(SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENTS, []);
       commit(SET_SPOUSE_FIRST_NAME, null);
       commit(SET_SPOUSE_MIDDLE_NAME, null);
@@ -1045,6 +1057,9 @@ export default {
     [SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE]({ commit }, payload) {
       commit(SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE, payload);
     },
+    [SET_AH_GENDER_MATCHES]({ commit }, payload) {
+      commit(SET_AH_GENDER_MATCHES, payload);
+    },
     [SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS]({ commit }, payload) {
       commit(SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS, payload);
     },
@@ -1132,6 +1147,9 @@ export default {
     },
     [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE]({ commit }, payload) {
       commit(SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE, payload);
+    },
+    [SET_SPOUSE_GENDER_MATCHES]({ commit }, payload) {
+      commit(SET_SPOUSE_GENDER_MATCHES, payload);
     },
     [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS]({ commit }, payload) {
       commit(SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS, payload);

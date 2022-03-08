@@ -198,8 +198,20 @@
           <div class="text-danger"
             v-if="$v.citizenshipSupportDocumentType.$dirty && !$v.citizenshipSupportDocumentType.required"
             aria-live="assertive">Please select one of the above.</div>
-          <div v-if="citizenshipSupportDocumentType">
-            <h2>{{citizenshipSupportDocumentType}}</h2>
+          <Radio
+            label="Does the child's document that supports their status in Canada include their selected gender designation?" 
+            :name="'gender-matches-' + index"
+            :id="'gender-matches-' + index"
+            class="mt-3"
+            v-model="genderMatches"
+            :items="radioOptionsNoYes"
+            @blur="handleBlurField($v.genderMatches)" />
+          <div class="text-danger"
+            v-if="$v.genderMatches.$dirty
+              && !$v.genderMatches.required"
+            aria-live="assertive">This field is required.</div>
+          <div v-if="citizenshipSupportDocumentType && genderMatches">
+            <h2>{{citizenshipSupportDocumentType}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
             <hr/>
             <div class="row">
               <div class="col-md-7">
@@ -218,16 +230,18 @@
             </div>
           </div>
 
-          <Radio label="Has the child's name changed since their ID was issued due to marriage or legal name change?"
-            :id="'name-change-' + index"
-            :name="'name-change-' + index"
-            class="mt-3 mb-3"
-            v-model="isNameChanged"
-            @blur="handleBlurField($v.isNameChanged)"
-            :items="radioOptionsNoYes" />
-          <div class="text-danger"
-            v-if="$v.isNameChanged.$dirty && !$v.isNameChanged.required"
-            aria-live="assertive">Please indicate if the child's name changed.</div>
+          <div v-if="citizenshipSupportDocumentType && genderMatches">
+            <Radio label="Has the child's name changed since their ID was issued due to marriage or legal name change?"
+              :id="'name-change-' + index"
+              :name="'name-change-' + index"
+              class="mt-3 mb-3"
+              v-model="isNameChanged"
+              @blur="handleBlurField($v.isNameChanged)"
+              :items="radioOptionsNoYes" />
+            <div class="text-danger"
+              v-if="$v.isNameChanged.$dirty && !$v.isNameChanged.required"
+              aria-live="assertive">Please indicate if the child's name changed.</div>
+          </div>
           <div v-if="isNameChanged === 'Y'" class="tabbed-section">
             <h2>Additional Documents</h2>
             <p>Provide one of the required documents to support the child's name change.</p>
@@ -1039,6 +1053,7 @@ export default {
       status: null,
       statusReason: null,
       citizenshipSupportDocumentType: null,
+      genderMatches: null,
       citizenshipSupportDocuments: [],
       isNameChanged: null,
       nameChangeSupportDocumentType: null,
@@ -1096,6 +1111,7 @@ export default {
     this.status = this.childData.status;
     this.statusReason = this.childData.statusReason;
     this.citizenshipSupportDocumentType = this.childData.citizenshipSupportDocumentType;
+    this.genderMatches = this.childData.genderMatches;
     this.citizenshipSupportDocuments = this.childData.citizenshipSupportDocuments;
     this.isNameChanged = this.childData.isNameChanged;
     this.nameChangeSupportDocumentType = this.childData.nameChangeSupportDocumentType;
@@ -1156,6 +1172,7 @@ export default {
       status: {},
       statusReason: {},
       citizenshipSupportDocumentType: {},
+      genderMatches: {},
       citizenshipSupportDocuments: {},
       isNameChanged: {},
       nameChangeSupportDocumentType: {},
@@ -1207,6 +1224,7 @@ export default {
       validations.status.required = required;
       validations.statusReason.required = required;
       validations.citizenshipSupportDocumentType.required = required;
+      validations.genderMatches.required = required;
       validations.citizenshipSupportDocuments.required = required;
       validations.isNameChanged.required = required;
       validations.madePermanentMove.required = required;
@@ -1335,6 +1353,7 @@ export default {
           status: this.status,
           statusReason: this.statusReason,
           citizenshipSupportDocumentType: this.citizenshipSupportDocumentType,
+          genderMatches: this.genderMatches,
           citizenshipSupportDocuments: this.citizenshipSupportDocuments,
           isNameChanged: this.isNameChanged,
           nameChangeSupportDocumentType: this.nameChangeSupportDocumentType,
@@ -1456,6 +1475,7 @@ export default {
     statusReason() {
       if (this.pageLoaded) {
         this.citizenshipSupportDocumentType = null;
+        this.genderMatches = null;
         this.citizenshipSupportDocuments = [];
         this.isNameChanged = null;
         this.livedInBCSinceBirth = null;
@@ -1468,6 +1488,7 @@ export default {
         this.hasBeenReleasedFromInstitution = null;
 
         this.$v.citizenshipSupportDocumentType.$reset();
+        this.$v.genderMatches.$reset();
         this.$v.citizenshipSupportDocuments.$reset();
         this.$v.isNameChanged.$reset();
         this.$v.livedInBCSinceBirth.$reset();
@@ -1489,6 +1510,9 @@ export default {
         
         this.saveData();
       }
+    },
+    genderMatches() {
+      this.saveData();
     },
     citizenshipSupportDocuments() {
       this.saveData();
