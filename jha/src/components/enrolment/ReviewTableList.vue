@@ -258,12 +258,17 @@ export default {
                 ? "Yes"
                 : "No",
           });
-        const ahPreviousHealthNumber = this.$store.state.enrolmentModule
-          .ahPreviousHealthNumber;
-        items.push({
-          label: "Health number from previous residence",
-          value: ahPreviousHealthNumber ? ahPreviousHealthNumber : "No",
-        });
+        const ahCitizenshipStatus = this.$store.state.enrolmentModule.ahCitizenshipStatus;
+        if ((ahCitizenshipStatus === StatusInCanada.Citizen 
+          || ahCitizenshipStatus === StatusInCanada.PermanentResident)
+          && this.$store.state.enrolmentModule.ahCitizenshipStatusReason === CanadianStatusReasons.MovingFromProvince) {
+            const ahPreviousHealthNumber = this.$store.state.enrolmentModule
+              .ahPreviousHealthNumber;
+            items.push({
+              label: "Health number from previous residence",
+              value: ahPreviousHealthNumber ? ahPreviousHealthNumber : "No",
+            });
+        }
         items.push({
           label: "Has previous BC Health Number?",
           value:
@@ -469,12 +474,17 @@ export default {
               ? "Yes"
               : "No",
         });
-        const spousePreviousHealthNumber = this.$store.state.enrolmentModule
-          .spousePreviousHealthNumber;
-        items.push({
-          label: "Health number from previous residence",
-          value: spousePreviousHealthNumber ? spousePreviousHealthNumber : "No",
-        });
+        const spouseStatus = this.$store.state.enrolmentModule.spouseStatus;
+        if ((spouseStatus === StatusInCanada.Citizen 
+          || spouseStatus === StatusInCanada.PermanentResident)
+          && this.$store.state.enrolmentModule.spouseStatusReason === CanadianStatusReasons.MovingFromProvince) {
+            const spousePreviousHealthNumber = this.$store.state.enrolmentModule.spousePreviousHealthNumber;
+            items.push({
+              label: "Health number from previous residence",
+              value: spousePreviousHealthNumber ? spousePreviousHealthNumber : "No",
+            });
+        }
+        
         items.push({
           label: "Has Previous BC Health Number?",
           value:
@@ -650,7 +660,9 @@ export default {
               label: "Has child moved to BC permanently?",
               value: child.madePermanentMove === "Y" ? "Yes" : "No",
             });
-            if (child.previousHealthNumber) {
+            if ((child.status === StatusInCanada.Citizen 
+            || child.status === StatusInCanada.PermanentResident)
+            && child.statusReason === CanadianStatusReasons.MovingFromProvince) {
               childData.push({
                 label: "Health number from previous residence",
                 value: child.previousHealthNumber
