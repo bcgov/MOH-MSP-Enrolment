@@ -223,7 +223,7 @@
                   aria-live="assertive">You must include documentation for your application.</div>
               </div>
               <div class="col-md-5">
-                <SampleImageTipBox :documentType="citizenshipSupportDocumentType"/>
+                <SampleImageTipBox :documentType="citizenshipSupportDocumentType" :includeGenderDocumentSamples="genderMatches === 'N'"/>
               </div>
             </div>
           </div>

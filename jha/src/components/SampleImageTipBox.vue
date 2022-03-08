@@ -1,10 +1,15 @@
 <template>
   <div>
     <TipBox title="Tip">
-      <p v-if="sampleImageFileName">
+      <p v-if="hasSampleImage">
         <a href="javascript:void(0)"
           :title="`${documentType} sample`"
-          @click="openModal()">{{documentType}} samples</a>
+          @click="openModal(false)">{{documentType}} samples</a>
+      </p>
+      <p v-if="includeGenderDocumentSamples">
+        <a href="javascript:void(0)"
+          :title="genderDocsTitle"
+          @click="openModal(true)">{{genderDocsTitle}}</a>
       </p>
       <p>Scan the document, or take a photo of it.</p>
       <p>Make sure that it's:</p>
@@ -17,7 +22,7 @@
     </TipBox>
     <portal v-if="isModalOpen"
       to="modal">
-      <ContentModal :title="`${documentType} sample`"
+      <ContentModal :title="modalTitle"
         size="lg"
         @close="closeModal()">
         <div class="sample-image-container text-center">
@@ -52,15 +57,23 @@ export default {
     documentType: {
       type: String,
       default: null,
+    },
+    includeGenderDocumentSamples: {
+      type: Boolean,
+      default: false,
     }
   },
   data: () => {
     return {
       isModalOpen: false,
+      showGenderDocs: false,
+      genderDocsTitle: 'Change of Gender Designation and Request for Waiver of Parental Consent form samples',
+      genderDocsSampleImageFileName: 'gender_forms.png'
     }
   },
   methods: {
-    openModal() {
+    openModal(showGenderDocs) {
+      this.showGenderDocs = showGenderDocs;
       this.isModalOpen = true;
     },
     closeModal() {
@@ -68,11 +81,22 @@ export default {
     },
   },
   computed: {
+    hasSampleImage() {
+      return !!SupportDocumentSamples[this.documentType];
+    },
     sampleImageFileName() {
-      if (SupportDocumentSamples[this.documentType]) {
+      if (this.showGenderDocs) {
+        return this.genderDocsSampleImageFileName;
+      } else {
         return SupportDocumentSamples[this.documentType];
       }
-      return null;
+    },
+    modalTitle() {
+      if (this.showGenderDocs) {
+        return this.genderDocsTitle;
+      } else {
+        return `${this.documentType} sample`;
+      }
     }
   }
 }

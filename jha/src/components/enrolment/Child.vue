@@ -225,7 +225,7 @@
                   aria-live="assertive">File upload required.</div>
               </div>
               <div class="col-md-5">
-                <SampleImageTipBox :documentType="citizenshipSupportDocumentType"/>
+                <SampleImageTipBox :documentType="citizenshipSupportDocumentType" :includeGenderDocumentSamples="genderMatches === 'N'"/>
               </div>
             </div>
           </div>
