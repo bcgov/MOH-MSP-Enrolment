@@ -1,11 +1,18 @@
 <template>
   <div>
     <TipBox title="Tip">
-      <p v-if="sampleImageFileName">
+      <p v-if="hasSingleSample">
         <a href="javascript:void(0)"
           :title="`${documentType} sample`"
           @click="openModal()">{{documentType}} samples</a>
       </p>
+      <div v-if="hasMultipleSamples">
+        <p v-for="(sample, index) in documentType" :key="index">
+          <a href="javascript:void(0)"
+            :title="`${sample} samples`"
+            @click="openModal(index)">{{sample}} samples</a>
+        </p>
+      </div>
       <p>Scan the document, or take a photo of it.</p>
       <p>Make sure that it's:</p>
       <ul>
@@ -17,7 +24,7 @@
     </TipBox>
     <portal v-if="isModalOpen"
       to="modal">
-      <ContentModal :title="`${documentType} sample`"
+      <ContentModal :title="modalTitle"
         size="lg"
         @close="closeModal()">
         <div class="sample-image-container text-center">
@@ -50,17 +57,19 @@ export default {
   },
   props: {
     documentType: {
-      type: String,
+      type: [String, Array],
       default: null,
     }
   },
   data: () => {
     return {
       isModalOpen: false,
+      sampleIndex: 0,
     }
   },
   methods: {
-    openModal() {
+    openModal(sampleIndex) {
+      this.sampleIndex = sampleIndex;
       this.isModalOpen = true;
     },
     closeModal() {
@@ -68,11 +77,25 @@ export default {
     },
   },
   computed: {
+    hasSingleSample() {
+      return typeof this.documentType === 'string' && SupportDocumentSamples[this.documentType];
+    },
+    hasMultipleSamples() {
+      return Array.isArray(this.documentType);
+    },
     sampleImageFileName() {
-      if (SupportDocumentSamples[this.documentType]) {
+      if (this.hasMultipleSamples) {
+        return SupportDocumentSamples[this.documentType[this.sampleIndex]];
+      } else {
         return SupportDocumentSamples[this.documentType];
       }
-      return null;
+    },
+    modalTitle() {
+      if (this.hasMultipleSamples) {
+        return `${this.documentType[this.sampleIndex]} samples`;
+      } else {
+        return `${this.documentType} samples`;
+      }
     }
   }
 }

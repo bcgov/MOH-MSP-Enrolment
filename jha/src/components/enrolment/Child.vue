@@ -225,7 +225,7 @@
                   aria-live="assertive">File upload required.</div>
               </div>
               <div class="col-md-5">
-                <SampleImageTipBox :documentType="citizenshipSupportDocumentType"/>
+                <SampleImageTipBox :documentType="citizenshipSamples"/>
               </div>
             </div>
           </div>
@@ -864,6 +864,7 @@ import {
   StatusInCanada,
   CanadianStatusReasons, 
 } from '@/constants/immigration-status-types';
+import { SupportDocumentTypes } from '@/constants/document-types';
 import { ChildAgeTypes } from '../../constants/child-age-types';
 import { isAfter, isBefore } from 'date-fns/esm';
 import TipBox from '@/components/TipBox.vue';
@@ -1759,7 +1760,14 @@ export default {
     },
     isAddressValidatorEnabled() {
       return spaEnvService.values.SPA_ENV_JHA_ENABLE_ADDRESS_VALIDATOR === 'true';
-    }
+    },
+    citizenshipSamples() {
+      if (this.genderMatches === 'N') {
+        return [this.citizenshipSupportDocumentType, SupportDocumentTypes.ChangeGenderDocs];
+      } else {
+        return this.citizenshipSupportDocumentType;
+      }
+    },
   },
 }
 </script>
