@@ -251,7 +251,7 @@
                         aria-live="assertive">File upload required.</div>
                     </div>
                     <div class="col-md-5">
-                      <SampleImageTipBox :documentType="spouseCitizenshipSupportDocumentType" :includeGenderDocumentSamples="spouseGenderMatches === 'N'"/>
+                      <SampleImageTipBox :documentType="citizenshipSamples"/>
                     </div>
                   </div>
               </div>
@@ -737,7 +737,8 @@ import {
   StatusInCanada,
   CanadianStatusReasons, 
 } from '@/constants/immigration-status-types';
-import { smallStyles, mediumStyles } from '@/constants/input-styles'
+import { smallStyles, mediumStyles } from '@/constants/input-styles';
+import { SupportDocumentTypes } from '@/constants/document-types';
 import {
   MODULE_NAME as enrolmentModule,
   SET_HAS_SPOUSE,
@@ -1522,7 +1523,14 @@ export default {
     },
     showDischargeInputs() {
       return this.spouseStatus === this.statusOptions.Citizen;
-    }
+    },
+    citizenshipSamples() {
+      if (this.spouseGenderMatches === 'N') {
+        return [this.spouseCitizenshipSupportDocumentType, SupportDocumentTypes.ChangeGenderDocs];
+      } else {
+        return this.spouseCitizenshipSupportDocumentType;
+      }
+    },
   },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {

@@ -223,7 +223,7 @@
                   aria-live="assertive">You must include documentation for your application.</div>
               </div>
               <div class="col-md-5">
-                <SampleImageTipBox :documentType="citizenshipSupportDocumentType" :includeGenderDocumentSamples="genderMatches === 'N'"/>
+                <SampleImageTipBox :documentType="citizenshipSamples"/>
               </div>
             </div>
           </div>
@@ -757,6 +757,7 @@ import {
   CanadianStatusReasons,
   StatusInCanada,
 } from '@/constants/immigration-status-types';
+import { SupportDocumentTypes } from '@/constants/document-types';
 import ConsentModal from '@/components/ConsentModal.vue';
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
@@ -1299,6 +1300,13 @@ export default {
         return selectOptionsCitizenshipSupportDocuments;
       }
       return [];
+    },
+    citizenshipSamples() {
+      if (this.genderMatches === 'N') {
+        return [this.citizenshipSupportDocumentType, SupportDocumentTypes.ChangeGenderDocs];
+      } else {
+        return this.citizenshipSupportDocumentType;
+      }
     },
     canContinueProcess() {
       if (this.isMovedToBCPermanently) {
