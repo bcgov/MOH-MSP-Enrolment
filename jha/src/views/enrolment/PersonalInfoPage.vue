@@ -393,12 +393,12 @@
                   <div class="text-danger"
                     v-if="$v.arrivalDateInBC.$dirty
                       && !$v.arrivalDateInBC.afterBirthdateValidator"
-                    aria-live="assertive">The applicant's {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C. date' : 'arrival date in B.C.'}} cannot be before the applicant's date of birth.</div>
+                    aria-live="assertive">The applicant's {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C.' : 'arrival date in B.C.'}} cannot be before the applicant's date of birth.</div>
                   <div class="text-danger"
                     v-if="$v.arrivalDateInBC.$dirty
                       && $v.arrivalDateInBC.afterBirthdateValidator
                       && !$v.arrivalDateInBC.afterCanadaArrivalDateValidator"
-                    aria-live="assertive">The applicant's {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C. date' : 'arrival date in B.C.'}} cannot be before the move to Canada date.</div>
+                    aria-live="assertive">The applicant's {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C.' : 'arrival date in B.C.'}} cannot be before the move to Canada date.</div>
                 </div>
                 <div v-if="requestArrivalInCanadaInfo">
                   <DateInput :label="`Arrival date in Canada${isArrivalDateInCanadaRequired ? '' : ' (optional)'}`"
