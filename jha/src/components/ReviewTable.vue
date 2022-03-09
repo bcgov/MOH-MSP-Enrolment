@@ -1,5 +1,5 @@
 <template>
-  <div class="form-group bcgov-table-body p-3"
+  <div class="bcgov-table-body p-3"
       :style="{'background-color': backgroundColor}">
     <div v-for="(element, index) in elements"
         :key="element.label + '-' + index"

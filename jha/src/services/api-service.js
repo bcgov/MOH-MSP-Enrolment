@@ -392,10 +392,10 @@ class ApiService {
     });
   }
 
-  getDeductibles(formState) {
-    const headers = this._getHeaders(formState.captchaToken);
+  getDeductibles(token, fpcUuid) {
+    const headers = this._getHeaders(token);
     const payload = {
-      uuid: formState.fpcUuid,
+      uuid: fpcUuid,
       benefitYear: `${new Date().getFullYear()}`,
       taxYear: `${new Date().getFullYear() - 1}`
     };

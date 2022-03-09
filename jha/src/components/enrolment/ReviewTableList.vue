@@ -1,6 +1,6 @@
 <template>
   <div :class="className + ' row'">
-    <div class="col-lg-6">
+    <div class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
           <h2 class="mb-2">Account Holder</h2>
@@ -17,7 +17,7 @@
                   :backgroundColor='tableBackgroundColor'/>
     </div>
     
-    <div class="col-lg-6" v-if='hasSpouse'>
+    <div class="col-lg-6 mb-3" v-if='hasSpouse'>
       <div class="row align-items-end mt-3">
         <div class="col-9">
           <h2 class="mb-2">Spouse</h2>
@@ -34,7 +34,7 @@
                   :backgroundColor='tableBackgroundColor'/>
     </div>
 
-    <div class="col-lg-6" v-for="(childData, index) in childrenData"
+    <div class="col-lg-6 mb-3" v-for="(childData, index) in childrenData"
         :key="'child-data-' + index">
       <div class="row align-items-end mt-3">
         <div class="col-9">
@@ -52,7 +52,7 @@
                   :backgroundColor='tableBackgroundColor'/>
     </div>
     
-    <div v-if="isApplyingForFPCare" class="col-lg-6">
+    <div v-if="isApplyingForFPCare" class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
           <h2 class="mb-2">Fair PharmaCare Financial Info</h2>
@@ -67,9 +67,24 @@
       </div>
       <ReviewTable :elements='fpcData'
                   :backgroundColor='tableBackgroundColor'/>
+      <div class="p-3"
+        :style="{'background-color': tableBackgroundColor}">
+        <h3>Level of Coverage</h3>
+        <div v-if="isFPCDataLoading"
+          class="text-center">
+          <Loader color="#000"
+            size="24px" />
+        </div>
+        <div v-if="isFPCDataUnavailable"
+          class="text-danger mt-3 mb-3"
+          aria-live="assertive">Unable to retrieve assistance levels, system unavailable.</div>
+        <DistributionBar v-if="!isFPCDataLoading && !isFPCDataUnavailable"
+          startingLabel="$0"
+          :items="FPCDistributionBarItems"/>
+      </div>
     </div>
     
-    <div v-if="isApplyingForSuppBen" class="col-lg-6">
+    <div v-if="isApplyingForSuppBen" class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
           <h2 class="mb-2">Supplementary Benefits Financial Info</h2>
@@ -86,7 +101,7 @@
                   :backgroundColor='tableBackgroundColor'/>
     </div>
 
-    <div class="col-lg-6">
+    <div class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
           <h2 class="mb-2">Contact Info</h2>
@@ -111,11 +126,26 @@ import ReviewTable from '@/components/ReviewTable.vue';
 import { enrolmentRoutes } from '@/router/routes';
 import { scrollTo } from '@/helpers/scroll';
 import pageStateService from '@/services/page-state-service';
-import { formatDate } from 'common-lib-vue';
+import apiService from '@/services/api-service';
+import logService from '@/services/log-service';
+import {
+  DistributionBar,
+  Loader,
+  formatDate,
+} from 'common-lib-vue';
 import { getConvertedPath } from '@/helpers/url';
 import { ChildAgeTypes } from '../../constants/child-age-types';
 import { StatusInCanada, CanadianStatusReasons } from '../../constants/immigration-status-types';
 import { radioOptionsGender } from '../../constants/radio-options'
+import {
+  MODULE_NAME as appModule,
+  SET_DEDUCTIBLES_API_DATA
+} from '@/store/modules/app-module';
+import {
+  formatServerData,
+  getCoverageTier,
+  getDistributionBarItems,
+} from '@/helpers/fpc-helpers';
 
 const moneyFormatter = new Intl.NumberFormat('en-US', {
   style: 'currency',
@@ -125,6 +155,8 @@ const moneyFormatter = new Intl.NumberFormat('en-US', {
 export default {
   name: 'ReviewTableList',
   components: {
+    DistributionBar,
+    Loader,
     ReviewTable,
   },
   props: {
@@ -142,16 +174,67 @@ export default {
   },
   data: () => {
     return {
+      isApplyingForMSP: false,
       isApplyingForFPCare: false,
       isApplyingForSuppBen: false,
+      isFPCDataLoading: false,
+      isFPCDataUnavailable: false,
+      deductibleTiers: [],
+      pre1939DeductibleTiers: [],
     }
   },
-  created() {
+  async created() {
     this.isApplyingForMSP = this.$store.state.enrolmentModule.isApplyingForMSP;
     this.isApplyingForFPCare = this.$store.state.enrolmentModule.isApplyingForFPCare;
     this.isApplyingForSuppBen = this.$store.state.enrolmentModule.isApplyingForSuppBen;
+
+    let apiData = this.$store.state.appModule.deductiblesAPIData;
+
+    this.isFPCDataLoading = true;
+    this.isFPCDataUnavailable = false;
+
+    try {
+      if (!apiData) {
+        const response = await apiService.getDeductibles(
+          this.$store.state.enrolmentModule.captchaToken,
+          this.$store.state.enrolmentModule.fpcUuid
+        );
+        apiData = response.data;
+        if (!apiData || !apiData.assistanceLevels || !apiData.pre1939AssistanceLevels) {
+          throw new Error('response data does not include assistance levels.');
+        }
+        this.$store.dispatch(`${appModule}/${SET_DEDUCTIBLES_API_DATA}`, apiData);
+      }
+      this.deductibleTiers = formatServerData(apiData.assistanceLevels) || [];
+      this.pre1939DeductibleTiers = formatServerData(apiData.pre1939AssistanceLevels) || [];
+      this.isFPCDataLoading = false;
+    } catch (error) {
+      this.isFPCDataLoading = false;
+      this.isFPCDataUnavailable = true;
+
+      logService.logError(this.$store.state.enrolmentModule.applicationUuid, {
+        event: 'error getting values from getDeductibles endpoint',
+        error,
+      });
+    }
   },
   computed: {
+    FPCDistributionBarItems() {
+      const ahIncome = parseFloat(this.$store.state.enrolmentModule.ahFPCIncome) || 0;
+      const spouseIncome = parseFloat(this.$store.state.enrolmentModule.spouseFPCIncome) || 0;
+      const ahRDSP = parseFloat(this.$store.state.enrolmentModule.ahFPCRDSP) || 0;
+      const spouseRDSP = parseFloat(this.$store.state.enrolmentModule.spouseFPCRDSP) || 0;
+      const adjustedIncome = ahIncome + spouseIncome - ahRDSP - spouseRDSP;
+
+      const tier = getCoverageTier({
+        ahBirthdate: this.$store.state.enrolmentModule.ahBirthdate,
+        spouseBirthdate: this.$store.state.enrolmentModule.spouseBirthDate,
+        adjustedIncome,
+        pre1939DeductibleTiers: this.pre1939DeductibleTiers,
+        deductibleTiers: this.deductibleTiers,
+      });
+      return getDistributionBarItems(tier);
+    },
     accountHolderData() {
       const items = [];
       const firstName = this.$store.state.enrolmentModule.ahFirstName;
@@ -816,10 +899,6 @@ export default {
             : moneyFormatter.format("0"),
         });
       }
-      items.push({
-        label: "Widget data",
-        value: "placeholder",
-      });
       return items;
     },
     suppBenData() {
