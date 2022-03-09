@@ -55,32 +55,17 @@ import {
   DistributionBar,
   Loader,
 } from 'common-lib-vue';
-import {
-  isBefore,
-  isValid as isDateValid,
-  parseISO,
-} from 'date-fns';
 import apiService from '@/services/api-service';
 import {
   MODULE_NAME as appModule,
   SET_DEDUCTIBLES_API_DATA,
 } from '@/store/modules/app-module';
-
-const BLUE = '#036';
-const YELLOW = '#f3cd65';
-const GREEN = '#486446';
-
-const formatCurrencyNumber = (value) => {
-  if (typeof value !== 'number') {
-    return '$0';
-  }
-  const formatterOptions = {
-    style: 'currency',
-    currency: 'USD',
-  };
-  const formatter = new Intl.NumberFormat('en-US', formatterOptions);
-  return formatter.format(value).replace('.00', '');
-};
+import {
+  formatCurrencyNumber,
+  formatServerData,
+  getCoverageTier,
+  getDistributionBarItems,
+} from '@/helpers/fpc-helpers';
 
 export default {
   name: 'FPCWidget',
@@ -106,17 +91,27 @@ export default {
   },
   async created() {
     let apiData = this.$store.state.appModule.deductiblesAPIData;
+
+    this.isLoading = true;
+    this.isSystemUnavailable = false;
+
     try {
       if (!apiData) {
-        apiData = await this.fetchCoverageData();
+        const response = await apiService.getDeductibles(
+          this.$store.state.enrolmentModule.captchaToken,
+          this.$store.state.enrolmentModule.fpcUuid
+        );
+        apiData = response.data;
         if (!apiData || !apiData.assistanceLevels || !apiData.pre1939AssistanceLevels) {
           throw new Error('response data does not include assistance levels.');
         }
         this.$store.dispatch(`${appModule}/${SET_DEDUCTIBLES_API_DATA}`, apiData);
       }
-      this.deductibleTiers = this.formatServerData(apiData.assistanceLevels) || [];
-      this.pre1939DeductibleTiers = this.formatServerData(apiData.pre1939AssistanceLevels) || [];
+      this.deductibleTiers = formatServerData(apiData.assistanceLevels) || [];
+      this.pre1939DeductibleTiers = formatServerData(apiData.pre1939AssistanceLevels) || [];
+      this.isLoading = false;
     } catch (error) {
+      this.isLoading = false;
       this.isSystemUnavailable = true;
     }
   },
@@ -142,129 +137,15 @@ export default {
       return adjustedIncome;
     },
     distributionBarItems() {
-      const tier = this.getCoverageTier();
-      if (!tier) {
-        return [];
-      }
-      if (tier.maximum === 0) {
-        return [
-          {
-            color: GREEN,
-            barLabel: '&infin;',
-            label: 'PharmaCare pays 100% of eligible drug costs'
-          }
-        ];
-      } else if (tier.deductible === 0) {
-        return [
-          {
-            color: YELLOW,
-            barLabel: formatCurrencyNumber(tier.maximum),
-            label: `PharmaCare pays ${tier.pharmaCarePortion}% and you pay ${100 - tier.pharmaCarePortion}% of eligible drug costs (between ${formatCurrencyNumber(tier.deductible)} and ${formatCurrencyNumber(tier.maximum)})`
-          },
-          {
-            color: GREEN,
-            barLabel: '&infin;',
-            label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${formatCurrencyNumber(tier.maximum)})`
-          }
-        ];
-      } else if (tier.pharmaCarePortion === 100) {
-        return [
-          {
-            color: BLUE,
-            barLabel: formatCurrencyNumber(tier.deductible),
-            label: `You pay 100% of eligible drug costs (between $0 and ${formatCurrencyNumber(tier.deductible)})`
-          },
-          {
-            color: GREEN,
-            barLabel: '&infin;',
-            label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${formatCurrencyNumber(tier.maximum)})`
-          },
-        ];
-      } else {
-        return [
-          {
-            color: BLUE,
-            barLabel: formatCurrencyNumber(tier.deductible),
-            label: `You pay 100% of eligible drug costs (between $0 and ${formatCurrencyNumber(tier.deductible)})`
-          },
-          {
-            color: YELLOW,
-            barLabel: formatCurrencyNumber(tier.maximum),
-            label: `PharmaCare pays ${tier.pharmaCarePortion}% and you pay ${100 - tier.pharmaCarePortion}% of eligible drug costs (between ${formatCurrencyNumber(tier.deductible)} and ${formatCurrencyNumber(tier.maximum)})`
-          },
-          {
-            color: GREEN,
-            barLabel: '&infin;',
-            label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${formatCurrencyNumber(tier.maximum)})`
-          },
-        ];
-      }
-    }
-  },
-  methods: {
-    fetchCoverageData() {
-      const formState = this.$store.state.enrolmentModule;
-      this.isLoading = true;
-
-      // Make API request to get coverage data.
-      return new Promise((resolve, reject) => {
-        apiService.getDeductibles(formState)
-          .then((response) => {
-            this.isLoading = false;
-            resolve(response.data);
-          })
-          .catch((error) => {
-            this.isLoading = false;
-            reject(error)
-          });
+      const tier = getCoverageTier({
+        ahBirthdate: this.value.ahBirthdate,
+        spouseBirthdate: this.value.spouseBirthdate,
+        adjustedIncome: this.adjustedIncome,
+        pre1939DeductibleTiers: this.pre1939DeductibleTiers,
+        deductibleTiers: this.deductibleTiers,
       });
+      return getDistributionBarItems(tier);
     },
-    getCoverageTier() {
-      const ahBirthdate = this.value.ahBirthdate;
-      const spouseBirthdate = this.value.spouseBirthdate;
-      if ((
-          (isDateValid(ahBirthdate) && isBefore(ahBirthdate, parseISO('1940-01-01'))) ||
-          (isDateValid(spouseBirthdate) && isBefore(spouseBirthdate, parseISO('1940-01-01')))
-        )
-        && Array.isArray(this.pre1939DeductibleTiers)
-        && this.pre1939DeductibleTiers.length > 0) {
-        let maxCoverageTier = this.pre1939DeductibleTiers[0];
-        this.pre1939DeductibleTiers.forEach((item) => {
-          if (parseFloat(item.endRange) > parseFloat(maxCoverageTier.endRange)) {
-            maxCoverageTier = item;
-          }
-        });
-        const coverageTier = this.pre1939DeductibleTiers.find((item) => {
-          return this.adjustedIncome >= item.startRange && this.adjustedIncome <= item.endRange;
-        });
-        return coverageTier ? coverageTier : maxCoverageTier;
-      } else if (Array.isArray(this.deductibleTiers)
-        && this.deductibleTiers.length > 0) {
-        let maxCoverageTier = this.deductibleTiers[0];
-        this.deductibleTiers.forEach((item) => {
-          if (parseFloat(item.endRange) > parseFloat(maxCoverageTier.endRange)) {
-            maxCoverageTier = item;
-          }
-        });
-        const coverageTier = this.deductibleTiers.find((item) => {
-          return this.adjustedIncome >= item.startRange && this.adjustedIncome <= item.endRange;
-        });
-        return coverageTier ? coverageTier : maxCoverageTier;
-      } else {
-        return null;
-      }
-    },
-    formatServerData(arr) {
-      return arr.map((item) => {
-        return {
-          startRange: Number(item.startRange),
-          endRange: Number(item.endRange),
-          deductible: Number(item.deductible.replace('$', '')),
-          pharmaCarePortion: Number(item.pharmaCarePortion.replace('%', '')),
-          maximum: Number(item.maximum.replace('$', ''))
-        };
-      });
-    }
   },
   filters: {
     currencyFilter(value) {
