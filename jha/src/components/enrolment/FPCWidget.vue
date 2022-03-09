@@ -56,6 +56,7 @@ import {
   Loader,
 } from 'common-lib-vue';
 import apiService from '@/services/api-service';
+import logService from '@/services/log-service';
 import {
   MODULE_NAME as appModule,
   SET_DEDUCTIBLES_API_DATA,
@@ -113,6 +114,11 @@ export default {
     } catch (error) {
       this.isLoading = false;
       this.isSystemUnavailable = true;
+
+      logService.logError(this.$store.state.enrolmentModule.applicationUuid, {
+        event: 'error getting values from getDeductibles endpoint',
+        error,
+      });
     }
   },
   computed: {

@@ -127,6 +127,7 @@ import { enrolmentRoutes } from '@/router/routes';
 import { scrollTo } from '@/helpers/scroll';
 import pageStateService from '@/services/page-state-service';
 import apiService from '@/services/api-service';
+import logService from '@/services/log-service';
 import {
   DistributionBar,
   Loader,
@@ -210,6 +211,11 @@ export default {
     } catch (error) {
       this.isFPCDataLoading = false;
       this.isFPCDataUnavailable = true;
+
+      logService.logError(this.$store.state.enrolmentModule.applicationUuid, {
+        event: 'error getting values from getDeductibles endpoint',
+        error,
+      });
     }
   },
   computed: {
