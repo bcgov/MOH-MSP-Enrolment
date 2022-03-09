@@ -309,6 +309,8 @@ export default {
           });
         }
         if (
+          this.$store.state.enrolmentModule.ahCitizenshipStatusReason !==
+            CanadianStatusReasons.LivingInBCWithoutMSP ||
           this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth !== "Y"
         ) {
           items.push({
@@ -330,7 +332,11 @@ export default {
             displayMoveFromLocation = this.$store.state.enrolmentModule.ahFromProvinceOrCountry;
           }
           items.push({
-            label: "Location account holder moved from",
+            label: this.getMoveFromLabel(
+              this.$store.state.enrolmentModule.ahCitizenshipStatus,
+              this.$store.state.enrolmentModule.ahCitizenshipStatusReason,
+              this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth
+            ),
             value: displayMoveFromLocation,
           });
         }
@@ -341,12 +347,17 @@ export default {
                 ? "Yes"
                 : "No",
           });
-        const ahPreviousHealthNumber = this.$store.state.enrolmentModule
-          .ahPreviousHealthNumber;
-        items.push({
-          label: "Health number from previous residence",
-          value: ahPreviousHealthNumber ? ahPreviousHealthNumber : "No",
-        });
+        const ahCitizenshipStatus = this.$store.state.enrolmentModule.ahCitizenshipStatus;
+        if ((ahCitizenshipStatus === StatusInCanada.Citizen 
+          || ahCitizenshipStatus === StatusInCanada.PermanentResident)
+          && this.$store.state.enrolmentModule.ahCitizenshipStatusReason === CanadianStatusReasons.MovingFromProvince) {
+            const ahPreviousHealthNumber = this.$store.state.enrolmentModule
+              .ahPreviousHealthNumber;
+            items.push({
+              label: "Health number from previous residence",
+              value: ahPreviousHealthNumber ? ahPreviousHealthNumber : "No",
+            });
+        }
         items.push({
           label: "Has previous BC Health Number?",
           value:
@@ -526,6 +537,8 @@ export default {
           });
         }
         if (
+          this.$store.state.enrolmentModule.spouseStatusReason !==
+            CanadianStatusReasons.LivingInBCWithoutMSP ||
           this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth !== "Y"
         ) {
           items.push({
@@ -541,7 +554,11 @@ export default {
             ),
           });
           items.push({
-            label: "Location spouse moved from",
+            label: this.getMoveFromLabel(
+              this.$store.state.enrolmentModule.spouseStatus,
+              this.$store.state.enrolmentModule.spouseStatusReason,
+              this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth
+            ),
             value: this.$store.state.enrolmentModule.spouseMoveFromOrigin,
           });
         }
@@ -552,12 +569,17 @@ export default {
               ? "Yes"
               : "No",
         });
-        const spousePreviousHealthNumber = this.$store.state.enrolmentModule
-          .spousePreviousHealthNumber;
-        items.push({
-          label: "Health number from previous residence",
-          value: spousePreviousHealthNumber ? spousePreviousHealthNumber : "No",
-        });
+        const spouseStatus = this.$store.state.enrolmentModule.spouseStatus;
+        if ((spouseStatus === StatusInCanada.Citizen 
+          || spouseStatus === StatusInCanada.PermanentResident)
+          && this.$store.state.enrolmentModule.spouseStatusReason === CanadianStatusReasons.MovingFromProvince) {
+            const spousePreviousHealthNumber = this.$store.state.enrolmentModule.spousePreviousHealthNumber;
+            items.push({
+              label: "Health number from previous residence",
+              value: spousePreviousHealthNumber ? spousePreviousHealthNumber : "No",
+            });
+        }
+        
         items.push({
           label: "Has Previous BC Health Number?",
           value:
@@ -716,7 +738,10 @@ export default {
               value: child.livedInBCSinceBirth === "Y" ? "Yes" : "No",
             });
           }
-          if (child.livedInBCSinceBirth !== "Y") {
+          if (
+            child.statusReason !== CanadianStatusReasons.LivingInBCWithoutMSP ||
+            child.livedInBCSinceBirth !== "Y"
+          ) {
             childData.push({
               label: "Date arrived in B.C.",
               value: formatDate(child.recentBCMoveDate),
@@ -726,14 +751,20 @@ export default {
               value: formatDate(child.canadaArrivalDate),
             });
             childData.push({
-              label: "Location child moved from",
+              label: this.getMoveFromLabel(
+                child.status,
+                child.statusReason,
+                child.livedInBCSinceBirth
+              ),
               value: child.moveFromOrigin,
             });
             childData.push({
               label: "Has child moved to BC permanently?",
               value: child.madePermanentMove === "Y" ? "Yes" : "No",
             });
-            if (child.previousHealthNumber) {
+            if ((child.status === StatusInCanada.Citizen 
+            || child.status === StatusInCanada.PermanentResident)
+            && child.statusReason === CanadianStatusReasons.MovingFromProvince) {
               childData.push({
                 label: "Health number from previous residence",
                 value: child.previousHealthNumber
@@ -1201,6 +1232,38 @@ export default {
         }
       }
       return "";
+    },
+    getMoveFromLabel(status, reason, livedInBC) {
+      //One of two conditions:
+      //1. Status reason is "Moving From Province" (combined with either Citizen or Permanent Resident status)
+      //2. Citizen status, "Living in BC Without MSP" reason, and "Lived in BC since birth" equals no
+      if (
+        ((status === StatusInCanada.Citizen ||
+          status === StatusInCanada.PermanentResident) &&
+          reason === CanadianStatusReasons.MovingFromProvince) ||
+        (status === StatusInCanada.Citizen &&
+          reason === CanadianStatusReasons.LivingInBCWithoutMSP &&
+          livedInBC === "N")
+      ) {
+        return "Moved from province";
+      }
+      //Status reason is "Moving From Jurisdiction" (combined with either Citizen or Permanent Resident status)
+      if (
+        (status === StatusInCanada.Citizen ||
+          status === StatusInCanada.PermanentResident) &&
+        reason === CanadianStatusReasons.MovingFromCountry
+      ) {
+        return "Moved from jurisdiction";
+      }
+      //Permanent Resident status and "Living in BC Without MSP" reason
+      if (
+        status === StatusInCanada.PermanentResident &&
+        reason === CanadianStatusReasons.LivingInBCWithoutMSP
+      ) {
+        return "Moved from province/jurisdiction";
+      }
+      //default
+      return "Moved from location";
     },
   }
 }
