@@ -437,6 +437,23 @@ export default {
     } else {
       this.selectOptionsFamilyMembers.filter(option => {return option.id === 'spouse';})[0].disabled = false;
     }
+
+    if (this.hasChildren !== 'Y') {
+      //the ah has no children so disable the checkbox group option for child 
+      this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = true;
+      this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
+      //if the ah has selected child for one of the deductions, remove that selection
+      if (this.selectedDisabilityRecipients.includes("child")){
+        this.selectedDisabilityRecipients.splice(this.selectedDisabilityRecipients.indexOf("child"), 1);
+      }
+      if (this.selectedAttendantNursingRecipients.includes("child")){
+        this.selectedAttendantNursingRecipients.splice(this.selectedAttendantNursingRecipients.indexOf("child"), 1);
+      }
+    } else if (this.intNumChildren > 0) {
+      // the hasChildren is 'Y' and numChildren is > 0 so enable the checkbox group option for child
+      this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
+      this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
+    }
     
     // set options for years
     this.radioOptionsNOAYears = [
@@ -654,9 +671,10 @@ export default {
       }
     },
     intNumChildren(value) {
-      if (value === 0) {
+      if (!value) {
         //the ah has no children so disable the checkbox group option for child 
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = true;
+        this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
         //if the ah has selected child for one of the deductions, remove that selection
         if (this.selectedDisabilityRecipients.includes("child")){
           this.selectedDisabilityRecipients.splice(this.selectedDisabilityRecipients.indexOf("child"), 1);
@@ -667,12 +685,14 @@ export default {
       } else {
         // the hasChildren is 'Y' and numChildren is > 0 so enable the checkbox group option for child
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
+        this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
       }
     },
     hasChildren(value) {
-      if (value === 'N') {
+      if (value !== 'Y') {
         //the ah has no children so disable the checkbox group option for child 
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = true;
+        this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
         //if the ah has selected child for one of the deductions, remove that selection
         if (this.selectedDisabilityRecipients.includes("child")){
           this.selectedDisabilityRecipients.splice(this.selectedDisabilityRecipients.indexOf("child"), 1);
@@ -683,6 +703,7 @@ export default {
       } else if (this.intNumChildren > 0) {
         // the hasChildren is 'Y' and numChildren is > 0 so enable the checkbox group option for child
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
+        this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
       }
     },
     hasDisabilityCredit(value) {
