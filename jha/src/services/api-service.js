@@ -67,13 +67,13 @@ class ApiService {
           ...formState.ahCitizenshipSupportDocuments.map((image) => image.uuid)
         ],
         hasPreviousCoverage: formState.ahHasPreviousPHN || null,
-        prevPHN: formState.ahPreviousPHN || null,
+        prevPHN: stripSpaces(formState.ahPreviousPHN) || null,
         hasLivedInBC: formState.ahHasLivedInBCSinceBirth || null,
         prevHealthNumber: formState.ahPreviousHealthNumber || null,
         recentBCMoveDate: formatISODate(formState.ahArrivalDateInBC) || null,
         recentCanadaMoveDate: formatISODate(formState.ahArrivalDateInCanada) || null,
         isPermanentMove: formState.ahIsMovedToBCPermanently || null,
-        prevProvinceOrCountry: formState.ahFromProvinceOrCountry || null,
+        prevProvinceOrCountry: formState.ahFromProvinceOrCountry || formState.ahMoveFromOrigin || null,
         beenOutsideBCMoreThan: formState.ahIsOutsideBCLast12Months || null,
         departureDate: formatISODate(formState.ahOutsideBCLast12MonthsDepartureDate) || null,
         returnDate: formatISODate(formState.ahOutsideBCLast12MonthsReturnDate) || null,
@@ -183,7 +183,7 @@ class ApiService {
               returnDate: formatISODate(dependent.outsideBCLast12MonthsReturnDate) || null,
               familyMemberReason: dependent.outsideBCLast12MonthsReason || null,
               destination: dependent.outsideBCLast12MonthsDestination || null,
-              isFullTimeStudent: null, // Not a field, but is collected by the middleware,
+              isFullTimeStudent: 'Y', // Not a field, but is collected by the middleware. All overage children (dependents) are students
               isInBCafterStudies: dependent.willResideInBCAfterStudies || null,
               armedDischargeDate: formatISODate(dependent.dischargeDate) || null,
             };
@@ -191,7 +191,7 @@ class ApiService {
         }
       }
       
-      // Add mailing address.
+      // Add mailing address, copy residential address if same
       if (!formState.isMailSame) {
         jsonPayload.medicalServicesPlan.mailingAddress = {
           addressLine1: formState.mailAddressLine1 || null,
@@ -201,6 +201,16 @@ class ApiService {
           postalCode: stripSpaces(formState.mailPostalCode) || null,
           provinceOrState: formState.mailProvince || null,
           country: formState.mailCountry || null,
+        };
+      } else {
+        jsonPayload.medicalServicesPlan.mailingAddress = {
+          addressLine1: formState.resAddressLine1 || null,
+          addressLine2: formState.resAddressLine2 || null,
+          addressLine3: formState.resAddressLine3 || null,
+          city: formState.resCity || null,
+          postalCode: stripSpaces(formState.resPostalCode) || null,
+          provinceOrState: formState.resProvince || null,
+          country: formState.resCountry || null,
         };
       }
 
