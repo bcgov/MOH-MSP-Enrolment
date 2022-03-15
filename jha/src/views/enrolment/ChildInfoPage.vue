@@ -25,6 +25,7 @@
           aria-live="assertive">Please indicate if you have a child who needs to enrol for MSP coverage.</div>
         <div v-for="(child, index) in children"
             :key="'child-' + index">
+          <a :name="'child-' + index"></a>
           <div class="heading mt-3">
             <div v-if="!child.collapsed" @click="collapseChild(index)" class="icon-header">
               <font-awesome-icon icon="angle-down" size="3x" />
@@ -125,6 +126,7 @@ export default {
     this.hasChildren = this.$store.state.enrolmentModule.hasChildren;
     this.children = this.$store.state.enrolmentModule.children ? cloneDeep(this.$store.state.enrolmentModule.children) : [];
     this.calculateUsedPHNs();
+    this.expandAllChildren();
     
     setTimeout(() => {
       this.pageLoaded = true;
@@ -232,6 +234,7 @@ export default {
     },
     handleChildUpdate(data, index) {
       this.children[index] = data;
+      this.children = [...this.children];
       this.calculateUsedPHNs();
     },
     validateFields() {

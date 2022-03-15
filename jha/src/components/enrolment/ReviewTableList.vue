@@ -43,7 +43,7 @@
         <div v-if='showEditButtons'
             class="col-3 text-right">
           <a href="javascript:void(0)"
-            @click="navigateToChildInfoPage()">Edit 
+            @click="navigateToChildInfoPage('child-' + index)">Edit 
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
@@ -124,7 +124,7 @@
 <script>
 import ReviewTable from '@/components/ReviewTable.vue';
 import { enrolmentRoutes } from '@/router/routes';
-import { scrollTo } from '@/helpers/scroll';
+import { scrollTo, scrollToElement } from '@/helpers/scroll';
 import pageStateService from '@/services/page-state-service';
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
@@ -1145,14 +1145,17 @@ export default {
       this.$router.push(toPath);
       scrollTo();
     },
-    navigateToChildInfoPage() {
+    navigateToChildInfoPage(anchorName) {
         const toPath = getConvertedPath(
           this.$router.currentRoute.path,
           enrolmentRoutes.CHILD_INFO_PAGE.path
         );
         pageStateService.setPageComplete(toPath);
         this.$router.push(toPath);
-        scrollTo();
+        this.$nextTick(() => {
+          const anchorEl = document.querySelector(`a[name="${anchorName}"`);
+          scrollToElement(anchorEl, false, 0);
+        }, 0);
     },
     navigateToFPCInfoPage() {
       const toPath = getConvertedPath(
