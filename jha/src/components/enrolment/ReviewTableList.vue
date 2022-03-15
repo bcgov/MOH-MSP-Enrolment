@@ -701,11 +701,6 @@ export default {
               value: child.nameChangeSupportDocumentType,
             });
           }
-          const gender = child.gender === "F" ? "Female" : "Male";
-          childData.push({
-            label: "Gender",
-            value: gender,
-          });
         }
         const birthdate = formatDate(child.birthDate);
         childData.push({
