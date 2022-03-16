@@ -1072,6 +1072,11 @@ export default {
         label: "Jurisdiction",
         value: this.$store.state.enrolmentModule.resCountry,
       });
+      if (this.$store.state.enrolmentModule.phone)
+      items.push({
+        label: "Phone",
+        value: this.$store.state.enrolmentModule.phone,
+      });
       if (!this.$store.state.enrolmentModule.isMailSame) {
         items.push({
           label: "Mailing Address:",
@@ -1109,10 +1114,6 @@ export default {
         items.push({
           label: "Jurisdiction",
           value: this.$store.state.enrolmentModule.mailCountry,
-        });
-        items.push({
-          label: "Phone",
-          value: this.$store.state.enrolmentModule.phone,
         });
       }
       return items;
