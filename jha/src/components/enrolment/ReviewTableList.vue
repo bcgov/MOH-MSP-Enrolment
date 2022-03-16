@@ -279,6 +279,8 @@ export default {
           label: "Account holder PHN",
           value: this.$store.state.enrolmentModule.ahPHN,
         });
+      }
+      if (this.isApplyingForFPCare || this.isApplyingForSuppBen) {
         items.push({
           label: "Account holder SIN",
           value: this.$store.state.enrolmentModule.ahSIN,
@@ -507,6 +509,8 @@ export default {
           label: "Spouse PHN",
           value: this.$store.state.enrolmentModule.spousePHN,
         });
+      }
+      if (this.isApplyingForFPCare || this.isApplyingForSuppBen) {
         items.push({
           label: "Spouse SIN",
           value: this.$store.state.enrolmentModule.spouseSIN,
