@@ -733,6 +733,10 @@ export default {
               value: child.livedInBCSinceBirth === "Y" ? "Yes" : "No",
             });
           }
+          childData.push({
+            label: "Has child moved to BC permanently?",
+            value: child.madePermanentMove === "Y" ? "Yes" : "No",
+          });
           if (
             child.statusReason !== CanadianStatusReasons.LivingInBCWithoutMSP ||
             child.livedInBCSinceBirth !== "Y"
@@ -752,10 +756,6 @@ export default {
                 child.livedInBCSinceBirth
               ),
               value: child.moveFromOrigin,
-            });
-            childData.push({
-              label: "Has child moved to BC permanently?",
-              value: child.madePermanentMove === "Y" ? "Yes" : "No",
             });
             if ((child.status === StatusInCanada.Citizen 
             || child.status === StatusInCanada.PermanentResident)
