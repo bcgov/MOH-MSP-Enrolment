@@ -444,19 +444,8 @@ export default {
         }
       }
       if (this.isApplyingForMSP) {
-        let documentCount = 0;
-        if (
-          this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments.length >
-          0
-        ) {
-          documentCount += 1;
-        }
-        if (
-          this.$store.state.enrolmentModule.ahNameChangeSupportDocuments.length >
-          0
-        ) {
-          documentCount += 1;
-        }
+        const documentCount = this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments.length 
+        + this.$store.state.enrolmentModule.ahNameChangeSupportDocuments.length;
         items.push({
           label: "Documents",
           value: `${documentCount} ${this.getFilePlural(documentCount)}`,
@@ -660,19 +649,8 @@ export default {
         }
       }
       if (this.isApplyingForMSP) {
-        let documentCount = 0;
-        if (
-          this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments
-            .length > 0
-        ) {
-          documentCount += 1;
-        }
-        if (
-          this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments
-            .length > 0
-        ) {
-          documentCount += 1;
-        }
+        const documentCount = this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments.length 
+        + this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments.length
         items.push({
           label: "Documents",
           value: `${documentCount} ${this.getFilePlural(documentCount)}`,
@@ -881,13 +859,7 @@ export default {
           }
         }
         if (this.isApplyingForMSP) {
-          let documentCount = 0;
-          if (child.citizenshipSupportDocuments.length > 0) {
-            documentCount += 1;
-          }
-          if (child.nameChangeSupportDocuments.length > 0) {
-            documentCount += 1;
-          }
+          const documentCount = child.citizenshipSupportDocuments.length + child.nameChangeSupportDocuments.length;
           childData.push({
             label: "Documents",
             value: `${documentCount} ${this.getFilePlural(documentCount)}`,
@@ -1026,16 +998,9 @@ export default {
           ),
         });
       }
-      let documentCount = 0;
-      if (this.$store.state.enrolmentModule.attendantNursingReceipts.length > 0) {
-        documentCount += 1;
-      }
-      if (this.$store.state.enrolmentModule.ahCRADocuments.length > 0) {
-        documentCount += 1;
-      }
-      if (this.$store.state.enrolmentModule.spouseCRADocuments.length > 0) {
-        documentCount += 1;
-      }
+      const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length 
+      + this.$store.state.enrolmentModule.ahCRADocuments.length 
+      + this.$store.state.enrolmentModule.spouseCRADocuments.length;
       items.push({
         label: "Documents",
         value: `${documentCount} ${this.getFilePlural(documentCount)}`,
