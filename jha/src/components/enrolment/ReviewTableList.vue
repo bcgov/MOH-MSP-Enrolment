@@ -117,7 +117,6 @@
       <ReviewTable :elements='contactData'
                   :backgroundColor='tableBackgroundColor'/>
     </div>
-
   </div>
 </template>
 
