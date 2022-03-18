@@ -219,6 +219,9 @@ export default {
     }
   },
   computed: {
+    onlyApplyingForFPCare(){
+      return this.isApplyingForFPCare && !this.isApplyingForMSP && !this.isApplyingForSuppBen;
+    },
     FPCDistributionBarItems() {
       const ahIncome = parseFloat(this.$store.state.enrolmentModule.ahFPCIncome) || 0;
       const spouseIncome = parseFloat(this.$store.state.enrolmentModule.spouseFPCIncome) || 0;
@@ -1035,50 +1038,54 @@ export default {
     },
     contactData() {
       const items = [];
-      items.push({
-        label: "Residential Address:",
-        value: "",
-        underlined: true
-      });
-      items.push({
-        label: "Street Address",
-        value: this.$store.state.enrolmentModule.resAddressLine1,
-      });
-      if (this.$store.state.enrolmentModule.resAddressLine2) {
+      // If only applying for FPCare, don't include residential address info
+      if (!this.onlyApplyingForFPCare) {
         items.push({
-          label: "",
-          value: this.$store.state.enrolmentModule.resAddressLine2,
+          label: "Residential Address:",
+          value: "",
+          underlined: true
         });
-      }
-      if (this.$store.state.enrolmentModule.resAddressLine3) {
         items.push({
-          label: "",
-          value: this.$store.state.enrolmentModule.resAddressLine3,
+          label: "Street Address",
+          value: this.$store.state.enrolmentModule.resAddressLine1,
         });
+        if (this.$store.state.enrolmentModule.resAddressLine2) {
+          items.push({
+            label: "",
+            value: this.$store.state.enrolmentModule.resAddressLine2,
+          });
+        }
+        if (this.$store.state.enrolmentModule.resAddressLine3) {
+          items.push({
+            label: "",
+            value: this.$store.state.enrolmentModule.resAddressLine3,
+          });
+        }
+        items.push({
+          label: "City",
+          value: this.$store.state.enrolmentModule.resCity,
+        });
+        items.push({
+          label: "Province",
+          value: this.$store.state.enrolmentModule.resProvince,
+        });
+        items.push({
+          label: "Postal Code",
+          value: this.$store.state.enrolmentModule.resPostalCode,
+        });
+        items.push({
+          label: "Jurisdiction",
+          value: this.$store.state.enrolmentModule.resCountry,
+        });
+
       }
-      items.push({
-        label: "City",
-        value: this.$store.state.enrolmentModule.resCity,
-      });
-      items.push({
-        label: "Province",
-        value: this.$store.state.enrolmentModule.resProvince,
-      });
-      items.push({
-        label: "Postal Code",
-        value: this.$store.state.enrolmentModule.resPostalCode,
-      });
-      items.push({
-        label: "Jurisdiction",
-        value: this.$store.state.enrolmentModule.resCountry,
-      });
       if (this.$store.state.enrolmentModule.phone) {
         items.push({
           label: "Phone",
           value: this.$store.state.enrolmentModule.phone,
         });
       }
-      if (!this.$store.state.enrolmentModule.isMailSame) {
+      if (!this.$store.state.enrolmentModule.isMailSame || this.onlyApplyingForFPCare) {
         items.push({
           label: "Mailing Address:",
           value: "",
