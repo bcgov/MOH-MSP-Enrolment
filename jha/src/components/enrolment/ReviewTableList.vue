@@ -1152,7 +1152,7 @@ export default {
         this.$nextTick(() => {
           const anchorEl = document.querySelector(`a[name="${anchorName}"`);
           scrollToElement(anchorEl, false, 0);
-        }, 0);
+        });
     },
     navigateToFPCInfoPage() {
       const toPath = getConvertedPath(
