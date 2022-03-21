@@ -47,13 +47,13 @@ class ApiService {
     
     // only mail address is required for FPCare-only submissions
     if (onlyApplyingForFPCare) {
-      jsonPayload.addressLine1 = formState.mailAddressLine1;
-      jsonPayload.addressLine2 = formState.mailAddressLine2;
-      jsonPayload.addressLine3 = formState.mailAddressLine3;
-      jsonPayload.city = formState.mailCity;
-      jsonPayload.postalCode = formState.mailPostalCode;
-      jsonPayload.provinceOrState = formState.mailProvince;
-      jsonPayload.country = formState.mailCountry;
+      jsonPayload.addressLine1 = formState.mailAddressLine1 || null;
+      jsonPayload.addressLine2 = formState.mailAddressLine2 || null;
+      jsonPayload.addressLine3 = formState.mailAddressLine3 || null;
+      jsonPayload.city = formState.mailCity || null;
+      jsonPayload.postalCode = formState.mailPostalCode || null;
+      jsonPayload.provinceOrState = formState.mailProvince || null;
+      jsonPayload.country = formState.mailCountry || null;
     }
 
     if (formState.hasSpouse === 'Y') {
