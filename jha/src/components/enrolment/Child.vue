@@ -996,7 +996,7 @@ const uniquePHNValidator = (value, vm) => {
 };
 
 export default {
-  name: 'Child',
+  name: 'ChildItem',
   mixins: [pageContentMixin],
   components: {
     AddressDoctorInput,
