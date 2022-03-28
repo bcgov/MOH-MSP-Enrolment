@@ -1375,8 +1375,10 @@ export default {
       if (this.isPageLoaded) {
         this.moveFromOrigin = null;
         this.arrivalDateInCanada = null;
+        this.arrivalDateInBC = null;
         this.$v.moveFromOrigin.$reset();
         this.$v.arrivalDateInCanada.$reset();
+        this.$v.arrivalDateInBC.$reset();
       }
     },
     isMovedToBCPermanently(newValue) {

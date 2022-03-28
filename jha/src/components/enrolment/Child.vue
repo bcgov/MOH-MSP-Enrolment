@@ -1480,6 +1480,7 @@ export default {
         this.citizenshipSupportDocuments = [];
         this.isNameChanged = null;
         this.livedInBCSinceBirth = null;
+        this.previousHealthNumber = null;
         this.madePermanentMove = null;
         this.moveFromOrigin = null;
         this.recentBCMoveDate = null;
@@ -1544,8 +1545,10 @@ export default {
       if (this.pageLoaded) {
         this.moveFromOrigin = null;
         this.canadaArrivalDate = null;
+        this.recentBCMoveDate = null;
         this.$v.moveFromOrigin.$reset();
         this.$v.canadaArrivalDate.$reset();
+        this.$v.recentBCMoveDate.$reset();
              
         this.saveData();
       }
