@@ -314,23 +314,18 @@ export default {
                 : "No",
           });
         }
+        items.push({
+            label: "Has account holder moved to BC permanently?",
+            value:
+              this.$store.state.enrolmentModule.ahIsMovedToBCPermanently === "Y"
+                ? "Yes"
+                : "No",
+        });
         if (
           this.$store.state.enrolmentModule.ahCitizenshipStatusReason !==
             CanadianStatusReasons.LivingInBCWithoutMSP ||
           this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth !== "Y"
         ) {
-          items.push({
-            label: "Date arrived in B.C.",
-            value: formatDate(
-              this.$store.state.enrolmentModule.ahArrivalDateInBC
-            ),
-          });
-          items.push({
-            label: "Date arrived in Canada",
-            value: formatDate(
-              this.$store.state.enrolmentModule.ahArrivalDateInCanada
-            ),
-          });
           let displayMoveFromLocation = "";
           if (this.$store.state.enrolmentModule.ahMoveFromOrigin) {
             displayMoveFromLocation = this.$store.state.enrolmentModule.ahMoveFromOrigin;
@@ -345,14 +340,19 @@ export default {
             ),
             value: displayMoveFromLocation,
           });
-        }
-        items.push({
-            label: "Has account holder moved to BC permanently?",
-            value:
-              this.$store.state.enrolmentModule.ahIsMovedToBCPermanently === "Y"
-                ? "Yes"
-                : "No",
+          items.push({
+            label: "Date arrived in B.C.",
+            value: formatDate(
+              this.$store.state.enrolmentModule.ahArrivalDateInBC
+            ),
           });
+          items.push({
+            label: "Date arrived in Canada",
+            value: formatDate(
+              this.$store.state.enrolmentModule.ahArrivalDateInCanada
+            ),
+          });
+        }
         const ahCitizenshipStatus = this.$store.state.enrolmentModule.ahCitizenshipStatus;
         if ((ahCitizenshipStatus === StatusInCanada.Citizen 
           || ahCitizenshipStatus === StatusInCanada.PermanentResident)
