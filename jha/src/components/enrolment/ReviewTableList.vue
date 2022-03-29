@@ -247,7 +247,47 @@ export default {
         label: "Name",
         value: name,
       });
+      const birthdate = formatDate(
+        this.$store.state.enrolmentModule.ahBirthdate
+      );
+      items.push({
+        label: "Birthdate",
+        value: birthdate,
+      });      
+      if (!this.isApplyingForMSP) {
+        items.push({
+          label: "Account holder PHN",
+          value: this.$store.state.enrolmentModule.ahPHN,
+        });
+      }
+      if (this.isApplyingForFPCare || this.isApplyingForSuppBen) {
+        items.push({
+          label: "Account holder SIN",
+          value: this.$store.state.enrolmentModule.ahSIN,
+        });
+      }
       if (this.isApplyingForMSP) {
+        items.push({
+          label: "Gender",
+          value: this.getFormattedGender(this.$store.state.enrolmentModule.ahGender),
+        });
+        const statusInCanada =
+          this.$store.state.enrolmentModule.ahCitizenshipStatus +
+          " > " +
+          this.$store.state.enrolmentModule.ahCitizenshipStatusReason;
+        items.push({
+          label: "Status in Canada",
+          value: statusInCanada,
+        });
+        items.push({
+          label: "Support Document type",
+          value: this.$store.state.enrolmentModule
+            .ahCitizenshipSupportDocumentType,
+        });
+        items.push({
+          label: "Does your status document include gender designation?",
+          value: "Placeholder"
+        });
         items.push({
           label: "Is Name Changed?",
           value:
@@ -262,44 +302,6 @@ export default {
               .ahNameChangeSupportDocumentType,
           });
         }
-        items.push({
-          label: "Gender",
-          value: this.getFormattedGender(this.$store.state.enrolmentModule.ahGender),
-        });
-      }
-      const birthdate = formatDate(
-        this.$store.state.enrolmentModule.ahBirthdate
-      );
-      items.push({
-        label: "Birthdate",
-        value: birthdate,
-      });
-      if (!this.isApplyingForMSP) {
-        items.push({
-          label: "Account holder PHN",
-          value: this.$store.state.enrolmentModule.ahPHN,
-        });
-      }
-      if (this.isApplyingForFPCare || this.isApplyingForSuppBen) {
-        items.push({
-          label: "Account holder SIN",
-          value: this.$store.state.enrolmentModule.ahSIN,
-        });
-      }
-      if (this.isApplyingForMSP) {
-        const statusInCanada =
-          this.$store.state.enrolmentModule.ahCitizenshipStatus +
-          " > " +
-          this.$store.state.enrolmentModule.ahCitizenshipStatusReason;
-        items.push({
-          label: "Status in Canada",
-          value: statusInCanada,
-        });
-        items.push({
-          label: "Support Document type",
-          value: this.$store.state.enrolmentModule
-            .ahCitizenshipSupportDocumentType,
-        });
         if (this.$store.state.enrolmentModule.ahCitizenshipStatus === StatusInCanada.Citizen
           && this.$store.state.enrolmentModule.ahCitizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP) {
           items.push({
