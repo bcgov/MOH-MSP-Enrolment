@@ -3,6 +3,7 @@ import {
   formatISODate,
   stripPhoneFormatting,
   stripSpaces,
+  replaceSpecialCharacters,
 } from 'common-lib-vue';
 import { ChildAgeTypes } from '@/constants/child-age-types';
 import { getCitizenshipType } from '@/constants/immigration-status-types';
@@ -20,7 +21,8 @@ class ApiService {
     const dateToday = new Date();
     const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
     const dependents = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child19To24);
-    
+    const onlyApplyingForFPCare = formState.isApplyingForFPCare && !formState.isApplyingForMSP && !formState.isApplyingForSuppBen;
+
     const jsonPayload = {
       uuid: formState.applicationUuid,
       firstName: formState.ahFirstName || null,
@@ -37,12 +39,24 @@ class ApiService {
       city: formState.resCity || null,
       postalCode: stripSpaces(formState.resPostalCode) || null,
       provinceOrState: formState.resProvince || null,
-      country: formState.resCountry || '',
+      country: formState.resCountry ? replaceSpecialCharacters(formState.resCountry).substring(0, 30) : null,
       authorizedByApplicant: 'Y',
       authorizedByApplicantDate: formatISODate(dateToday),
       authorizedBySpouse: null, // Set below.
       spouse: null, // Set below.
     };
+    
+    // only mail address is required for FPCare-only submissions
+    if (onlyApplyingForFPCare) {
+      jsonPayload.addressLine1 = formState.mailAddressLine1 || null;
+      jsonPayload.addressLine2 = formState.mailAddressLine2 || null;
+      jsonPayload.addressLine3 = formState.mailAddressLine3 || null;
+      jsonPayload.city = formState.mailCity || null;
+      jsonPayload.postalCode = stripSpaces(formState.mailPostalCode) || null;
+      jsonPayload.provinceOrState = formState.mailProvince || null;
+      jsonPayload.country = formState.mailCountry ? replaceSpecialCharacters(formState.mailCountry).substring(0, 30) : null;
+    }
+
     if (formState.hasSpouse === 'Y') {
       jsonPayload.authorizedBySpouse = 'Y';
       jsonPayload.spouse = {
@@ -59,6 +73,16 @@ class ApiService {
       jsonPayload.authorizedBySpouse = 'N';
     }
     if (formState.isApplyingForMSP) {
+      // formmatting for multiple values
+      let fromProvinceOrCountry; 
+      if (formState.ahFromProvinceOrCountry) {
+        fromProvinceOrCountry = replaceSpecialCharacters(formState.ahFromProvinceOrCountry).substring(0, 25);
+      } else if (formState.ahMoveFromOrigin) {
+        fromProvinceOrCountry = replaceSpecialCharacters(formState.ahMoveFromOrigin).substring(0, 25);
+      } else {
+        fromProvinceOrCountry = null;
+      }
+
       jsonPayload.medicalServicesPlan = {
         uuid: formState.mspUuid || null,
         citizenshipType: getCitizenshipType(formState.ahCitizenshipStatus, formState.ahCitizenshipStatusReason) || null,
@@ -73,7 +97,7 @@ class ApiService {
         recentBCMoveDate: formatISODate(formState.ahArrivalDateInBC) || null,
         recentCanadaMoveDate: formatISODate(formState.ahArrivalDateInCanada) || null,
         isPermanentMove: formState.ahIsMovedToBCPermanently || null,
-        prevProvinceOrCountry: formState.ahFromProvinceOrCountry || formState.ahMoveFromOrigin || null,
+        prevProvinceOrCountry: fromProvinceOrCountry || null,
         beenOutsideBCMoreThan: formState.ahIsOutsideBCLast12Months || null,
         departureDate: formatISODate(formState.ahOutsideBCLast12MonthsDepartureDate) || null,
         returnDate: formatISODate(formState.ahOutsideBCLast12MonthsReturnDate) || null,
@@ -97,7 +121,7 @@ class ApiService {
           recentBCMoveDate: formatISODate(formState.spouseRecentBCMoveDate) || null,
           recentCanadaMoveDate: formatISODate(formState.spouseCanadaArrivalDate) || null,
           isPermanentMove: formState.spouseMadePermanentMove || null,
-          prevProvinceOrCountry: formState.spouseMoveFromOrigin || null,
+          prevProvinceOrCountry: formState.spouseMoveFromOrigin ? replaceSpecialCharacters(formState.spouseMoveFromOrigin).substring(0, 25) : null,
           beenOutsideBCMoreThan: formState.spouseOutsideBCLast12Months || null,
           departureDate: formatISODate(formState.spouseOutsideBCLast12MonthsDepartureDate) || null,
           returnDate: formatISODate(formState.spouseOutsideBCLast12MonthsReturnDate) || null,
@@ -131,7 +155,7 @@ class ApiService {
               recentBCMoveDate: formatISODate(child.recentBCMoveDate) || null,
               recentCanadaMoveDate: formatISODate(child.canadaArrivalDate) || null,
               isPermanentMove: child.madePermanentMove || null,
-              prevProvinceOrCountry: child.moveFromOrigin || null,
+              prevProvinceOrCountry: child.moveFromOrigin ? replaceSpecialCharacters(child.moveFromOrigin).substring(0, 25) : null,
               beenOutsideBCMoreThan: child.outsideBCLast12Months || '',
               departureDate: formatISODate(child.outsideBCLast12MonthsDepartureDate) || null,
               returnDate: formatISODate(child.outsideBCLast12MonthsReturnDate) || null,
@@ -163,7 +187,7 @@ class ApiService {
                 city: dependent.schoolCity || null,
                 postalCode: dependent.schoolPostalCode || null,
                 provinceOrState: dependent.schoolProvinceOrState || null,
-                country: dependent.schoolCountry || null,
+                country: dependent.schoolCountry ? replaceSpecialCharacters(dependent.schoolCountry).substring(0, 30) : null,
               },
               citizenshipType: dependent.status || null,
               attachmentUuids: [
@@ -177,7 +201,7 @@ class ApiService {
               recentBCMoveDate: formatISODate(dependent.recentBCMoveDate) || null,
               recentCanadaMoveDate: formatISODate(dependent.canadaArrivalDate) || null,
               isPermanentMove: dependent.madePermanentMove || null,
-              prevProvinceOrCountry: dependent.moveFromOrigin || null,
+              prevProvinceOrCountry: dependent.moveFromOrigin ? replaceSpecialCharacters(dependent.moveFromOrigin).substring(0, 25) : null,
               beenOutsideBCMoreThan: dependent.outsideBCLast12Months || null,
               departureDate: formatISODate(dependent.outsideBCLast12MonthsDepartureDate) || null,
               returnDate: formatISODate(dependent.outsideBCLast12MonthsReturnDate) || null,
@@ -200,7 +224,7 @@ class ApiService {
           city: formState.mailCity || null,
           postalCode: stripSpaces(formState.mailPostalCode) || null,
           provinceOrState: formState.mailProvince || null,
-          country: formState.mailCountry || null,
+          country: formState.mailCountry ? replaceSpecialCharacters(formState.mailCountry).substring(0, 30) : null,
         };
       } else {
         jsonPayload.medicalServicesPlan.mailingAddress = {
@@ -210,7 +234,7 @@ class ApiService {
           city: formState.resCity || null,
           postalCode: stripSpaces(formState.resPostalCode) || null,
           provinceOrState: formState.resProvince || null,
-          country: formState.resCountry || null,
+          country: formState.resCountry ? replaceSpecialCharacters(formState.resCountry).substring(0, 30) : null,
         };
       }
 

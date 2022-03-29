@@ -43,7 +43,7 @@
         <div v-if='showEditButtons'
             class="col-3 text-right">
           <a href="javascript:void(0)"
-            @click="navigateToChildInfoPage()">Edit 
+            @click="navigateToChildInfoPage('child-' + index)">Edit 
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
@@ -117,14 +117,13 @@
       <ReviewTable :elements='contactData'
                   :backgroundColor='tableBackgroundColor'/>
     </div>
-
   </div>
 </template>
 
 <script>
 import ReviewTable from '@/components/ReviewTable.vue';
 import { enrolmentRoutes } from '@/router/routes';
-import { scrollTo } from '@/helpers/scroll';
+import { scrollTo, scrollToElement } from '@/helpers/scroll';
 import pageStateService from '@/services/page-state-service';
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
@@ -219,6 +218,9 @@ export default {
     }
   },
   computed: {
+    onlyApplyingForFPCare(){
+      return this.isApplyingForFPCare && !this.isApplyingForMSP && !this.isApplyingForSuppBen;
+    },
     FPCDistributionBarItems() {
       const ahIncome = parseFloat(this.$store.state.enrolmentModule.ahFPCIncome) || 0;
       const spouseIncome = parseFloat(this.$store.state.enrolmentModule.spouseFPCIncome) || 0;
@@ -685,11 +687,6 @@ export default {
               value: child.nameChangeSupportDocumentType,
             });
           }
-          const gender = child.gender === "F" ? "Female" : "Male";
-          childData.push({
-            label: "Gender",
-            value: gender,
-          });
         }
         const birthdate = formatDate(child.birthDate);
         childData.push({
@@ -722,6 +719,10 @@ export default {
               value: child.livedInBCSinceBirth === "Y" ? "Yes" : "No",
             });
           }
+          childData.push({
+            label: "Has child moved to BC permanently?",
+            value: child.madePermanentMove === "Y" ? "Yes" : "No",
+          });
           if (
             child.statusReason !== CanadianStatusReasons.LivingInBCWithoutMSP ||
             child.livedInBCSinceBirth !== "Y"
@@ -741,10 +742,6 @@ export default {
                 child.livedInBCSinceBirth
               ),
               value: child.moveFromOrigin,
-            });
-            childData.push({
-              label: "Has child moved to BC permanently?",
-              value: child.madePermanentMove === "Y" ? "Yes" : "No",
             });
             if ((child.status === StatusInCanada.Citizen 
             || child.status === StatusInCanada.PermanentResident)
@@ -1011,44 +1008,54 @@ export default {
     },
     contactData() {
       const items = [];
-      items.push({
-        label: "Residential Address:",
-        value: "",
-        underlined: true
-      });
-      items.push({
-        label: "Street Address",
-        value: this.$store.state.enrolmentModule.resAddressLine1,
-      });
-      if (this.$store.state.enrolmentModule.resAddressLine2) {
+      // If only applying for FPCare, don't include residential address info
+      if (!this.onlyApplyingForFPCare) {
         items.push({
-          label: "",
-          value: this.$store.state.enrolmentModule.resAddressLine2,
+          label: "Residential Address:",
+          value: "",
+          underlined: true
+        });
+        items.push({
+          label: "Street Address",
+          value: this.$store.state.enrolmentModule.resAddressLine1,
+        });
+        if (this.$store.state.enrolmentModule.resAddressLine2) {
+          items.push({
+            label: "",
+            value: this.$store.state.enrolmentModule.resAddressLine2,
+          });
+        }
+        if (this.$store.state.enrolmentModule.resAddressLine3) {
+          items.push({
+            label: "",
+            value: this.$store.state.enrolmentModule.resAddressLine3,
+          });
+        }
+        items.push({
+          label: "City",
+          value: this.$store.state.enrolmentModule.resCity,
+        });
+        items.push({
+          label: "Province",
+          value: this.$store.state.enrolmentModule.resProvince,
+        });
+        items.push({
+          label: "Postal Code",
+          value: this.$store.state.enrolmentModule.resPostalCode,
+        });
+        items.push({
+          label: "Jurisdiction",
+          value: this.$store.state.enrolmentModule.resCountry,
+        });
+
+      }
+      if (this.$store.state.enrolmentModule.phone) {
+        items.push({
+          label: "Phone",
+          value: this.$store.state.enrolmentModule.phone,
         });
       }
-      if (this.$store.state.enrolmentModule.resAddressLine3) {
-        items.push({
-          label: "",
-          value: this.$store.state.enrolmentModule.resAddressLine3,
-        });
-      }
-      items.push({
-        label: "City",
-        value: this.$store.state.enrolmentModule.resCity,
-      });
-      items.push({
-        label: "Province",
-        value: this.$store.state.enrolmentModule.resProvince,
-      });
-      items.push({
-        label: "Postal Code",
-        value: this.$store.state.enrolmentModule.resPostalCode,
-      });
-      items.push({
-        label: "Jurisdiction",
-        value: this.$store.state.enrolmentModule.resCountry,
-      });
-      if (!this.$store.state.enrolmentModule.isMailSame) {
+      if (!this.$store.state.enrolmentModule.isMailSame || this.onlyApplyingForFPCare) {
         items.push({
           label: "Mailing Address:",
           value: "",
@@ -1086,10 +1093,6 @@ export default {
           label: "Jurisdiction",
           value: this.$store.state.enrolmentModule.mailCountry,
         });
-        items.push({
-          label: "Phone",
-          value: this.$store.state.enrolmentModule.phone,
-        });
       }
       return items;
     },
@@ -1116,14 +1119,17 @@ export default {
       this.$router.push(toPath);
       scrollTo();
     },
-    navigateToChildInfoPage() {
+    navigateToChildInfoPage(anchorName) {
         const toPath = getConvertedPath(
           this.$router.currentRoute.path,
           enrolmentRoutes.CHILD_INFO_PAGE.path
         );
         pageStateService.setPageComplete(toPath);
         this.$router.push(toPath);
-        scrollTo();
+        this.$nextTick(() => {
+          const anchorEl = document.querySelector(`a[name="${anchorName}"`);
+          scrollToElement(anchorEl, false, 0);
+        });
     },
     navigateToFPCInfoPage() {
       const toPath = getConvertedPath(

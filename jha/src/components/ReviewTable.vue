@@ -15,7 +15,7 @@
 <script>
 
 export default {
-  name: 'Table',
+  name: 'ReviewTable',
   components: {},
   props: {
     elements: Array,

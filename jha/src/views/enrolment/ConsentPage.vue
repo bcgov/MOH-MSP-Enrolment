@@ -155,7 +155,7 @@ const requiredTrue = (value) => {
 };
 
 export default {
-  name: 'ReviewPage',
+  name: 'ConsentPage',
   mixins: [
     pageContentMixin,
     pageStepperMixin,

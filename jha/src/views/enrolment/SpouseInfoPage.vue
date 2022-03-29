@@ -1137,6 +1137,7 @@ export default {
         this.spouseCitizenshipSupportDocumentType = null;
         this.spouseMoveFromOrigin = null;
         this.spouseLivedInBCSinceBirth = null;
+        this.spousePreviousHealthNumber = null;
         this.$v.spouseStatusReason.$reset();
         this.$v.spouseMoveFromOrigin.$reset();
         this.$v.spouseLivedInBCSinceBirth.$reset();
@@ -1156,6 +1157,7 @@ export default {
         this.spouseRecentBCMoveDate = null;
         this.spouseCanadaArrivalDate = null;
         this.spouseOutsideBCLast12Months = null;
+        this.spousePreviousHealthNumber = null;
         this.spouseHasPreviousBCHealthNumber = null;
         this.spouseBeenReleasedFromInstitution = null;
         this.$v.spouseGenderMatches.$reset();
@@ -1194,8 +1196,10 @@ export default {
       if (this.isPageLoaded) {
         this.spouseMoveFromOrigin = null;
         this.spouseCanadaArrivalDate = null;
+        this.spouseRecentBCMoveDate = null;
         this.$v.spouseMoveFromOrigin.$reset();
         this.$v.spouseCanadaArrivalDate.$reset();
+        this.$v.spouseRecentBCMoveDate.$reset();
       }
     },
     spouseMadePermanentMove(newValue) {

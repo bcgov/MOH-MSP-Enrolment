@@ -25,18 +25,34 @@
                       v-if="$v.ahCRADocuments.$dirty && !$v.ahCRADocuments.required"
                       aria-live="assertive">File upload required.</div>
             </div>
-            <div v-if="hasSpouse">
-              <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for {{selectedNOAYear}}</p>
-              <hr/>
-              <FileUploader v-model="spouseCRADocuments"
-                :isZoomPortalEnabled="true"
-                modalElementTarget="#modal-target"
-                documentType="Spouse NOA/NOR support documents"
-                description="Spouse NOA/NOR" />
-              <div class="text-danger"
-                      v-if="$v.spouseCRADocuments.$dirty && !$v.spouseCRADocuments.required"
-                      aria-live="assertive">File upload required.</div>
-            </div>
+          </div>
+          <div class="col-md-4">
+            <TipBox title="Tip">
+              <p>
+                If you are uploading a copy of a Notice of Assessment or Reassessment from the Canada Revenue Agency website, make sure the image contains:
+              </p>
+              <ul>
+                <li>Your name</li>
+                <li>The tax year</li>
+                <li>Your net income (line 23600)</li>
+                <li>If you have a Regisered Disability Savings Plan (line 12500)</li>
+                <li>A JPG, PNG, GIF, BMP or PDF file</li>
+              </ul>
+            </TipBox>
+          </div>
+        </div>
+        <div v-if="hasSpouse" class="row mt-5">
+          <div class="col-md-8">
+            <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for {{selectedNOAYear}}</p>
+            <hr/>
+            <FileUploader v-model="spouseCRADocuments"
+              :isZoomPortalEnabled="true"
+              modalElementTarget="#modal-target"
+              documentType="Spouse NOA/NOR support documents"
+              description="Spouse NOA/NOR" />
+            <div class="text-danger"
+              v-if="$v.spouseCRADocuments.$dirty && !$v.spouseCRADocuments.required"
+              aria-live="assertive">File upload required.</div>
           </div>
           <div class="col-md-4">
             <TipBox title="Tip">
