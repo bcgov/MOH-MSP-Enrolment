@@ -100,8 +100,8 @@ export const radioOptionsGender = [
     value: 'F',
   },
   {
-    id: 'anothergender',
-    label: 'Another gender (X)',
+    id: 'genderx',
+    label: 'Gender X',
     value: 'X',
   }
 ];
