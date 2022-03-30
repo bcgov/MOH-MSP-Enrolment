@@ -470,26 +470,6 @@ export default {
         label: "Name",
         value: name,
       });
-      if (this.isApplyingForMSP) {
-        items.push({
-          label: "Is Name Changed?",
-          value:
-            this.$store.state.enrolmentModule.spouseIsNameChanged === "Y"
-              ? "Yes"
-              : "No",
-        });
-        if (this.$store.state.enrolmentModule.spouseIsNameChanged === "Y") {
-          items.push({
-            label: "Name Change Support Document Type",
-            value: this.$store.state.enrolmentModule
-              .spouseNameChangeSupportDocumentType,
-          });
-        }
-        items.push({
-          label: "Gender",
-          value: this.getFormattedGender(this.$store.state.enrolmentModule.spouseGender),
-        });
-      }
       const birthdate = formatDate(
         this.$store.state.enrolmentModule.spouseBirthDate
       );
@@ -510,6 +490,10 @@ export default {
         });
       }
       if (this.isApplyingForMSP) {
+        items.push({
+          label: "Gender",
+          value: this.getFormattedGender(this.$store.state.enrolmentModule.spouseGender),
+        });
         const statusInCanada =
           this.$store.state.enrolmentModule.spouseStatus +
           " > " +
@@ -523,6 +507,24 @@ export default {
           value: this.$store.state.enrolmentModule
             .spouseCitizenshipSupportDocumentType,
         });
+        items.push({
+          label: "Does your status document include gender designation?",
+          value: "Placeholder"
+        });
+        items.push({
+          label: "Is Name Changed?",
+          value:
+            this.$store.state.enrolmentModule.spouseIsNameChanged === "Y"
+              ? "Yes"
+              : "No",
+        });
+        if (this.$store.state.enrolmentModule.spouseIsNameChanged === "Y") {
+          items.push({
+            label: "Name Change Support Document Type",
+            value: this.$store.state.enrolmentModule
+              .spouseNameChangeSupportDocumentType,
+          });
+        }
         if (this.$store.state.enrolmentModule.spouseStatus === StatusInCanada.Citizen
         && this.$store.state.enrolmentModule.spouseStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ) {
           items.push({
@@ -533,11 +535,26 @@ export default {
                 : "No",
           });
         }
+        items.push({
+          label: "Has spouse moved to BC permanently?",
+          value:
+            this.$store.state.enrolmentModule.spouseMadePermanentMove === "Y"
+              ? "Yes"
+              : "No",
+        });
         if (
           this.$store.state.enrolmentModule.spouseStatusReason !==
             CanadianStatusReasons.LivingInBCWithoutMSP ||
           this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth !== "Y"
         ) {
+          items.push({
+            label: this.getMoveFromLabel(
+              this.$store.state.enrolmentModule.spouseStatus,
+              this.$store.state.enrolmentModule.spouseStatusReason,
+              this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth
+            ),
+            value: this.$store.state.enrolmentModule.spouseMoveFromOrigin,
+          });
           items.push({
             label: "Date arrived in B.C.",
             value: formatDate(
@@ -550,22 +567,7 @@ export default {
               this.$store.state.enrolmentModule.spouseCanadaArrivalDate
             ),
           });
-          items.push({
-            label: this.getMoveFromLabel(
-              this.$store.state.enrolmentModule.spouseStatus,
-              this.$store.state.enrolmentModule.spouseStatusReason,
-              this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth
-            ),
-            value: this.$store.state.enrolmentModule.spouseMoveFromOrigin,
-          });
         }
-        items.push({
-          label: "Has spouse moved to BC permanently?",
-          value:
-            this.$store.state.enrolmentModule.spouseMadePermanentMove === "Y"
-              ? "Yes"
-              : "No",
-        });
         const spouseStatus = this.$store.state.enrolmentModule.spouseStatus;
         if ((spouseStatus === StatusInCanada.Citizen 
           || spouseStatus === StatusInCanada.PermanentResident)
@@ -575,8 +577,7 @@ export default {
               label: "Health number from previous residence",
               value: spousePreviousHealthNumber ? spousePreviousHealthNumber : "No",
             });
-        }
-        
+        }        
         items.push({
           label: "Has Previous BC Health Number?",
           value:
@@ -676,18 +677,6 @@ export default {
           label: "Name",
           value: name,
         });
-        if (this.isApplyingForMSP) {
-          childData.push({
-            label: "Is Name Changed?",
-            value: child.isNameChanged === "Y" ? "Yes" : "No",
-          });
-          if (child.isNameChanged === "Y") {
-            childData.push({
-              label: "Name Change Support Document Type",
-              value: child.nameChangeSupportDocumentType,
-            });
-          }
-        }
         const birthdate = formatDate(child.birthDate);
         childData.push({
           label: "Birthdate",
@@ -713,6 +702,20 @@ export default {
             label: "Support Document Type",
             value: child.citizenshipSupportDocumentType,
           });
+          childData.push({
+            label: "Does your status document include gender designation?",
+            value: "Placeholder",
+          });
+          childData.push({
+            label: "Is Name Changed?",
+            value: child.isNameChanged === "Y" ? "Yes" : "No",
+          });
+          if (child.isNameChanged === "Y") {
+              childData.push({
+                label: "Name Change Support Document Type",
+                value: child.nameChangeSupportDocumentType,
+              });
+            }
           if (child.status === StatusInCanada.Citizen && child.statusReason === CanadianStatusReasons.LivingInBCWithoutMSP ) {
             childData.push({
               label: "Lived in BC since birth?",
@@ -728,14 +731,6 @@ export default {
             child.livedInBCSinceBirth !== "Y"
           ) {
             childData.push({
-              label: "Date arrived in B.C.",
-              value: formatDate(child.recentBCMoveDate),
-            });
-            childData.push({
-              label: "Date arrived in Canada",
-              value: formatDate(child.canadaArrivalDate),
-            });
-            childData.push({
               label: this.getMoveFromLabel(
                 child.status,
                 child.statusReason,
@@ -743,6 +738,14 @@ export default {
               ),
               value: child.moveFromOrigin,
             });
+            childData.push({
+              label: "Date arrived in B.C.",
+              value: formatDate(child.recentBCMoveDate),
+            });
+            childData.push({
+              label: "Date arrived in Canada",
+              value: formatDate(child.canadaArrivalDate),
+            });            
             if ((child.status === StatusInCanada.Citizen 
             || child.status === StatusInCanada.PermanentResident)
             && child.statusReason === CanadianStatusReasons.MovingFromProvince) {
@@ -806,11 +809,6 @@ export default {
               label: "Full-time student?",
               value: isFullTimeStudent ? "Yes" : "No",
             });
-            const willResideInBC = child.willResideInBCAfterStudies === "Y";
-            childData.push({
-              label: "Will you reside in BC upon completion of your studies?",
-              value: willResideInBC ? "Yes" : "No",
-            });
             childData.push({
               label: "School name",
               value: child.schoolName,
@@ -840,13 +838,13 @@ export default {
               value: child.schoolProvinceOrState,
             });
             childData.push({
-              label: "Postal code",
-              value: child.schoolPostalCode,
-            });
-            childData.push({
               label: "Jurisdiction",
               value: child.schoolCountry,
             });
+            childData.push({
+              label: "Postal code",
+              value: child.schoolPostalCode,
+            });            
             childData.push({
               label: "School departure date:",
               value: formatDate(child.schoolDepartureDate),
@@ -854,6 +852,11 @@ export default {
             childData.push({
               label: "Estimated school completion date:",
               value: formatDate(child.schoolCompletionDate),
+            });
+            const willResideInBC = child.willResideInBCAfterStudies === "Y";
+            childData.push({
+              label: "Will you reside in BC upon completion of your studies?",
+              value: willResideInBC ? "Yes" : "No",
             });
           }
         }
