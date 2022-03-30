@@ -255,7 +255,7 @@ export default {
       items.push({
         label: "Birthdate",
         value: birthdate,
-      });      
+      });
       if (!this.isApplyingForMSP) {
         items.push({
           label: "Account holder PHN",
@@ -346,12 +346,14 @@ export default {
               this.$store.state.enrolmentModule.ahArrivalDateInBC
             ),
           });
-          items.push({
-            label: "Date arrived in Canada",
-            value: formatDate(
-              this.$store.state.enrolmentModule.ahArrivalDateInCanada
-            ),
-          });
+          if (this.$store.state.enrolmentModule.ahArrivalDateInCanada) {
+            items.push({
+              label: "Date arrived in Canada",
+              value: formatDate(
+                this.$store.state.enrolmentModule.ahArrivalDateInCanada
+              ),
+            });
+          }
         }
         const ahCitizenshipStatus = this.$store.state.enrolmentModule.ahCitizenshipStatus;
         if ((ahCitizenshipStatus === StatusInCanada.Citizen 
@@ -561,12 +563,14 @@ export default {
               this.$store.state.enrolmentModule.spouseRecentBCMoveDate
             ),
           });
-          items.push({
-            label: "Date arrived in Canada",
-            value: formatDate(
-              this.$store.state.enrolmentModule.spouseCanadaArrivalDate
-            ),
-          });
+          if (this.$store.state.enrolmentModule.spouseCanadaArrivalDate) {
+            items.push({
+              label: "Date arrived in Canada",
+              value: formatDate(
+                this.$store.state.enrolmentModule.spouseCanadaArrivalDate
+              ),
+            });
+          }
         }
         const spouseStatus = this.$store.state.enrolmentModule.spouseStatus;
         if ((spouseStatus === StatusInCanada.Citizen 
@@ -742,10 +746,12 @@ export default {
               label: "Date arrived in B.C.",
               value: formatDate(child.recentBCMoveDate),
             });
-            childData.push({
-              label: "Date arrived in Canada",
-              value: formatDate(child.canadaArrivalDate),
-            });            
+            if (child.canadaArrivalDate) {
+              childData.push({
+                label: "Date arrived in Canada",
+                value: formatDate(child.canadaArrivalDate),
+              });            
+            }
             if ((child.status === StatusInCanada.Citizen 
             || child.status === StatusInCanada.PermanentResident)
             && child.statusReason === CanadianStatusReasons.MovingFromProvince) {
