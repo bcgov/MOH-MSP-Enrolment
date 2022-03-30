@@ -288,7 +288,7 @@ export default {
         });
         items.push({
           label: "Does your status document include gender designation?",
-          value: "Placeholder"
+          value: this.$store.state.enrolmentModule.ahGenderMatches === "Y" ? "Yes" : "No"
         });
         items.push({
           label: "Is Name Changed?",
@@ -509,7 +509,7 @@ export default {
         });
         items.push({
           label: "Does your status document include gender designation?",
-          value: "Placeholder"
+          value: this.$store.state.enrolmentModule.spouseGenderMatches === "Y" ? "Yes" : "No"
         });
         items.push({
           label: "Is Name Changed?",
@@ -704,7 +704,7 @@ export default {
           });
           childData.push({
             label: "Does your status document include gender designation?",
-            value: "Placeholder",
+            value: child.genderMatches === "Y" ? "Yes" : "No",
           });
           childData.push({
             label: "Is Name Changed?",
