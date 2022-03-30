@@ -1052,12 +1052,6 @@ export default {
         });
 
       }
-      if (this.$store.state.enrolmentModule.phone) {
-        items.push({
-          label: "Phone",
-          value: this.$store.state.enrolmentModule.phone,
-        });
-      }
       if (!this.$store.state.enrolmentModule.isMailSame || this.onlyApplyingForFPCare) {
         items.push({
           label: "Mailing Address:",
@@ -1096,6 +1090,13 @@ export default {
           label: "Jurisdiction",
           value: this.$store.state.enrolmentModule.mailCountry,
         });
+        if (this.$store.state.enrolmentModule.phone) {
+          items.push({
+            label: "Phone",
+            value: this.$store.state.enrolmentModule.phone,
+            underlined: true,
+          });
+        }
       }
       return items;
     },
