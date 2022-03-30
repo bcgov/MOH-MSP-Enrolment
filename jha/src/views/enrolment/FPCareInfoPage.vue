@@ -81,6 +81,13 @@
             </TipBox>
           </div>
         </div>
+        <div v-if="isSystemUnavailable"
+          class="text-danger mt-3 mb-5"
+          aria-live="assertive">Unable to continue, system unavailable. Please try again later.</div>
+        <div v-if="checkEligibilityErrorMessage"
+          class="text-danger mt-3 mb-5"
+          aria-live="assertive"
+          v-html="checkEligibilityErrorMessage"></div>
       </div>
     </PageContent>
     <portal v-if="isSampleModalOpen"
@@ -95,6 +102,7 @@
       </ContentModal>
     </portal>
     <ContinueBar @continue="validateFields()"
+      :hasLoader='isLoading'
       class="continue-bar" />
   </div>
 </template>
@@ -103,6 +111,7 @@
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
+  isEQPath,
   isPastPath,
 } from '@/router/routes';
 import {
@@ -115,13 +124,13 @@ import {
 } from '@/helpers/url';
 import {
   MODULE_NAME as enrolmentModule,
-  RESET_FORM,
   SET_AH_FPC_INCOME,
   SET_AH_FPC_RDSP,
   SET_SPOUSE_FPC_INCOME,
   SET_SPOUSE_FPC_RDSP,
 } from '@/store/modules/enrolment-module';
 import logService from '@/services/log-service';
+import apiService from '@/services/api-service';
 import {
   ContentModal,
   ContinueBar,
@@ -158,6 +167,9 @@ export default {
       spouseIncome: null,
       spouseRDSP: null,
       isSampleModalOpen: false,
+      isLoading: false,
+      isSystemUnavailable: false,
+      checkEligibilityErrorMessage: null,
     };
   },
   created() {
@@ -204,7 +216,34 @@ export default {
       }
 
       this.saveData();
-      this.navigateToNextPage();
+
+      if (this.shouldCheckEligibility) {
+        this.isLoading = true;
+        this.isSystemUnavailable = false;
+        this.checkEligibilityErrorMessage = null;
+
+        apiService.checkEligibility(this.$store.state.enrolmentModule)
+          .then((response) => {
+            this.isLoading = false;
+
+            if (response.data && response.data.regStatusCode === '0') {
+              this.navigateToNextPage();
+            } else if (response.data && response.data.exception) {
+              this.isSystemUnavailable = true;
+              scrollToError();
+            } else {
+              this.checkEligibilityErrorMessage = response.data.regStatusMsg;
+              scrollToError();
+            }
+          })
+          .catch(() => {
+            this.isLoading = false;
+            this.isSystemUnavailable = true;
+            scrollToError();
+          });
+      } else {
+        this.navigateToNextPage();
+      }
     },
     saveData() {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_FPC_INCOME}`, this.ahIncome);
@@ -242,20 +281,24 @@ export default {
     },
     widgetData() {
       return {
+        ahBirthdate: this.$store.state.enrolmentModule.ahBirthdate,
+        spouseBirthdate: this.$store.state.enrolmentModule.spouseBirthDate,
         ahIncome: this.ahIncome,
         ahRDSP: this.ahRDSP,
         spouseIncome: this.spouseIncome,
         spouseRDSP: this.spouseRDSP,
       };
+    },
+    shouldCheckEligibility() {
+      return this.$store.state.enrolmentModule.isApplyingForFPCare
+          && !this.$store.state.enrolmentModule.isApplyingForMSP;
     }
   },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
-      next();
-    } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
+    if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)
+      && !isEQPath(to.path)) {
       next();
     } else {
       // Navigate to self.

@@ -1,12 +1,5 @@
 <template>
   <div>
-    <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
-        :routes='stepRoutes'
-        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
-        :isMobileStepperOpen='isMobileStepperOpen'
-        @onClickLink='handleClickStepperLink($event)'/>
-    </div>
     <PageContent>
       <div class="container pt-3 pt-sm-5 mb-3">
         <div class="row align-items-end mt-3">
@@ -27,23 +20,55 @@
         </div>
         <hr/>
 
-        <div class="success-box container">
-          <div class="row align-items-center">
-            <div class="col-md-1 pr-0 icon-container text-center">
-              <font-awesome-icon icon="check-circle" size="3x" />
-            </div>
-            <div class="col-md-10 pt-2 pb-2">
-              <p>Your application has been submitted.</p>
-              <div class="row">
-                <div class="col-md-4 col-lg-3">Date of Submission:</div>
-                <div class="col-md-8 col-lg-9"><b>{{ submissionDate }}</b></div>
-              </div>
-              <div class="row">
-                <div class="col-md-4 col-lg-3">Reference Number:</div>
-                <div class="col-md-8 col-lg-9"><b>{{referenceNumber}}</b></div>
-              </div>
-            </div>
+        <p><b>Date submitted: {{ submissionDate }}</b></p>
+
+        <!-- For all submissions with MSP -->
+        <div v-if="mspApplicationResult"
+          class="mb-4">
+          <SuccessBox v-if="mspApplicationResult.returnCode === '0'">
+            <p><b>Your {{formattedSuccessfulSubmissionPrograms}} form{{successfulSubmissionPrograms.length > 1 ? 's' : ''}} {{successfulSubmissionPrograms.length > 1 ? 'have' : 'has'}} been submitted.</b></p>
+            <p v-if="mspApplicationResult.referenceNumber"><b>Reference number is: {{mspApplicationResult.referenceNumber}}</b></p>
+          </SuccessBox>
+          <ErrorBox v-else>
+            <p><b>There was an issue with your Medical Services Plan submission. Your form was not submitted.</b></p>
+            <p v-if="mspApplicationResult.message"><b>{{mspApplicationResult.message}}</b></p>
+          </ErrorBox>
+          <ErrorBox v-if="fpcApplicationResult && fpcApplicationResult.returnCode !== '0'">
+            <p><b>There was an issue with your Fair PharmaCare submission. Your form was not submitted.</b></p>
+            <p v-if="fpcApplicationResult.message"><b>{{fpcApplicationResult.message}}</b></p>
+          </ErrorBox>
+          <ErrorBox v-if="sbApplicationResult && sbApplicationResult.returnCode !== '0'">
+            <p><b>There was an issue with your Supplementary Benefits submission. Your form was not submitted.</b></p>
+            <p v-if="sbApplicationResult.message"><b>{{sbApplicationResult.message}}</b></p>
+          </ErrorBox>
+        </div>
+
+        <!-- For submissions without MSP -->
+        <div v-else>
+          <div v-if="fpcApplicationResult"
+            class="mb-4">
+            <SuccessBox v-if="fpcApplicationResult.returnCode === '0'">
+              <p><b>Your Fair PharmaCare form has been submitted.</b></p>
+              <p v-if="fpcApplicationResult.familyNumber"><b>Reference number is: {{fpcApplicationResult.familyNumber}}</b></p>
+            </SuccessBox>
+            <ErrorBox v-else>
+              <p><b>There was an issue with your Fair PharmaCare submission. Your form was not submitted.</b></p>
+              <p v-if="fpcApplicationResult.message"><b>{{fpcApplicationResult.message}}</b></p>
+            </ErrorBox>
           </div>
+
+          <div v-if="sbApplicationResult"
+            class="mb-4">
+            <SuccessBox v-if="sbApplicationResult.returnCode === '0'">
+              <p><b>Your Supplementary Benefits form has been submitted.</b></p>
+              <p v-if="sbApplicationResult.referenceNumber"><b>Reference number is: {{sbApplicationResult.referenceNumber}}</b></p>
+            </SuccessBox>
+            <ErrorBox v-else>
+              <p><b>There was an issue with your Supplementary Benefits submission. Your form was not submitted.</b></p>
+              <p v-if="sbApplicationResult.message"><b>{{sbApplicationResult.message}}</b></p>
+            </ErrorBox>
+          </div>
+
         </div>
 
         <h3 class="mt-4">Next Steps</h3>
@@ -61,42 +86,51 @@
 </template>
 
 <script>
+import SuccessBox from '@/components/SuccessBox.vue';
+import ErrorBox from '@/components/ErrorBox.vue';
 import ReviewTableList from '@/components/enrolment/ReviewTableList.vue';
 import {
   PageContent,
+  formatArray,
   formatDate,
 } from 'common-lib-vue';
 import { getConvertedPath } from '@/helpers/url';
 import pageStateService from '@/services/page-state-service';
 import { enrolmentRoutes } from '@/router/routes';
 import {
-  MODULE_NAME as formModule,
+  MODULE_NAME as enrolmentModule,
   RESET_FORM
 } from '@/store/modules/enrolment-module';
 import { scrollTo } from '@/helpers/scroll';
 import logService from '@/services/log-service';
 import pageContentMixin from '@/mixins/page-content-mixin';
-import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 export default {
   name: 'SubmissionPage',
   mixins: [
     pageContentMixin,
-    pageStepperMixin,
   ],
   components: {
+    ErrorBox,
     PageContent,
     ReviewTableList,
+    SuccessBox,
   },
   data: () => {
     return {
       submissionDate: '',
       referenceNumber: '',
+      mspApplicationResult: null,
+      fpcApplicationResult: null,
+      sbApplicationResult: null,
     };
   },
   created() {
     this.submissionDate = formatDate(this.$store.state.enrolmentModule.submissionDate);
     this.referenceNumber = this.$store.state.enrolmentModule.referenceNumber || 'Unknown';
+    this.mspApplicationResult = this.$store.state.enrolmentModule.submissionAPIResponse.msp;
+    this.fpcApplicationResult = this.$store.state.enrolmentModule.submissionAPIResponse.fpc;
+    this.sbApplicationResult = this.$store.state.enrolmentModule.submissionAPIResponse.sb;
 
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
@@ -107,19 +141,37 @@ export default {
   methods: {
     printPage() {
       window.print();
+    },
+  },
+  computed: {
+    formattedSuccessfulSubmissionPrograms() {
+      return formatArray(this.successfulSubmissionPrograms);
+    },
+    successfulSubmissionPrograms() {
+      const programs = [];
+      if (this.mspApplicationResult && this.mspApplicationResult.returnCode === '0') {
+        programs.push('Medical Services Plan');
+      }
+      if (this.fpcApplicationResult && this.fpcApplicationResult.returnCode === '0') {
+        programs.push('Fair PharmaCare');
+      }
+      if (this.sbApplicationResult && this.sbApplicationResult.returnCode === '0') {
+        programs.push('Supplementary Benefits');
+      }
+      return programs;
     }
   },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    this.$store.dispatch(formModule + '/' + RESET_FORM);
-    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
+    this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
+    if (to.path === enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path) {
       next();
     } else {
       const toPath = getConvertedPath(
         this.$router.currentRoute.path,
-        enrolmentRoutes.HOME_PAGE.path
-      )
+        enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path
+      );
       next({ path: toPath });
     }
     setTimeout(() => {
@@ -163,12 +215,6 @@ export default {
   visibility: visible;
 }
 
-.success-box {
-  border-radius: 10px;
-  border: 5px solid rgba(46, 133, 64, 1);
-  padding: 10px;
-}
-
 .print-btn {
   text-decoration: none;
 }
@@ -176,11 +222,4 @@ export default {
   text-decoration: none;
   font-weight: bold;
 }
-.box-border {
-  border-width: 4px !important;
-}
-.status-icon {
-  font-size: 32px;
-}
-
 </style>

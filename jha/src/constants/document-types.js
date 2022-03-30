@@ -23,6 +23,7 @@ export const SupportDocumentTypes = {
     'Application for Change of Gender Designation (Minor)',
   ChangeGenderPhysicianConfirmation:
     'Physician\'s or Psychologist Confirmation of Change of Gender Designation Form',
+  ChangeGenderDocs: 'Change of Gender Designation and Request for Waiver of Parental Consent form',
   ParentalConsentWaiver:
     'Request for Waiver of Parental Consent (minor) (for under 19 years)',
   SeparationAgreement: 'Separation Agreement',
@@ -52,6 +53,7 @@ export const SupportDocumentSamples = {
   [SupportDocumentTypes.ChangeGenderAdultApplication]: 'app_change_gender_adult.jpg',
   [SupportDocumentTypes.ChangeGenderMinorApplication]: 'app_change_gender_minor.jpg',
   [SupportDocumentTypes.ChangeGenderPhysicianConfirmation]: 'physician_conf_gender_designation.jpg',
+  [SupportDocumentTypes.ChangeGenderDocs]: 'gender_forms.png',
   [SupportDocumentTypes.ParentalConsentWaiver]: '',
   [SupportDocumentTypes.SeparationAgreement]: 'separation_agreement.png',
   [SupportDocumentTypes.NotarizedStatementOrAffidavit]: '',

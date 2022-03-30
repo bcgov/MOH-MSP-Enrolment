@@ -71,7 +71,6 @@ export function nameChangeSupportDocs(): SupportDocumentTypes[] {
     SupportDocumentTypes.ChangeOfNameCertificate,
     SupportDocumentTypes.CanadianBirthCertificate,
     SupportDocumentTypes.CanadianCitizenCard,
-    SupportDocumentTypes.CanadianPassport,
     SupportDocumentTypes.PermanentResidentCard,
     SupportDocumentTypes.PermanentResidentConfirmation,
     SupportDocumentTypes.RecordOfLanding,
@@ -86,7 +85,6 @@ export function genderBirthDateChangeDocuments(): SupportDocumentTypes[] {
     SupportDocumentTypes.DriversLicense,
     SupportDocumentTypes.CanadianBirthCertificate,
     SupportDocumentTypes.CanadianCitizenCard,
-    SupportDocumentTypes.CanadianPassport,
     SupportDocumentTypes.PermanentResidentCard,
     SupportDocumentTypes.PermanentResidentConfirmation,
     SupportDocumentTypes.RecordOfLanding,
@@ -100,7 +98,6 @@ export function nameChangeDueToErrorDocuments(): SupportDocumentTypes[] {
   return [
     SupportDocumentTypes.CanadianBirthCertificate,
     SupportDocumentTypes.CanadianCitizenCard,
-    SupportDocumentTypes.CanadianPassport,
     SupportDocumentTypes.PermanentResidentCard,
     SupportDocumentTypes.PermanentResidentConfirmation,
     SupportDocumentTypes.RecordOfLanding,

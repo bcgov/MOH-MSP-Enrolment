@@ -44,7 +44,7 @@ export enum CanadianStatusReason {
 export const CanadianStatusReasonStrings = {
   LivingInBCWithoutMSP: 'Not new to B.C. but needs to apply for MSP',
   MovingFromProvince: 'Moved to B.C. from another province',
-  MovingFromCountry: 'Moved to B.C. from another country',
+  MovingFromCountry: 'Moved to B.C. from another jurisdiction',
   WorkingInBC: 'Work Permit',
   StudyingInBC: 'Study Permit',
   ReligiousWorker: 'Religious Worker',

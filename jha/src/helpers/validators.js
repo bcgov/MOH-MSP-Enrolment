@@ -80,3 +80,10 @@ export const reasonDestinationContentValidator = (value) => {
   return criteriaAllowedCharecters.test(value)
           && criteriaMustHaveLetter.test(value);
 };
+
+export const phnFirstDigitValidator = (value) => {
+  if (typeof(value) !== 'string') {
+    return false;
+  }
+  return value[0] === '9';
+};

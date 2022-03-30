@@ -85,7 +85,7 @@ export class PersonReviewCardComponent<T extends IPersonReviewCard> {
   constructor() {}
 
   get movedFromLabel(): string {
-     return  'Moved from ' + ( this._isCountryMove() ? 'country' : 'province' );
+     return  'Moved from ' + ( this._isCountryMove() ? 'jurisdiction' : 'province' );
   }
 
   get gender() {

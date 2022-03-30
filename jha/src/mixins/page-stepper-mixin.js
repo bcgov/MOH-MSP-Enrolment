@@ -63,8 +63,10 @@ export default {
         },
         {...enrolmentRoutes.PERSONAL_INFO_PAGE},
         {...enrolmentRoutes.SPOUSE_INFO_PAGE},
-        {...enrolmentRoutes.CHILD_INFO_PAGE},
       ];
+      if (this.$store.state.enrolmentModule.isApplyingForFPCare || this.$store.state.enrolmentModule.isApplyingForMSP) {
+        routes.push({...enrolmentRoutes.CHILD_INFO_PAGE});
+      }
       if (this.$store.state.enrolmentModule.isApplyingForFPCare) {
         routes.push({...enrolmentRoutes.FPCARE_INFO_PAGE});
       }
@@ -74,7 +76,7 @@ export default {
       }
       routes.push({...enrolmentRoutes.CONTACT_INFO_PAGE});
       routes.push({...enrolmentRoutes.REVIEW_PAGE});
-      routes.push({...enrolmentRoutes.SUBMISSION_PAGE});
+      routes.push({...enrolmentRoutes.CONSENT_PAGE});
       return routes;
     },
   }

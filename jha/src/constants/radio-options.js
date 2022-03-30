@@ -91,16 +91,22 @@ export const radioOptionsOverageChildTemporaryResidentStatusReasons = [
 export const radioOptionsGender = [
   {
     id: 'male',
-    label: 'Male',
+    label: 'Male (M)',
     value: 'M',
   },
   {
     id: 'female',
-    label: 'Female',
+    label: 'Female (F)',
     value: 'F',
+  },
+  {
+    id: 'genderx',
+    label: 'Gender X',
+    value: 'X',
   }
 ];
 
+// For form inputs
 export const radioOptionsNoYes = [
   {
     id: 'no',
@@ -111,6 +117,20 @@ export const radioOptionsNoYes = [
     id: 'yes',
     label: 'Yes',
     value: 'Y',
+  }
+];
+
+// For eligibility questions
+export const radioOptionsYesNo = [
+  {
+    id: 'yes',
+    label: 'Yes',
+    value: 'Y',
+  },
+  {
+    id: 'no',
+    label: 'No',
+    value: 'N',
   }
 ];
 

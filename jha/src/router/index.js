@@ -17,6 +17,7 @@ import FPCareInfoPage from '@/views/enrolment/FPCareInfoPage.vue';
 import SuppBenInfoPage from '@/views/enrolment/SuppBenInfoPage.vue';
 import DocumentsPage from '@/views/enrolment/DocumentsPage.vue';
 import ReviewPage from '@/views/enrolment/ReviewPage.vue';
+import ConsentPage from '@/views/enrolment/ConsentPage.vue';
 import SubmissionPage from '@/views/enrolment/SubmissionPage.vue';
 import SubmissionErrorPage from '@/views/enrolment/SubmissionErrorPage.vue';
 import MaintenancePage from '@/views/MaintenancePage.vue';
@@ -109,6 +110,11 @@ const routeCollection = [
     path: enrolmentRoutes.REVIEW_PAGE.path,
     name: enrolmentRoutes.REVIEW_PAGE.name,
     component: ReviewPage
+  },
+  {
+    path: enrolmentRoutes.CONSENT_PAGE.path,
+    name: enrolmentRoutes.CONSENT_PAGE.name,
+    component: ConsentPage
   },
   {
     path: enrolmentRoutes.SUBMISSION_PAGE.path,

@@ -25,6 +25,7 @@
           aria-live="assertive">Please indicate if you have a child who needs to enrol for MSP coverage.</div>
         <div v-for="(child, index) in children"
             :key="'child-' + index">
+          <a :name="'child-' + index"></a>
           <div class="heading mt-3">
             <div v-if="!child.collapsed" @click="collapseChild(index)" class="icon-header">
               <font-awesome-icon icon="angle-down" size="3x" />
@@ -45,6 +46,7 @@
               ref="children"
               :index="index"
               :childData="child"
+              :usedPHNs="usedPHNs"
               @updateChild="handleChildUpdate($event, index)" />
           </div>
         </div>
@@ -63,6 +65,7 @@
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
+  isEQPath,
   isPastPath,
 } from '@/router/routes';
 import {
@@ -89,7 +92,6 @@ import {
 } from '@/constants/radio-options';
 import {
   MODULE_NAME as enrolmentModule,
-  RESET_FORM,
   SET_HAS_CHILDREN,
   SET_NUM_CHILDREN,
   SET_CHILDREN,
@@ -117,11 +119,14 @@ export default {
       // Data to be saved
       hasChildren: null,
       children: [],
+      usedPHNs: [],
     };
   },
   created() {
     this.hasChildren = this.$store.state.enrolmentModule.hasChildren;
     this.children = this.$store.state.enrolmentModule.children ? cloneDeep(this.$store.state.enrolmentModule.children) : [];
+    this.calculateUsedPHNs();
+    this.expandAllChildren();
     
     setTimeout(() => {
       this.pageLoaded = true;
@@ -153,6 +158,7 @@ export default {
         middleName: null,
         lastName: null,
         birthDate: null,
+        personalHealthNumber: null,
         gender: null,
         
         status: null,
@@ -161,6 +167,7 @@ export default {
         citizenshipSupportDocuments: [],
         isNameChanged: null,
         nameChangeSupportDocumentType: null,
+        genderMatches: null,
         nameChangeSupportDocuments: [],
         
         moveFromOrigin: null,
@@ -227,6 +234,8 @@ export default {
     },
     handleChildUpdate(data, index) {
       this.children[index] = data;
+      this.children = [...this.children];
+      this.calculateUsedPHNs();
     },
     validateFields() {
       this.saveData();
@@ -290,6 +299,21 @@ export default {
       this.$router.push(toPath);
       scrollTo(0);
     },
+    calculateUsedPHNs() {
+      const phns = [];
+      if (this.$store.state.enrolmentModule.ahPHN) {
+        phns.push(this.$store.state.enrolmentModule.ahPHN);
+      }
+      if (this.$store.state.enrolmentModule.spousePHN) {
+        phns.push(this.$store.state.enrolmentModule.spousePHN);
+      }
+      this.children.forEach((child) => {
+        if (child.personalHealthNumber) {
+          phns.push(child.personalHealthNumber);
+        }
+      });
+      this.usedPHNs = phns;
+    }
   },
   watch: {
     children(arr) {
@@ -319,10 +343,8 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
-      next();
-    } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
+    if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)
+      && !isEQPath(to.path)) {
       next();
     } else {
       // Navigate to self.

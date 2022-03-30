@@ -290,7 +290,7 @@ export class MovingInformationComponent<T extends IMovingInfo> extends Base impl
   }
 
   get countryMoveLabel() {
-    let msg = 'Which country ';
+    let msg = 'Which jurisdiction ';
     msg = msg.concat( (this.isApplicant ? 'are ' : 'is '), this.relationship, ' moving from?' );
     return msg;
   }

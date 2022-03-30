@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-7">Total Family Income</div>
       <div class="col-sm-5">
-        <b>{{formattedTotalIncome}}</b>
+        <b>{{totalIncome | currencyFilter}}</b>
       </div>
     </div>
 
@@ -14,13 +14,13 @@
     <div class="row">
       <div class="col-sm-7">Family Registered Disability Savings Plan</div>
       <div class="col-sm-5">
-        <b>{{formattedRDSP}}</b>
+        <b>{{RDSP | currencyFilter}}</b>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col-sm-7">Total Deductions</div>
       <div class="col-sm-5">
-        <b>{{formattedRDSP}}</b>
+        <b>{{RDSP | currencyFilter}}</b>
       </div>
     </div>
 
@@ -28,7 +28,7 @@
     <div class="row">
       <div class="col-sm-7">Adjusted Income</div>
       <div class="col-sm-5">
-        <b>{{formattedAdjustedIncome}}</b>
+        <b>{{adjustedIncome | currencyFilter}}</b>
       </div>
     </div>
 
@@ -41,7 +41,10 @@
       <Loader color="#000"
         size="24px" />
     </div>
-    <DistributionBar v-if="!isLoading"
+    <div v-if="isSystemUnavailable"
+      class="text-danger mt-3 mb-3"
+      aria-live="assertive">Unable to retrieve assistance levels, system unavailable.</div>
+    <DistributionBar v-if="!isLoading && !isSystemUnavailable"
       startingLabel="$0"
       :items="distributionBarItems"/>
   </div>
@@ -52,6 +55,18 @@ import {
   DistributionBar,
   Loader,
 } from 'common-lib-vue';
+import apiService from '@/services/api-service';
+import logService from '@/services/log-service';
+import {
+  MODULE_NAME as appModule,
+  SET_DEDUCTIBLES_API_DATA,
+} from '@/store/modules/app-module';
+import {
+  formatCurrencyNumber,
+  formatServerData,
+  getCoverageTier,
+  getDistributionBarItems,
+} from '@/helpers/fpc-helpers';
 
 export default {
   name: 'FPCWidget',
@@ -70,69 +85,77 @@ export default {
   data: () => {
     return {
       isLoading: false,
+      isSystemUnavailable: false,
+      deductibleTiers: [],
+      pre1939DeductibleTiers: [],
     };
   },
-  created() {
-    this.fetchCoverageData();
+  async created() {
+    let apiData = this.$store.state.appModule.deductiblesAPIData;
+
+    this.isLoading = true;
+    this.isSystemUnavailable = false;
+
+    try {
+      if (!apiData) {
+        const response = await apiService.getDeductibles(
+          this.$store.state.enrolmentModule.captchaToken,
+          this.$store.state.enrolmentModule.fpcUuid
+        );
+        apiData = response.data;
+        if (!apiData || !apiData.assistanceLevels || !apiData.pre1939AssistanceLevels) {
+          throw new Error('response data does not include assistance levels.');
+        }
+        this.$store.dispatch(`${appModule}/${SET_DEDUCTIBLES_API_DATA}`, apiData);
+      }
+      this.deductibleTiers = formatServerData(apiData.assistanceLevels) || [];
+      this.pre1939DeductibleTiers = formatServerData(apiData.pre1939AssistanceLevels) || [];
+      this.isLoading = false;
+    } catch (error) {
+      this.isLoading = false;
+      this.isSystemUnavailable = true;
+
+      logService.logError(this.$store.state.enrolmentModule.applicationUuid, {
+        event: 'error getting values from getDeductibles endpoint',
+        error,
+      });
+    }
   },
   computed: {
-    formattedTotalIncome() {
+    totalIncome() {
       const ahIncome = parseFloat(this.value.ahIncome) || 0;
       const spouseIncome = parseFloat(this.value.spouseIncome) || 0;
       const totalIncome = ahIncome + spouseIncome;
-      return this.formatCurrencyValue(totalIncome);
+      return totalIncome;
     },
-    formattedRDSP() {
+    RDSP() {
       const ahRDSP = parseFloat(this.value.ahRDSP) || 0;
       const spouseRDSP = parseFloat(this.value.spouseRDSP) || 0;
       const totalRDSP = ahRDSP + spouseRDSP;
-      return this.formatCurrencyValue(totalRDSP);
+      return totalRDSP;
     },
-    formattedAdjustedIncome() {
+    adjustedIncome() {
       const ahIncome = parseFloat(this.value.ahIncome) || 0;
       const spouseIncome = parseFloat(this.value.spouseIncome) || 0;
       const ahRDSP = parseFloat(this.value.ahRDSP) || 0;
       const spouseRDSP = parseFloat(this.value.spouseRDSP) || 0;
       const adjustedIncome = ahIncome + spouseIncome - ahRDSP - spouseRDSP;
-      return this.formatCurrencyValue(adjustedIncome);
+      return adjustedIncome;
     },
     distributionBarItems() {
-      return [
-        {
-          color: '#036',
-          barLabel: '$200',
-          label: 'First tier coverage.'
-        },
-        {
-          color: '#f3cd65',
-          barLabel: '$400',
-          label: 'Second tier coverage.'
-        },
-        {
-          color: '#486446',
-          barLabel: '&infin;',
-          label: 'Third tier coverage.'
-        },
-      ];
-    }
-  },
-  methods: {
-    formatCurrencyValue(value) {
-      const formatterOptions = {
-        style: 'currency',
-        currency: 'USD',
-      };
-      const formatter = new Intl.NumberFormat('en-US', formatterOptions);
-      return formatter.format(value).replace('.00', '');
+      const tier = getCoverageTier({
+        ahBirthdate: this.value.ahBirthdate,
+        spouseBirthdate: this.value.spouseBirthdate,
+        adjustedIncome: this.adjustedIncome,
+        pre1939DeductibleTiers: this.pre1939DeductibleTiers,
+        deductibleTiers: this.deductibleTiers,
+      });
+      return getDistributionBarItems(tier);
     },
-    fetchCoverageData() {
-      this.isLoading = true;
-      // Make API request for coverage data.
-
-      // Temporarily set timeout to remove loading status.
-      setTimeout(() => {
-        this.isLoading = false;
-      }, 5000);
+  },
+  filters: {
+    currencyFilter(value) {
+      return formatCurrencyNumber(value);
     }
   }
 }

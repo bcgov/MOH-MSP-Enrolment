@@ -1,5 +1,11 @@
+import { v4 as uuidv4 } from 'uuid';
 import dummyData from '@/store/states/enrolment-module-dummy-data';
 import settings from '@/settings';
+import {
+  eqMsgCodesMSP,
+  eqMsgCodesFPC,
+  eqMsgCodesSB,
+} from '@/constants/eqMsgCodes';
 
 export const MODULE_NAME = 'enrolmentModule';
 
@@ -11,17 +17,27 @@ export const SET_FPC_UUID = 'setFPCUuid';
 export const SET_SB_UUID = 'setSBUuid';
 export const SET_CAPTCHA_TOKEN = 'setCaptchaToken';
 export const SET_SUBMISSION_DATE = 'setSubmissionDate';
-export const SET_REFERENCE_NUMBER = 'setReferenceNumber';
+export const SET_SUBMISSION_API_RESPONSE = 'setSubmissionAPIResponse';
+export const SET_MSP_REFERENCE_NUMBER = 'setMSPReferenceNumber';
+export const SET_FPC_REFERENCE_NUMBER = 'setFPCReferenceNumber';
+export const SET_SB_REFERENCE_NUMBER = 'setSBReferenceNumber';
 export const SET_IS_INFO_COLLECTION_NOTICE_OPEN = 'setIsInfoCollectionNoticeOpen';
 // Eligibility Questionnaires
+export const SET_EQ_MSP_IS_APPLYING = 'setEqMSPIsApplying';
 export const SET_EQ_MSP_LIVE_IN_BC = 'setEqMSPLiveInBC';
 export const SET_EQ_MSP_AWAY_OVER_30 = 'setEqMSPAwayOver30';
 export const SET_EQ_MSP_STUDENT_MINOR_REFUGEE = 'setEqMSPStudentMinorRefugee';
 export const SET_EQ_MSP_HAS_DOCUMENTS = 'setEqMSPHasDocuments';
+export const SET_EQ_FPC_IS_APPLYING = 'setEqFPCIsApplying';
 export const SET_EQ_FPC_MEETS_CRITERIA = 'setEqFPCMeetsCriteria';
 export const SET_EQ_FPC_HAS_INFO = 'setEqFPCHasInfo';
+export const SET_EQ_SB_IS_APPLYING = 'setEqSBIsApplying';
 export const SET_EQ_SB_MEETS_CRITERIA = 'setEqSBMeetsCriteria';
 export const SET_EQ_SB_HAS_INFO = 'setEqSBhasInfo';
+// Form selection page message codes
+export const SET_MSG_CODE_MSP = 'setMsgCodeMSP';
+export const SET_MSG_CODE_FPC = 'setMsgCodeFPC';
+export const SET_MSG_CODE_SB = 'setMsgCodeSB';
 // Form selections
 export const SET_IS_APPLYING_FOR_MSP = 'setIsApplyingForMSP';
 export const SET_IS_APPLYING_FOR_FPCARE = 'setIsApplyingForFPCare';
@@ -31,11 +47,13 @@ export const SET_AH_FIRST_NAME = 'setAHFirstName';
 export const SET_AH_MIDDLE_NAME = 'setAHMiddleName';
 export const SET_AH_LAST_NAME = 'setAHLastName';
 export const SET_AH_BIRTHDATE = 'setAHBirthdate';
+export const SET_AH_PHN = 'setAHPHN';
 export const SET_AH_SIN = 'setAHSIN';
 export const SET_AH_GENDER = 'setAHGender';
 export const SET_AH_CITIZENSHIP_STATUS = 'setAHCitizenshipStatus';
 export const SET_AH_CITIZENSHIP_STATUS_REASON = 'setAHCitizenshipStatusReason';
 export const SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE = 'setAHCitizenshipSupportDocumentType';
+export const SET_AH_GENDER_MATCHES = 'setAHGenderMatches';
 export const SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS = 'setAHCitizenshipSupportDocuments';
 export const SET_AH_IS_NAME_CHANGED = 'setAHIsNameChanged';
 export const SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE = 'setAHNameChangeSupportDocumentType';
@@ -66,6 +84,7 @@ export const SET_HAS_SPOUSE = 'setHasSpouse';
 export const SET_SPOUSE_STATUS = 'setSpouseStatus';
 export const SET_SPOUSE_STATUS_REASON = 'setSpouseStatusReason';
 export const SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE = 'setSpouseCitizenshipSupportDocumentType';
+export const SET_SPOUSE_GENDER_MATCHES = 'setSpouseGenderMatches';
 export const SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS = 'setSpouseCitizenshipSupportDocuments';
 export const SET_SPOUSE_IS_NAME_CHANGED = 'setSpouseIsNameChanged';
 export const SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE = 'setSpouseNameChangeSupportDocumentType';
@@ -74,6 +93,8 @@ export const SET_SPOUSE_FIRST_NAME = 'setSpouseFirstName';
 export const SET_SPOUSE_MIDDLE_NAME = 'setSpouseMiddleName';
 export const SET_SPOUSE_LAST_NAME = 'setSpouseLastName';
 export const SET_SPOUSE_BIRTH_DATE = 'setSpouseBirthDate';
+export const SET_SPOUSE_PHN = 'setSpousePHN';
+export const SET_SPOUSE_SIN = 'setSpouseSIN';
 export const SET_SPOUSE_GENDER = 'setSpouseGender';
 export const SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH = 'setSpouseLivedInBCSinceBirth';
 export const SET_SPOUSE_MADE_PERMANENT_MOVE = 'setSpouseMadePermanentMove';
@@ -150,23 +171,33 @@ export default {
   namespaced: true,
   state: () => {
     const state = {
-      applicationUuid: null,
+      applicationUuid: uuidv4(),
       mspUuid: null,
       fpcUuid: null,
       sbUuid: null,
       captchaToken: null,
       submissionDate: null,
-      referenceNumber: null,
+      submissionAPIResponse: null,
+      mspReferenceNumber: null,
+      fpcReferenceNumber: null,
+      sbReferenceNumber: null,
       isInfoCollectionNoticeOpen: true,
       // Eligibility Questionnaires
+      eqMSPIsApplying: null,
       eqMSPLiveInBC: null,
       eqMSPAwayOver30: null,
       eqMSPStudentMinorRefugee: null,
       eqMSPHasDocuments: null,
+      eqFPCIsApplying: null,
       eqFPCMeetsCriteria: null,
       eqFPCHasInfo: null,
+      eqSBIsApplying: null,
       eqSBMeetsCriteria: null,
       eqSBhasInfo: null,
+      // Form selection page message codes
+      msgCodeMSP: eqMsgCodesMSP.NotApplying,
+      msgCodeFPC: eqMsgCodesFPC.NotApplying,
+      msgCodeSB: eqMsgCodesSB.NotApplying,
       // Form selections
       isApplyingForMSP: null,
       isApplyingForFPCare: null,
@@ -176,11 +207,13 @@ export default {
       ahMiddleName: null,
       ahLastName: null,
       ahBirthdate: null,
+      ahPHN: null,
       ahSIN: null,
       ahGender: null,
       ahCitizenshipStatus: null,
       ahCitizenshipStatusReason: null,
       ahCitizenshipSupportDocumentType: null,
+      ahGenderMatches: null,
       ahCitizenshipSupportDocuments: [],
       ahIsNameChanged: null,
       ahNameChangeSupportDocumentType: null,
@@ -211,6 +244,7 @@ export default {
       spouseStatus: null,
       spouseStatusReason: null,
       spouseCitizenshipSupportDocumentType: null,
+      spouseGenderMatches: null,
       spouseCitizenshipSupportDocuments: [],
       spouseIsNameChanged: null,
       spouseNameChangeSupportDocumentType: null,
@@ -219,6 +253,8 @@ export default {
       spouseMiddleName: null,
       spouseLastName: null,
       spouseBirthDate: null,
+      spousePHN: null,
+      spouseSIN: null,
       spouseGender: null,
       spouseLivedInBCSinceBirth: null,
       spouseMadePermanentMove: null,
@@ -315,13 +351,25 @@ export default {
     [SET_SUBMISSION_DATE](state, payload) {
       state.submissionDate = payload;
     },
-    [SET_REFERENCE_NUMBER](state, payload) {
-      state.referenceNumber = payload;
+    [SET_SUBMISSION_API_RESPONSE](state, payload) {
+      state.submissionAPIResponse = payload;
+    },
+    [SET_MSP_REFERENCE_NUMBER](state, payload) {
+      state.mspReferenceNumber = payload;
+    },
+    [SET_FPC_REFERENCE_NUMBER](state, payload) {
+      state.fpcReferenceNumber = payload;
+    },
+    [SET_SB_REFERENCE_NUMBER](state, payload) {
+      state.sbReferenceNumber = payload;
     },
     [SET_IS_INFO_COLLECTION_NOTICE_OPEN](state, payload) {
       state.isInfoCollectionNoticeOpen = payload;
     },
     // Eligibility Questionnaires
+    [SET_EQ_MSP_IS_APPLYING](state, payload) {
+      state.eqMSPIsApplying = payload;
+    },
     [SET_EQ_MSP_LIVE_IN_BC](state, payload) {
       state.eqMSPLiveInBC = payload;
     },
@@ -334,17 +382,33 @@ export default {
     [SET_EQ_MSP_HAS_DOCUMENTS](state, payload) {
       state.eqMSPHasDocuments = payload;
     },
+    [SET_EQ_FPC_IS_APPLYING](state, payload) {
+      state.eqFPCIsApplying = payload;
+    },
     [SET_EQ_FPC_MEETS_CRITERIA](state, payload) {
       state.eqFPCMeetsCriteria = payload;
     },
     [SET_EQ_FPC_HAS_INFO](state, payload) {
       state.eqFPCHasInfo = payload;
     },
+    [SET_EQ_SB_IS_APPLYING](state, payload) {
+      state.eqSBIsApplying = payload;
+    },
     [SET_EQ_SB_MEETS_CRITERIA](state, payload) {
       state.eqSBMeetsCriteria = payload;
     },
     [SET_EQ_SB_HAS_INFO](state, payload) {
       state.eqSBhasInfo = payload;
+    },
+    // Form selection page message codes
+    [SET_MSG_CODE_MSP](state, payload) {
+      state.msgCodeMSP = payload;
+    },
+    [SET_MSG_CODE_FPC](state, payload) {
+      state.msgCodeFPC = payload;
+    },
+    [SET_MSG_CODE_SB](state, payload) {
+      state.msgCodeSB = payload;
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP](state, payload) {
@@ -369,6 +433,9 @@ export default {
     [SET_AH_BIRTHDATE](state, payload) {
       state.ahBirthdate = payload;
     },
+    [SET_AH_PHN](state, payload) {
+      state.ahPHN = payload;
+    },
     [SET_AH_SIN](state, payload) {
       state.ahSIN = payload;
     },
@@ -383,6 +450,9 @@ export default {
     },
     [SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE](state, payload) {
       state.ahCitizenshipSupportDocumentType = payload;
+    },
+    [SET_AH_GENDER_MATCHES](state, payload) {
+      state.ahGenderMatches = payload;
     },
     [SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS](state, payload) {
       state.ahCitizenshipSupportDocuments = payload;
@@ -472,6 +542,9 @@ export default {
     [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE](state, payload) {
       state.spouseCitizenshipSupportDocumentType = payload;
     },
+    [SET_SPOUSE_GENDER_MATCHES](state, payload) {
+      state.spouseGenderMatches = payload;
+    },
     [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS](state, payload) {
       state.spouseCitizenshipSupportDocuments = payload;
     },
@@ -495,6 +568,12 @@ export default {
     },
     [SET_SPOUSE_BIRTH_DATE](state, payload) {
       state.spouseBirthDate = payload;
+    },
+    [SET_SPOUSE_PHN](state, payload) {
+      state.spousePHN = payload;
+    },
+    [SET_SPOUSE_SIN](state, payload) {
+      state.spouseSIN = payload;
     },
     [SET_SPOUSE_GENDER](state, payload) {
       state.spouseGender = payload;
@@ -704,37 +783,49 @@ export default {
   },
   actions: {
     [RESET_FORM]({ commit }) {
-      commit(SET_APPLICATION_UUID, null);
+      commit(SET_APPLICATION_UUID, uuidv4());
       commit(SET_MSP_UUID, null);
       commit(SET_FPC_UUID, null);
       commit(SET_SB_UUID, null);
       commit(SET_CAPTCHA_TOKEN, null);
       commit(SET_SUBMISSION_DATE, null);
-      commit(SET_REFERENCE_NUMBER, null);
+      commit(SET_SUBMISSION_API_RESPONSE, null);
+      commit(SET_MSP_REFERENCE_NUMBER, null);
+      commit(SET_FPC_REFERENCE_NUMBER, null);
+      commit(SET_SB_REFERENCE_NUMBER, null);
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, true);
       // Eligibility Questionnaires
+      commit(SET_EQ_MSP_IS_APPLYING, null);
       commit(SET_EQ_MSP_LIVE_IN_BC, null);
       commit(SET_EQ_MSP_AWAY_OVER_30, null);
       commit(SET_EQ_MSP_STUDENT_MINOR_REFUGEE, null);
       commit(SET_EQ_MSP_HAS_DOCUMENTS, null);
+      commit(SET_EQ_FPC_IS_APPLYING, null);
       commit(SET_EQ_FPC_MEETS_CRITERIA, null);
       commit(SET_EQ_FPC_HAS_INFO, null);
+      commit(SET_EQ_SB_IS_APPLYING, null);
       commit(SET_EQ_SB_MEETS_CRITERIA, null);
       commit(SET_EQ_SB_HAS_INFO, null);
+      // Form selection page message codes
+      commit(SET_MSG_CODE_MSP, 0);
+      commit(SET_MSG_CODE_FPC, 0);
+      commit(SET_MSG_CODE_SB, 0);
       // Form selections
-      commit(SET_IS_APPLYING_FOR_MSP, false);
-      commit(SET_IS_APPLYING_FOR_FPCARE, false);
-      commit(SET_IS_APPLYING_FOR_SUPP_BEN, false);
+      commit(SET_IS_APPLYING_FOR_MSP, null);
+      commit(SET_IS_APPLYING_FOR_FPCARE, null);
+      commit(SET_IS_APPLYING_FOR_SUPP_BEN, null);
       // Account Holder info.
       commit(SET_AH_FIRST_NAME, null);
       commit(SET_AH_MIDDLE_NAME, null);
       commit(SET_AH_LAST_NAME, null);
       commit(SET_AH_BIRTHDATE, null);
+      commit(SET_AH_PHN, null);
       commit(SET_AH_SIN, null);
       commit(SET_AH_GENDER, null);
       commit(SET_AH_CITIZENSHIP_STATUS, null);
       commit(SET_AH_CITIZENSHIP_STATUS_REASON, null);
       commit(SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE, null);
+      commit(SET_AH_GENDER_MATCHES, null);
       commit(SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS, []);
       commit(SET_AH_IS_NAME_CHANGED, null);
       commit(SET_AH_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, null);
@@ -768,11 +859,14 @@ export default {
       commit(SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS, []);
       commit(SET_SPOUSE_IS_NAME_CHANGED, null);
       commit(SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE, null);
+      commit(SET_SPOUSE_GENDER_MATCHES, null);
       commit(SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENTS, []);
       commit(SET_SPOUSE_FIRST_NAME, null);
       commit(SET_SPOUSE_MIDDLE_NAME, null);
       commit(SET_SPOUSE_LAST_NAME, null);
       commit(SET_SPOUSE_BIRTH_DATE, null);
+      commit(SET_SPOUSE_PHN, null);
+      commit(SET_SPOUSE_SIN, null);
       commit(SET_SPOUSE_GENDER, null);
       commit(SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH, null);
       commit(SET_SPOUSE_MADE_PERMANENT_MOVE, null);
@@ -832,15 +926,15 @@ export default {
       commit(SET_RES_ADDRESS_LINE_2, null);
       commit(SET_RES_ADDRESS_LINE_3, null);
       commit(SET_RES_CITY, null);
-      commit(SET_RES_PROVINCE, null);
-      commit(SET_RES_COUNTRY, null);
+      commit(SET_RES_PROVINCE, 'British Columbia');
+      commit(SET_RES_COUNTRY, 'Canada');
       commit(SET_RES_POSTAL_CODE, null);
       commit(SET_MAIL_ADDRESS_LINE_1, null);
       commit(SET_MAIL_ADDRESS_LINE_2, null);
       commit(SET_MAIL_ADDRESS_LINE_3, null);
       commit(SET_MAIL_CITY, null);
-      commit(SET_MAIL_PROVINCE, null);
-      commit(SET_MAIL_COUNTRY, null);
+      commit(SET_MAIL_PROVINCE, 'British Columbia');
+      commit(SET_MAIL_COUNTRY, 'Canada');
       commit(SET_MAIL_POSTAL_CODE, null);
       commit(SET_IS_MAIL_SAME, true);
       commit(SET_PHONE, null);
@@ -863,13 +957,25 @@ export default {
     [SET_SUBMISSION_DATE]({ commit }, payload) {
       commit(SET_SUBMISSION_DATE, payload);
     },
-    [SET_REFERENCE_NUMBER]({ commit }, payload) {
-      commit(SET_REFERENCE_NUMBER, payload);
+    [SET_SUBMISSION_API_RESPONSE]({ commit }, payload) {
+      commit(SET_SUBMISSION_API_RESPONSE, payload);
+    },
+    [SET_MSP_REFERENCE_NUMBER]({ commit }, payload) {
+      commit(SET_MSP_REFERENCE_NUMBER, payload);
+    },
+    [SET_FPC_REFERENCE_NUMBER]({ commit }, payload) {
+      commit(SET_FPC_REFERENCE_NUMBER, payload);
+    },
+    [SET_SB_REFERENCE_NUMBER]({ commit }, payload) {
+      commit(SET_SB_REFERENCE_NUMBER, payload);
     },
     [SET_IS_INFO_COLLECTION_NOTICE_OPEN]({ commit }, payload) {
       commit(SET_IS_INFO_COLLECTION_NOTICE_OPEN, payload);
     },
     // Eligibility Questionnaires
+    [SET_EQ_MSP_IS_APPLYING]({commit}, payload) {
+      commit(SET_EQ_MSP_IS_APPLYING, payload);
+    },
     [SET_EQ_MSP_LIVE_IN_BC]({commit}, payload) {
       commit(SET_EQ_MSP_LIVE_IN_BC, payload);
     },
@@ -882,17 +988,33 @@ export default {
     [SET_EQ_MSP_HAS_DOCUMENTS]({commit}, payload) {
       commit(SET_EQ_MSP_HAS_DOCUMENTS, payload);
     },
+    [SET_EQ_FPC_IS_APPLYING]({commit}, payload) {
+      commit(SET_EQ_FPC_IS_APPLYING, payload);
+    },
     [SET_EQ_FPC_MEETS_CRITERIA]({commit}, payload) {
       commit(SET_EQ_FPC_MEETS_CRITERIA, payload);
     },
     [SET_EQ_FPC_HAS_INFO]({commit}, payload) {
       commit(SET_EQ_FPC_HAS_INFO, payload);
     },
+    [SET_EQ_SB_IS_APPLYING]({commit}, payload) {
+      commit(SET_EQ_SB_IS_APPLYING, payload);
+    },
     [SET_EQ_SB_MEETS_CRITERIA]({commit}, payload) {
       commit(SET_EQ_SB_MEETS_CRITERIA, payload);
     },
     [SET_EQ_SB_HAS_INFO]({commit}, payload) {
       commit(SET_EQ_SB_HAS_INFO, payload);
+    },
+    // Form selection page message codes
+    [SET_MSG_CODE_MSP]({commit}, payload) {
+      commit(SET_MSG_CODE_MSP, payload);
+    },
+    [SET_MSG_CODE_FPC]({commit}, payload) {
+      commit(SET_MSG_CODE_FPC, payload);
+    },
+    [SET_MSG_CODE_SB]({commit}, payload) {
+      commit(SET_MSG_CODE_SB, payload);
     },
     // Form selections
     [SET_IS_APPLYING_FOR_MSP]({commit}, payload) {
@@ -917,6 +1039,9 @@ export default {
     [SET_AH_BIRTHDATE]({ commit }, payload) {
       commit(SET_AH_BIRTHDATE, payload);
     },
+    [SET_AH_PHN]({ commit }, payload) {
+      commit(SET_AH_PHN, payload);
+    },
     [SET_AH_SIN]({ commit }, payload) {
       commit(SET_AH_SIN, payload);
     },
@@ -931,6 +1056,9 @@ export default {
     },
     [SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE]({ commit }, payload) {
       commit(SET_AH_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE, payload);
+    },
+    [SET_AH_GENDER_MATCHES]({ commit }, payload) {
+      commit(SET_AH_GENDER_MATCHES, payload);
     },
     [SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS]({ commit }, payload) {
       commit(SET_AH_CITIZENSHIP_SUPPORT_DOCUMENTS, payload);
@@ -1020,6 +1148,9 @@ export default {
     [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE]({ commit }, payload) {
       commit(SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE, payload);
     },
+    [SET_SPOUSE_GENDER_MATCHES]({ commit }, payload) {
+      commit(SET_SPOUSE_GENDER_MATCHES, payload);
+    },
     [SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS]({ commit }, payload) {
       commit(SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS, payload);
     },
@@ -1043,6 +1174,12 @@ export default {
     },
     [SET_SPOUSE_BIRTH_DATE]({ commit }, payload) {
       commit(SET_SPOUSE_BIRTH_DATE, payload);
+    },
+    [SET_SPOUSE_PHN]({ commit }, payload) {
+      commit(SET_SPOUSE_PHN, payload);
+    },
+    [SET_SPOUSE_SIN]({ commit }, payload) {
+      commit(SET_SPOUSE_SIN, payload);
     },
     [SET_SPOUSE_GENDER]({ commit }, payload) {
       commit(SET_SPOUSE_GENDER, payload);

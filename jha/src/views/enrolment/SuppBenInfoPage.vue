@@ -36,21 +36,29 @@
             <CurrencyInput id="ah-net-income"
               label="See line 23600 of your Notice of Assessment or Reassessment."
               v-model="ahSBIncome"
+              maxlength="6"
               :inputStyle='mediumStyles'
               @blur="handleBlurField($v.ahSBIncome)"/>
               <div class="text-danger"
                   v-if="$v.ahSBIncome.$dirty && !$v.ahSBIncome.required"
                     aria-live="assertive">Your net income from {{selectedNOAYear}} is required.</div>
+              <div class="text-danger"
+                  v-if="$v.ahSBIncome.$dirty && !$v.ahSBIncome.positiveNumberValidator"
+                    aria-live="assertive">Your net income must be a positive number.</div>
             <div v-if="hasSpouse === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's {{selectedNOAYear}} net income.</p>
               <CurrencyInput id="spouse-net-income"
                 label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
                 v-model="spouseSBIncome"
+                maxlength="6"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.spouseSBIncome)"/>
               <div class="text-danger"
                   v-if="$v.spouseSBIncome.$dirty && !$v.spouseSBIncome.required"
                     aria-live="assertive">Your spouse/common-law partner's net income from {{selectedNOAYear}} is required.</div>
+              <div class="text-danger"
+                  v-if="$v.spouseSBIncome.$dirty && !$v.spouseSBIncome.positiveNumberValidator"
+                    aria-live="assertive">Your spouse/common-law partner's net income must be a positive number.</div>
             </div>
 
             <div v-if="onlySuppBen">
@@ -85,6 +93,7 @@
               <CurrencyInput id="child-care-expenses"
                 label="See line 21400 of your Notice of Assessment or Reassessment."
                 v-model="claimedChildCareExpenses"
+                maxlength="6"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.claimedChildCareExpenses)"/>
               <div class="text-danger"
@@ -149,6 +158,7 @@
               <CurrencyInput id="disability-savings-plan"
                 label="See Line 12500 of the Notice of Assessment or Reassessment"
                 v-model="sbRDSPAmount"
+                maxlength="6"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.sbRDSPAmount)"/>
               <div class="text-danger"
@@ -220,10 +230,10 @@
                 <p>Scan the document, or take a photo of it.</p>
                 <p>Make sure it's:</p>
                 <ul>
-                  <li>The entire document, from corner to corner.</li>
-                  <li>Rotated Correctly(not upside down or sideways).</li>
-                  <li>In focus and easy to read.</li>
-                  <li>A JPG, PNG, GIF, BMP, or PDF file.</li>
+                  <li>The entire document, from corner to corner</li>
+                  <li>Rotated correctly (not upside down or sideways)</li>
+                  <li>In focus and easy to read</li>
+                  <li>A JPG, PNG, GIF, BMP, or PDF file</li>
                 </ul>
               </TipBox>
             </div>
@@ -242,6 +252,7 @@
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
+  isEQPath,
   isPastPath,
 } from '@/router/routes';
 import {
@@ -266,7 +277,6 @@ import SuppBenData from '@/data-types/supp-ben-data';
 
 import {
   MODULE_NAME as enrolmentModule,
-  RESET_FORM,
   SET_HAS_CHILDREN,
   SET_NUM_CHILDREN,
   SET_SELECTED_NOA_YEAR,
@@ -310,6 +320,8 @@ import {
   DigitInput,
   CheckboxGroup,
   windowWidthMixin,
+  positiveNumberValidator,
+  optionalValidator,
 } from 'common-lib-vue';
 import TipBox from '@/components/TipBox';
 import SuppBenWidget from '@/components/SuppBenWidget';
@@ -425,6 +437,23 @@ export default {
     } else {
       this.selectOptionsFamilyMembers.filter(option => {return option.id === 'spouse';})[0].disabled = false;
     }
+
+    if (this.hasChildren !== 'Y') {
+      //the ah has no children so disable the checkbox group option for child 
+      this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = true;
+      this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
+      //if the ah has selected child for one of the deductions, remove that selection
+      if (this.selectedDisabilityRecipients.includes("child")){
+        this.selectedDisabilityRecipients.splice(this.selectedDisabilityRecipients.indexOf("child"), 1);
+      }
+      if (this.selectedAttendantNursingRecipients.includes("child")){
+        this.selectedAttendantNursingRecipients.splice(this.selectedAttendantNursingRecipients.indexOf("child"), 1);
+      }
+    } else if (this.intNumChildren > 0) {
+      // the hasChildren is 'Y' and numChildren is > 0 so enable the checkbox group option for child
+      this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
+      this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
+    }
     
     // set options for years
     this.radioOptionsNOAYears = [
@@ -451,6 +480,7 @@ export default {
       },
       ahSBIncome: {
         required,
+        positiveNumberValidator: optionalValidator(positiveNumberValidator),
       },
       spouseSBIncome: {},
       hasChildren: {},
@@ -479,6 +509,7 @@ export default {
     
     if (this.hasSpouse === 'Y') {
       validations.spouseSBIncome.required = required;
+      validations.spouseSBIncome.positiveNumberValidator = optionalValidator(positiveNumberValidator);
     }
 
     if (this.hasChildren === 'Y' && this.onlySuppBen) {
@@ -518,7 +549,53 @@ export default {
     return validations;
   },
   methods: {
+    setEmptyFields() {
+      //No Spouse
+      if (this.hasSpouse === "N") {
+        this.spouseSBIncome = "0";
+      }
+
+      //No children
+      if (this.hasChildren === "N") {
+        this.numChildren = "0";
+        this.numDisabilityChildren = "0";
+        this.numAttendantNursingChildren = "0";
+        this.claimedChildCareExpenses = "0";
+      }
+
+      if (this.numChildren === 0) {
+        this.hasChildren = "N";
+        this.numDisabilityChildren = "0";
+        this.numAttendantNursingChildren = "0";
+        this.claimedChildCareExpenses = "0";
+      }
+
+      //No children in recipients list
+      if (!this.selectedDisabilityRecipients.includes("child")) {
+        this.numDisabilityChildren = "0";
+      }
+
+      if (!this.selectedAttendantNursingRecipients.includes("child")) {
+        this.numAttendantNursingChildren = "0";
+      }
+
+      //No expenses/credits
+      if (this.hasAttendantNursingExpenses === "N") {
+        this.attendantNursingReceipts = [];
+        this.selectedAttendantNursingRecipients = [];
+      }
+
+      if (this.hasDisabilityCredit === "N") {
+        this.selectedDisabilityRecipients = [];
+      }
+
+      //No RDSP
+      if (this.hasRDSP === "N") {
+        this.sbRDSPAmount = "0";
+      }
+    },
     saveData() {
+      this.setEmptyFields();
       this.$store.dispatch(`${enrolmentModule}/${SET_SELECTED_NOA_YEAR}`, this.selectedNOAYear);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_SB_INCOME}`, this.ahSBIncome);
       this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_SB_INCOME}`, this.spouseSBIncome);
@@ -594,9 +671,10 @@ export default {
       }
     },
     intNumChildren(value) {
-      if (value === 0) {
+      if (!value) {
         //the ah has no children so disable the checkbox group option for child 
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = true;
+        this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
         //if the ah has selected child for one of the deductions, remove that selection
         if (this.selectedDisabilityRecipients.includes("child")){
           this.selectedDisabilityRecipients.splice(this.selectedDisabilityRecipients.indexOf("child"), 1);
@@ -607,12 +685,14 @@ export default {
       } else {
         // the hasChildren is 'Y' and numChildren is > 0 so enable the checkbox group option for child
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
+        this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
       }
     },
     hasChildren(value) {
-      if (value === 'N') {
+      if (value !== 'Y') {
         //the ah has no children so disable the checkbox group option for child 
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = true;
+        this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
         //if the ah has selected child for one of the deductions, remove that selection
         if (this.selectedDisabilityRecipients.includes("child")){
           this.selectedDisabilityRecipients.splice(this.selectedDisabilityRecipients.indexOf("child"), 1);
@@ -623,16 +703,26 @@ export default {
       } else if (this.intNumChildren > 0) {
         // the hasChildren is 'Y' and numChildren is > 0 so enable the checkbox group option for child
         this.selectOptionsFamilyMembers.filter(option => {return option.id === "child";} )[0].disabled = false;
+        this.selectOptionsFamilyMembers = [...this.selectOptionsFamilyMembers];
       }
     },
     hasDisabilityCredit(value) {
-      if (this.pageLoaded && value === 'N') {
+      if (this.pageLoaded && value === "N") {
         this.selectedDisabilityRecipients = [];
+        this.numDisabilityChildren = 0;
+        this.$v.selectedDisabilityRecipients.$reset();
+        this.$v.numDisabilityChildren.$reset();
       }
     },
     hasAttendantNursingExpenses(value) {
-      if (this.pageLoaded && value === 'N') {
+      if (this.pageLoaded && value === "N") {
         this.selectedAttendantNursingRecipients = [];
+        this.numAttendantNursingChildren = 0;
+        //could clear this.attendantNursingReceipts = [] if we wanted as well
+        //I'm leaving it out right now to save on the effort of re-uploading
+        this.$v.selectedAttendantNursingRecipients.$reset();
+        this.$v.numAttendantNursingChildren.$reset();
+        this.$v.attendantNursingReceipts.$reset();
       }
     }
   },
@@ -670,10 +760,8 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
-      next();
-    } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
+    if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)
+      && !isEQPath(to.path)) {
       next();
     } else {
       // Navigate to self.

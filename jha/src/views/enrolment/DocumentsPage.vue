@@ -14,27 +14,57 @@
         <div class="row">
           <div class="col-md-8">
             <div>
-              <p class="font-weight-bold">Upload your Canada Revenue Agency Notice of Assessment or Reassessment for 2020</p>
+              <p class="font-weight-bold">Upload your Canada Revenue Agency Notice of Assessment or Reassessment for {{selectedNOAYear}}</p>
               <hr/>
-              <FileUploader v-model="ahCRADocuments" />
-            </div>
-            <div v-if="hasSpouse">
-              <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for 2020</p>
-              <hr/>
-              <FileUploader v-model="spouseCRADocuments" />
+              <FileUploader v-model="ahCRADocuments"
+                :isZoomPortalEnabled="true"
+                modalElementTarget="#modal-target"
+                documentType="Account holder NOA/NOR support documents"
+                description="Account holder NOA/NOR" />
+              <div class="text-danger"
+                      v-if="$v.ahCRADocuments.$dirty && !$v.ahCRADocuments.required"
+                      aria-live="assertive">File upload required.</div>
             </div>
           </div>
           <div class="col-md-4">
             <TipBox title="Tip">
               <p>
-                If you are uploading a copy of a Notice of Assessment of Reassessment from the Canada Revenue Agency website, make sure the image contains:
+                If you are uploading a copy of a Notice of Assessment or Reassessment from the Canada Revenue Agency website, make sure the image contains:
               </p>
               <ul>
-                <li>Your Name</li>
-                <li>The Tax Year</li>
-                <li>Your Net Income(line 23600)</li>
-                <li>If you have a Regisered Disability Savings Plan(line 12500)</li>
-                <li>A JPG, PNG, GIF, BMP, or PDF file.</li>
+                <li>Your name</li>
+                <li>The tax year</li>
+                <li>Your net income (line 23600)</li>
+                <li>If you have a Regisered Disability Savings Plan (line 12500)</li>
+                <li>A JPG, PNG, GIF, BMP or PDF file</li>
+              </ul>
+            </TipBox>
+          </div>
+        </div>
+        <div v-if="hasSpouse" class="row mt-5">
+          <div class="col-md-8">
+            <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for {{selectedNOAYear}}</p>
+            <hr/>
+            <FileUploader v-model="spouseCRADocuments"
+              :isZoomPortalEnabled="true"
+              modalElementTarget="#modal-target"
+              documentType="Spouse NOA/NOR support documents"
+              description="Spouse NOA/NOR" />
+            <div class="text-danger"
+              v-if="$v.spouseCRADocuments.$dirty && !$v.spouseCRADocuments.required"
+              aria-live="assertive">File upload required.</div>
+          </div>
+          <div class="col-md-4">
+            <TipBox title="Tip">
+              <p>
+                If you are uploading a copy of a Notice of Assessment or Reassessment from the Canada Revenue Agency website, make sure the image contains:
+              </p>
+              <ul>
+                <li>Your name</li>
+                <li>The tax year</li>
+                <li>Your net income (line 23600)</li>
+                <li>If you have a Regisered Disability Savings Plan (line 12500)</li>
+                <li>A JPG, PNG, GIF, BMP or PDF file</li>
               </ul>
             </TipBox>
           </div>
@@ -49,6 +79,7 @@
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
+  isEQPath,
   isPastPath,
 } from '@/router/routes';
 import {
@@ -61,7 +92,6 @@ import {
 } from '@/helpers/url';
 import {
   MODULE_NAME as enrolmentModule,
-  RESET_FORM,
   SET_AH_CRA_DOCUMENTS,
   SET_SPOUSE_CRA_DOCUMENTS,
 } from '@/store/modules/enrolment-module';
@@ -71,6 +101,9 @@ import {
   PageContent,
   FileUploader,
 } from 'common-lib-vue';
+import {
+  required
+} from 'vuelidate/lib/validators';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import TipBox from '@/components/TipBox';
@@ -92,6 +125,7 @@ export default {
       ahCRADocuments: [],
       spouseCRADocuments: [],
       hasSpouse: false,
+      selectedNOAYear: null,
     };
   },
   created() {
@@ -103,9 +137,19 @@ export default {
     this.ahCRADocuments = this.$store.state.enrolmentModule.ahCRADocuments;
     this.spouseCRADocuments = this.$store.state.enrolmentModule.spouseCRADocuments;
     this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse !== 'N';
+    this.selectedNOAYear = this.$store.state.enrolmentModule.selectedNOAYear;
   },
   validations() {
-    const validations = {};
+    const validations = {
+      ahCRADocuments: {
+        required,
+      },
+      spouseCRADocuments: {}
+    };
+
+    if (this.$store.state.enrolmentModule.hasSpouse === 'Y') {
+      validations.spouseCRADocuments.required = required;
+    }
     return validations;
   },
   methods: {
@@ -137,10 +181,8 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if (to.path === enrolmentRoutes.HOME_PAGE.path) {
-      this.$store.dispatch(enrolmentModule + '/' + RESET_FORM);
-      next();
-    } else if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)) {
+    if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)
+      && !isEQPath(to.path)) {
       next();
     } else {
       // Navigate to self.

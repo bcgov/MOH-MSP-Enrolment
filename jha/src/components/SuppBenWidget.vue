@@ -122,7 +122,7 @@
           <span v-if="inputData.totalDeductions > 0" >
             {{currencyString(inputData.totalDeductions)}}
           </span>
-          <span v-else>- - </span>
+          <span v-else> - - </span>
         </td>
       </tr>
     </table>
@@ -135,20 +135,21 @@
             <h4>Adjusted Net Income:</h4>
           </td>
           <td>
-            <span v-if="inputData.adjustedIncome > 0">
+            <span v-if="inputData.adjustedIncome === null || inputData.adjustedIncome === undefined || inputData.adjustedIncome === ''"> - - </span>
+            <span v-else-if="inputData.adjustedIncome > 0">
               {{currencyString(inputData.adjustedIncome)}}
             </span>
             <span v-else>
-              - -
+              {{currencyString(0)}}
             </span>
           </td>
         </tr>
       </tbody>
     </table>
-    <p v-if="inputData.adjustedIncome > 0 && inputData.incomeUnderThreshold" class="text-success font-weight-bold">
+    <p v-if="inputData.adjustedIncome >= 0 && inputData.incomeUnderThreshold" class="result-message-success">
       It is likely that you will qualify for Supplementary Benefits.
     </p>
-    <p v-if="!inputData.incomeUnderThreshold" class="text-danger font-weight-bold" aria-live="assertive">
+    <p v-if="!inputData.incomeUnderThreshold" class="result-message-failure" aria-live="assertive">
       You might not qualify for Supplementary Benefits.
     </p>
   </div>
@@ -189,5 +190,15 @@ export default {
 <style scoped>
 .widget-container {
   background: #f2f2f2;
+}
+.result-message-success {
+  color: rgb(0, 128, 0);
+  font-size: 1rem;
+  font-weight: 400;
+}
+.result-message-failure {
+  color: #cc5900;
+  font-size: 1rem;
+  font-weight: 700;
 }
 </style>
