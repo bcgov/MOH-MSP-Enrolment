@@ -1243,9 +1243,11 @@ export default {
         return "Moved from jurisdiction";
       }
       //Permanent Resident status and "Living in BC Without MSP" reason
+      //OR Temporary Resident of any kind
       if (
-        status === StatusInCanada.PermanentResident &&
-        reason === CanadianStatusReasons.LivingInBCWithoutMSP
+        (status === StatusInCanada.PermanentResident &&
+          reason === CanadianStatusReasons.LivingInBCWithoutMSP) ||
+        status === StatusInCanada.TemporaryResident
       ) {
         return "Moved from province/jurisdiction";
       }
