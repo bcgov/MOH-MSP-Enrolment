@@ -880,8 +880,9 @@ export default {
     fpcData() {
       const items = [];
       const ahFPCIncome = this.$store.state.enrolmentModule.ahFPCIncome;
+      const noaYear = new Date().getFullYear() - 2;
       items.push({
-        label: "Account holder net income for 2019",
+        label: `Account holder net income for ${noaYear}`,
         value: ahFPCIncome
           ? moneyFormatter.format(ahFPCIncome)
           : moneyFormatter.format("0"),
@@ -890,7 +891,7 @@ export default {
         const spouseFPCIncome = this.$store.state.enrolmentModule
           .spouseFPCIncome;
         items.push({
-          label: "Spouse/common-law partner net income for 2019",
+          label: `Spouse/common-law partner net income for ${noaYear}`,
           value: spouseFPCIncome
             ? moneyFormatter.format(
                 this.$store.state.enrolmentModule.spouseFPCIncome
