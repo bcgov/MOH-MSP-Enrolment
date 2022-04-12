@@ -329,7 +329,7 @@ class ApiService {
         sixtyFiveDeduction: parseInt(formState.ah65Deduction) || 0,
         totalDeductions: parseInt(formState.sbTotalDeductions) || 0,
         totalNetIncome: parseInt(formState.sbTotalHouseholdIncome) || 0,
-        childCareExpense: Math.floor(parseInt(formState.claimedChildCareExpenses) / 2 || 0),
+        childCareExpense: Math.floor(parseInt(formState.claimedChildCareExpenses) / 2 || 0), // amount recieved is half actual child care expenses 
         netIncomeLastYear: parseInt(formState.ahSBIncome) || 0, // Account holder net income. DB as "netIncome".
         numChildren: parseInt(formState.numChildren) || 0,
         numDisabled,
