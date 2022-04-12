@@ -304,6 +304,16 @@ class ApiService {
 
     // SB.
     if (formState.isApplyingForSuppBen) {
+      let numDisabled = parseInt(formState.numDisabilityChildren) || 0;
+      // check if spouse is on disability
+      if (formState.selectedDisabilityRecipients && formState.selectedDisabilityRecipients.includes('spouse')) {
+        numDisabled += 1;
+      }
+      // check if account holder is on disability
+      if (formState.selectedDisabilityRecipients && formState.selectedDisabilityRecipients.includes('ah')) {
+        numDisabled += 1;
+      }
+
       jsonPayload.supplementaryBenefits = {
         uuid: formState.sbUuid,
         powerOfAttorney: 'N',
@@ -313,17 +323,19 @@ class ApiService {
         adjustedNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
         childDeduction: parseInt(formState.childDeduction) || 0,
         deductions: parseInt(formState.childAdjustedDeduction) || 0, // Stored as "deductionsDifference" in DB.
-        disabilityDeduction: parseInt(formState.ahDisabilityCreditDeduction) || 0,
+        disabilityDeduction: parseInt(formState.ahDisabilityCreditDeduction) + 
+          parseInt(formState.spouseDisabilityCreditDeduction) +
+          parseInt(formState.childDisabilityCreditDeduction) || 0,
         sixtyFiveDeduction: parseInt(formState.ah65Deduction) || 0,
         totalDeductions: parseInt(formState.sbTotalDeductions) || 0,
-        totalNetIncome: parseInt(formState.sbAdjustedIncome) || 0,
-        childCareExpense: parseInt(formState.claimedChildCareExpenses) || 0,
+        totalNetIncome: parseInt(formState.sbTotalHouseholdIncome) || 0,
+        childCareExpense: Math.floor(parseInt(formState.claimedChildCareExpenses) / 2 || 0),
         netIncomeLastYear: parseInt(formState.ahSBIncome) || 0, // Account holder net income. DB as "netIncome".
         numChildren: parseInt(formState.numChildren) || 0,
-        numDisabled: parseInt(formState.numDisabilityChildren) || 0,
+        numDisabled,
         spouseIncomeLine236: parseInt(formState.spouseSBIncome) || 0,
         reportedUCCBenefit: parseInt(formState.childDisabilityCreditDeduction) || 0,
-        spouseDSPAmount: parseInt(formState.spouseDisabilityCreditDeduction) || 0,
+        spouseDSPAmount: parseInt(formState.sbRDSPAmount) || 0, // for some reason the db expects total SB RDSP as "spouseDSPAmount" although this isn't specified for the user as being spouse only
         spouseDeduction: parseInt(formState.spouseDeduction) || 0,
         applicantAttendantCareExpense: parseInt(formState.ahAttendantNursingDeduction) || 0,
         spouseAttendantCareExpense: parseInt(formState.spouseAttendantNursingDeduction) || 0,

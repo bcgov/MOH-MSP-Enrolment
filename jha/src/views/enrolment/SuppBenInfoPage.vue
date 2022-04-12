@@ -718,8 +718,7 @@ export default {
       if (this.pageLoaded && value === "N") {
         this.selectedAttendantNursingRecipients = [];
         this.numAttendantNursingChildren = 0;
-        //could clear this.attendantNursingReceipts = [] if we wanted as well
-        //I'm leaving it out right now to save on the effort of re-uploading
+        this.attendantNursingReceipts = [];
         this.$v.selectedAttendantNursingRecipients.$reset();
         this.$v.numAttendantNursingChildren.$reset();
         this.$v.attendantNursingReceipts.$reset();
