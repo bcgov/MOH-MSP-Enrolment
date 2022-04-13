@@ -290,9 +290,9 @@ class ApiService {
         clientName: null,
         processDate: formatISODate(dateToday),
         accountHolderNetIncome: formState.ahFPCIncome,
-        accountHolderRDSP: formState.ahFPCRDSP,
+        accountHolderRDSP: formState.ahFPCRDSP || '0.00',
         spouseNetIncome: formState.ahFPCIncome,
-        spouseRDSP: formState.ahFPCRDSP,
+        spouseRDSP: formState.ahFPCRDSP || '0.00',
         spousePostalCode: postalCode,
         persons, // Contains account holder, spouse, and children.
         familyNumber: null,
