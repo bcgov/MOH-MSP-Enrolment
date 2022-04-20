@@ -12,7 +12,7 @@
         <h1>Contact Information</h1>
         <hr class="mt-0"/>
         <div class="row">
-            <div class="col-md-6" v-if="!onlyFPC">
+            <div class="col-md-6" v-if="applyingForMSP">
               <div>
                 <h2>Residential Address</h2>
                 <p class="address-description">Enter your residential address - that's the address you currently live at in B.C.</p>
@@ -103,8 +103,8 @@
           <div class="col-md-6">
             <div>
               <h2>Mailing Address</h2>
-              <p v-if="!onlyFPC" class="address-description">Enter your mailing address - if it's different</p>
-              <p v-else>Enter your mailing address - if it's different</p>
+              <p v-if="applyingForMSP" class="address-description">Enter your mailing address - if it's different</p>
+              <p v-else>Enter your mailing address</p>
             </div>
             <hr class="mt-0"/>
             <div v-if="isMailSame">
@@ -230,7 +230,7 @@
             </div>
           </div>
         </div>
-        <div v-if="!onlyFPC">
+        <div v-if="applyingForMSP">
           <Checkbox class="mt-3"
                 id="same-address-check"
                 v-model="isMailSame"
@@ -395,7 +395,7 @@ export default {
   data: () => {
     return {
       isPageLoaded: false,
-      onlyFPC: false,
+      applyingForMSP: true,
       resAddressLine1: null,
       resAddressLine2: null,
       resAddressLine3: null,
@@ -423,8 +423,7 @@ export default {
       enrolmentRoutes.CONTACT_INFO_PAGE.title
     );
 
-    this.onlyFPC = this.$store.state.enrolmentModule.isApplyingForFPCare
-                  && !(this.$store.state.enrolmentModule.isApplyingForMSP || this.$store.state.enrolmentModule.isApplyingForSuppBen)
+    this.applyingForMSP = this.$store.state.enrolmentModule.isApplyingForMSP;
     this.resAddressLine1 = this.$store.state.enrolmentModule.resAddressLine1;
     this.resAddressLine2 = this.$store.state.enrolmentModule.resAddressLine2;
     this.resAddressLine3 = this.$store.state.enrolmentModule.resAddressLine3;
@@ -442,7 +441,7 @@ export default {
     this.isMailSame = this.$store.state.enrolmentModule.isMailSame;
     this.phone = this.$store.state.enrolmentModule.phone;
 
-    if (this.onlyFPC) {
+    if (!this.applyingForMSP) {
       this.isMailSame = false;
     }
     this.$nextTick(() => {
@@ -455,7 +454,7 @@ export default {
         phoneValidator,
       },
     };
-    if (!this.onlyFPC) {
+    if (this.applyingForMSP) {
       const resValidations = {
         resAddressLine1: {
           required,
@@ -502,7 +501,6 @@ export default {
         mailCountry: {
           required,
         },
-        
         mailPostalCode: {
           required,
           specialCharacterValidator: this.mailCountry === 'Canada' ? () => true : specialCharacterValidator,
