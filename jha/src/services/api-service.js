@@ -21,7 +21,7 @@ class ApiService {
     const dateToday = new Date();
     const children = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child0To18);
     const dependents = formState.children.filter((child) => child.ageRange === ChildAgeTypes.Child19To24);
-    const onlyApplyingForFPCare = formState.isApplyingForFPCare && !formState.isApplyingForMSP && !formState.isApplyingForSuppBen;
+    const applyingForMSP = formState.isApplyingForMSP;
 
     const jsonPayload = {
       uuid: formState.applicationUuid,
@@ -46,8 +46,8 @@ class ApiService {
       spouse: null, // Set below.
     };
     
-    // only mail address is required for FPCare-only submissions
-    if (onlyApplyingForFPCare) {
+    // only mailing address is required for SuppBens and FPCare submissions
+    if (!applyingForMSP) {
       jsonPayload.addressLine1 = formState.mailAddressLine1 || null;
       jsonPayload.addressLine2 = formState.mailAddressLine2 || null;
       jsonPayload.addressLine3 = formState.mailAddressLine3 || null;

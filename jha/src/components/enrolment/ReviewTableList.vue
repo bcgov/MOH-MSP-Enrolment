@@ -218,9 +218,6 @@ export default {
     }
   },
   computed: {
-    onlyApplyingForFPCare(){
-      return this.isApplyingForFPCare && !this.isApplyingForMSP && !this.isApplyingForSuppBen;
-    },
     FPCDistributionBarItems() {
       const ahIncome = parseFloat(this.$store.state.enrolmentModule.ahFPCIncome) || 0;
       const spouseIncome = parseFloat(this.$store.state.enrolmentModule.spouseFPCIncome) || 0;
@@ -1019,7 +1016,7 @@ export default {
     contactData() {
       const items = [];
       // If only applying for FPCare, don't include residential address info
-      if (!this.onlyApplyingForFPCare) {
+      if (this.isApplyingForMSP) {
         items.push({
           label: "Residential Address:",
           value: "",
@@ -1059,7 +1056,7 @@ export default {
         });
 
       }
-      if (!this.$store.state.enrolmentModule.isMailSame || this.onlyApplyingForFPCare) {
+      if (!this.$store.state.enrolmentModule.isMailSame || !this.isApplyingForMSP) {
         items.push({
           label: "Mailing Address:",
           value: "",
