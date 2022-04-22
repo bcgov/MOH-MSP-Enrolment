@@ -42,7 +42,7 @@ export const SupportDocumentList = {
   RecordOfLanding: 'Record of Landing',
   PermanentResidentCard: 'Permanent Resident Card (front and back)',
   PermanentResidentConfirmation: 'Confirmation of Permanent Residence',
-  WorkPermit: 'Work Permit',
+  WorkPermit: 'Work Permit / CUAET',
   StudyPermit: 'Study Permit',
   VisitorVisa: 'Visitor Permit',
   PassportWithDiplomaticFoil: 'Passport With Diplomatic Foil',
@@ -104,7 +104,7 @@ export const SupportDocumentSamples: SampleImageInterface[] = [
     desc: 'Picture of a sample Confirmation of Permanent Residence',
   },
   // WorkPermit
-  { path: 'assets/work_permit.jpg', desc: 'Picture of a sample Work Permit' },
+  { path: 'assets/work_permit_CUAET.png', desc: 'Picture of a sample Work Permit / CUAET' },
   // StudyPermit
   {
     path: 'assets/study_permit.jpg',

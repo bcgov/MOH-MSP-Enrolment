@@ -276,8 +276,8 @@ export class MovingInformationComponent<T extends IMovingInfo> extends Base impl
   }
 
   get absentLast12MonthsLabel() {
-    const msg = ' been outside B.C. for more than 30 days in total in the past 12 months?';
-    return (this.isApplicant ? 'Have ' : 'Has ') + this.relationship + msg;
+    const msg = `Since ${this.relationship} arrived in B.C. have ${this.isApplicant ? 'you' : 'they'} left the province for more than 30 days total in the past 12 months?`;
+    return msg;
   }
 
   get absentLast12MonthsInstruct() {
