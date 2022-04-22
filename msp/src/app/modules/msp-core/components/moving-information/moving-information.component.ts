@@ -251,8 +251,7 @@ export class MovingInformationComponent<T extends IMovingInfo> extends Base impl
   }
 
   get permanentMoveTip() {
-    return 'A permanent move means that you intend to make B.C. ' +
-           'your primary residence for 6 months or longer.';
+    return 'A permanent move means that you intend to make B.C. your primary residence for 6 months or longer. If you leave B.C. within 6 months of enrolling for MSP, you may have to repay your medical expenses.';
   }
 
   get armedForceLabel() {
