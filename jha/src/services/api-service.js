@@ -274,7 +274,7 @@ class ApiService {
     if (formState.isApplyingForFPCare) {
       const postalCode = formState.isMailSame && formState.resPostalCode ? stripSpaces(formState.resPostalCode) : stripSpaces(formState.mailPostalCode);
       const persons = [];
-      children.forEach((child) => {
+      formState.children.forEach((child) => {
         persons.push({
           givenName: child.firstName,
           surname: child.lastName,
