@@ -166,6 +166,9 @@ export const SET_MAIL_COUNTRY = 'setMailCountry';
 export const SET_MAIL_POSTAL_CODE = 'setMailPostalCode';
 export const SET_IS_MAIL_SAME = 'setIsMailSame';
 export const SET_PHONE = 'setPhone';
+// Consent Info
+export const SET_POWER_OF_ATTORNEY = 'setPowerOfAttorney';
+export const SET_POWER_OF_ATTORNEY_DOCUMENTS = 'setPowerOfAttorneyDocuments';
 
 export default {
   namespaced: true,
@@ -326,6 +329,9 @@ export default {
       mailPostalCode: null,
       isMailSame: true,
       phone: null,
+      // Consent Info
+      hasPowerOfAttorney: null,
+      powerOfAttorneyDocuments: [],
     };
     if (settings.useDummyData) {
       Object.assign(state, dummyData);
@@ -779,6 +785,12 @@ export default {
     },
     [SET_PHONE](state, payload) {
       state.phone = payload;
+    },
+    [SET_POWER_OF_ATTORNEY](state, payload) {
+      state.hasPowerOfAttorney = payload;
+    },
+    [SET_POWER_OF_ATTORNEY_DOCUMENTS](state, payload) {
+      state.powerOfAttorneyDocuments = payload;
     },
   },
   actions: {
@@ -1385,6 +1397,13 @@ export default {
     },
     [SET_PHONE]({ commit }, payload) {
       commit(SET_PHONE, payload);
+    },
+    // Consent
+    [SET_POWER_OF_ATTORNEY]({commit}, payload) {
+      commit(SET_POWER_OF_ATTORNEY, payload)
+    },
+    [SET_POWER_OF_ATTORNEY_DOCUMENTS]({commit}, payload) {
+      commit(SET_POWER_OF_ATTORNEY_DOCUMENTS, payload)
     },
   },
   getters: {
