@@ -42,6 +42,8 @@ class ApiService {
       country: formState.resCountry ? replaceSpecialCharacters(formState.resCountry).substring(0, 30) : null,
       authorizedByApplicant: 'Y',
       authorizedByApplicantDate: formatISODate(dateToday),
+      powerOfAttorney: formState.hasPowerOfAttorney ? "Y" : "N",
+      spousePowerOfAttorney: formState.hasPowerOfAttorney ? "Y" : "N",
       authorizedBySpouse: null, // Set below.
       spouse: null, // Set below.
     };
@@ -88,7 +90,8 @@ class ApiService {
         citizenshipType: getCitizenshipType(formState.ahCitizenshipStatus, formState.ahCitizenshipStatusReason) || null,
         attachmentUuids: [
           ...formState.ahNameChangeSupportDocuments.map((image) => image.uuid),
-          ...formState.ahCitizenshipSupportDocuments.map((image) => image.uuid)
+          ...formState.ahCitizenshipSupportDocuments.map((image) => image.uuid),
+          ...formState.mspPowerOfAttorneyDocuments.map(document => document.uuid),
         ],
         hasPreviousCoverage: formState.ahHasPreviousPHN || null,
         prevPHN: stripSpaces(formState.ahPreviousPHN) || null,
@@ -267,6 +270,10 @@ class ApiService {
         ];
       }
 
+      if (formState.hasPowerOfAttorney) {
+        documents = [...documents, ...formState.mspPowerOfAttorneyDocuments];
+      }
+
       jsonPayload.medicalServicesPlan.attachments = this._createAttachmentDetails(documents);
     }
 
@@ -295,11 +302,16 @@ class ApiService {
         spouseRDSP: formState.spouseFPCRDSP || '0',
         spousePostalCode: postalCode,
         persons, 
+        attachments: [],
         familyNumber: null,
         deductibleAmount: null, // TODO.
         annualMaximumAmount: null, // TODO.
         copayPercentage: null
       };
+
+      if (formState.hasPowerOfAttorney) {
+        jsonPayload.fairPharmaCare.attachments = this._createAttachmentDetails(formState.fpcPowerOfAttorneyDocuments);
+      } 
     }
 
     // SB.
@@ -341,13 +353,19 @@ class ApiService {
         spouseAttendantCareExpense: parseInt(formState.spouseAttendantNursingDeduction) || 0,
         childAttendantCareExpense: parseInt(formState.childAttendantNursingDeduction) || 0,
         spouseSixtyFiveDeduction: parseInt(formState.spouse65Deduction) || 0,
-        attachments: this._createAttachmentDetails([
-          ...formState.attendantNursingReceipts,
-          ...formState.ahCRADocuments,
-          ...formState.spouseCRADocuments,
-        ]),
       };
     }
+
+    let documents = [
+      ...formState.attendantNursingReceipts,
+      ...formState.ahCRADocuments,
+      ...formState.spouseCRADocuments,
+    ];
+    if (formState.hasPowerOfAttorney) {
+      documents = [...documents, ...formState.sbPowerOfAttorneyDocuments]
+    }
+    jsonPayload.supplementaryBenefits.attachments = this._createAttachmentDetails(documents)
+
     // console.log('JSON Payload:', jsonPayload);
     const jhaApplicationUuid = formState.applicationUuid;
     const url = `${SUBMIT_APPLICATION_URL}/${jhaApplicationUuid}`;
@@ -395,6 +413,31 @@ class ApiService {
     
     // Send attachments.
     const promises = [];
+
+    if (formState.hasPowerOfAttorney) {
+      const addPoADocs = (applicationDocumentsKey, applicationUuid) => {
+        formState[applicationDocumentsKey].forEach((document) => {
+          promises.push(
+            this._sendAttachment(
+              document,
+              applicationUuid,
+              formState.captchaToken,
+              'PowerOfAttorney',
+            )
+          );
+        });
+      }
+      if (formState.isApplyingForFPCare) {
+        addPoADocs('fpcPowerOfAttorneyDocuments', formState.fpcUuid)
+      }
+      if (formState.isApplyingForMSP) {
+        addPoADocs('mspPowerOfAttorneyDocuments', formState.mspUuid)
+      }
+      if (formState.isApplyingForSuppBen) {
+        addPoADocs('sbPowerOfAttorneyDocuments', formState.sbUuid)
+      }
+    }
+
     if (formState.isApplyingForMSP) {
       mspImages.forEach((image) => {
         promises.push(this._sendAttachment(image, formState.mspUuid, formState.captchaToken));
@@ -408,8 +451,8 @@ class ApiService {
     return Promise.all(promises);
   }
 
-  _sendAttachment(image, programUuid, token) {
-    const url = `${SUBMIT_ATTACHMENT_URL}/${programUuid}/attachments/${image.uuid}?programArea=ENROLMENT&attachmentDocumentType=SupportDocument&contentType=image/jpeg&imageSize=${image.size}&dpackage=msp_enrolment_pkg`;
+  _sendAttachment(image, programUuid, token, docType='SupportDocument') {
+    const url = `${SUBMIT_ATTACHMENT_URL}/${programUuid}/attachments/${image.uuid}?programArea=ENROLMENT&attachmentDocumentType=${docType}&contentType=image/jpeg&imageSize=${image.size}&dpackage=msp_enrolment_pkg`;
     const headers = this._getAttachmentHeaders(token);
     let blob;
 
@@ -502,14 +545,20 @@ class ApiService {
   _createAttachmentDetails(attachments) {
     const results = [];
 
-    for (let i=0; i<attachments.length; i++) {
-      results.push({
-        contentType: attachments[i].contentType,
-        attachmentDocumentType: 'SupportDocument',
-        attachmentUuid: attachments[i].uuid,
-        attachmentOrder: `${i + 1}`,
-        description: attachments[i].description || null,
-      });
+    for (let i = 0; i < attachments.length; i++) {
+      const attachment = attachments[i];
+      let attachmentDocumentType = "SupportDocument";
+      if (attachment.documentType === "PowerOfAttorney") attachmentDocumentType = "PowerOfAttorney";
+
+      if (attachments) {
+        results.push({
+          contentType: attachment.contentType,
+          attachmentDocumentType,
+          attachmentUuid: attachment.uuid,
+          attachmentOrder: `${i + 1}`,
+          description: attachment.description || null,
+        });
+      }
     }
     return results;
   }

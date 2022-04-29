@@ -214,4 +214,9 @@ export default {
   mailPostalCode: 'V5T 4T4',
   isMailSame: false,
   phone: null,
+  // Consent
+  hasPowerOfAttorney: null,
+  fpcPowerOfAttorneyDocuments: [],
+  mspPowerOfAttorneyDocuments: [],
+  sbPowerOfAttorneyDocuments: [],
 };

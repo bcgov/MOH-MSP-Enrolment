@@ -11,6 +11,62 @@
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Declaration and consent</h1>
 
+        <hr />
+        <h3>Note:</h3>
+        <ul class="pl-4">
+          <li>
+            <strong>
+              If someone with power of attorney or other legal representation
+              agreement is signing on your behalf, check the box below and
+              upload a copy of the agreement. Power of attorney or other legal
+              representation will apply to all programs (MSP, Fair PharmaCare
+              and/or Supplementary Benefits) you apply for. For Fair PharmaCare
+              and/or for MSP, copies of the power of attorney agreement may be
+              forwarded to the CRA if they request it.
+            </strong>
+          </li>
+        </ul>
+        <Checkbox
+          label="I have Power of Attorney or another legal representation agreement"
+          id="power-of-attorney-checkbox"
+          class="mt-3"
+          v-model="hasPowerOfAttorney"
+        />
+
+        <div v-if="hasPowerOfAttorney" class="row">
+          <div class="col-8">
+            <div class="flex flex-col">
+              <strong>
+                <label class="mt-2" for="power-of-attorney-upload">
+                  Upload your Power of Attorney document or another legal
+                  representation agreement
+                </label>
+              </strong>
+              <FileUploader
+                v-model="powerOfAttorneyDocuments"
+                :isZoomPortalEnabled="true"
+                modalElementTarget="#modal-target"
+                documentType="PowerOfAttorney"
+                description="Power Of Attorney Supporting Documents"
+                id="power-of-attorney-upload"
+              />
+            </div>
+            <div
+              class="text-danger"
+              v-if="
+                $v.powerOfAttorneyDocuments.$dirty &&
+                !$v.powerOfAttorneyDocuments.required
+              "
+              aria-live="assertive"
+            >
+              File upload required.
+            </div>
+          </div>
+          <div class="col-4">
+            <SampleImageTipBox />
+          </div>
+        </div>
+
         <!-- MSP -->
         <div v-if="isApplyingForMSP"
           class="mb-5">
@@ -21,7 +77,7 @@
             <li>I authorize the Ministry of Health to collect my health information from practitioners who provide publicly funded health care service(s) to me under MSP and other publicly funded health care programs, and I provide consent for those practitioners to disclose such information to the Ministry of Health for the purposes of asessing eligibility for, and in regard to the administration of, MSP and other Ministry of Health publicly funded health care programs.</li>
             <li>I declare that all information provided is true and I understand that the Ministry of Health and/or Health Insurance BC may verify this information with immigration authorities, law enforcement authorities and other public authorities, agencies and persons as appropriate. I declare that all persons listed are residents of British Columbia.</li>
           </ul>
-          <Checkbox label="Account holder"
+          <Checkbox :label="ahConsentLabel"
             id="msp-ah"
             v-model="isAuthorizedMSPAH"
             @blur="handleBlurField($v.isAuthorizedMSPAH)" />
@@ -30,7 +86,7 @@
               && !$v.isAuthorizedMSPAH.requiredTrue"
             aria-live="assertive">Field is required.</div>
           <Checkbox v-if="hasSpouse"
-            label="Spouse or common law partner"
+            :label="spouseConsentLabel"
             id="msp-spouse"
             class="mt-3"
             v-model="isAuthorizedMSPSpouse"
@@ -55,7 +111,7 @@
             <li>This consent is valid for the two taxation years before the year in which I sign this document, for the year in which I sign it and for each following taxation year in which I and/or my family am eligible for the Fair PharmaCare Plan.</li>
             <li>I understand that I can withdraw this consent at any time by writing to Health Insurance BC, PO Box 9655 Stn Prov Govt, Victoria BC V8W 9P2.</li>
           </ul>
-          <Checkbox label="Account holder"
+          <Checkbox :label="ahConsentLabel"
             id="fpc-ah"
             v-model="isAuthorizedFPCAH"
             @blur="handleBlurField($v.isAuthorizedFPCAH)" />
@@ -64,7 +120,7 @@
               && !$v.isAuthorizedFPCAH.requiredTrue"
             aria-live="assertive">Field is required.</div>
           <Checkbox v-if="hasSpouse"
-            label="Spouse or common law partner"
+            :label="spouseConsentLabel"
             id="fpc-spouse"
             class="mt-3"
             v-model="isAuthorizedFPCSpouse"
@@ -87,7 +143,7 @@
             <li>I (applicant) have resided in Canada as a Canadian citizen or holder of permanent resident state (landed immigrant) for at least the last 12 months immediately preceding this application. I am not exempt from liability to pay income tax by reason of any other Act.</li>
             <li>I (applicant and, if applicable, spouse) hereby consent to the release of information from my income tax returns, and other taxpayer information, by the Canada Revenue Agency to the Ministry of Health and/or Health Insurance BC. The information obtained will be relevant to and used for the purpose of determining and verifying my initial and ongoing entitlement to the Supplementary Benefits Program under the Medicare Protection Act, and will not be disclosed to any other party. This authorization is valid for the taxation year prior to the signature of this application, the year of the signature and for each subsequent consecutive taxation year for which supplementary benefits is requested. It may be revoked by sending a written notice to Health Insurance BC.</li>
           </ul>
-          <Checkbox label="Account holder"
+          <Checkbox :label="ahConsentLabel"
             id="sb-ah"
             v-model="isAuthorizedSBAH"
             @blur="handleBlurField($v.isAuthorizedSBAH)" />
@@ -96,7 +152,7 @@
               && !$v.isAuthorizedSBAH.requiredTrue"
             aria-live="assertive">Field is required.</div>
           <Checkbox v-if="hasSpouse"
-            label="Spouse or common law partner"
+            :label="spouseConsentLabel"
             id="sb-spouse"
             class="mt-3"
             v-model="isAuthorizedSBSpouse"
@@ -132,6 +188,7 @@ import {
   getTopScrollPosition
 } from '@/helpers/scroll';
 import { getConvertedPath } from '@/helpers/url';
+import { copyPowerOfAttorneyDocuments } from "@/helpers/form-helpers";
 import {
   MODULE_NAME as formModule,
   SET_MSP_REFERENCE_NUMBER,
@@ -139,6 +196,10 @@ import {
   SET_SB_REFERENCE_NUMBER,
   SET_SUBMISSION_DATE,
   SET_SUBMISSION_API_RESPONSE,
+  SET_POWER_OF_ATTORNEY,
+  SET_FPC_POWER_OF_ATTORNEY_DOCUMENTS,
+  SET_MSP_POWER_OF_ATTORNEY_DOCUMENTS,
+  SET_SB_POWER_OF_ATTORNEY_DOCUMENTS,
 } from '@/store/modules/enrolment-module';
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
@@ -146,9 +207,12 @@ import {
   Checkbox,
   ContinueBar,
   PageContent,
+  FileUploader,
 } from 'common-lib-vue';
+import SampleImageTipBox from "@/components/SampleImageTipBox";
 import pageContentMixin from '@/mixins/page-content-mixin';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
+import { required } from "vuelidate/lib/validators";
 
 const requiredTrue = (value) => {
   return value === true;
@@ -164,6 +228,8 @@ export default {
     Checkbox,
     ContinueBar,
     PageContent,
+    FileUploader,
+    SampleImageTipBox,
   },
   data: () => {
     return {
@@ -178,6 +244,8 @@ export default {
       isAuthorizedFPCSpouse: false,
       isAuthorizedSBAH: false,
       isAuthorizedSBSpouse: false,
+      hasPowerOfAttorney: true,
+      powerOfAttorneyDocuments: [],
     }
   },
   validations() {
@@ -188,6 +256,7 @@ export default {
       isAuthorizedFPCSpouse: this.isApplyingForFPCare && this.hasSpouse ? { requiredTrue } : {},
       isAuthorizedSBAH: this.isApplyingForSuppBen ? { requiredTrue } : {},
       isAuthorizedSBSpouse: this.isApplyingForSuppBen && this.hasSpouse ? { requiredTrue } : {},
+      powerOfAttorneyDocuments: this.hasPowerOfAttorney ? { required } : {},
     };
     return validations;
   },
@@ -195,7 +264,8 @@ export default {
     this.isApplyingForMSP = this.$store.state.enrolmentModule.isApplyingForMSP;
     this.isApplyingForFPCare = this.$store.state.enrolmentModule.isApplyingForFPCare;
     this.isApplyingForSuppBen = this.$store.state.enrolmentModule.isApplyingForSuppBen;
-
+    this.hasPowerOfAttorney = this.$store.state.enrolmentModule.hasPowerOfAttorney;
+    
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.CONSENT_PAGE.path,
@@ -212,9 +282,36 @@ export default {
 
       this.submitForm();
     },
+    saveData() {
+      const {
+        mspPowerOfAttorneyDocuments,
+        fpcPowerOfAttorneyDocuments,
+        sbPowerOfAttorneyDocuments,
+      } = copyPowerOfAttorneyDocuments(
+        this.$store.state.enrolmentModule,
+        this.powerOfAttorneyDocuments
+      );
+      this.$store.dispatch(
+        `${formModule}/${SET_POWER_OF_ATTORNEY}`,
+        this.hasPowerOfAttorney
+      );
+      this.$store.dispatch(
+        `${formModule}/${SET_FPC_POWER_OF_ATTORNEY_DOCUMENTS}`,
+        fpcPowerOfAttorneyDocuments,
+      );
+      this.$store.dispatch(
+        `${formModule}/${SET_MSP_POWER_OF_ATTORNEY_DOCUMENTS}`,
+        mspPowerOfAttorneyDocuments,
+      );
+      this.$store.dispatch(
+        `${formModule}/${SET_SB_POWER_OF_ATTORNEY_DOCUMENTS}`,
+        sbPowerOfAttorneyDocuments,
+      );
+    },
     submitForm() {
       this.isLoading = true;
       this.isSystemUnavailable = false;
+      this.saveData();
 
       this.$store.dispatch(formModule + '/' + SET_SUBMISSION_DATE, new Date());
 
@@ -322,7 +419,17 @@ export default {
   computed: {
     hasSpouse() {
       return this.$store.state.enrolmentModule.hasSpouse === 'Y';
-    }
+    },
+    ahConsentLabel() {
+      let label = `${this.$store.state.enrolmentModule.ahFirstName} ${this.$store.state.enrolmentModule.ahLastName}`;
+      if (this.hasPowerOfAttorney) label += " or legal representative";
+      return label;
+    },
+    spouseConsentLabel() {
+      let label = `${this.$store.state.enrolmentModule.spouseFirstName} ${this.$store.state.enrolmentModule.spouseLastName}`;
+      if (this.hasPowerOfAttorney) label += " or legal representative";
+      return label;
+    },
   },
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
