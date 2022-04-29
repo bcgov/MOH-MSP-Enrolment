@@ -550,15 +550,13 @@ class ApiService {
       let attachmentDocumentType = "SupportDocument";
       if (attachment.documentType === "PowerOfAttorney") attachmentDocumentType = "PowerOfAttorney";
 
-      if (attachments) {
-        results.push({
-          contentType: attachment.contentType,
-          attachmentDocumentType,
-          attachmentUuid: attachment.uuid,
-          attachmentOrder: `${i + 1}`,
-          description: attachment.description || null,
-        });
-      }
+      results.push({
+        contentType: attachment.contentType,
+        attachmentDocumentType,
+        attachmentUuid: attachment.uuid,
+        attachmentOrder: `${i + 1}`,
+        description: attachment.description || null,
+      });
     }
     return results;
   }
