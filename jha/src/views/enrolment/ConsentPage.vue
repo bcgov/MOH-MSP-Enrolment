@@ -103,13 +103,20 @@
           class="mb-5">
           <hr/>
           <h2>Fair PharmaCare: Declaration and Consent - Must Be Signed</h2>
-          <p><b>Please read and sign. If you are married or living and cohabiting in a marriage-like relationship, your spouse must also sign.</b></p>
+          <p>Your online application is now complete. In order to make your Fair PharmaCare coverage permanent, we need to check your income information with the Canada Revenue Agency (CRA). The CRA requires that you provide written consent to share your income informaton. If you are maried or living in a mariage-like relationship, your spouse or common law partner must also provie written consent.</p>
+          <p>You will receive a letter at the address you provided, asking you to agree to the following statement:</p>
           <ul>
             <li>I consent to allow the Canada Revenue Agency to release information from my income tax returns and other required taxpayer information to the B.C. Ministry of Health and Health Insurance BC.</li>
             <li>The information provided will be used solely to determine, verify and administer my and/or my family's Fair PharmaCare Plan coverage, but may be aggregated for planning and evaluation purposes.</li>
             <li>I understand my information will be collected, used and disclosed in accordance with the British Columbia Pharmaceutical Services Act and Freedom of Information and Protection of Privacy Act. It will not be disclosed to any persons without my consent.</li>
             <li>This consent is valid for the two taxation years before the year in which I sign this document, for the year in which I sign it and for each following taxation year in which I and/or my family am eligible for the Fair PharmaCare Plan.</li>
             <li>I understand that I can withdraw this consent at any time by writing to Health Insurance BC, PO Box 9655 Stn Prov Govt, Victoria BC V8W 9P2.</li>
+          </ul>
+          <h2>Your Information</h2>
+          <p>Please confirm that you (and your spouse or common law partner, if you have one):</p>
+          <ul>
+            <li>filed tax returns for the tax year two years prior to this application, and</li>
+            <li>agree to allow the CRA to share your income information with PharmaCare.</li>
           </ul>
           <Checkbox :label="ahConsentLabel"
             id="fpc-ah"
