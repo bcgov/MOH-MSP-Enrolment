@@ -166,6 +166,11 @@ export const SET_MAIL_COUNTRY = 'setMailCountry';
 export const SET_MAIL_POSTAL_CODE = 'setMailPostalCode';
 export const SET_IS_MAIL_SAME = 'setIsMailSame';
 export const SET_PHONE = 'setPhone';
+// Consent Info
+export const SET_POWER_OF_ATTORNEY = 'setPowerOfAttorney';
+export const SET_FPC_POWER_OF_ATTORNEY_DOCUMENTS = 'setFPCPowerOfAttorneyDocuments';
+export const SET_SB_POWER_OF_ATTORNEY_DOCUMENTS = 'setSBPowerOfAttorneyDocuments';
+export const SET_MSP_POWER_OF_ATTORNEY_DOCUMENTS = 'setMSPPowerOfAttorneyDocuments';
 
 export default {
   namespaced: true,
@@ -326,6 +331,11 @@ export default {
       mailPostalCode: null,
       isMailSame: true,
       phone: null,
+      // Consent Info
+      hasPowerOfAttorney: null,
+      fpcPowerOfAttorneyDocuments: [],
+      mspPowerOfAttorneyDocuments: [],
+      sbPowerOfAttorneyDocuments: [],
     };
     if (settings.useDummyData) {
       Object.assign(state, dummyData);
@@ -780,6 +790,19 @@ export default {
     [SET_PHONE](state, payload) {
       state.phone = payload;
     },
+    // Consent
+    [SET_POWER_OF_ATTORNEY](state, payload) {
+      state.hasPowerOfAttorney = payload;
+    },
+    [SET_FPC_POWER_OF_ATTORNEY_DOCUMENTS](state, payload) {
+      state.fpcPowerOfAttorneyDocuments = payload;
+    },
+    [SET_MSP_POWER_OF_ATTORNEY_DOCUMENTS](state, payload) {
+      state.mspPowerOfAttorneyDocuments = payload;
+    },
+    [SET_SB_POWER_OF_ATTORNEY_DOCUMENTS](state, payload) {
+      state.sbPowerOfAttorneyDocuments = payload;
+    },
   },
   actions: {
     [RESET_FORM]({ commit }) {
@@ -938,6 +961,11 @@ export default {
       commit(SET_MAIL_POSTAL_CODE, null);
       commit(SET_IS_MAIL_SAME, true);
       commit(SET_PHONE, null);
+      // consent
+      commit(SET_FPC_POWER_OF_ATTORNEY_DOCUMENTS, []);
+      commit(SET_MSP_POWER_OF_ATTORNEY_DOCUMENTS, []);
+      commit(SET_SB_POWER_OF_ATTORNEY_DOCUMENTS, []);
+      commit(SET_POWER_OF_ATTORNEY, null);
     },
     [SET_APPLICATION_UUID]({ commit }, payload) {
       commit(SET_APPLICATION_UUID, payload);
@@ -1385,6 +1413,19 @@ export default {
     },
     [SET_PHONE]({ commit }, payload) {
       commit(SET_PHONE, payload);
+    },
+    // Consent
+    [SET_POWER_OF_ATTORNEY]({commit}, payload) {
+      commit(SET_POWER_OF_ATTORNEY, payload)
+    },
+    [SET_FPC_POWER_OF_ATTORNEY_DOCUMENTS]({commit}, payload) {
+      commit(SET_FPC_POWER_OF_ATTORNEY_DOCUMENTS, payload)
+    },
+    [SET_MSP_POWER_OF_ATTORNEY_DOCUMENTS]({commit}, payload) {
+      commit(SET_MSP_POWER_OF_ATTORNEY_DOCUMENTS, payload)
+    },
+    [SET_SB_POWER_OF_ATTORNEY_DOCUMENTS]({commit}, payload) {
+      commit(SET_SB_POWER_OF_ATTORNEY_DOCUMENTS, payload)
     },
   },
   getters: {
