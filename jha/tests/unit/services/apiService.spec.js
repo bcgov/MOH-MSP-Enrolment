@@ -11,6 +11,10 @@ apiService._sendPostRequest = jest.fn(() =>
   Promise.resolve(postRequestSuccessResult)
 );
 
+beforeEach(() => {
+  jest.clearAllMocks();
+});
+
 describe("Power Of Attorney", () => {
   dummyData.hasPowerOfAttorney = true;
 
@@ -32,10 +36,6 @@ describe("Power Of Attorney", () => {
     await apiService.sendAttachments(data);
     return apiService._sendPostRequest.mock.calls.map((call) => call[0]);
   };
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
 
   it("Correctly formats payload for FPC", async () => {
     const appData = { ...dummyData, fpcPowerOfAttorneyDocuments: [mockFile] };
@@ -131,5 +131,22 @@ describe("Power Of Attorney", () => {
     );
     // Other calls should be enrolment support docs
     expect(supportDocumentCalls.length).toBe(postedUrls.length - EXPECTED_POA_CALLS_COUNT);
+  });
+});
+
+describe("FPC Application", () => {
+  it("includes children in the persons array of JSON payload when applying for only FPC", async () => {
+    const appData = {
+      ...dummyData,
+      isApplyingForMSP: false,
+      isApplyingForSuppBen: false,
+    };
+    const { children } = appData;
+    await apiService.sendApplication(appData);
+    const [, , postedFormData] = apiService._sendPostRequest.mock.calls[0];
+    const { persons } = postedFormData.fairPharmaCare;
+
+    expect(Array.isArray(persons)).toBe(true);
+    expect(persons.length).toBe(children.length);
   });
 });
