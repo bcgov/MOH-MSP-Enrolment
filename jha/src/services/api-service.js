@@ -288,7 +288,7 @@ class ApiService {
           postalCode: postalCode,
           perType: '2', // 0 is applicant, 1 is spouse, 2 is children only.
           dateOfBirth: formatISODate(child.birthDate),
-          phn: stripSpaces(child.phn) || null,
+          phn: stripSpaces(child.personalHealthNumber) || null,
         });
       });
       

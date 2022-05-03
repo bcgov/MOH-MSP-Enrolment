@@ -1,6 +1,7 @@
 import apiService from "@/services/api-service";
 import dummyData from "@/store/states/enrolment-module-dummy-data.js";
 import { mockFile } from "../../fixtures.js";
+import { stripSpaces, formatISODate } from "common-lib-vue";
 
 const postRequestSuccessResult = {
   data: {
@@ -135,18 +136,35 @@ describe("Power Of Attorney", () => {
 });
 
 describe("FPC Application", () => {
-  it("includes children in the persons array of JSON payload when applying for only FPC", async () => {
-    const appData = {
-      ...dummyData,
-      isApplyingForMSP: false,
-      isApplyingForSuppBen: false,
-    };
-    const { children } = appData;
+  let children;
+  let persons;
+  const appData = {
+    ...dummyData,
+    isApplyingForMSP: false,
+    isApplyingForSuppBen: false,
+  };
+
+  beforeEach(async () => {
+    children = appData.children;
     await apiService.sendApplication(appData);
     const [, , postedFormData] = apiService._sendPostRequest.mock.calls[0];
-    const { persons } = postedFormData.fairPharmaCare;
+    persons = postedFormData.fairPharmaCare.persons;
+  });
 
+  it("includes children in the persons array of JSON payload when applying for only FPC", () => {
     expect(Array.isArray(persons)).toBe(true);
     expect(persons.length).toBe(children.length);
+  });
+
+  it("maps vuex state for children to JSON payload for FPC correctly", () => {
+    persons.forEach((person, i) => {
+      const child = children[i];
+      expect(person.givenName).toBe(child.firstName);
+      expect(person.surname).toBe(child.lastName);
+      expect(person.postalCode).toBe(stripSpaces(appData.mailPostalCode));
+      expect(person.perType).toBe("2");
+      expect(person.dateOfBirth).toBe(formatISODate(child.birthDate));
+      expect(person.phn).toBe(stripSpaces(child.personalHealthNumber));
+    });
   });
 });
