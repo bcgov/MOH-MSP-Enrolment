@@ -354,17 +354,17 @@ class ApiService {
         childAttendantCareExpense: parseInt(formState.childAttendantNursingDeduction) || 0,
         spouseSixtyFiveDeduction: parseInt(formState.spouse65Deduction) || 0,
       };
-    }
 
-    let documents = [
-      ...formState.attendantNursingReceipts,
-      ...formState.ahCRADocuments,
-      ...formState.spouseCRADocuments,
-    ];
-    if (formState.hasPowerOfAttorney) {
-      documents = [...documents, ...formState.sbPowerOfAttorneyDocuments]
+      let documents = [
+        ...formState.attendantNursingReceipts,
+        ...formState.ahCRADocuments,
+        ...formState.spouseCRADocuments,
+      ];
+      if (formState.hasPowerOfAttorney) {
+        documents = [...documents, ...formState.sbPowerOfAttorneyDocuments]
+      }
+      jsonPayload.supplementaryBenefits.attachments = this._createAttachmentDetails(documents)
     }
-    jsonPayload.supplementaryBenefits.attachments = this._createAttachmentDetails(documents)
 
     // console.log('JSON Payload:', jsonPayload);
     const jhaApplicationUuid = formState.applicationUuid;
