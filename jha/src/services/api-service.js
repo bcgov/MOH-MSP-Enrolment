@@ -415,7 +415,7 @@ class ApiService {
     const promises = [];
 
     if (formState.hasPowerOfAttorney) {
-      const addPoADocs = (applicationDocumentsKey, applicationUuid) => {
+      const addPoADocs = (applicationDocumentsKey, applicationUuid, programArea) => {
         formState[applicationDocumentsKey].forEach((document) => {
           promises.push(
             this._sendAttachment(
@@ -423,12 +423,13 @@ class ApiService {
               applicationUuid,
               formState.captchaToken,
               'PowerOfAttorney',
+              programArea,
             )
           );
         });
       }
       if (formState.isApplyingForFPCare) {
-        addPoADocs('fpcPowerOfAttorneyDocuments', formState.fpcUuid)
+        addPoADocs('fpcPowerOfAttorneyDocuments', formState.fpcUuid, 'PHARMANET')
       }
       if (formState.isApplyingForMSP) {
         addPoADocs('mspPowerOfAttorneyDocuments', formState.mspUuid)
@@ -451,8 +452,8 @@ class ApiService {
     return Promise.all(promises);
   }
 
-  _sendAttachment(image, programUuid, token, docType='SupportDocument') {
-    const url = `${SUBMIT_ATTACHMENT_URL}/${programUuid}/attachments/${image.uuid}?programArea=ENROLMENT&attachmentDocumentType=${docType}&contentType=image/jpeg&imageSize=${image.size}&dpackage=msp_enrolment_pkg`;
+  _sendAttachment(image, programUuid, token, docType='SupportDocument', programArea='ENROLMENT') {
+    const url = `${SUBMIT_ATTACHMENT_URL}/${programUuid}/attachments/${image.uuid}?programArea=${programArea}&attachmentDocumentType=${docType}&contentType=image/jpeg&imageSize=${image.size}&dpackage=msp_enrolment_pkg`;
     const headers = this._getAttachmentHeaders(token);
     let blob;
 
