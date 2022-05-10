@@ -16,31 +16,45 @@
 
     <div class="d-flex flex-column-reverse">
       <div *ngFor="let child of children; let idx = index">
-        <msp-canadian-status [person]="child"
-                             label="{{statusLabel}}"
-                             [displayStatusInCanada]="displayStatusOpt(child)">
-          <div sectionTitleInfo>
-            <h2>Child #{{idx + 1}}</h2>
-            <p class="horizontal-line">
-              Please provide the child's immigration status information. You will be required to upload documents to support the child's status in Canada.
-              For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select ‘Temporary Permit Holder or Diplomat’ from the drop down below
-              <common-xicon-button label= "Remove child #{{idx + 1}}" (click)="removeChild(idx)">
-              </common-xicon-button>
-            </p>
-            <div additionalInfo>
-              <div class="form-group p-sm-2">
-                <common-radio name="AgeCategory_{{idx}}"
-                              [ngModel]="child.relationship"
-                              (ngModelChange)="relationship($event, child)"
-                              label="How old is the child?"
-                              [radioLabels]="childAgeCategory"
-                              required>
-                </common-radio>
+        <!-- Below h2 and p tags would normally be in sectionTitleInfo but could not due to tipbox spacing -->
+        <h2>Child #{{idx + 1}}</h2>
+        <p class="horizontal-line">
+          Please provide the child's immigration status information. You will be required to upload documents to support the child's status in Canada.
+          For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select ‘Temporary Permit Holder or Diplomat’ from the drop down below
+          <common-xicon-button label= "Remove child #{{idx + 1}}" (click)="removeChild(idx)">
+          </common-xicon-button>
+        </p>
+        <div class="row">
+          <div class="col-sm-8">
+            <msp-canadian-status [person]="child"
+                                label="{{statusLabel}}"
+                                [displayStatusInCanada]="displayStatusOpt(child)">
+
+              <!-- sectionTitleInfo content had to be moved to above in order for the tipbox to be placed correctly -->
+              <div sectionTitleInfo>
+                <div additionalInfo>
+                  <div class="form-group p-sm-2">
+                    <common-radio name="AgeCategory_{{idx}}"
+                                  [ngModel]="child.relationship"
+                                  (ngModelChange)="relationship($event, child)"
+                                  label="How old is the child?"
+                                  [radioLabels]="childAgeCategory"
+                                  required>
+                    </common-radio>
+                  </div>
+                </div>
               </div>
+            </msp-canadian-status>
+          </div>
+          <div class="col-sm-4">
+            <div class="tipbox">
+              <p><strong>Tip</strong></p>
+              <p>You can include your 19 to 24 year old child on your MSP account if they are enrolled in full-time studies.</p>
+              <p>If your child is 19 to 24 and not in full-time studies, they must apply separately for their own MSP coverage.</p>
+              <p>If your child is 25 years or older, they must apply separately for their own MSP coverage.</p>
             </div>
           </div>
-        </msp-canadian-status>
-
+        </div>
         <msp-support-documents *ngIf="hasStatus(child)"
                                [canadianStatus]="child.status"
                                [statusReason]="child.currentActivity"
