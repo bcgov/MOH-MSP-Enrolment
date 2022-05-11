@@ -328,7 +328,6 @@ class ApiService {
 
       jsonPayload.supplementaryBenefits = {
         uuid: formState.sbUuid,
-        powerOfAttorney: 'N',
         assistanceYear: `${new Date().getFullYear()}`,
         taxYear: formState.selectedNOAYear,
         numberOfTaxYears: 0,
