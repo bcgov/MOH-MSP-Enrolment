@@ -10,7 +10,8 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Add Spouse / Common-law personal information and upload documents</h1>
-        <p>Do you have a spouse or common-law partner who also needs to enrol for MSP coverage? If so, you are required to provide spouse information and provide supporting documents.</p>
+        <p>A spouse is a person who is married to or living and cohabitating in a marriage-like relationship with the Account Holder. A spouse may be the same gender as the Account Holder. To be eligible for MSP coverage, a spouse must be a BC resident. </p> 
+        <p>Personal Health Number (PHN) is the number that appears on the spouse's BC Services Card.</p>
         <hr class="mt-0"/>
         <Radio
           v-if="hasSpouse !== 'Y'"

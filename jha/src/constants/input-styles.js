@@ -9,7 +9,7 @@ export const smallStyles = {
 };
 
 export const mediumStyles = {
-  width: '350px',
+  width: '540px',
   maxWidth: '100%'
 };
 
