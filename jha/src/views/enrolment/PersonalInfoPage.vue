@@ -11,7 +11,8 @@
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Add personal information and upload documents</h1>
         <h2>Account Holder basic information</h2>
-        <p>After enrolment, the main applicant will be the Medical Services Plan Account Holder, and will be responsible for maintaining the Medical Services Plan account and requesting any changes.</p>
+        <p>The MSP Account Holder is the person who submits the application for MSP coverage. The Account Holder is responsible for the MSP account, including notifying HIBC of any account changes (such as a change of address, family structure or status in Canada).</p>
+        <p>Personal Health Number (PHN) is the number that appears on the Account Holder's BC Services Card.</p>
         <hr class="mt-0"/>
         <!-- Bootstrap row and column classes for gender tipbox placement -->
         <div class="row">
