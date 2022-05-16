@@ -8,7 +8,7 @@ export const CanadianStatusReasons = {
   LivingInBCWithoutMSP: 'Not new to B.C. but needs to apply for MSP',
   MovingFromProvince: 'Moved to B.C. from another province',
   MovingFromCountry: 'Moved to B.C. from another jurisdiction',
-  WorkingInBC: 'Work Permit',
+  WorkingInBC: 'Work Permit / CUAET',
   StudyingInBC: 'Study Permit',
   ReligiousWorker: 'Religious Worker',
   Diplomat: 'Diplomat',
