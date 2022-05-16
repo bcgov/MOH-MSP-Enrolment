@@ -40,7 +40,7 @@
               <Radio
                 id='student-minor-refugee'
                 name='student-minor-refugee'
-                label='4. Is anyone included in this application (yourself, spouse, or child): a student returning to a home province outside B.C. at the end of a course or program; a minor (under the age of 16); or a person seeking refugee status who has not yet been approved?'
+                label='4. Is anyone included in this application (yourself, spouse, or child): a student returning to a home province outside B.C. at the end of a course or program; an unaccompanied minor; or a person seeking refugee status who has not yet been approved?'
                 v-model='eqMSPStudentMinorRefugee'
                 :items='radioOptionsYesNo' />
               <div class="font-weight-bold ml-4" v-if="eqMSPStudentMinorRefugee === 'Y'">
@@ -93,7 +93,7 @@ import {
 import {
   getConvertedPath,
 } from '@/helpers/url';
-import { 
+import {
   radioOptionsYesNo,
 } from '@/constants/radio-options';
 import {
@@ -116,14 +116,14 @@ import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesMSP } from '@/constants/eqMsgCodes';
 
 const validateQuestionsAnswered = (_value, vm) => {
-        if(!vm.eqMSPIsApplying
-          || (vm.eqMSPIsApplying === 'Y' && !vm.eqMSPLiveInBC)
-          || (vm.eqMSPIsApplying === 'Y' && vm.eqMSPLiveInBC === 'Y' && !vm.eqMSPAwayOver30)
-          || (vm.eqMSPIsApplying === 'Y' && vm.eqMSPLiveInBC === 'Y' && vm.eqMSPAwayOver30 === 'N' && !vm.eqMSPStudentMinorRefugee)
-          || (vm.eqMSPIsApplying === 'Y' && vm.eqMSPLiveInBC === 'Y' && vm.eqMSPAwayOver30 === 'N' && vm.eqMSPStudentMinorRefugee === 'N' && !vm.eqMSPHasDocuments)) {
-        return false;
-      }
-      return true;
+  if (!vm.eqMSPIsApplying
+    || (vm.eqMSPIsApplying === 'Y' && !vm.eqMSPLiveInBC)
+    || (vm.eqMSPIsApplying === 'Y' && vm.eqMSPLiveInBC === 'Y' && !vm.eqMSPAwayOver30)
+    || (vm.eqMSPIsApplying === 'Y' && vm.eqMSPLiveInBC === 'Y' && vm.eqMSPAwayOver30 === 'N' && !vm.eqMSPStudentMinorRefugee)
+    || (vm.eqMSPIsApplying === 'Y' && vm.eqMSPLiveInBC === 'Y' && vm.eqMSPAwayOver30 === 'N' && vm.eqMSPStudentMinorRefugee === 'N' && !vm.eqMSPHasDocuments)) {
+    return false;
+  }
+  return true;
 }
 
 export default {
@@ -235,7 +235,7 @@ export default {
     }
   },
   computed: {
-    msgCode(){
+    msgCode() {
       if (this.eqMSPIsApplying === 'N') {
         // Not applying for MSP
         return eqMsgCodesMSP.NotApplying;
