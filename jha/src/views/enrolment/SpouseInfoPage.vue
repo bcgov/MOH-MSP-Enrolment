@@ -243,6 +243,7 @@
                 <div class="row">
                     <div class="col-md-7">
                       <FileUploader v-model="spouseCitizenshipSupportDocuments"
+                        id='spouse-citizenship-support-documents'
                         :isZoomPortalEnabled="true"
                         modalElementTarget="#modal-target"
                         documentType="Spouse citizenship support documents"
@@ -298,6 +299,7 @@
                   <div class="row">
                     <div class="col-md-7">
                       <FileUploader class="mb-3"
+                          id='spouse-name-change-support-documents'
                           v-model="spouseNameChangeSupportDocuments"
                           :isZoomPortalEnabled="true"
                           modalElementTarget="#modal-target"
@@ -366,6 +368,7 @@
                 <div v-if="spouseMadePermanentMove !== 'N' || spouseStatus === statusOptions.TemporaryResident">
                   <div v-if="showProvinceSelector">
                     <RegionSelect
+                      id='spouse-province-of-origin'
                       className="mt-3"
                       label="Which province is your spouse moving from?" 
                       v-model="spouseMoveFromOrigin"
@@ -384,6 +387,7 @@
                   </div>
                   <div v-if="showCountrySelector">
                     <CountrySelect 
+                      id='spouse-country-of-origin'
                       className="mt-3"
                       label="Which jurisdiction is your spouse moving from?" 
                       v-model="spouseMoveFromOrigin"

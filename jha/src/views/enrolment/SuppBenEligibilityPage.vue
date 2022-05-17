@@ -9,7 +9,7 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Eligibility questionnaire</h1>
+        <h1>Eligibility Questionnaire</h1>
         <p class="mb-0">You can use the British Columbia Application for Health Drug Coverage to apply for Medical Services Plan (MSP) enrolmnent, Fair PharmaCare, and/or MSP Supplementary Benefits.</p>
         <p class="mt-0">Answering the following questions will help you determine which programs you are eligible for, and ensure you have the required documents and information to complete your application(s).</p>
         <hr class="mt-0"/>
