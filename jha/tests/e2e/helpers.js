@@ -6,6 +6,7 @@ export const removeUniqueFields = (baseApplicationObj) => {
   delete applicationObj?.uuid;
   delete applicationObj?.medicalServicesPlan?.uuid;
   delete applicationObj?.fairPharmaCare?.uuid;
+  delete applicationObj?.supplementaryBenefits?.uuid;
   delete applicationObj?.medicalServicesPlan?.attachmentUuids;
   delete applicationObj?.medicalServicesPlan?.spouse?.attachmentUuids;
   delete applicationObj?.medicalServicesPlan?.children?.attachmentUuids;
@@ -17,7 +18,11 @@ export const removeUniqueFields = (baseApplicationObj) => {
 
   applicationObj?.medicalServicesPlan?.attachments?.forEach(attachment => {
     delete attachment.attachmentUuid
-  })
+  });
+
+  applicationObj?.supplementaryBenefits?.attachments?.forEach(attachment => {
+    delete attachment.attachmentUuid
+  });
 
   return applicationObj;
 }

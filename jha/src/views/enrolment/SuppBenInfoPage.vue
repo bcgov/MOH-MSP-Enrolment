@@ -217,6 +217,7 @@
           <div class="row">
             <div class="col-md-7">
               <FileUploader class="ml-5"
+                id='attendant-nursing-receipts'
                 v-model="attendantNursingReceipts"
                 @blur="handleBlurField($v.attendantNursingReceipts)"
                 :isZoomPortalEnabled="true"

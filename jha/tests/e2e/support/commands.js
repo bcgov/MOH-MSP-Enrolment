@@ -54,11 +54,9 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
   cy.get('input#birthdate-day').type('01');
   cy.get('input#birthdate-year').type('2000');
 
-  if (options?.includeFPC) {
+  if (!options?.includeMSP) {
     cy.fillIdFields();
-  }
-
-  if (options?.includeMSP) {
+  } else {
     cy.get('label[for=gender-x]').click();
 
     cy.get('select#immigration-status').select('Canadian Citizen');
@@ -168,11 +166,9 @@ Cypress.Commands.add('fillSpousePage', (options) => {
   cy.get('input#birth-date-day').type('20')
   cy.get('input#birth-date-year').type('1990')
 
-  if (options?.includeFPC) {
+  if (!options?.includeMSP) {
     cy.fillIdFields('9348671676', '195544135');
-  }
-
-  if (options?.includeMSP) {
+  } else {
 
     cy.get('label[for=spouse-gender-x]').click();
 
@@ -218,7 +214,7 @@ Cypress.Commands.add('fillChildPage', (options) => {
   cy.get('input#child-birth-date-0-day').type('01')
   cy.get('input#child-birth-date-0-year').type('2019')
 
-  if(options?.includeFPC) {
+  if (options?.includeFPC) {
     cy.get('input#personal-health-number-0').type('9344 507 929')
   }
 
@@ -247,6 +243,38 @@ Cypress.Commands.add('fillChildPage', (options) => {
   }
   cy.continue()
 })
+
+Cypress.Commands.add('fillSBInfoPage', (options) => {
+  cy.get('label[for=select-noa-year-currentNOAYear').click()
+  cy.get('input#ah-net-income').type('50000')
+  cy.get('input#spouse-net-income').type('4000')
+  cy.get('label[for=has-children-yes').click()
+
+  cy.get('input#num-children').type('12')
+  cy.get('input#child-care-expenses').type('200')
+
+  cy.get('label[for=has-disability-credit-yes').click()
+  cy.get('label[for=selected-disability-credit-recipients-spouse').click()
+  
+  cy.get('label[for=has-disability-savings-yes').click()
+  cy.get('input#disability-savings-plan').type('1000')
+
+  cy.get('label[for=has-attendant-nursing-expenses-yes').click()
+  cy.get('label[for=selected-attendant-nursing-recipients-ah').click()
+
+  cy.get('input#attendant-nursing-receipts').selectFile(samplePDF, { force: true });
+  
+  // wait for file to fully upload
+  cy.wait(500);
+  cy.continue();  
+})
+
+Cypress.Commands.add('fillDocumentsPage', () => {
+  cy.get('input#ah-cra-documents').selectFile(samplePDF, { force: true });
+  cy.get('input#spouse-cra-documents').selectFile(samplePDF, { force: true });
+  cy.wait(500);
+  cy.continue();
+});
 
 Cypress.Commands.add('fillResidentialAddress', () => {
   cy.get('input#res-address-line1').type('123 fake st.')
