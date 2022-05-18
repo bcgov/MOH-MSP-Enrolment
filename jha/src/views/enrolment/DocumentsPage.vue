@@ -17,6 +17,7 @@
               <p class="font-weight-bold">Upload your Canada Revenue Agency Notice of Assessment or Reassessment for {{selectedNOAYear}}</p>
               <hr/>
               <FileUploader v-model="ahCRADocuments"
+                id='ah-cra-documents'
                 :isZoomPortalEnabled="true"
                 modalElementTarget="#modal-target"
                 documentType="Account holder NOA/NOR support documents"
@@ -46,6 +47,7 @@
             <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for {{selectedNOAYear}}</p>
             <hr/>
             <FileUploader v-model="spouseCRADocuments"
+              id='spouse-cra-documents'
               :isZoomPortalEnabled="true"
               modalElementTarget="#modal-target"
               documentType="Spouse NOA/NOR support documents"

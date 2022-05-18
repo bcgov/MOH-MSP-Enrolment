@@ -1,8 +1,8 @@
-import { generateRequestObject } from '../fixtures/mspStandaloneRequest.js';
+import { generateRequestObject } from '../fixtures/fpcStandaloneRequest';
 import { removeUniqueFields } from '../helpers';
 
-describe('MSP only application', () => {
-  const options = {includeMSP: true}
+describe('FPC only application', () => {
+  const options = { includeFPC: true }
   it('Fills eligibility questionnaire', () => {
     cy.fillEligibilityQuestionnaire(options)
   })
@@ -19,23 +19,27 @@ describe('MSP only application', () => {
     cy.fillChildPage(options)
   })
 
-  it('Accepts valid information for the contact info page', () => {
-    cy.fillResidentialAddress()
+  it('Accepts valid information for the FPC info page', () => {
+    cy.fillFPCInfoPage()
   })
 
-  it('submits form with expected payload', () => {
-    cy.continue()
-    cy.fillConsent(options)
-    cy.submitApplication()
+  it('Accepts valid information for the contact info page', () => {
+    cy.fillMailingAddress()
+  });
+
+  it('Submits with the expected payload', () => {
+    cy.continue();
+    cy.fillConsent(options);
+
+    cy.submitApplication();
     cy.wait('@submitApplication')
       .then(interception => {
         expect(removeUniqueFields(interception.request.body)).to.deep.equal(removeUniqueFields(generateRequestObject()))
-      })
+      });
   });
 
   it('Redirects user to confirmation page when successful', () => {
     cy.url().should('include', 'submission');
     cy.contains('Confirmation of Submission')
   });
-
 });
