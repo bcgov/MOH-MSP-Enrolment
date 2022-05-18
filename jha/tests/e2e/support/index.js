@@ -21,6 +21,15 @@ beforeEach(() => {
     statusCode: 200,
   })
 
+  cy.intercept('POST', '/ahdc/api/jhaIntegration/forwardCheckEligibility', {
+    statusCode: 200,
+    body: {
+      regStatusCode: '0'
+    }
+  })
+
+  cy.intercept('POST', '/ahdc/api/jhaIntegration/application/**', { statusCode: 200 } ).as('submitApplication')
+
   cy.intercept('/ahdc/api/jhaIntegration/version', {
     statusCode: 200,
   })
