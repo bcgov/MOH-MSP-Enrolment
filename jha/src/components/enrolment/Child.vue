@@ -1,22 +1,22 @@
 <template>
     <div>
-      <div v-if="requestAgeRange">
-        <Radio
-          label='How old is the child?'
-          :id="'child-age-range-' + index"
-          :name="'child-age-range-' + index"
-          v-model='ageRange'
-          @blur="handleBlurField($v.ageRange)"
-          className="mt-3"
-          :items='radioChildAgeOptions'
-        />
-        <div class="text-danger"
-          v-if="$v.ageRange.$dirty && !$v.ageRange.required"
-          aria-live="assertive">Please indicate the child's age range.</div>
-      </div>
       <!-- Bootstrap row and column classes for gender tipbox placement -->
       <div class="row">
-        <div class="col-md-7"> 
+        <div class="col-md-7">
+          <div v-if="requestAgeRange">
+            <Radio
+              label='How old is the child?'
+              :id="'child-age-range-' + index"
+              :name="'child-age-range-' + index"
+              v-model='ageRange'
+              @blur="handleBlurField($v.ageRange)"
+              className="mt-3"
+              :items='radioChildAgeOptions'
+            />
+            <div class="text-danger"
+              v-if="$v.ageRange.$dirty && !$v.ageRange.required"
+              aria-live="assertive">Please indicate the child's age range.</div>
+          </div>
           <Input label='First name'
             :id="'child-first-name-' + index"
             className='mt-3'
@@ -117,7 +117,13 @@
               aria-live="assertive">Please indicate the child's gender.</div>
           </div>
         </div>
-        <div class="col-md-5 d-flex align-items-end">
+        <div class="col-md-5 d-flex flex-column justify-content-between">
+          <TipBox class="mb-3" v-if="requestAgeRange">
+            <p>Tip</p>
+            <p>You can include your 19 to 24 year old child on your MSP account if they are enrolled in full-time studies.</p>
+            <p>If your child is 19 to 24 and not in full-time studies, they must apply separately for their own MSP coverage.</p>
+            <p>If your child is 25 years or older, they must apply separately for their own MSP coverage.</p>
+          </TipBox>
           <TipBox v-if="requestGender">
             <p>Tip</p>
             <p>If the gender you select does not match the gender on your supporting document(s), you must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
