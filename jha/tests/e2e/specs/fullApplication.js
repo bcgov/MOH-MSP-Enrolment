@@ -1,8 +1,8 @@
-import { generateRequestObject } from '../fixtures/sbStandaloneRequest.js';
+import { generateRequestObject } from '../fixtures/fullApplication.js';
 import { removeUniqueFields } from '../helpers';
 
-describe('SB only application', () => {
-  const options = {includeSB: true}
+describe('Full application for MSP FPC and SB', () => {
+  const options = {includeMSP: true, includeFPC: false, includeSB: true}
   it('Fills eligibility questionnaire', () => {
     cy.fillEligibilityQuestionnaire(options)
   })
@@ -15,6 +15,10 @@ describe('SB only application', () => {
     cy.fillSpousePage(options)
   });
 
+  it('Accepts valid information for the child page', () => {
+    cy.fillChildPage(options)
+  });
+
   it('Accepts valid information for the supplemental benefits information page', () => {
     cy.fillSBInfoPage(options)
   });
@@ -24,8 +28,8 @@ describe('SB only application', () => {
   });
 
   it('Accepts valid information for the contact info page', () => {
-    cy.fillMailingAddress()
-  });
+    cy.fillResidentialAddress()
+  })
 
   it('submits form with expected payload', () => {
     cy.continue()

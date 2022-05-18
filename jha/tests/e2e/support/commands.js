@@ -31,6 +31,8 @@ const currentDate = new Date();
 const lastMonthDate = new Date();
 lastMonthDate.setMonth(currentDate.getMonth() - 1);
 
+const DOCUMENT_WAIT_TIME = 750;
+
 
 Cypress.Commands.add('fillName', (firstName = 'alex', middleName = 'jaimie', lastName = 'doe') => {
   cy.get('input#first-name').type(firstName);
@@ -57,6 +59,9 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
   if (!options?.includeMSP) {
     cy.fillIdFields();
   } else {
+    if (options.includeSB || options.includeFPC) {
+      cy.get('input#social-insurance-number').type('238795439')
+    }
     cy.get('label[for=gender-x]').click();
 
     cy.get('select#immigration-status').select('Canadian Citizen');
@@ -170,6 +175,10 @@ Cypress.Commands.add('fillSpousePage', (options) => {
     cy.fillIdFields('9348671676', '195544135');
   } else {
 
+    if (options.includeSB || options.includeFPC) {
+      cy.get('input#social-insurance-number').type('195544135')
+    }
+
     cy.get('label[for=spouse-gender-x]').click();
 
     cy.get('select#spouse-status').select('Permanent Resident')
@@ -248,9 +257,12 @@ Cypress.Commands.add('fillSBInfoPage', (options) => {
   cy.get('label[for=select-noa-year-currentNOAYear').click()
   cy.get('input#ah-net-income').type('50000')
   cy.get('input#spouse-net-income').type('4000')
-  cy.get('label[for=has-children-yes').click()
 
-  cy.get('input#num-children').type('12')
+  if (!options.includeMSP) {
+    cy.get('label[for=has-children-yes').click()
+    cy.get('input#num-children').type('12')
+  }
+
   cy.get('input#child-care-expenses').type('200')
 
   cy.get('label[for=has-disability-credit-yes').click()
@@ -265,14 +277,14 @@ Cypress.Commands.add('fillSBInfoPage', (options) => {
   cy.get('input#attendant-nursing-receipts').selectFile(samplePDF, { force: true });
   
   // wait for file to fully upload
-  cy.wait(500);
+  cy.wait(DOCUMENT_WAIT_TIME);
   cy.continue();  
 })
 
 Cypress.Commands.add('fillDocumentsPage', () => {
   cy.get('input#ah-cra-documents').selectFile(samplePDF, { force: true });
   cy.get('input#spouse-cra-documents').selectFile(samplePDF, { force: true });
-  cy.wait(500);
+  cy.wait(DOCUMENT_WAIT_TIME);
   cy.continue();
 });
 
