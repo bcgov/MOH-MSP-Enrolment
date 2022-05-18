@@ -16,5 +16,26 @@
 // Import commands.js using ES2015 syntax:
 import './commands'
 
-// Alternatively you can use CommonJS syntax:
-// require('./commands')
+beforeEach(() => {
+  cy.intercept('POST', '/ahdc/api/jhaIntegration/getDeductibles', {
+    statusCode: 200,
+  })
+
+  cy.intercept('/ahdc/api/jhaIntegration/version', {
+    statusCode: 200,
+  })
+
+  cy.intercept('POST', '/ahdc/api/captcha/verify/captcha', {
+    statusCode: 200,
+    body: {
+      valid: true,
+    }
+  });
+  
+  cy.intercept('POST', '/ahdc/api/submit-attachment/**', {
+    statusCode: 200,
+    body: {
+      returnCode: 'success'
+    }
+  })
+})
