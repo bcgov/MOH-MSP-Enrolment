@@ -1,6 +1,6 @@
 import apiService from "@/services/api-service";
 import dummyData from "@/store/states/enrolment-module-dummy-data.js";
-import { mockFile } from "../../fixtures.js";
+import { mockFile } from "../fixtures.js";
 import { stripSpaces, formatISODate } from "common-lib-vue";
 
 const postRequestSuccessResult = {

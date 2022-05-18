@@ -7,7 +7,7 @@ import ConsentPage from "@/views/enrolment/ConsentPage.vue";
 import apiService from "@/services/api-service.js";
 import enrolmentModule from "@/store/modules/enrolment-module.js";
 import dummyData from "@/store/states/enrolment-module-dummy-data.js";
-import { completedConsentPageState, mockFile } from "../../../fixtures.js";
+import { completedConsentPageState, mockFile } from "../../fixtures.js";
 
 jest.mock("@/services/api-service.js", () => ({
   sendApplication: jest.fn(() => Promise.resolve(true)),

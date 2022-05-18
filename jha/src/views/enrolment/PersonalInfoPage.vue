@@ -214,6 +214,7 @@
             <div class="row">
               <div class="col-md-7">
                 <FileUploader v-model="citizenshipSupportDocuments"
+                  id='citizenship-support-documents'
                   :isZoomPortalEnabled="true"
                   modalElementTarget="#modal-target"
                   documentType="Account holder citizenship support documents"
@@ -271,6 +272,7 @@
             <div class="row">
               <div class="col-md-7">
                 <FileUploader v-model="nameChangeSupportDocuments"
+                  id='name-change-support-documents'
                   :isZoomPortalEnabled="true"
                   modalElementTarget="#modal-target"
                   documentType="Account holder name change support documents"

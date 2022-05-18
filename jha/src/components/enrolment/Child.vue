@@ -222,6 +222,7 @@
             <div class="row">
               <div class="col-md-7">
                 <FileUploader v-model="citizenshipSupportDocuments"
+                  :id="'child-citizenship-support-documents-' + index"
                   :isZoomPortalEnabled="true"
                   modalElementTarget="#modal-target"
                   documentType="Child citizenship support documents"
