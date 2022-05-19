@@ -142,7 +142,7 @@ import {
 import pageContentMixin from '@/mixins/page-content-mixin';
 import TipBox from '@/components/TipBox.vue';
 import FPCWidget from '@/components/enrolment/FPCWidget.vue';
-import { required } from 'vuelidate/lib/validators';
+import { required } from '@vuelidate/validators';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 export default {

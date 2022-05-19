@@ -710,7 +710,7 @@ import {
 } from 'common-lib-vue';
 import {
   required
-} from 'vuelidate/lib/validators';
+} from '@vuelidate/validators';
 import {
   isSameDay,
   startOfToday,

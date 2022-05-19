@@ -743,7 +743,7 @@ import {
 } from '@/constants/input-styles';
 import {
   required,
-} from 'vuelidate/lib/validators';
+} from '@vuelidate/validators';
 import {
   dateDataRequiredValidator,
   dateDataValidator,

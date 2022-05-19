@@ -325,7 +325,7 @@ import {
 } from 'common-lib-vue';
 import {
   required,
-} from 'vuelidate/lib/validators';
+} from '@vuelidate/validators';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import TipBox from '@/components/TipBox';

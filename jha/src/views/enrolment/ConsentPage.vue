@@ -219,7 +219,7 @@ import {
 import SampleImageTipBox from "@/components/SampleImageTipBox";
 import pageContentMixin from '@/mixins/page-content-mixin';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
-import { required } from "vuelidate/lib/validators";
+import { required } from "@vuelidate/validators";
 
 const requiredTrue = (value) => {
   return value === true;

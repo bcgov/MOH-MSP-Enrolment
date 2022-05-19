@@ -329,7 +329,7 @@ import SuppBenWidget from '@/components/SuppBenWidget';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import {
   required,
-} from 'vuelidate/lib/validators';
+} from '@vuelidate/validators';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 
 const validateNumChildClaims = (value, vm) => {
