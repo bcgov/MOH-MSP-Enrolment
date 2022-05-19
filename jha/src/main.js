@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import Vuelidate from 'vuelidate';
+import { createApp } from 'vue';
 import PortalVue from 'portal-vue';
 import App from '@/App.vue';
 import router from '@/router';
@@ -41,20 +40,20 @@ library.add(faPrint);
 library.add(faTimesCircle);
 library.add(faInfoCircle);
 library.add(faExclamationCircle);
-Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-Vue.use(Vuelidate);
-Vue.use(PortalVue);
+// Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-Vue.config.productionTip = false;
+// Vue.use(Vuelidate);
+// Vue.use(PortalVue);
+// Vue.use(router);
 
-// Add 'ie' class name when is IE browser.
-if (isIE()) {
-  document.body.classList.add('ie');
-}
+// Vue.config.productionTip = false;
 
-new Vue({
+const app = createApp({
   router,
-  store,
-  render: h => h(App)
-}).$mount('#app');
+  ...App,
+})
+
+app.use(store)
+app.use(router)
+app.mount('#app');

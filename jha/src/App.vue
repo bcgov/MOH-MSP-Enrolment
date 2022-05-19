@@ -8,7 +8,7 @@
       </main>
       <Footer :version='version' />
     </div>
-    <portal-target id="modal-target" name="modal"></portal-target>
+    <!-- <portal-target id="modal-target" name="modal"></portal-target> -->
   </div>
 </template>
 

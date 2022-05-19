@@ -1,11 +1,18 @@
 import Vue from 'vue';
-import Vuex from 'vuex';
+import { createStore } from 'vuex';
 import appModule from './modules/app-module';
 import enrolmentModule from './modules/enrolment-module';
 
-Vue.use(Vuex);
+const store = createStore({
+  modules: {
+    appModule,
+    enrolmentModule,
+  }
+});
 
-export default new Vuex.Store({
+Vue.use(store);
+
+export default createStore({
   modules: {
     appModule,
     enrolmentModule,
