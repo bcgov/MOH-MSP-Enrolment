@@ -69,7 +69,7 @@
           </div>
         </div>
         <div class="text-danger"
-          v-if="v.eqMSPIsApplying.$dirty && !v.eqMSPIsApplying.validateQuestionsAnswered.$response"
+          v-if="v$.eqMSPIsApplying.$dirty && !v$.eqMSPIsApplying.validateQuestionsAnswered.$response"
           aria-live="assertive">Please complete the questionnaire to continue.</div>
       </div>
     </PageContent>
@@ -130,7 +130,7 @@ const validateQuestionsAnswered = (_value, vm) => {
 export default {
   name: 'MSPEligibilityPage',
   setup () {
-    return { v: useVuelidate() }
+    return { v$: useVuelidate() }
   },
   mixins: [
     pageContentMixin,
@@ -192,8 +192,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.v.$touch()
-      if (this.v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }

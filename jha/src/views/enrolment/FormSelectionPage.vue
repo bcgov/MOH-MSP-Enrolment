@@ -57,7 +57,7 @@
           </template>
         </Checkbox>
         <div class="text-danger mt-3"
-          v-if="$v.$dirty && !$v.atLeastOne"
+          v-if="v$.$dirty && !v$.atLeastOne.$response"
           aria-live="assertive">You must select at least one program.</div>
       </div>
     </PageContent>
@@ -66,6 +66,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import logService from '@/services/log-service';
 import {
@@ -120,6 +121,9 @@ export default {
     Checkbox,
     ContinueBar,
     PageContent,
+  },
+  setup () {
+    return { v$: useVuelidate() }
   },
   data: () => {
     return {
@@ -183,8 +187,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }

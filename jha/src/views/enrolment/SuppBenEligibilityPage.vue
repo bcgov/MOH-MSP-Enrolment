@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="text-danger"
-                      v-if="v.applyFPC.$dirty && !v.applyFPC.validateQuestionsAnswered.$response"
+                      v-if="v$.applyFPC.$dirty && !v$.applyFPC.validateQuestionsAnswered.$response"
                       aria-live="assertive">Please complete the questionnaire to continue.</div>
       </div>
     </PageContent>
@@ -119,7 +119,7 @@ export default {
     Radio,
   },
   setup () {
-    return { v: useVuelidate() }
+    return { v$: useVuelidate() }
   },
   data: () => {
     return {
@@ -154,8 +154,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.v.$touch()
-      if (this.v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
