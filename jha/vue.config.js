@@ -1,3 +1,5 @@
+const path = require('path')
+
 module.exports = {
   publicPath: '/ahdc/',
   devServer: {
@@ -9,21 +11,9 @@ module.exports = {
     }
   },
   lintOnSave: true,
+  // Below configuration is for use with npm link. Can be removed after common-lib-vue is working and published for vue-3
   chainWebpack: (config) => {
-    config.resolve.alias.set('vue', '@vue/compat')
-
-    config.module
-      .rule('vue')
-      .use('vue-loader')
-      .tap((options) => {
-        return {
-          ...options,
-          compilerOptions: {
-            compatConfig: {
-              MODE: 2,
-            }
-          }
-        }
-      })
+    config.resolve.symlinks(false)
+    config.resolve.alias.set( 'vue', path.resolve('./node_modules/vue'))
   }
 };

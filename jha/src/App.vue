@@ -24,7 +24,6 @@ import {
 } from 'common-lib-vue';
 import pageStateService from '@/services/page-state-service';
 import { commonRoutes } from '@/router/routes';
-import { Wormhole } from 'portal-vue';
 import spaEnvService from '@/services/spa-env-service';
 import logService from '@/services/log-service';
 
@@ -66,8 +65,9 @@ export default {
     isModalOpen() {
       const modalTargetEl = document.body.querySelector('#modal-target');
       const modalTargetHasChildren = modalTargetEl && modalTargetEl.children.length > 0;
-      return Wormhole.hasContentFor('modal')
-          || modalTargetHasChildren;
+      // return Wormhole.hasContentFor('modal')
+      //     || modalTargetHasChildren;
+      return modalTargetHasChildren;
     }
   },
 }
