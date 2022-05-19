@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="text-danger"
-          v-if="$v.eqFPCIsApplying.$dirty && !$v.eqFPCIsApplying.validateQuestionsAnswered"
+          v-if="v.eqFPCIsApplying.$dirty && !v.eqFPCIsApplying.validateQuestionsAnswered.$response"
           aria-live="assertive">Please complete the questionnaire to continue.</div>
       </div>
     </PageContent>
@@ -66,6 +66,7 @@
 <script>
 import pageStateService from '@/services/page-state-service';
 import logService from '@/services/log-service';
+import useVuelidate from '@vuelidate/core'
 import {
   enrolmentRoutes,
   isPastPath,
@@ -113,6 +114,9 @@ export default {
     pageContentMixin,
     pageStepperMixin,
   ],
+  setup () {
+    return { v: useVuelidate() }
+  },
   components: {
     ContinueBar,
     PageContent,
@@ -165,8 +169,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v.$touch()
+      if (this.v.$invalid) {
         scrollToError();
         return;
       }

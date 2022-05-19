@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="text-danger"
-                      v-if="$v.applyFPC.$dirty && !$v.applyFPC.validateQuestionsAnswered"
+                      v-if="v.applyFPC.$dirty && !v.applyFPC.validateQuestionsAnswered.$response"
                       aria-live="assertive">Please complete the questionnaire to continue.</div>
       </div>
     </PageContent>
@@ -63,6 +63,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import logService from '@/services/log-service';
 import {
@@ -117,6 +118,9 @@ export default {
     PageContent,
     Radio,
   },
+  setup () {
+    return { v: useVuelidate() }
+  },
   data: () => {
     return {
       isPageLoaded: false,
@@ -150,8 +154,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v.$touch()
+      if (this.v.$invalid) {
         scrollToError();
         return;
       }
