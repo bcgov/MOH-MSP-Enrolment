@@ -88,7 +88,7 @@ export const commonRoutes = {
     name: 'MaintenancePage'
   },
   PAGE_NOT_FOUND_PAGE: {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     title: 'Page not found',
     name: 'PageNotFoundPage'
   }
