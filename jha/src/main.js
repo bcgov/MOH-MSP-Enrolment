@@ -40,11 +40,6 @@ library.add(faTimesCircle);
 library.add(faInfoCircle);
 library.add(faExclamationCircle);
 
-// Vue.use(Vuelidate);
-// Vue.use(PortalVue);
-// Vue.use(router);
-
-
 const app = createApp({
   router,
   ...App,
