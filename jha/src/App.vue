@@ -8,7 +8,7 @@
       </main>
       <Footer :version='version' />
     </div>
-    <!-- <portal-target id="modal-target" name="modal"></portal-target> -->
+    <div id="modal-target" name="modal"></div>
   </div>
 </template>
 
@@ -65,6 +65,7 @@ export default {
     isModalOpen() {
       const modalTargetEl = document.body.querySelector('#modal-target');
       const modalTargetHasChildren = modalTargetEl && modalTargetEl.children.length > 0;
+      // TODO: Update commented out code below for new Teleport component
       // return Wormhole.hasContentFor('modal')
       //     || modalTargetHasChildren;
       return modalTargetHasChildren;
