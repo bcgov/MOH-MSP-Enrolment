@@ -40,19 +40,16 @@ library.add(faTimesCircle);
 library.add(faInfoCircle);
 library.add(faExclamationCircle);
 
-// Vue.component('font-awesome-icon', FontAwesomeIcon);
-
 // Vue.use(Vuelidate);
 // Vue.use(PortalVue);
 // Vue.use(router);
 
-// Vue.config.productionTip = false;
 
 const app = createApp({
   router,
   ...App,
 })
-
-app.use(store)
-app.use(router)
-app.mount('#app');
+  .use(store)
+  .use(router)
+  .component("font-awesome-icon", FontAwesomeIcon)
+  .mount('#app');
