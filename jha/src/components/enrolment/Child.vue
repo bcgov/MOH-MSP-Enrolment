@@ -252,10 +252,6 @@
           <div v-if="isNameChanged === 'Y'" class="tabbed-section">
             <h2>Additional Documents</h2>
             <p>Provide one of the required documents to support the child's name change.</p>
-            <ul>
-              <li>Marriage Certificate</li>
-              <li>Legal Name Change Certificate</li>
-            </ul>
             <hr/>
             <Select 
               label="Document Type"
@@ -857,7 +853,7 @@ import {
   selectOptionReligiousWorkSupportDocument,
   selectOptionDiplomaticFoilSupportDocument,
   selectOptionVisitorVisaSupportDocument,
-  selectOptionsNameChangeSupportDocuments,
+  selectOptionsChildNameChangeSupportDocuments,
 } from '@/constants/select-options';
 import { 
   radioOptionsNoYes,
@@ -1041,7 +1037,7 @@ export default {
       childAgeTypes: ChildAgeTypes,
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
-      nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
+      nameChangeSupportDocumentOptions: selectOptionsChildNameChangeSupportDocuments,
       temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
       overageChildTemporaryResidentStatusReasonOptions: radioOptionsOverageChildTemporaryResidentStatusReasons,
       mediumStyles: mediumStyles,
