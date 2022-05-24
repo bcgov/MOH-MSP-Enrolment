@@ -24,7 +24,7 @@
           <Radio
             id='live-in-bc'
             name='live-in-bc'
-            label='2. Do you currently live in British Columbia? (i.e. Do you have an address here?)'
+            label='2. Do you live in British Columbia and have a B.C. address where you can receive mail?'
             v-model='eqMSPLiveInBC'
             :items='radioOptionsYesNo' />
           <p class="font-weight-bold ml-4" v-if="eqMSPLiveInBC === 'N'">You might not qualify for MSP or related income-based programs if you do not live in B.C. Contact Health Insurance BC for more information.</p>
