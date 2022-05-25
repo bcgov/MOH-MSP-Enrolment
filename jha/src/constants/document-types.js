@@ -39,7 +39,7 @@ export const SupportDocumentSamples = {
   [SupportDocumentTypes.RecordOfLanding]: 'record_of_landing.jpg',
   [SupportDocumentTypes.PermanentResidentCard]: 'perm_resident_card.jpg',
   [SupportDocumentTypes.PermanentResidentConfirmation]: 'perm_resident_conf.jpg',
-  [SupportDocumentTypes.WorkPermit]: 'work_permit.jpg',
+  [SupportDocumentTypes.WorkPermit]: 'work_permit.png',
   [SupportDocumentTypes.StudyPermit]: 'study_permit.jpg',
   [SupportDocumentTypes.VisitorVisa]: 'visitor_permit.jpg',
   [SupportDocumentTypes.PassportWithDiplomaticFoil]: 'diplomatic_passport.jpg',
