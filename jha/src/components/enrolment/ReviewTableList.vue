@@ -1111,7 +1111,7 @@ export default {
   methods: {
     navigateToPersonalInfoPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.PERSONAL_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -1120,7 +1120,7 @@ export default {
     },
     navigateToSpouseInfoPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SPOUSE_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -1129,7 +1129,7 @@ export default {
     },
     navigateToChildInfoPage(anchorName) {
         const toPath = getConvertedPath(
-          this.$router.currentRoute.path,
+          this.$router.currentRoute.value.path,
           enrolmentRoutes.CHILD_INFO_PAGE.path
         );
         pageStateService.setPageComplete(toPath);
@@ -1141,7 +1141,7 @@ export default {
     },
     navigateToFPCInfoPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.FPCARE_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -1150,7 +1150,7 @@ export default {
     },
     navigateToSuppBenInfoPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUPP_BEN_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -1159,7 +1159,7 @@ export default {
     },
     navigateToContactInfoPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.CONTACT_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -399,7 +399,7 @@ export default {
     },
     navigateToSubmissionPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUBMISSION_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -409,7 +409,7 @@ export default {
     },
     navigateToSubmissionErrorPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUBMISSION_ERROR_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -448,7 +448,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.REVIEW_PAGE.path
       );
       next({
