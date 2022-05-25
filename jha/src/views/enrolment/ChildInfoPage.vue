@@ -18,10 +18,10 @@
                 :name="'has-children'"
                 class="mt-3"
                 v-model="hasChildren"
-                @blur="handleBlurField($v.hasChildren)"
+                @blur="handleBlurField(v$.hasChildren)"
                 :items="radioOptionsNoYes" />
         <div class="text-danger"
-          v-if="$v.hasChildren.$dirty && !$v.hasChildren.required"
+          v-if="v$.hasChildren.$dirty && v$.hasChildren.required.$invalid"
           aria-live="assertive">Please indicate if you have a child who needs to enrol for MSP coverage.</div>
         <div v-for="(child, index) in children"
             :key="'child-' + index">
@@ -62,6 +62,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
@@ -146,6 +147,9 @@ export default {
     };
 
     return validations;
+  },
+  setup () {
+    return { v$: useVuelidate() }
   },
   methods: {
     addChild() {
@@ -246,15 +250,15 @@ export default {
       }
 
       // touch parent forms inputs
-      this.$v.$touch();
+      this.v$.$touch();
       // touch all children
       let validChildren = true;
       if (this.$refs && this.$refs.children) {
         for (let child of this.$refs.children) {
-          if (child.$v) {
-            child.$v.$touch();
+          if (child.v$) {
+            child.v$.$touch();
             
-            if (child.$v.$invalid) {
+            if (child.v$.$invalid) {
               validChildren = false;
             }
           }
@@ -262,7 +266,7 @@ export default {
       }
 
       // if the parent form or any children have invalid inputs
-      if (this.$v.$invalid || !validChildren) {
+      if (this.v$.$invalid || !validChildren) {
         if (!validChildren) {
           // only call this function if there are children, lest it unnecessarily triggers the watcher for this.children
           this.expandAllChildren();
