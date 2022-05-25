@@ -9,9 +9,16 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Add Spouse / Common-law personal information and upload documents</h1>
-        <p>A spouse is a person who is married to or living and cohabitating in a marriage-like relationship with the Account Holder. A spouse may be the same gender as the Account Holder. To be eligible for MSP coverage, a spouse must be a BC resident. </p> 
-        <p>Personal Health Number (PHN) is the number that appears on the spouse's BC Services Card.</p>
+        <h1>Spouse or Common-law partner</h1>
+        <div class="heading mt-3">
+          <div>
+            <p>A spouse is a person who is married to or living and cohabitating in a marriage-like relationship with the Account Holder. A spouse may be the same gender as the Account Holder. To be eligible for MSP coverage, a spouse must be a BC resident. </p> 
+            <p>Personal Health Number (PHN) is the number that appears on the spouse's BC Services Card.</p>
+          </div>
+          <div v-if="hasSpouse === 'Y'" class="ml-1 mb-2 remove-icon align-self-end " @click="removeSpouse()">
+            <font-awesome-icon icon="times-circle" size="2x" title="Remove Spouse"/>
+          </div>
+        </div>
         <hr class="mt-0"/>
         <Radio
           v-if="hasSpouse !== 'Y'"
@@ -26,14 +33,6 @@
           aria-live="assertive">Please indicate whether or not you have a spouse who needs to enrol.</div>
         
         <div v-if="hasSpouse === 'Y'" class="mt-3">
-          <h2>Spouse / Common-law basic information</h2>
-          <div class="heading mt-3">
-            <p>Please provide the spouse's personal information. You will be required to upload supporting documents with your application.</p>
-            <div class="ml-1 remove-icon" @click="removeSpouse()">
-              <font-awesome-icon icon="times-circle" size="2x"/>
-            </div>
-          </div>
-          <hr class="mt-0"/>
           <!-- Spouse personal information -->
           <!-- Bootstrap row and column classes for gender tipbox placement -->
           <div class="row">
@@ -166,7 +165,7 @@
           <div v-if="requestImmigrationStatus">
             <h2 class="mt-4">Spouse or common-law partner status in Canada</h2>
             <div class="heading mt-3">
-              <p>Please provide the spouse's immigration status in Canada. You will be required to upload supporting documents with your application.</p>
+              <p>Please provide your spouse's immigration status information. You will be required to upload documents to support spouse's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select 'Temporary Permit Holder or Diplomat' from the drop down below.</p>
             </div>
             <hr class="mt-0"/>
             <Select 
@@ -259,7 +258,7 @@
               </div>
 
               <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
-                <Radio label="Has your spouse's name changed since your ID was issued due to marriage or legal name change?"
+                <Radio label="Has your spouse's name changed since their ID was issued due to marriage or legal name change?"
                   id="name-change"
                   name="name-change"
                   class="mt-3 mb-3"
@@ -515,7 +514,7 @@
                       :inputStyle='mediumStyles' />
                   </div>
                   <Radio
-                    label='Has your spouse been outside B.C. for more than 30 days in total in the past 12 months?'
+                    label='Since your spouse arrived in B.C. have you left the province for more than 30 days in total in the past 12 months?'
                     id='outside-bc-past-12'
                     name='outside-bc-past-12'
                     v-model='spouseOutsideBCLast12Months'
