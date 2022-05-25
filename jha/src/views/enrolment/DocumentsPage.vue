@@ -23,7 +23,7 @@
                 documentType="Account holder NOA/NOR support documents"
                 description="Account holder NOA/NOR" />
               <div class="text-danger"
-                      v-if="$v.ahCRADocuments.$dirty && !$v.ahCRADocuments.required"
+                      v-if="v$.ahCRADocuments.$dirty && v$.ahCRADocuments.required.$invalid"
                       aria-live="assertive">File upload required.</div>
             </div>
           </div>
@@ -53,7 +53,7 @@
               documentType="Spouse NOA/NOR support documents"
               description="Spouse NOA/NOR" />
             <div class="text-danger"
-              v-if="$v.spouseCRADocuments.$dirty && !$v.spouseCRADocuments.required"
+              v-if="v$.spouseCRADocuments.$dirty && v$.spouseCRADocuments.required.$invalid"
               aria-live="assertive">File upload required.</div>
           </div>
           <div class="col-md-4">
@@ -78,6 +78,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
@@ -130,6 +131,9 @@ export default {
       selectedNOAYear: null,
     };
   },
+  setup () {
+    return { v$: useVuelidate() }
+  },
   created() {
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
@@ -156,8 +160,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
