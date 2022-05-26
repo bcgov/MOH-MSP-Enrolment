@@ -258,7 +258,7 @@
               </div>
 
               <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
-                <Radio label="Has your spouse's name changed since their ID was issued due to marriage or legal name change?"
+                <Radio label="Has your spouse's name changed since their ID was issued due to marriage or a legal name change?"
                   id="name-change"
                   name="name-change"
                   class="mt-3 mb-3"
