@@ -57,7 +57,7 @@
           </template>
         </Checkbox>
         <div class="text-danger mt-3"
-          v-if="v$.$dirty && !v$.atLeastOne.$response"
+          v-if="v$.$dirty && v$.atLeastOne.$invalid"
           aria-live="assertive">You must select at least one program.</div>
       </div>
     </PageContent>

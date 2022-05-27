@@ -11,6 +11,7 @@ export const removeUniqueFields = (baseApplicationObj) => {
   delete applicationObj?.medicalServicesPlan?.spouse?.attachmentUuids;
   delete applicationObj?.medicalServicesPlan?.children?.attachmentUuids;
   delete applicationObj?.authorizedByApplicantDate;
+  delete applicationObj?.fairPharmaCare?.processDate;
 
   applicationObj?.medicalServicesPlan?.children?.forEach(child => {
     delete child.attachmentUuids

@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="text-danger"
-                      v-if="v$.applyFPC.$dirty && !v$.applyFPC.validateQuestionsAnswered.$response"
+                      v-if="v$.eqSBIsApplying.$dirty && v$.eqSBIsApplying.validateQuestionsAnswered.$invalid"
                       aria-live="assertive">Please complete the questionnaire to continue.</div>
       </div>
     </PageContent>
@@ -146,7 +146,7 @@ export default {
   },
   validations() {
     const validations = {
-      applyFPC: {
+      eqSBIsApplying: {
         validateQuestionsAnswered,
       }
     };

@@ -69,7 +69,7 @@
           </div>
         </div>
         <div class="text-danger"
-          v-if="v$.eqMSPIsApplying.$dirty && !v$.eqMSPIsApplying.validateQuestionsAnswered.$response"
+          v-if="v$.eqMSPIsApplying.$dirty && v$.eqMSPIsApplying.validateQuestionsAnswered.$invalid"
           aria-live="assertive">Please complete the questionnaire to continue.</div>
       </div>
     </PageContent>

@@ -54,7 +54,7 @@
           </div>
         </div>
         <div class="text-danger"
-          v-if="v$.eqFPCIsApplying.$dirty && !v$.eqFPCIsApplying.validateQuestionsAnswered.$response"
+          v-if="v$.eqFPCIsApplying.$dirty && v$.eqFPCIsApplying.validateQuestionsAnswered.$invalid"
           aria-live="assertive">Please complete the questionnaire to continue.</div>
       </div>
     </PageContent>
