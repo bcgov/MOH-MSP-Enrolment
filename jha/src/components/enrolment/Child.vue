@@ -188,7 +188,7 @@
         </div>
         <div v-if="statusReason !== null && statusReason !== undefined" class="mt-3">
           <h2>Documents</h2>
-          <p>Provide one of the following documents to support your status in Canada. If the child's name has changed since your ID was issued you are also required to upload document to support the name change.</p>
+          <p>Provide one of the required documents to support your status in Canada. If the child's name has changed since your ID was issued you are also required to upload document to support the name change.</p>
           <hr/>
           <Select 
             label="Document Type"
@@ -252,10 +252,6 @@
           <div v-if="isNameChanged === 'Y'" class="tabbed-section">
             <h2>Additional Documents</h2>
             <p>Provide one of the required documents to support the child's name change.</p>
-            <ul>
-              <li>Marriage Certificate</li>
-              <li>Legal Name Change Certificate</li>
-            </ul>
             <hr/>
             <Select 
               label="Document Type"
@@ -637,7 +633,7 @@
             </div>
             <div class="col-md-5 mt-3">
               <TipBox>
-                  <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer.</p>
+                  <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer. If you leave B.C. within 6 months of enrolling for MSP, you may have to repay your medical expenses.</p>
               </TipBox>
             </div>
         </div>
@@ -857,7 +853,7 @@ import {
   selectOptionReligiousWorkSupportDocument,
   selectOptionDiplomaticFoilSupportDocument,
   selectOptionVisitorVisaSupportDocument,
-  selectOptionsNameChangeSupportDocuments,
+  selectOptionsChildNameChangeSupportDocuments,
 } from '@/constants/select-options';
 import { 
   radioOptionsNoYes,
@@ -1041,7 +1037,7 @@ export default {
       childAgeTypes: ChildAgeTypes,
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
-      nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
+      nameChangeSupportDocumentOptions: selectOptionsChildNameChangeSupportDocuments,
       temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
       overageChildTemporaryResidentStatusReasonOptions: radioOptionsOverageChildTemporaryResidentStatusReasons,
       mediumStyles: mediumStyles,
