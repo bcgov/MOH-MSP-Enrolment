@@ -399,7 +399,7 @@
                     aria-live="assertive">The applicant's {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C.' : 'arrival date in B.C.'}} cannot be before the applicant's date of birth.</div>
                   <div class="text-danger"
                     v-if="v$.arrivalDateInBC.$dirty
-                      && v$.arrivalDateInBC.afterBirthdateValidator.$invalid
+                      && !v$.arrivalDateInBC.afterBirthdateValidator.$invalid
                       && v$.arrivalDateInBC.afterCanadaArrivalDateValidator.$invalid"
                     aria-live="assertive">The applicant's {{citizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ? 'most recent move to B.C.' : 'arrival date in B.C.'}} cannot be before the move to Canada date.</div>
                 </div>
@@ -412,7 +412,7 @@
                     @processDate="handleProcessDateArrivalInCanada($event)" />
                   <div class="text-danger"
                     v-if="v$.arrivalDateInCanada.$dirty
-                      && v$.arrivalDateInCanada.required.$invalid"
+                      && v$.arrivalDateInCanada.required?.$invalid"
                     aria-live="assertive">Arrival date in Canada is required.</div>
                   <div class="text-danger"
                     v-if="v$.arrivalDateInCanada.$dirty
@@ -1052,8 +1052,6 @@ export default {
       if (this.requestArrivalInCanadaInfo) {
         if (this.isArrivalDateInCanadaRequired) {
           validations.arrivalDateInCanada.required = dateDataRequiredValidator(this.arrivalDateInCanadaData);
-        } else {
-          validations.arrivalDateInCanada.required = () => true; // Validator for optional use-case.
         }
         validations.arrivalDateInCanada.dateDataValidator = dateDataValidator(this.arrivalDateInCanadaData);
         validations.arrivalDateInCanada.pastDateValidator = optionalValidator(pastDateValidator);
