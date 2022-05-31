@@ -47,7 +47,7 @@
         <div v-else>
           <div v-if="fpcApplicationResult" class="mb-4">
             <div v-if="fpcApplicationResult.returnCode === '0'">
-              <SuccessBox v-if="true">
+              <SuccessBox>
                 <p><b>Your Fair PharmaCare form has been submitted.</b></p>
                 <p v-if="fpcApplicationResult.familyNumber"><b>Reference number is: {{fpcApplicationResult.familyNumber}}</b></p>
               </SuccessBox>
