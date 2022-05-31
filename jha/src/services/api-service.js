@@ -514,6 +514,16 @@ class ApiService {
         sin: stripSpaces(formState.spouseSIN),
       });
     }
+    if (formState.hasChildren === 'Y' && Array.isArray(formState.children)) {
+      formState.children.forEach(child => {
+        payload.persons.push({
+          perType: '2',
+          phn: stripSpaces(child?.personalHealthNumber),
+          dateOfBirth: formatISODate(child?.birthDate),
+          surname: child?.lastName,
+        })
+      });
+    }
     return this._sendPostRequest(CHECK_ELIGIBILITY_URL, headers, payload);
   }
 
