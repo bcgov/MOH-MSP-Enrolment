@@ -37,6 +37,27 @@ body.no-scroll {
   font-size: 13.33px;
 }
 
+/* Classes for html returned from middleware. Applied globally because v-html directive won't use scoped styles */
+.middleware-response {
+  margin-top: 20px;
+  font-weight: lighter;
+}
+
+.middleware-response > * {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.middleware-response strong {
+  font-weight: bold;
+}
+
+.middleware-response > h3 {
+  border-bottom: 1px solid black;
+  width: 100%;
+}
+
 @media only screen and (max-width: 575px) {
   .container.stepper {
     padding: 0;
