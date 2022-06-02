@@ -22,7 +22,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import 'core-js/es/number'; // IE polyfill for `Number.isNaN()`.
-import { isIE } from '@/helpers/user-agent';
 
 library.add(faAngleDown);
 library.add(faAngleRight);
@@ -44,6 +43,8 @@ const app = createApp({
   router,
   ...App,
 })
+
+app
   .use(store)
   .use(router)
   .component("font-awesome-icon", FontAwesomeIcon)
