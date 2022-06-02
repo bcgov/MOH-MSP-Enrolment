@@ -65,6 +65,16 @@ export const dateDataValidator = (dateData) => helpers.withParams(
     return isValidISODateString(isoDateString);
   })
 
+/* A validator that is initially setup using the withParams helper 
+ expects any overwrites of that validator to also use withParams.
+ Although this validator does not use paramaters,
+ helpers.withParams is required to overwrite the dataDateRequired 
+ validator without reference errors */
+export const dateDataOptionalValidator = () => {
+  return helpers.withParams(
+  {}, () => true)
+}
+
 export const pastDateValidator = (value) => {
   return isBefore(value, addDays(startOfToday(), 1));
 };

@@ -505,7 +505,7 @@
                   <div class="text-danger"
                     v-if="v$.departureBeginDate.$dirty
                       && v$.departureBeginDate.dateDataValidator.$invalid"
-                    aria-live="assertive">Invalid departure date here.</div>
+                    aria-live="assertive">Invalid departure date.</div>
                   <div class="text-danger"
                     v-if="v$.departureBeginDate.$dirty
                       && v$.departureBeginDate.departureBeginDateValidator.$invalid"
@@ -747,6 +747,7 @@ import {
 } from '@vuelidate/validators';
 import {
   dateDataRequiredValidator,
+  dateDataOptionalValidator,
   dateDataValidator,
   nameValidator,
   nonBCValidator,
@@ -1052,6 +1053,8 @@ export default {
       if (this.requestArrivalInCanadaInfo) {
         if (this.isArrivalDateInCanadaRequired) {
           validations.arrivalDateInCanada.required = dateDataRequiredValidator(this.arrivalDateInCanadaData);
+        } else {
+          validations.arrivalDateInCanada.required = dateDataOptionalValidator();
         }
         validations.arrivalDateInCanada.dateDataValidator = dateDataValidator(this.arrivalDateInCanadaData);
         validations.arrivalDateInCanada.pastDateValidator = optionalValidator(pastDateValidator);
@@ -1346,6 +1349,8 @@ export default {
         this.isMovedToBCPermanently = null;
         this.moveFromOrigin = null;
         this.arrivalDateInBC = null;
+        this.arrivalDateInBCData = null;
+        this.arrivalDateInCanadaData = null;
         this.arrivalDateInCanada = null;
         this.previousHealthNumber = null;
         this.v$.genderMatches.$reset();
@@ -1388,7 +1393,7 @@ export default {
     },
     isMovedToBCPermanently(newValue) {
       if (this.isPageLoaded) {
-        if (newValue === null) {
+        if (newValue === null || newValue === 'N') {
           this.moveFromOrigin = null;
           this.arrivalDateInBC = null;
           this.arrivalDateInCanada = null;
@@ -1414,6 +1419,8 @@ export default {
         this.departureLocation = null;
         this.departureBeginDate = null;
         this.departureReturnDate = null;
+        this.departureReturnDateData = null;
+        this.departureBeginDateData = null;
         this.v$.departureReason.$reset();
         this.v$.departureLocation.$reset();
         this.v$.departureBeginDate.$reset();
@@ -1435,6 +1442,7 @@ export default {
     isReleasedFromArmedForces() {
       if (this.isPageLoaded) {
         this.armedForcesDischargeDate = null;
+        this.armedForcesDischargeDateData = null;
         this.v$.armedForcesDischargeDate.$reset();
       }
     },

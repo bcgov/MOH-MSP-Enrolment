@@ -810,6 +810,7 @@
 import useVuelidate from '@vuelidate/core'
 import {
   dateDataRequiredValidator,
+  dateDataOptionalValidator,
   dateDataValidator,
   nameValidator,
   nonBCValidator,
@@ -1276,7 +1277,7 @@ export default {
         validations.recentBCMoveDate.beforeBirthdateValidator = beforeBirthdateValidator;
         validations.recentBCMoveDate.pastDateValidator = optionalValidator(pastDateValidator);
         
-        validations.canadaArrivalDate.required = this.canadaArrivalDateLabel === 'Arrival date in Canada' ? dateDataRequiredValidator(this.canadaArrivalDateData) : () => true,
+        validations.canadaArrivalDate.required = this.canadaArrivalDateLabel === 'Arrival date in Canada' ? dateDataRequiredValidator(this.canadaArrivalDateData) : dateDataOptionalValidator(),
         validations.canadaArrivalDate.dateDataValidator = dateDataValidator(this.canadaArrivalDateData);
         validations.canadaArrivalDate.dateOrderValidator = optionalValidator(dateOrderValidator);
         validations.canadaArrivalDate.beforeBirthdateValidator = optionalValidator(beforeBirthdateValidator);
@@ -1497,6 +1498,8 @@ export default {
         this.moveFromOrigin = null;
         this.recentBCMoveDate = null;
         this.canadaArrivalDate = null;
+        this.recentBCMoveDateData = null;
+        this.canadaArrivalDateData = null;
         this.outsideBCLast12Months = null;
         this.hasPreviousBCHealthNumber = null;
         this.hasBeenReleasedFromInstitution = null;
@@ -1557,7 +1560,9 @@ export default {
       if (this.pageLoaded) {
         this.moveFromOrigin = null;
         this.canadaArrivalDate = null;
+        this.canadaArrivalDateData = null;
         this.recentBCMoveDate = null;
+        this.recentBCMoveDateData = null;
         this.v$.moveFromOrigin.$reset();
         this.v$.canadaArrivalDate.$reset();
         this.v$.recentBCMoveDate.$reset();
@@ -1582,7 +1587,9 @@ export default {
         this.outsideBCLast12MonthsReason = null;
         this.outsideBCLast12MonthsDestination = null;
         this.outsideBCLast12MonthsDepartureDate = null;
+        this.outsideBCLast12MonthsDepartureDateData = null;
         this.outsideBCLast12MonthsReturnDate = null;
+        this.outsideBCLast12MonthsReturnDateData = null;
         this.v$.outsideBCLast12MonthsReason.$reset();
         this.v$.outsideBCLast12MonthsDestination.$reset();
         this.v$.outsideBCLast12MonthsDepartureDate.$reset();
@@ -1617,6 +1624,7 @@ export default {
     hasBeenReleasedFromInstitution() {
       if (this.pageLoaded) {
         this.dischargeDate = null;
+        this.dischargeDateData = null;
         this.v$.dischargeDate.$reset();
              
         this.saveData();

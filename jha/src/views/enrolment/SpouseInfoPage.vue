@@ -414,7 +414,7 @@
                     <div v-if="bcMoveDateLabel === 'Most recent move to B.C.'">
                       <div class="text-danger"
                         v-if="v$.spouseRecentBCMoveDate.$dirty && v$.spouseRecentBCMoveDate.required.$invalid"
-                        aria-live="assertive">Most recent move to B.C. is required ggg.</div>
+                        aria-live="assertive">Most recent move to B.C. is required.</div>
                       <div class="text-danger"
                         v-if="v$.spouseRecentBCMoveDate.$dirty
                               && !v$.spouseRecentBCMoveDate.required.$invalid
@@ -686,6 +686,7 @@ import {
 } from '@/helpers/url';
 import {
   dateDataRequiredValidator,
+  dateDataOptionalValidator,
   dateDataValidator,
   nameValidator,
   nonBCValidator,
@@ -1102,7 +1103,7 @@ export default {
         validations.spouseRecentBCMoveDate.beforeBirthdateValidator = beforeBirthdateValidator;
         validations.spouseRecentBCMoveDate.pastDateValidator = optionalValidator(pastDateValidator);
         
-        validations.spouseCanadaArrivalDate.required = this.canadaArrivalDateLabel === 'Arrival date in Canada' ? dateDataRequiredValidator(this.canadaArrivalDateData) : () => true,
+        validations.spouseCanadaArrivalDate.required = this.canadaArrivalDateLabel === 'Arrival date in Canada' ? dateDataRequiredValidator(this.canadaArrivalDateData) : dateDataOptionalValidator(),
         validations.spouseCanadaArrivalDate.dateDataValidator = dateDataValidator(this.canadaArrivalDateData);
         validations.spouseCanadaArrivalDate.dateOrderValidator = optionalValidator(dateOrderValidator);
         validations.spouseCanadaArrivalDate.beforeBirthdateValidator = optionalValidator(beforeBirthdateValidator);
@@ -1162,12 +1163,15 @@ export default {
         this.spouseGenderMatches = null;
         this.spouseCitizenshipSupportDocumentType = null;
         this.spouseCitizenshipSupportDocuments = [];
+        this.spouseNameChangeSupportDocuments = [];
         this.spouseIsNameChanged = null;
         this.spouseLivedInBCSinceBirth = null;
         this.spouseMadePermanentMove = null;
         this.spouseMoveFromOrigin = null;
         this.spouseRecentBCMoveDate = null;
         this.spouseCanadaArrivalDate = null;
+        this.recentBCMoveDateData = null;
+        this.canadaArrivalDateData = null;
         this.spouseOutsideBCLast12Months = null;
         this.spousePreviousHealthNumber = null;
         this.spouseHasPreviousBCHealthNumber = null;
@@ -1187,39 +1191,43 @@ export default {
       }
     },
     spouseCitizenshipSupportDocumentType() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.spouseCitizenshipSupportDocuments = [];
         this.v$.spouseCitizenshipSupportDocuments.$reset();
       }
     },
     spouseIsNameChanged() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.spouseNameChangeSupportDocumentType = null;
         this.v$.spouseNameChangeSupportDocumentType.$reset();
       }
     },
     spouseNameChangeSupportDocumentType() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.spouseNameChangeSupportDocuments = [];
         this.v$.spouseNameChangeSupportDocuments.$reset();
       }
     },
     spouseLivedInBCSinceBirth() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.spouseMoveFromOrigin = null;
         this.spouseCanadaArrivalDate = null;
         this.spouseRecentBCMoveDate = null;
+        this.recentBCMoveDateData = null;
+        this.canadaArrivalDateData = null;
         this.v$.spouseMoveFromOrigin.$reset();
         this.v$.spouseCanadaArrivalDate.$reset();
         this.v$.spouseRecentBCMoveDate.$reset();
       }
     },
     spouseMadePermanentMove(newValue) {
-      if (this.isPageLoaded) {
-        if (newValue === null) {
+      if (this.pageLoaded) {
+        if (newValue === null || newValue === 'N') {
           this.spouseMoveFromOrigin = null;
           this.spouseRecentBCMoveDate = null;
           this.spouseCanadaArrivalDate = null;
+          this.recentBCMoveDateData = null;
+          this.canadaArrivalDateData = null;
           this.spouseOutsideBCLast12Months = null;
           this.spouseHasPreviousBCHealthNumber = null;
           this.spouseBeenReleasedFromInstitution = null;
@@ -1233,10 +1241,12 @@ export default {
       }
     },
     spouseOutsideBCLast12Months() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.spouseOutsideBCLast12MonthsReason = null;
         this.spouseOutsideBCLast12MonthsDestination = null;
         this.spouseOutsideBCLast12MonthsDepartureDate = null;
+        this.spouseOutsideBCLast12MonthsDepartureDateData = null;
+        this.spouseOutsideBCLast12MonthsReturnDateData = null;
         this.spouseOutsideBCLast12MonthsReturnDate = null;
         this.v$.spouseOutsideBCLast12MonthsReason.$reset();
         this.v$.spouseOutsideBCLast12MonthsDestination.$reset();
@@ -1245,20 +1255,21 @@ export default {
       }
     },
     spouseHasPreviousBCHealthNumber() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.spousePreviousBCHealthNumber = null;
         this.v$.spousePreviousBCHealthNumber.$reset();
       }
     },
     showDischargeInputs(newValue) {
-      if (this.isPageLoaded && newValue === false) {
+      if (this.pageLoaded && newValue === false) {
         this.spouseBeenReleasedFromInstitution = null;
         this.v$.spouseBeenReleasedFromInstitution.$reset();
       }
     },
     spouseBeenReleasedFromInstitution() {
-      if (this.isPageLoaded) {
+      if (this.pageLoaded) {
         this.spouseDischargeDate = null;
+        this.spouseDischargeDateData = null;
         this.v$.spouseDischargeDate.$reset();
       }
     },
