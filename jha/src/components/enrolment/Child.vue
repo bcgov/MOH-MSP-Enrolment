@@ -51,7 +51,7 @@
             v-if="v$.lastName.$dirty && v$.lastName.required.$invalid"
             aria-live="assertive">Last name is required.</div>
           <div class="text-danger"
-            v-if="v$.lastName.$dirty && v$.lastName.required && !v$.lastName.nameValidator"
+            v-if="v$.lastName.$dirty && !v$.lastName.required.$invalid && v$.lastName.nameValidator.$invalid"
             aria-live="assertive">Last name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
           <DateInput label='Birthdate'
             :id="'child-birth-date-' + index"
@@ -67,7 +67,7 @@
             aria-live="assertive">Invalid birthdate.</div>
           <div class="text-danger"
             v-if="v$.birthDate.$dirty && v$.birthDate.distantPastValidator.$invalid"
-            aria-live="assertive">Invalid birthdate (passt).</div>
+            aria-live="assertive">Invalid birthdate.</div>
           <div class="text-danger"
             v-if="v$.birthDate.$dirty
               && !v$.birthDate.required.$invalid
