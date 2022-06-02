@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <div :aria-hidden="isModalOpen">
       <Header :title='pageTitle'
               imagePath='/ahdc/images/' />
