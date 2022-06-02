@@ -93,11 +93,11 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
     cy.get('input#departure-reason').type('vacation');
     cy.get('input#departure-location').type('bahamas');
 
-    cy.get('select#departure-begin-date-month').select(lastMonthDate.getMonth());
+    cy.get('select#departure-begin-date-month').select(lastMonthDate.getMonth() + 1);
     cy.get('input#departure-begin-date-day').type(padInteger(lastMonthDate.getDate()));
     cy.get('input#departure-begin-date-year').type(lastMonthDate.getFullYear());
 
-    cy.get('select#departure-return-date-month').select(currentDate.getMonth());
+    cy.get('select#departure-return-date-month').select(currentDate.getMonth() + 1);
     cy.get('input#departure-return-date-day').type(padInteger(currentDate.getDate()));
     cy.get('input#departure-return-date-year').type(currentDate.getFullYear());
 

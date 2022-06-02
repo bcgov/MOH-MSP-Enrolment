@@ -1,4 +1,4 @@
-import { formatDate } from '../helpers';
+import { formatISODate } from 'common-lib-vue';
 
 export const generateRequestObject = () => {
   const currentDate = new Date();
@@ -55,9 +55,8 @@ export const generateRequestObject = () => {
       "isPermanentMove": "Y",
       "prevProvinceOrCountry": "Alberta",
       "beenOutsideBCMoreThan": "Y",
-      "departureDate": "2022-03-17",
-      "departureDate": formatDate(lastMonthDate),
-      "returnDate": formatDate(currentDate),
+      "departureDate": formatISODate(lastMonthDate),
+      "returnDate": formatISODate(currentDate),
       "familyMemberReason": "vacation",
       "destination": "bahamas",
       "isFullTimeStudent": "Y",

@@ -29,4 +29,4 @@ export const removeUniqueFields = (baseApplicationObj) => {
 }
 
 export const padInteger = (int, spaces = 2, padChar = '0') => String(int).padStart(spaces, padChar);
-export const formatDate = (date) => `${date.getFullYear()}-${padInteger(date.getMonth())}-${date.getDate()}`
+export const formatDate = (date) => `${date.getFullYear()}-${padInteger(date.getMonth())}-${padInteger(date.getDate())}`
