@@ -8,7 +8,7 @@
       </main>
       <Footer :version='version' />
     </div>
-    <div id="modal-target" name="modal"></div>
+    <div id="modal-target" name="modal" ref="modal"></div>
   </div>
 </template>
 
@@ -37,7 +37,20 @@ export default {
     return {
       version: project.version,
       pageTitle: 'British Columbia Application for Health Drug Coverage (AHDC)',
+      isModalOpen: false,
+      modalObserver: null,
     };
+  },
+  methods: {
+    initModalObserver() {
+      const modalObserver = new MutationObserver(() => {
+        const modalTargetEl = this.$refs.modal;
+        const modalTargetHasChildren = modalTargetEl && modalTargetEl.children.length > 0;
+        this.isModalOpen = modalTargetHasChildren;
+      });
+      modalObserver.observe(this.$refs.modal, {childList: true})
+      this.modalObserver = modalObserver;
+    }
   },
   created() {
     document.title = this.pageTitle;
@@ -61,16 +74,12 @@ export default {
         });
       });
   },
-  computed: {
-    isModalOpen() {
-      const modalTargetEl = document.body.querySelector('#modal-target');
-      const modalTargetHasChildren = modalTargetEl && modalTargetEl.children.length > 0;
-      // TODO: Update commented out code below for new Teleport component
-      // return Wormhole.hasContentFor('modal')
-      //     || modalTargetHasChildren;
-      return modalTargetHasChildren;
-    }
+  mounted() {
+    this.initModalObserver();
   },
+  beforeDestroy() {
+    if(this.modalObserver) this.modalObserver.disconnect();
+  }
 }
 </script>
 
