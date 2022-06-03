@@ -422,15 +422,15 @@
                         aria-live="assertive">Invalid most recent move to B.C. date.</div>
                       <div class="text-danger"
                         v-if="v$.spouseRecentBCMoveDate.$dirty
-                              && v$.spouseRecentBCMoveDate.required.$invalid
-                              && v$.spouseRecentBCMoveDate.dateDataValidator.$invalid
+                              && !v$.spouseRecentBCMoveDate.required.$invalid
+                              && !v$.spouseRecentBCMoveDate.dateDataValidator.$invalid
                               && v$.spouseRecentBCMoveDate.pastDateValidator.$invalid"
                         aria-live="assertive">Most recent move to B.C. date cannot be in the future.</div>
                       <div class="text-danger"
                         v-if="v$.spouseRecentBCMoveDate.$dirty
-                              && v$.spouseRecentBCMoveDate.required.$invalid
-                              && v$.spouseRecentBCMoveDate.dateDataValidator.$invalid
-                              && v$.spouseRecentBCMoveDate.pastDateValidator.$invalid
+                              && !v$.spouseRecentBCMoveDate.required.$invalid
+                              && !v$.spouseRecentBCMoveDate.dateDataValidator.$invalid
+                              && !v$.spouseRecentBCMoveDate.pastDateValidator.$invalid
                               && v$.spouseRecentBCMoveDate.beforeBirthdateValidator.$invalid"
                         aria-live="assertive">The spouse's most recent move to B.C. cannot be before the spouse's date of birth.</div>
                       <div class="text-danger"

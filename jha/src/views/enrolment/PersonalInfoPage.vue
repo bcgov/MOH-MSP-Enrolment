@@ -595,8 +595,8 @@
                     aria-live="assertive">Discharge date cannot be in the future.</div>
                   <div class="text-danger"
                     v-if="v$.armedForcesDischargeDate.$dirty
-                      && v$.armedForcesDischargeDate.distantPastValidator.$invalid
-                      && !v$.armedForcesDischargeDate.afterBirthdateValidator.$invalid"
+                      && !v$.armedForcesDischargeDate.distantPastValidator.$invalid
+                      && v$.armedForcesDischargeDate.afterBirthdateValidator.$invalid"
                     aria-live="assertive">Discharge date cannot be before the applicant's date of birth.</div>
                 </div>
                 <div v-if="requestIsStudent">
