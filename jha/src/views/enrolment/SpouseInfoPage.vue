@@ -111,7 +111,7 @@
                 <div class="text-danger"
                   v-if="$v.spousePersonalHealthNumber.$dirty
                     && (!$v.spousePersonalHealthNumber.phnValidator || !$v.spousePersonalHealthNumber.phnFirstDigitValidator)"
-                  aria-live="assertive">Personal Health Number is invalid.</div>
+                  aria-live="assertive">Personal Health Number is not valid.</div>
                 <div class="text-danger"
                   v-if="$v.spousePersonalHealthNumber.$dirty && !$v.spousePersonalHealthNumber.uniquePHNValidator"
                   aria-live="assertive">This Personal Health Number (PHN) was already used for another family member. Please provide the PHN that is listed on the family member's PHN card/letter.</div>
@@ -192,7 +192,7 @@
                 :items='citizenshipStatusReasonOptions' />
               <div class="text-danger"
                 v-if="$v.spouseStatusReason.$dirty && !$v.spouseStatusReason.required"
-                aria-live="assertive">Please select one of the above.</div>
+                aria-live="assertive">This field is required.</div>
             </div>
             <div v-if="spouseStatus === statusOptions.TemporaryResident">
               <Radio
@@ -204,7 +204,7 @@
                 :items='temporaryResidentStatusReasonOptions' />
               <div class="text-danger"
                 v-if="$v.spouseStatusReason.$dirty && !$v.spouseStatusReason.required"
-                aria-live="assertive">Please select one of the above.</div>
+                aria-live="assertive">This field is required.</div>
             </div>
             <div v-if="spouseStatusReason !== null && spouseStatusReason !== undefined" class="mt-3">
               <h2>Documents</h2>
@@ -223,7 +223,7 @@
                 :inputStyle='mediumStyles' />
               <div class="text-danger"
                 v-if="$v.spouseCitizenshipSupportDocumentType.$dirty && !$v.spouseCitizenshipSupportDocumentType.required"
-                aria-live="assertive">Please select one of the above.</div>
+                aria-live="assertive">Document Type is required.</div>
               <Radio
                 label="Does your spouse's document that supports their status in Canada include their selected gender designation?" 
                 name="spouse-gender-matches"
@@ -249,7 +249,7 @@
                         :description="spouseCitizenshipSupportDocumentType" />
                       <div class="text-danger"
                         v-if="$v.spouseCitizenshipSupportDocuments.$dirty && !$v.spouseCitizenshipSupportDocuments.required"
-                        aria-live="assertive">File upload required.</div>
+                        aria-live="assertive">You must include documentation for your application.</div>
                     </div>
                     <div class="col-md-5">
                       <SampleImageTipBox :documentType="citizenshipSamples"/>
@@ -291,7 +291,7 @@
                   :inputStyle='mediumStyles' />
                 <div class="text-danger"
                   v-if="$v.spouseNameChangeSupportDocumentType.$dirty && !$v.spouseNameChangeSupportDocumentType.required"
-                  aria-live="assertive">Please select one of the above.</div>
+                  aria-live="assertive">Document Type is required.</div>
                 <div v-if="spouseNameChangeSupportDocumentType">
                   <h2>{{spouseNameChangeSupportDocumentType}}</h2>
                   <hr/>
@@ -306,7 +306,7 @@
                           :description="spouseNameChangeSupportDocumentType" />
                       <div class="text-danger"
                         v-if="$v.spouseNameChangeSupportDocuments.$dirty && !$v.spouseNameChangeSupportDocuments.required"
-                        aria-live="assertive">File upload required.</div>
+                        aria-live="assertive">You must include documentation for your application.</div>
                     </div>
                     <div class="col-md-5">
                       <SampleImageTipBox :documentType="spouseNameChangeSupportDocumentType"/>
@@ -449,7 +449,7 @@
                         v-if="$v.spouseRecentBCMoveDate.$dirty
                               && $v.spouseRecentBCMoveDate.required
                               && !$v.spouseRecentBCMoveDate.dateDataValidator"
-                        aria-live="assertive">Invalid arrival date in BC.</div>
+                        aria-live="assertive">Invalid arrival date in B.C.</div>
                       <div class="text-danger"
                         v-if="$v.spouseRecentBCMoveDate.$dirty
                               && $v.spouseRecentBCMoveDate.required
@@ -485,7 +485,7 @@
                       aria-live="assertive">Arrival date in Canada is required.</div>
                     <div class="text-danger"
                       v-if="$v.spouseCanadaArrivalDate.$dirty && !$v.spouseCanadaArrivalDate.dateDataValidator"
-                      aria-live="assertive">Invalid Arrival date in Canada.</div>
+                      aria-live="assertive">Invalid arrival date in Canada.</div>
                     <div class="text-danger"
                       v-if="$v.spouseCanadaArrivalDate.$dirty
                             && $v.spouseCanadaArrivalDate.dateDataValidator
@@ -610,7 +610,7 @@
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
                       v-if="$v.spousePreviousBCHealthNumber.$dirty && !$v.spousePreviousBCHealthNumber.phnValidator"
-                      aria-live="assertive">Invalid Personal Health Number</div>
+                      aria-live="assertive">Personal Health Number is not valid.</div>
                   </div>
                   <div v-if="showDischargeInputs">
                     <Radio

@@ -98,7 +98,7 @@
               aria-live="assertive">Personal Health Number is required.</div>
             <div class="text-danger"
               v-if="$v.personalHealthNumber.$dirty && (!$v.personalHealthNumber.phnValidator || !$v.personalHealthNumber.phnFirstDigitValidator)"
-              aria-live="assertive">Personal Health Number is invalid.</div>
+              aria-live="assertive">Personal Health Number is not valid.</div>
             <div class="text-danger"
               v-if="$v.personalHealthNumber.$dirty && !$v.personalHealthNumber.uniquePHNValidator"
               aria-live="assertive">This Personal Health Number (PHN) was already used for another family member. Please provide the PHN that is listed on the family member's PHN card/letter.</div>
@@ -160,7 +160,7 @@
             :items='citizenshipStatusReasonOptions' />
           <div class="text-danger"
             v-if="$v.statusReason.$dirty && !$v.statusReason.required"
-            aria-live="assertive">Please select one of the above.</div>
+            aria-live="assertive">This field is required.</div>
         </div>
         <div v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child19To24">
           <Radio
@@ -172,7 +172,7 @@
             :items='temporaryResidentStatusReasonOptions' />
           <div class="text-danger"
             v-if="$v.statusReason.$dirty && !$v.statusReason.required"
-            aria-live="assertive">Please select one of the above.</div>
+            aria-live="assertive">This field is required.</div>
         </div>
         <div v-if="status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child19To24">
           <Radio
@@ -184,7 +184,7 @@
             :items='overageChildTemporaryResidentStatusReasonOptions' />
           <div class="text-danger"
             v-if="$v.statusReason.$dirty && !$v.statusReason.required"
-            aria-live="assertive">Please select one of the above.</div>
+            aria-live="assertive">This field is required.</div>
         </div>
         <div v-if="statusReason !== null && statusReason !== undefined" class="mt-3">
           <h2>Documents</h2>
@@ -203,7 +203,7 @@
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="$v.citizenshipSupportDocumentType.$dirty && !$v.citizenshipSupportDocumentType.required"
-            aria-live="assertive">Please select one of the above.</div>
+            aria-live="assertive">Document Type is required.</div>
           <Radio
             label="Does the child's document that supports their status in Canada include their selected gender designation?" 
             :name="'gender-matches-' + index"
@@ -229,7 +229,7 @@
                   :description="citizenshipSupportDocumentType" />
                 <div class="text-danger"
                   v-if="$v.citizenshipSupportDocuments.$dirty && !$v.citizenshipSupportDocuments.required"
-                  aria-live="assertive">File upload required.</div>
+                  aria-live="assertive">You must include documentation for your application.</div>
               </div>
               <div class="col-md-5">
                 <SampleImageTipBox :documentType="citizenshipSamples"/>
@@ -266,7 +266,7 @@
               :inputStyle='mediumStyles' />
             <div class="text-danger"
               v-if="$v.nameChangeSupportDocumentType.$dirty && !$v.nameChangeSupportDocumentType.required"
-              aria-live="assertive">Please select one of the above.</div>
+              aria-live="assertive">Document Type is required.</div>
             <div v-if="nameChangeSupportDocumentType">
                 <h2>{{nameChangeSupportDocumentType}}</h2>
                 <hr/>
@@ -280,7 +280,7 @@
                       :description="nameChangeSupportDocumentType" />
                     <div class="text-danger"
                       v-if="$v.nameChangeSupportDocuments.$dirty && !$v.nameChangeSupportDocuments.required"
-                      aria-live="assertive">File upload required.</div>
+                      aria-live="assertive">You must include documentation for your application.</div>
                   </div>
                   <div class="col-md-5">
                     <SampleImageTipBox :documentType="nameChangeSupportDocumentType"/>
@@ -428,7 +428,7 @@
                         v-if="$v.recentBCMoveDate.$dirty
                           && $v.recentBCMoveDate.required
                           && !$v.recentBCMoveDate.dateDataValidator"
-                        aria-live="assertive">Invalid arrival date in BC.</div>
+                        aria-live="assertive">Invalid arrival date in B.C.</div>
                       <div class="text-danger"
                         v-if="$v.recentBCMoveDate.$dirty
                           && $v.recentBCMoveDate.required
@@ -465,7 +465,7 @@
                       aria-live="assertive">Arrival date in Canada is required.</div>
                     <div class="text-danger"
                       v-if="$v.canadaArrivalDate.$dirty && !$v.canadaArrivalDate.dateDataValidator"
-                      aria-live="assertive">Invalid Arrival date in Canada.</div>
+                      aria-live="assertive">Invalid arrival date in Canada.</div>
                     <div class="text-danger"
                       v-if="$v.canadaArrivalDate.$dirty
                         && $v.canadaArrivalDate.dateDataValidator
@@ -593,7 +593,7 @@
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
                       v-if="$v.previousBCHealthNumber.$dirty && !$v.previousBCHealthNumber.phnValidator"
-                      aria-live="assertive">Invalid Personal Health Number</div>
+                      aria-live="assertive">Personal Health Number is not valid.</div>
                   </div>
                   <div v-if="showDischargeInputs">
                     <Radio
