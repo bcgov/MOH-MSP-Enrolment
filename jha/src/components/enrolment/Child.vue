@@ -876,7 +876,7 @@ import {
 } from '@/constants/immigration-status-types';
 import { SupportDocumentTypes } from '@/constants/document-types';
 import { ChildAgeTypes } from '../../constants/child-age-types';
-import { isAfter, isBefore } from 'date-fns/esm';
+import { isAfter, isBefore } from 'date-fns';
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import { mediumStyles, smallStyles } from '@/constants/input-styles';
