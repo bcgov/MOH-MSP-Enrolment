@@ -1,48 +1,47 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import Vue from 'vue';
+import { mount } from '@vue/test-utils';
+import { createStore } from 'vuex';
+import router from '@/router';
 import SubmissionPage from '@/views/enrolment/SubmissionPage.vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import appModule from "@/store/modules/app-module.js";
 import { fpcAddressUpdateMiddlewareHTML } from "../../fixtures.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.component('font-awesome-icon', FontAwesomeIcon);
+const enrolmentModuleState = {
+  applicationUuid: null,
+  submissionAPIResponse: {
+    fpc: {
+      returnCode: '0',
+      message: fpcAddressUpdateMiddlewareHTML,
+    }
+  },
+  children: [],
+};
+
+const store = createStore({
+  modules: {
+    appModule,
+    enrolmentModule: {
+      state: () => enrolmentModuleState,
+    },
+  }
+});
+
+jest.mock("@/services/log-service.js", () => ({
+  logError: jest.fn(() => Promise.resolve(true)),
+  logNavigation: jest.fn(() => Promise.resolve(true)),
+}));
 
 describe('Enrolment - FormSelectionPage.vue', () => {
-  let state;
-  let store;
-
-  beforeEach(() => {
-    state = {
-      applicationUuid: null,
-      submissionAPIResponse: {
-        fpc: {
-          returnCode: '0',
-          message: fpcAddressUpdateMiddlewareHTML,
-        }
-      },
-    };    
-
-    store = new Vuex.Store({
-      modules: {
-        appModule: {
-          state: {
-            showMobileStepperDetails: false,
-          }
+  it('Shows returned middleware messages for successful FPC only applications', async () => {
+    const wrapper = mount(SubmissionPage, {
+      global: {
+        stubs: {
+          'font-awesome-icon': {
+              template: '<i />'
+          },
         },
-        enrolmentModule: {
-          state,
-        }
+        plugins: [router, store]
       }
     });
-  });
-
-  it('Shows returned middleware messages for successful FPC only applications', () => {
-    const wrapper = shallowMount(SubmissionPage, {
-      store,
-      localVue,
-    });
-    const middlwareResponseContainer = wrapper.get('.middleware-response');
+    wrapper.get('.middleware-response');
   });
 });
