@@ -43,7 +43,6 @@ const app = createApp({
   router,
   ...App,
 })
-
 app
   .use(store)
   .use(router)
