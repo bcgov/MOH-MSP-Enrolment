@@ -33,7 +33,7 @@
             label='Do you meet the above eligibility criteria?'
             v-model='eqFPCMeetsCriteria'
             :items='radioOptionsYesNo' />
-          <p class="font-weight-bold ml-4" v-if="eqFPCMeetsCriteria === 'N'">You are not eligible to register for Fair PharmaCare at this time. Register after you have completed the required wait period and registered with the Medical Services Plan.  If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible.  When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</p>
+          <p class="text-danger ml-4" v-if="eqFPCMeetsCriteria === 'N'">You are not eligible to register for Fair PharmaCare at this time. Register after you have completed the required wait period and registered with the Medical Services Plan.  If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible.  When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</p>
           <div v-if="eqFPCMeetsCriteria === 'Y'">
             <p class="mb-0">3. To register for Fair PharmaCare, you must include the following with your application:</p>
             <div class="ml-4">
@@ -47,7 +47,7 @@
               label='Do you have the above information to include with your application?'
               v-model='eqFPCHasInfo'
               :items='radioOptionsYesNo' />
-            <ul class="font-weight-bold pl-4 ml-4" v-if="eqFPCHasInfo === 'N'">
+            <ul class="text-danger pl-4 ml-4" v-if="eqFPCHasInfo === 'N'">
               <li>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
               <li>If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible. When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
             </ul>

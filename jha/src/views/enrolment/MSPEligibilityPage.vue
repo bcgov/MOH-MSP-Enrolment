@@ -24,10 +24,10 @@
           <Radio
             id='live-in-bc'
             name='live-in-bc'
-            label='2. Do you currently live in British Columbia? (i.e. Do you have an address here?)'
+            label='2. Do you live in British Columbia and have a B.C. address where you can receive mail?'
             v-model='eqMSPLiveInBC'
             :items='radioOptionsYesNo' />
-          <p class="font-weight-bold ml-4" v-if="eqMSPLiveInBC === 'N'">You might not qualify for MSP or related income-based programs if you do not live in B.C. Contact Health Insurance BC for more information.</p>
+          <p class="text-danger ml-4" v-if="eqMSPLiveInBC === 'N'">You might not qualify for MSP or related income-based programs if you do not live in B.C. Contact Health Insurance BC for more information.</p>
           <div v-if="eqMSPLiveInBC === 'Y'">
             <Radio
               id='away-over-30'
@@ -35,7 +35,7 @@
               label='3. Will you or anyone in your immediate family (included on this application) be away from B.C. for more than 30 days in total over the next six months?'
               v-model='eqMSPAwayOver30'
               :items='radioOptionsYesNo' />
-            <p class="font-weight-bold ml-4" v-if="eqMSPAwayOver30 === 'Y'">You or your family member might not qualify for MSP or related income-based programs if you leave the province for more than 30 days in total during the first six months after you apply - doing this could mean you are no longer considered a B.C. resident.  Find out more by contacting Health Insurance BC.</p>
+            <p class="text-danger ml-4" v-if="eqMSPAwayOver30 === 'Y'">You or your family member might not qualify for MSP or related income-based programs if you leave the province for more than 30 days in total during the first six months after you apply - doing this could mean you are no longer considered a B.C. resident.  Find out more by contacting Health Insurance BC.</p>
             <div v-if="eqMSPAwayOver30 === 'N'">
               <Radio
                 id='student-minor-refugee'
@@ -43,7 +43,7 @@
                 label='4. Is anyone included in this application (yourself, spouse, or child): a student returning to a home province outside B.C. at the end of a course or program; an unaccompanied minor; or a person seeking refugee status who has not yet been approved?'
                 v-model='eqMSPStudentMinorRefugee'
                 :items='radioOptionsYesNo' />
-              <div class="font-weight-bold ml-4" v-if="eqMSPStudentMinorRefugee === 'Y'">
+              <div class="text-danger ml-4" v-if="eqMSPStudentMinorRefugee === 'Y'">
                 <p class="mb-0">You can submit an application with some assistance from one of our representatives - please contact Health Insurance BC:</p>
                 <p class="mb-0">(604) 683-7151 (Lower Mainland)</p>
                 <p class="mb-0">1-800-663-7100 (Elsewhere in B.C.)</p>
@@ -63,7 +63,7 @@
                   label='5. Do you have copies of the above documents to include with your application?'
                   v-model='eqMSPHasDocuments'
                   :items='radioOptionsYesNo' />
-                <p class="font-weight-bold ml-4" v-if="eqMSPHasDocuments === 'N'">Make sure you have digital copies of the above documents before completing your British Columbia Application for Health Drug Coverage. You will not be able to apply for MSP enrolment without these documents.</p>
+                <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">Make sure you have digital copies of the above documents before completing your British Columbia Application for Health Drug Coverage. You will not be able to apply for MSP enrolment without these documents.</p>
               </div>
             </div>
           </div>

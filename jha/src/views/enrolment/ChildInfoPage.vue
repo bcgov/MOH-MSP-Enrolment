@@ -10,7 +10,9 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Add child information and upload documents</h1>
-        <p>Do you have a child who also needs to enrol for MSP coverage? If so, you are required to provide child information and provide supporting documents.</p>
+        <p>A child is a person who is under 19 years old and whose parent or legal guardian is the Account Holder and/or spouse. To be eligible for MSP coverage, a child must be a BC resident.</p>
+        <p>A Dependent Post-Secondary Student is a person 19 to 24 years old who is supported by the Account Holder and/or spouse; who is not married; and who is enrolled full-time in a recognized post-secondary institution (which can be an accredited trade school, technical school, or high school).</p>
+        <p>Personal Health Number (PHN) is the number that appears on the child’s BC Services Card </p>
         <hr class="mt-0"/>
         <Radio v-if="hasChildren !== 'Y'"
                 label="Do you have a child who also needs to enrol for MSP coverage?"

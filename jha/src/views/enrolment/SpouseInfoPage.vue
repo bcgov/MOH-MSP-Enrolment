@@ -9,9 +9,16 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Add Spouse / Common-law personal information and upload documents</h1>
-        <p>A spouse is a person who is married to or living and cohabitating in a marriage-like relationship with the Account Holder. A spouse may be the same gender as the Account Holder. To be eligible for MSP coverage, a spouse must be a BC resident. </p> 
-        <p>Personal Health Number (PHN) is the number that appears on the spouse's BC Services Card.</p>
+        <h1>Spouse or Common-law partner</h1>
+        <div class="heading mt-3">
+          <div>
+            <p>A spouse is a person who is married to or living and cohabitating in a marriage-like relationship with the Account Holder. A spouse may be the same gender as the Account Holder. To be eligible for MSP coverage, a spouse must be a BC resident. </p> 
+            <p>Personal Health Number (PHN) is the number that appears on the spouse's BC Services Card.</p>
+          </div>
+          <div v-if="hasSpouse === 'Y'" class="ml-1 mb-2 remove-icon align-self-end " @click="removeSpouse()">
+            <font-awesome-icon icon="times-circle" size="2x" title="Remove Spouse"/>
+          </div>
+        </div>
         <hr class="mt-0"/>
         <Radio
           v-if="hasSpouse !== 'Y'"
@@ -26,14 +33,6 @@
           aria-live="assertive">Please indicate whether or not you have a spouse who needs to enrol.</div>
         
         <div v-if="hasSpouse === 'Y'" class="mt-3">
-          <h2>Spouse / Common-law basic information</h2>
-          <div class="heading mt-3">
-            <p>Please provide the spouse's personal information. You will be required to upload supporting documents with your application.</p>
-            <div class="ml-1 remove-icon" @click="removeSpouse()">
-              <font-awesome-icon icon="times-circle" size="2x"/>
-            </div>
-          </div>
-          <hr class="mt-0"/>
           <!-- Spouse personal information -->
           <!-- Bootstrap row and column classes for gender tipbox placement -->
           <div class="row">
@@ -112,7 +111,7 @@
                 <div class="text-danger"
                   v-if="v$.spousePersonalHealthNumber.$dirty
                     && (v$.spousePersonalHealthNumber.phnValidator.$invalid || v$.spousePersonalHealthNumber.phnFirstDigitValidator.$invalid)"
-                  aria-live="assertive">Personal Health Number is invalid.</div>
+                  aria-live="assertive">Personal Health Number is not valid.</div>
                 <div class="text-danger"
                   v-if="v$.spousePersonalHealthNumber.$dirty && v$.spousePersonalHealthNumber.uniquePHNValidator.$invalid"
                   aria-live="assertive">This Personal Health Number (PHN) was already used for another family member. Please provide the PHN that is listed on the family member's PHN card/letter.</div>
@@ -166,7 +165,7 @@
           <div v-if="requestImmigrationStatus">
             <h2 class="mt-4">Spouse or common-law partner status in Canada</h2>
             <div class="heading mt-3">
-              <p>Please provide the spouse's immigration status in Canada. You will be required to upload supporting documents with your application.</p>
+              <p>Please provide your spouse's immigration status information. You will be required to upload documents to support spouse's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select 'Temporary Permit Holder or Diplomat' from the drop down below.</p>
             </div>
             <hr class="mt-0"/>
             <Select 
@@ -193,7 +192,7 @@
                 :items='citizenshipStatusReasonOptions' />
               <div class="text-danger"
                 v-if="v$.spouseStatusReason.$dirty && v$.spouseStatusReason.required.$invalid"
-                aria-live="assertive">Please select one of the above.</div>
+                aria-live="assertive">This field is required.</div>
             </div>
             <div v-if="spouseStatus === statusOptions.TemporaryResident">
               <Radio
@@ -205,11 +204,11 @@
                 :items='temporaryResidentStatusReasonOptions' />
               <div class="text-danger"
                 v-if="v$.spouseStatusReason.$dirty && v$.spouseStatusReason.required.$invalid"
-                aria-live="assertive">Please select one of the above.</div>
+                aria-live="assertive">This field is required.</div>
             </div>
             <div v-if="spouseStatusReason !== null && spouseStatusReason !== undefined" class="mt-3">
               <h2>Documents</h2>
-              <p>Provide one of the following documents to support your spouse's status in Canada. If your spouse's name has changed since their ID was issued you are also required to upload document to support the name change.</p>
+              <p>Provide one of the required documents to support your spouse's status in Canada. If your spouse's name has changed since their ID was issued you are also required to upload document to support the name change.</p>
               <hr/>
               <Select 
                 label="Document Type"
@@ -224,7 +223,7 @@
                 :inputStyle='mediumStyles' />
               <div class="text-danger"
                 v-if="v$.spouseCitizenshipSupportDocumentType.$dirty && v$.spouseCitizenshipSupportDocumentType.required.$invalid"
-                aria-live="assertive">Please select one of the above.</div>
+                aria-live="assertive">Document Type is required.</div>
               <Radio
                 label="Does your spouse's document that supports their status in Canada include their selected gender designation?" 
                 name="spouse-gender-matches"
@@ -250,7 +249,7 @@
                         :description="spouseCitizenshipSupportDocumentType" />
                       <div class="text-danger"
                         v-if="v$.spouseCitizenshipSupportDocuments.$dirty && v$.spouseCitizenshipSupportDocuments.required.$invalid"
-                        aria-live="assertive">File upload required.</div>
+                        aria-live="assertive">You must include documentation for your application.</div>
                     </div>
                     <div class="col-md-5">
                       <SampleImageTipBox :documentType="citizenshipSamples"/>
@@ -259,7 +258,7 @@
               </div>
 
               <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
-                <Radio label="Has your spouse's name changed since your ID was issued due to marriage or legal name change?"
+                <Radio label="Has your spouse's name changed since their ID was issued due to marriage or a legal name change?"
                   id="name-change"
                   name="name-change"
                   class="mt-3 mb-3"
@@ -292,7 +291,7 @@
                   :inputStyle='mediumStyles' />
                 <div class="text-danger"
                   v-if="v$.spouseNameChangeSupportDocumentType.$dirty && v$.spouseNameChangeSupportDocumentType.required.$invalid"
-                  aria-live="assertive">Please select one of the above.</div>
+                  aria-live="assertive">Document Type is required.</div>
                 <div v-if="spouseNameChangeSupportDocumentType">
                   <h2>{{spouseNameChangeSupportDocumentType}}</h2>
                   <hr/>
@@ -307,7 +306,7 @@
                           :description="spouseNameChangeSupportDocumentType" />
                       <div class="text-danger"
                         v-if="v$.spouseNameChangeSupportDocuments.$dirty && v$.spouseNameChangeSupportDocuments.required.$invalid"
-                        aria-live="assertive">File upload required.</div>
+                        aria-live="assertive">You must include documentation for your application.</div>
                     </div>
                     <div class="col-md-5">
                       <SampleImageTipBox :documentType="spouseNameChangeSupportDocumentType"/>
@@ -450,7 +449,7 @@
                         v-if="v$.spouseRecentBCMoveDate.$dirty
                               && !v$.spouseRecentBCMoveDate.required.$invalid
                               && v$.spouseRecentBCMoveDate.dateDataValidator.$invalid"
-                        aria-live="assertive">Invalid arrival date in BC.</div>
+                        aria-live="assertive">Invalid arrival date in B.C.</div>
                       <div class="text-danger"
                         v-if="v$.spouseRecentBCMoveDate.$dirty
                               && !v$.spouseRecentBCMoveDate.required.$invalid
@@ -486,7 +485,7 @@
                       aria-live="assertive">Arrival date in Canada is required.</div>
                     <div class="text-danger"
                       v-if="v$.spouseCanadaArrivalDate.$dirty && v$.spouseCanadaArrivalDate.dateDataValidator.$invalid && !v$.spouseCanadaArrivalDate.required.$invalid"
-                      aria-live="assertive">Invalid Arrival date in Canada.</div>
+                      aria-live="assertive">Invalid arrival date in Canada.</div>
                     <div class="text-danger"
                       v-if="v$.spouseCanadaArrivalDate.$dirty
                             && !v$.spouseCanadaArrivalDate.required.$invalid
@@ -518,7 +517,7 @@
                       :inputStyle='mediumStyles' />
                   </div>
                   <Radio
-                    label='Has your spouse been outside B.C. for more than 30 days in total in the past 12 months?'
+                    label='Since your spouse arrived in B.C. have you left the province for more than 30 days in total in the past 12 months?'
                     id='outside-bc-past-12'
                     name='outside-bc-past-12'
                     v-model='spouseOutsideBCLast12Months'
@@ -614,7 +613,7 @@
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
                       v-if="v$.spousePreviousBCHealthNumber.$dirty && v$.spousePreviousBCHealthNumber.phnValidator.$invalid"
-                      aria-live="assertive">Invalid Personal Health Number</div>
+                      aria-live="assertive">Personal Health Number is not valid.</div>
                   </div>
                   <div v-if="showDischargeInputs">
                     <Radio
@@ -656,7 +655,7 @@
               </div>
               <div class="col-md-5 mt-3">
                 <TipBox>
-                  <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer.</p>
+                  <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer. If you leave B.C. within 6 months of enrolling for MSP, you may have to repay your medical expenses.</p>
                 </TipBox>
               </div>
             </div>

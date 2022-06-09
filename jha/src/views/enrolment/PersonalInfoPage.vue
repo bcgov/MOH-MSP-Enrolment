@@ -72,11 +72,11 @@
             <div class="text-danger"
               v-if="v$.birthdate.$dirty
                 && v$.birthdate.dateDataValidator.$invalid"
-              aria-live="assertive">Invalid Birthdate.</div>
+              aria-live="assertive">Invalid birthdate.</div>
             <div class="text-danger"
               v-if="v$.birthdate.$dirty
                 && v$.birthdate.distantPastValidator.$invalid"
-              aria-live="assertive">Invalid Birthdate.</div>
+              aria-live="assertive">Invalid birthdate.</div>
             <div class="text-danger"
               v-if="v$.birthdate.$dirty
                 && v$.birthdate.birthdate16YearsValidator.$invalid"
@@ -96,7 +96,7 @@
               <div class="text-danger"
                 v-if="v$.personalHealthNumber.$dirty
                   && (v$.personalHealthNumber.phnValidator.$invalid || v$.personalHealthNumber.phnFirstDigitValidator.$invalid)"
-                aria-live="assertive">Personal Health Number is invalid.</div>
+                aria-live="assertive">Personal Health Number is not valid.</div>
             </div>
             <div v-if="requestSocialInsuranceNumber">
               <SINInput label="Social Insurance Number (SIN)"
@@ -126,7 +126,7 @@
               <div class="text-danger"
                 v-if="v$.gender.$dirty
                   && v$.gender.required.$invalid"
-                aria-live="assertive">Gender is required.</div>
+                aria-live="assertive">Please indicate your gender.</div>
             </div>
           </div>
           <div class="col-md-5 d-flex align-items-end">
@@ -153,7 +153,7 @@
           <div class="text-danger"
             v-if="v$.citizenshipStatus.$dirty
               && v$.citizenshipStatus.required.$invalid"
-            aria-live="assertive">Immigration status in Canada is required.</div>
+            aria-live="assertive">Please select your immigration status.</div>
           <div v-if="citizenshipStatus === StatusInCanada.Citizen
               || citizenshipStatus === StatusInCanada.PermanentResident">
             <Radio name="citizen-status-reason"
@@ -181,7 +181,7 @@
         
         <div v-if="isCitizenshipDocsShown">
           <h2 class="mt-4">Documents</h2>
-          <p>Provide one of the following documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload document to support the name change.</p>
+          <p>Provide one of the required documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload document to support the name change.</p>
           <hr/>
           <Select label="Document Type"
             id="citizen-support-document-type"
@@ -232,7 +232,7 @@
         </div>
 
         <div v-if="requestIsNameChanged">
-          <Radio label="Has your name changed since your ID was issued due to marriage or legal name change?"
+          <Radio label="Has your name changed since your ID was issued due to marriage or a legal name change?"
             id="name-change"
             name="name-change"
             class="mt-3"
@@ -242,7 +242,7 @@
           <div class="text-danger"
             v-if="v$.isNameChanged.$dirty
               && v$.isNameChanged.required.$invalid"
-            aria-live="assertive">This field is required.</div>
+            aria-live="assertive">Please indicate if your name changed.</div>
         </div>
         <div v-if="requestNameChangedDocs"
           class="tabbed-section mt-3">
@@ -305,7 +305,7 @@
                 <div class="text-danger"
                   v-if="v$.fromProvinceOrCountry.$dirty
                     && v$.fromProvinceOrCountry.required.$invalid"
-                  aria-live="assertive">Field is required.</div>
+                  aria-live="assertive">Province or jurisdiction of origin is required.</div>
               </div>
               <div v-if="requestLivedInBCSinceBirth">
                 <Radio label="Have you lived in B.C. since birth?"
@@ -331,7 +331,7 @@
                 <div class="text-danger"
                   v-if="v$.isMovedToBCPermanently.$dirty
                     && v$.isMovedToBCPermanently.required.$invalid"
-                  aria-live="assertive">This field is required.</div>
+                  aria-live="assertive">Please indicate whether you have made a permanent move to BC.</div>
                 <div class="text-danger"
                   v-if="!canContinueProcess"
                   aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, you are not eligible for enrolment in the Medical Services Plan. Please contact <a href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us" target="_blank">Health Insurance BC</a> for further information.</div>
@@ -444,7 +444,7 @@
                     @blur="handleBlurField(v$.previousHealthNumber)" />
                 </div>
                 <div>
-                  <Radio label="Have you been outside B.C. for more than 30 days in total in the past 12 months?"
+                  <Radio label="Since you arrived in B.C. have you left the province for more than 30 days in total in the past 12 months?"
                     class="mt-3"
                     id="outside-bc-12-months"
                     name="outside-bc-12-months"
@@ -458,7 +458,7 @@
                   <div class="text-danger"
                     v-if="v$.isOutsideBCInLast12Months.$dirty
                       && v$.isOutsideBCInLast12Months.required.$invalid"
-                    aria-live="assertive">This field is required.</div>
+                    aria-live="assertive">Please indicate whether you have been outside BC in the past 12 months.</div>
                 </div>
                 <div v-if="isOutsideBCInLast12Months === 'Y'"
                   class="tabbed-section">
@@ -540,7 +540,7 @@
                   <div class="text-danger"
                     v-if="v$.hasPreviousPHN.$dirty
                       && v$.hasPreviousPHN.required.$invalid"
-                    aria-live="assertive">This field is required.</div>
+                    aria-live="assertive">Please indicate whether you have a previous BC Personal Health Number.</div>
                 </div>
                 <div v-if="hasPreviousPHN === 'Y'"
                   class="tabbed-section">
@@ -567,7 +567,7 @@
                   <div class="text-danger"
                     v-if="v$.isReleasedFromArmedForces.$dirty
                       && v$.isReleasedFromArmedForces.required.$invalid"
-                    aria-live="assertive">This field is required.</div>
+                    aria-live="assertive">Please indicate whether you have been released from an institution.</div>
                 </div>
                 <div v-if="isReleasedFromArmedForces === 'Y'"
                   class="tabbed-section">
@@ -634,7 +634,7 @@
 
             <div class="col-md-5 mt-3">
               <TipBox>
-                <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer.</p>
+                <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer. If you leave B.C. within 6 months of enrolling for MSP, you may have to repay your medical expenses.</p>
               </TipBox>
             </div>
           </div>

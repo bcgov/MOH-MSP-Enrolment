@@ -99,7 +99,7 @@
               aria-live="assertive">Personal Health Number is required.</div>
             <div class="text-danger"
               v-if="v$.personalHealthNumber.$dirty && (v$.personalHealthNumber.phnValidator.$invalid || v$.personalHealthNumber.phnFirstDigitValidator.$invalid)"
-              aria-live="assertive">Personal Health Number is invalid.</div>
+              aria-live="assertive">Personal Health Number is not valid.</div>
             <div class="text-danger"
               v-if="v$.personalHealthNumber.$dirty && v$.personalHealthNumber.uniquePHNValidator.$invalid"
               aria-live="assertive">This Personal Health Number (PHN) was already used for another family member. Please provide the PHN that is listed on the family member's PHN card/letter.</div>
@@ -160,8 +160,8 @@
             @blur="handleBlurField(v$.statusReason)"
             :items='citizenshipStatusReasonOptions' />
           <div class="text-danger"
-            v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
-            aria-live="assertive">Please select one of the above.</div>
+            v-if="$v.statusReason.$dirty && !$v.statusReason.required"
+            aria-live="assertive">This field is required.</div>
         </div>
         <div v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child19To24">
           <Radio
@@ -173,7 +173,7 @@
             :items='temporaryResidentStatusReasonOptions' />
           <div class="text-danger"
             v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
-            aria-live="assertive">Please select one of the above.</div>
+            aria-live="assertive">This field is required.</div>
         </div>
         <div v-if="status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child19To24">
           <Radio
@@ -185,11 +185,11 @@
             :items='overageChildTemporaryResidentStatusReasonOptions' />
           <div class="text-danger"
             v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
-            aria-live="assertive">Please select one of the above.</div>
+            aria-live="assertive">This field is required.</div>
         </div>
         <div v-if="statusReason !== null && statusReason !== undefined" class="mt-3">
           <h2>Documents</h2>
-          <p>Provide one of the following documents to support your status in Canada. If the child's name has changed since your ID was issued you are also required to upload document to support the name change.</p>
+          <p>Provide one of the required documents to support your status in Canada. If the child's name has changed since your ID was issued you are also required to upload document to support the name change.</p>
           <hr/>
           <Select 
             label="Document Type"
@@ -204,7 +204,7 @@
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="v$.citizenshipSupportDocumentType.$dirty && v$.citizenshipSupportDocumentType.required.$invalid"
-            aria-live="assertive">Please select one of the above.</div>
+            aria-live="assertive">Document Type is required.</div>
           <Radio
             label="Does the child's document that supports their status in Canada include their selected gender designation?" 
             :name="'gender-matches-' + index"
@@ -230,7 +230,7 @@
                   :description="citizenshipSupportDocumentType" />
                 <div class="text-danger"
                   v-if="v$.citizenshipSupportDocuments.$dirty && v$.citizenshipSupportDocuments.required.$invalid"
-                  aria-live="assertive">File upload required.</div>
+                  aria-live="assertive">You must include documentation for your application.</div>
               </div>
               <div class="col-md-5">
                 <SampleImageTipBox :documentType="citizenshipSamples"/>
@@ -253,10 +253,6 @@
           <div v-if="isNameChanged === 'Y'" class="tabbed-section">
             <h2>Additional Documents</h2>
             <p>Provide one of the required documents to support the child's name change.</p>
-            <ul>
-              <li>Marriage Certificate</li>
-              <li>Legal Name Change Certificate</li>
-            </ul>
             <hr/>
             <Select 
               label="Document Type"
@@ -271,7 +267,7 @@
               :inputStyle='mediumStyles' />
             <div class="text-danger"
               v-if="v$.nameChangeSupportDocumentType.$dirty && v$.nameChangeSupportDocumentType.required.$invalid"
-              aria-live="assertive">Please select one of the above.</div>
+              aria-live="assertive">Document Type is required.</div>
             <div v-if="nameChangeSupportDocumentType">
                 <h2>{{nameChangeSupportDocumentType}}</h2>
                 <hr/>
@@ -285,7 +281,7 @@
                       :description="nameChangeSupportDocumentType" />
                     <div class="text-danger"
                       v-if="v$.nameChangeSupportDocuments.$dirty && v$.nameChangeSupportDocuments.required.$invalid"
-                      aria-live="assertive">File upload required.</div>
+                      aria-live="assertive">You must include documentation for your application.</div>
                   </div>
                   <div class="col-md-5">
                     <SampleImageTipBox :documentType="nameChangeSupportDocumentType"/>
@@ -433,7 +429,7 @@
                         v-if="v$.recentBCMoveDate.$dirty
                           && !v$.recentBCMoveDate.required.$invalid
                           && v$.recentBCMoveDate.dateDataValidator.$invalid"
-                        aria-live="assertive">Invalid arrival date in BC.</div>
+                        aria-live="assertive">Invalid arrival date in B.C.</div>
                       <div class="text-danger"
                         v-if="v$.recentBCMoveDate.$dirty
                           && !v$.recentBCMoveDate.required.$invalid
@@ -470,7 +466,7 @@
                       aria-live="assertive">Arrival date in Canada is required.</div>
                     <div class="text-danger"
                       v-if="v$.canadaArrivalDate.$dirty && v$.canadaArrivalDate.dateDataValidator.$invalid"
-                      aria-live="assertive">Invalid Arrival date in Canada.</div>
+                      aria-live="assertive">Invalid arrival date in Canada.</div>
                     <div class="text-danger"
                       v-if="v$.canadaArrivalDate.$dirty
                         && !v$.canadaArrivalDate.dateDataValidator.$invalid
@@ -598,7 +594,7 @@
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
                       v-if="v$.previousBCHealthNumber.$dirty && v$.previousBCHealthNumber.phnValidator.$invalid"
-                      aria-live="assertive">Invalid Personal Health Number</div>
+                      aria-live="assertive">Personal Health Number is not valid.</div>
                   </div>
                   <div v-if="showDischargeInputs">
                     <Radio
@@ -638,7 +634,7 @@
             </div>
             <div class="col-md-5 mt-3">
               <TipBox>
-                  <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer.</p>
+                  <p>A permanent move means that you intend to make B.C. your primary residence for 6 months or longer. If you leave B.C. within 6 months of enrolling for MSP, you may have to repay your medical expenses.</p>
               </TipBox>
             </div>
         </div>
@@ -860,7 +856,7 @@ import {
   selectOptionReligiousWorkSupportDocument,
   selectOptionDiplomaticFoilSupportDocument,
   selectOptionVisitorVisaSupportDocument,
-  selectOptionsNameChangeSupportDocuments,
+  selectOptionsChildNameChangeSupportDocuments,
 } from '@/constants/select-options';
 import { 
   radioOptionsNoYes,
@@ -1047,7 +1043,7 @@ export default {
       childAgeTypes: ChildAgeTypes,
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
-      nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
+      nameChangeSupportDocumentOptions: selectOptionsChildNameChangeSupportDocuments,
       temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
       overageChildTemporaryResidentStatusReasonOptions: radioOptionsOverageChildTemporaryResidentStatusReasons,
       mediumStyles: mediumStyles,
