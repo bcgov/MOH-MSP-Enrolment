@@ -228,7 +228,7 @@
             </div>
             <div class="col-md-5">
               <TipBox title="Tip">
-                <p>Scan the document, or take a photo of it.</p>
+                <p>Scan the document or take a photo of it.</p>
                 <p>Make sure it's:</p>
                 <ul>
                   <li>The entire document, from corner to corner</li>
