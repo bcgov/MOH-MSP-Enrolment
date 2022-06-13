@@ -9,22 +9,22 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Eligibility Questionnaire</h1>
-        <p class="mb-0">You can use the British Columbia Application for Health Drug Coverage to apply for Medical Services Plan (MSP) enrolmnent, Fair PharmaCare, and/or MSP Supplementary Benefits.</p>
-        <p class="mt-0">Answering the following questions will help you determine which programs you are eligible for, and ensure you have the required documents and information to complete your application(s).</p>
-        <hr class="mt-0"/>
+        <EligibilityQuestionnaireHeader />
         <h2>Medical Services Plan (MSP) Enrolment</h2>
+        <p>
+          MSP pays for medically required services of physicians and surgeons, and dental or oral surgery performed in a hospital. If you are a B.C. resident, you must by law enrol in MSP, and enrol your spouse and child(ren) who are B.C. residents. You must physically be in B.C. to enrol in MSP. If you are already enrolled in MSP, you can update your account at <a href="https://www.gov.bc.ca/managingyourmspaccount">gov.bc.ca/managingyourmspaccount</a>.
+        </p>
         <Radio
           id='apply-msp'
           name='apply-msp'
-          label='1. Will you use the British Columbia Application for Health Drug Coverage to apply for MSP coverage?'
+          label='1. Will you use the British Columbia Application for Health and Drug Coverage to apply for MSP coverage?'
           v-model='eqMSPIsApplying'
           :items='radioOptionsApplyMSP' />
         <div v-if="eqMSPIsApplying === 'Y'">
           <Radio
             id='live-in-bc'
             name='live-in-bc'
-            label='2. Do you live in British Columbia and have a B.C. address where you can receive mail?'
+            label='2. Do you currently live in British Columbia and have a B.C. address where you can receive mail?'
             v-model='eqMSPLiveInBC'
             :items='radioOptionsYesNo' />
           <p class="text-danger ml-4" v-if="eqMSPLiveInBC === 'N'">You might not qualify for MSP or related income-based programs if you do not live in B.C. Contact Health Insurance BC for more information.</p>
@@ -40,27 +40,21 @@
               <Radio
                 id='student-minor-refugee'
                 name='student-minor-refugee'
-                label='4. Is anyone included in this application (yourself, spouse, or child): a student returning to a home province outside B.C. at the end of a course or program; an unaccompanied minor; or a person seeking refugee status who has not yet been approved?'
+                label='4. Is anyone included in this application (yourself, spouse, or child) a student returning to a home province outside B.C. at the end of a course or program; an unaccompanied minor; or a person seeking refugee status who has not yet been approved?'
                 v-model='eqMSPStudentMinorRefugee'
                 :items='radioOptionsYesNo' />
               <div class="text-danger ml-4" v-if="eqMSPStudentMinorRefugee === 'Y'">
-                <p class="mb-0">You can submit an application with some assistance from one of our representatives - please contact Health Insurance BC:</p>
+                <p class="mb-0">You can submit an application with some assistance from one of our representatives. Please contact Health Insurance BC:</p>
                 <p class="mb-0">(604) 683-7151 (Lower Mainland)</p>
                 <p class="mb-0">1-800-663-7100 (Elsewhere in B.C.)</p>
               </div>
               <div v-if="eqMSPStudentMinorRefugee === 'N'">
-                <p>When applying for MSP coverage, you are required to submit digital copies (pdf, jpeg, png) of the following documents for yourself and (if applicable) your spouse.  For more information see ID Requirements for Online MSP Enrolment - Province of British Columbia.</p>
-                <ul class="ml-4">
-                  <li>Canadian Citizens: Canadian Birth Certificate, Canadian Passport, or Canadian Citizenship Card/Certificate</li>
-                  <li>Permanent Residents: Record of Landing or Permanent Resident Card</li>
-                  <li>Temporary Permit Holders: Work, Study, or Visitor Permit</li>
-                  <li>Diplomats: Valid Passport with Entry Stamps and Acceptance Foils</li>
-                  <li>Supporting Documents: Marriage Certificate and/or Legal Name Change Certificate</li>
-                </ul>
+                <p>5. If you are applying for MSP, you will need to include copies of ID with this application. The ID you submit must show full legal name and legal status in Canada for everyone included with this application. If you do not have one of these IDs, contact Health Insurance BC (HIBC).</p>
+                <IdTable />
                 <Radio 
                   id='has-documents'
                   name='has-documents'
-                  label='5. Do you have copies of the above documents to include with your application?'
+                  label='Do you have copies of the above documents to include with your application?'
                   v-model='eqMSPHasDocuments'
                   :items='radioOptionsYesNo' />
                 <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">Make sure you have digital copies of the above documents before completing your British Columbia Application for Health Drug Coverage. You will not be able to apply for MSP enrolment without these documents.</p>
@@ -112,8 +106,10 @@ import {
   SET_EQ_MSP_HAS_DOCUMENTS,
   SET_MSG_CODE_MSP,
 } from '@/store/modules/enrolment-module';
+import IdTable from '@/components/IdTable.vue';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesMSP } from '@/constants/eqMsgCodes';
+import EligibilityQuestionnaireHeader from '@/components/EligibilityQuestionnaireHeader.vue';
 
 const validateQuestionsAnswered = (_value, vm) => {
   if (!vm.eqMSPIsApplying
@@ -136,6 +132,8 @@ export default {
     ContinueBar,
     PageContent,
     Radio,
+    IdTable,
+    EligibilityQuestionnaireHeader,
   },
   data: () => {
     return {
