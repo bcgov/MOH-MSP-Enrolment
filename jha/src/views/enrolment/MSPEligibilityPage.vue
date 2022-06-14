@@ -9,11 +9,12 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <EligibilityQuestionnaireHeader />
+        <EligibilityQuestionnaireHeader>
         <h2>Medical Services Plan (MSP) Enrolment</h2>
         <p>
           MSP pays for medically required services of physicians and surgeons, and dental or oral surgery performed in a hospital. If you are a B.C. resident, you must by law enrol in MSP, and enrol your spouse and child(ren) who are B.C. residents. You must physically be in B.C. to enrol in MSP. If you are already enrolled in MSP, you can update your account at <a href="https://www.gov.bc.ca/managingyourmspaccount">gov.bc.ca/managingyourmspaccount</a>.
         </p>
+        </EligibilityQuestionnaireHeader>
         <Radio
           id='apply-msp'
           name='apply-msp'

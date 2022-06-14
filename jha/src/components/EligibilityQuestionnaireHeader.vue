@@ -5,6 +5,7 @@
       Services Plan (MSP) enrolment, Fair PharmaCare, and/or MSP Supplementary Benefits.</p>
     <p class="mt-0">Answer the following questions to help you determine which programs you are eligible for and ensure
       you have the required documents and information to complete your application(s).</p>
-    <hr class="mt-0" />
+    <slot></slot>
+  <hr class="mt-0" />
   </div>
 </template>

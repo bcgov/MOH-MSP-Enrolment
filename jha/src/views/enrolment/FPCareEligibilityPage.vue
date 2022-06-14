@@ -9,11 +9,12 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <EligibilityQuestionnaireHeader />
+        <EligibilityQuestionnaireHeader>
         <h2>Fair PharmaCare</h2>
         <p>
           Fair PharmaCare helps pay for some drugs and medical devices and supplies, such as prostheses and diabetes supplies. It is based on income. The less you earn, the more help you get.
         </p>
+        </EligibilityQuestionnaireHeader>
         <Radio
           id='apply-fpc'
           name='apply-fpc'
