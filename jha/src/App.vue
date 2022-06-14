@@ -70,6 +70,13 @@ export default {
           || modalTargetHasChildren;
     }
   },
+  mounted() {
+    // Custom a11y overrides requested for app
+    const headerNav = document.querySelector('nav[aria-label=Header]')
+    const footerNav = document.querySelector('nav[aria-label=Footer]')
+    headerNav.removeAttribute('aria-label')
+    footerNav.removeAttribute('aria-label')
+  },
 }
 </script>
 
