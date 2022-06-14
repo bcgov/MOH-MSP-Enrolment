@@ -79,5 +79,14 @@ export default {
       routes.push({...enrolmentRoutes.CONSENT_PAGE});
       return routes;
     },
+  },
+  mounted() {
+    const disabledPageSteps = Array.from(document.querySelectorAll('div.step-text>span'));
+    disabledPageSteps.forEach(step => {
+      step.setAttribute('role', 'link')
+      step.setAttribute('tabindex', '0')
+      step.setAttribute('disabled', 'true')
+      step.setAttribute('aria-disabled', 'true')
+    })
   }
 };
