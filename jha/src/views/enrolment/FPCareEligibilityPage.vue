@@ -149,7 +149,7 @@ export default {
       },
       {
         id: 'no',
-        label: 'No: (continue to MSP Supplementary Benefits).',
+        label: 'No: (continue to Supplementary Benefits).',
         value: 'N',
       }
     ];

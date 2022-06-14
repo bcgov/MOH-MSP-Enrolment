@@ -43,14 +43,14 @@
             </ul>
           </template>
         </Checkbox>
-        <Checkbox label="MSP Supplementary Benefits"
+        <Checkbox label="Supplementary Benefits"
           id="sb"
           :disabled="!isEligibleForSuppBen"
           class="pb-1"
           v-model="isApplyingForSuppBen">
           <template v-slot:description>
             <p v-if="msgCodeSB === eqMsgCodesSB.NotApplying" class="mt-2">Eligibility questionnaire not answered.</p>
-            <p v-else-if="msgCodeSB === eqMsgCodesSB.NotMeetsCriteria" class="mt-2 text-danger">You are not eligible to apply for MSP supplementary benefits at this time. Please submit an application when you meet the residency requirements. For assistance, please contact Health Insurance BC. For more information on eligibility requirements, see <a target="_blank" href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits">Applying for Supplementary Benefits.</a></p>
+            <p v-else-if="msgCodeSB === eqMsgCodesSB.NotMeetsCriteria" class="mt-2 text-danger">You are not eligible to apply for supplementary benefits at this time. Please submit an application when you meet the residency requirements. For assistance, please contact Health Insurance BC. For more information on eligibility requirements, see <a target="_blank" href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits">Applying for Supplementary Benefits.</a></p>
             <ul v-else-if="msgCodeSB === eqMsgCodesSB.NotHasInfo" class="mt-2 text-danger">
               <li>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
               <li>If you (or your spouse) did not submit a tax return for a valid taxation year: file an income tax return with the Canada Revenue Agency for the required year as soon as possible. When you have received an NOA/NORA, apply for supplementary benefits. If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
