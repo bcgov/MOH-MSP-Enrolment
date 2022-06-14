@@ -1,7 +1,7 @@
 <template>
   <table class="table table-bordered table-sm">
     <thead>
-      <tr class="bg-primary text-light">
+      <tr class="bg-primary text-light text-center">
         <th scope="col">Canadian Citizen</th>
         <th scope="col">Permanent Resident</th>
         <th scope="col">Temporary Document Holder</th>
@@ -9,7 +9,7 @@
     </thead>
     <tbody>
       <tr>
-        <td>
+        <td class="col-sm-4">
           <ul>
             <li>Canadian Birth Certificate</li>
             <li>Canadian Citizenship Card (front and back)</li>
@@ -19,14 +19,14 @@
             <li>Métis status card</li>
           </ul>
         </td>
-        <td>
+        <td class="col-sm-4">
           <ul>
             <li>Record of Landing</li>
             <li>Confirmation of Permanent Residence</li>
             <li>Permanent Resident Card (front and back)</li>
           </ul>
         </td>
-        <td>
+        <td class="col-sm-4">
           <ul>
             <li>Study permit</li>
             <li>Work permit (working holiday permit holders must include a letter of employment)</li>
