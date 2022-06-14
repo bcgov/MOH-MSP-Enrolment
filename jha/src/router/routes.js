@@ -21,7 +21,7 @@ export const enrolmentRoutes = {
   },
   FORM_SELECTION_PAGE: {
     path: '/form-selection',
-    title: 'AHDC Start',
+    title: 'Select Programs',
     name: 'FormSelectionPage',
   },
   PERSONAL_INFO_PAGE: {
