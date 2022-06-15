@@ -25,7 +25,7 @@
           <p class="mb-0">2. To register for Fair PharmaCare, you must:</p>
           <div class="ml-4">
             <p class="mb-0">a. have been a resident of British Columbia for at least three months;</p>
-            <p class="mb-0">b. be registered with the Medical Services Plan (MSP); and</p>
+            <p class="mb-0">b. be registered with the Medical Services Plan (MSP) or be using this application form to also apply for MSP; and</p>
             <p>c. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
           </div>
           <Radio
@@ -39,7 +39,7 @@
             <p class="mb-0">3. To register for Fair PharmaCare, you must include the following with your application:</p>
             <div class="ml-4">
               <p class="mb-0">a. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
-              <p class="mb-0">b. Net Income shown on Line 23600 of your and if applicable, your spouse's CRA Notice of Assessment (NOA) or Notice of Reassessment (NORA) or federal income tax return for the relevant taxation year (two years before the current year); and</p>
+              <p class="mb-0">b. Net Income shown on Line 23600 of your and if applicable, your spouse's CRA Notice of Assessment (NOA), Notice of Reassessment (NORA) or federal income tax return for the relevant taxation year (two years before the current year); and</p>
               <p>c. Registered Disability Savings Plan (RDSP) income (Line 12500) from the above CRA NOA, NORA or federal income tax return.</p>
             </div>
             <Radio

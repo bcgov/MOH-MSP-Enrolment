@@ -134,7 +134,7 @@
 
       <div v-if="requestImmigrationStatus">
         <h2 class="mt-3">Child's status in Canada</h2>
-        <p>Please provide your child's immigration status. You will be required to upload documents to support your status in Canada.</p>
+        <p>Please provide your child's immigration status. You will be required to upload documents to support your child's status in Canada.</p>
         <hr />
         <Select 
           :id="'child-status-' + index"

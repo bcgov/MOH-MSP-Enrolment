@@ -27,7 +27,7 @@
           </li>
         </ul>
         <Checkbox
-          label="I have Power of Attorney or another legal representation agreement"
+          label="I have power of attorney or another legal representation agreement"
           id="power-of-attorney-checkbox"
           class="mt-3"
           v-model="hasPowerOfAttorney"
