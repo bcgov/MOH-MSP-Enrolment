@@ -160,7 +160,7 @@
             @blur="handleBlurField(v$.statusReason)"
             :items='citizenshipStatusReasonOptions' />
           <div class="text-danger"
-            v-if="$v.statusReason.$dirty && !$v.statusReason.required"
+            v-if="v$.statusReason.$dirty && !v$.statusReason.required"
             aria-live="assertive">This field is required.</div>
         </div>
         <div v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child19To24">
@@ -1154,6 +1154,8 @@ export default {
     this.schoolDepartureDate = this.childData.schoolDepartureDate;
     this.schoolCompletionDate = this.childData.schoolCompletionDate;
     this.willResideInBCAfterStudies = this.childData.willResideInBCAfterStudies;
+
+    debugger
   },
   validations() {
     const validations = {
