@@ -132,8 +132,7 @@
           <div class="col-md-5 d-flex align-items-end">
             <TipBox v-if="requestGender">
               <p>Tip</p>
-              <p>If the gender you select does not match the gender on your supporting document(s), you must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
-              <p>For more information see BC Services Card: <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
+              <p>If the gender you select does not match the gender on your supporting document(s), you must submit an application for change of gender designation. For more information see <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
             </TipBox>
           </div>
         </div>
@@ -181,7 +180,7 @@
         
         <div v-if="isCitizenshipDocsShown">
           <h2 class="mt-4">Documents</h2>
-          <p>Provide one of the required documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload document to support the name change.</p>
+          <p>Provide one of the required documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload a document to support the name change.</p>
           <hr/>
           <Select label="Document Type"
             id="citizen-support-document-type"

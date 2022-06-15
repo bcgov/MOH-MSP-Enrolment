@@ -37,7 +37,7 @@ export default {
   data: () => {
     return {
       version: project.version,
-      pageTitle: 'British Columbia Application for Health Drug Coverage (AHDC)',
+      pageTitle: 'British Columbia Application for Health and Drug Coverage (AHDC)',
     };
   },
   created() {

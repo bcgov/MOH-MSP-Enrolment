@@ -13,8 +13,8 @@
             @click="openModal(index)">{{sample}} samples</a>
         </p>
       </div>
-      <p>Scan the document, or take a photo of it.</p>
-      <p>Make sure that it's:</p>
+      <p>Scan the document or take a photo of it.</p>
+      <p>Make sure that it is:</p>
       <ul>
         <li>The entire document, from corner to corner</li>
         <li>Rotated correctly (not upside down or sideways)</li>

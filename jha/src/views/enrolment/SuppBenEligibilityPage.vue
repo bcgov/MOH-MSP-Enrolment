@@ -9,23 +9,24 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Eligibility Questionnaire</h1>
-        <p class="mb-0">You can use the British Columbia Application for Health Drug Coverage to apply for Medical Services Plan (MSP) enrolmnent, Fair PharmaCare, and/or MSP Supplementary Benefits.</p>
-        <p class="mt-0">Answering the following questions will help you determine which programs you are eligible for, and ensure you have the required documents and information to complete your application(s).</p>
-        <hr class="mt-0"/>
-        <h2>MSP Supplementary Benefits</h2>
+        <EligibilityQuestionnaireHeader>
+        <h2>Supplementary Benefits</h2>
+        <p>
+          Supplementary Benefits provides partial payment for certain medical services, such as acupuncture and massage therapy, and may provide access to other income-based programs. Individuals or families must have an adjusted net income of $42,000 a year or less to be eligible.
+        </p>
+        </EligibilityQuestionnaireHeader>
         <Radio
           id='apply-sb'
           name='apply-sb'
-          label='1. Will you use the British Columbia Application for Health Drug Coverage to apply for supplementary benefits?'
+          label='1. Will you use the British Columbia Application for Health and Drug Coverage to apply for Supplementary Benefits?'
           v-model='eqSBIsApplying'
           :items='radioOptionsYesNo' />
         <div v-if="eqSBIsApplying === 'Y'">
-          <p class="mb-0">2. To register for MSP supplementary benefits, you must:</p>
+          <p class="mb-0">2. To register for Supplementary Benefits, you must:</p>
           <div class="ml-4">
-            <p class="mb-0">a. be a resident of British Columbia as defined by the Medicare Protection Act;</p>
+            <p class="mb-0">a. be a resident of British Columbia as defined by the <em>Medicare Protection Act</em>;</p>
             <p class="mb-0">b. have resided in Canada as a Canadian citizen or holder of a permanent resident status (landed immigrant) for at least the last 12 months immediately preceding this application; and</p>
-            <p>c. not be exempt from liability to pay income tax by reason of any other act</p>
+            <p>c. not be exempt from liability to pay income tax by reason of any other Act</p>
           </div>
           <Radio
             id='meets-sb-criteria'
@@ -33,12 +34,12 @@
             label='Do you meet the above eligibility criteria?'
             v-model='eqSBMeetsCriteria'
             :items='radioOptionsYesNo' />
-          <p class="text-danger ml-4" v-if="eqSBMeetsCriteria === 'N'">You are not eligible to apply for MSP supplementary benefits at this time. Please submit an application when you meet the residency requirements.  For assistance, please contact Health Insurance BC.  For more information on eligibility requirements, see <a target="_blank" href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits">Applying for Supplementary Benefits.</a></p>
+          <p class="text-danger ml-4" v-if="eqSBMeetsCriteria === 'N'">You are not eligible to apply for Supplementary Benefits at this time. Please submit an application when you meet the residency requirements.  For assistance, please contact Health Insurance BC.  For more information on eligibility requirements, see <a target="_blank" href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits">Applying for Supplementary Benefits.</a></p>
           <div v-if="eqSBMeetsCriteria === 'Y'">
-            <p class="mb-0">3. To apply for MSP supplementary benefits, you must include the following with your application:</p>
+            <p class="mb-0">3. To apply for Supplementary Benefits, you must include the following with your application:</p>
             <div class="ml-4">
               <p class="mb-0">a. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
-              <p class="mb-0">b. a digital copy (pdf, jpg, png) of your and if applicable, your spouse's CRA Notice of Assessment (NOA) or Notice of Reassessment (NORA) for the relevant taxation year (previous year or previous two tax year to the current calendar year); and</p>
+              <p class="mb-0">b. a digital copy (pdf, jpg, png) of your and if applicable, your spouse's CRA Notice of Assessment (NOA) or Notice of Reassessment (NORA) for the most recent taxation year; and</p>
               <p>c. Net Income (Line 23600) and Registered Disability Savings Plan (RDSP) income (Line 12500) from the above CRA NOA or NORA.</p>
             </div>
             <Radio
@@ -48,8 +49,8 @@
               v-model='eqSBhasInfo'
               :items='radioOptionsYesNo' />
             <ul class="text-danger pl-4 ml-4" v-if="eqSBhasInfo === 'N'">
-              <li class="ml-0">If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
-              <li class="ml-0">If you (or your spouse) did not submit a tax return for a valid taxation year: file an income tax return with the Canada Revenue Agency for the required year as soon as possible. When you have recieved an NOA/NORA, apply for supplementary benefits.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
+              <li class="ml-0">If you (or your spouse) do not have a Social Insurance Number, Contact Service Canada before submitting an application. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
+              <li class="ml-0">If you and/or your spouse did not file taxes with the CRA two years ago, do so as soon as possible. If you and/or your spouse were not able to file taxes with the CRA two years ago (because you did not live in Canada, were a minor, or were exempt from filing taxes), please contact HIBC. If we are not able to verify your income or you do not provide your consent you will not receive coverage based on your income.</li>
             </ul>
           </div>
         </div>
@@ -96,6 +97,7 @@ import {
 } from '@/store/modules/enrolment-module';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesSB } from '@/constants/eqMsgCodes';
+import EligibilityQuestionnaireHeader from '@/components/EligibilityQuestionnaireHeader.vue';
 
 const validateQuestionsAnswered = (_value, vm) => {
       if(!vm.eqSBIsApplying
@@ -116,6 +118,7 @@ export default {
     ContinueBar,
     PageContent,
     Radio,
+    EligibilityQuestionnaireHeader,
   },
   data: () => {
     return {

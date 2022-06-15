@@ -27,7 +27,7 @@
           </li>
         </ul>
         <Checkbox
-          label="I have Power of Attorney or another legal representation agreement"
+          label="I have power of attorney or another legal representation agreement"
           id="power-of-attorney-checkbox"
           class="mt-3"
           v-model="hasPowerOfAttorney"
@@ -143,7 +143,7 @@
         <div v-if="isApplyingForSuppBen"
           class="mb-5">
           <hr/>
-          <h2>MSP Supplementary Benefits: Declaration and Consent - Must Be Signed</h2>
+          <h2>Supplementary Benefits: Declaration and Consent - Must Be Signed</h2>
           <p><b>Please read and sign. If you are married or living in a marriage-like relationship, your spouse must also sign.</b></p>
           <ul>
             <li>I (applicant) am a resident of British Columbia as defined by the Medicare Protection Act.</li>

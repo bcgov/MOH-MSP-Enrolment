@@ -12,7 +12,7 @@
         <h1>Spouse or Common-law partner</h1>
         <div class="heading mt-3">
           <div>
-            <p>A spouse is a person who is married to or living and cohabitating in a marriage-like relationship with the Account Holder. A spouse may be the same gender as the Account Holder. To be eligible for MSP coverage, a spouse must be a BC resident. </p> 
+            <p>A spouse is a person who is married to or living and cohabitating in a marriage-like relationship with the Account Holder. A spouse may be the same gender as the Account Holder. To be eligible for MSP coverage, a spouse must be a B.C. resident. </p> 
             <p>Personal Health Number (PHN) is the number that appears on the spouse's BC Services Card.</p>
           </div>
           <div v-if="hasSpouse === 'Y'" class="ml-1 mb-2 remove-icon align-self-end " @click="removeSpouse()">
@@ -155,7 +155,7 @@
             <div class="col-md-5 d-flex align-items-end">
               <TipBox v-if="requestGender">
                 <p>Tip</p>
-                <p>If the gender you select does not match the gender on your supporting document(s), you must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
+                <p>If the gender you select does not match the gender on your spouse's supporting document(s), they must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
                 <p>For more information see BC Services Card: <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
               </TipBox>
             </div>
@@ -165,7 +165,7 @@
           <div v-if="requestImmigrationStatus">
             <h2 class="mt-4">Spouse or common-law partner status in Canada</h2>
             <div class="heading mt-3">
-              <p>Please provide your spouse's immigration status information. You will be required to upload documents to support spouse's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select 'Temporary Permit Holder or Diplomat' from the drop down below.</p>
+              <p>Please provide your spouse's immigration status information. You will be required to upload documents to support your spouse's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select "Temporary Permit Holder or Diplomat" from the drop down below.</p>
             </div>
             <hr class="mt-0"/>
             <Select 
@@ -208,7 +208,7 @@
             </div>
             <div v-if="spouseStatusReason !== null && spouseStatusReason !== undefined" class="mt-3">
               <h2>Documents</h2>
-              <p>Provide one of the required documents to support your spouse's status in Canada. If your spouse's name has changed since their ID was issued you are also required to upload document to support the name change.</p>
+              <p>Provide one of the required documents to support your spouse's status in Canada. If your spouse's name has changed since their ID was issued, you are also required to upload a document to support the name change.</p>
               <hr/>
               <Select 
                 label="Document Type"
@@ -514,7 +514,7 @@
                       :inputStyle='mediumStyles' />
                   </div>
                   <Radio
-                    label='Since your spouse arrived in B.C. have you left the province for more than 30 days in total in the past 12 months?'
+                    label='Since your spouse arrived in B.C. have they left the province for more than 30 days in total in the past 12 months?'
                     id='outside-bc-past-12'
                     name='outside-bc-past-12'
                     v-model='spouseOutsideBCLast12Months'
