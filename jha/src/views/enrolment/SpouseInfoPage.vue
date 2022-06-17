@@ -40,7 +40,7 @@
               <Input label='First name'
                 id='first-name'
                 className='mt-3'
-                maxlength="30"
+                :maxlength="firstNameMaxLength"
                 v-model='spouseFirstName'
                 @blur="handleBlurField($v.spouseFirstName)"
                 :inputStyle='mediumStyles' />
@@ -53,7 +53,7 @@
               <Input label='Middle name (optional)'
                 id='middle-name'
                 className='mt-3'
-                maxlength="30"
+                :maxlength="middleNameMaxLength"
                 v-model='spouseMiddleName'
                 @blur="handleBlurField($v.spouseMiddleName)"
                 :inputStyle='mediumStyles' />
@@ -783,6 +783,7 @@ import {
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
+import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -878,6 +879,8 @@ export default {
   data: () => {
     return {
       pageLoaded: false,
+      firstNameMaxLength,
+      middleNameMaxLength,
       // Radio and select options
       radioGenderOptions: radioOptionsGender,
       radioOptionsNoYes: radioOptionsNoYes,

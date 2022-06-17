@@ -20,7 +20,7 @@
           <Input label='First name'
             :id="'child-first-name-' + index"
             className='mt-3'
-            maxlength="30"
+            :maxlength="firstNameMaxLength"
             @blur="handleBlurField($v.firstName)"
             v-model='firstName'
             :inputStyle='mediumStyles' />
@@ -33,7 +33,7 @@
           <Input label='Middle name (optional)'
             :id="'child-middle-name-' + index"
             className='mt-3'
-            maxlength="30"
+            :maxlength="middleNameMaxLength"
             @blur="handleBlurField($v.middleName)"
             v-model='middleName'
             :inputStyle='mediumStyles' />
@@ -874,6 +874,7 @@ import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import { mediumStyles, smallStyles } from '@/constants/input-styles';
 import spaEnvService from '@/services/spa-env-service';
+import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -1028,6 +1029,8 @@ export default {
   data: () => {
     return {
       pageLoaded: false,
+      firstNameMaxLength,
+      middleNameMaxLength,
       // Radio and select options
       radioChildAgeOptions: radioOptionsChildAge,
       radioGenderOptions: radioOptionsGender,

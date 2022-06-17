@@ -20,7 +20,7 @@
             <Input label="First name"
               id="first-name"
               v-model="firstName"
-              maxlength="30"
+              :maxlength="firstNameMaxLength"
               :inputStyle="mediumStyles"
               @blur="handleBlurField($v.firstName)" />
             <div class="text-danger"
@@ -35,7 +35,7 @@
               id="middle-name"
               class="mt-3"
               v-model="middleName"
-              maxlength="30"
+              :maxlength="middleNameMaxLength"
               :inputStyle="mediumStyles"
               @blur="handleBlurField($v.middleName)" />
             <div class="text-danger"
@@ -773,6 +773,7 @@ import {
   subYears,
 } from 'date-fns';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
+import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
 
 const birthdate16YearsValidator = (value) => {
   const sixteenYearsAgo = subYears(startOfToday(), 16);
@@ -835,6 +836,8 @@ export default {
   data: () => {
     return {
       isPageLoaded: false,
+      firstNameMaxLength,
+      middleNameMaxLength,
       // Constants.
       StatusInCanada,
       CanadianStatusReasons,
