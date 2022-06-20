@@ -1094,13 +1094,14 @@ export default {
           label: "Jurisdiction",
           value: this.$store.state.enrolmentModule.mailCountry,
         });
-        if (this.$store.state.enrolmentModule.phone) {
-          items.push({
-            label: "Phone",
-            value: this.$store.state.enrolmentModule.phone,
-            underlined: true,
-          });
-        }
+      }
+      // Add phone to the end of contact info if present for any application type
+      if (this.$store.state.enrolmentModule.phone) {
+        items.push({
+          label: "Phone",
+          value: this.$store.state.enrolmentModule.phone,
+          underlined: true,
+        });
       }
       return items;
     },
