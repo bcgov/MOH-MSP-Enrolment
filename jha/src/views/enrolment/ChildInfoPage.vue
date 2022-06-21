@@ -9,10 +9,10 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Add child information and upload documents</h1>
+        <h1>Child information</h1>
         <p>A child is under 19 years old, and the applicant is their parent or legal guardian.</p>
-        <p>A Dependent Post-Secondary Student is a 19- to 24-year old who is supported by parent(s) or guardian(s), has no spouse, and is enrolled full-time in a recognized post-secondary institution.</p>
-        <p>Personal Health Number (PHN) is the number that appears on your child’s BC Services Card </p>
+        <p>A Dependent Post-Secondary Student is a 19- to 24-year-old who is supported by parent(s) or guardian(s), has no spouse, and is enrolled full-time in a recognized post-secondary institution.</p>
+        <p>Personal Health Number (PHN) is the number that appears on your child's BC Services Card.</p>
         <hr class="mt-0"/>
         <Radio v-if="hasChildren !== 'Y'"
                 label="Do you have a child who also needs to enrol for MSP coverage?"
@@ -205,7 +205,7 @@ export default {
       this.children.splice(index, 1);
     },
     getChildTitle(index) {
-      return 'Child #' + (index + 1) + ' basic information';
+      return 'Child ' + (index + 1) + ' information';
     },
     collapseChild(index) {
       this.children[index].collapsed = true;

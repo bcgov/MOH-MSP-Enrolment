@@ -120,21 +120,22 @@
         <div class="col-md-5 d-flex flex-column justify-content-between">
           <TipBox class="mb-3" v-if="requestAgeRange">
             <p>Tip</p>
-            <p>You can include your 19- to 24-year old child on your MSP account if they are enrolled in full-time studies.</p>
+            <p>You can include your 19- to 24-year-old child on your MSP account if they are enrolled in full-time studies.</p>
             <p>If your child is 19 to 24 and not in full-time studies, they must apply separately for their own MSP coverage.</p>
-            <p>If your child is 25 years or older, they must apply separately for their own MSP coverage.</p>
+            <p>If your child is 25 or older, they must apply separately for their own MSP coverage.</p>
           </TipBox>
           <TipBox v-if="requestGender">
             <p>Tip</p>
-            <p>If the gender you select does not match the gender on your child's supporting document(s), they must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
-            <p>For more information see BC Services Card: <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
+            <p>
+              If the gender you select does not match the gender on your child's supporting document(s), they must submit an application for change of gender designation. For more information see <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a>.
+            </p>
           </TipBox>
         </div>
       </div>
 
       <div v-if="requestImmigrationStatus">
         <h2 class="mt-3">Child's status in Canada</h2>
-        <p>Please provide your child's immigration status. You will be required to upload documents to support your child's status in Canada.</p>
+        <p>Provide your child's immigration status. You will need to upload documents that show your child's status in Canada.</p>
         <hr />
         <Select 
           :id="'child-status-' + index"
@@ -188,7 +189,7 @@
         </div>
         <div v-if="statusReason !== null && statusReason !== undefined" class="mt-3">
           <h2>Documents</h2>
-          <p>Provide one of the required documents to support your child's status in Canada. If your child's name has changed since their ID was issued, you are also required to upload document to support the name change.</p>
+          <p>Provide a copy of an accepted document that shows your child’s status in Canada. If their name is different from the name on the ID, you must also upload a copy of a name change certificate that shows their full legal name.</p>
           <hr/>
           <Select 
             label="Document Type"
@@ -205,7 +206,7 @@
             v-if="$v.citizenshipSupportDocumentType.$dirty && !$v.citizenshipSupportDocumentType.required"
             aria-live="assertive">Document Type is required.</div>
           <Radio
-            label="Does your child's document that supports their status in Canada include their selected gender designation?" 
+            label="Does the document that shows your child's status in Canada match their selected gender designation?" 
             :name="'gender-matches-' + index"
             :id="'gender-matches-' + index"
             class="mt-3"
@@ -238,7 +239,7 @@
           </div>
 
           <div v-if="citizenshipSupportDocumentType && genderMatches">
-            <Radio label="Has your child's name changed since their ID was issued due to marriage or legal name change?"
+            <Radio label="Is your child's name different from the name on their ID?"
               :id="'name-change-' + index"
               :name="'name-change-' + index"
               class="mt-3 mb-3"
@@ -251,7 +252,7 @@
           </div>
           <div v-if="isNameChanged === 'Y'" class="tabbed-section">
             <h2>Additional Documents</h2>
-            <p>Provide one of the required documents to support your child's name change.</p>
+            <p>Provide a copy of a name change certificate that shows your child's full legal name.</p>
             <hr/>
             <Select 
               label="Document Type"
