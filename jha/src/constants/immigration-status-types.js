@@ -1,7 +1,7 @@
 export const StatusInCanada = {
-  Citizen: 'Canadian Citizen',
-  PermanentResident: 'Permanent Resident',
-  TemporaryResident: 'Temporary Permit Holder or Diplomat'
+  Citizen: 'Canadian citizen',
+  PermanentResident: 'Permanent resident',
+  TemporaryResident: 'Temporary document holder or diplomat'
 };
 
 export const CanadianStatusReasons = {
