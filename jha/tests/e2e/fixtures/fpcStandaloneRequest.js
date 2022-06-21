@@ -1,4 +1,8 @@
+import { formatISODate } from 'common-lib-vue';
+
 export const generateRequestObject = () => {
+  const currentDate = new Date();
+
   return {
     "firstName": "alex",
     "secondName": "jaimie",
@@ -7,7 +11,7 @@ export const generateRequestObject = () => {
     "phn": "9999999998",
     "gender": null,
     "birthDate": "2000-01-01",
-    "telephone": null,
+    "telephone": "5555555555",
     "addressLine1": "123 fake st.",
     "addressLine2": null,
     "addressLine3": null,
@@ -25,14 +29,14 @@ export const generateRequestObject = () => {
       "lastName": "doe",
       "gender": null,
       "birthDate": "1990-06-20",
-      "telephone": null,
+      "telephone": "5555555555",
       "sin": "195544135",
       "phn": "9348671676"
     },
     "fairPharmaCare": {
       "uuid": "1f630383-be09-4bbf-b980-a516ce6ffb6f",
       "clientName": null,
-      "processDate": "2022-05-18",
+      "processDate": formatISODate(currentDate),
       "accountHolderNetIncome": "20000",
       "accountHolderRDSP": "2000",
       "spouseNetIncome": "20000",

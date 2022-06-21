@@ -23,8 +23,12 @@ describe('MSP only application', () => {
     cy.fillResidentialAddress()
   })
 
+  it('Displays the phone number with contact information', () => {
+    cy.contains('(555) 555-5555')
+    cy.continue();
+  })
+
   it('submits form with expected payload', () => {
-    cy.continue()
     cy.fillConsent(options)
     cy.submitApplication()
     cy.wait('@submitApplication')

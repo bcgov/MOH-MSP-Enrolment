@@ -1,4 +1,5 @@
-import { formatDate } from '../helpers';
+import { formatISODate } from 'common-lib-vue';
+
 
 export const generateRequestObject = () => {
   const currentDate = new Date();
@@ -14,7 +15,7 @@ export const generateRequestObject = () => {
     "phn": null,
     "gender": "X",
     "birthDate": "2000-01-01",
-    "telephone": null,
+    "telephone": "5555555555",
     "addressLine1": "123 fake st.",
     "addressLine2": null,
     "addressLine3": null,
@@ -33,7 +34,7 @@ export const generateRequestObject = () => {
       "lastName": "doe",
       "gender": "X",
       "birthDate": "1990-06-20",
-      "telephone": null,
+      "telephone": "5555555555",
       "sin": null,
       "phn": null
     },
@@ -56,8 +57,8 @@ export const generateRequestObject = () => {
       "prevProvinceOrCountry": "Alberta",
       "beenOutsideBCMoreThan": "Y",
       "departureDate": "2022-03-17",
-      "departureDate": formatDate(lastMonthDate),
-      "returnDate": formatDate(currentDate),
+      "departureDate": formatISODate(lastMonthDate),
+      "returnDate": formatISODate(currentDate),
       "familyMemberReason": "vacation",
       "destination": "bahamas",
       "isFullTimeStudent": "Y",
