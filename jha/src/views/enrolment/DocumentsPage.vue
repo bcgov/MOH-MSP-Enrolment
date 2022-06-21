@@ -35,8 +35,8 @@
               <ul>
                 <li>Your name</li>
                 <li>The tax year</li>
-                <li>Your net income (line 23600)</li>
-                <li>If you have a Registered Disability Savings Plan (line 12500)</li>
+                <li>Your net income (Line 23600)</li>
+                <li>Registered Disability Savings Plan income (Line 12500)</li>
                 <li>A JPG, PNG, GIF, BMP or PDF file</li>
               </ul>
             </TipBox>
