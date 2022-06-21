@@ -10,7 +10,7 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Select programs </h1>
-        <p>Based on the information you have provided, you are eligible to apply for the programs indicated below. If you choose not to apply for one of the programs indicated, remove the checkmark from that program.</p>
+        <p>Based on the information you provided, you are eligible to apply for the programs indicated below. If you choose not to apply for a program, remove the checkmark from that program.</p>
         <hr class="mt-0"/>
         <Checkbox label="MSP Enrolment"
           id="msp"
