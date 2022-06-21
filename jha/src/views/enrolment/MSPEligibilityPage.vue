@@ -18,7 +18,7 @@
         <Radio
           id='apply-msp'
           name='apply-msp'
-          label='1. Will you use the British Columbia Application for Health and Drug Coverage to apply for MSP coverage?'
+          label='1. Will you use this form to apply for MSP?'
           v-model='eqMSPIsApplying'
           :items='radioOptionsApplyMSP' />
         <div v-if="eqMSPIsApplying === 'Y'">
@@ -28,37 +28,46 @@
             label='2. Do you currently live in British Columbia and have a B.C. address where you can receive mail?'
             v-model='eqMSPLiveInBC'
             :items='radioOptionsYesNo' />
-          <p class="text-danger ml-4" v-if="eqMSPLiveInBC === 'N'">You might not qualify for MSP or related income-based programs if you do not live in B.C. Contact Health Insurance BC for more information.</p>
+          <div class="text-danger ml-4" v-if="eqMSPLiveInBC === 'N'">
+            <p>
+              If you do not live in B.C., you may not be eligible for MSP or related income-based programs. For more information, contact HIBC at: 
+            </p>
+            <ContactInformation />
+          </div>
           <div v-if="eqMSPLiveInBC === 'Y'">
             <Radio
               id='away-over-30'
               name='away-over-30'
-              label='3. Will you or anyone in your immediate family (included on this application) be away from B.C. for more than 30 days in total over the next six months?'
+              label='3. Will anyone included in this application be away from B.C. for more than 30 days in total during the next six months?'
               v-model='eqMSPAwayOver30'
               :items='radioOptionsYesNo' />
-            <p class="text-danger ml-4" v-if="eqMSPAwayOver30 === 'Y'">You or your family member might not qualify for MSP or related income-based programs if you leave the province for more than 30 days in total during the first six months after you apply - doing this could mean you are no longer considered a B.C. resident.  Find out more by contacting Health Insurance BC.</p>
+            <div class="text-danger ml-4" v-if="eqMSPAwayOver30 === 'Y'">
+              <p>
+                If you leave B.C. for more than 30 days in total during the first six months after applying for MSP, you may not be considered a B.C. resident. You or a family member may not be eligible for MSP coverage or related income-based programs. For more information, contact HIBC at:
+              </p>
+              <ContactInformation/>
+            </div>
             <div v-if="eqMSPAwayOver30 === 'N'">
               <Radio
                 id='student-minor-refugee'
                 name='student-minor-refugee'
-                label='4. Is anyone included in this application (yourself, spouse, or child) a student returning to a home province outside B.C. at the end of a course or program; an unaccompanied minor; or a person seeking refugee status who has not yet been approved?'
+                label='4. Is anyone included in this application: a student returning to a province outside B.C. at the end of a course or program; an unaccompanied minor; or a person seeking refugee status?'
                 v-model='eqMSPStudentMinorRefugee'
                 :items='radioOptionsYesNo' />
               <div class="text-danger ml-4" v-if="eqMSPStudentMinorRefugee === 'Y'">
-                <p class="mb-0">You can submit an application with some assistance from one of our representatives. Please contact Health Insurance BC:</p>
-                <p class="mb-0">(604) 683-7151 (Lower Mainland)</p>
-                <p class="mb-0">1-800-663-7100 (Elsewhere in B.C.)</p>
+                <p>You can apply for MSP with some assistance from HIBC. Contact us at:</p>
+                <ContactInformation />
               </div>
               <div v-if="eqMSPStudentMinorRefugee === 'N'">
-                <p>5. If you are applying for MSP, you will need to include copies of ID with this application. The ID you submit must show full legal name and legal status in Canada for everyone included with this application. If you do not have one of these IDs, contact Health Insurance BC (HIBC).</p>
+                <p>5. To apply for MSP, you must upload a digital copy of one the IDs below for each person included in this application. The ID must show full legal name and legal status in Canada.</p>
                 <IdTable />
                 <Radio 
                   id='has-documents'
                   name='has-documents'
-                  label='Do you have copies of the above documents to include with your application?'
+                  label='Do you have digital copies of ID for each person included in this application?'
                   v-model='eqMSPHasDocuments'
                   :items='radioOptionsYesNo' />
-                <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">Make sure you have digital copies of the above documents before completing your British Columbia Application for Health Drug Coverage. You will not be able to apply for MSP enrolment without these documents.</p>
+                <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">You must have digital copies of ID to apply for MSP using this form. If you are not able to make digital copies, you can apply with print copies using the printable form (HLTH 101) available at gov.bc.ca/AHDC.</p>
               </div>
             </div>
           </div>
@@ -111,6 +120,7 @@ import IdTable from '@/components/IdTable.vue';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesMSP } from '@/constants/eqMsgCodes';
 import EligibilityQuestionnaireHeader from '@/components/EligibilityQuestionnaireHeader.vue';
+import ContactInformation from '@/components/ContactInformation.vue';
 
 const validateQuestionsAnswered = (_value, vm) => {
   if (!vm.eqMSPIsApplying
@@ -135,6 +145,7 @@ export default {
     Radio,
     IdTable,
     EligibilityQuestionnaireHeader,
+    ContactInformation,
   },
   data: () => {
     return {
@@ -168,7 +179,7 @@ export default {
       },
       {
         id: 'no',
-        label: 'No: I am already enrolled (continue to Fair PharmaCare). (You will be required to provide your MSP Personal Health Number.)',
+        label: 'No: I am already enrolled. (Continue to Fair PharmaCare. You will need to provide your MSP Personal Health Number.)',
         value: 'N',
       },
     ];

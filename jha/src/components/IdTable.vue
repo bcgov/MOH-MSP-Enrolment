@@ -11,10 +11,10 @@
       <tr>
         <td class="col-sm-4">
           <ul>
-            <li>Canadian Birth Certificate</li>
-            <li>Canadian Citizenship Card (front and back)</li>
+            <li>Canadian birth certificate</li>
+            <li>Canadian citizenship card (front and back)</li>
             <li>Certificate of Canadian citizenship (front and back)</li>
-            <li>Canadian Passport</li>
+            <li>Canadian passport</li>
             <li>First Nations status card</li>
             <li>Métis status card</li>
           </ul>
@@ -23,7 +23,7 @@
           <ul>
             <li>Record of Landing</li>
             <li>Confirmation of Permanent Residence</li>
-            <li>Permanent Resident Card (front and back)</li>
+            <li>Permanent Resident card (front and back)</li>
           </ul>
         </td>
         <td class="col-sm-4">
