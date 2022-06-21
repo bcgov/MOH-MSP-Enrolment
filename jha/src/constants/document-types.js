@@ -23,7 +23,7 @@ export const SupportDocumentTypes = {
     'Application for Change of Gender Designation (Minor)',
   ChangeGenderPhysicianConfirmation:
     'Physician\'s or Psychologist Confirmation of Change of Gender Designation Form',
-  ChangeGenderDocs: 'Change of Gender Designation and Request for Waiver of Parental Consent form',
+  ChangeGenderDocs: 'Change of Gender Designation, Request for Waiver of Parental Consent',
   ParentalConsentWaiver:
     'Request for Waiver of Parental Consent (minor) (for under 19 years)',
   SeparationAgreement: 'Separation Agreement',
