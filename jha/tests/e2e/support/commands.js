@@ -93,11 +93,11 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
     cy.get('input#departure-reason').type('vacation');
     cy.get('input#departure-location').type('bahamas');
 
-    cy.get('select#departure-begin-date-month').select(lastMonthDate.getMonth());
+    cy.get('select#departure-begin-date-month').select(String(lastMonthDate.getMonth()));
     cy.get('input#departure-begin-date-day').type(padInteger(lastMonthDate.getDate()));
     cy.get('input#departure-begin-date-year').type(lastMonthDate.getFullYear());
 
-    cy.get('select#departure-return-date-month').select(currentDate.getMonth());
+    cy.get('select#departure-return-date-month').select(String(currentDate.getMonth()));
     cy.get('input#departure-return-date-day').type(padInteger(currentDate.getDate()));
     cy.get('input#departure-return-date-year').type(currentDate.getFullYear());
 
@@ -292,6 +292,7 @@ Cypress.Commands.add('fillResidentialAddress', () => {
   cy.get('input#res-address-line1').type('123 fake st.')
   cy.get('input#res-city').type('duncan')
   cy.get('input#res-postal-code').type('V8P1A1')
+  cy.get('input#phone-input').type('555 555 5555')
   cy.continue()
 });
 
@@ -299,6 +300,7 @@ Cypress.Commands.add('fillMailingAddress', () => {
   cy.get('input#mail-address-line1').type('123 fake st.')
   cy.get('input#mail-city').type('duncan')
   cy.get('input#mail-postal-code').type('V8P1A1')
+  cy.get('input#phone-input').type('555 555 5555')
   cy.continue()
 });
 
