@@ -1,16 +1,17 @@
 <template>
   <div>
     <TipBox title="Tip">
+      <p>Document samples:</p>
       <p v-if="hasSingleSample">
         <a href="javascript:void(0)"
           :title="`${documentType} sample`"
-          @click="openModal()">{{documentType}} samples</a>
+          @click="openModal()">{{documentType}}</a>
       </p>
       <div v-if="hasMultipleSamples">
         <p v-for="(sample, index) in documentType" :key="index">
           <a href="javascript:void(0)"
             :title="`${sample} samples`"
-            @click="openModal(index)">{{sample}} samples</a>
+            @click="openModal(index)">{{sample}}</a>
         </p>
       </div>
       <p>Scan the document or take a photo of it.</p>

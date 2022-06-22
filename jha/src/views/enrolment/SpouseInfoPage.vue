@@ -9,11 +9,11 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Spouse or Common-law partner</h1>
+        <h1>Spouse information</h1>
         <div class="heading mt-3">
           <div>
-            <p>A spouse is a person who is married to or living and cohabitating in a marriage-like relationship with the Account Holder. A spouse may be the same gender as the Account Holder. To be eligible for MSP coverage, a spouse must be a B.C. resident. </p> 
-            <p>Personal Health Number (PHN) is the number that appears on the spouse's BC Services Card.</p>
+            <p>A spouse is a person married to or cohabiting in a marriage-like relationship with the applicant. A spouse may be the same gender as the Account Holder. To be eligible for MSP coverage, a spouse must be a B.C. resident. </p> 
+            <p>Personal Health Number (PHN) is the number that appears on your spouse's BC Services Card.</p>
           </div>
           <div v-if="hasSpouse === 'Y'" class="ml-1 mb-2 remove-icon align-self-end " @click="removeSpouse()">
             <font-awesome-icon icon="times-circle" size="2x" title="Remove Spouse"/>
@@ -155,17 +155,18 @@
             <div class="col-md-5 d-flex align-items-end">
               <TipBox v-if="requestGender">
                 <p>Tip</p>
-                <p>If the gender you select does not match the gender on your spouse's supporting document(s), they must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
-                <p>For more information see BC Services Card: <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
+                <p>
+                  If the gender you select does not match the gender on your spouse's supporting document(s), they must submit an application for change of gender designation. For more information see <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank"> Change Your Personal Information</a>.
+                </p>
               </TipBox>
             </div>
           </div>
           
           <!-- Spouse citizenship information  -->
           <div v-if="requestImmigrationStatus">
-            <h2 class="mt-4">Spouse or common-law partner status in Canada</h2>
+            <h2 class="mt-4">Spouse's status in Canada</h2>
             <div class="heading mt-3">
-              <p>Please provide your spouse's immigration status information. You will be required to upload documents to support your spouse's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select "Temporary Permit Holder or Diplomat" from the drop down below.</p>
+              <p>Provide your spouse's immigration status. You will be need to upload documents that show your spouse's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
             </div>
             <hr class="mt-0"/>
             <Select 
@@ -208,7 +209,7 @@
             </div>
             <div v-if="spouseStatusReason !== null && spouseStatusReason !== undefined" class="mt-3">
               <h2>Documents</h2>
-              <p>Provide one of the required documents to support your spouse's status in Canada. If your spouse's name has changed since their ID was issued, you are also required to upload a document to support the name change.</p>
+              <p>Provide a copy of an accepted document that shows your spouse’s status in Canada. If their name is different from the name on the ID, you must also upload a copy of a marriage certificate or name change certificate that shows their full legal name.</p>
               <hr/>
               <Select 
                 label="Document Type"
@@ -225,7 +226,7 @@
                 v-if="$v.spouseCitizenshipSupportDocumentType.$dirty && !$v.spouseCitizenshipSupportDocumentType.required"
                 aria-live="assertive">Document Type is required.</div>
               <Radio
-                label="Does your spouse's document that supports their status in Canada include their selected gender designation?" 
+                label="Does the document that shows your spouse's status in Canada match their selected gender designation?" 
                 name="spouse-gender-matches"
                 id="spouse-gender-matches"
                 class="mt-3"
@@ -237,7 +238,7 @@
                   && !$v.spouseGenderMatches.required"
                 aria-live="assertive">This field is required.</div>
               <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
-                <h2>{{spouseCitizenshipSupportDocumentType }} {{ spouseGenderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+                <h2>{{ supportDocumentTypeToTitle(spouseCitizenshipSupportDocumentType) }} {{ spouseGenderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
                 <hr/>
                 <div class="row">
                     <div class="col-md-7">
@@ -258,7 +259,7 @@
               </div>
 
               <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
-                <Radio label="Has your spouse's name changed since their ID was issued due to marriage or a legal name change?"
+                <Radio label="Is your spouse's name different from the name on their ID?"
                   id="name-change"
                   name="name-change"
                   class="mt-3 mb-3"
@@ -272,11 +273,7 @@
               <div v-if="spouseIsNameChanged === 'Y'"
                 class="tabbed-section">
                 <h2>Additional Documents</h2>
-                <p>Provide one of the required documents to support your spouse's name change.</p>
-                <ul>
-                  <li>Marriage Certificate</li>
-                  <li>Legal Name Change Certificate</li>
-                </ul>
+                <p>Provide a copy of a marriage certificate or name change certificate that shows your spouse's full legal name.</p>
                 <hr/>
                 <Select 
                   label="Document Type"
@@ -318,7 +315,7 @@
           </div>
           <div v-if="requestMovingInfo" class="mt-3">
             <!-- Spouse moving information -->
-            <h2 class="mt-3">Moving information</h2>
+            <h2 class="mt-3">Residency Information</h2>
             <hr>
             <div class="row">
               <div class="col-md-7">
@@ -689,6 +686,7 @@ import {
   pastDateValidator,
   phnFirstDigitValidator
 } from '@/helpers/validators';
+import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import logService from '@/services/log-service';
 import {
   ContinueBar,
@@ -1262,6 +1260,7 @@ export default {
     removeSpouse() {
       this.hasSpouse = 'N';
     },
+    supportDocumentTypeToTitle,
     validateFields() {
       this.saveData();
 

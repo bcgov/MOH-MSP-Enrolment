@@ -18,7 +18,7 @@
                 id="ah-income"
                 @blur="handleBlurField($v.ahIncome)">
                 <template v-slot:description>
-                  <label for="ah-income">Enter your net income from {{noaYear}} - see line 23600 of your Notice of Assessment or Notice of Reassessment from the Canada Revenue Agency (<a href="javascript:void(0)" @click="handleClickIncomeSample()">samples</a>). For more information, please see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
+                  <label for="ah-income">Enter the net income (Line 23600) from your {{noaYear}} CRA Notice of Assessment (NOA, <a href="javascript:void(0)" @click="handleClickIncomeSample()">sample</a>). For more information, see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
                 </template>
               </CurrencyInput>
               <div class="text-danger"
@@ -36,7 +36,7 @@
                 class="mt-3"
                 @blur="handleBlurField($v.spouseIncome)">
                 <template v-slot:description>
-                  <label for="spouse-income">Enter your spouse/common-law partner's net income from {{noaYear}} - see line 23600 of your spouse/common-law partner's Notice of Assessment or Notice of Reassessment from the Canada Revenue Agency (<a href="javscript:void(0)" @click="handleClickIncomeSample()">samples</a>). For more information, please see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
+                  <label for="spouse-income">Enter the net income (Line 23600) from your spouse's {{noaYear}} CRA Notice of Assessment (NOA, <a href="javscript:void(0)" @click="handleClickIncomeSample()">sample</a>). For more information, see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
                 </template>
               </CurrencyInput>
               <div class="text-danger"
@@ -50,10 +50,10 @@
                   && !$v.spouseIncome.positiveNumberValidator"
                 aria-live="assertive">Your spouse/common-law partner's net income from {{noaYear}} must be a positive number.</div>
             </div>
-            <h2 class="mt-5">Disability Information (if applicable)</h2>
+            <h2 class="mt-5">Registered Disability Savings Plan</h2>
             <hr/>
             <div>
-              <CurrencyInput :label="`How much did you report for a Registered Disability Savings Plan on your income tax return ${noaYear} (line 12500)?`"
+              <CurrencyInput :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your ${noaYear} tax return.`"
                 v-model="ahRDSP"
                 id="ah-disability-savings"
                 class="mt-3"
@@ -64,7 +64,7 @@
                 aria-live="assertive">Your Registered Disability Savings Plan amount from {{noaYear}} must be a positive number.</div>
             </div>
             <div v-if="hasSpouse">
-              <CurrencyInput :label="`How much did your spouse/common-law partner report for a Registered Disability Savings Plan on your income tax return ${noaYear} (line 12500)?`"
+              <CurrencyInput :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your spouse's ${noaYear} tax return.`"
                 v-model="spouseRDSP"
                 id="spouse-disability-savings"
                 class="mt-3"

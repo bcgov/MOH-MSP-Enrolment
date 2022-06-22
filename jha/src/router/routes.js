@@ -36,7 +36,7 @@ export const enrolmentRoutes = {
   },
   CHILD_INFO_PAGE: {
     path: '/child-info',
-    title: 'Children',
+    title: 'Child',
     name: 'ChildInfoPage',
   },
   CONTACT_INFO_PAGE: {

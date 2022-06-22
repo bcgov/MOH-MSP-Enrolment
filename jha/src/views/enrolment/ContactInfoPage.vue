@@ -15,7 +15,7 @@
             <div class="col-md-6" v-if="applyingForMSP">
               <div>
                 <h2>Residential Address</h2>
-                <p class="address-description">Enter your residential address - that's the address you currently live at in B.C.</p>
+                <p class="address-description">Your residential address is the address where you currently live in B.C.</p>
               </div>
               <hr class="mt-0"/>
               <AddressDoctorInput v-if="isAddressValidatorEnabled"
@@ -103,7 +103,7 @@
           <div class="col-md-6">
             <div>
               <h2>Mailing Address</h2>
-              <p v-if="applyingForMSP" class="address-description">Enter your mailing address - if it's different</p>
+              <p v-if="applyingForMSP" class="address-description">Enter your mailing address if it is different from your residential address.</p>
               <p v-else>Enter your mailing address</p>
             </div>
             <hr class="mt-0"/>
@@ -255,7 +255,7 @@
           <div class="col-md-4">
             <TipBox title="Tip">
               <p>
-                Please provide a phone number so you may be contacted in case of any issues with your application.
+                Please provide a phone number so we can contact you if there are any issues with your application.
               </p>
             </TipBox>
           </div>

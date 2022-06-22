@@ -10,9 +10,9 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Add personal information and upload documents</h1>
-        <h2>Account Holder basic information</h2>
-        <p>The MSP Account Holder is the person who submits the application for MSP coverage. The Account Holder is responsible for the MSP account, including notifying HIBC of any account changes (such as a change of address, family structure or status in Canada).</p>
-        <p>Personal Health Number (PHN) is the number that appears on the Account Holder's BC Services Card.</p>
+        <h2>Account Holder information</h2>
+        <p>The MSP Account Holder is the person who submits the application for MSP enrolment. The Account Holder is responsible for the MSP account, including notifying HIBC of any account changes. These include changes of address, family structure or status in Canada.</p>
+        <p>Personal Health Number (PHN) is the number that appears on your BC Services Card.</p>
         <hr class="mt-0"/>
         <!-- Bootstrap row and column classes for gender tipbox placement -->
         <div class="row">
@@ -132,14 +132,14 @@
           <div class="col-md-5 d-flex align-items-end">
             <TipBox v-if="requestGender">
               <p>Tip</p>
-              <p>If the gender you select does not match the gender on your supporting document(s), you must submit an application for change of gender designation. For more information see <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
+              <p>If the gender you select does not match the gender on your supporting document(s), you must submit an application for change of gender designation. For more information see <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a>.</p>
             </TipBox>
           </div>
         </div>
         
         <div v-if="requestImmigrationStatus">
           <h2 class="mt-4">Your status in Canada</h2>
-          <p>Please provide your immigration status information. You will be required to upload documents to support your status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select 'Temporary Permit Holder or Diplomat' from the drop down below.</p>
+          <p>Provide your immigration status. You will need to upload documents that show your status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select 'Temporary Permit Holder or Diplomat' from the menu below.</p>
           <hr/>
           <Select label="Immigration status in Canada"
             id="immigration-status"
@@ -180,7 +180,7 @@
         
         <div v-if="isCitizenshipDocsShown">
           <h2 class="mt-4">Documents</h2>
-          <p>Provide one of the required documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload a document to support the name change.</p>
+          <p>Provide a copy of an accepted document that shows your status in Canada. If your name is different from the name on the ID, you must also upload a copy of a marriage certificate or name change certificate that shows your full legal name.</p>
           <hr/>
           <Select label="Document Type"
             id="citizen-support-document-type"
@@ -195,7 +195,7 @@
               && !$v.citizenshipSupportDocumentType.required"
             aria-live="assertive">Document Type is required.</div>
           <Radio
-            label="Does your document that supports your status in Canada include your selected gender designation?" 
+            label="Does the document that shows your status in Canada match your selected gender designation?" 
             name="gender-matches"
             id="gender-matches"
             class="mt-3"
@@ -208,7 +208,7 @@
             aria-live="assertive">This field is required.</div>
           <div v-if="citizenshipSupportDocumentType && genderMatches"
             class="mt-3">
-            <h2 class="mt-4">{{citizenshipSupportDocumentType}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+            <h2 class="mt-4">{{ supportDocumentTypeToTitle(citizenshipSupportDocumentType)}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
             <hr/>
             <div class="row">
               <div class="col-md-7">
@@ -231,7 +231,7 @@
         </div>
 
         <div v-if="requestIsNameChanged">
-          <Radio label="Has your name changed since your ID was issued due to marriage or a legal name change?"
+          <Radio label="Is your name different from the name on your ID?"
             id="name-change"
             name="name-change"
             class="mt-3"
@@ -246,11 +246,7 @@
         <div v-if="requestNameChangedDocs"
           class="tabbed-section mt-3">
           <h2 class="mt-4">Additional Documents</h2>
-          <p>Provide one of the required documents to support your name change.</p>
-          <ul>
-            <li>Marriage Certificate</li>
-            <li>Legal Name Change Certificate</li>
-          </ul>
+          <p>Provide a copy of a marriage certificate or name change certificate that shows your full legal name.</p>
           <hr/>
           <Select label="Document Type"
             id="name-change-doc-type"
@@ -289,7 +285,7 @@
         </div>
 
         <div v-if="isMovingInformationShown">
-          <h2 class="mt-4">Moving Information</h2>
+          <h2 class="mt-4">Residency Information</h2>
           <hr class="mb-0"/>
           <div class="row">
             <div class="col-md-7">
@@ -613,7 +609,7 @@
                 </div>
                 <div v-if="requestWillStudentResideInBC"
                   class="tabbed-section">
-                  <Radio label="Will you reside in B.C. upon completion of your studies?"
+                  <Radio label="Will you reside in B.C. on completion of your studies?"
                     id="will-student-reside-in-bc"
                     name="will-student-reside-in-bc"
                     class="mt-3"
@@ -755,6 +751,7 @@ import {
   optionalInvalidDateValidator,
   reasonDestinationContentValidator,
 } from '@/helpers/validators';
+import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import {
   CanadianStatusReasons,
   StatusInCanada,
@@ -1101,6 +1098,7 @@ export default {
       this.saveData();
       this.navigateToNextPage();
     },
+    supportDocumentTypeToTitle,
     saveData() {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_FIRST_NAME}`, this.firstName);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_MIDDLE_NAME}`, this.middleName);

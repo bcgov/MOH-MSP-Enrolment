@@ -1,4 +1,5 @@
 import { formatISODate } from 'common-lib-vue';
+import { SupportDocumentTypes } from '../../../src/constants/document-types';
 
 export const generateRequestObject = () => {
   const currentDate = new Date();
@@ -112,13 +113,13 @@ export const generateRequestObject = () => {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "1",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "2",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         },
         {
           "contentType": "IMAGE_JPEG",
@@ -160,13 +161,13 @@ export const generateRequestObject = () => {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "9",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "10",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         }
       ]
     },

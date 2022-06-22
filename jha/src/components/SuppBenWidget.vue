@@ -5,7 +5,7 @@
       <tbody>
         <tr>
           <td>
-            <span>Total Household Income</span>
+            <span>Total Net Income</span>
           </td>
           <td>
             <span v-if="inputData.totalHouseholdIncome > 0">
@@ -52,7 +52,7 @@
       </tr>
       <tr v-if="inputData.claimedChildCareExpensesReduction < 0">
         <td>
-          -50% child care expense claimed on income tax
+          50% of Child Care Expenses
         </td>
         <td>
           {{currencyString(inputData.claimedChildCareExpensesReduction)}}
@@ -116,7 +116,7 @@
       </tr>
       <tr>
         <td class="deduction-table-cell-margin">
-          <h4>Total deductions</h4>
+          <h4>Total Deductions</h4>
         </td>
         <td>
           <span v-if="inputData.totalDeductions > 0" >

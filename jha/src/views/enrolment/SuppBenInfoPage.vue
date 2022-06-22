@@ -11,9 +11,7 @@
       <div class="container pt-3 pt-sm-5 mb-3">
         <h1>Supplementary Benefits Financial Information</h1>
         <h4 class="font-weight-normal">
-          Your application must be based on income from the most recent Notice of 
-          Assessment or Notice of Reassessment available from Canada Revenue Agency (CRA). 
-          You will be required to upload a copy (and your spouse's, if applicable) with your application.
+          Your application must be based on income from your (and your spouse's, if applicable) most recent CRA Notice of Assessment or Notice of Reassessment. You will need to upload copies with your application.
         </h4>
         <hr class="mt-0"/>
         <div class="row">
