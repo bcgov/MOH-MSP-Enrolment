@@ -132,7 +132,7 @@
           <div class="col-md-5 d-flex align-items-end">
             <TipBox v-if="requestGender">
               <p>Tip</p>
-              <p>If the gender you select does not match the gender on your supporting document(s), you must submit an application for change of gender designation. For more information see <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
+              <p>If the gender you select does not match the gender on your supporting document(s), you must submit an application for change of gender designation. For more information see <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a>.</p>
             </TipBox>
           </div>
         </div>
@@ -180,7 +180,7 @@
         
         <div v-if="isCitizenshipDocsShown">
           <h2 class="mt-4">Documents</h2>
-          <p>Provide a copy of an accepted document that shows your status in Canada. If your name is different from the name on the ID, you must also upload a copy of a marriage certificate, divorce decree, or name change certificate that shows your full legal name.</p>
+          <p>Provide a copy of an accepted document that shows your status in Canada. If your name is different from the name on the ID, you must also upload a copy of a marriage certificate or name change certificate that shows your full legal name.</p>
           <hr/>
           <Select label="Document Type"
             id="citizen-support-document-type"
@@ -208,7 +208,7 @@
             aria-live="assertive">This field is required.</div>
           <div v-if="citizenshipSupportDocumentType && genderMatches"
             class="mt-3">
-            <h2 class="mt-4">{{citizenshipSupportDocumentType}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+            <h2 class="mt-4">{{ supportDocumentTypeToTitle(citizenshipSupportDocumentType)}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
             <hr/>
             <div class="row">
               <div class="col-md-7">
@@ -246,7 +246,7 @@
         <div v-if="requestNameChangedDocs"
           class="tabbed-section mt-3">
           <h2 class="mt-4">Additional Documents</h2>
-          <p>Provide a copy of a marriage certificate, divorce decree, or name change certificate that shows your full legal name.</p>
+          <p>Provide a copy of a marriage certificate or name change certificate that shows your full legal name.</p>
           <hr/>
           <Select label="Document Type"
             id="name-change-doc-type"
@@ -751,6 +751,7 @@ import {
   optionalInvalidDateValidator,
   reasonDestinationContentValidator,
 } from '@/helpers/validators';
+import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import {
   CanadianStatusReasons,
   StatusInCanada,
@@ -1097,6 +1098,7 @@ export default {
       this.saveData();
       this.navigateToNextPage();
     },
+    supportDocumentTypeToTitle,
     saveData() {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_FIRST_NAME}`, this.firstName);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_MIDDLE_NAME}`, this.middleName);

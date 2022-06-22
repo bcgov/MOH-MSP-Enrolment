@@ -218,7 +218,7 @@
               && !$v.genderMatches.required"
             aria-live="assertive">This field is required.</div>
           <div v-if="citizenshipSupportDocumentType && genderMatches">
-            <h2>{{citizenshipSupportDocumentType}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+            <h2>{{ supportDocumentTypeToTitle(citizenshipSupportDocumentType)}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
             <hr/>
             <div class="row">
               <div class="col-md-7">
@@ -868,6 +868,7 @@ import {
   StatusInCanada,
   CanadianStatusReasons, 
 } from '@/constants/immigration-status-types';
+import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import { SupportDocumentTypes } from '@/constants/document-types';
 import { ChildAgeTypes } from '../../constants/child-age-types';
 import { isAfter, isBefore } from 'date-fns/esm';
@@ -1399,6 +1400,7 @@ export default {
         this.$emit('updateChild', childData);
       }
     },
+    supportDocumentTypeToTitle,
     handleBlurField(validationObject) {
       if (validationObject) {
         validationObject.$touch();

@@ -209,7 +209,7 @@
             </div>
             <div v-if="spouseStatusReason !== null && spouseStatusReason !== undefined" class="mt-3">
               <h2>Documents</h2>
-              <p>Provide a copy of an accepted document that shows your spouse’s status in Canada. If their name is different from the name on the ID, you must also upload a copy of a marriage certificate, divorce decree, or name change certificate that shows their full legal name.</p>
+              <p>Provide a copy of an accepted document that shows your spouse’s status in Canada. If their name is different from the name on the ID, you must also upload a copy of a marriage certificate or name change certificate that shows their full legal name.</p>
               <hr/>
               <Select 
                 label="Document Type"
@@ -238,7 +238,7 @@
                   && !$v.spouseGenderMatches.required"
                 aria-live="assertive">This field is required.</div>
               <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
-                <h2>{{spouseCitizenshipSupportDocumentType }} {{ spouseGenderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+                <h2>{{ supportDocumentTypeToTitle(spouseCitizenshipSupportDocumentType) }} {{ spouseGenderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
                 <hr/>
                 <div class="row">
                     <div class="col-md-7">
@@ -273,7 +273,7 @@
               <div v-if="spouseIsNameChanged === 'Y'"
                 class="tabbed-section">
                 <h2>Additional Documents</h2>
-                <p>Provide a copy of a marriage certificate, divorce decree, or name change certificate that shows your spouse's full legal name.</p>
+                <p>Provide a copy of a marriage certificate or name change certificate that shows your spouse's full legal name.</p>
                 <hr/>
                 <Select 
                   label="Document Type"
@@ -686,6 +686,7 @@ import {
   pastDateValidator,
   phnFirstDigitValidator
 } from '@/helpers/validators';
+import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import logService from '@/services/log-service';
 import {
   ContinueBar,
@@ -1259,6 +1260,7 @@ export default {
     removeSpouse() {
       this.hasSpouse = 'N';
     },
+    supportDocumentTypeToTitle,
     validateFields() {
       this.saveData();
 
