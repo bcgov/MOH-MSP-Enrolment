@@ -50,7 +50,7 @@
                   && !$v.spouseIncome.positiveNumberValidator"
                 aria-live="assertive">Your spouse/common-law partner's net income from {{noaYear}} must be a positive number.</div>
             </div>
-            <h2 class="mt-5">Disability Information (if applicable)</h2>
+            <h2 class="mt-5">Registered Disability Savings Plan</h2>
             <hr/>
             <div>
               <CurrencyInput :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your ${noaYear} tax return.`"

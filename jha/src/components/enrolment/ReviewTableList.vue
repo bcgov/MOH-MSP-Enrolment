@@ -304,7 +304,7 @@ export default {
         if (this.$store.state.enrolmentModule.ahCitizenshipStatus === StatusInCanada.Citizen
           && this.$store.state.enrolmentModule.ahCitizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP) {
           items.push({
-            label: "Lived in BC since birth?",
+            label: "Lived in B.C. since birth?",
             value:
               this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth === "Y"
                 ? "Yes"
@@ -364,7 +364,7 @@ export default {
             });
         }
         items.push({
-          label: "Previous B.C. Health Number?",
+          label: "Has Previous B.C. Health Number?",
           value:
             this.$store.state.enrolmentModule.ahHasPreviousPHN === "Y"
               ? "Yes"
@@ -372,7 +372,7 @@ export default {
         });
         if (this.$store.state.enrolmentModule.ahHasPreviousPHN === "Y") {
           items.push({
-            label: "Previous BC Health Number",
+            label: "Previous B.C. Health Number",
             value: this.$store.state.enrolmentModule.ahPreviousPHN,
           });
         }
@@ -527,7 +527,7 @@ export default {
         if (this.$store.state.enrolmentModule.spouseStatus === StatusInCanada.Citizen
         && this.$store.state.enrolmentModule.spouseStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ) {
           items.push({
-            label: "Lived in BC since birth?",
+            label: "Lived in B.C. since birth?",
             value:
               this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth === "Y"
                 ? "Yes"
@@ -580,7 +580,7 @@ export default {
             });
         }        
         items.push({
-          label: "Previous B.C. Health Number? ",
+          label: "Has Previous B.C. Health Number? ",
           value:
             this.$store.state.enrolmentModule
               .spouseHasPreviousBCHealthNumber === "Y"
@@ -592,7 +592,7 @@ export default {
           "Y"
         ) {
           items.push({
-            label: "Previous BC Health Number",
+            label: "Previous B.C. Health Number",
             value: this.$store.state.enrolmentModule
               .spousePreviousBCHealthNumber,
           });
@@ -719,7 +719,7 @@ export default {
             }
           if (child.status === StatusInCanada.Citizen && child.statusReason === CanadianStatusReasons.LivingInBCWithoutMSP ) {
             childData.push({
-              label: "Lived in BC since birth?",
+              label: "Lived in B.C. since birth?",
               value: child.livedInBCSinceBirth === "Y" ? "Yes" : "No",
             });
           }
@@ -761,12 +761,12 @@ export default {
             }
           }
           childData.push({
-            label: "Previous B.C. Health Number? ",
+            label: "Has Previous B.C. Health Number? ",
             value: child.hasPreviousBCHealthNumber === "Y" ? "Yes" : "No",
           });
           if (child.hasPreviousBCHealthNumber === "Y") {
             childData.push({
-              label: "Previous BC Health number?",
+              label: "Previous B.C. Health number",
               value: child.previousBCHealthNumber,
             });
           }

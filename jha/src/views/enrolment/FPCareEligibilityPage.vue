@@ -127,7 +127,6 @@ import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesFPC } from '@/constants/eqMsgCodes';
 import EligibilityQuestionnaireHeader from '@/components/EligibilityQuestionnaireHeader.vue';
 import ContactInformation from '@/components/ContactInformation.vue';
-import ContactInfoPage from './ContactInfoPage.vue';
 
 const validateQuestionsAnswered = (_value, vm) => {
         if(!vm.eqFPCIsApplying
@@ -149,7 +148,6 @@ export default {
     PageContent,
     Radio,
     EligibilityQuestionnaireHeader,
-    ContactInfoPage,
     ContactInformation,
 },
   data: () => {
