@@ -18,7 +18,7 @@
                 id="ah-income"
                 @blur="handleBlurField($v.ahIncome)">
                 <template v-slot:description>
-                  <label for="ah-income">Enter the net income (Line 23600) from yout {{noaYear}} CRA Notice of Assessment (NOA, <a href="javascript:void(0)" @click="handleClickIncomeSample()">sample</a>). For more information, see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
+                  <label for="ah-income">Enter the net income (Line 23600) from your {{noaYear}} CRA Notice of Assessment (NOA, <a href="javascript:void(0)" @click="handleClickIncomeSample()">sample</a>). For more information, see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
                 </template>
               </CurrencyInput>
               <div class="text-danger"
