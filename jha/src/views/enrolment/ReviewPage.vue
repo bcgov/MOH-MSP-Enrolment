@@ -8,12 +8,12 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Review</h1>
         <hr/>
         <ReviewTableList :showEditButtons='true' 
                         tableBackgroundColor='#EEE'/>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar @continue='continueHandler()'/>
   </div>

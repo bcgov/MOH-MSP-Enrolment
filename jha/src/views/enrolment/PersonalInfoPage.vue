@@ -8,7 +8,7 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Add personal information and upload documents</h1>
         <h2>Account Holder information</h2>
         <p>The MSP Account Holder is the person who submits the application for MSP enrolment. The Account Holder is responsible for the MSP account, including notifying HIBC of any account changes. These include changes of address, family structure or status in Canada.</p>
@@ -634,7 +634,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
     <portal v-if="isInfoCollectionNoticeOpen"

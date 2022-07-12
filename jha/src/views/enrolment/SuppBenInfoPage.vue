@@ -8,7 +8,7 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Supplementary Benefits Financial Information</h1>
         <h4 class="font-weight-normal">
           Your application must be based on income from your (and your spouse's, if applicable) most recent CRA Notice of Assessment or Notice of Reassessment. You will need to upload copies with your application.
@@ -241,7 +241,7 @@
         <div class="mt-3" v-if="windowWidth < 768">
           <SuppBenWidget :inputData="widgetData"/>
         </div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
   </div>

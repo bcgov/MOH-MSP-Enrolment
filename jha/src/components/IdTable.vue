@@ -1,15 +1,15 @@
 <template>
-  <table class="table table-bordered table-sm">
+  <table class="table table-sm">
     <thead>
-      <tr class="bg-primary text-light text-center">
-        <th scope="col">Canadian Citizen</th>
-        <th scope="col">Permanent Resident</th>
-        <th scope="col">Temporary Document Holder</th>
+      <tr class="border-br row bg-primary text-light text-center">
+        <th class="col-sm-4 border-tl">Canadian Citizen</th>
+        <th class="col-sm-4 border-tl">Permanent Resident</th>
+        <th class="col-sm-4 border-tl">Temporary Document Holder</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td class="col-sm-4">
+      <tr class="border-br row">
+        <td class="col-sm-4 border-l">
           <ul>
             <li>Canadian birth certificate</li>
             <li>Canadian citizenship card (front and back)</li>
@@ -19,14 +19,14 @@
             <li>Métis status card</li>
           </ul>
         </td>
-        <td class="col-sm-4">
+        <td class="col-sm-4 border-l">
           <ul>
             <li>Record of Landing</li>
             <li>Confirmation of Permanent Residence</li>
             <li>Permanent Resident card (front and back)</li>
           </ul>
         </td>
-        <td class="col-sm-4">
+        <td class="col-sm-4 border-l">
           <ul>
             <li>Study permit</li>
             <li>Work permit (working holiday permit holders must include a letter of employment)</li>
@@ -39,15 +39,24 @@
 </template>
 
 <style scoped>
-table.table-bordered {
-  border: 1px solid black;
+.border-tl {
+  border-top: 1px solid black;
+  border-left: 1px solid black;
+  border-bottom: none;
+  border-right: none;
 }
 
-table.table-bordered>thead>tr>th {
-  border: 1px solid black;
+.border-l {
+  border-left: 1px solid black;
+  border-top: none;
+  border-right: none;
+  border-bottom: none;
 }
 
-table.table-bordered>tbody>tr>td {
-  border: 1px solid black;
+.border-br {
+  border-bottom: 1px solid black;
+  border-right: 1px solid black;
+  border-top: none;
+  border-left: none;
 }
 </style>

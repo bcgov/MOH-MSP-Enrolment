@@ -8,7 +8,7 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Fair PharmaCare Financial Information</h1>
         <hr class="mt-0"/>
         <div class="row">
@@ -88,7 +88,7 @@
           class="text-danger mt-3 mb-5"
           aria-live="assertive"
           v-html="checkEligibilityErrorMessage"></div>
-      </div>
+      </main>
     </PageContent>
     <portal v-if="isSampleModalOpen"
       to="modal">

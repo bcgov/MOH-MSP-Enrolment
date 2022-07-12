@@ -8,7 +8,7 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Declaration and consent</h1>
 
         <hr />
@@ -174,7 +174,7 @@
         <div v-if="isSystemUnavailable"
             class="text-danger mt-3 mb-5"
             aria-live="assertive">Unable to continue, system unavailable. Please try again later.</div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar @continue='continueHandler()'
                 :hasLoader='isLoading'

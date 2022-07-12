@@ -8,7 +8,7 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Select programs </h1>
         <p>Based on the information you provided, you are eligible to apply for the programs indicated below. If you choose not to apply for a program, remove the checkmark from that program.</p>
         <hr class="mt-0"/>
@@ -60,7 +60,7 @@
         <div class="text-danger mt-3"
           v-if="$v.$dirty && !$v.atLeastOne"
           aria-live="assertive">You must select at least one program.</div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
   </div>
