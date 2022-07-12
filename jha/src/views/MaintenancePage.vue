@@ -1,11 +1,11 @@
 <template>
   <div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-5">
+      <main class="container pt-3 pt-sm-5 mb-5">
         <h1>Maintenance mode</h1>
         <hr/>
         <p>This application is temporarily unavailable. We apologize for any inconvenience. Please try again later.</p>
-      </div>
+      </main>
     </PageContent>
   </div>
 </template>

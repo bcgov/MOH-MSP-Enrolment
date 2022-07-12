@@ -8,7 +8,7 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Upload Supporting Documents</h1>
         <hr class="mt-0"/>
         <div class="row">
@@ -71,7 +71,7 @@
             </TipBox>
           </div>
         </div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
   </div>

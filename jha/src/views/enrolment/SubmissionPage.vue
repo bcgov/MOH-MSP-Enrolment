@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageContent>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <div class="row align-items-end mt-3">
           <div class="col-9">
             <h1 class="mb-0">Confirmation of Submission</h1>
@@ -82,7 +82,7 @@
         </ul>
 
         <ReviewTableList className='mt-5 mb-5' />
-      </div>
+      </main>
     </PageContent>
   </div>
 </template>

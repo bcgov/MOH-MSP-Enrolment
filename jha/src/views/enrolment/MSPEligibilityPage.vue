@@ -8,7 +8,7 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <EligibilityQuestionnaireHeader>
         <h2>Medical Services Plan (MSP) Enrolment</h2>
         <p>
@@ -75,7 +75,7 @@
         <div class="text-danger"
           v-if="$v.eqMSPIsApplying.$dirty && !$v.eqMSPIsApplying.validateQuestionsAnswered"
           aria-live="assertive">Please complete the questionnaire to continue.</div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar
     @continue="validateFields()" />
