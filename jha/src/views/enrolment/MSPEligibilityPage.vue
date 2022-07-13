@@ -20,6 +20,7 @@
           name='apply-msp'
           label='1. Will you use this form to apply for MSP?'
           v-model='eqMSPIsApplying'
+          :required="true"
           :items='radioOptionsApplyMSP' />
         <div v-if="eqMSPIsApplying === 'Y'">
           <Radio
@@ -27,6 +28,7 @@
             name='live-in-bc'
             label='2. Do you currently live in British Columbia and have a B.C. address where you can receive mail?'
             v-model='eqMSPLiveInBC'
+            :required="true"
             :items='radioOptionsYesNo' />
           <div class="text-danger ml-4" v-if="eqMSPLiveInBC === 'N'">
             <p>
@@ -40,6 +42,7 @@
               name='away-over-30'
               label='3. Will anyone included in this application be away from B.C. for more than 30 days in total during the next six months?'
               v-model='eqMSPAwayOver30'
+              :required="true"
               :items='radioOptionsYesNo' />
             <div class="text-danger ml-4" v-if="eqMSPAwayOver30 === 'Y'">
               <p>
@@ -53,6 +56,7 @@
                 name='student-minor-refugee'
                 label='4. Is anyone included in this application: a student returning to a province outside B.C. at the end of a course or program; an unaccompanied minor; or a person seeking refugee status?'
                 v-model='eqMSPStudentMinorRefugee'
+                :required="true"
                 :items='radioOptionsYesNo' />
               <div class="text-danger ml-4" v-if="eqMSPStudentMinorRefugee === 'Y'">
                 <p>You can apply for MSP with some assistance from HIBC. Contact us at:</p>
@@ -66,6 +70,7 @@
                   name='has-documents'
                   label='Do you have digital copies of ID for each person included in this application?'
                   v-model='eqMSPHasDocuments'
+                  :required="true"
                   :items='radioOptionsYesNo' />
                 <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">You must have digital copies of ID to apply for MSP using this form. If you are not able to make digital copies, you can apply with print copies using the printable form (HLTH 101) available at gov.bc.ca/AHDC.</p>
               </div>

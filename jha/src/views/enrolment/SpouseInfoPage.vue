@@ -26,6 +26,7 @@
           name='has-spouse'
           label='Do you have a spouse or common-law partner?'
           v-model='hasSpouse'
+          :required="true"
           @blur="handleBlurField($v.hasSpouse)"
           :items='radioOptionsNoYes' />
         <div class="text-danger"
@@ -42,6 +43,7 @@
                 className='mt-3'
                 :maxlength="firstNameMaxLength"
                 v-model='spouseFirstName'
+                :required="true"
                 @blur="handleBlurField($v.spouseFirstName)"
                 :inputStyle='mediumStyles' />
               <div class="text-danger"
@@ -65,6 +67,7 @@
                 className='mt-3'
                 maxlength="30"
                 v-model='spouseLastName'
+                :required="true"
                 @blur="handleBlurField($v.spouseLastName)"
                 :inputStyle='mediumStyles' />
               <div class="text-danger"
@@ -77,6 +80,7 @@
                 id='birth-date'
                 className='mt-3'
                 v-model='spouseBirthDate'
+                :required="true"
                 @blur="handleBlurField($v.spouseBirthDate)"
                 @processDate="handleProcessBirthdate($event)" />
               <div class="text-danger"
@@ -103,6 +107,7 @@
                   placeholder="1111 111 111"
                   :inputStyle="smallStyles"
                   v-model="spousePersonalHealthNumber"
+                  :required="true"
                   @blur="handleBlurField($v.spousePersonalHealthNumber)" />
                 <div class="text-danger"
                   v-if="$v.spousePersonalHealthNumber.$dirty
@@ -123,6 +128,7 @@
                   placeholder="111 111 111"
                   :inputStyle="smallStyles"
                   v-model="spouseSocialInsuranceNumber"
+                  :required="true"
                   @blur="handleBlurField($v.spouseSocialInsuranceNumber)" />
                 <div class="text-danger"
                   v-if="$v.spouseSocialInsuranceNumber.$dirty
@@ -144,6 +150,7 @@
                   id='spouse-gender'
                   name='spouse-gender'
                   v-model='spouseGender'
+                  :required="true"
                   className="mt-3"
                   @blur="handleBlurField($v.spouseGender)"
                   :items='radioGenderOptions' />
@@ -177,6 +184,7 @@
               label="Immigration status in Canada"
               class='mt-3'
               v-model='spouseStatus'
+              :required="true"
               :options='citizenshipStatusOptions'
               @blur="handleBlurField($v.spouseStatus)"
               :inputStyle='mediumStyles' />
@@ -189,6 +197,7 @@
                 name='spouse-status-reason'
                 label=''
                 v-model='spouseStatusReason'
+                :required="true"
                 @blur="handleBlurField($v.spouseStatusReason)"
                 :items='citizenshipStatusReasonOptions' />
               <div class="text-danger"
@@ -201,6 +210,7 @@
                 name='spouse-status-reason'
                 label=''
                 v-model='spouseStatusReason'
+                :required="true"
                 @blur="handleBlurField($v.spouseStatusReason)"
                 :items='temporaryResidentStatusReasonOptions' />
               <div class="text-danger"
@@ -219,6 +229,7 @@
                 :disablePlaceholder="true"
                 class="mb-3"
                 v-model="spouseCitizenshipSupportDocumentType"
+                :required="true"
                 :options="citizenshipSupportDocumentOptions"
                 @blur="handleBlurField($v.spouseCitizenshipSupportDocumentType)"
                 :inputStyle='mediumStyles' />
@@ -231,6 +242,7 @@
                 id="spouse-gender-matches"
                 class="mt-3"
                 v-model="spouseGenderMatches"
+                :required="true"
                 :items="radioOptionsNoYes"
                 @blur="handleBlurField($v.spouseGenderMatches)" />
               <div class="text-danger"
@@ -264,6 +276,7 @@
                   name="name-change"
                   class="mt-3 mb-3"
                   v-model="spouseIsNameChanged"
+                  :required="true"
                   @blur="handleBlurField($v.spouseIsNameChanged)"
                   :items="radioOptionsNoYes" />
                 <div class="text-danger"
@@ -283,6 +296,7 @@
                   :disablePlaceholder="true"
                   class="mb-3"
                   v-model="spouseNameChangeSupportDocumentType"
+                  :required="true"
                   :options="nameChangeSupportDocumentOptions"
                   @blur="handleBlurField($v.spouseNameChangeSupportDocumentType)"
                   :inputStyle='mediumStyles' />
@@ -325,6 +339,7 @@
                     id='lived-in-bc'
                     name='lived-in-bc'
                     v-model='spouseLivedInBCSinceBirth'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField($v.spouseLivedInBCSinceBirth)"
                     :items='radioOptionsNoYes' />
@@ -338,6 +353,7 @@
                       label="From which province or jurisdiction?"
                       maxlength="25"
                       v-model="spouseMoveFromOrigin"
+                      :required="true"
                       @blur="handleBlurField($v.spouseMoveFromOrigin)"
                       :inputStyle='mediumStyles' />
                   <div class="text-danger"
@@ -351,6 +367,7 @@
                     id='permanent-move'
                     name='permanent-move'
                     v-model='spouseMadePermanentMove'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField($v.spouseMadePermanentMove)"
                     :items='radioOptionsNoYes'/>
@@ -368,6 +385,7 @@
                       className="mt-3"
                       label="Which province is your spouse moving from?" 
                       v-model="spouseMoveFromOrigin"
+                      :required="true"
                       :disablePlaceholder="true"
                       defaultOptionLabel="Please select a province"
                       @blur="handleBlurField($v.spouseMoveFromOrigin)"
@@ -387,6 +405,7 @@
                       className="mt-3"
                       label="Which jurisdiction is your spouse moving from?" 
                       v-model="spouseMoveFromOrigin"
+                      :required="true"
                       :disablePlaceholder="true"
                       defaultOptionLabel="Please select a jurisdiction"
                       @blur="handleBlurField($v.spouseMoveFromOrigin)"
@@ -405,6 +424,7 @@
                       id='move-date'
                       className='mt-3'
                       v-model='spouseRecentBCMoveDate'
+                      :required="true"
                       @blur="handleBlurField($v.spouseRecentBCMoveDate)"
                       @processDate="handleProcessDateBCMove($event)" />
                     <div v-if="bcMoveDateLabel === 'Most recent move to B.C.'">
@@ -473,6 +493,7 @@
                       id='canada-arrival-date'
                       className='mt-3'
                       v-model='spouseCanadaArrivalDate'
+                      :required="canadaArrivalDateLabel === 'Arrival date in Canada'"
                       @blur="handleBlurField($v.spouseCanadaArrivalDate)"
                       @processDate="handleProcessDateCanadaArrival($event)" />
                     <div class="text-danger"
@@ -515,6 +536,7 @@
                     id='outside-bc-past-12'
                     name='outside-bc-past-12'
                     v-model='spouseOutsideBCLast12Months'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField($v.spouseOutsideBCLast12Months)"
                     :items='radioOptionsNoYes'>
@@ -532,6 +554,7 @@
                       label="Reason for departure"
                       maxlength="20"
                       v-model="spouseOutsideBCLast12MonthsReason"
+                      :required="true"
                       @blur="handleBlurField($v.spouseOutsideBCLast12MonthsReason)"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
@@ -544,6 +567,7 @@
                       label="Location"
                       maxlength="20" 
                       v-model="spouseOutsideBCLast12MonthsDestination"
+                      :required="true"
                       @blur="handleBlurField($v.spouseOutsideBCLast12MonthsDestination)"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
@@ -555,7 +579,8 @@
                       className='mt-3'
                       @blur="handleBlurField($v.spouseOutsideBCLast12MonthsDepartureDate)"
                       @processDate="handleProcessDate12MonthsDeparture($event)"
-                      v-model='spouseOutsideBCLast12MonthsDepartureDate' />
+                      v-model='spouseOutsideBCLast12MonthsDepartureDate'
+                      :required="true" />
                     <div class="text-danger"
                       v-if="$v.spouseOutsideBCLast12MonthsDepartureDate.$dirty && !$v.spouseOutsideBCLast12MonthsDepartureDate.required"
                       aria-live="assertive">Departure date is required.</div>
@@ -572,7 +597,8 @@
                       className='mt-3'
                       @blur="handleBlurField($v.spouseOutsideBCLast12MonthsReturnDate)"
                       @processDate="handleProcessDate12MonthsReturn($event)"
-                      v-model='spouseOutsideBCLast12MonthsReturnDate' />
+                      v-model='spouseOutsideBCLast12MonthsReturnDate'
+                      :required="true" />
                     <div class="text-danger"
                       v-if="$v.spouseOutsideBCLast12MonthsReturnDate.$dirty && !$v.spouseOutsideBCLast12MonthsReturnDate.required"
                       aria-live="assertive">Return date is required.</div>
@@ -590,6 +616,7 @@
                     id='has-previous-bc-health-number'
                     name='has-previous-bc-health-number'
                     v-model='spouseHasPreviousBCHealthNumber'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField($v.spouseHasPreviousBCHealthNumber)"
                     :items='radioOptionsNoYes'/>
@@ -615,6 +642,7 @@
                       id='been-released-from-institution'
                       name='been-released-from-institution'
                       v-model='spouseBeenReleasedFromInstitution'
+                      :required="true"
                       className="mt-3"
                       @blur="handleBlurField($v.spouseBeenReleasedFromInstitution)"
                       :items='radioOptionsNoYes' />
@@ -628,7 +656,8 @@
                       className='mt-3'
                       @blur="handleBlurField($v.spouseDischargeDate)"
                       @processDate="handleProcessDateDischarge($event)"
-                      v-model='spouseDischargeDate' />
+                      v-model='spouseDischargeDate'
+                      :required="true" />
                     <div class="text-danger"
                       v-if="$v.spouseDischargeDate.$dirty && !$v.spouseDischargeDate.required"
                       aria-live="assertive">Discharge date is required.</div>

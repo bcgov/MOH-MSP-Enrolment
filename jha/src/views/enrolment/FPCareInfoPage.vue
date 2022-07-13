@@ -16,6 +16,7 @@
             <div>
               <CurrencyInput v-model="ahIncome"
                 id="ah-income"
+                :required="true"
                 @blur="handleBlurField($v.ahIncome)">
                 <template v-slot:description>
                   <label for="ah-income">Enter the net income (Line 23600) from your {{noaYear}} CRA Notice of Assessment (NOA, <a href="javascript:void(0)" @click="handleClickIncomeSample()">sample</a>). For more information, see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
@@ -34,6 +35,7 @@
               <CurrencyInput v-model="spouseIncome"
                 id="spouse-income"
                 class="mt-3"
+                :required="true"
                 @blur="handleBlurField($v.spouseIncome)">
                 <template v-slot:description>
                   <label for="spouse-income">Enter the net income (Line 23600) from your spouse's {{noaYear}} CRA Notice of Assessment (NOA, <a href="javscript:void(0)" @click="handleClickIncomeSample()">sample</a>). For more information, see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>

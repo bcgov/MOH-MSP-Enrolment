@@ -22,6 +22,7 @@
               v-model="firstName"
               :maxlength="firstNameMaxLength"
               :inputStyle="mediumStyles"
+              :required="true"
               @blur="handleBlurField($v.firstName)" />
             <div class="text-danger"
               v-if="$v.firstName.$dirty
@@ -46,6 +47,7 @@
               id="last-name"
               class="mt-3"
               v-model="lastName"
+              :required="true"
               maxlength="30"
               :inputStyle="mediumStyles"
               @blur="handleBlurField($v.lastName)" />
@@ -61,6 +63,7 @@
               id="birthdate"
               class="mt-3"
               v-model="birthdate"
+              :required="true"
               :watchForModelChange="true"
               :useInvalidState="true"
               @blur="handleBlurField($v.birthdate)"
@@ -88,6 +91,7 @@
                 placeholder="1111 111 111"
                 :inputStyle="smallStyles"
                 v-model="personalHealthNumber"
+                :required="true"
                 @blur="handleBlurField($v.personalHealthNumber)" />
               <div class="text-danger"
                 v-if="$v.personalHealthNumber.$dirty
@@ -105,6 +109,7 @@
                 placeholder="111 111 111"
                 :inputStyle="smallStyles"
                 v-model="socialInsuranceNumber"
+                :required="true"
                 @blur="handleBlurField($v.socialInsuranceNumber)" />
               <div class="text-danger"
                 v-if="$v.socialInsuranceNumber.$dirty
@@ -121,6 +126,7 @@
                 name="gender"
                 class="mt-3"
                 v-model="gender"
+                :required="true"
                 :items="genderOptions"
                 @blur="handleBlurField($v.gender)" />
               <div class="text-danger"
@@ -146,6 +152,7 @@
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
             v-model="citizenshipStatus"
+            :required="true"
             :options="citizenshipStatusOptions"
             :inputStyle="mediumStyles"
             @blur="handleBlurField($v.citizenshipStatus)"/>
@@ -158,6 +165,7 @@
             <Radio name="citizen-status-reason"
               class="mt-3"
               v-model="citizenshipStatusReason"
+              :required="true"
               :items="citizenshipStatusReasonOptions"
               @blur="handleBlurField($v.citizenshipStatusReason)" />
             <div class="text-danger"
@@ -169,6 +177,7 @@
             <Radio name="citizen-status-reason"
               class="mt-3"
               v-model="citizenshipStatusReason"
+              :required="true"
               :items="temporaryResidentStatusReasonOptions"
               @blur="handleBlurField($v.citizenshipStatusReason)" />
             <div class="text-danger"
@@ -187,6 +196,7 @@
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
             v-model="citizenshipSupportDocumentType"
+            :required="true"
             :options="citizenshipSupportDocumentsOptions"
             :inputStyle="mediumStyles"
             @blur="handleBlurField($v.citizenshipSupportDocumentType)" />
@@ -200,6 +210,7 @@
             id="gender-matches"
             class="mt-3"
             v-model="genderMatches"
+            :required="true"
             :items="radioOptionsNoYes"
             @blur="handleBlurField($v.genderMatches)" />
           <div class="text-danger"
@@ -236,6 +247,7 @@
             name="name-change"
             class="mt-3"
             v-model="isNameChanged"
+            :required="true"
             :items="radioOptionsNoYes"
             @blur="handleBlurField($v.isNameChanged)" />
           <div class="text-danger"
@@ -254,6 +266,7 @@
             :disablePlaceholder="true"
             class="mt-3"
             v-model="nameChangeSupportDocumentType"
+            :required="true"
             :options="nameChangeSupportDocumentOptions"
             :inputStyle="mediumStyles"
             @blur="handleBlurField($v.nameChangeSupportDocumentType)"/>
@@ -295,6 +308,7 @@
                   class="mt-3"
                   maxlength="25"
                   v-model="fromProvinceOrCountry"
+                  :required="true"
                   :inputStyle="mediumStyles"
                   @blur="handleBlurField($v.fromProvinceOrCountry)"/>
                 <div class="text-danger"
@@ -308,6 +322,7 @@
                   name="has-live-in-bc-since-birth"
                   class="mt-3"
                   v-model="hasLivedInBCSinceBirth"
+                  :required="true"
                   :items="radioOptionsNoYes"
                   @blur="handleBlurField($v.hasLivedInBCSinceBirth)"/>
                 <div class="text-danger"
@@ -321,6 +336,7 @@
                   name="is-moved-to-bc-permanently"
                   class="mt-3"
                   v-model="isMovedToBCPermanently"
+                  :required="true"
                   :items="radioOptionsNoYes"
                   @blur="handleBlurField($v.isMovedToBCPermanently)"/>
                 <div class="text-danger"
@@ -339,6 +355,7 @@
                     country="Canada"
                     defaultOptionLabel="Please select a province"
                     v-model="moveFromOrigin"
+                    :required="true"
                     :disablePlaceholder="true"
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.moveFromOrigin)"/>
@@ -357,6 +374,7 @@
                     class="mt-3"
                     defaultOptionLabel="Please select a jurisdiction"
                     v-model="moveFromOrigin"
+                    :required="true"
                     :inputStyle="mediumStyles"
                     :disablePlaceholder="true"
                     @blur="handleBlurField($v.moveFromOrigin)"/>
@@ -374,6 +392,7 @@
                     id="arrival-date-in-bc"
                     class="mt-3"
                     v-model="arrivalDateInBC"
+                    :required="true"
                     @blur="handleBlurField($v.arrivalDateInBC)"
                     @processDate="handleProcessDateArrivalInBC($event)" />
                   <div class="text-danger"
@@ -403,6 +422,7 @@
                     id="arrival-date-in-canada"
                     class="mt-3"
                     v-model="arrivalDateInCanada"
+                    :required="isArrivalDateInCanadaRequired"
                     @blur="handleBlurField($v.arrivalDateInCanada)"
                     @processDate="handleProcessDateArrivalInCanada($event)" />
                   <div class="text-danger"
@@ -444,6 +464,7 @@
                     id="outside-bc-12-months"
                     name="outside-bc-12-months"
                     v-model="isOutsideBCInLast12Months"
+                    :required="true"
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField($v.isOutsideBCInLast12Months)">
                     <template v-slot:description>
@@ -461,6 +482,7 @@
                     id="departure-reason"
                     class="mt-3"
                     v-model="departureReason"
+                    :required="true"
                     maxlength="20"
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.departureReason)" />
@@ -476,6 +498,7 @@
                     id="departure-location"
                     class="mt-3"
                     v-model="departureLocation"
+                    :required="true"
                     maxlength="20"
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.departureLocation)" />
@@ -491,6 +514,7 @@
                     id="departure-begin-date"
                     class="mt-3"
                     v-model="departureBeginDate"
+                    :required="true"
                     @blur="handleBlurField($v.departureBeginDate)"
                     @processDate="handleProcessDateDepartureBegin($event)" />
                   <div class="text-danger"
@@ -509,6 +533,7 @@
                     id="departure-return-date"
                     class="mt-3"
                     v-model="departureReturnDate"
+                    :required="true"
                     @blur="handleBlurField($v.departureReturnDate)"
                     @processDate="handleProcessDateDepartureReturn($event)" />
                   <div class="text-danger"
@@ -530,6 +555,7 @@
                     id="has-previous-phn"
                     name="has-previous-phn"
                     v-model="hasPreviousPHN"
+                    :required="true"
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField($v.hasPreviousPHN)"/>
                   <div class="text-danger"
@@ -557,6 +583,7 @@
                     id="is-released-from-armed-forces"
                     name="is-released-from-armed-forces"
                     v-model="isReleasedFromArmedForces"
+                    :required="true"
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField($v.isReleasedFromArmedForces)"/>
                   <div class="text-danger"
@@ -570,6 +597,7 @@
                     id="armed-forces-discharge-date"
                     class="mt-3"
                     v-model="armedForcesDischargeDate"
+                    :required="true"
                     @blur="handleBlurField($v.armedForcesDischargeDate)"
                     @processDate="handleProcessDateArmedForcesDischarge($event)"/>
                   <div class="text-danger"
@@ -600,6 +628,7 @@
                     id="is-student"
                     name="is-student"
                     v-model="isStudent"
+                    :required="true"
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField($v.isStudent)"/>
                   <div class="text-danger"
@@ -614,6 +643,7 @@
                     name="will-student-reside-in-bc"
                     class="mt-3"
                     v-model="willStudentResideInBC"
+                    :required="true"
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField($v.willStudentResideInBC)"/>
                   <div class="text-danger"

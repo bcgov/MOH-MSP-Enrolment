@@ -20,6 +20,7 @@
           name='apply-sb'
           label='1. Will you use this form to apply for Supplementary Benefits?'
           v-model='eqSBIsApplying'
+          :required="true"
           :items='radioOptionsYesNo' />
         <div v-if="eqSBIsApplying === 'Y'">
           <p class="mb-0">2. To apply for Supplementary Benefits, you must:</p>
@@ -33,6 +34,7 @@
             name='meets-sb-criteria'
             label='Do you meet the above eligibility criteria?'
             v-model='eqSBMeetsCriteria'
+            :required="true"
             :items='radioOptionsYesNo' />
           <div class="text-danger ml-4" v-if="eqSBMeetsCriteria === 'N'">
             <p>
@@ -52,6 +54,7 @@
               name='has-sb-info'
               label='Do you have these documents and information to include with your application?'
               v-model='eqSBhasInfo'
+              :required="true"
               :items='radioOptionsYesNo' />
             <div class="text-danger pl-4 ml-4" v-if="eqSBhasInfo === 'N'">
               <p>

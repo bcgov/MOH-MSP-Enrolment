@@ -26,6 +26,7 @@
                 maxlength="25"
                 serviceUrl="/ahdc/api/address"
                 :inputStyle='mediumStyles'
+                :required="true"
                 @addressSelected="handleResAddressSelected($event)"
                 @blur="handleBlurField($v.resAddressLine1)" />
               <Input v-else
@@ -33,6 +34,7 @@
                 label="Full street address, rural route, or general delivery"
                 id="res-address-line1"
                 v-model="resAddressLine1"
+                :required="true"
                 maxlength="25"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.resAddressLine1)" />
@@ -76,6 +78,7 @@
                 id="res-province"
                 v-model="resProvince"
                 :inputStyle='mediumStyles'
+                :required="true"
                 @blur="handleBlurField($v.resProvince)"
                 :disabled='true' />
               <CountrySelect class="mt-3"
@@ -83,6 +86,7 @@
                 id="res-country"
                 v-model="resCountry"
                 :inputStyle='mediumStyles'
+                :required="true"
                 @blur="handleBlurField($v.resCountry)"
                 :disabled='true' />
               <PostalCodeInput class="mt-3"
@@ -90,6 +94,7 @@
                 id="res-postal-code"
                 v-model="resPostalCode"
                 :inputStyle='smallStyles'
+                :required="true"
                 @blur="handleBlurField($v.resPostalCode)" />
               <div class="text-danger" v-if="$v.resPostalCode.$dirty && !$v.resPostalCode.required" aria-live="assertive">Postal code is required.</div>
               <div class="text-danger" v-if="$v.resPostalCode.$dirty
@@ -122,6 +127,7 @@
                 maxlength="25"
                 serviceUrl="/ahdc/api/address"
                 :inputStyle='mediumStyles'
+                :required="true"
                 @addressSelected="handleMailAddressSelected($event)"
                 @blur="handleBlurField($v.mailAddressLine1)" />
               <Input v-else
@@ -131,6 +137,7 @@
                 v-model="mailAddressLine1"
                 maxlength="25"
                 :inputStyle='mediumStyles'
+                :required="true"
                 @blur="handleBlurField($v.mailAddressLine1)" />
               <div class="text-danger" v-if="$v.mailAddressLine1.$dirty && !$v.mailAddressLine1.required" aria-live="assertive">
                 Full street address, rural route, PO box, or general delivery is required.
@@ -175,6 +182,7 @@
                 id="mail-province"
                 v-model="mailProvince"
                 :inputStyle='mediumStyles'
+                :required="true"
                 :disablePlaceholder="true"
                 @blur="handleBlurField($v.mailProvince)" />
               <Input v-else
@@ -184,6 +192,7 @@
                 v-model="mailProvince"
                 maxlength="25"
                 :inputStyle='mediumStyles'
+                :required="true"
                 @blur="handleBlurField($v.mailProvince)" />
               <div class="text-danger" v-if="$v.mailProvince.$dirty && !$v.mailProvince.required" aria-live="assertive">Province or state is required.</div>
               <div class="text-danger"
@@ -194,6 +203,7 @@
                 id="mail-country"
                 v-model="mailCountry"
                 :inputStyle='mediumStyles'
+                :required="true"
                 :disablePlaceholder="true"
                 @blur="handleBlurField($v.mailCountry)" />
               <div class="text-danger" v-if="$v.mailCountry.$dirty && !$v.mailCountry.required" aria-live="assertive">Jurisdiction is required.</div>
@@ -206,6 +216,7 @@
                   v-model="mailPostalCode"
                   maxlength="25"
                   :inputStyle='smallStyles'
+                  :required="true"
                   @blur="handleBlurField($v.mailPostalCode)" />
                 <div class="text-danger" v-if="$v.mailPostalCode.$dirty
                                             && $v.mailPostalCode.required
@@ -220,6 +231,7 @@
                   v-model="mailPostalCode"
                   maxlength="25"
                   :inputStyle='smallStyles'
+                  :required="true"
                   @blur="handleBlurField($v.mailPostalCode)" />
                 <div class="text-danger"
                   v-if="$v.mailPostalCode.$dirty && $v.mailPostalCode.required && !$v.mailPostalCode.specialCharacterValidator"

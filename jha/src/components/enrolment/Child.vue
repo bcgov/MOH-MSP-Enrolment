@@ -9,6 +9,7 @@
               :id="'child-age-range-' + index"
               :name="'child-age-range-' + index"
               v-model='ageRange'
+              :required="true"
               @blur="handleBlurField($v.ageRange)"
               className="mt-3"
               :items='radioChildAgeOptions'
@@ -23,6 +24,7 @@
             :maxlength="firstNameMaxLength"
             @blur="handleBlurField($v.firstName)"
             v-model='firstName'
+            :required="true"
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="$v.firstName.$dirty && !$v.firstName.required"
@@ -46,6 +48,7 @@
             maxlength="30"
             @blur="handleBlurField($v.lastName)"
             v-model='lastName'
+            :required="true"
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="$v.lastName.$dirty && !$v.lastName.required"
@@ -58,7 +61,8 @@
             className='mt-3'
             @blur="handleBlurField($v.birthDate)"
             @processDate="handleProcessBirthdate($event)"
-            v-model='birthDate' />
+            v-model='birthDate'
+            :required="true" />
           <div class="text-danger"
             v-if="$v.birthDate.$dirty && !$v.birthDate.required"
             aria-live="assertive">Birthate is required.</div>
@@ -92,6 +96,7 @@
               placeholder="1111 111 111"
               :inputStyle="smallStyles"
               v-model="personalHealthNumber"
+              :required="true"
               @blur="handleBlurField($v.personalHealthNumber)" />
             <div class="text-danger"
               v-if="$v.personalHealthNumber.$dirty && !$v.personalHealthNumber.required"
@@ -109,6 +114,7 @@
               :id="'child-gender-' + index"
               :name="'child-gender-' + index"
               v-model='gender'
+              :required="true"
               className="mt-3"
               @blur="handleBlurField($v.gender)"
               :items='radioGenderOptions'/>
@@ -146,6 +152,7 @@
           :disablePlaceholder="true"
           @blur="handleBlurField($v.status)"
           v-model='status'
+          :required="true"
           :options='citizenshipStatusOptions'
           :inputStyle='mediumStyles'/>
         <div class="text-danger"
@@ -157,6 +164,7 @@
             :name="'child-status-reason-' + index"
             label=''
             v-model='statusReason'
+            :required="true"
             @blur="handleBlurField($v.statusReason)"
             :items='citizenshipStatusReasonOptions' />
           <div class="text-danger"
@@ -169,6 +177,7 @@
             :name="'child-status-reason' + index"
             label=''
             v-model='statusReason'
+            :required="true"
             @blur="handleBlurField($v.statusReason)"
             :items='temporaryResidentStatusReasonOptions' />
           <div class="text-danger"
@@ -181,6 +190,7 @@
             :name="'child-status-reason' + index"
             label=''
             v-model='statusReason'
+            :required="true"
             @blur="handleBlurField($v.statusReason)"
             :items='overageChildTemporaryResidentStatusReasonOptions' />
           <div class="text-danger"
@@ -199,6 +209,7 @@
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
             v-model="citizenshipSupportDocumentType"
+            :required="true"
             @blur="handleBlurField($v.citizenshipSupportDocumentType)"
             :options="citizenshipSupportDocumentOptions"
             :inputStyle='mediumStyles' />
@@ -211,6 +222,7 @@
             :id="'gender-matches-' + index"
             class="mt-3"
             v-model="genderMatches"
+            :required="true"
             :items="radioOptionsNoYes"
             @blur="handleBlurField($v.genderMatches)" />
           <div class="text-danger"
@@ -244,6 +256,7 @@
               :name="'name-change-' + index"
               class="mt-3 mb-3"
               v-model="isNameChanged"
+              :required="true"
               @blur="handleBlurField($v.isNameChanged)"
               :items="radioOptionsNoYes" />
             <div class="text-danger"
@@ -262,6 +275,7 @@
               defaultOptionLabel="Please select"
               :disablePlaceholder="true"
               v-model="nameChangeSupportDocumentType"
+              :required="true"
               @blur="handleBlurField($v.nameChangeSupportDocumentType)"
               :options="nameChangeSupportDocumentOptions"
               :inputStyle='mediumStyles' />
@@ -302,6 +316,7 @@
                     :id="'lived-in-bc-' + index"
                     :name="'lived-in-bc-' + index"
                     v-model='livedInBCSinceBirth'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField($v.livedInBCSinceBirth)"
                     :items='radioOptionsNoYes' />
@@ -315,6 +330,7 @@
                     label="From which province or jurisdiction?"
                     maxlength="25"
                     v-model="moveFromOrigin"
+                    :required="true"
                     @blur="handleBlurField($v.moveFromOrigin)"
                     :inputStyle='mediumStyles' />
                   <div class="text-danger"
@@ -330,6 +346,7 @@
                     :id="'permanent-move-' + index"
                     :name="'permanent-move-' + index"
                     v-model='madePermanentMove'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField($v.madePermanentMove)"
                     :items='radioOptionsNoYes'/>
@@ -348,6 +365,7 @@
                     :name="'province-select-' + index"
                     label="Which province is your child moving from?" 
                     v-model="moveFromOrigin"
+                    :required="true"
                     :disablePlaceholder="true"
                     defaultOptionLabel="Please select a province"
                     @blur="handleBlurField($v.moveFromOrigin)"
@@ -368,6 +386,7 @@
                       :name="'country-select-' + index"
                       label="Which jurisdiction is your child moving from?" 
                       v-model="moveFromOrigin"
+                      :required="true"
                       :disablePlaceholder="true"
                       defaultOptionLabel="Please select a jurisdiction"
                       @blur="handleBlurField($v.moveFromOrigin)"
@@ -388,6 +407,7 @@
                       :name="'bc-move-' + index"
                       className='mt-3'
                       v-model='recentBCMoveDate'
+                      :required="true"
                       @blur="handleBlurField($v.recentBCMoveDate)"
                       @processDate="handleProcessDateBCMove($event)" />
                     <div v-if="bcMoveDateLabel === 'Most recent move to B.C.'">
@@ -457,6 +477,7 @@
                       :name="'canada-arrival-date-' + index"
                       className='mt-3'
                       v-model='canadaArrivalDate'
+                      :required="canadaArrivalDateLabel === 'Arrival date in Canada'"
                       @blur="handleBlurField($v.canadaArrivalDate)"
                       @processDate="handleProcessDateCanadaArrival($event)" />
                     <div class="text-danger"
@@ -501,6 +522,7 @@
                     :id="'outside-bc-' + index"
                     :name="'outside-bc-' + index"
                     v-model='outsideBCLast12Months'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField($v.outsideBCLast12Months)"
                     :items='radioOptionsNoYes'>
@@ -519,6 +541,7 @@
                       label="Reason for departure"
                       maxlength="20"
                       v-model="outsideBCLast12MonthsReason"
+                      :required="true"
                       @blur="handleBlurField($v.outsideBCLast12MonthsReason)"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
@@ -532,6 +555,7 @@
                       label="Location"
                       maxlength="20" 
                       v-model="outsideBCLast12MonthsDestination"
+                      :required="true"
                       @blur="handleBlurField($v.outsideBCLast12MonthsDestination)"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
@@ -544,7 +568,8 @@
                       className='mt-3'
                       @blur="handleBlurField($v.outsideBCLast12MonthsDepartureDate)"
                       @processDate="handleProcessDate12MonthsDeparture($event)"
-                      v-model='outsideBCLast12MonthsDepartureDate' />
+                      v-model='outsideBCLast12MonthsDepartureDate'
+                      :required="true" />
                     <div class="text-danger"
                       v-if="$v.outsideBCLast12MonthsDepartureDate.$dirty && !$v.outsideBCLast12MonthsDepartureDate.required"
                       aria-live="assertive">Departure date is required.</div>
@@ -560,7 +585,8 @@
                       className='mt-3'
                       @blur="handleBlurField($v.outsideBCLast12MonthsReturnDate)"
                       @processDate="handleProcessDate12MonthsReturn($event)"
-                      v-model='outsideBCLast12MonthsReturnDate' />
+                      v-model='outsideBCLast12MonthsReturnDate'
+                      :required="true" />
                     <div class="text-danger"
                       v-if="$v.outsideBCLast12MonthsReturnDate.$dirty && !$v.outsideBCLast12MonthsReturnDate.required"
                       aria-live="assertive">Return date is required.</div>
@@ -576,6 +602,7 @@
                     :id="'has-bc-health-number-' + index"
                     :name="'has-bc-health-number-' + index"
                     v-model='hasPreviousBCHealthNumber'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField($v.hasPreviousBCHealthNumber)"
                     :items='radioOptionsNoYes'/>
@@ -602,6 +629,7 @@
                       :id="'been-released-' + index"
                       :name="'been-released-' + index"
                       v-model='hasBeenReleasedFromInstitution'
+                      :required="true"
                       className="mt-3"
                       @blur="handleBlurField($v.hasBeenReleasedFromInstitution)"
                       :items='radioOptionsNoYes' />
@@ -616,7 +644,8 @@
                       className='mt-3'
                       @blur="handleBlurField($v.dischargeDate)"
                       @processDate="handleProcessDateDischarge($event)"
-                      v-model='dischargeDate' />
+                      v-model='dischargeDate'
+                      :required="true" />
                     <div class="text-danger"
                       v-if="$v.dischargeDate.$dirty && !$v.dischargeDate.required"
                       aria-live="assertive">Discharge date is required.</div>
