@@ -20,6 +20,7 @@
                 :name="'has-children'"
                 class="mt-3"
                 v-model="hasChildren"
+                :required="true"
                 @blur="handleBlurField($v.hasChildren)"
                 :items="radioOptionsNoYes" />
         <div class="text-danger"

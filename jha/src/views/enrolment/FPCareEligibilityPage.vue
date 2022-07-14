@@ -20,6 +20,7 @@
           name='apply-fpc'
           label='1. Will you use this form to apply for Fair PharmaCare?'
           v-model='eqFPCIsApplying'
+          :required="true"
           :items='radioOptionsApplyFPC' />
         <div v-if="eqFPCIsApplying === 'Y'">
           <p class="mb-0">2. To apply for Fair PharmaCare, you must:</p>
@@ -33,6 +34,7 @@
             name='meets-fpc-criteria'
             label='Do you meet the above eligibility criteria?'
             v-model='eqFPCMeetsCriteria'
+            :required="true"
             :items='radioOptionsYesNo' />
           <div class="text-danger ml-4" v-if="eqFPCMeetsCriteria === 'N'">
             <p>
@@ -64,6 +66,7 @@
               name='has-fpc-info'
               label='Do you have this information to include with your application?'
               v-model='eqFPCHasInfo'
+              :required="true"
               :items='radioOptionsYesNo' />
             <div class="text-danger pl-4 ml-4" v-if="eqFPCHasInfo === 'N'">
               <p>

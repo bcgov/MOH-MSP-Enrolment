@@ -21,6 +21,7 @@
                     name="select-noa-year"
                     class="mt-3"
                     v-model="selectedNOAYear"
+                    :required="true"
                     :items="radioOptionsNOAYears"
                     @blur="handleBlurField($v.selectedNOAYear)"/>
             <div class="text-danger"
@@ -34,6 +35,7 @@
             <CurrencyInput id="ah-net-income"
               label="See line 23600 of your Notice of Assessment or Notice of Reassessment."
               v-model="ahSBIncome"
+              :required="true"
               maxlength="6"
               :inputStyle='mediumStyles'
               @blur="handleBlurField($v.ahSBIncome)"/>
@@ -48,6 +50,7 @@
               <CurrencyInput id="spouse-net-income"
                 label="See line 23600 of your spouse's Notice of Assessment or Notice of Reassessment."
                 v-model="spouseSBIncome"
+                :required="true"
                 maxlength="6"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.spouseSBIncome)"/>
@@ -64,6 +67,7 @@
               <Radio id="has-children"
                 name="has-children"
                 v-model="hasChildren"
+                :required="true"
                 :items="radioOptionsNoYes"
                 @blur="handleBlurField($v.hasChildren)"/>
               <div class="text-danger"
@@ -73,6 +77,7 @@
                 <DigitInput id="num-children"
                   label="How many children do you have on your account?"
                   v-model="numChildren"
+                  :required="true"
                   :inputStyle="extraSmallStyles"
                   @blur="handleBlurField($v.numChildren)"/>
                 <div class="text-danger"
@@ -91,6 +96,7 @@
               <CurrencyInput id="child-care-expenses"
                 label="See line 21400 of your Notice of Assessment or Notice of Reassessment."
                 v-model="claimedChildCareExpenses"
+                :required="true"
                 maxlength="6"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.claimedChildCareExpenses)"/>
@@ -104,6 +110,7 @@
               name="has-disability-credit"
               label="See line 31600, 31800, or 32600 of your Notice of Assessment or Notice of Reassessment."
               v-model="hasDisabilityCredit"
+              :required="true"
               :items="radioOptionsNoYes"
               @blur="handleBlurField($v.hasDisabilityCredit)"/>
             <div class="text-danger"
@@ -128,6 +135,7 @@
                 <DigitInput id="num-attendant-nursing-children"
                   label="How many of your children are eligible for a disability tax credit?"
                   v-model="numDisabilityChildren"
+                  :required="true"
                   :inputStyle="extraSmallStyles"
                   @blur="handleBlurField($v.numDisabilityChildren)"/>
                 <div class="text-danger"
@@ -145,6 +153,7 @@
             <Radio id="has-disability-savings"
               name="has-disability-savings"
               v-model="hasRDSP"
+              :required="true"
               :items="radioOptionsNoYes"
               @blur="handleBlurField($v.hasRDSP)"/>
             <div class="text-danger"
@@ -156,6 +165,7 @@
               <CurrencyInput id="disability-savings-plan"
                 label="See Line 12500 of the Notice of Assessment or Notice of Reassessment"
                 v-model="sbRDSPAmount"
+                :required="true"
                 maxlength="6"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField($v.sbRDSPAmount)"/>
@@ -169,6 +179,7 @@
               name="has-attendant-nursing-expenses"
               label="See line 21500 or 33099 of your Notice of Assessment or Notice of Reassessment."
               v-model="hasAttendantNursingExpenses"
+              :required="true"
               :items="radioOptionsNoYes"
               @blur="handleBlurField($v.hasAttendantNursingExpenses)"/>
             <div class="text-danger"
@@ -192,6 +203,7 @@
                 <DigitInput id="num-attendant-nursing-children"
                   label="How many children claimed attendant care expenses?"
                   v-model="numAttendantNursingChildren"
+                  :required="true"
                   :inputStyle="extraSmallStyles"
                   @blur="handleBlurField($v.numAttendantNursingChildren)"/>
                 <div class="text-danger"
