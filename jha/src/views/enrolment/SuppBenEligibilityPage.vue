@@ -67,7 +67,7 @@
                 </li>
                 <li>
                   If you and/or your spouse did not file taxes with the CRA, do so as soon as possible. When you have received your NOA(s), apply for Supplementary Benefits. If you and/or your spouse were not able to file taxes with the CRA (because you did not live in Canada, were a minor, or were exempt from filing taxes), contact HIBC. 
-                </li>
+                &nbsp;</li>
               </ul>
             </div>
           </div>
