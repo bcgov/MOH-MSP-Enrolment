@@ -3,9 +3,7 @@
     <div :aria-hidden="isModalOpen">
       <Header :title='pageTitle'
               imagePath='/ahdc/images/' />
-      <main>
-        <router-view/>
-      </main>
+      <router-view/>
       <Footer :version='version' />
     </div>
     <portal-target id="modal-target" name="modal"></portal-target>

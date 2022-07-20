@@ -11,26 +11,26 @@
       <tr class="border-br row">
         <td class="col-sm-4 border-l">
           <ul>
-            <li>Canadian birth certificate</li>
-            <li>Canadian citizenship card (front and back)</li>
-            <li>Certificate of Canadian citizenship (front and back)</li>
-            <li>Canadian passport</li>
-            <li>First Nations status card</li>
-            <li>Métis status card</li>
+            <li>Canadian birth certificate&nbsp;</li>
+            <li>Canadian citizenship card (front and back)&nbsp;</li>
+            <li>Certificate of Canadian citizenship (front and back)&nbsp;</li>
+            <li>Canadian passport&nbsp;</li>
+            <li>First Nations status card&nbsp;</li>
+            <li>Métis status card&nbsp;</li>
           </ul>
         </td>
         <td class="col-sm-4 border-l">
           <ul>
-            <li>Record of Landing</li>
-            <li>Confirmation of Permanent Residence</li>
-            <li>Permanent Resident card (front and back)</li>
+            <li>Record of Landing&nbsp;</li>
+            <li>Confirmation of Permanent Residence&nbsp;</li>
+            <li>Permanent Resident card (front and back)&nbsp;</li>
           </ul>
         </td>
         <td class="col-sm-4 border-l">
           <ul>
-            <li>Study permit</li>
-            <li>Work permit (working holiday permit holders must include a letter of employment)</li>
-            <li>Visitor permit (accompanying spouse or child)</li>
+            <li>Study permit&nbsp;</li>
+            <li>Work permit (working holiday permit holders must include a letter of employment)&nbsp;</li>
+            <li>Visitor permit (accompanying spouse or child)&nbsp;</li>
           </ul>
         </td>
       </tr>

@@ -44,10 +44,10 @@
             <ul>
               <li>
                 If you have not been a resident of B.C. for at least three months, apply after you have completed the required wait period. 
-              </li>
+              &nbsp;</li>
               <li>
                 If you and/or your spouse did not file taxes with the CRA two years ago, do so as soon as possible. When you have submitted your tax return(s), apply for Fair PharmaCare. 
-              </li>
+              &nbsp;</li>
               <li>
                 If you and/or your spouse were not able to file taxes with the CRA two years ago (because you did not live in Canada, were a minor, or were exempt from filing taxes), contact HIBC at:
                 <ContactInformation />
@@ -79,7 +79,7 @@
                 </li>
                 <li>
                   If you and/or your spouse did not file taxes with the CRA two years ago, do so as soon as possible. When you have submitted your tax return(s), apply for Fair PharmaCare. If you and/or your spouse were not able to file taxes with the CRA two years ago (because you did not live in Canada, were a minor, or were exempt from filing taxes), contact HIBC.
-                </li>
+                &nbsp;</li>
               </ul>
             </div>
           </div>
