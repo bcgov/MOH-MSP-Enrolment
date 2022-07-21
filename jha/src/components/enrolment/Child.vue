@@ -1154,8 +1154,6 @@ export default {
     this.schoolDepartureDate = this.childData.schoolDepartureDate;
     this.schoolCompletionDate = this.childData.schoolCompletionDate;
     this.willResideInBCAfterStudies = this.childData.willResideInBCAfterStudies;
-
-    debugger
   },
   validations() {
     const validations = {

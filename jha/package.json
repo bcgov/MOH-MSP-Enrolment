@@ -24,7 +24,7 @@
     "uuid": "^8.3.2",
     "vue": "^3.1.0",
     "vue-router": "^4.0.15",
-    "common-lib-vue": "3.0.1-alpha.1",
+    "common-lib-vue": "3.0.1-alpha.3",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
