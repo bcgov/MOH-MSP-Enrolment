@@ -62,10 +62,7 @@ export default {
   },
   computed: {
     isModalOpen() {
-      const modalTargetEl = document.body.querySelector('#modal-target');
-      const modalTargetHasChildren = modalTargetEl && modalTargetEl.children.length > 0;
-      return Wormhole.hasContentFor('modal')
-          || modalTargetHasChildren;
+      return Wormhole.hasContentFor('modal');
     }
   },
 }
