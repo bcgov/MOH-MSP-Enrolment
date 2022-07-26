@@ -44,16 +44,16 @@ Deployments for our microservices use the following resources:
 - **A service**: Required to expose the deployment config pods to other openshift resources.
 - **A route**: Required to expose the service to an accessible URL.
 
-There are deployments for each service in all environments, i.e dev, test and prod. Changing an environments base image only requires changing the associated imageStreamTag to point to the new image, since the deploymentConfig updates on image changes. e.g `oc tag -n f0463d-tools f0463d-tools/msp-service:latest f0463d-tools/msp-service:prod` to update the prod environments image to the latest build of msp-service.
+**Updating Deployments**: There are deployments for each service in all environments, i.e dev, test and prod. Changing the image running in an environment only requires changing the associated imageStreamTag to point to the new image, since the deploymentConfig updates on image changes. E.g `oc tag -n f0463d-tools f0463d-tools/msp-service:latest f0463d-tools/msp-service:prod` will update the prod environments image to the latest build of msp-service.
 
-The service just needs to be selecting the associated deployment config by name:
+**Service Details**: The service just needs to be selecting the associated deployment config by name:
 
 ``` yaml
 selector:
   deploymentconfig: ${API_NAME}
 ```
 
-and exposing the correct port, usually 8080:
+and exposing the correct port, usually 8080 in our services:
 
 ``` yaml
 ports:
@@ -63,7 +63,9 @@ ports:
     targetPort: 8080
 ```
 
-Note that the port is given the name 8080-tcp here. Finally, the route just needs to select the service to expose the application:
+Note that the port is given the name 8080-tcp here.
+
+**Route Details**: Finally, the route just needs to select the service to expose the application:
 
 ``` yaml
 to:
@@ -73,10 +75,17 @@ to:
 ```
 
 here the parmeter ${API_NAME} should match the services name to select it.
+The route can grab the service's port to listen to by the name the service assigned to it, `8080-tcp`:
+
+``` yaml
+port:
+  targetPort: 8080-tcp
+```
+
 
 ## NetworkPolicies
 
-NetworkPolicies are required to allow communication with other openshift resources, since a `deny-all-by-default` policy is used on the platform services cluster. See the [msp-to-all](/openshift/templates/quickmspweb-toall.yaml) template for an example set. As an example, the below spec:
+NetworkPolicies are required to allow communication with other openshift resources, since a `deny-all-by-default` policy is used on the platform services cluster. See the [msp-to-all](/openshift/templates/quickmspweb-toall.yaml) template for an example set. The policy to allow jha and msp to talk to the captcha service is shown below:
 
 ``` yaml
 spec:
@@ -93,4 +102,6 @@ spec:
           port: 8080
 ```
 
-selects all pods given a role of `captchaservice`, and allows them to receive ingress traffic from any pods with the role `mspfrontend`. If services are failing to communicate, check the network policy allowing them to exists and that the selector labels are correct on the relevant pods or services.
+This selects all pods given the label `role=captchaservice`, and allows them to receive ingress traffic from any pods with the label `role=mspfrontend`. The deploymentConfigs for the captcha service, jha, and msp all give their pods these roles in the pod template section, allowing those web-apps to use the captcha service. 
+
+If services are failing to communicate, check the network policy allowing them to exists and that the selector labels are correct on the relevant pods or services.
