@@ -4,7 +4,7 @@ export const SupportDocumentTypes = {
   CanadianCitizenCard: 'Canadian citizenship card or certificate (front and back)',
   DriversLicense: 'BC Driver\'s License',
   RecordOfLanding: 'Record of Landing',
-  PermanentResidentCard: 'Permanent Resident card (front and back)',
+  PermanentResidentCard: 'Permanent resident card (front and back)',
   PermanentResidentConfirmation: 'Confirmation of Permanent Residence',
   WorkPermit: 'Work permit / CUAET',
   StudyPermit: 'Study permit',

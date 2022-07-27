@@ -36,7 +36,7 @@
                 <li>Your name&nbsp;</li>
                 <li>The tax year&nbsp;</li>
                 <li>Your net income (Line 23600)&nbsp;</li>
-                <li>Registered Disability Savings Plan income (Line 12500)&nbsp;</li>
+                <li>Registered Disability Savings Plan income (Line 12500) if applicable&nbsp;</li>
                 <li>A JPG, PNG, GIF, BMP or PDF file&nbsp;</li>
               </ul>
             </TipBox>
@@ -65,7 +65,7 @@
                 <li>Your name&nbsp;</li>
                 <li>The tax year&nbsp;</li>
                 <li>Your net income (line 23600)&nbsp;</li>
-                <li>If you have a Regisered Disability Savings Plan (line 12500)&nbsp;</li>
+                <li>Regisered Disability Savings Plan income (line 12500) if applicable&nbsp;</li>
                 <li>A JPG, PNG, GIF, BMP or PDF file&nbsp;</li>
               </ul>
             </TipBox>

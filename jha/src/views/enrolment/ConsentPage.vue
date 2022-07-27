@@ -15,15 +15,13 @@
         <h3>Note:</h3>
         <ul class="pl-4">
           <li>
-            <strong>
-              If someone with power of attorney or other legal representation
-              agreement is signing on your behalf, check the box below and
-              upload a copy of the agreement. Power of attorney or other legal
-              representation will apply to all programs (MSP, Fair PharmaCare
-              and/or Supplementary Benefits) you apply for. For Fair PharmaCare
-              and/or for MSP, copies of the power of attorney agreement may be
-              forwarded to the CRA if they request it.
-            </strong>
+            If someone with power of attorney or other legal representation
+            agreement is signing on your behalf, check the box below and
+            upload a copy of the agreement. Power of attorney or other legal
+            representation will apply to all programs (MSP, Fair PharmaCare
+            and/or Supplementary Benefits) you apply for. For Fair PharmaCare
+            and/or for MSP, copies of the power of attorney agreement may be
+            forwarded to the CRA if they request it.
           </li>
         </ul>
         <Checkbox
@@ -71,7 +69,7 @@
         <div v-if="isApplyingForMSP"
           class="mb-5">
           <hr/>
-          <h2>MSP Authorization: Must be signed by Applicant, and Spouse if applicable</h2>
+          <h2>MSP Authorization: Must be signed by applicant, and spouse if applicable</h2>
           <ul>
             <li>I have received information about MSP and agree to abide by the terms and conditions of MSP. I understand that if a discrepancy exists between the information provided and the legislation, the legislation will govern.&nbsp;</li>
             <li>I authorize the Ministry of Health to collect my health information from practitioners who provide publicly funded health care service(s) to me under MSP and other publicly funded health care programs, and I provide consent for those practitioners to disclose such information to the Ministry of Health for the purposes of asessing eligibility for, and in regard to the administration of, MSP and other Ministry of Health publicly funded health care programs.&nbsp;</li>

@@ -3,7 +3,7 @@
     <div class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Account Holder Information</h2>
+          <h2 class="mb-2">Applicant Information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -255,13 +255,13 @@ export default {
       });
       if (!this.isApplyingForMSP) {
         items.push({
-          label: "Account Holder PHN",
+          label: "Applicant PHN",
           value: this.$store.state.enrolmentModule.ahPHN,
         });
       }
       if (this.isApplyingForFPCare || this.isApplyingForSuppBen) {
         items.push({
-          label: "Account Holder SIN",
+          label: "Applicant SIN",
           value: this.$store.state.enrolmentModule.ahSIN,
         });
       }
@@ -918,7 +918,7 @@ export default {
       const items = [];
       const selectedYear = this.$store.state.enrolmentModule.selectedNOAYear;
       items.push({
-        label: `Account Holder net income for ${selectedYear}`,
+        label: `Applicant net income for ${selectedYear}`,
         value: moneyFormatter.format(
           this.$store.state.enrolmentModule.ahSBIncome
         ),
@@ -1181,7 +1181,7 @@ export default {
       for (const [index, recipient] of array.entries()) {
         switch (recipient) {
           case "ah":
-            result += `Account Holder`;
+            result += `Applicant`;
             break;
           case "spouse":
             result += `Spouse`;

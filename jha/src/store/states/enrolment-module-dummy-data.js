@@ -23,7 +23,7 @@ export default {
   isApplyingForMSP: true,
   isApplyingForFPCare: true,
   isApplyingForSuppBen: true,
-  // Account Holder info.
+  // Applicant info.
   ahFirstName: 'John',
   ahMiddleName: 'Herbert',
   ahLastName: 'CANALICULATEXB',

@@ -23,7 +23,7 @@
           <ul>
             <li>Record of Landing&nbsp;</li>
             <li>Confirmation of Permanent Residence&nbsp;</li>
-            <li>Permanent Resident card (front and back)&nbsp;</li>
+            <li>Permanent resident card (front and back)&nbsp;</li>
           </ul>
         </td>
         <td class="col-sm-4 border-l">
