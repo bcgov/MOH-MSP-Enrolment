@@ -98,6 +98,7 @@
               v-model="personalHealthNumber"
               :required="true"
               @blur="handleBlurField($v.personalHealthNumber)" />
+            <span class="field-description">This number appears on the BC Services Card</span>
             <div class="text-danger"
               v-if="$v.personalHealthNumber.$dirty && !$v.personalHealthNumber.required"
               aria-live="assertive">Personal Health Number is required.</div>
@@ -199,7 +200,7 @@
         </div>
         <div v-if="statusReason !== null && statusReason !== undefined" class="mt-3">
           <h2>Documents</h2>
-          <p>Provide a copy of an accepted document that shows your child’s status in Canada. If their name is different from the name on the ID, you must also upload a copy of a name change certificate that shows their full legal name.</p>
+          <p>Provide a copy of an accepted document that shows your child’s status in Canada. If their name is different from the name on the document, you must also upload a copy of a name change certificate that shows their full legal name.</p>
           <hr/>
           <Select 
             label="Document Type"
@@ -251,7 +252,7 @@
           </div>
 
           <div v-if="citizenshipSupportDocumentType && genderMatches">
-            <Radio label="Is your child's name different from the name on their ID?"
+            <Radio label="Is your child's name different from the name on their document?"
               :id="'name-change-' + index"
               :name="'name-change-' + index"
               class="mt-3 mb-3"
@@ -619,6 +620,7 @@
                       placeholder="1111 111 111"
                       @blur="handleBlurField($v.previousBCHealthNumber)"
                       :inputStyle='mediumStyles' />
+                    <span class="field-description">This number appears on the BC Services Card</span>
                     <div class="text-danger"
                       v-if="$v.previousBCHealthNumber.$dirty && !$v.previousBCHealthNumber.phnValidator"
                       aria-live="assertive">Personal Health Number is not valid.</div>
@@ -824,7 +826,7 @@
             <div class="text-danger"
               v-if="$v.willResideInBCAfterStudies.$dirty
                   && !$v.willResideInBCAfterStudies.permanentMoveValidator"
-              aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As your child intend's to leave B.C. when their studies are completed, they are not eligible for MSP coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
+              aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As your child intends to leave B.C. when their studies are completed, they are not eligible for MSP coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
         </div>
         </div>
       </div>

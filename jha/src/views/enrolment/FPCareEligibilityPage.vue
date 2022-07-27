@@ -9,12 +9,7 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
-        <EligibilityQuestionnaireHeader>
-        <h2>Fair PharmaCare</h2>
-        <p>
-          Fair PharmaCare helps pay for some drugs and medical devices and supplies, such as prostheses and diabetes supplies. It is based on income. The less you earn, the more help you get.
-        </p>
-        </EligibilityQuestionnaireHeader>
+        <h1>Fair PharmaCare Eligibility</h1>
         <Radio
           id='apply-fpc'
           name='apply-fpc'
@@ -25,9 +20,8 @@
         <div v-if="eqFPCIsApplying === 'Y'">
           <p class="mb-0">2. To apply for Fair PharmaCare, you must:</p>
           <div class="ml-4">
-            <p class="mb-0">a. have been a resident of B.C. for at least three months;</p>
-            <p class="mb-0">b. be registered with MSP or be using this application form to also apply for MSP and Fair PharmaCare; and</p>
-            <p>c. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
+            <p class="mb-0">a. be enrolled in MSP or be using this application form to also apply for MSP; and</p>
+            <p class="mb-0">b. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
           </div>
           <Radio
             id='meets-fpc-criteria'
@@ -59,7 +53,7 @@
             <div class="ml-4">
               <p class="mb-0">a. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
               <p class="mb-0">b. Net Income (Line 23600) from your and (if applicable) your spouse's CRA Notice of Assessment (NOA), Notice of Reassessment (NORA) or federal income tax return for the tax year two years before the current year; and</p>
-              <p>c. Registered Disability Savings Plan (RDSP) income (Line 12500) from the above CRA NOA, NORA or federal income tax return.</p>
+              <p>c. Registered Disability Savings Plan (RDSP) income (Line 12500) if applicable.</p>
             </div>
             <Radio
               id='has-fpc-info'
@@ -128,7 +122,6 @@ import {
 } from '@/store/modules/enrolment-module';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesFPC } from '@/constants/eqMsgCodes';
-import EligibilityQuestionnaireHeader from '@/components/EligibilityQuestionnaireHeader.vue';
 import ContactInformation from '@/components/ContactInformation.vue';
 
 const validateQuestionsAnswered = (_value, vm) => {
@@ -150,7 +143,6 @@ export default {
     ContinueBar,
     PageContent,
     Radio,
-    EligibilityQuestionnaireHeader,
     ContactInformation,
 },
   data: () => {

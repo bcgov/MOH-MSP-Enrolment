@@ -31,7 +31,7 @@ const supportDocumentTitleMap = {
   'Canadian citizenship card or certificate (front and back)': 'Canadian Citizenship Card or Certificate (front and back)',
   'BC Driver\'s License': 'BC Driver\'s License',
   'Record of Landing': 'Record of Landing',
-  'Permanent Resident card (front and back)': 'Permanent Resident Card (front and back)',
+  'Permanent resident card (front and back)': 'Permanent Resident Card (front and back)',
   'Confirmation of Permanent Residence': 'Confirmation of Permanent Residence',
   'Work permit / CUAET': 'Work Permit / CUAET',
   'Study permit': 'Study Permit',

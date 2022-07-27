@@ -29,7 +29,7 @@
                     aria-live="assertive">Please indicate which year's Notice of Assessment you are uploading.</div>
             <div v-if="selectedNOAYear === `${this.currentYear - 2}`" class="text-danger">
               <font-awesome-icon icon="exclamation-circle"/>
-              Selecting this Notice of Assessment will allow you to apply for supplementary benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
+              Selecting this Notice of Assessment will allow you to apply for Supplementary Benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
             </div>
             <p class="mt-2 mb-1 font-weight-bolder">Enter your {{selectedNOAYear}} net income.</p>
             <CurrencyInput id="ah-net-income"

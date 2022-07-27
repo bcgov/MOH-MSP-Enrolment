@@ -10,9 +10,7 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Add personal information and upload documents</h1>
-        <h2>Account Holder information</h2>
-        <p>The MSP Account Holder is the person who submits the application for MSP enrolment. The Account Holder is responsible for the MSP account, including notifying HIBC of any account changes. These include changes of address, family structure or status in Canada.</p>
-        <p>Personal Health Number (PHN) is the number that appears on your BC Services Card.</p>
+        <h2>Applicant information</h2>
         <hr class="mt-0"/>
         <!-- Bootstrap row and column classes for gender tipbox placement -->
         <div class="row">
@@ -93,6 +91,7 @@
                 v-model="personalHealthNumber"
                 :required="true"
                 @blur="handleBlurField($v.personalHealthNumber)" />
+              <span class="field-description">This number appears on the BC Services Card</span>
               <div class="text-danger"
                 v-if="$v.personalHealthNumber.$dirty
                   && !$v.personalHealthNumber.required"
@@ -111,6 +110,7 @@
                 v-model="socialInsuranceNumber"
                 :required="true"
                 @blur="handleBlurField($v.socialInsuranceNumber)" />
+              <span class="field-description">Your SIN will be used to verify your income for Fair Pharmacare and Supplementary Benefits (as applicable)</span>
               <div class="text-danger"
                 v-if="$v.socialInsuranceNumber.$dirty
                   && !$v.socialInsuranceNumber.required"
@@ -189,7 +189,7 @@
         
         <div v-if="isCitizenshipDocsShown">
           <h2 class="mt-4">Documents</h2>
-          <p>Provide a copy of an accepted document that shows your status in Canada. If your name is different from the name on the ID, you must also upload a copy of a marriage certificate or name change certificate that shows your full legal name.</p>
+          <p>Provide a copy of an accepted document that shows your status in Canada. If your name is different from the name on the document, you must also upload a copy of a marriage certificate or name change certificate that shows your full legal name.</p>
           <hr/>
           <Select label="Document Type"
             id="citizen-support-document-type"
@@ -242,7 +242,7 @@
         </div>
 
         <div v-if="requestIsNameChanged">
-          <Radio label="Is your name different from the name on your ID?"
+          <Radio label="Is your name different from the name on your document?"
             id="name-change"
             name="name-change"
             class="mt-3"
@@ -572,6 +572,7 @@
                     placeholder="1111 111 111"
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField($v.previousPHN)"/>
+                  <span class="field-description">This number appears on the BC Services Card</span>
                   <div class="text-danger"
                     v-if="$v.previousPHN.$dirty
                       && !$v.previousPHN.phnValidator"

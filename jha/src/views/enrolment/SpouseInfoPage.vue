@@ -12,7 +12,7 @@
         <h1>Spouse information</h1>
         <div class="heading mt-3">
           <div>
-            <p>A spouse is a person married to or cohabiting in a marriage-like relationship with the applicant. A spouse may be the same gender as the Account Holder. To be eligible for MSP coverage, a spouse must be a B.C. resident. </p> 
+            <p>A spouse is a person married to or cohabiting in a marriage-like relationship with the applicant. A spouse may be the same gender as the applicant. To be eligible for MSP coverage, a spouse must be a B.C. resident. </p> 
             <p>Personal Health Number (PHN) is the number that appears on your spouse's BC Services Card.</p>
           </div>
           <div v-if="hasSpouse === 'Y'" class="ml-1 mb-2 remove-icon align-self-end " @click="removeSpouse()">
@@ -109,6 +109,7 @@
                   v-model="spousePersonalHealthNumber"
                   :required="true"
                   @blur="handleBlurField($v.spousePersonalHealthNumber)" />
+                <span class="field-description">This number appears on the BC Services Card</span>
                 <div class="text-danger"
                   v-if="$v.spousePersonalHealthNumber.$dirty
                     && !$v.spousePersonalHealthNumber.required"
@@ -130,6 +131,7 @@
                   v-model="spouseSocialInsuranceNumber"
                   :required="true"
                   @blur="handleBlurField($v.spouseSocialInsuranceNumber)" />
+                <span class="field-description">Your spouse’s SIN will be used to verify your income for Fair Pharmacare and Supplementary Benefits (as applicable)</span>
                 <div class="text-danger"
                   v-if="$v.spouseSocialInsuranceNumber.$dirty
                     && !$v.spouseSocialInsuranceNumber.required"
@@ -219,7 +221,7 @@
             </div>
             <div v-if="spouseStatusReason !== null && spouseStatusReason !== undefined" class="mt-3">
               <h2>Documents</h2>
-              <p>Provide a copy of an accepted document that shows your spouse’s status in Canada. If their name is different from the name on the ID, you must also upload a copy of a marriage certificate or name change certificate that shows their full legal name.</p>
+              <p>Provide a copy of an accepted document that shows your spouse’s status in Canada. If their name is different from the name on the document, you must also upload a copy of a marriage certificate or name change certificate that shows their full legal name.</p>
               <hr/>
               <Select 
                 label="Document Type"
@@ -271,7 +273,7 @@
               </div>
 
               <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
-                <Radio label="Is your spouse's name different from the name on their ID?"
+                <Radio label="Is your spouse's name different from the name on their document?"
                   id="name-change"
                   name="name-change"
                   class="mt-3 mb-3"
@@ -632,6 +634,7 @@
                       placeholder="1111 111 111"
                       @blur="handleBlurField($v.spousePreviousBCHealthNumber)"
                       :inputStyle='mediumStyles' />
+                    <span class="field-description">This number appears on the BC Services Card</span>
                     <div class="text-danger"
                       v-if="$v.spousePreviousBCHealthNumber.$dirty && !$v.spousePreviousBCHealthNumber.phnValidator"
                       aria-live="assertive">Personal Health Number is not valid.</div>

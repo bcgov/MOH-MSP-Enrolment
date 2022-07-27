@@ -9,12 +9,7 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
-        <EligibilityQuestionnaireHeader>
-        <h2>Medical Services Plan (MSP) Enrolment</h2>
-        <p>
-          MSP pays for medically required services of physicians and surgeons, and dental or oral surgery performed in a hospital. If you are a B.C. resident, you must by law enrol in MSP, and enrol your spouse and child(ren) who are B.C. residents. You must physically be in B.C. to enrol in MSP. If you are already enrolled in MSP, you can update your account at <a href="https://www.gov.bc.ca/managingyourmspaccount">gov.bc.ca/managingyourmspaccount</a>.
-        </p>
-        </EligibilityQuestionnaireHeader>
+        <h1>Medical Services Plan Eligibility</h1>
         <Radio
           id='apply-msp'
           name='apply-msp'
@@ -26,7 +21,7 @@
           <Radio
             id='live-in-bc'
             name='live-in-bc'
-            label='2. Do you currently live in British Columbia and have a B.C. address where you can receive mail?'
+            label='2. Do you currently live in B.C. and have a B.C. address where you can receive mail?'
             v-model='eqMSPLiveInBC'
             :required="true"
             :items='radioOptionsYesNo' />
@@ -63,16 +58,16 @@
                 <ContactInformation />
               </div>
               <div v-if="eqMSPStudentMinorRefugee === 'N'">
-                <p>5. To apply for MSP, you must upload a digital copy of one the IDs below for each person included in this application. The ID must show full legal name and legal status in Canada.</p>
+                <p>5. To apply for MSP, you must upload a digital copy of one the documents below for each person included in this application. The document must show full legal name and legal status in Canada.</p>
                 <IdTable />
                 <Radio 
                   id='has-documents'
                   name='has-documents'
-                  label='Do you have digital copies of ID for each person included in this application?'
+                  label='Do you have digital copies of the documents for each person included in this application?'
                   v-model='eqMSPHasDocuments'
                   :required="true"
                   :items='radioOptionsYesNo' />
-                <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">You must have digital copies of ID to apply for MSP using this form. If you are not able to make digital copies, you can apply with print copies using the printable form (HLTH 101) available at gov.bc.ca/AHDC.</p>
+                <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">You must have digital copies of the documents to apply for MSP using this form. If you are not able to make digital copies, you can apply with print copies using the printable form (HLTH 101) available at <a target="_blank" href="https://gov.bc.ca/AHDC">gov.bc.ca/AHDC</a>.</p>
               </div>
             </div>
           </div>
@@ -124,7 +119,6 @@ import {
 import IdTable from '@/components/IdTable.vue';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesMSP } from '@/constants/eqMsgCodes';
-import EligibilityQuestionnaireHeader from '@/components/EligibilityQuestionnaireHeader.vue';
 import ContactInformation from '@/components/ContactInformation.vue';
 
 const validateQuestionsAnswered = (_value, vm) => {
@@ -149,7 +143,6 @@ export default {
     PageContent,
     Radio,
     IdTable,
-    EligibilityQuestionnaireHeader,
     ContactInformation,
   },
   data: () => {
@@ -184,7 +177,7 @@ export default {
       },
       {
         id: 'no',
-        label: 'No: I am already enrolled. (Continue to Fair PharmaCare. You will need to provide your MSP Personal Health Number.)',
+        label: 'No, I am already enrolled. Continue to Fair PharmaCare. You will need to provide your MSP Personal Health Number.',
         value: 'N',
       },
     ];

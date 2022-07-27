@@ -9,19 +9,18 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
-        <EligibilityQuestionnaireHeader>
-        <h2>Supplementary Benefits</h2>
-        <p>
-          Supplementary Benefits provides partial payment for certain medical services, such as acupuncture and massage therapy, and may provide access to other income-based programs. Individuals or families must have an adjusted net income of $42,000 a year or less to be eligible.
-        </p>
-        </EligibilityQuestionnaireHeader>
+        <h1>Supplementary Benefits Eligibility</h1>
         <Radio
           id='apply-sb'
           name='apply-sb'
           label='1. Will you use this form to apply for Supplementary Benefits?'
           v-model='eqSBIsApplying'
           :required="true"
-          :items='radioOptionsYesNo' />
+          :items='radioOptionsYesNo' >
+          <template v-slot:description>
+            <span class="field-description">Note: If you or your spouse (who may not live in BC or Canada) earned income outside Canada during the most recent tax year, you must submit your application for Supplementary Benefits using the print form (HLTH 101) available <a target="_blank" href="https://gov.bc.ca/ahdc">here</a>.</span>
+          </template>  
+        </Radio>
         <div v-if="eqSBIsApplying === 'Y'">
           <p class="mb-0">2. To apply for Supplementary Benefits, you must:</p>
           <div class="ml-4">
@@ -115,7 +114,6 @@ import {
 } from '@/store/modules/enrolment-module';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesSB } from '@/constants/eqMsgCodes';
-import EligibilityQuestionnaireHeader from '@/components/EligibilityQuestionnaireHeader.vue';
 import ContactInformation from '@/components/ContactInformation.vue';
 
 const validateQuestionsAnswered = (_value, vm) => {
@@ -137,7 +135,6 @@ export default {
     ContinueBar,
     PageContent,
     Radio,
-    EligibilityQuestionnaireHeader,
     ContactInformation,
   },
   data: () => {
