@@ -63,11 +63,11 @@
                 <Radio 
                   id='has-documents'
                   name='has-documents'
-                  label='Do you have digital copies of document for each person included in this application?'
+                  label='Do you have digital copies of the documents for each person included in this application?'
                   v-model='eqMSPHasDocuments'
                   :required="true"
                   :items='radioOptionsYesNo' />
-                <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">You must have digital copies of documents to apply for MSP using this form. If you are not able to make digital copies, you can apply with print copies using the printable form (HLTH 101) available at <a target="_blank" href="https://gov.bc.ca/AHDC">gov.bc.ca/AHDC</a>.</p>
+                <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">You must have digital copies of the documents to apply for MSP using this form. If you are not able to make digital copies, you can apply with print copies using the printable form (HLTH 101) available at <a target="_blank" href="https://gov.bc.ca/AHDC">gov.bc.ca/AHDC</a>.</p>
               </div>
             </div>
           </div>
