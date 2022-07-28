@@ -36,4 +36,4 @@ The above-mentioned repo should be updated whenever secrets are updated and cont
 
 ## OpenShift Documentation
 
-For documentation regarding the OpenShift setup for web apps, refer to [WebAppResources.md](./WebAppResources.md). For a deep dive into a specific web app, refer to [jhaResources.md](./jhaResources.md). For documentation regarding the OpenShift setup for microservices, such as captcha-service, refer to [MicroServiceResources.md](./MicroServiceResources.md).
+For documentation regarding the OpenShift setup for web apps, refer to [webAppResources.md](./webAppResources.md). For a deep dive into a specific web app, refer to [jhaResources.md](./jhaResources.md). For documentation regarding the OpenShift setup for microservices, such as captcha-service, refer to [microservicesResources.md](./microservicesResources.md).
