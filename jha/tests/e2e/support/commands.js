@@ -25,6 +25,8 @@
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 import { padInteger } from '../helpers';
+import { SupportDocumentTypes } from '../../../src/constants/document-types';
+import { StatusInCanada } from '../../../src/constants/immigration-status-types';
 // NOTE: using cy.fixture for the sampe pdf multiple times has issues, using dir works better with selectFile
 const samplePDF = 'tests/e2e/fixtures/sample.pdf';
 const currentDate = new Date();
@@ -64,15 +66,15 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
     }
     cy.get('label[for=gender-x]').click();
 
-    cy.get('select#immigration-status').select('Canadian Citizen');
+    cy.get('select#immigration-status').select(StatusInCanada.Citizen);
     cy.get('label[for=-new-to-province]').click();
-    cy.get('select#citizen-support-document-type').select('Canadian Birth Certificate');
+    cy.get('select#citizen-support-document-type').select(SupportDocumentTypes.CanadianBirthCertificate);
     cy.get('label[for=gender-matches-no]').click();
 
     cy.get('input#citizenship-support-documents').selectFile(samplePDF, { force: true });
     cy.get('label[for=name-change-yes]').click();
 
-    cy.get('select#name-change-doc-type').select('Marriage Certificate');
+    cy.get('select#name-change-doc-type').select(SupportDocumentTypes.MarriageCertificate);
     cy.get('#name-change-support-documents').selectFile(samplePDF, { force: true });
 
     cy.get('label[for=is-moved-to-bc-permanently-yes]').click();
@@ -93,11 +95,11 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
     cy.get('input#departure-reason').type('vacation');
     cy.get('input#departure-location').type('bahamas');
 
-    cy.get('select#departure-begin-date-month').select(lastMonthDate.getMonth() + 1);
+    cy.get('select#departure-begin-date-month').select(String(lastMonthDate.getMonth()));
     cy.get('input#departure-begin-date-day').type(padInteger(lastMonthDate.getDate()));
     cy.get('input#departure-begin-date-year').type(lastMonthDate.getFullYear());
 
-    cy.get('select#departure-return-date-month').select(currentDate.getMonth() + 1);
+    cy.get('select#departure-return-date-month').select(String(currentDate.getMonth()));
     cy.get('input#departure-return-date-day').type(padInteger(currentDate.getDate()));
     cy.get('input#departure-return-date-year').type(currentDate.getFullYear());
 
@@ -118,7 +120,6 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
 
 Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   cy.visit('/')
-  cy.contains('h1', 'Eligibility Questionnaire');
 
   if (!options.includeMSP) {
     cy.get('label[for=apply-msp-no]').click();
@@ -131,7 +132,6 @@ Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   }
   cy.continue()
 
-  cy.contains('h1', 'Eligibility Questionnaire')
   if (!options.includeFPC) {
     cy.get('label[for=apply-fpc-no]').click();
   } else {
@@ -141,7 +141,6 @@ Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   }
   cy.continue()
 
-  cy.contains('h1', 'Eligibility Questionnaire')
   if (!options.includeSB) {
     cy.get('label[for=apply-sb-no]').click();
   } else {
@@ -181,15 +180,15 @@ Cypress.Commands.add('fillSpousePage', (options) => {
 
     cy.get('label[for=spouse-gender-x]').click();
 
-    cy.get('select#spouse-status').select('Permanent Resident')
+    cy.get('select#spouse-status').select(StatusInCanada.PermanentResident)
     cy.get('label[for=spouse-status-reason-new-to-country]').click();
-    cy.get('select#citizen-support-document-type').select('Confirmation of Permanent Residence');
+    cy.get('select#citizen-support-document-type').select(SupportDocumentTypes.PermanentResidentConfirmation);
 
     cy.get('label[for=spouse-gender-matches-no]').click();
 
     cy.get('input#spouse-citizenship-support-documents').selectFile(samplePDF, { force: true });
     cy.get('label[for=name-change-yes]').click();
-    cy.get('select#name-change-doc-type').select('Marriage Certificate');
+    cy.get('select#name-change-doc-type').select(SupportDocumentTypes.MarriageCertificate);
 
     cy.get('input#spouse-name-change-support-documents').selectFile(samplePDF, { force: true });
 
@@ -231,11 +230,11 @@ Cypress.Commands.add('fillChildPage', (options) => {
     cy.get('label[for=child-age-range-0-0-18]').click()
 
     cy.get('label[for=child-gender-0-male]').click()
-    cy.get('select#child-status-0').select('Canadian Citizen')
+    cy.get('select#child-status-0').select(StatusInCanada.Citizen)
 
     cy.get('label[for=child-status-reason-0-not-new]').click()
 
-    cy.get('select#citizen-support-document-type-0').select('Canadian Birth Certificate')
+    cy.get('select#citizen-support-document-type-0').select(SupportDocumentTypes.CanadianBirthCertificate)
     cy.get('label[for=gender-matches-0-yes]').click()
 
     cy.get('input#child-citizenship-support-documents-0').selectFile(samplePDF, { force: true });
@@ -292,6 +291,7 @@ Cypress.Commands.add('fillResidentialAddress', () => {
   cy.get('input#res-address-line1').type('123 fake st.')
   cy.get('input#res-city').type('duncan')
   cy.get('input#res-postal-code').type('V8P1A1')
+  cy.get('input#phone-input').type('555 555 5555')
   cy.continue()
 });
 
@@ -299,6 +299,7 @@ Cypress.Commands.add('fillMailingAddress', () => {
   cy.get('input#mail-address-line1').type('123 fake st.')
   cy.get('input#mail-city').type('duncan')
   cy.get('input#mail-postal-code').type('V8P1A1')
+  cy.get('input#phone-input').type('555 555 5555')
   cy.continue()
 });
 

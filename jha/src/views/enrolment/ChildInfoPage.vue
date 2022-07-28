@@ -8,11 +8,11 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Add child information and upload documents</h1>
-        <p>A child is a person who is under 19 years old and whose parent or legal guardian is the Account Holder and/or spouse. To be eligible for MSP coverage, a child must be a BC resident.</p>
-        <p>A Dependent Post-Secondary Student is a person 19 to 24 years old who is supported by the Account Holder and/or spouse; who is not married; and who is enrolled full-time in a recognized post-secondary institution (which can be an accredited trade school, technical school, or high school).</p>
-        <p>Personal Health Number (PHN) is the number that appears on the child’s BC Services Card </p>
+      <main class="container pt-3 pt-sm-5 mb-3">
+        <h1>Child information</h1>
+        <p>A child is under 19 years old, and the applicant is their parent or legal guardian.</p>
+        <p>A Dependent Post-Secondary Student is a 19- to 24-year-old who is supported by parent(s) or guardian(s), has no spouse, and is enrolled full-time in a recognized post-secondary institution.</p>
+        <p>Personal Health Number (PHN) is the number that appears on your child's BC Services Card.</p>
         <hr class="mt-0"/>
         <Radio v-if="hasChildren !== 'Y'"
                 label="Do you have a child who also needs to enrol for MSP coverage?"
@@ -21,6 +21,7 @@
                 class="mt-3"
                 v-model="hasChildren"
                 @blur="handleBlurField(v$.hasChildren)"
+                :required="true"
                 :items="radioOptionsNoYes" />
         <div class="text-danger"
           v-if="v$.hasChildren.$dirty && v$.hasChildren.required.$invalid"
@@ -52,7 +53,7 @@
               @updateChild="handleChildUpdate($event, index)" />
           </div>
         </div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar 
       @continue="validateFields()" 
@@ -209,7 +210,7 @@ export default {
       this.children.splice(index, 1);
     },
     getChildTitle(index) {
-      return 'Child #' + (index + 1) + ' basic information';
+      return 'Child ' + (index + 1) + ' information';
     },
     collapseChild(index) {
       this.children[index].collapsed = true;

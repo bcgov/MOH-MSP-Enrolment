@@ -8,55 +8,80 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
-        <h1>Eligibility Questionnaire</h1>
-        <p class="mb-0">You can use the British Columbia Application for Health Drug Coverage to apply for Medical Services Plan (MSP) enrolmnent, Fair PharmaCare, and/or MSP Supplementary Benefits.</p>
-        <p class="mt-0">Answering the following questions will help you determine which programs you are eligible for, and ensure you have the required documents and information to complete your application(s).</p>
-        <hr class="mt-0"/>
-        <h2>Fair PharmaCare</h2>
+      <main class="container pt-3 pt-sm-5 mb-3">
+        <h1>Fair PharmaCare Eligibility</h1>
         <Radio
           id='apply-fpc'
           name='apply-fpc'
-          label='1. Will you use the British Columbia Application for Health Drug Coverage to register for Fair PharmaCare?'
+          label='1. Will you use this form to apply for Fair PharmaCare?'
           v-model='eqFPCIsApplying'
+          :required="true"
           :items='radioOptionsApplyFPC' />
         <div v-if="eqFPCIsApplying === 'Y'">
-          <p class="mb-0">2. To register for Fair PharmaCare, you must:</p>
+          <p class="mb-0">2. To apply for Fair PharmaCare, you must:</p>
           <div class="ml-4">
-            <p class="mb-0">a. have been a resident of British Columbia for at least three months;</p>
-            <p class="mb-0">b. be registered with the Medical Services Plan (MSP); and</p>
-            <p>c. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
+            <p class="mb-0">a. be enrolled in MSP or be using this application form to also apply for MSP; and</p>
+            <p class="mb-0">b. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
           </div>
           <Radio
             id='meets-fpc-criteria'
             name='meets-fpc-criteria'
             label='Do you meet the above eligibility criteria?'
             v-model='eqFPCMeetsCriteria'
+            :required="true"
             :items='radioOptionsYesNo' />
-          <p class="text-danger ml-4" v-if="eqFPCMeetsCriteria === 'N'">You are not eligible to register for Fair PharmaCare at this time. Register after you have completed the required wait period and registered with the Medical Services Plan.  If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible.  When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</p>
+          <div class="text-danger ml-4" v-if="eqFPCMeetsCriteria === 'N'">
+            <p>
+              You are not eligible to apply for Fair PharmaCare at this time. 
+            </p>
+
+            <ul>
+              <li>
+                If you have not been a resident of B.C. for at least three months, apply after you have completed the required wait period. 
+              &nbsp;</li>
+              <li>
+                If you and/or your spouse did not file taxes with the CRA two years ago, do so as soon as possible. When you have submitted your tax return(s), apply for Fair PharmaCare. 
+              &nbsp;</li>
+              <li>
+                If you and/or your spouse were not able to file taxes with the CRA two years ago (because you did not live in Canada, were a minor, or were exempt from filing taxes), contact HIBC at:
+                <ContactInformation />
+              </li>
+            </ul>
+          </div>
           <div v-if="eqFPCMeetsCriteria === 'Y'">
-            <p class="mb-0">3. To register for Fair PharmaCare, you must include the following with your application:</p>
+            <p class="mb-0">3. To apply for Fair PharmaCare, you must provide the following information:</p>
             <div class="ml-4">
               <p class="mb-0">a. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
-              <p class="mb-0">b. Net Income shown on Line 23600 of your and if applicable, your spouse's CRA Notice of Assessment or federal income tax return for the relevant taxation year (two years before the current year); and</p>
-              <p>c. If you received income form a Registered Disability Savings Plan (RDSP), income shown on Line 12500 of your and if applicable, your spouse's CRA Notice of Assessment or federal income tax return for the relevant taxation year (two years before the current year). If you did not receive RDSP income, you will enter $0.</p>
+              <p class="mb-0">b. Net Income (Line 23600) from your and (if applicable) your spouse's CRA Notice of Assessment (NOA), Notice of Reassessment (NORA) or federal income tax return for the tax year two years before the current year; and</p>
+              <p>c. Registered Disability Savings Plan (RDSP) income (Line 12500) if applicable.</p>
             </div>
             <Radio
               id='has-fpc-info'
               name='has-fpc-info'
-              label='Do you have the above information to include with your application?'
+              label='Do you have this information to include with your application?'
               v-model='eqFPCHasInfo'
+              :required="true"
               :items='radioOptionsYesNo' />
-            <ul class="text-danger pl-4 ml-4" v-if="eqFPCHasInfo === 'N'">
-              <li>If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact Health Insurance BC.</li>
-              <li>If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible. When you have submitted your tax return(s), register your family for Fair PharmaCare.  If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.</li>
-            </ul>
+            <div class="text-danger pl-4 ml-4" v-if="eqFPCHasInfo === 'N'">
+              <p>
+                You must have this information to apply for Fair PharmaCare.
+              </p>
+              <ul>
+                <li>
+                  If you and/or your spouse do not have a Social Insurance Number, Contact Service Canada before you apply. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact HIBC at:
+                  <ContactInformation />
+                </li>
+                <li>
+                  If you and/or your spouse did not file taxes with the CRA two years ago, do so as soon as possible. When you have submitted your tax return(s), apply for Fair PharmaCare. If you and/or your spouse were not able to file taxes with the CRA two years ago (because you did not live in Canada, were a minor, or were exempt from filing taxes), contact HIBC.
+                &nbsp;</li>
+              </ul>
+            </div>
           </div>
         </div>
         <div class="text-danger"
           v-if="v$.eqFPCIsApplying.$dirty && v$.eqFPCIsApplying.validateQuestionsAnswered.$invalid"
           aria-live="assertive">Please complete the questionnaire to continue.</div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar
     @continue="validateFields()" />
@@ -98,6 +123,7 @@ import {
 } from '@/store/modules/enrolment-module';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { eqMsgCodesFPC } from '@/constants/eqMsgCodes';
+import ContactInformation from '@/components/ContactInformation.vue';
 
 const validateQuestionsAnswered = (_value, vm) => {
         if(!vm.eqFPCIsApplying
@@ -121,7 +147,8 @@ export default {
     ContinueBar,
     PageContent,
     Radio,
-  },
+    ContactInformation,
+},
   data: () => {
     return {
       isPageLoaded: false,
@@ -150,7 +177,7 @@ export default {
       },
       {
         id: 'no',
-        label: 'No: (continue to MSP Supplementary Benefits).',
+        label: 'No (Continue to Supplementary Benefits)',
         value: 'N',
       }
     ];

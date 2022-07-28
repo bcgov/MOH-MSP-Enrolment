@@ -7,7 +7,7 @@ export const generateRequestObject = () => {
     "phn": "9999999998",
     "gender": null,
     "birthDate": "2000-01-01",
-    "telephone": null,
+    "telephone": "5555555555",
     "addressLine1": "123 fake st.",
     "addressLine2": null,
     "addressLine3": null,
@@ -25,7 +25,7 @@ export const generateRequestObject = () => {
       "lastName": "doe",
       "gender": null,
       "birthDate": "1990-06-20",
-      "telephone": null,
+      "telephone": "5555555555",
       "sin": "195544135",
       "phn": "9348671676"
     },

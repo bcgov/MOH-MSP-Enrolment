@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
 
         <div class="box-border border border-danger rounded">
           <div class="row align-items-center">
@@ -17,7 +17,7 @@
           </div>
         </div>
 
-      </div>
+      </main>
     </PageContent>
   </div>
 </template>

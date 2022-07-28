@@ -1,7 +1,7 @@
 <template>
   <div>
     <PageContent>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <div class="row align-items-end mt-3">
           <div class="col-9">
             <h1 class="mb-0">Confirmation of Submission</h1>
@@ -76,13 +76,13 @@
         <h3 class="mt-4">Next Steps</h3>
         <hr/>
         <ul>
-          <li>Please <a href="javascript:void(0)" @click="printPage()" class="print-link">print</a> this page for your records.</li>
-          <li>Health Insurance BC will send you a letter following cancellation of MSP coverage.</li>
-          <li>Please contact <a href="https://www2.gov.bc.ca/gov/content/health/about-bc-s-health-care-system/partners/health-insurance-bc" target="_blank">Health Insurance BC</a> if you have any questions.</li>
+          <li>Please <a href="javascript:void(0)" @click="printPage()" class="print-link">print</a> this page for your records.&nbsp;</li>
+          <li>Health Insurance BC will send you a letter following cancellation of MSP coverage.&nbsp;</li>
+          <li>Please contact <a href="https://www2.gov.bc.ca/gov/content/health/about-bc-s-health-care-system/partners/health-insurance-bc" target="_blank">Health Insurance BC</a> if you have any questions.&nbsp;</li>
         </ul>
 
         <ReviewTableList className='mt-5 mb-5' />
-      </div>
+      </main>
     </PageContent>
   </div>
 </template>

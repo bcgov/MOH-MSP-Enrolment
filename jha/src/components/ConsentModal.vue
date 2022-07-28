@@ -162,11 +162,11 @@ export default {
     mspNoticeTitle() {
       if (this.$store.state.enrolmentModule.isApplyingForMSP
         && this.$store.state.enrolmentModule.isApplyingForSuppBen) {
-        return 'MEDICAL SERVICES PLAN (MSP) AND MSP SUPPLEMENTARY BENEFITS';
+        return 'MEDICAL SERVICES PLAN (MSP) AND SUPPLEMENTARY BENEFITS';
       } else if (this.$store.state.enrolmentModule.isApplyingForMSP) {
         return 'MEDICAL SERVICES PLAN (MSP)';
       } else if (this.$store.state.enrolmentModule.isApplyingForSuppBen) {
-        return 'MSP SUPPLEMENTARY BENEFITS';
+        return 'SUPPLEMENTARY BENEFITS';
       }
       return '';
     }

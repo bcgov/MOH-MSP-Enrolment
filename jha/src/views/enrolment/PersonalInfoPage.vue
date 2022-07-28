@@ -8,11 +8,9 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Add personal information and upload documents</h1>
-        <h2>Account Holder basic information</h2>
-        <p>The MSP Account Holder is the person who submits the application for MSP coverage. The Account Holder is responsible for the MSP account, including notifying HIBC of any account changes (such as a change of address, family structure or status in Canada).</p>
-        <p>Personal Health Number (PHN) is the number that appears on the Account Holder's BC Services Card.</p>
+        <h2>Applicant information</h2>
         <hr class="mt-0"/>
         <!-- Bootstrap row and column classes for gender tipbox placement -->
         <div class="row">
@@ -20,8 +18,9 @@
             <Input label="First name"
               id="first-name"
               v-model="firstName"
-              maxlength="30"
+              :maxlength="firstNameMaxLength"
               :inputStyle="mediumStyles"
+              :required="true"
               @blur="handleBlurField(v$.firstName)" />
             <div class="text-danger"
               v-if="v$.firstName.$dirty
@@ -35,7 +34,7 @@
               id="middle-name"
               class="mt-3"
               v-model="middleName"
-              maxlength="30"
+              :maxlength="middleNameMaxLength"
               :inputStyle="mediumStyles"
               @blur="handleBlurField(v$.middleName)" />
             <div class="text-danger"
@@ -46,6 +45,7 @@
               id="last-name"
               class="mt-3"
               v-model="lastName"
+              :required="true"
               maxlength="30"
               :inputStyle="mediumStyles"
               @blur="handleBlurField(v$.lastName)" />
@@ -61,6 +61,7 @@
               id="birthdate"
               class="mt-3"
               v-model="birthdate"
+              :required="true"
               :watchForModelChange="true"
               :useInvalidState="true"
               @blur="handleBlurField(v$.birthdate)"
@@ -88,7 +89,9 @@
                 placeholder="1111 111 111"
                 :inputStyle="smallStyles"
                 v-model="personalHealthNumber"
+                :required="true"
                 @blur="handleBlurField(v$.personalHealthNumber)" />
+              <span class="field-description">This number appears on the BC Services Card</span>
               <div class="text-danger"
                 v-if="v$.personalHealthNumber.$dirty
                   && v$.personalHealthNumber.required.$invalid"
@@ -105,7 +108,9 @@
                 placeholder="111 111 111"
                 :inputStyle="smallStyles"
                 v-model="socialInsuranceNumber"
+                :required="true"
                 @blur="handleBlurField(v$.socialInsuranceNumber)" />
+              <span class="field-description">Your SIN will be used to verify your income for Fair Pharmacare and Supplementary Benefits (as applicable)</span>
               <div class="text-danger"
                 v-if="v$.socialInsuranceNumber.$dirty
                   && v$.socialInsuranceNumber.required.$invalid"
@@ -121,6 +126,7 @@
                 name="gender"
                 class="mt-3"
                 v-model="gender"
+                :required="true"
                 :items="genderOptions"
                 @blur="handleBlurField(v$.gender)" />
               <div class="text-danger"
@@ -132,21 +138,21 @@
           <div class="col-md-5 d-flex align-items-end">
             <TipBox v-if="requestGender">
               <p>Tip</p>
-              <p>If the gender you select does not match the gender on your supporting document(s), you must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
-              <p>For more information see BC Services Card: <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
+              <p>If the gender you select does not match the gender on your supporting document(s), you must submit an application for change of gender designation. For more information see <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a>.</p>
             </TipBox>
           </div>
         </div>
         
         <div v-if="requestImmigrationStatus">
           <h2 class="mt-4">Your status in Canada</h2>
-          <p>Please provide your immigration status information. You will be required to upload documents to support your status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select 'Temporary Permit Holder or Diplomat' from the drop down below.</p>
+          <p>Provide your immigration status. You will need to upload documents that show your status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select 'Temporary Permit Holder or Diplomat' from the menu below.</p>
           <hr/>
           <Select label="Immigration status in Canada"
             id="immigration-status"
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
             v-model="citizenshipStatus"
+            :required="true"
             :options="citizenshipStatusOptions"
             :inputStyle="mediumStyles"
             @blur="handleBlurField(v$.citizenshipStatus)"/>
@@ -159,6 +165,7 @@
             <Radio name="citizen-status-reason"
               class="mt-3"
               v-model="citizenshipStatusReason"
+              :required="true"
               :items="citizenshipStatusReasonOptions"
               @blur="handleBlurField(v$.citizenshipStatusReason)" />
             <div class="text-danger"
@@ -170,6 +177,7 @@
             <Radio name="citizen-status-reason"
               class="mt-3"
               v-model="citizenshipStatusReason"
+              :required="true"
               :items="temporaryResidentStatusReasonOptions"
               @blur="handleBlurField(v$.citizenshipStatusReason)" />
             <div class="text-danger"
@@ -181,13 +189,14 @@
         
         <div v-if="isCitizenshipDocsShown">
           <h2 class="mt-4">Documents</h2>
-          <p>Provide one of the required documents to support your status in Canada. If your name has changed since your ID was issued you are also required to upload document to support the name change.</p>
+          <p>Provide a copy of an accepted document that shows your status in Canada. If your name is different from the name on the document, you must also upload a copy of a marriage certificate or name change certificate that shows your full legal name.</p>
           <hr/>
           <Select label="Document Type"
             id="citizen-support-document-type"
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
             v-model="citizenshipSupportDocumentType"
+            :required="true"
             :options="citizenshipSupportDocumentsOptions"
             :inputStyle="mediumStyles"
             @blur="handleBlurField(v$.citizenshipSupportDocumentType)" />
@@ -196,11 +205,12 @@
               && v$.citizenshipSupportDocumentType.$invalid"
             aria-live="assertive">Document Type is required.</div>
           <Radio
-            label="Does your document that supports your status in Canada include your selected gender designation?" 
+            label="Does the document that shows your status in Canada match your selected gender designation?" 
             name="gender-matches"
             id="gender-matches"
             class="mt-3"
             v-model="genderMatches"
+            :required="true"
             :items="radioOptionsNoYes"
             @blur="handleBlurField(v$.genderMatches)" />
           <div class="text-danger"
@@ -209,7 +219,7 @@
             aria-live="assertive">This field is required.</div>
           <div v-if="citizenshipSupportDocumentType && genderMatches"
             class="mt-3">
-            <h2 class="mt-4">{{citizenshipSupportDocumentType}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+            <h2 class="mt-4">{{ supportDocumentTypeToTitle(citizenshipSupportDocumentType)}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
             <hr/>
             <div class="row">
               <div class="col-md-7">
@@ -232,11 +242,12 @@
         </div>
 
         <div v-if="requestIsNameChanged">
-          <Radio label="Has your name changed since your ID was issued due to marriage or a legal name change?"
+          <Radio label="Is your name different from the name on your document?"
             id="name-change"
             name="name-change"
             class="mt-3"
             v-model="isNameChanged"
+            :required="true"
             :items="radioOptionsNoYes"
             @blur="handleBlurField(v$.isNameChanged)" />
           <div class="text-danger"
@@ -247,11 +258,7 @@
         <div v-if="requestNameChangedDocs"
           class="tabbed-section mt-3">
           <h2 class="mt-4">Additional Documents</h2>
-          <p>Provide one of the required documents to support your name change.</p>
-          <ul>
-            <li>Marriage Certificate</li>
-            <li>Legal Name Change Certificate</li>
-          </ul>
+          <p>Provide a copy of a marriage certificate or name change certificate that shows your full legal name.</p>
           <hr/>
           <Select label="Document Type"
             id="name-change-doc-type"
@@ -259,6 +266,7 @@
             :disablePlaceholder="true"
             class="mt-3"
             v-model="nameChangeSupportDocumentType"
+            :required="true"
             :options="nameChangeSupportDocumentOptions"
             :inputStyle="mediumStyles"
             @blur="handleBlurField(v$.nameChangeSupportDocumentType)"/>
@@ -290,7 +298,7 @@
         </div>
 
         <div v-if="isMovingInformationShown">
-          <h2 class="mt-4">Moving Information</h2>
+          <h2 class="mt-4">Residency Information</h2>
           <hr class="mb-0"/>
           <div class="row">
             <div class="col-md-7">
@@ -300,6 +308,7 @@
                   class="mt-3"
                   maxlength="25"
                   v-model="fromProvinceOrCountry"
+                  :required="true"
                   :inputStyle="mediumStyles"
                   @blur="handleBlurField(v$.fromProvinceOrCountry)"/>
                 <div class="text-danger"
@@ -313,6 +322,7 @@
                   name="has-live-in-bc-since-birth"
                   class="mt-3"
                   v-model="hasLivedInBCSinceBirth"
+                  :required="true"
                   :items="radioOptionsNoYes"
                   @blur="handleBlurField(v$.hasLivedInBCSinceBirth)"/>
                 <div class="text-danger"
@@ -326,6 +336,7 @@
                   name="is-moved-to-bc-permanently"
                   class="mt-3"
                   v-model="isMovedToBCPermanently"
+                  :required="true"
                   :items="radioOptionsNoYes"
                   @blur="handleBlurField(v$.isMovedToBCPermanently)"/>
                 <div class="text-danger"
@@ -344,6 +355,7 @@
                     country="Canada"
                     defaultOptionLabel="Please select a province"
                     v-model="moveFromOrigin"
+                    :required="true"
                     :disablePlaceholder="true"
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField(v$.moveFromOrigin)"/>
@@ -362,6 +374,7 @@
                     class="mt-3"
                     defaultOptionLabel="Please select a jurisdiction"
                     v-model="moveFromOrigin"
+                    :required="true"
                     :inputStyle="mediumStyles"
                     :disablePlaceholder="true"
                     @blur="handleBlurField(v$.moveFromOrigin)"/>
@@ -379,6 +392,7 @@
                     id="arrival-date-in-bc"
                     class="mt-3"
                     v-model="arrivalDateInBC"
+                    :required="true"
                     @blur="handleBlurField(v$.arrivalDateInBC)"
                     @processDate="handleProcessDateArrivalInBC($event)" />
                   <div class="text-danger"
@@ -408,6 +422,7 @@
                     id="arrival-date-in-canada"
                     class="mt-3"
                     v-model="arrivalDateInCanada"
+                    :required="isArrivalDateInCanadaRequired"
                     @blur="handleBlurField(v$.arrivalDateInCanada)"
                     @processDate="handleProcessDateArrivalInCanada($event)" />
                   <div class="text-danger"
@@ -449,6 +464,7 @@
                     id="outside-bc-12-months"
                     name="outside-bc-12-months"
                     v-model="isOutsideBCInLast12Months"
+                    :required="true"
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField(v$.isOutsideBCInLast12Months)">
                     <template v-slot:description>
@@ -466,6 +482,7 @@
                     id="departure-reason"
                     class="mt-3"
                     v-model="departureReason"
+                    :required="true"
                     maxlength="20"
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField(v$.departureReason)" />
@@ -481,6 +498,7 @@
                     id="departure-location"
                     class="mt-3"
                     v-model="departureLocation"
+                    :required="true"
                     maxlength="20"
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField(v$.departureLocation)" />
@@ -497,6 +515,7 @@
                     class="mt-3"
                     v-model="departureBeginDate"
                     @blur="handleBlurField(v$.departureBeginDate)"
+                    :required="true"
                     @processDate="handleProcessDateDepartureBegin($event)" />
                   <div class="text-danger"
                     v-if="v$.departureBeginDate.$dirty
@@ -515,6 +534,7 @@
                     class="mt-3"
                     v-model="departureReturnDate"
                     @blur="handleBlurField(v$.departureReturnDate)"
+                    :required="true"
                     @processDate="handleProcessDateDepartureReturn($event)" />
                   <div class="text-danger"
                     v-if="v$.departureReturnDate.$dirty
@@ -535,6 +555,7 @@
                     id="has-previous-phn"
                     name="has-previous-phn"
                     v-model="hasPreviousPHN"
+                    :required="true"
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField(v$.hasPreviousPHN)"/>
                   <div class="text-danger"
@@ -551,6 +572,7 @@
                     placeholder="1111 111 111"
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField(v$.previousPHN)"/>
+                  <span class="field-description">This number appears on the BC Services Card</span>
                   <div class="text-danger"
                     v-if="v$.previousPHN.$dirty
                       && v$.previousPHN.phnValidator.$invalid"
@@ -562,6 +584,7 @@
                     id="is-released-from-armed-forces"
                     name="is-released-from-armed-forces"
                     v-model="isReleasedFromArmedForces"
+                    :required="true"
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField(v$.isReleasedFromArmedForces)"/>
                   <div class="text-danger"
@@ -576,6 +599,7 @@
                     class="mt-3"
                     v-model="armedForcesDischargeDate"
                     @blur="handleBlurField(v$.armedForcesDischargeDate)"
+                    :required="true"
                     @processDate="handleProcessDateArmedForcesDischarge($event)"/>
                   <div class="text-danger"
                     v-if="v$.armedForcesDischargeDate.$dirty
@@ -605,6 +629,7 @@
                     id="is-student"
                     name="is-student"
                     v-model="isStudent"
+                    :required="true"
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField(v$.isStudent)"/>
                   <div class="text-danger"
@@ -614,11 +639,12 @@
                 </div>
                 <div v-if="requestWillStudentResideInBC"
                   class="tabbed-section">
-                  <Radio label="Will you reside in B.C. upon completion of your studies?"
+                  <Radio label="Will you reside in B.C. on completion of your studies?"
                     id="will-student-reside-in-bc"
                     name="will-student-reside-in-bc"
                     class="mt-3"
                     v-model="willStudentResideInBC"
+                    :required="true"
                     :items="radioOptionsNoYes"
                     @blur="handleBlurField(v$.willStudentResideInBC)"/>
                   <div class="text-danger"
@@ -639,7 +665,7 @@
             </div>
           </div>
         </div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
     <Teleport v-if="isInfoCollectionNoticeOpen"
@@ -758,6 +784,7 @@ import {
   optionalInvalidDateValidator,
   reasonDestinationContentValidator,
 } from '@/helpers/validators';
+import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import {
   CanadianStatusReasons,
   StatusInCanada,
@@ -776,6 +803,7 @@ import {
   subYears,
 } from 'date-fns';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
+import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
 
 const birthdate16YearsValidator = (value) => {
   const sixteenYearsAgo = subYears(startOfToday(), 16);
@@ -841,6 +869,8 @@ export default {
   data: () => {
     return {
       isPageLoaded: false,
+      firstNameMaxLength,
+      middleNameMaxLength,
       // Constants.
       StatusInCanada,
       CanadianStatusReasons,
@@ -1104,6 +1134,7 @@ export default {
       this.saveData();
       this.navigateToNextPage();
     },
+    supportDocumentTypeToTitle,
     saveData() {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_FIRST_NAME}`, this.firstName);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_MIDDLE_NAME}`, this.middleName);

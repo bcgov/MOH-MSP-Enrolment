@@ -1,4 +1,5 @@
 import { formatISODate } from 'common-lib-vue';
+import { SupportDocumentTypes } from '../../../src/constants/document-types';
 
 export const generateRequestObject = () => {
   const currentDate = new Date();
@@ -14,7 +15,7 @@ export const generateRequestObject = () => {
     "phn": null,
     "gender": "X",
     "birthDate": "2000-01-01",
-    "telephone": null,
+    "telephone": "5555555555",
     "addressLine1": "123 fake st.",
     "addressLine2": null,
     "addressLine3": null,
@@ -33,7 +34,7 @@ export const generateRequestObject = () => {
       "lastName": "doe",
       "gender": "X",
       "birthDate": "1990-06-20",
-      "telephone": null,
+      "telephone": "5555555555",
       "sin": null,
       "phn": null
     },
@@ -132,14 +133,14 @@ export const generateRequestObject = () => {
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "95d272ee-b5ce-45c2-8dfb-3b0979d86068",
           "attachmentOrder": "1",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "3984a7ec-7a20-46d1-bfb6-5c986d4bb052",
           "attachmentOrder": "2",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         },
         {
           "contentType": "IMAGE_JPEG",
@@ -188,14 +189,14 @@ export const generateRequestObject = () => {
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "4c502613-0298-4f48-a9aa-23831038e247",
           "attachmentOrder": "9",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "033350b3-3ff8-483f-9095-aab0af58f44c",
           "attachmentOrder": "10",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         }
       ]
     }

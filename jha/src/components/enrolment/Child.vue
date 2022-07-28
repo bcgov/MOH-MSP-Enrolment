@@ -5,24 +5,26 @@
         <div class="col-md-7">
           <div v-if="requestAgeRange">
             <Radio
-              label='How old is the child?'
+              label='How old is your child?'
               :id="'child-age-range-' + index"
               :name="'child-age-range-' + index"
               v-model='ageRange'
               @blur="handleBlurField(v$.ageRange)"
+              :required="true"
               className="mt-3"
               :items='radioChildAgeOptions'
             />
             <div class="text-danger"
               v-if="v$.ageRange.$dirty && v$.ageRange.required.$invalid"
-              aria-live="assertive">Please indicate the child's age range.</div>
+              aria-live="assertive">Please indicate your child's age range.</div>
           </div>
           <Input label='First name'
             :id="'child-first-name-' + index"
             className='mt-3'
-            maxlength="30"
             @blur="handleBlurField(v$.firstName)"
+            :maxlength="firstNameMaxLength"
             v-model='firstName'
+            :required="true"
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="v$.firstName.$dirty && v$.firstName.required.$invalid"
@@ -33,8 +35,8 @@
           <Input label='Middle name (optional)'
             :id="'child-middle-name-' + index"
             className='mt-3'
-            maxlength="30"
             @blur="handleBlurField(v$.middleName)"
+            :maxlength="middleNameMaxLength"
             v-model='middleName'
             :inputStyle='mediumStyles' />
           <div class="text-danger"
@@ -46,6 +48,7 @@
             maxlength="30"
             @blur="handleBlurField(v$.lastName)"
             v-model='lastName'
+            :required="true"
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="v$.lastName.$dirty && v$.lastName.required.$invalid"
@@ -58,7 +61,8 @@
             className='mt-3'
             @blur="handleBlurField(v$.birthDate)"
             @processDate="handleProcessBirthdate($event)"
-            v-model='birthDate' />
+            v-model='birthDate'
+            :required="true" />
           <div class="text-danger"
             v-if="v$.birthDate.$dirty && v$.birthDate.required.$invalid"
             aria-live="assertive">Birthate is required.</div>
@@ -93,7 +97,9 @@
               placeholder="1111 111 111"
               :inputStyle="smallStyles"
               v-model="personalHealthNumber"
+              :required="true"
               @blur="handleBlurField(v$.personalHealthNumber)" />
+            <span class="field-description">This number appears on the BC Services Card</span>
             <div class="text-danger"
               v-if="v$.personalHealthNumber.$dirty && v$.personalHealthNumber.required.$invalid"
               aria-live="assertive">Personal Health Number is required.</div>
@@ -110,32 +116,34 @@
               :id="'child-gender-' + index"
               :name="'child-gender-' + index"
               v-model='gender'
+              :required="true"
               className="mt-3"
               @blur="handleBlurField(v$.gender)"
               :items='radioGenderOptions'/>
             <div class="text-danger"
               v-if="v$.gender.$dirty && v$.gender.required.$invalid"
-              aria-live="assertive">Please indicate the child's gender.</div>
+              aria-live="assertive">Please indicate your child's gender.</div>
           </div>
         </div>
         <div class="col-md-5 d-flex flex-column justify-content-between">
           <TipBox class="mb-3" v-if="requestAgeRange">
             <p>Tip</p>
-            <p>You can include your 19 to 24 year old child on your MSP account if they are enrolled in full-time studies.</p>
+            <p>You can include your 19- to 24-year-old child on your MSP account if they are enrolled in full-time studies.</p>
             <p>If your child is 19 to 24 and not in full-time studies, they must apply separately for their own MSP coverage.</p>
-            <p>If your child is 25 years or older, they must apply separately for their own MSP coverage.</p>
+            <p>If your child is 25 or older, they must apply separately for their own MSP coverage.</p>
           </TipBox>
           <TipBox v-if="requestGender">
             <p>Tip</p>
-            <p>If the gender you select does not match the gender on your supporting document(s), you must submit an Application for Change of Gender Designation or Request for Waiver of Parental Consent (Minor) below.</p>
-            <p>For more information see BC Services Card: <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a></p>
+            <p>
+              If the gender you select does not match the gender on your child's supporting document(s), they must submit an application for change of gender designation. For more information see <a href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information" target="_blank">Change Your Personal Information</a>.
+            </p>
           </TipBox>
         </div>
       </div>
 
       <div v-if="requestImmigrationStatus">
         <h2 class="mt-3">Child's status in Canada</h2>
-        <p>Please provide child immigration status information. You will be required to upload documents to support your status in Canada.</p>
+        <p>Provide your child's immigration status. You will need to upload documents that show your child's status in Canada.</p>
         <hr />
         <Select 
           :id="'child-status-' + index"
@@ -146,11 +154,12 @@
           :disablePlaceholder="true"
           @blur="handleBlurField(v$.status)"
           v-model='status'
+          :required="true"
           :options='citizenshipStatusOptions'
           :inputStyle='mediumStyles'/>
         <div class="text-danger"
           v-if="v$.status.$dirty && v$.status.required.$invalid"
-          aria-live="assertive">Please select the child's immigration status.</div>
+          aria-live="assertive">Please select your child's immigration status.</div>
         <div v-if="status === statusOptions.Citizen || status === statusOptions.PermanentResident">
           <Radio
             :id="'child-status-reason-' + index"
@@ -158,6 +167,7 @@
             label=''
             v-model='statusReason'
             @blur="handleBlurField(v$.statusReason)"
+            :required="true"
             :items='citizenshipStatusReasonOptions' />
           <div class="text-danger"
             v-if="v$.statusReason.$dirty && !v$.statusReason.required"
@@ -170,6 +180,7 @@
             label=''
             v-model='statusReason'
             @blur="handleBlurField(v$.statusReason)"
+            :required="true"
             :items='temporaryResidentStatusReasonOptions' />
           <div class="text-danger"
             v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
@@ -182,6 +193,7 @@
             label=''
             v-model='statusReason'
             @blur="handleBlurField(v$.statusReason)"
+            :required="true"
             :items='overageChildTemporaryResidentStatusReasonOptions' />
           <div class="text-danger"
             v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
@@ -189,7 +201,7 @@
         </div>
         <div v-if="statusReason !== null && statusReason !== undefined" class="mt-3">
           <h2>Documents</h2>
-          <p>Provide one of the required documents to support your status in Canada. If the child's name has changed since your ID was issued you are also required to upload document to support the name change.</p>
+          <p>Provide a copy of an accepted document that shows your child’s status in Canada. If their name is different from the name on the document, you must also upload a copy of a name change certificate that shows their full legal name.</p>
           <hr/>
           <Select 
             label="Document Type"
@@ -200,17 +212,19 @@
             :disablePlaceholder="true"
             v-model="citizenshipSupportDocumentType"
             @blur="handleBlurField(v$.citizenshipSupportDocumentType)"
+            :required="true"
             :options="citizenshipSupportDocumentOptions"
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="v$.citizenshipSupportDocumentType.$dirty && v$.citizenshipSupportDocumentType.required.$invalid"
             aria-live="assertive">Document Type is required.</div>
           <Radio
-            label="Does the child's document that supports their status in Canada include their selected gender designation?" 
+            label="Does the document that shows your child's status in Canada match their selected gender designation?" 
             :name="'gender-matches-' + index"
             :id="'gender-matches-' + index"
             class="mt-3"
             v-model="genderMatches"
+            :required="true"
             :items="radioOptionsNoYes"
             @blur="handleBlurField(v$.genderMatches)" />
           <div class="text-danger"
@@ -218,7 +232,7 @@
               && v$.genderMatches.required.$invalid"
             aria-live="assertive">This field is required.</div>
           <div v-if="citizenshipSupportDocumentType && genderMatches">
-            <h2>{{citizenshipSupportDocumentType}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+            <h2>{{ supportDocumentTypeToTitle(citizenshipSupportDocumentType)}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
             <hr/>
             <div class="row">
               <div class="col-md-7">
@@ -239,20 +253,21 @@
           </div>
 
           <div v-if="citizenshipSupportDocumentType && genderMatches">
-            <Radio label="Has the child's name changed since their ID was issued due to marriage or legal name change?"
+            <Radio label="Is your child's name different from the name on their document?"
               :id="'name-change-' + index"
               :name="'name-change-' + index"
               class="mt-3 mb-3"
               v-model="isNameChanged"
+              :required="true"
               @blur="handleBlurField(v$.isNameChanged)"
               :items="radioOptionsNoYes" />
             <div class="text-danger"
               v-if="v$.isNameChanged.$dirty && v$.isNameChanged.required.$invalid"
-              aria-live="assertive">Please indicate if the child's name changed.</div>
+              aria-live="assertive">Please indicate if your child's name changed.</div>
           </div>
           <div v-if="isNameChanged === 'Y'" class="tabbed-section">
             <h2>Additional Documents</h2>
-            <p>Provide one of the required documents to support the child's name change.</p>
+            <p>Provide a copy of a name change certificate that shows your child's full legal name.</p>
             <hr/>
             <Select 
               label="Document Type"
@@ -263,6 +278,7 @@
               :disablePlaceholder="true"
               v-model="nameChangeSupportDocumentType"
               @blur="handleBlurField(v$.nameChangeSupportDocumentType)"
+              :required="true"
               :options="nameChangeSupportDocumentOptions"
               :inputStyle='mediumStyles' />
             <div class="text-danger"
@@ -298,16 +314,17 @@
               <div class="col-md-7">
               <div v-if="showLivedInBCSinceBirth">
                   <Radio 
-                    label='Has the child lived in B.C. since birth?'
+                    label='Has your child lived in B.C. since birth?'
                     :id="'lived-in-bc-' + index"
                     :name="'lived-in-bc-' + index"
                     v-model='livedInBCSinceBirth'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField(v$.livedInBCSinceBirth)"
                     :items='radioOptionsNoYes' />
                   <div class="text-danger"
                     v-if="v$.livedInBCSinceBirth.$dirty && v$.livedInBCSinceBirth.required.$invalid"
-                    aria-live="assertive">Please indicate whether the child has lived in B.C. since birth.</div>
+                    aria-live="assertive">Please indicate whether your child has lived in B.C. since birth.</div>
               </div>
               <div v-if="showOriginTextField">
                   <Input 
@@ -316,6 +333,7 @@
                     maxlength="25"
                     v-model="moveFromOrigin"
                     @blur="handleBlurField(v$.moveFromOrigin)"
+                    :required="true"
                     :inputStyle='mediumStyles' />
                   <div class="text-danger"
                     v-if="v$.moveFromOrigin.$dirty && v$.moveFromOrigin.required.$invalid"
@@ -326,19 +344,21 @@
               </div>
               <div v-if="showMovedPermanentlyQuestion">
                   <Radio
-                    label='Has the child moved to B.C. permanently?'
+                    label='Has your child moved to B.C. permanently?'
                     :id="'permanent-move-' + index"
                     :name="'permanent-move-' + index"
                     v-model='madePermanentMove'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField(v$.madePermanentMove)"
                     :items='radioOptionsNoYes'/>
                   <div class="text-danger"
                     v-if="v$.madePermanentMove.$dirty && v$.madePermanentMove.required.$invalid"
-                    aria-live="assertive">Please indicate whether the child has made a permanent move to B.C.</div>
+                    aria-live="assertive">Please indicate whether your child has made a permanent move to B.C.</div>
                   <div class="text-danger"
                     v-if="madePermanentMove === 'N' && status !== statusOptions.TemporaryResident"
-                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, the child is not eligible for enrolment in the Medical Services Plan. Please contact <a target="_blank" href="http://www2.gov$.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.</div>
+                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your child is not eligible for enrolment in the Medical Services Plan. Please contact <a target="_blank" href="http://www2.go$v.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.
+                  </div>
               </div>
               <div v-if="madePermanentMove !== 'N' || status === statusOptions.TemporaryResident">
                   <div v-if="showProvinceSelector">
@@ -346,8 +366,9 @@
                     className="mt-3"
                     :id="'province-select-' + index"
                     :name="'province-select-' + index"
-                    label="Which province is the child moving from?" 
+                    label="Which province is your child moving from?" 
                     v-model="moveFromOrigin"
+                    :required="true"
                     :disablePlaceholder="true"
                     defaultOptionLabel="Please select a province"
                     @blur="handleBlurField(v$.moveFromOrigin)"
@@ -366,8 +387,9 @@
                       className="mt-3"
                       :id="'country-select-' + index"
                       :name="'country-select-' + index"
-                      label="Which jurisdiction is the child moving from?" 
+                      label="Which jurisdiction is your child moving from?" 
                       v-model="moveFromOrigin"
+                      :required="true"
                       :disablePlaceholder="true"
                       defaultOptionLabel="Please select a jurisdiction"
                       @blur="handleBlurField(v$.moveFromOrigin)"
@@ -389,6 +411,7 @@
                       className='mt-3'
                       v-model='recentBCMoveDate'
                       @blur="handleBlurField(v$.recentBCMoveDate)"
+                      :required="true"
                       @processDate="handleProcessDateBCMove($event)" />
                     <div v-if="bcMoveDateLabel === 'Most recent move to B.C.'">
                       <div class="text-danger"
@@ -411,7 +434,7 @@
                           && !v$.recentBCMoveDate.dateDataValidator.$invalid
                           && !v$.recentBCMoveDate.pastDateValidator.$invalid
                           && v$.recentBCMoveDate.beforeBirthdateValidator.$invalid"
-                        aria-live="assertive">The child's most recent move to B.C. cannot be before the child's date of birth.</div>
+                        aria-live="assertive">Your child's most recent move to B.C. cannot be before your child's date of birth.</div>
                       <div class="text-danger"
                         v-if="v$.recentBCMoveDate.$dirty
                           && !v$.recentBCMoveDate.required.$invalid
@@ -419,7 +442,7 @@
                           && !v$.recentBCMoveDate.pastDateValidator.$invalid
                           && !v$.recentBCMoveDate.beforeBirthdateValidator.$invalid
                           && v$.recentBCMoveDate.dateOrderValidator.$invalid"
-                        aria-live="assertive">The child's most recent move to B.C. cannot be before the arrival date in Canada.</div>
+                        aria-live="assertive">Your child's most recent move to B.C. cannot be before the arrival date in Canada.</div>
                     </div>
                     <div v-else>
                       <div class="text-danger"
@@ -442,7 +465,7 @@
                           && !v$.recentBCMoveDate.dateDataValidator.$invalid
                           && !v$.recentBCMoveDate.pastDateValidator.$invalid
                           && v$.recentBCMoveDate.beforeBirthdateValidator.$invalid"
-                        aria-live="assertive">The child's arrival date in B.C. cannot be before the child's date of birth.</div>
+                        aria-live="assertive">Your child's arrival date in B.C. cannot be before your child's date of birth.</div>
                       <div class="text-danger"
                         v-if="v$.recentBCMoveDate.$dirty
                           && !v$.recentBCMoveDate.required.$invalid
@@ -450,7 +473,7 @@
                           && !v$.recentBCMoveDate.pastDateValidator.$invalid
                           && !v$.recentBCMoveDate.beforeBirthdateValidator.$invalid
                           && v$.recentBCMoveDate.dateOrderValidator.$invalid"
-                        aria-live="assertive">The child's arrival date in B.C. cannot be before the arrival date in Canada.</div>
+                        aria-live="assertive">Your child's arrival date in B.C. cannot be before the arrival date in Canada.</div>
                     </div>
                     <DateInput :label='canadaArrivalDateLabel'
                       :id="'canada-arrival-date-' + index"
@@ -458,6 +481,7 @@
                       className='mt-3'
                       v-model='canadaArrivalDate'
                       @blur="handleBlurField(v$.canadaArrivalDate)"
+                      :required="canadaArrivalDateLabel === 'Arrival date in Canada'"
                       @processDate="handleProcessDateCanadaArrival($event)" />
                     <div class="text-danger"
                       v-if="canadaArrivalDateLabel === 'Arrival date in Canada'
@@ -477,14 +501,14 @@
                         && !v$.canadaArrivalDate.dateDataValidator.$invalid
                         && !v$.canadaArrivalDate.pastDateValidator.$invalid
                         && v$.canadaArrivalDate.beforeBirthdateValidator.$invalid"
-                      aria-live="assertive">The child's arrival date in Canada cannot be before the child's date of birth.</div>
+                      aria-live="assertive">Your child's arrival date in Canada cannot be before your child's date of birth.</div>
                     <div class="text-danger"
                       v-if="v$.canadaArrivalDate.$dirty 
                         && !v$.canadaArrivalDate.dateDataValidator.$invalid
                         && !v$.canadaArrivalDate.pastDateValidator.$invalid
                         && !v$.canadaArrivalDate.beforeBirthdateValidator.$invalid
                         && v$.canadaArrivalDate.dateOrderValidator.$invalid"
-                      aria-live="assertive">The child's arrival date in Canada cannot be after the move to B.C. date.</div>
+                      aria-live="assertive">Your child's arrival date in Canada cannot be after the move to B.C. date.</div>
                   </div>
                   <div v-if="showPreviousHealthNumber">
                     <Input 
@@ -497,20 +521,21 @@
                       :inputStyle='mediumStyles' />
                   </div>
                   <Radio
-                    label='Has the child been outside B.C. for more than 30 days in total in the past 12 months?'
+                    label='Has your child been outside B.C. for more than 30 days in total in the past 12 months?'
                     :id="'outside-bc-' + index"
                     :name="'outside-bc-' + index"
                     v-model='outsideBCLast12Months'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField(v$.outsideBCLast12Months)"
                     :items='radioOptionsNoYes'>
                     <template v-slot:description>
-                      <span class="field-description">If the child has been living in B.C. for less than 12 months, please indicate any absences since arrival.</span>
+                      <span class="field-description">If your child has been living in B.C. for less than 12 months, please indicate any absences since arrival.</span>
                     </template>
                   </Radio>
                   <div class="text-danger"
                     v-if="v$.outsideBCLast12Months.$dirty && v$.outsideBCLast12Months.required.$invalid"
-                    aria-live="assertive">Please indicate whether the child has been outside BC in the past 12 months.</div>
+                    aria-live="assertive">Please indicate whether your child has been outside BC in the past 12 months.</div>
                   <div v-if="outsideBCLast12Months === 'Y'" class="tabbed-section">
                     <Input 
                       className="mt-3"
@@ -520,6 +545,7 @@
                       maxlength="20"
                       v-model="outsideBCLast12MonthsReason"
                       @blur="handleBlurField(v$.outsideBCLast12MonthsReason)"
+                      :required="true"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
                       v-if="v$.outsideBCLast12MonthsReason.$dirty && v$.outsideBCLast12MonthsReason.required.$invalid"
@@ -533,6 +559,7 @@
                       maxlength="20" 
                       v-model="outsideBCLast12MonthsDestination"
                       @blur="handleBlurField(v$.outsideBCLast12MonthsDestination)"
+                      :required="true"
                       :inputStyle='mediumStyles' />
                     <div class="text-danger"
                       v-if="v$.outsideBCLast12MonthsDestination.$dirty && v$.outsideBCLast12MonthsDestination.required.$invalid"
@@ -544,7 +571,8 @@
                       className='mt-3'
                       @blur="handleBlurField(v$.outsideBCLast12MonthsDepartureDate)"
                       @processDate="handleProcessDate12MonthsDeparture($event)"
-                      v-model='outsideBCLast12MonthsDepartureDate' />
+                      v-model='outsideBCLast12MonthsDepartureDate'
+                      :required="true" />
                     <div class="text-danger"
                       v-if="v$.outsideBCLast12MonthsDepartureDate.$dirty && v$.outsideBCLast12MonthsDepartureDate.required.$invalid"
                       aria-live="assertive">Departure date is required.</div>
@@ -560,7 +588,8 @@
                       className='mt-3'
                       @blur="handleBlurField(v$.outsideBCLast12MonthsReturnDate)"
                       @processDate="handleProcessDate12MonthsReturn($event)"
-                      v-model='outsideBCLast12MonthsReturnDate' />
+                      v-model='outsideBCLast12MonthsReturnDate'
+                      :required="true" />
                     <div class="text-danger"
                       v-if="v$.outsideBCLast12MonthsReturnDate.$dirty && v$.outsideBCLast12MonthsReturnDate.required.$invalid"
                       aria-live="assertive">Return date is required.</div>
@@ -572,42 +601,45 @@
                       aria-live="assertive">Return date must be within the last 12 months and after departure date.</div>
                   </div>
                   <Radio
-                    label='Does the child have a previous B.C. Personal Health Number?'
+                    label='Does your child have a previous B.C. Personal Health Number?'
                     :id="'has-bc-health-number-' + index"
                     :name="'has-bc-health-number-' + index"
                     v-model='hasPreviousBCHealthNumber'
+                    :required="true"
                     className="mt-3"
                     @blur="handleBlurField(v$.hasPreviousBCHealthNumber)"
                     :items='radioOptionsNoYes'/>
                   <div class="text-danger"
                     v-if="v$.hasPreviousBCHealthNumber.$dirty && v$.hasPreviousBCHealthNumber.required.$invalid"
-                    aria-live="assertive">Please indicate whether the child has a previous BC Personal Health Number.</div>
+                    aria-live="assertive">Please indicate whether your child has a previous BC Personal Health Number.</div>
                   <div v-if="hasPreviousBCHealthNumber === 'Y'" class="tabbed-section">
                     <PhnInput 
                       className="mt-3"
                       :id="'bc-phn-' + index"
                       :name="'bc-phn-' + index"
-                      label="The child's previous B.C. Personal Health Number (optional)" 
+                      label="Your child's previous B.C. Personal Health Number (optional)" 
                       v-model="previousBCHealthNumber"
                       placeholder="1111 111 111"
                       @blur="handleBlurField(v$.previousBCHealthNumber)"
                       :inputStyle='mediumStyles' />
+                    <span class="field-description">This number appears on the BC Services Card</span>
                     <div class="text-danger"
                       v-if="v$.previousBCHealthNumber.$dirty && v$.previousBCHealthNumber.phnValidator.$invalid"
                       aria-live="assertive">Personal Health Number is not valid.</div>
                   </div>
                   <div v-if="showDischargeInputs">
                     <Radio
-                      label='Has the child been released from the Canadian Armed Forces or an institution?'
+                      label='Has your child been released from the Canadian Armed Forces or an institution?'
                       :id="'been-released-' + index"
                       :name="'been-released-' + index"
                       v-model='hasBeenReleasedFromInstitution'
+                      :required="true"
                       className="mt-3"
                       @blur="handleBlurField(v$.hasBeenReleasedFromInstitution)"
                       :items='radioOptionsNoYes' />
                     <div class="text-danger"
                       v-if="v$.hasBeenReleasedFromInstitution.$dirty && v$.hasBeenReleasedFromInstitution.required.$invalid"
-                      aria-live="assertive">Please indicate whether the child has been released from an institution.</div>
+                      aria-live="assertive">Please indicate whether your child has been released from an institution.</div>
                   </div>
                   <div v-if="showDischargeInputs && hasBeenReleasedFromInstitution === 'Y'" class="tabbed-section">
                     <DateInput label='Discharge date'
@@ -616,7 +648,8 @@
                       className='mt-3'
                       @blur="handleBlurField(v$.dischargeDate)"
                       @processDate="handleProcessDateDischarge($event)"
-                      v-model='dischargeDate' />
+                      v-model='dischargeDate'
+                      :required="true" />
                     <div class="text-danger"
                       v-if="v$.dischargeDate.$dirty && v$.dischargeDate.required.$invalid"
                       aria-live="assertive">Discharge date is required.</div>
@@ -625,7 +658,7 @@
                       aria-live="assertive">Invalid discharge date.</div>
                     <div class="text-danger"
                       v-if="v$.dischargeDate.$dirty && v$.dischargeDate.dischargeDateValidator.$invalid"
-                      aria-live="assertive">Discharge date cannot be before the child's date of birth.</div>
+                      aria-live="assertive">Discharge date cannot be before your child's date of birth.</div>
                     <div class="text-danger"
                       v-if="v$.dischargeDate.$dirty && v$.dischargeDate.pastDateValidator.$invalid"
                       aria-live="assertive">Discharge date cannot be in the future.</div>
@@ -640,7 +673,7 @@
         </div>
         <div v-if="requestSchoolInfo">
           <h2 class="mt-3">School Information</h2>
-          <p class="m-0">Enter information of the school that this child is attending (must be in full time attendance)</p>
+          <p class="m-0">Enter information for the school that your child is attending. (They must be in full-time attendance.)</p>
           <hr/>
           <Input label='School name'
             :id="'school-name-' + index"
@@ -781,7 +814,7 @@
             aria-live="assertive">Expected school completion date is required.</div>
           <div class="text-danger" v-if="v$.schoolCompletionDate.$dirty && v$.schoolCompletionDate.dateDataValidator.$invalid" aria-live="assertive">Invalid estimated school completion date.</div>
           <div class="text-danger" v-if="v$.schoolCompletionDate.$dirty && v$.schoolCompletionDate.futureDateValidator.$invalid" aria-live="assertive">Estimated school completion date cannot be in the past.</div>
-          <Radio label="Will the child reside in BC after completing their studies?"
+          <Radio label="Will your child reside in BC after completing their studies?"
             class="mt-3"
             :id="'will-reside-in-bc-after-studies-' + index"
             :name="'will-reside-in-bc-after-studies-' + index"
@@ -795,7 +828,7 @@
             <div class="text-danger"
               v-if="v$.willResideInBCAfterStudies.$dirty
                   && v$.willResideInBCAfterStudies.permanentMoveValidator.$invalid"
-              aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for Medical Services Plan coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
+              aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As your child intends to leave B.C. when their studies are completed, they are not eligible for MSP coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
         </div>
         </div>
       </div>
@@ -870,6 +903,7 @@ import {
   StatusInCanada,
   CanadianStatusReasons, 
 } from '@/constants/immigration-status-types';
+import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import { SupportDocumentTypes } from '@/constants/document-types';
 import { ChildAgeTypes } from '../../constants/child-age-types';
 import { isAfter, isBefore } from 'date-fns';
@@ -877,6 +911,7 @@ import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import { mediumStyles, smallStyles } from '@/constants/input-styles';
 import spaEnvService from '@/services/spa-env-service';
+import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -1034,6 +1069,8 @@ export default {
   data: () => {
     return {
       pageLoaded: false,
+      firstNameMaxLength,
+      middleNameMaxLength,
       // Radio and select options
       radioChildAgeOptions: radioOptionsChildAge,
       radioGenderOptions: radioOptionsGender,
@@ -1401,6 +1438,7 @@ export default {
         this.$emit('updateChild', childData);
       }
     },
+    supportDocumentTypeToTitle,
     handleBlurField(validationObject) {
       if (validationObject) {
         validationObject.$touch();

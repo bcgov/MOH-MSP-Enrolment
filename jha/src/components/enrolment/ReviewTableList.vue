@@ -3,7 +3,7 @@
     <div class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Account Holder</h2>
+          <h2 class="mb-2">Applicant Information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -20,7 +20,7 @@
     <div class="col-lg-6 mb-3" v-if='hasSpouse'>
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Spouse</h2>
+          <h2 class="mb-2">Spouse Information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -55,7 +55,7 @@
     <div v-if="isApplyingForFPCare" class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Fair PharmaCare Financial Info</h2>
+          <h2 class="mb-2">Fair PharmaCare Financial Information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -87,7 +87,7 @@
     <div v-if="isApplyingForSuppBen" class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Supplementary Benefits Financial Info</h2>
+          <h2 class="mb-2">Supplementary Benefits Financial Information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -104,7 +104,7 @@
     <div class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Contact Info</h2>
+          <h2 class="mb-2">Contact Information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -255,13 +255,13 @@ export default {
       });
       if (!this.isApplyingForMSP) {
         items.push({
-          label: "Account holder PHN",
+          label: "Applicant PHN",
           value: this.$store.state.enrolmentModule.ahPHN,
         });
       }
       if (this.isApplyingForFPCare || this.isApplyingForSuppBen) {
         items.push({
-          label: "Account holder SIN",
+          label: "Applicant SIN",
           value: this.$store.state.enrolmentModule.ahSIN,
         });
       }
@@ -284,11 +284,11 @@ export default {
             .ahCitizenshipSupportDocumentType,
         });
         items.push({
-          label: "Does your status document include gender designation?",
+          label: "Does status document match gender designation?",
           value: this.$store.state.enrolmentModule.ahGenderMatches === "Y" ? "Yes" : "No"
         });
         items.push({
-          label: "Is Name Changed?",
+          label: "Has name changed?",
           value:
             this.$store.state.enrolmentModule.ahIsNameChanged === "Y"
               ? "Yes"
@@ -296,7 +296,7 @@ export default {
         });
         if (this.$store.state.enrolmentModule.ahIsNameChanged === "Y") {
           items.push({
-            label: "Name Change Support Document Type",
+            label: "Name change support document type",
             value: this.$store.state.enrolmentModule
               .ahNameChangeSupportDocumentType,
           });
@@ -304,7 +304,7 @@ export default {
         if (this.$store.state.enrolmentModule.ahCitizenshipStatus === StatusInCanada.Citizen
           && this.$store.state.enrolmentModule.ahCitizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP) {
           items.push({
-            label: "Lived in BC since birth?",
+            label: "Lived in B.C. since birth?",
             value:
               this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth === "Y"
                 ? "Yes"
@@ -312,7 +312,7 @@ export default {
           });
         }
         items.push({
-            label: "Has account holder moved to BC permanently?",
+            label: "Moved to B.C. permanently?",
             value:
               this.$store.state.enrolmentModule.ahIsMovedToBCPermanently === "Y"
                 ? "Yes"
@@ -364,7 +364,7 @@ export default {
             });
         }
         items.push({
-          label: "Has previous BC Health Number?",
+          label: "Has Previous B.C. Health Number?",
           value:
             this.$store.state.enrolmentModule.ahHasPreviousPHN === "Y"
               ? "Yes"
@@ -372,7 +372,7 @@ export default {
         });
         if (this.$store.state.enrolmentModule.ahHasPreviousPHN === "Y") {
           items.push({
-            label: "Previous BC Health Number",
+            label: "Previous B.C. Health Number",
             value: this.$store.state.enrolmentModule.ahPreviousPHN,
           });
         }
@@ -441,7 +441,7 @@ export default {
           const willResideInBC =
             this.$store.state.enrolmentModule.ahWillStudentResideInBC === "Y";
           items.push({
-            label: "Will you reside in BC upon completion of your studies?",
+            label: "Will reside in B.C. on completion of your studies?",
             value: willResideInBC ? "Yes" : "No",
           });
         }
@@ -507,11 +507,11 @@ export default {
             .spouseCitizenshipSupportDocumentType,
         });
         items.push({
-          label: "Does your status document include gender designation?",
+          label: "Does status document match gender designation?",
           value: this.$store.state.enrolmentModule.spouseGenderMatches === "Y" ? "Yes" : "No"
         });
         items.push({
-          label: "Is Name Changed?",
+          label: "Has name changed?",
           value:
             this.$store.state.enrolmentModule.spouseIsNameChanged === "Y"
               ? "Yes"
@@ -519,7 +519,7 @@ export default {
         });
         if (this.$store.state.enrolmentModule.spouseIsNameChanged === "Y") {
           items.push({
-            label: "Name Change Support Document Type",
+            label: "Name change support document type",
             value: this.$store.state.enrolmentModule
               .spouseNameChangeSupportDocumentType,
           });
@@ -527,7 +527,7 @@ export default {
         if (this.$store.state.enrolmentModule.spouseStatus === StatusInCanada.Citizen
         && this.$store.state.enrolmentModule.spouseStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ) {
           items.push({
-            label: "Lived in BC since birth?",
+            label: "Lived in B.C. since birth?",
             value:
               this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth === "Y"
                 ? "Yes"
@@ -535,7 +535,7 @@ export default {
           });
         }
         items.push({
-          label: "Has spouse moved to BC permanently?",
+          label: "Moved to B.C. permanently?",
           value:
             this.$store.state.enrolmentModule.spouseMadePermanentMove === "Y"
               ? "Yes"
@@ -580,7 +580,7 @@ export default {
             });
         }        
         items.push({
-          label: "Has Previous BC Health Number?",
+          label: "Has Previous B.C. Health Number? ",
           value:
             this.$store.state.enrolmentModule
               .spouseHasPreviousBCHealthNumber === "Y"
@@ -592,7 +592,7 @@ export default {
           "Y"
         ) {
           items.push({
-            label: "Previous BC Health Number",
+            label: "Previous B.C. Health Number",
             value: this.$store.state.enrolmentModule
               .spousePreviousBCHealthNumber,
           });
@@ -704,27 +704,27 @@ export default {
             value: child.citizenshipSupportDocumentType,
           });
           childData.push({
-            label: "Does your status document include gender designation?",
+            label: "Does status document match gender designation?",
             value: child.genderMatches === "Y" ? "Yes" : "No",
           });
           childData.push({
-            label: "Is Name Changed?",
+            label: "Has name changed?",
             value: child.isNameChanged === "Y" ? "Yes" : "No",
           });
           if (child.isNameChanged === "Y") {
               childData.push({
-                label: "Name Change Support Document Type",
+                label: "Name change support document type",
                 value: child.nameChangeSupportDocumentType,
               });
             }
           if (child.status === StatusInCanada.Citizen && child.statusReason === CanadianStatusReasons.LivingInBCWithoutMSP ) {
             childData.push({
-              label: "Lived in BC since birth?",
+              label: "Lived in B.C. since birth?",
               value: child.livedInBCSinceBirth === "Y" ? "Yes" : "No",
             });
           }
           childData.push({
-            label: "Has child moved to BC permanently?",
+            label: "Moved to B.C. permanently?",
             value: child.madePermanentMove === "Y" ? "Yes" : "No",
           });
           if (
@@ -761,12 +761,12 @@ export default {
             }
           }
           childData.push({
-            label: "Has previous BC Health number?",
+            label: "Has Previous B.C. Health Number? ",
             value: child.hasPreviousBCHealthNumber === "Y" ? "Yes" : "No",
           });
           if (child.hasPreviousBCHealthNumber === "Y") {
             childData.push({
-              label: "Previous BC Health number?",
+              label: "Previous B.C. Health number",
               value: child.previousBCHealthNumber,
             });
           }
@@ -858,7 +858,7 @@ export default {
             });
             const willResideInBC = child.willResideInBCAfterStudies === "Y";
             childData.push({
-              label: "Will you reside in BC upon completion of your studies?",
+              label: "Will reside in B.C. on completion of your studies?",
               value: willResideInBC ? "Yes" : "No",
             });
           }
@@ -898,7 +898,7 @@ export default {
       }
       const ahFPCRDSP = this.$store.state.enrolmentModule.ahFPCRDSP;
       items.push({
-        label: "Account holder RDSP amount",
+        label: "Account holder RDSP income",
         value: ahFPCRDSP
           ? moneyFormatter.format(ahFPCRDSP)
           : moneyFormatter.format("0"),
@@ -906,7 +906,7 @@ export default {
       if (this.$store.state.enrolmentModule.hasSpouse === "Y") {
         const spouseFPCRDSP = this.$store.state.enrolmentModule.spouseFPCRDSP;
         items.push({
-          label: "Spouse RDSP amount",
+          label: "Spouse RDSP income",
           value: spouseFPCRDSP
             ? moneyFormatter.format(spouseFPCRDSP)
             : moneyFormatter.format("0"),
@@ -918,7 +918,7 @@ export default {
       const items = [];
       const selectedYear = this.$store.state.enrolmentModule.selectedNOAYear;
       items.push({
-        label: `Account Holder net income for ${selectedYear}`,
+        label: `Applicant net income for ${selectedYear}`,
         value: moneyFormatter.format(
           this.$store.state.enrolmentModule.ahSBIncome
         ),
@@ -971,7 +971,7 @@ export default {
         });
       }
       items.push({
-        label: `Registered Disability Savings Plan?`,
+        label: `RDSP income?`,
         value: this.$store.state.enrolmentModule.hasRDSP === "Y" ? "Yes" : "No",
       });
       if (this.$store.state.enrolmentModule.hasRDSP === "Y") {
@@ -1094,13 +1094,14 @@ export default {
           label: "Jurisdiction",
           value: this.$store.state.enrolmentModule.mailCountry,
         });
-        if (this.$store.state.enrolmentModule.phone) {
-          items.push({
-            label: "Phone",
-            value: this.$store.state.enrolmentModule.phone,
-            underlined: true,
-          });
-        }
+      }
+      // Add phone to the end of contact info if present for any application type
+      if (this.$store.state.enrolmentModule.phone) {
+        items.push({
+          label: "Phone",
+          value: this.$store.state.enrolmentModule.phone,
+          underlined: true,
+        });
       }
       return items;
     },
@@ -1169,9 +1170,9 @@ export default {
     getChildTitle(index) {
       const children = this.$store.state.enrolmentModule.children;
       if (children && children.length > 1) {
-        return `Child #${index + 1}`;
+        return `Child ${index + 1} Information`;
       }
-      return 'Child';
+      return 'Child Information';
     },
     getWhoClaimed(array, numberOfChildren) {
       //takes an array containing some combination of the values ah, spouse, and child
@@ -1180,7 +1181,7 @@ export default {
       for (const [index, recipient] of array.entries()) {
         switch (recipient) {
           case "ah":
-            result += `Account Holder`;
+            result += `Applicant`;
             break;
           case "spouse":
             result += `Spouse`;

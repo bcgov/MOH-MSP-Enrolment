@@ -8,14 +8,14 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Contact Information</h1>
         <hr class="mt-0"/>
         <div class="row">
             <div class="col-md-6" v-if="applyingForMSP">
               <div>
                 <h2>Residential Address</h2>
-                <p class="address-description">Enter your residential address - that's the address you currently live at in B.C.</p>
+                <p class="address-description">Your residential address is the address where you currently live in B.C.</p>
               </div>
               <hr class="mt-0"/>
               <AddressDoctorInput v-if="isAddressValidatorEnabled"
@@ -26,6 +26,7 @@
                 maxlength="25"
                 serviceUrl="/ahdc/api/address"
                 :inputStyle='mediumStyles'
+                :required="true"
                 @addressSelected="handleResAddressSelected($event)"
                 @blur="handleBlurField(v$.resAddressLine1)" />
               <Input v-else
@@ -33,6 +34,7 @@
                 label="Full street address, rural route, or general delivery"
                 id="res-address-line1"
                 v-model="resAddressLine1"
+                :required="true"
                 maxlength="25"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField(v$.resAddressLine1)" />
@@ -77,6 +79,7 @@
                 v-model="resProvince"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField(v$.resProvince)"
+                :required="true"
                 :disabled='true' />
               <CountrySelect class="mt-3"
                 label="Jurisdiction"
@@ -84,12 +87,14 @@
                 v-model="resCountry"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField(v$.resCountry)"
+                :required="true"
                 :disabled='true' />
               <PostalCodeInput class="mt-3"
                 label="Postal Code"
                 id="res-postal-code"
                 v-model="resPostalCode"
                 :inputStyle='smallStyles'
+                :required="true"
                 @blur="handleBlurField(v$.resPostalCode)" />
               <div class="text-danger" v-if="v$.resPostalCode.$dirty && v$.resPostalCode.required.$invalid" aria-live="assertive">Postal code is required.</div>
               <div class="text-danger" v-if="v$.resPostalCode.$dirty
@@ -103,7 +108,7 @@
           <div class="col-md-6">
             <div>
               <h2>Mailing Address</h2>
-              <p v-if="applyingForMSP" class="address-description">Enter your mailing address - if it's different</p>
+              <p v-if="applyingForMSP" class="address-description">Enter your mailing address if it is different from your residential address.</p>
               <p v-else>Enter your mailing address</p>
             </div>
             <hr class="mt-0"/>
@@ -122,6 +127,7 @@
                 maxlength="25"
                 serviceUrl="/ahdc/api/address"
                 :inputStyle='mediumStyles'
+                :required="true"
                 @addressSelected="handleMailAddressSelected($event)"
                 @blur="handleBlurField(v$.mailAddressLine1)" />
               <Input v-else
@@ -131,6 +137,7 @@
                 v-model="mailAddressLine1"
                 maxlength="25"
                 :inputStyle='mediumStyles'
+                :required="true"
                 @blur="handleBlurField(v$.mailAddressLine1)" />
               <div class="text-danger" v-if="v$.mailAddressLine1.$dirty && v$.mailAddressLine1.required.$invalid" aria-live="assertive">
                 Full street address, rural route, PO box, or general delivery is required.
@@ -175,6 +182,7 @@
                 id="mail-province"
                 v-model="mailProvince"
                 :inputStyle='mediumStyles'
+                :required="true"
                 :disablePlaceholder="true"
                 @blur="handleBlurField(v$.mailProvince)" />
               <Input v-else
@@ -184,6 +192,7 @@
                 v-model="mailProvince"
                 maxlength="25"
                 :inputStyle='mediumStyles'
+                :required="true"
                 @blur="handleBlurField(v$.mailProvince)" />
               <div class="text-danger" v-if="v$.mailProvince.$dirty && v$.mailProvince.required.$invalid" aria-live="assertive">Province or state is required.</div>
               <div class="text-danger"
@@ -194,6 +203,7 @@
                 id="mail-country"
                 v-model="mailCountry"
                 :inputStyle='mediumStyles'
+                :required="true"
                 :disablePlaceholder="true"
                 @blur="handleBlurField(v$.mailCountry)" />
               <div class="text-danger" v-if="v$.mailCountry.$dirty && v$.mailCountry.required.$invalid" aria-live="assertive">Jurisdiction is required.</div>
@@ -206,6 +216,7 @@
                   v-model="mailPostalCode"
                   maxlength="25"
                   :inputStyle='smallStyles'
+                  :required="true"
                   @blur="handleBlurField(v$.mailPostalCode)" />
                 <div class="text-danger" v-if="v$.mailPostalCode.$dirty
                                             && !v$.mailPostalCode.required.$invalid
@@ -220,6 +231,7 @@
                   v-model="mailPostalCode"
                   maxlength="25"
                   :inputStyle='smallStyles'
+                  :required="true"
                   @blur="handleBlurField(v$.mailPostalCode)" />
                 <div class="text-danger"
                   v-if="v$.mailPostalCode.$dirty && !v$.mailPostalCode.required.$invalid && v$.mailPostalCode.specialCharacterValidator.$invalid"
@@ -255,12 +267,12 @@
           <div class="col-md-4">
             <TipBox title="Tip">
               <p>
-                Please provide a phone number so you may be contacted in case of any issues with your application.
+                Please provide a phone number so we can contact you if there are any issues with your application.
               </p>
             </TipBox>
           </div>
         </div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
   </div>

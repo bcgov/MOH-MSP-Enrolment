@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-sm-7">Total Family Income</div>
+      <div class="col-sm-7">Total Net Income</div>
       <div class="col-sm-5">
         <b>{{totalIncome}}</b>
       </div>
@@ -12,7 +12,7 @@
       <b>Deductions</b>
     </p>
     <div class="row">
-      <div class="col-sm-7">Family Registered Disability Savings Plan</div>
+      <div class="col-sm-7">Total RDSP Income</div>
       <div class="col-sm-5">
         <b>{{RDSP}}</b>
       </div>
@@ -33,7 +33,7 @@
     </div>
 
     <hr/>
-    <p>The information you entered indicates you would be eligible for the level of coverage below. Coverage is temporary until we verify your income with CRA.</p>
+    <p>Based on the information you entered, you may be eligible for the level of coverage below. Coverage is temporary until we verify your income with the CRA.</p>
 
     <h3>Level of Coverage</h3>
     <div v-if="isLoading"

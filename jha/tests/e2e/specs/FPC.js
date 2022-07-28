@@ -27,10 +27,13 @@ describe('FPC only application', () => {
     cy.fillMailingAddress()
   });
 
-  it('Submits with the expected payload', () => {
+  it('Displays the phone number with contact information', () => {
+    cy.contains('(555) 555-5555')
     cy.continue();
+  })
+  
+  it('Submits with the expected payload', () => {
     cy.fillConsent(options);
-
     cy.submitApplication();
     cy.wait('@submitApplication')
       .then(interception => {

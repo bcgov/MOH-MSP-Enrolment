@@ -1,4 +1,5 @@
 import { formatISODate } from 'common-lib-vue';
+import { SupportDocumentTypes } from '../../../src/constants/document-types';
 
 export const generateRequestObject = () => {
   const currentDate = new Date();
@@ -13,7 +14,7 @@ export const generateRequestObject = () => {
     "phn": null,
     "gender": "X",
     "birthDate": "2000-01-01",
-    "telephone": null,
+    "telephone": "5555555555",
     "addressLine1": "123 fake st.",
     "addressLine2": null,
     "addressLine3": null,
@@ -31,7 +32,7 @@ export const generateRequestObject = () => {
       "lastName": "doe",
       "gender": "X",
       "birthDate": "1990-06-20",
-      "telephone": null,
+      "telephone": "5555555555",
       "sin": "195544135",
       "phn": null
     },
@@ -112,13 +113,13 @@ export const generateRequestObject = () => {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "1",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "2",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         },
         {
           "contentType": "IMAGE_JPEG",
@@ -160,13 +161,13 @@ export const generateRequestObject = () => {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "9",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "10",
-          "description": "Canadian Birth Certificate"
+          "description": SupportDocumentTypes.CanadianBirthCertificate
         }
       ]
     },

@@ -8,21 +8,20 @@
         @onClickLink='handleClickStepperLink($event)'/>
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
-      <div class="container pt-3 pt-sm-5 mb-3">
+      <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Supplementary Benefits Financial Information</h1>
         <h4 class="font-weight-normal">
-          Your application must be based on income from the most recent Notice of 
-          Assessment or Notice of Reassessment available from Canada Revenue Agency(CRA). 
-          You will be required to upload a copy (and your spouse's, if applicable) with your application.
+          Your application must be based on income from your (and your spouse's, if applicable) most recent CRA Notice of Assessment or Notice of Reassessment. You will need to upload copies with your application.
         </h4>
         <hr class="mt-0"/>
         <div class="row">
           <div class="col-md-7">
-            <h2>Which year's Notice of Assessment or Reassessment will you upload?</h2>
+            <h2>Which year's Notice of Assessment or Notice of Reassessment will you upload?</h2>
             <Radio id="select-noa-year"
                     name="select-noa-year"
                     class="mt-3"
                     v-model="selectedNOAYear"
+                    :required="true"
                     :items="radioOptionsNOAYears"
                     @blur="handleBlurField(v$.selectedNOAYear)"/>
             <div class="text-danger"
@@ -30,12 +29,13 @@
                     aria-live="assertive">Please indicate which year's Notice of Assessment you are uploading.</div>
             <div v-if="selectedNOAYear === `${this.currentYear - 2}`" class="text-danger">
               <font-awesome-icon icon="exclamation-circle"/>
-              Selecting this Notice of Assessment will allow you to apply for supplementary benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
+              Selecting this Notice of Assessment will allow you to apply for Supplementary Benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
             </div>
             <p class="mt-2 mb-1 font-weight-bolder">Enter your {{selectedNOAYear}} net income.</p>
             <CurrencyInput id="ah-net-income"
-              label="See line 23600 of your Notice of Assessment or Reassessment."
+              label="See line 23600 of your Notice of Assessment or Notice of Reassessment."
               v-model="ahSBIncome"
+              :required="true"
               maxlength="6"
               :inputStyle='mediumStyles'
               @blur="handleBlurField(v$.ahSBIncome)"/>
@@ -48,8 +48,9 @@
             <div v-if="hasSpouse === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's {{selectedNOAYear}} net income.</p>
               <CurrencyInput id="spouse-net-income"
-                label="See line 23600 of your spouse's Notice of Assessment or Reassessment."
+                label="See line 23600 of your spouse's Notice of Assessment or Notice of Reassessment."
                 v-model="spouseSBIncome"
+                :required="true"
                 maxlength="6"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField(v$.spouseSBIncome)"/>
@@ -66,6 +67,7 @@
               <Radio id="has-children"
                 name="has-children"
                 v-model="hasChildren"
+                :required="true"
                 :items="radioOptionsNoYes"
                 @blur="handleBlurField(v$.hasChildren)"/>
               <div class="text-danger"
@@ -75,6 +77,7 @@
                 <DigitInput id="num-children"
                   label="How many children do you have on your account?"
                   v-model="numChildren"
+                  :required="true"
                   :inputStyle="extraSmallStyles"
                   @blur="handleBlurField(v$.numChildren)"/>
                 <div class="text-danger"
@@ -91,8 +94,9 @@
             <div v-if="intNumChildren > 0">
               <p class="mt-4 mb-1 font-weight-bolder">How much did you claim for child care expenses in {{selectedNOAYear}}?</p>
               <CurrencyInput id="child-care-expenses"
-                label="See line 21400 of your Notice of Assessment or Reassessment."
+                label="See line 21400 of your Notice of Assessment or Notice of Reassessment."
                 v-model="claimedChildCareExpenses"
+                :required="true"
                 maxlength="6"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField(v$.claimedChildCareExpenses)"/>
@@ -104,8 +108,9 @@
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim a disability tax credit in {{selectedNOAYear}}?</p>
             <Radio id="has-disability-credit"
               name="has-disability-credit"
-              label="See line 31600, 31800, or 32600 of your Notice of Assessment or Reassessment."
+              label="See line 31600, 31800, or 32600 of your Notice of Assessment or Notice of Reassessment."
               v-model="hasDisabilityCredit"
+              :required="true"
               :items="radioOptionsNoYes"
               @blur="handleBlurField(v$.hasDisabilityCredit)"/>
             <div class="text-danger"
@@ -130,6 +135,7 @@
                 <DigitInput id="num-attendant-nursing-children"
                   label="How many of your children are eligible for a disability tax credit?"
                   v-model="numDisabilityChildren"
+                  :required="true"
                   :inputStyle="extraSmallStyles"
                   @blur="handleBlurField(v$.numDisabilityChildren)"/>
                 <div class="text-danger"
@@ -147,6 +153,7 @@
             <Radio id="has-disability-savings"
               name="has-disability-savings"
               v-model="hasRDSP"
+              :required="true"
               :items="radioOptionsNoYes"
               @blur="handleBlurField(v$.hasRDSP)"/>
             <div class="text-danger"
@@ -156,8 +163,9 @@
             <div class="ml-5" v-if="hasRDSP === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">How much did you report for a Registered Disability Savings Plan in {{selectedNOAYear}}?</p>
               <CurrencyInput id="disability-savings-plan"
-                label="See Line 12500 of the Notice of Assessment or Reassessment"
+                label="See Line 12500 of the Notice of Assessment or Notice of Reassessment"
                 v-model="sbRDSPAmount"
+                :required="true"
                 maxlength="6"
                 :inputStyle='mediumStyles'
                 @blur="handleBlurField(v$.sbRDSPAmount)"/>
@@ -169,8 +177,9 @@
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
             <Radio id="has-attendant-nursing-expenses"
               name="has-attendant-nursing-expenses"
-              label="See line 21500 or 33099 of your Notice of Assessment or Reassessment."
+              label="See line 21500 or 33099 of your Notice of Assessment or Notice of Reassessment."
               v-model="hasAttendantNursingExpenses"
+              :required="true"
               :items="radioOptionsNoYes"
               @blur="handleBlurField(v$.hasAttendantNursingExpenses)"/>
             <div class="text-danger"
@@ -194,6 +203,7 @@
                 <DigitInput id="num-attendant-nursing-children"
                   label="How many children claimed attendant care expenses?"
                   v-model="numAttendantNursingChildren"
+                  :required="true"
                   :inputStyle="extraSmallStyles"
                   @blur="handleBlurField(v$.numAttendantNursingChildren)"/>
                 <div class="text-danger"
@@ -228,13 +238,13 @@
             </div>
             <div class="col-md-5">
               <TipBox title="Tip">
-                <p>Scan the document, or take a photo of it.</p>
+                <p>Scan the document or take a photo of it.</p>
                 <p>Make sure it's:</p>
                 <ul>
-                  <li>The entire document, from corner to corner</li>
-                  <li>Rotated correctly (not upside down or sideways)</li>
-                  <li>In focus and easy to read</li>
-                  <li>A JPG, PNG, GIF, BMP, or PDF file</li>
+                  <li>The entire document, from corner to corner&nbsp;</li>
+                  <li>Rotated correctly (not upside down or sideways)&nbsp;</li>
+                  <li>In focus and easy to read&nbsp;</li>
+                  <li>A JPG, PNG, GIF, BMP, or PDF file&nbsp;</li>
                 </ul>
               </TipBox>
             </div>
@@ -243,7 +253,7 @@
         <div class="mt-3" v-if="windowWidth < 768">
           <SuppBenWidget :inputData="widgetData"/>
         </div>
-      </div>
+      </main>
     </PageContent>
     <ContinueBar @continue="validateFields()" />
   </div>

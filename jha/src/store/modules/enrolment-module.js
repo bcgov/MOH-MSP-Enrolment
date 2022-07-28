@@ -42,7 +42,7 @@ export const SET_MSG_CODE_SB = 'setMsgCodeSB';
 export const SET_IS_APPLYING_FOR_MSP = 'setIsApplyingForMSP';
 export const SET_IS_APPLYING_FOR_FPCARE = 'setIsApplyingForFPCare';
 export const SET_IS_APPLYING_FOR_SUPP_BEN = 'setIsApplyingForSuppBen';
-// Account Holder info.
+// Applicant info.
 export const SET_AH_FIRST_NAME = 'setAHFirstName';
 export const SET_AH_MIDDLE_NAME = 'setAHMiddleName';
 export const SET_AH_LAST_NAME = 'setAHLastName';
@@ -207,7 +207,7 @@ export default {
       isApplyingForMSP: null,
       isApplyingForFPCare: null,
       isApplyingForSuppBen: null,
-      // Account Holder info.
+      // Applicant info.
       ahFirstName: null,
       ahMiddleName: null,
       ahLastName: null,
@@ -430,7 +430,7 @@ export default {
     [SET_IS_APPLYING_FOR_SUPP_BEN](state, payload) {
       state.isApplyingForSuppBen = payload;
     },
-    // Account Holder info.
+    // Applicant info.
     [SET_AH_FIRST_NAME](state, payload) {
       state.ahFirstName = payload;
     },
@@ -837,7 +837,7 @@ export default {
       commit(SET_IS_APPLYING_FOR_MSP, null);
       commit(SET_IS_APPLYING_FOR_FPCARE, null);
       commit(SET_IS_APPLYING_FOR_SUPP_BEN, null);
-      // Account Holder info.
+      // Applicant info.
       commit(SET_AH_FIRST_NAME, null);
       commit(SET_AH_MIDDLE_NAME, null);
       commit(SET_AH_LAST_NAME, null);
@@ -1054,7 +1054,7 @@ export default {
     [SET_IS_APPLYING_FOR_SUPP_BEN]({commit}, payload) {
       commit(SET_IS_APPLYING_FOR_SUPP_BEN, payload);
     },
-    // Account Holder info.
+    // Applicant info.
     [SET_AH_FIRST_NAME]({ commit }, payload) {
       commit(SET_AH_FIRST_NAME, payload);
     },

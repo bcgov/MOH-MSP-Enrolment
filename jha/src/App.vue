@@ -3,9 +3,7 @@
     <div :aria-hidden="isModalOpen">
       <Header :title='pageTitle'
               imagePath='/ahdc/images/' />
-      <main>
-        <router-view/>
-      </main>
+      <router-view/>
       <Footer :version='version' />
     </div>
     <div id="modal-target" name="modal" ref="modal"></div>
@@ -36,7 +34,7 @@ export default {
   data: () => {
     return {
       version: project.version,
-      pageTitle: 'British Columbia Application for Health Drug Coverage (AHDC)',
+      pageTitle: 'British Columbia Application for Health and Drug Coverage (AHDC)',
       isModalOpen: false,
       modalObserver: null,
     };
