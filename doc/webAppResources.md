@@ -61,7 +61,7 @@ Our running web applications use the following objects:
 
 ## NetworkPolicies
 
-On the platform-services cluster, new projects have a `deny-all` default **NetworkPolicy** setup, so that any communication between objects needs to be allowed explicitly. For example, communication with different microservices like the captcha-service. See [quickmspweb-toall](/openshift/templates/quickmspweb-toall.yaml) for the example msp and jha application policies. In these policy templates, it is selecting using the label `role=msfrontend`, which is applied to both jha and msp pods.
+On the platform-services cluster, new projects have a `deny-all` default **NetworkPolicy** setup, so that any communication between objects needs to be allowed explicitly. For example, communication with different microservices like the captcha-service. See [quickmspweb-toall](/openshift/templates/quickmspweb-toall.yaml) for the example msp and jha application policies. In these policy templates, it is selecting using the label `role=mspfrontend`, which is applied to both jha and msp pods.
 
 ## Footnotes
 

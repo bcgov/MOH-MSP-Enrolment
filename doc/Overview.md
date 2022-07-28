@@ -1,8 +1,8 @@
-# Maximus DE OpenShift Setup Documentation (written by Bryce)
+# Maximus DE Overview
 
 Several Maximus DE applications are deployed to Redhat OpenShift clusters. These projects include the following: MSP and JHA (Angular app, Vue app respectively and Node.js services, repo name: MOH-MSP-Enrolment), FPCare and FPCare Income Review (Angular apps and Node.js services, repo name: MOH-FPC-Enrolment), SiteReg (Angular app and Node.js services, repo name: MOH-IAM-Enrolment), BCP (Angular app and Node.js services, repo name: MOH-BCP-Enrolment), AOP and OOP (Vue apps and Node.js services, repo name: MOH-AOP-OOP), and PPPP (Vue app and Node.js services, repo name: MOH-PPPP-Enrolment). The container platform and resource allocation is managed by bcgov, the configuration and deployment of the individual clusters is managed by Maximus.
 
-I will document the structure of one of these clusters as they all follow the same approach, albeit with different applications and slightly different Node.js services. We will look at MSP and JHA's cluster.
+Below I will document the structure of one of these repos as they all follow the same approach, albeit with different applications and slightly different Node.js services. We will look at MOH-MSP-Enrolment.
 
 ## MOH-MSP-Enrolment Repo Structure
 
@@ -30,6 +30,10 @@ Because our single page apps deployed with OpenShift via NGINX don't have access
 splunk-forwarder is exactly what it sounds like, it handles requests from the frontend to create logs and extracts details to send to Splunk. This service is configured with environment variables including certificate(s) etc. which can be found in the OpenShift console unless they are stored as OpenShift secrets. 
 
 ## Environment variable storage and configuration
-OpenShift secrets (some environment variables like certificate keys etc. are sensitive) are stored on Maximus' servers here: https://devtools.maximusbc.ca/bitbucket/projects/ocp/repos/ocp.secrets/browse 
+OpenShift secrets (some environment variables like certificate keys etc. are sensitive) are stored on Maximus' servers in a Bitbucket repo (contact one of the developers for access)
 
-The above repo should be updated whenever secrets are updated and contains the oc (OpenShift command-line tool) commands to set them. Environment variables vary between the different environments (dev, test, prod). 
+The above-mentioned repo should be updated whenever secrets are updated and contains the oc (OpenShift command-line tool) commands to set them. Environment variables vary between the different environments (dev, test, prod). 
+
+## OpenShift Documentation
+
+For documentation regarding the OpenShift setup for web apps, refer to [WebAppResources.md](./WebAppResources.md). For a deep dive into a specific web app, refer to [jhaResources.md](./jhaResources.md). For documentation regarding the OpenShift setup for microservices, such as captcha-service, refer to [MicroServiceResources.md](./MicroServiceResources.md).
