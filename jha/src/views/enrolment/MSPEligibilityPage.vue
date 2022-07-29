@@ -9,6 +9,7 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
+        <p>Answer the following questions to see which programs you are eligible for and make sure you have what you need to apply</p>
         <h1>Medical Services Plan Eligibility</h1>
         <Radio
           id='apply-msp'

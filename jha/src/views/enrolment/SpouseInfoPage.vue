@@ -636,7 +636,8 @@
                       :inputStyle='mediumStyles' />
                     <span class="field-description">This number appears on the BC Services Card</span>
                     <div class="text-danger"
-                      v-if="$v.spousePreviousBCHealthNumber.$dirty && !$v.spousePreviousBCHealthNumber.phnValidator"
+                      v-if="$v.spousePreviousBCHealthNumber.$dirty && 
+                      (!$v.spousePreviousBCHealthNumber.phnValidator || !$v.spousePreviousBCHealthNumber.phnFirstDigitValidator)"
                       aria-live="assertive">Personal Health Number is not valid.</div>
                   </div>
                   <div v-if="showDischargeInputs">
@@ -1150,6 +1151,7 @@ export default {
 
       if (this.spouseHasPreviousBCHealthNumber === 'Y') {
         validations.spousePreviousBCHealthNumber.phnValidator = optionalValidator(phnValidator);
+        validations.spousePreviousBCHealthNumber.phnFirstDigitValidator = optionalValidator(phnFirstDigitValidator);
       }
 
       if (this.showDischargeInputs) {
