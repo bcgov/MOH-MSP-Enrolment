@@ -575,7 +575,7 @@
                   <span class="field-description">This number appears on the BC Services Card</span>
                   <div class="text-danger"
                     v-if="$v.previousPHN.$dirty
-                      && !$v.previousPHN.phnValidator"
+                      && (!$v.previousPHN.phnValidator || !$v.previousPHN.phnFirstDigitValidator)"
                     aria-live="assertive">Personal Health Number is not valid.</div>
                 </div>
                 <div v-if="requestArmedForceInfo">
@@ -1041,6 +1041,7 @@ export default {
       validations.isOutsideBCInLast12Months.required = required;
       validations.hasPreviousPHN.required = required;
       validations.previousPHN.phnValidator = optionalValidator(phnValidator);
+      validations.previousPHN.phnFirstDigitValidator = optionalValidator(phnFirstDigitValidator);
 
       if (this.isNameChanged === 'Y') {
         validations.nameChangeSupportDocumentType.required = required;
