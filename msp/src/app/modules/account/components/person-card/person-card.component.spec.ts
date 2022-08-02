@@ -110,12 +110,12 @@ describe('MspPersonCardComponent', () => {
   });
 
   describe('movedFromLabel', () => {
-    it('should return \'Moved from country\' when is temporary resident or is moving from country.', () => {
+    it('should return \'Moved from jurisdiction\' when is temporary resident or is moving from country.', () => {
       component.person.status = StatusInCanada.TemporaryResident;
-      expect(component.movedFromLabel).toEqual('Moved from country');
+      expect(component.movedFromLabel).toEqual('Moved from jurisdiction');
       component.person.status = null;
       component.person.currentActivity = CanadianStatusReason.MovingFromCountry;
-      expect(component.movedFromLabel).toEqual('Moved from country');
+      expect(component.movedFromLabel).toEqual('Moved from jurisdiction');
     });
 
     it('should return \'Moved from province\' for all other cases.', () => {
