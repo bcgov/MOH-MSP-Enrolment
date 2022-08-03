@@ -7,7 +7,7 @@ Below I will document the structure of one of these repos as they all follow the
 ## MOH-MSP-Enrolment Repo Structure
 
 ### .github/
-Where GitHub actions are stored. These make use of two GitHub repository secrets, which can be modified or removed through GitHub UI on the repo by navigating to Settings -> Secrets -> Actions. They are "OpenShiftServerURL" and "OpenShiftToken", which correspond to "https://api.silver.devops.gov.bc.ca:6443" (available from ‘copy login command’ in OpenShift console) and one of the two "github-cicd-token"'s found in the OpenShift console under Developer -> <NAMESPACE>-tools -> Secrets OR Administrator -> <NAMESPACE>-tools -> Workloads -> Secrets. Here NAMESPACE refers to the project namespace, ie. f0463d if in MOH-MSP-Enrolment cluster.
+Where GitHub actions are stored. These make use of two GitHub repository secrets, which can be modified or removed through GitHub UI on the repo by navigating to Settings -> Secrets -> Actions. They are "OpenShiftServerURL" and "OpenShiftToken", which correspond to "https://api.silver.devops.gov.bc.ca:6443" (available from ‘copy login command’ in OpenShift console) and one of the two "github-cicd-token"'s found in the OpenShift console under Developer -> NAMESPACE-tools -> Secrets OR Administrator -> NAMESPACE-tools -> Workloads -> Secrets. Here NAMESPACE refers to the project namespace, ie. f0463d if in MOH-MSP-Enrolment cluster.
 
 These GitHub actions exist to make it 'easy' to deploy the apps and services to dev, test, and prod via image tagging. More on that later.
 
