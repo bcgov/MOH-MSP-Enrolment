@@ -459,7 +459,7 @@
                     @blur="handleBlurField($v.previousHealthNumber)" />
                 </div>
                 <div>
-                  <Radio label="Since you arrived in B.C. have you left the province for more than 30 days in total in the past 12 months?"
+                  <Radio label="Since you arrived in B.C., have you left the province for more than 30 days in total in the past 12 months?"
                     class="mt-3"
                     id="outside-bc-12-months"
                     name="outside-bc-12-months"

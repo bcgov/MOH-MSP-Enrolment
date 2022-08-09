@@ -534,7 +534,7 @@
                       :inputStyle='mediumStyles' />
                   </div>
                   <Radio
-                    label='Since your spouse arrived in B.C. have they left the province for more than 30 days in total in the past 12 months?'
+                    label='Since your spouse arrived in B.C., have they left the province for more than 30 days in total in the past 12 months?'
                     id='outside-bc-past-12'
                     name='outside-bc-past-12'
                     v-model='spouseOutsideBCLast12Months'
