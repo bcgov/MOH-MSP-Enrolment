@@ -331,7 +331,7 @@
           </div>
           <div v-if="requestMovingInfo" class="mt-3">
             <!-- Spouse moving information -->
-            <h2 class="mt-3">Residency Information</h2>
+            <h2 class="mt-3">Moving Information</h2>
             <hr>
             <div class="row">
               <div class="col-md-7">
@@ -347,7 +347,7 @@
                     :items='radioOptionsNoYes' />
                   <div class="text-danger"
                     v-if="$v.spouseLivedInBCSinceBirth.$dirty && !$v.spouseLivedInBCSinceBirth.required"
-                    aria-live="assertive">Please indicate whether your spouse has lived in BC since birth.</div>
+                    aria-live="assertive">Please indicate whether your spouse has lived in B.C. since birth.</div>
                 </div>
                 <div v-if="showOriginTextField">
                   <Input 

@@ -298,7 +298,7 @@
         </div>
 
         <div v-if="isMovingInformationShown">
-          <h2 class="mt-4">Residency Information</h2>
+          <h2 class="mt-4">Moving Information</h2>
           <hr class="mb-0"/>
           <div class="row">
             <div class="col-md-7">
@@ -328,7 +328,7 @@
                 <div class="text-danger"
                   v-if="$v.hasLivedInBCSinceBirth.$dirty
                     && !$v.hasLivedInBCSinceBirth.required"
-                  aria-live="assertive">This field is required.</div>
+                  aria-live="assertive">Please indicate whether you have lived in B.C. since birth.</div>
               </div>
               <div v-if="requestPermanentMoveInfo">
                 <Radio label="Have you moved to B.C. permanently?"
