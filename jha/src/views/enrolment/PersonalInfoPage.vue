@@ -298,7 +298,7 @@
         </div>
 
         <div v-if="isMovingInformationShown">
-          <h2 class="mt-4">Residency Information</h2>
+          <h2 class="mt-4">Moving Information</h2>
           <hr class="mb-0"/>
           <div class="row">
             <div class="col-md-7">
@@ -328,7 +328,7 @@
                 <div class="text-danger"
                   v-if="$v.hasLivedInBCSinceBirth.$dirty
                     && !$v.hasLivedInBCSinceBirth.required"
-                  aria-live="assertive">This field is required.</div>
+                  aria-live="assertive">Please indicate whether you have lived in B.C. since birth.</div>
               </div>
               <div v-if="requestPermanentMoveInfo">
                 <Radio label="Have you moved to B.C. permanently?"
@@ -459,7 +459,7 @@
                     @blur="handleBlurField($v.previousHealthNumber)" />
                 </div>
                 <div>
-                  <Radio label="Since you arrived in B.C. have you left the province for more than 30 days in total in the past 12 months?"
+                  <Radio label="Since you arrived in B.C., have you left the province for more than 30 days in total in the past 12 months?"
                     class="mt-3"
                     id="outside-bc-12-months"
                     name="outside-bc-12-months"

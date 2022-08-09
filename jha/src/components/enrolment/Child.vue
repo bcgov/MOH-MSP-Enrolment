@@ -519,7 +519,7 @@
                       :inputStyle='mediumStyles' />
                   </div>
                   <Radio
-                    label='Has your child been outside B.C. for more than 30 days in total in the past 12 months?'
+                    label='Since your child arrived in B.C., have they left the province for more than 30 days in total in the past 12 months?'
                     :id="'outside-bc-' + index"
                     :name="'outside-bc-' + index"
                     v-model='outsideBCLast12Months'
