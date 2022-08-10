@@ -145,7 +145,7 @@
         
         <div v-if="requestImmigrationStatus">
           <h2 class="mt-4">Your status in Canada</h2>
-          <p>Provide your immigration status. You will need to upload documents that show your status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select 'Temporary Permit Holder or Diplomat' from the menu below.</p>
+          <p>Provide your immigration status. You will need to upload documents that show your status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel (CUAET) program, please select 'Temporary Permit Holder or Diplomat' from the menu below.</p>
           <hr/>
           <Select label="Immigration status in Canada"
             id="immigration-status"

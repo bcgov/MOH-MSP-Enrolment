@@ -142,7 +142,7 @@
 
       <div v-if="requestImmigrationStatus">
         <h2 class="mt-3">Child's status in Canada</h2>
-        <p>Please provide your child's immigration status. You will be required to upload documents to support your child's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
+        <p>Please provide your child's immigration status. You will be required to upload documents to support your child's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel (CUAET) program, please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
         <hr />
         <Select 
           :id="'child-status-' + index"
