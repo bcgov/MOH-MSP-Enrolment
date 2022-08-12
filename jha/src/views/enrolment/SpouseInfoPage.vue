@@ -175,7 +175,7 @@
           <div v-if="requestImmigrationStatus">
             <h2 class="mt-4">Spouse's status in Canada</h2>
             <div class="heading mt-3">
-              <p>Provide your spouse's immigration status. You will be need to upload documents that show your spouse's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
+              <p>Provide your spouse's immigration status. You will be need to upload documents that show your spouse's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel (CUAET) program, please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
             </div>
             <hr class="mt-0"/>
             <Select 
