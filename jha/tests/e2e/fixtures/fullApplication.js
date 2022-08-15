@@ -211,13 +211,13 @@ export const generateRequestObject = () => {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "3",
-          "description": "Account holder NOA/NOR"
+          "description": "Applicant NOA/NOR"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "4",
-          "description": "Account holder NOA/NOR"
+          "description": "Applicant NOA/NOR"
         },
         {
           "contentType": "IMAGE_JPEG",

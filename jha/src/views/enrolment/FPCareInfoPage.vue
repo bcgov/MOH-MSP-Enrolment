@@ -9,7 +9,7 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
-        <h1>Fair PharmaCare Financial Information</h1>
+        <h1>Fair PharmaCare financial information</h1>
         <hr class="mt-0"/>
         <div class="row">
           <div class="col-md-7">
@@ -19,7 +19,7 @@
                 :required="true"
                 @blur="handleBlurField($v.ahIncome)">
                 <template v-slot:description>
-                  <label for="ah-income">Enter the net income (Line 23600) from your {{noaYear}} CRA Notice of Assessment (NOA, <a href="javascript:void(0)" @click="handleClickIncomeSample()">sample</a>). For more information, see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
+                  <label for="ah-income">Enter the net income (Line 23600) from your {{noaYear}} CRA Notice of Assessment (NOA, <a href="javascript:void(0)" @click="handleClickIncomeSample()">sample</a>).</label>
                 </template>
               </CurrencyInput>
               <div class="text-danger"
@@ -38,7 +38,7 @@
                 :required="true"
                 @blur="handleBlurField($v.spouseIncome)">
                 <template v-slot:description>
-                  <label for="spouse-income">Enter the net income (Line 23600) from your spouse's {{noaYear}} CRA Notice of Assessment (NOA, <a href="javscript:void(0)" @click="handleClickIncomeSample()">sample</a>). For more information, see <a href='https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/pharmacare-for-bc-residents/who-we-cover/fair-pharmacare-plan/frequently-asked-questions-about-registration-income-and-consent' target='_blank'>Frequently Asked Questions</a>.</label>
+                  <label for="spouse-income">Enter the net income (Line 23600) from your spouse's {{noaYear}} CRA Notice of Assessment (NOA, <a href="javscript:void(0)" @click="handleClickIncomeSample()">sample</a>).</label>
                 </template>
               </CurrencyInput>
               <div class="text-danger"
@@ -55,7 +55,7 @@
             <h2 class="mt-5">Registered Disability Savings Plan</h2>
             <hr/>
             <div>
-              <CurrencyInput :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your ${noaYear} tax return.`"
+              <CurrencyInput :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your ${noaYear} tax return if applicable.`"
                 v-model="ahRDSP"
                 id="ah-disability-savings"
                 class="mt-3"
@@ -66,7 +66,7 @@
                 aria-live="assertive">Your Registered Disability Savings Plan amount from {{noaYear}} must be a positive number.</div>
             </div>
             <div v-if="hasSpouse">
-              <CurrencyInput :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your spouse's ${noaYear} tax return.`"
+              <CurrencyInput :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your spouse's ${noaYear} tax return if applicable.`"
                 v-model="spouseRDSP"
                 id="spouse-disability-savings"
                 class="mt-3"

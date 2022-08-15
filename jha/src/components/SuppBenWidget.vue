@@ -1,11 +1,11 @@
 <template>
   <div :class="'widget-container rounded p-3' + className">
-    <h2>Eligibility Calculator</h2>
+    <h2>Eligibility calculator</h2>
     <table class="table table-borderless">
       <tbody>
         <tr>
           <td>
-            <span>Total Net Income</span>
+            <span>Total net income</span>
           </td>
           <td>
             <span v-if="inputData.totalHouseholdIncome > 0">
@@ -52,7 +52,7 @@
       </tr>
       <tr v-if="inputData.claimedChildCareExpensesReduction < 0">
         <td>
-          50% of Child Care Expenses
+          50% of child care expenses
         </td>
         <td>
           {{currencyString(inputData.claimedChildCareExpensesReduction)}}
@@ -60,7 +60,7 @@
       </tr>
       <tr v-if="inputData.ahDisabilityCreditDeduction > 0">
         <td>
-          Applicant Disability credit
+          Applicant disability credit
         </td>
         <td>
           {{ currencyString(inputData.ahDisabilityCreditDeduction) }}
@@ -116,7 +116,7 @@
       </tr>
       <tr>
         <td class="deduction-table-cell-margin">
-          <h4>Total Deductions</h4>
+          <h4>Total deductions</h4>
         </td>
         <td>
           <span v-if="inputData.totalDeductions > 0" >
@@ -132,7 +132,7 @@
       <tbody>
         <tr>
           <td>
-            <h4>Adjusted Net Income:</h4>
+            <h4>Adjusted net income:</h4>
           </td>
           <td>
             <span v-if="inputData.adjustedIncome === null || inputData.adjustedIncome === undefined || inputData.adjustedIncome === ''"> - - </span>

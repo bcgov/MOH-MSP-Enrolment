@@ -9,7 +9,7 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
-        <h1>Fair PharmaCare Eligibility</h1>
+        <h1>Fair PharmaCare eligibility</h1>
         <Radio
           id='apply-fpc'
           name='apply-fpc'
@@ -19,22 +19,21 @@
           :items='radioOptionsApplyFPC' />
         <div v-if="eqFPCIsApplying === 'Y'">
           <p class="mb-0">2. To apply for Fair PharmaCare, you must:</p>
-          <div class="ml-4">
-            <p class="mb-0">a. be enrolled in MSP or be using this application form to also apply for MSP; and</p>
-            <p class="mb-0">b. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
+          <div class="ml-4 mb-3">
+            <p class="mb-0 ml-4">a. be enrolled in MSP or be using this application form to also apply for MSP; and</p>
+            <p class="mb-0 ml-4">b. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
           </div>
+          <p id="eqFPCMeetsCriteria" class="ml-4 mb-0">Do you meet the above eligibility criteria?</p>
           <Radio
             id='meets-fpc-criteria'
             name='meets-fpc-criteria'
-            label='Do you meet the above eligibility criteria?'
+            label=''
+            aria-labelledby="eqFPCMeetsCriteria"
             v-model='eqFPCMeetsCriteria'
             :required="true"
             :items='radioOptionsYesNo' />
           <div class="text-danger ml-4" v-if="eqFPCMeetsCriteria === 'N'">
-            <p>
-              You are not eligible to apply for Fair PharmaCare at this time. 
-            </p>
-
+            <p>You are not eligible to apply for Fair PharmaCare at this time.</p>
             <ul>
               <li>
                 If you have not been a resident of B.C. for at least three months, apply after you have completed the required wait period. 
@@ -43,7 +42,7 @@
                 If you and/or your spouse did not file taxes with the CRA two years ago, do so as soon as possible. When you have submitted your tax return(s), apply for Fair PharmaCare. 
               &nbsp;</li>
               <li>
-                If you and/or your spouse were not able to file taxes with the CRA two years ago (because you did not live in Canada, were a minor, or were exempt from filing taxes), contact HIBC at:
+                If you and/or your spouse were not able to file taxes with the CRA two years ago (because you did not live in Canada, were a minor, or were otherwise exempt from filing taxes), contact HIBC at:
                 <ContactInformation />
               </li>
             </ul>
@@ -51,15 +50,17 @@
           <div v-if="eqFPCMeetsCriteria === 'Y'">
             <p class="mb-0">3. To apply for Fair PharmaCare, you must provide the following information:</p>
             <div class="ml-4">
-              <p class="mb-0">a. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
-              <p class="mb-0">b. Net Income (Line 23600) from your and (if applicable) your spouse's CRA Notice of Assessment (NOA), Notice of Reassessment (NORA) or federal income tax return for the tax year two years before the current year; and</p>
-              <p>c. Registered Disability Savings Plan (RDSP) income (Line 12500) if applicable.</p>
+              <p class="mb-0 ml-4">a. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
+              <p class="mb-0 ml-4">b. Net Income (Line 23600) from your and (if applicable) your spouse's CRA Notice of Assessment (NOA), Notice of Reassessment (NORA) or federal income tax return for the tax year two years before the current year; and</p>
+              <p class="ml-4">c. Registered Disability Savings Plan (RDSP) income (Line 12500) if applicable.</p>
             </div>
+            <p id="eqFPCHasInfo" class="ml-4 mb-0">Do you have this information to include with your application?</p>
             <Radio
               id='has-fpc-info'
               name='has-fpc-info'
-              label='Do you have this information to include with your application?'
+              label=''
               v-model='eqFPCHasInfo'
+              aria-labelledby="eqFPCHasInfo"
               :required="true"
               :items='radioOptionsYesNo' />
             <div class="text-danger pl-4 ml-4" v-if="eqFPCHasInfo === 'N'">
@@ -68,11 +69,11 @@
               </p>
               <ul>
                 <li>
-                  If you and/or your spouse do not have a Social Insurance Number, Contact Service Canada before you apply. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact HIBC at:
+                  If you and/or your spouse do not have a SIN, Contact Service Canada before you apply. If you are a new resident to Canada and do not qualify for a SIN, contact HIBC at:
                   <ContactInformation />
                 </li>
                 <li>
-                  If you and/or your spouse did not file taxes with the CRA two years ago, do so as soon as possible. When you have submitted your tax return(s), apply for Fair PharmaCare. If you and/or your spouse were not able to file taxes with the CRA two years ago (because you did not live in Canada, were a minor, or were exempt from filing taxes), contact HIBC.
+                  If you and/or your spouse did not file taxes with the CRA two years ago, do so as soon as possible. When you have submitted your tax return(s), apply for Fair PharmaCare. If you and/or your spouse were not able to file taxes with the CRA two years ago (because you did not live in Canada, were a minor, or were otherwise exempt from filing taxes), contact HIBC.
                 &nbsp;</li>
               </ul>
             </div>

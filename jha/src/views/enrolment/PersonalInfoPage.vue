@@ -114,11 +114,11 @@
               <div class="text-danger"
                 v-if="$v.socialInsuranceNumber.$dirty
                   && !$v.socialInsuranceNumber.required"
-                aria-live="assertive">Social Insurance Number is required.</div>
+                aria-live="assertive">SIN is required.</div>
               <div class="text-danger"
                 v-if="$v.socialInsuranceNumber.$dirty
                   && !$v.socialInsuranceNumber.sinValidator"
-                aria-live="assertive">Social Insurance Number is invalid.</div>
+                aria-live="assertive">SIN is invalid.</div>
             </div>
             <div v-if="requestGender">
               <Radio label="Gender"
@@ -145,7 +145,7 @@
         
         <div v-if="requestImmigrationStatus">
           <h2 class="mt-4">Your status in Canada</h2>
-          <p>Provide your immigration status. You will need to upload documents that show your status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel (CUAET) program, please select 'Temporary Permit Holder or Diplomat' from the menu below.</p>
+          <p>Provide your immigration status. You will need to upload documents that show your status in Canada. For arrivals through the Canada-Ukraine authorization for emergency travel (CUAET) program, please select 'Temporary Permit Holder or Diplomat' from the menu below.</p>
           <hr/>
           <Select label="Immigration status in Canada"
             id="immigration-status"
@@ -189,9 +189,9 @@
         
         <div v-if="isCitizenshipDocsShown">
           <h2 class="mt-4">Documents</h2>
-          <p>Provide a copy of an accepted document that shows your status in Canada. If your name is different from the name on the document, you must also upload a copy of a marriage certificate or name change certificate that shows your full legal name.</p>
+          <p>Provide a copy of an accepted document that shows your status in Canada. If your name is different from the name on the document, you must also upload a copy of a marriage certificate, divorce decree, or name change certificate that shows your full legal name.</p>
           <hr/>
-          <Select label="Document Type"
+          <Select label="Document type"
             id="citizen-support-document-type"
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
@@ -203,7 +203,7 @@
           <div class="text-danger"
             v-if="$v.citizenshipSupportDocumentType.$dirty
               && !$v.citizenshipSupportDocumentType.required"
-            aria-live="assertive">Document Type is required.</div>
+            aria-live="assertive">Document type is required.</div>
           <Radio
             label="Does the document that shows your status in Canada match your selected gender designation?" 
             name="gender-matches"
@@ -219,7 +219,7 @@
             aria-live="assertive">This field is required.</div>
           <div v-if="citizenshipSupportDocumentType && genderMatches"
             class="mt-3">
-            <h2 class="mt-4">{{ supportDocumentTypeToTitle(citizenshipSupportDocumentType)}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+            <h2 class="mt-4">{{ citizenshipSupportDocumentType }} {{ genderMatches === 'N' ? 'and change of gender designation' : '' }}</h2>
             <hr/>
             <div class="row">
               <div class="col-md-7">
@@ -227,7 +227,7 @@
                   id='citizenship-support-documents'
                   :isZoomPortalEnabled="true"
                   modalElementTarget="#modal-target"
-                  documentType="Account holder citizenship support documents"
+                  documentType="Applicant citizenship support documents"
                   :description="citizenshipSupportDocumentType" />
                 <div class="text-danger mt-3"
                   v-if="$v.citizenshipSupportDocuments.$dirty
@@ -258,9 +258,9 @@
         <div v-if="requestNameChangedDocs"
           class="tabbed-section mt-3">
           <h2 class="mt-4">Additional Documents</h2>
-          <p>Provide a copy of a marriage certificate or name change certificate that shows your full legal name.</p>
+          <p>Provide a copy of a marriage certificate, divorce decree, or name change certificate that shows your full legal name.</p>
           <hr/>
-          <Select label="Document Type"
+          <Select label="Document type"
             id="name-change-doc-type"
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
@@ -273,7 +273,7 @@
           <div class="text-danger"
             v-if="$v.nameChangeSupportDocumentType.$dirty
               && !$v.nameChangeSupportDocumentType.required"
-            aria-live="assertive">Document Type is required.</div>
+            aria-live="assertive">Document type is required.</div>
           <div v-if="nameChangeSupportDocumentType">
             <h2 class="mt-4">{{nameChangeSupportDocumentType}}</h2>
             <hr/>
@@ -283,7 +283,7 @@
                   id='name-change-support-documents'
                   :isZoomPortalEnabled="true"
                   modalElementTarget="#modal-target"
-                  documentType="Account holder name change support documents"
+                  documentType="Applicant name change support documents"
                   :description="nameChangeSupportDocumentType"/>
                 <div class="text-danger"
                   v-if="$v.nameChangeSupportDocuments.$dirty
@@ -298,7 +298,7 @@
         </div>
 
         <div v-if="isMovingInformationShown">
-          <h2 class="mt-4">Moving Information</h2>
+          <h2 class="mt-4">Moving information</h2>
           <hr class="mb-0"/>
           <div class="row">
             <div class="col-md-7">
@@ -345,7 +345,7 @@
                   aria-live="assertive">Please indicate whether you have made a permanent move to BC.</div>
                 <div class="text-danger"
                   v-if="!canContinueProcess"
-                  aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, you are not eligible for enrolment in the Medical Services Plan. Please contact <a href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us" target="_blank">Health Insurance BC</a> for further information.</div>
+                  aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, you are not eligible for enrolment in MSP. For more information, contact HIBC.</div>
               </div>
               <div v-if="canContinueProcess">
                 <div v-if="requestProvinceMoveInfo">
@@ -366,7 +366,7 @@
                   <div class="text-danger"
                     v-if="$v.moveFromOrigin.$dirty
                       && !$v.moveFromOrigin.nonBCValidator"
-                    aria-live="assertive">Province of origin cannot be British Columbia.</div>
+                    aria-live="assertive">Province of origin cannot be B.C.</div>
                 </div>
                 <div v-else-if="requestCountryMoveInfo">
                   <CountrySelect label="Which jurisdiction are you moving from?"
@@ -653,7 +653,7 @@
                     aria-live="assertive">This field is required.</div>
                   <div class="text-danger"
                     v-if="willStudentResideInBC === 'N'"
-                    aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for Medical Services Plan coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
+                    aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for MSP coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
                 </div>
               </div>
             </div>
@@ -782,7 +782,6 @@ import {
   optionalInvalidDateValidator,
   reasonDestinationContentValidator,
 } from '@/helpers/validators';
-import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import {
   CanadianStatusReasons,
   StatusInCanada,
@@ -1130,7 +1129,6 @@ export default {
       this.saveData();
       this.navigateToNextPage();
     },
-    supportDocumentTypeToTitle,
     saveData() {
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_FIRST_NAME}`, this.firstName);
       this.$store.dispatch(`${enrolmentModule}/${SET_AH_MIDDLE_NAME}`, this.middleName);

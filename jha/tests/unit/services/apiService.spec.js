@@ -73,14 +73,14 @@ describe("Power Of Attorney", () => {
     expect(powerOfAttorneyDocuments.length).toBe(1);
   });
 
-  it("Sets account holder PoA and spouse PoA to 'Y' in payload when included", async () => {
+  it("Sets applicant PoA and spouse PoA to 'Y' in payload when included", async () => {
     const { allData } = await getApplicationAttachments(dummyData);
 
     expect(allData.powerOfAttorney).toBe("Y");
     expect(allData.spousePowerOfAttorney).toBe("Y");
   });
 
-  it("Sets account holder PoA and spouse PoA to 'N' in payload when excluded", async () => {
+  it("Sets applicant PoA and spouse PoA to 'N' in payload when excluded", async () => {
     const appData = { ...dummyData, hasPowerOfAttorney: false };
     const { allData } = await getApplicationAttachments(appData);
 

@@ -4,12 +4,12 @@
       <main class="container pt-3 pt-sm-5 mb-3">
         <div class="row align-items-end mt-3">
           <div class="col-9">
-            <h1 class="mb-0">Confirmation of Submission</h1>
+            <h1 class="mb-0">Confirmation of submission</h1>
           </div>
           <div class="col-3 text-right">
             <a href="javascript:void(0)"
               class="print-btn"
-              @click="printPage()">Print or Save as PDF
+              @click="printPage()">Print or save as PDF
               <font-awesome-icon icon="print" />
             </a>
             <div class="tip-container">
@@ -73,7 +73,7 @@
 
         </div>
 
-        <h3 class="mt-4">Next Steps</h3>
+        <h3 class="mt-4">Next steps</h3>
         <hr/>
         <ul>
           <li>Please <a href="javascript:void(0)" @click="printPage()" class="print-link">print</a> this page for your records.&nbsp;</li>

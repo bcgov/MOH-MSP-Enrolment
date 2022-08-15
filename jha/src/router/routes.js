@@ -31,7 +31,7 @@ export const enrolmentRoutes = {
   },
   PERSONAL_INFO_PAGE: {
     path: '/personal-info',
-    title: 'Acct. Holder',
+    title: 'Applicant',
     name: 'PersonalInfoPage',
     pageTitle: 'Personal Info | AHDC'
   },
@@ -49,19 +49,19 @@ export const enrolmentRoutes = {
   },
   CONTACT_INFO_PAGE: {
     path: '/contact-info',
-    title: 'Contact Info',
+    title: 'Contact',
     name: 'ContactInfoPage',
     pageTitle: 'Contact Info | AHDC'
   },
   FPCARE_INFO_PAGE: {
     path: '/fpcare-info',
-    title: 'F PCare Info',
+    title: 'PharmaCare',
     name: 'FPCareInfoPage',
     pageTitle: 'FPCare Info | AHDC'
   },
   SUPP_BEN_INFO_PAGE: {
     path: '/supp-ben-info',
-    title: 'Supp Ben Info',
+    title: 'Supp Ben',
     name: 'SuppBenInfoPage',
     pageTitle: 'Supplementary Benefits Info | AHDC'
   },
