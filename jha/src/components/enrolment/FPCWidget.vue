@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="row">
-      <div class="col-sm-7">Total Net Income</div>
+      <div class="col-sm-7">Total net income</div>
       <div class="col-sm-5">
         <b>{{totalIncome | currencyFilter}}</b>
       </div>
@@ -12,13 +12,13 @@
       <b>Deductions</b>
     </p>
     <div class="row">
-      <div class="col-sm-7">Total RDSP Income</div>
+      <div class="col-sm-7">Total RDSP income</div>
       <div class="col-sm-5">
         <b>{{RDSP | currencyFilter}}</b>
       </div>
     </div>
     <div class="row mt-3">
-      <div class="col-sm-7">Total Deductions</div>
+      <div class="col-sm-7">Total deductions</div>
       <div class="col-sm-5">
         <b>{{RDSP | currencyFilter}}</b>
       </div>
@@ -26,7 +26,7 @@
 
     <hr/>
     <div class="row">
-      <div class="col-sm-7">Adjusted Income</div>
+      <div class="col-sm-7">Adjusted income</div>
       <div class="col-sm-5">
         <b>{{adjustedIncome | currencyFilter}}</b>
       </div>
@@ -35,7 +35,7 @@
     <hr/>
     <p>Based on the information you entered, you may be eligible for the level of coverage below. Coverage is temporary until we verify your income with the CRA.</p>
 
-    <h3>Level of Coverage</h3>
+    <h3>Level of coverage</h3>
     <div v-if="isLoading"
       class="text-center">
       <Loader color="#000"

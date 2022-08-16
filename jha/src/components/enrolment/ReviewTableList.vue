@@ -3,7 +3,7 @@
     <div class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Applicant Information</h2>
+          <h2 class="mb-2">Applicant information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -20,7 +20,7 @@
     <div class="col-lg-6 mb-3" v-if='hasSpouse'>
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Spouse Information</h2>
+          <h2 class="mb-2">Spouse information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -55,7 +55,7 @@
     <div v-if="isApplyingForFPCare" class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Fair PharmaCare Financial Information</h2>
+          <h2 class="mb-2">Fair PharmaCare financial information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -69,7 +69,7 @@
                   :backgroundColor='tableBackgroundColor'/>
       <div class="p-3"
         :style="{'background-color': tableBackgroundColor}">
-        <h3>Level of Coverage</h3>
+        <h3>Level of coverage</h3>
         <div v-if="isFPCDataLoading"
           class="text-center">
           <Loader color="#000"
@@ -87,7 +87,7 @@
     <div v-if="isApplyingForSuppBen" class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Supplementary Benefits Financial Information</h2>
+          <h2 class="mb-2">Supplementary Benefits financial information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -104,7 +104,7 @@
     <div class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">Contact Information</h2>
+          <h2 class="mb-2">Contact information</h2>
         </div>
         <div v-if='showEditButtons'
             class="col-3 text-right">
@@ -279,7 +279,7 @@ export default {
           value: statusInCanada,
         });
         items.push({
-          label: "Support Document type",
+          label: "Support document type",
           value: this.$store.state.enrolmentModule
             .ahCitizenshipSupportDocumentType,
         });
@@ -364,7 +364,7 @@ export default {
             });
         }
         items.push({
-          label: "Has Previous B.C. Health Number?",
+          label: "Has previous B.C. PHN?",
           value:
             this.$store.state.enrolmentModule.ahHasPreviousPHN === "Y"
               ? "Yes"
@@ -372,7 +372,7 @@ export default {
         });
         if (this.$store.state.enrolmentModule.ahHasPreviousPHN === "Y") {
           items.push({
-            label: "Previous B.C. Health Number",
+            label: "Previous B.C. PHN",
             value: this.$store.state.enrolmentModule.ahPreviousPHN,
           });
         }
@@ -419,7 +419,7 @@ export default {
             this.$store.state.enrolmentModule.ahIsReleasedFromArmedForces ===
             "Y";
           items.push({
-            label: "Released from Canadian Forces?",
+            label: "Released from Canadian Forces or an institution?",
             value: releasedFromForces ? "Yes" : "No",
           });
           if (releasedFromForces) {
@@ -502,7 +502,7 @@ export default {
           value: statusInCanada,
         });
         items.push({
-          label: "Support Document Type",
+          label: "Support document type",
           value: this.$store.state.enrolmentModule
             .spouseCitizenshipSupportDocumentType,
         });
@@ -580,7 +580,7 @@ export default {
             });
         }        
         items.push({
-          label: "Has Previous B.C. Health Number? ",
+          label: "Has previous B.C. PHN?",
           value:
             this.$store.state.enrolmentModule
               .spouseHasPreviousBCHealthNumber === "Y"
@@ -592,7 +592,7 @@ export default {
           "Y"
         ) {
           items.push({
-            label: "Previous B.C. Health Number",
+            label: "Previous B.C. PHN",
             value: this.$store.state.enrolmentModule
               .spousePreviousBCHealthNumber,
           });
@@ -641,7 +641,7 @@ export default {
             this.$store.state.enrolmentModule
               .spouseBeenReleasedFromInstitution === "Y";
           items.push({
-            label: "Released from Canadian Forces?",
+            label: "Released from Canadian Forces or an institution?",
             value: releasedFromForces ? "Yes" : "No",
           });
           if (releasedFromForces) {
@@ -700,7 +700,7 @@ export default {
             value: statusInCanada,
           });
           childData.push({
-            label: "Support Document Type",
+            label: "Support document type",
             value: child.citizenshipSupportDocumentType,
           });
           childData.push({
@@ -761,12 +761,12 @@ export default {
             }
           }
           childData.push({
-            label: "Has Previous B.C. Health Number? ",
+            label: "Has previous B.C. PHN?",
             value: child.hasPreviousBCHealthNumber === "Y" ? "Yes" : "No",
           });
           if (child.hasPreviousBCHealthNumber === "Y") {
             childData.push({
-              label: "Previous B.C. Health number",
+              label: "Previous B.C. PHN",
               value: child.previousBCHealthNumber,
             });
           }
@@ -794,7 +794,7 @@ export default {
           }
           if (child.status === StatusInCanada.Citizen) {
             childData.push({
-              label: "Released from Canadian Forces?",
+              label: "Released from Canadian Forces or an institution?",
               value:
                 child.hasBeenReleasedFromInstitution === "Y" ? "Yes" : "No",
             });
@@ -879,7 +879,7 @@ export default {
       const ahFPCIncome = this.$store.state.enrolmentModule.ahFPCIncome;
       const noaYear = new Date().getFullYear() - 2;
       items.push({
-        label: `Account holder net income for ${noaYear}`,
+        label: `Applicant net income for ${noaYear}`,
         value: ahFPCIncome
           ? moneyFormatter.format(ahFPCIncome)
           : moneyFormatter.format("0"),
@@ -898,7 +898,7 @@ export default {
       }
       const ahFPCRDSP = this.$store.state.enrolmentModule.ahFPCRDSP;
       items.push({
-        label: "Account holder RDSP income",
+        label: "Applicant RDSP income",
         value: ahFPCRDSP
           ? moneyFormatter.format(ahFPCRDSP)
           : moneyFormatter.format("0"),

@@ -9,12 +9,12 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
-        <h1>Contact Information</h1>
+        <h1>Contact information</h1>
         <hr class="mt-0"/>
         <div class="row">
             <div class="col-md-6" v-if="applyingForMSP">
               <div>
-                <h2>Residential Address</h2>
+                <h2>Residential address</h2>
                 <p class="address-description">Your residential address is the address where you currently live in B.C.</p>
               </div>
               <hr class="mt-0"/>
@@ -107,7 +107,7 @@
             </div>
           <div class="col-md-6">
             <div>
-              <h2>Mailing Address</h2>
+              <h2>Mailing address</h2>
               <p v-if="applyingForMSP" class="address-description">Enter your mailing address if it is different from your residential address.</p>
               <p v-else>Enter your mailing address</p>
             </div>

@@ -36,7 +36,7 @@
             <div class="flex flex-col">
               <strong>
                 <label class="mt-2" for="power-of-attorney-upload">
-                  Upload your Power of Attorney document or another legal
+                  Upload your power of attorney document or another legal
                   representation agreement
                 </label>
               </strong>
@@ -100,7 +100,7 @@
         <div v-if="isApplyingForFPCare"
           class="mb-5">
           <hr/>
-          <h2>Fair PharmaCare: Declaration and Consent - Must Be Signed</h2>
+          <h2>Fair PharmaCare: Declaration and consent - must be signed</h2>
           <p>Your online application is now complete. In order to make your Fair PharmaCare coverage permanent, we need to check your income information with the Canada Revenue Agency (CRA). The CRA requires that you provide written consent to share your income information. If you are married or living in a marriage-like relationship, your spouse must also provide written consent.</p>
           <p>You will receive a letter at the address you provided, asking you to agree to the following statement:</p>
           <ul>
@@ -110,7 +110,7 @@
             <li>This consent is valid for the two taxation years before the year in which I sign this document, for the year in which I sign it and for each following taxation year in which I and/or my family remain enrolled in the Fair PharmaCare Plan.&nbsp;</li>
             <li>I understand that I can withdraw this consent at any time by writing to Health Insurance BC, PO Box 9655 Stn Prov Govt, Victoria BC V8W 9P2. I also understand that if I withdraw my consent, my Fair PharmaCare deductible may be set to the highest amount.&nbsp;</li>
           </ul>
-          <h2>Your Information</h2>
+          <h2>Your information</h2>
           <p>Please confirm that you (and your spouse, if you have one):</p>
           <ul>
             <li>filed tax returns for the tax year two years prior to this application, and&nbsp;</li>
@@ -141,7 +141,7 @@
         <div v-if="isApplyingForSuppBen"
           class="mb-5">
           <hr/>
-          <h2>Supplementary Benefits: Declaration and Consent - Must Be Signed</h2>
+          <h2>Supplementary Benefits: Declaration and consent - must be signed</h2>
           <p><b>Please read and sign. If you are married or living in a marriage-like relationship, your spouse must also sign.</b></p>
           <ul>
             <li>I am a resident of British Columbia as defined by the Medicare Protection Act. I have resided in Canada as a Canadian citizen or holder of permanent resident status (landed immigrant) for at least the last 12 months immediately preceding this application. I am not exempt from liability to pay income tax by reason of any other Act. I consent to the release of information from my income tax returns and other taxpayer information, by the CRA to the Ministry of Health and/or HIBC. The information obtained will be relevant to and used for the purpose of determining and verifying my initial and ongoing entitlement to the Supplementary Benefits Program under the Medicare Protection Act, and will not be disclosed to any other party. This authorization is valid for the taxation year prior to the signature of this application, the year of the signature, and for each subsequent consecutive taxation year for determining Supplementary Benefits. It may be revoked by sending a written notice to HIBC.&nbsp;</li>

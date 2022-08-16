@@ -142,7 +142,7 @@
 
       <div v-if="requestImmigrationStatus">
         <h2 class="mt-3">Child's status in Canada</h2>
-        <p>Please provide your child's immigration status. You will be required to upload documents to support your child's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel (CUAET) program, please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
+        <p>Please provide your child's immigration status. You will be required to upload documents to support your child's status in Canada. For arrivals through the Canada-Ukraine authorization for emergency travel (CUAET) program, please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
         <hr />
         <Select 
           :id="'child-status-' + index"
@@ -203,7 +203,7 @@
           <p>Provide a copy of an accepted document that shows your child’s status in Canada. If their name is different from the name on the document, you must also upload a copy of a name change certificate that shows their full legal name.</p>
           <hr/>
           <Select 
-            label="Document Type"
+            label="Document type"
             :name="'citizen-support-document-type-' + index"
             :id="'citizen-support-document-type-' + index"
             class="mb-3"
@@ -216,7 +216,7 @@
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="$v.citizenshipSupportDocumentType.$dirty && !$v.citizenshipSupportDocumentType.required"
-            aria-live="assertive">Document Type is required.</div>
+            aria-live="assertive">Document type is required.</div>
           <Radio
             label="Does the document that shows your child's status in Canada match their selected gender designation?" 
             :name="'gender-matches-' + index"
@@ -231,7 +231,7 @@
               && !$v.genderMatches.required"
             aria-live="assertive">This field is required.</div>
           <div v-if="citizenshipSupportDocumentType && genderMatches">
-            <h2>{{ supportDocumentTypeToTitle(citizenshipSupportDocumentType)}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+            <h2>{{ citizenshipSupportDocumentType }} {{ genderMatches === 'N' ? 'and change of gender designation' : '' }}</h2>
             <hr/>
             <div class="row">
               <div class="col-md-7">
@@ -269,7 +269,7 @@
             <p>Provide a copy of a name change certificate that shows your child's full legal name.</p>
             <hr/>
             <Select 
-              label="Document Type"
+              label="Document type"
               :name="'name-change-doc-type-' + index"
               :id="'name-change-doc-type-' + index"
               class="mb-3"
@@ -282,7 +282,7 @@
               :inputStyle='mediumStyles' />
             <div class="text-danger"
               v-if="$v.nameChangeSupportDocumentType.$dirty && !$v.nameChangeSupportDocumentType.required"
-              aria-live="assertive">Document Type is required.</div>
+              aria-live="assertive">Document type is required.</div>
             <div v-if="nameChangeSupportDocumentType">
                 <h2>{{nameChangeSupportDocumentType}}</h2>
                 <hr/>
@@ -307,7 +307,7 @@
         </div>
 
         <div v-if="requestMovingInfo">
-          <h2 class="mt-4">Moving Information</h2>
+          <h2 class="mt-4">Moving information</h2>
           <hr/>
           <div class="row">
               <div class="col-md-7">
@@ -356,7 +356,7 @@
                     aria-live="assertive">Please indicate whether your child has made a permanent move to B.C.</div>
                   <div class="text-danger"
                     v-if="madePermanentMove === 'N' && status !== statusOptions.TemporaryResident"
-                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your child is not eligible for enrolment in the Medical Services Plan. Please contact <a target="_blank" href="http://www2.go$v.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.</div>
+                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your child is not eligible for enrolment in MSP. For more information, contact HIBC.</div>
               </div>
               <div v-if="madePermanentMove !== 'N' || status === statusOptions.TemporaryResident">
                   <div v-if="showProvinceSelector">
@@ -378,7 +378,7 @@
                     v-if="$v.moveFromOrigin.$dirty
                       && $v.moveFromOrigin.required
                       && !$v.moveFromOrigin.nonBCValidator"
-                    aria-live="assertive">Province of origin cannot be British Columbia.</div>
+                    aria-live="assertive">Province of origin cannot be B.C.</div>
                   </div>
                   <div v-if="showCountrySelector">
                     <CountrySelect 
@@ -899,7 +899,6 @@ import {
   StatusInCanada,
   CanadianStatusReasons, 
 } from '@/constants/immigration-status-types';
-import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import { SupportDocumentTypes } from '@/constants/document-types';
 import { ChildAgeTypes } from '../../constants/child-age-types';
 import { isAfter, isBefore } from 'date-fns/esm';
@@ -1432,7 +1431,6 @@ export default {
         this.$emit('updateChild', childData);
       }
     },
-    supportDocumentTypeToTitle,
     handleBlurField(validationObject) {
       if (validationObject) {
         validationObject.$touch();

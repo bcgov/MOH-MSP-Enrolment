@@ -9,8 +9,15 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
-        <p>Answer the following questions to see which programs you are eligible for and make sure you have what you need to apply</p>
-        <h1>Medical Services Plan Eligibility</h1>
+        <p><strong>British Columbia Application for Health and Drug Coverage</strong></p> 
+        <p>B.C. residents can apply for one, two or three programs using this form: 
+        <ul>
+          <li>Medical Services Plan (MSP)&nbsp;</li> 
+          <li>Fair PharmaCare&nbsp;</li>
+          <li>Supplementary Benefits&nbsp;</li>
+        </ul> 
+        <p>Answer the following questions to see which programs you are eligible for and make sure you have what you need to apply.</p>
+        <h1>Medical Services Plan eligibility</h1>
         <Radio
           id='apply-msp'
           name='apply-msp'
@@ -55,7 +62,7 @@
                 :required="true"
                 :items='radioOptionsYesNo' />
               <div class="text-danger ml-4" v-if="eqMSPStudentMinorRefugee === 'Y'">
-                <p>You can apply for MSP with some assistance from HIBC. Contact us at:</p>
+                <p>You can apply for MSP with some assistance from HIBC. Contact HIBC at:</p>
                 <ContactInformation />
               </div>
               <div v-if="eqMSPStudentMinorRefugee === 'N'">

@@ -108,6 +108,10 @@ export const selectOptionsNameChangeSupportDocuments = [
     value: SupportDocumentTypes.ChangeOfNameCertificate,
     label: SupportDocumentTypes.ChangeOfNameCertificate
   },
+  {
+    value: SupportDocumentTypes.DivorceDecree,
+    label: SupportDocumentTypes.DivorceDecree
+  }
 ];
 
 export const selectOptionsChildNameChangeSupportDocuments = [

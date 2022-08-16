@@ -321,7 +321,7 @@ class ApiService {
       if (formState.selectedDisabilityRecipients && formState.selectedDisabilityRecipients.includes('spouse')) {
         numDisabled += 1;
       }
-      // check if account holder is on disability
+      // check if applicant is on disability
       if (formState.selectedDisabilityRecipients && formState.selectedDisabilityRecipients.includes('ah')) {
         numDisabled += 1;
       }
@@ -341,7 +341,7 @@ class ApiService {
         totalDeductions: parseInt(formState.sbTotalDeductions) || 0,
         totalNetIncome: parseInt(formState.sbTotalHouseholdIncome) || 0,
         childCareExpense: Math.floor(parseInt(formState.claimedChildCareExpenses) / 2 || 0), // amount recieved is half actual child care expenses 
-        netIncomeLastYear: parseInt(formState.ahSBIncome) || 0, // Account holder net income. DB as "netIncome".
+        netIncomeLastYear: parseInt(formState.ahSBIncome) || 0, // Applicant net income. DB as "netIncome".
         numChildren: parseInt(formState.numChildren) || 0,
         numDisabled,
         spouseIncomeLine236: parseInt(formState.spouseSBIncome) || 0,
