@@ -2,9 +2,9 @@
   <table class="table table-sm">
     <thead>
       <tr class="border-br row bg-primary text-light text-center">
-        <th class="col-sm-4 border-tl">Canadian Citizen</th>
-        <th class="col-sm-4 border-tl">Permanent Resident</th>
-        <th class="col-sm-4 border-tl">Temporary Document Holder</th>
+        <th class="col-sm-4 border-tl">Canadian Citizens</th>
+        <th class="col-sm-4 border-tl">Permanent Residents</th>
+        <th class="col-sm-4 border-tl">Temporary Document Holders</th>
       </tr>
     </thead>
     <tbody>
@@ -12,8 +12,8 @@
         <td class="col-sm-4 border-l">
           <ul>
             <li>Canadian birth certificate&nbsp;</li>
-            <li>Canadian citizenship card (front and back)&nbsp;</li>
-            <li>Certificate of Canadian citizenship (front and back)&nbsp;</li>
+            <li>Canadian Citizenship Card (front and back)&nbsp;</li>
+            <li>Certificate of Canadian Citizenship (front and back)&nbsp;</li>
             <li>Canadian passport&nbsp;</li>
             <li>First Nations status card&nbsp;</li>
             <li>Métis status card&nbsp;</li>
@@ -29,7 +29,7 @@
         <td class="col-sm-4 border-l">
           <ul>
             <li>Study permit&nbsp;</li>
-            <li>Work permit (working holiday permit holders must include a letter of employment)&nbsp;</li>
+            <li>Work permit (Working Holiday permit must include a letter of employment)&nbsp;</li>
             <li>Visitor permit (accompanying spouse or child)&nbsp;</li>
           </ul>
         </td>
