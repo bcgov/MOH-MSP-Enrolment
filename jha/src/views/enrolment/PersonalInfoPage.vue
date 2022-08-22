@@ -655,7 +655,7 @@
                     aria-live="assertive">This field is required.</div>
                   <div class="text-danger"
                     v-if="willStudentResideInBC === 'N'"
-                    aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
+                    aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for MSP coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
                 </div>
               </div>
             </div>
