@@ -12,12 +12,12 @@
         <p><strong>British Columbia Application for Health and Drug Coverage</strong></p> 
         <p>B.C. residents can apply for one, two or three programs using this form: 
         <ul>
-          <li>Medical Services Plan (MSP)&nbsp;</li> 
+          <li>Medical Services Plan&nbsp;</li> 
           <li>Fair PharmaCare&nbsp;</li>
           <li>Supplementary Benefits&nbsp;</li>
         </ul> 
         <p>Answer the following questions to see which programs you are eligible for and make sure you have what you need to apply.</p>
-        <h1>Medical Services Plan eligibility</h1>
+        <h1>Medical Services Plan (MSP) eligibility</h1>
         <Radio
           id='apply-msp'
           name='apply-msp'
@@ -35,7 +35,7 @@
             :items='radioOptionsYesNo' />
           <div class="text-danger ml-4" v-if="eqMSPLiveInBC === 'N'">
             <p>
-              If you do not live in B.C., you may not be eligible for MSP or related income-based programs. For more information, contact HIBC at: 
+              If you do not live in B.C., you may not be eligible for MSP or related income-based programs. For more information, contact Health Insurance BC at: 
             </p>
             <ContactInformation />
           </div>
@@ -49,7 +49,7 @@
               :items='radioOptionsYesNo' />
             <div class="text-danger ml-4" v-if="eqMSPAwayOver30 === 'Y'">
               <p>
-                If you leave B.C. for more than 30 days in total during the first six months after applying for MSP, you may not be considered a B.C. resident. You or a family member may not be eligible for MSP coverage or related income-based programs. For more information, contact HIBC at:
+                If you leave B.C. for more than 30 days in total during the first six months after applying for MSP, you may not be considered a B.C. resident. You or a family member may not be eligible for MSP coverage or related income-based programs. For more information, contact Health Insurance BC at:
               </p>
               <ContactInformation/>
             </div>
@@ -62,7 +62,7 @@
                 :required="true"
                 :items='radioOptionsYesNo' />
               <div class="text-danger ml-4" v-if="eqMSPStudentMinorRefugee === 'Y'">
-                <p>You can apply for MSP with some assistance from HIBC. Contact HIBC at:</p>
+                <p>You can apply for MSP with some assistance from Health Insurance BC. Contact Health Insurance BC at:</p>
                 <ContactInformation />
               </div>
               <div v-if="eqMSPStudentMinorRefugee === 'N'">
@@ -185,7 +185,7 @@ export default {
       },
       {
         id: 'no',
-        label: 'No, I am already enrolled. Continue to Fair PharmaCare. You will need to provide your MSP Personal Health Number.',
+        label: 'No, I am already enrolled. Continue to Fair PharmaCare. You will need to provide your Personal Health Number.',
         value: 'N',
       },
     ];

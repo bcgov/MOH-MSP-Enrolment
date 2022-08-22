@@ -576,7 +576,7 @@ export default {
       // Display error message when province isn't BC.
       if (address.province !== 'BC') {
         this.resAddressLine1 = null;
-        alert('Please select a valid BC address.');
+        alert('Please select a valid B.C. address.');
         return;
       }
       const addressLines = truncateAddressLines(address.addressLines, 25);

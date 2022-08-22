@@ -110,7 +110,7 @@
                 v-model="socialInsuranceNumber"
                 :required="true"
                 @blur="handleBlurField($v.socialInsuranceNumber)" />
-              <span class="field-description">Your SIN will be used to verify your income for Fair Pharmacare and Supplementary Benefits (as applicable)</span>
+              <span class="field-description">Your SIN will be used to verify your income for Fair PharmaCare and Supplementary Benefits (as applicable)</span>
               <div class="text-danger"
                 v-if="$v.socialInsuranceNumber.$dirty
                   && !$v.socialInsuranceNumber.required"
@@ -342,10 +342,12 @@
                 <div class="text-danger"
                   v-if="$v.isMovedToBCPermanently.$dirty
                     && !$v.isMovedToBCPermanently.required"
-                  aria-live="assertive">Please indicate whether you have made a permanent move to BC.</div>
+                  aria-live="assertive">Please indicate whether you have made a permanent move to B.C.</div>
                 <div class="text-danger"
                   v-if="!canContinueProcess"
-                  aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, you are not eligible for enrolment in MSP. For more information, contact HIBC.</div>
+                  aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, you are not eligible for enrolment in MSP. For more information, contact Health Insurance BC at:
+                    <ContactInformation />
+                  </div>
               </div>
               <div v-if="canContinueProcess">
                 <div v-if="requestProvinceMoveInfo">
@@ -474,7 +476,7 @@
                   <div class="text-danger"
                     v-if="$v.isOutsideBCInLast12Months.$dirty
                       && !$v.isOutsideBCInLast12Months.required"
-                    aria-live="assertive">Please indicate whether you have been outside BC in the past 12 months.</div>
+                    aria-live="assertive">Please indicate whether you have been outside B.C. in the past 12 months.</div>
                 </div>
                 <div v-if="isOutsideBCInLast12Months === 'Y'"
                   class="tabbed-section">
@@ -561,7 +563,7 @@
                   <div class="text-danger"
                     v-if="$v.hasPreviousPHN.$dirty
                       && !$v.hasPreviousPHN.required"
-                    aria-live="assertive">Please indicate whether you have a previous BC Personal Health Number.</div>
+                    aria-live="assertive">Please indicate whether you have a previous B.C. Personal Health Number.</div>
                 </div>
                 <div v-if="hasPreviousPHN === 'Y'"
                   class="tabbed-section">
@@ -653,7 +655,7 @@
                     aria-live="assertive">This field is required.</div>
                   <div class="text-danger"
                     v-if="willStudentResideInBC === 'N'"
-                    aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for MSP coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
+                    aria-live="assertive">To qualify for provincial health care benefits a person must be a resident of B.C. As you intend to leave B.C. when your studies are completed, you are not eligible for coverage. Please contact the health care plan in your home province for information about medical coverage while studying in B.C.</div>
                 </div>
               </div>
             </div>
@@ -801,6 +803,7 @@ import {
 } from 'date-fns';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
+import ContactInformation from '@/components/ContactInformation.vue';
 
 const birthdate16YearsValidator = (value) => {
   const sixteenYearsAgo = subYears(startOfToday(), 16);
@@ -859,6 +862,7 @@ export default {
     Select,
     SINInput,
     TipBox,
+    ContactInformation
   },
   data: () => {
     return {

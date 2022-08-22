@@ -12,7 +12,7 @@
         <h1>Spouse information</h1>
         <div class="heading mt-3">
           <div>
-            <p>To be eligible for MSP coverage, a spouse must be a B.C. resident. </p> 
+            <p>To be eligible for coverage, a spouse must be a B.C. resident.</p> 
           </div>
           <div v-if="hasSpouse === 'Y'" class="ml-1 mb-2 remove-icon align-self-end " @click="removeSpouse()">
             <font-awesome-icon icon="times-circle" size="2x" title="Remove Spouse"/>
@@ -130,7 +130,7 @@
                   v-model="spouseSocialInsuranceNumber"
                   :required="true"
                   @blur="handleBlurField($v.spouseSocialInsuranceNumber)" />
-                <span class="field-description">Your spouse’s SIN will be used to verify your income for Fair Pharmacare and Supplementary Benefits (as applicable)</span>
+                <span class="field-description">Your spouse’s SIN will be used to verify your income for Fair PharmaCare and Supplementary Benefits (as applicable)</span>
                 <div class="text-danger"
                   v-if="$v.spouseSocialInsuranceNumber.$dirty
                     && !$v.spouseSocialInsuranceNumber.required"
@@ -374,10 +374,12 @@
                     :items='radioOptionsNoYes'/>
                   <div class="text-danger"
                     v-if="$v.spouseMadePermanentMove.$dirty && !$v.spouseMadePermanentMove.required"
-                    aria-live="assertive">Please indicate whether your spouse has made a permanent move to BC.</div>
+                    aria-live="assertive">Please indicate whether your spouse has made a permanent move to B.C.</div>
                   <div class="text-danger"
                     v-if="spouseMadePermanentMove === 'N' && spouseStatus !== statusOptions.TemporaryResident"
-                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your spouse is not eligible for enrolment in MSP. For more information, contact HIBC.</div>
+                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your spouse is not eligible for enrolment in MSP. For more information, contact Health Insurance BC at:
+                    <ContactInformation /> 
+                  </div>
                 </div>
                 <div v-if="spouseMadePermanentMove !== 'N' || spouseStatus === statusOptions.TemporaryResident">
                   <div v-if="showProvinceSelector">
@@ -547,7 +549,7 @@
                   </Radio>
                   <div class="text-danger"
                     v-if="$v.spouseOutsideBCLast12Months.$dirty && !$v.spouseOutsideBCLast12Months.required"
-                    aria-live="assertive">Please indicate whether your spouse has been outside BC in the past 12 months.</div>
+                    aria-live="assertive">Please indicate whether your spouse has been outside B.C. in the past 12 months.</div>
                   <div v-if="spouseOutsideBCLast12Months === 'Y'" class="tabbed-section">
                     <Input 
                       id="departure-reason"
@@ -623,7 +625,7 @@
                     :items='radioOptionsNoYes'/>
                   <div class="text-danger"
                     v-if="$v.spouseHasPreviousBCHealthNumber.$dirty && !$v.spouseHasPreviousBCHealthNumber.required"
-                    aria-live="assertive">Please indicate whether your spouse has a previous BC Personal Health Number.</div>
+                    aria-live="assertive">Please indicate whether your spouse has a previous B.C. Personal Health Number.</div>
                   <div v-if="spouseHasPreviousBCHealthNumber === 'Y'" class="tabbed-section">
                     <PhnInput 
                       id="previous-bc-phn"
@@ -812,7 +814,8 @@ import {
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
-import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
+import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js';
+import ContactInformation from '@/components/ContactInformation.vue';
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -903,7 +906,8 @@ export default {
     SINInput,
     FileUploader,
     TipBox,
-    SampleImageTipBox
+    SampleImageTipBox,
+    ContactInformation
   },
   data: () => {
     return {

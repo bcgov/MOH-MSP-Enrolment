@@ -8,11 +8,11 @@ export const CanadianStatusReasons = {
   LivingInBCWithoutMSP: 'Not new to B.C. but need to apply for MSP',
   MovingFromProvince: 'Moved to B.C. from another province',
   MovingFromCountry: 'Moved to B.C. from another jurisdiction',
-  WorkingInBC: 'Work Permit / CUAET',
-  StudyingInBC: 'Study Permit',
-  ReligiousWorker: 'Religious Worker',
+  WorkingInBC: 'Work permit / CUAET',
+  StudyingInBC: 'Study permit',
+  ReligiousWorker: 'Religious worker',
   Diplomat: 'Diplomat',
-  Visiting: 'Visitor Permit'
+  Visiting: 'Visitor permit'
 };
 
 // Types sent to the middleware as "citizenshipType".
