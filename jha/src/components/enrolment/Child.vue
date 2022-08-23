@@ -356,7 +356,9 @@
                     aria-live="assertive">Please indicate whether your child has made a permanent move to B.C.</div>
                   <div class="text-danger"
                     v-if="madePermanentMove === 'N' && status !== statusOptions.TemporaryResident"
-                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your child is not eligible for enrolment in MSP. For more information, contact HIBC.</div>
+                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your child is not eligible for enrolment in MSP. For more information, contact Health Insurance BC at:
+                    <ContactInformation />
+                  </div>
               </div>
               <div v-if="madePermanentMove !== 'N' || status === statusOptions.TemporaryResident">
                   <div v-if="showProvinceSelector">
@@ -533,7 +535,7 @@
                   </Radio>
                   <div class="text-danger"
                     v-if="$v.outsideBCLast12Months.$dirty && !$v.outsideBCLast12Months.required"
-                    aria-live="assertive">Please indicate whether your child has been outside BC in the past 12 months.</div>
+                    aria-live="assertive">Please indicate whether your child has been outside B.C. in the past 12 months.</div>
                   <div v-if="outsideBCLast12Months === 'Y'" class="tabbed-section">
                     <Input 
                       className="mt-3"
@@ -609,7 +611,7 @@
                     :items='radioOptionsNoYes'/>
                   <div class="text-danger"
                     v-if="$v.hasPreviousBCHealthNumber.$dirty && !$v.hasPreviousBCHealthNumber.required"
-                    aria-live="assertive">Please indicate whether your child has a previous BC Personal Health Number.</div>
+                    aria-live="assertive">Please indicate whether your child has a previous B.C. Personal Health Number.</div>
                   <div v-if="hasPreviousBCHealthNumber === 'Y'" class="tabbed-section">
                     <PhnInput 
                       className="mt-3"
@@ -812,7 +814,7 @@
             aria-live="assertive">Expected school completion date is required.</div>
           <div class="text-danger" v-if="$v.schoolCompletionDate.$dirty && !$v.schoolCompletionDate.dateDataValidator" aria-live="assertive">Invalid estimated school completion date.</div>
           <div class="text-danger" v-if="$v.schoolCompletionDate.$dirty && !$v.schoolCompletionDate.futureDateValidator" aria-live="assertive">Estimated school completion date cannot be in the past.</div>
-          <Radio label="Will your child reside in BC after completing their studies?"
+          <Radio label="Will your child reside in B.C. after completing their studies?"
             class="mt-3"
             :id="'will-reside-in-bc-after-studies-' + index"
             :name="'will-reside-in-bc-after-studies-' + index"
@@ -906,7 +908,8 @@ import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import { mediumStyles, smallStyles } from '@/constants/input-styles';
 import spaEnvService from '@/services/spa-env-service';
-import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
+import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js';
+import ContactInformation from '@/components/ContactInformation.vue';
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -1047,6 +1050,7 @@ export default {
     TipBox,
     SampleImageTipBox,
     PostalCodeInput,
+    ContactInformation
   },
   props: {
       childData: Object,
