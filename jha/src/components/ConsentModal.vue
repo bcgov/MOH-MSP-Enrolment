@@ -149,26 +149,6 @@ export default {
       }
       this.focusedEl.focus();
     },
-  },
-  computed: {
-    isMSPNoticeShown() {
-      return this.$store.state.enrolmentModule.isApplyingForMSP
-          || this.$store.state.enrolmentModule.isApplyingForSuppBen;
-    },
-    isFPCNoticeShown() {
-      return this.$store.state.enrolmentModule.isApplyingForFPCare;
-    },
-    mspNoticeTitle() {
-      if (this.$store.state.enrolmentModule.isApplyingForMSP
-        && this.$store.state.enrolmentModule.isApplyingForSuppBen) {
-        return 'MEDICAL SERVICES PLAN (MSP) AND SUPPLEMENTARY BENEFITS';
-      } else if (this.$store.state.enrolmentModule.isApplyingForMSP) {
-        return 'MEDICAL SERVICES PLAN (MSP)';
-      } else if (this.$store.state.enrolmentModule.isApplyingForSuppBen) {
-        return 'SUPPLEMENTARY BENEFITS';
-      }
-      return '';
-    }
   }
 };
 </script>
