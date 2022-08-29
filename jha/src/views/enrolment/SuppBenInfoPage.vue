@@ -103,6 +103,9 @@
               <div class="text-danger"
                 v-if="$v.claimedChildCareExpenses.$dirty && !$v.claimedChildCareExpenses.required"
                   aria-live="assertive">Your claimed child care expenses from {{selectedNOAYear}} are required.</div>
+              <div class="text-danger"
+                v-if="$v.claimedChildCareExpenses.$dirty && !$v.claimedChildCareExpenses.positiveNumberValidator"
+                  aria-live="assertive">Your claimed child care expenses must be a positive number.</div>
             </div>
 
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your MSP account claim a disability tax credit in {{selectedNOAYear}}?</p>
@@ -171,7 +174,10 @@
                 @blur="handleBlurField($v.sbRDSPAmount)"/>
               <div class="text-danger"
                 v-if="$v.sbRDSPAmount.$dirty && !$v.sbRDSPAmount.required"
-                  aria-live="assertive">You must enter how much you reported for a Registered Disability Savings Plan</div>
+                  aria-live="assertive">You must enter how much you reported for a Registered Disability Savings Plan.</div>
+              <div class="text-danger"
+                v-if="$v.sbRDSPAmount.$dirty && !$v.sbRDSPAmount.positiveNumberValidator"
+                  aria-live="assertive">How much you reported for a Registered Disability Savings Plan must be a positive number.</div>
             </div>
 
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your MSP account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
@@ -530,6 +536,7 @@ export default {
 
     if (this.hasChildren === 'Y') {
       validations.claimedChildCareExpenses.required = required;
+      validations.claimedChildCareExpenses.positiveNumberValidator = optionalValidator(positiveNumberValidator);
     }
 
     if (this.hasDisabilityCredit === 'Y') {
@@ -544,6 +551,7 @@ export default {
 
     if (this.hasRDSP === 'Y') {
       validations.sbRDSPAmount.required = required;
+      validations.sbRDSPAmount.positiveNumberValidator = optionalValidator(positiveNumberValidator);
     }
 
     if (this.hasAttendantNursingExpenses === 'Y') {

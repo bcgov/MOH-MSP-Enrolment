@@ -19,7 +19,7 @@
               </div>
               <hr class="mt-0"/>
               <AddressDoctorInput v-if="isAddressValidatorEnabled"
-                label="Full street address, rural route, or general delivery"
+                label="Full street address, rural route, PO box, or general delivery"
                 v-model="resAddressLine1"
                 id="res-address-line1"
                 class="mt-3"
@@ -31,7 +31,7 @@
                 @blur="handleBlurField($v.resAddressLine1)" />
               <Input v-else
                 class="mt-3"
-                label="Full street address, rural route, or general delivery"
+                label="Full street address, rural route, PO box, or general delivery"
                 id="res-address-line1"
                 v-model="resAddressLine1"
                 :required="true"
@@ -41,7 +41,7 @@
               <div class="text-danger" v-if="$v.resAddressLine1.$dirty && !$v.resAddressLine1.required" aria-live="assertive">Full street address, rural route, or general delivery is required.</div>
               <div class="text-danger"
                   v-if="$v.resAddressLine1.$dirty && $v.resAddressLine1.required && !$v.resAddressLine1.addressLineContentValidator"
-                  aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+                  aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
               <Input class="mt-3"
                 label="Address Line 2 (optional)"
                 id="res-address-line2"
@@ -51,7 +51,7 @@
                 @blur="handleBlurField($v.resAddressLine2)" />
               <div class="text-danger"
                   v-if="$v.resAddressLine2.$dirty && !$v.resAddressLine2.addressLineContentValidator"
-                  aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+                  aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
               <Input class="mt-3"
                 label="Address Line 3 (optional)"
                 id="res-address-line3"
@@ -61,7 +61,7 @@
                 @blur="handleBlurField($v.resAddressLine3)" />
               <div class="text-danger"
                   v-if="$v.resAddressLine3.$dirty && !$v.resAddressLine3.addressLineContentValidator"
-                  aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+                  aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
               <Input class="mt-3"
                 label="City"
                 id="res-city"
@@ -120,7 +120,7 @@
             </div>
             <div v-else>
               <AddressDoctorInput v-if="isAddressValidatorEnabled && mailCountry === 'Canada'"
-                label="Full street address, rural route, or general delivery"
+                label="Full street address, rural route, PO box, or general delivery"
                 v-model="mailAddressLine1"
                 id="mail-address-line1"
                 class="mt-3"
@@ -144,7 +144,7 @@
               </div>
               <div class="text-danger"
                 v-if="$v.mailAddressLine1.$dirty && $v.mailAddressLine1.required && !$v.mailAddressLine1.addressLineContentValidator"
-                aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+                aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
               <Input class="mt-3"
                 label="Address Line 2 (optional)"
                 id="mail-address-line2"
@@ -154,7 +154,7 @@
                 @blur="handleBlurField($v.mailAddressLine2)" />
               <div class="text-danger"
                 v-if="$v.mailAddressLine2.$dirty && !$v.mailAddressLine2.addressLineContentValidator"
-                aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+                aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
               <Input class="mt-3"
                 label="Address Line 3 (optional)"
                 id="mail-address-line3"
@@ -164,7 +164,7 @@
                 @blur="handleBlurField($v.mailAddressLine3)" />
               <div class="text-danger"
                 v-if="$v.mailAddressLine3.$dirty && !$v.mailAddressLine3.addressLineContentValidator"
-                aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
+                aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
               <Input class="mt-3"
                 label="City"
                 id="mail-city"
