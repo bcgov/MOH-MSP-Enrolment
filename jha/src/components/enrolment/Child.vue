@@ -1709,11 +1709,6 @@ export default {
       return this.$store.state.enrolmentModule.isApplyingForMSP;
     },
     requestMovingInfo() {
-      console.log('=====================requestMovingInfo:=========================' )
-      console.log('isApplyingForMSP:', this.$store.state.enrolmentModule.isApplyingForMSP);
-      console.log('citizenshipSupportDocuments.length:', this.citizenshipSupportDocuments.length);
-      console.log('isNameChanged:', this.isNameChanged);
-      console.log('nameChangeSupportDocuments.length:', this.nameChangeSupportDocuments.length);
       return this.$store.state.enrolmentModule.isApplyingForMSP
         && this.citizenshipSupportDocuments.length > 0 
         && (this.isNameChanged === 'N' || this.nameChangeSupportDocuments.length > 0);
