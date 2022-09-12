@@ -932,7 +932,7 @@ const birthDateStudentValidator = (value, vm) => {
 };
 
 const beforeBirthdateValidator = (value, vm) => {
-  if (vm.birthDate && vm.birthDate.getTime() > value.getTime()) {
+  if (value && vm.birthDate && vm.birthDate.getTime() > value.getTime()) {
     return false;
   } 
 
