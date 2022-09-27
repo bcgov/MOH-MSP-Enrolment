@@ -373,7 +373,8 @@ export default {
               this.isSystemUnavailable = true;
               logService.logError(applicationUuid, {
                 event: 'HTTP error while sending application',
-                status: httpStatusCode
+                status: httpStatusCode,
+                error,
               });
               scrollToError();
             });
@@ -385,6 +386,7 @@ export default {
           logService.logError(applicationUuid, {
             event: 'Error sending attachment',
             status: httpStatusCode,
+            error,
           });
           this.navigateToSubmissionErrorPage();
         });
