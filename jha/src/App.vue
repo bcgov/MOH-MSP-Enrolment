@@ -57,6 +57,7 @@ export default {
         logService.logError(applicationUuid, {
           event: 'HTTP error getting values from spa-env-server',
           status: error.response.status,
+          error
         });
       });
   },

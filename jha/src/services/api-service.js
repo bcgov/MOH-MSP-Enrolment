@@ -472,11 +472,30 @@ class ApiService {
           if (response && response.data && response.data.returnCode === 'success') {
             resolve(response.data);
           } else {
-            reject(response.data);
+            reject({
+              programUuid,
+              imageUuid: image && image.uuid,
+              size: image && image.size,
+              programArea,
+              docType,
+              token,
+              // getting status in ConsentPage.vue depends on response.data.response being under error.response
+              response: response && response.data && response.data.response,
+              // actual response from individual post request for extra detail
+              _response: response
+            });
           }
         })
         .catch((error) => {
-          reject(error);
+          reject({
+            programUuid,
+            imageUuid: image && image.uuid,
+            size: image && image.size,
+            programArea,
+            docType,
+            token,
+            error,
+          });
         });
     });
   }
