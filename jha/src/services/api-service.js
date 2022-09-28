@@ -470,15 +470,7 @@ class ApiService {
       this._sendPostRequest(url, headers, blob)
         .then((response) => {
           if (response && response.data && response.data.returnCode === 'success') {
-            resolve({
-              programUuid,
-              imageUuid: image && image.uuid,
-              size: image && image.size,
-              programArea,
-              docType,
-              token,
-              ...response.data
-            });
+            resolve(response.data);
           } else {
             reject({
               programUuid,
@@ -487,7 +479,10 @@ class ApiService {
               programArea,
               docType,
               token,
-              ...response.data
+              // getting status in ConsentPage.vue depends on response.data.response being under error.response
+              response: response && response.data && response.data.response,
+              // actual response from individual post request for extra detail
+              _response: response
             });
           }
         })

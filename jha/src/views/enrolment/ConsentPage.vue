@@ -390,10 +390,6 @@ export default {
           });
           this.navigateToSubmissionErrorPage();
         });
-      
-      
-      // Manually navigate to submission success page when middleware/RAPID is down.
-      // this.navigateToSubmissionPage();
     },
     navigateToSubmissionPage() {
       const toPath = getConvertedPath(
