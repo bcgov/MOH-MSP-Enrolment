@@ -579,6 +579,15 @@ export default {
         alert('Please select a valid B.C. address.');
         return;
       }
+
+      // prevent "Cannot read property of undefined" error should the address not be complete
+      if (address.addressLines) {
+        for (let i=0; i<address.addressLines.length; i++) {
+          // replace special characters PRIOR to truncating address lines
+          address.addressLines[i] = replaceSpecialCharacters(address.addressLines[i]);
+        }
+      }
+
       const addressLines = truncateAddressLines(address.addressLines, 25);
 
       // Remove all address lines.
@@ -587,12 +596,20 @@ export default {
       }
       // Add new address lines.
       for (let i=0; i<(addressLines.length <= 3 ? addressLines.length : 3); i++) {
-        this[`resAddressLine${i+1}`] = replaceSpecialCharacters(addressLines[i]);
+        this[`resAddressLine${i+1}`] = addressLines[i];
       }
       this.resCity = typeof address.city === 'string' ? replaceSpecialCharacters(address.city).substring(0, 25) : null;
       this.resPostalCode = replaceSpecialCharacters(address.postalCode);
     },
     handleMailAddressSelected(address) {
+      // prevent "Cannot read property of undefined" error should the address not be complete
+      if (address.addressLines) {
+        for (let i=0; i<address.addressLines.length; i++) {
+          // replace special characters PRIOR to truncating address lines
+          address.addressLines[i] = replaceSpecialCharacters(address.addressLines[i]);
+        }
+      }
+
       const addressLines = truncateAddressLines(address.addressLines, 25);
 
       // Remove all address lines.
@@ -601,7 +618,7 @@ export default {
       }
       // Add new address lines.
       for (let i=0; i<(addressLines.length <= 3 ? addressLines.length : 3); i++) {
-        this[`mailAddressLine${i+1}`] = replaceSpecialCharacters(addressLines[i]);
+        this[`mailAddressLine${i+1}`] = addressLines[i];
       }
       this.mailCountry = replaceSpecialCharacters(address.country);
       this.mailProvince = getProvinceNameByCode(address.province);
