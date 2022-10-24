@@ -1465,6 +1465,14 @@ export default {
       this.schoolCompletionDateData = data;
     },
     handleSchoolAddressSelected(address) {
+      // prevent "Cannot read property of undefined" error should the address not be complete
+      if (address.addressLines) {
+        for (let i=0; i<address.addressLines.length; i++) {
+          // replace special characters PRIOR to truncating address lines
+          address.addressLines[i] = replaceSpecialCharacters(address.addressLines[i]);
+        }
+      }
+
       const addressLines = truncateAddressLines(address.addressLines, 25);
 
       // Remove all address lines.
@@ -1473,7 +1481,7 @@ export default {
       }
       // Add new address lines.
       for (let i=0; i<(addressLines.length <= 3 ? addressLines.length : 3); i++) {
-        this[`schoolAddressLine${i+1}`] = replaceSpecialCharacters(addressLines[i]);
+        this[`schoolAddressLine${i+1}`] = addressLines[i];
       }
       this.schoolCountry = replaceSpecialCharacters(address.country);
       this.schoolProvinceOrState = getProvinceNameByCode(address.province);
