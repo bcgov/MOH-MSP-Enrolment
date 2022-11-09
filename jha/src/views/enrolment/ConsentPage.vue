@@ -10,7 +10,9 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Declaration and consent</h1>
-
+        <div class="alert alert-warning">
+          <p class="m-0">After clicking Submit, do not navigate away from this page. Please wait for the submission process to complete.</p>
+        </div>
         <hr />
         <h3>Note:</h3>
         <ul class="pl-4">
