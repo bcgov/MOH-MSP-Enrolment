@@ -376,7 +376,7 @@ export default {
               logService.logError(applicationUuid, {
                 event: 'HTTP error while sending application',
                 status: httpStatusCode,
-                error,
+                error: error && error.message,
               });
               scrollToError();
             });
