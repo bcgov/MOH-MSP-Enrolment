@@ -314,6 +314,9 @@ export default {
       );
     },
     submitForm() {
+      // prevent duplicate submissions
+      if (this.isLoading) return;
+
       this.isLoading = true;
       this.isSystemUnavailable = false;
       this.saveData();
