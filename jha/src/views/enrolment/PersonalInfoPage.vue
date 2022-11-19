@@ -303,7 +303,7 @@
           <div class="row">
             <div class="col-md-7">
               <div v-if="requestFromProvinceOrCountry">
-                <Input label="From which province or jurisdiction?"
+                <Input label="Which province or jurisdiction did you live in before moving to British Columbia?"
                   id="from-province-or-country"
                   class="mt-3"
                   maxlength="25"
