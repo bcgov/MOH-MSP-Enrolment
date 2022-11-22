@@ -351,7 +351,7 @@
                 <div v-if="showOriginTextField">
                   <Input 
                       className="mt-3"
-                      label="From which province or jurisdiction?"
+                      label="Which province or jurisdiction did your spouse live in before moving to British Columbia?"
                       maxlength="25"
                       v-model="spouseMoveFromOrigin"
                       :required="true"
