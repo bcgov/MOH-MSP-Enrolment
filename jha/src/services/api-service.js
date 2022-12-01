@@ -39,7 +39,7 @@ class ApiService {
       city: formState.resCity || null,
       postalCode: stripSpaces(formState.resPostalCode) || null,
       provinceOrState: formState.resProvince || null,
-      country: formState.resCountry ? replaceSpecialCharacters(formState.resCountry).substring(0, 30) : null,
+      country: formState.resCountry ? replaceSpecialCharacters(formState.resCountry).substring(0, 25) : null,
       authorizedByApplicant: 'Y',
       authorizedByApplicantDate: formatISODate(dateToday),
       powerOfAttorney: formState.hasPowerOfAttorney ? "Y" : "N",
@@ -56,7 +56,7 @@ class ApiService {
       jsonPayload.city = formState.mailCity || null;
       jsonPayload.postalCode = stripSpaces(formState.mailPostalCode) || null;
       jsonPayload.provinceOrState = formState.mailProvince || null;
-      jsonPayload.country = formState.mailCountry ? replaceSpecialCharacters(formState.mailCountry).substring(0, 30) : null;
+      jsonPayload.country = formState.mailCountry ? replaceSpecialCharacters(formState.mailCountry).substring(0, 25) : null;
     }
 
     if (formState.hasSpouse === 'Y') {
@@ -190,7 +190,7 @@ class ApiService {
                 city: dependent.schoolCity || null,
                 postalCode: dependent.schoolPostalCode || null,
                 provinceOrState: dependent.schoolProvinceOrState || null,
-                country: dependent.schoolCountry ? replaceSpecialCharacters(dependent.schoolCountry).substring(0, 30) : null,
+                country: dependent.schoolCountry ? replaceSpecialCharacters(dependent.schoolCountry).substring(0, 25) : null,
               },
               citizenshipType: dependent.status || null,
               attachmentUuids: [
@@ -227,7 +227,7 @@ class ApiService {
           city: formState.mailCity || null,
           postalCode: stripSpaces(formState.mailPostalCode) || null,
           provinceOrState: formState.mailProvince || null,
-          country: formState.mailCountry ? replaceSpecialCharacters(formState.mailCountry).substring(0, 30) : null,
+          country: formState.mailCountry ? replaceSpecialCharacters(formState.mailCountry).substring(0, 25) : null,
         };
       } else {
         jsonPayload.medicalServicesPlan.mailingAddress = {
@@ -237,7 +237,7 @@ class ApiService {
           city: formState.resCity || null,
           postalCode: stripSpaces(formState.resPostalCode) || null,
           provinceOrState: formState.resProvince || null,
-          country: formState.resCountry ? replaceSpecialCharacters(formState.resCountry).substring(0, 30) : null,
+          country: formState.resCountry ? replaceSpecialCharacters(formState.resCountry).substring(0, 25) : null,
         };
       }
 
