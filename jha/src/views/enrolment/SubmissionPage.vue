@@ -83,7 +83,7 @@
             <li>Update your MSP account if your address or family structure changes.</li>
           </ul>
 
-          <div v-if="mspApplicationResult && mspApplicationResult.returnCode === '0'">
+          <div v-if="mspApplicationResult && mspApplicationResult.returnCode === '0'" class="msp-success-message">
             <p class="m-0"><strong>Medical Services Plan (MSP) enrolment:</strong></p>
             <ul>
               <li>Your application will be processed within 21 business days.&nbsp;</li>
@@ -92,7 +92,7 @@
             </ul>
           </div>
 
-          <div v-if="fpcApplicationResult && fpcApplicationResult.returnCode === '0'">
+          <div v-if="fpcApplicationResult && fpcApplicationResult.returnCode === '0'" class="fpc-success-message">
             <p class="m-0"><strong>Fair PharmaCare:</strong></p>
             <ul>
               <li v-if="!mspApplicationResult">You are now registered for Fair PharmaCare with temporary coverage.&nbsp;</li>
@@ -104,7 +104,7 @@
             </ul>
           </div>
           
-          <div v-if="sbApplicationResult && sbApplicationResult.returnCode === '0'">
+          <div v-if="sbApplicationResult && sbApplicationResult.returnCode === '0'" class="sb-success-message">
             <p class="m-0"><strong>Supplementary Benefits:</strong></p>
             <ul>
               <li>The Notice of Assessment or Reassessment you submitted will be used to assess your and your family's eligibility for Supplementary Benefits.&nbsp;</li>

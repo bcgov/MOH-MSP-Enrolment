@@ -38,11 +38,11 @@ describe('Enrolment - FormSelectionPage.vue', () => {
     });
   });
 
-  it('Shows returned middleware messages for successful FPC only applications', () => {
+  it('Shows next steps message for successful FPC only applications', () => {
     const wrapper = shallowMount(SubmissionPage, {
       store,
       localVue,
     });
-    const middlwareResponseContainer = wrapper.get('.middleware-response');
+    const middlwareResponseContainer = wrapper.get('.fpc-success-message');
   });
 });
