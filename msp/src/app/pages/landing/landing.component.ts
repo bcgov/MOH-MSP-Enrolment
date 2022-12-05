@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { MspDataService } from '../../services/msp-data.service';
 import { Router } from '@angular/router';
 import { MspBenefitDataService } from '../../modules/benefit/services/msp-benefit-data.service';
-import { ROUTES_ENROL } from '../../modules/enrolment/models/enrol-route-constants';
+// import { ROUTES_ENROL } from '../../modules/enrolment/models/enrol-route-constants';
 import { ROUTES_ACL } from '../../modules/request-acl/request-acl-route-constants';
 import { AclDataService } from '../../modules/request-acl/services/acl-data.service';
 import { EnrolDataService } from '../../modules/enrolment/services/enrol-data.service';
@@ -36,7 +36,7 @@ export class LandingComponent {
   continueBenefitApp = 'Continue MSP Application for Supplementary Benefits';
 
   // routes
-  checkEligibility = ROUTES_ENROL.CHECK_ELIG.fullpath;
+  // checkEligibility = ROUTES_ENROL.CHECK_ELIG.fullpath;
   acl = ROUTES_ACL.REQUEST_ACL.fullpath;
 
   constructor(
@@ -52,20 +52,20 @@ export class LandingComponent {
     this.router.navigate(['/assistance/home']);
   }
 
-  clearSavedMspApp() {
-    this.enrolDataService.removeApplication();
-    this.router.navigate([this.checkEligibility]);
-  }
+  // clearSavedMspApp() {
+  //   this.enrolDataService.removeApplication();
+  //   this.router.navigate([this.checkEligibility]);
+  // }
 
   clearSavedAccountApp() {
     this.mspDataService.removeMspAccountApp();
     this.router.navigate(['/deam/home']);
   }
 
-  clearSavedBenefitAssisApp() {
-    this.mspBenefitDataService.removeMspBenefitApp();
-    this.router.navigate(['/benefit/eligibility']);
-  }
+  // clearSavedBenefitAssisApp() {
+  //   this.mspBenefitDataService.removeMspBenefitApp();
+  //   this.router.navigate(['/benefit/eligibility']);
+  // }
 
   clearSavedAclApplication() {
     this.aclDataService.removeApplication();

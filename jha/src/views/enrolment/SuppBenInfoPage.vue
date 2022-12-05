@@ -9,14 +9,14 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
-        <h1>Supplementary Benefits Financial Information</h1>
+        <h1>Supplementary Benefits financial information</h1>
         <h4 class="font-weight-normal">
-          Your application must be based on income from your (and your spouse's, if applicable) most recent CRA Notice of Assessment or Notice of Reassessment. You will need to upload copies with your application.
+          Your application must be based on income from your (and your spouse's, if applicable) most recent CRA Notice of Assessment (NOA) or Notice of Reassessment (NORA). You will need to upload copies with your application.
         </h4>
         <hr class="mt-0"/>
         <div class="row">
           <div class="col-md-7">
-            <h2>Which year's Notice of Assessment or Notice of Reassessment will you upload?</h2>
+            <h2>Which year's NOA or NORA will you upload?</h2>
             <Radio id="select-noa-year"
                     name="select-noa-year"
                     class="mt-3"
@@ -26,14 +26,14 @@
                     @blur="handleBlurField(v$.selectedNOAYear)"/>
             <div class="text-danger"
                   v-if="v$.selectedNOAYear.$dirty && v$.selectedNOAYear.required.$invalid"
-                    aria-live="assertive">Please indicate which year's Notice of Assessment you are uploading.</div>
+                    aria-live="assertive">Please indicate which year's NOA you are uploading.</div>
             <div v-if="selectedNOAYear === `${this.currentYear - 2}`" class="text-danger">
               <font-awesome-icon icon="exclamation-circle"/>
-              Selecting this Notice of Assessment will allow you to apply for Supplementary Benefits for the rest of the current calendar year only. Provide a more recent Notice of Assessment to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
+              Selecting this NOA will allow you to apply for Supplementary Benefits for the rest of the current calendar year only. Provide a more recent NOA to apply for the rest of the calendar year <strong>and</strong> the next calendar year.
             </div>
             <p class="mt-2 mb-1 font-weight-bolder">Enter your {{selectedNOAYear}} net income.</p>
             <CurrencyInput id="ah-net-income"
-              label="See line 23600 of your Notice of Assessment or Notice of Reassessment."
+              label="See line 23600 of your NOA or NORA."
               v-model="ahSBIncome"
               :required="true"
               maxlength="6"
@@ -48,7 +48,7 @@
             <div v-if="hasSpouse === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">Enter your spouse's {{selectedNOAYear}} net income.</p>
               <CurrencyInput id="spouse-net-income"
-                label="See line 23600 of your spouse's Notice of Assessment or Notice of Reassessment."
+                label="See line 23600 of your spouse's NOA or NORA."
                 v-model="spouseSBIncome"
                 :required="true"
                 maxlength="6"
@@ -63,7 +63,7 @@
             </div>
 
             <div v-if="onlySuppBen">
-              <p class="mt-4 mb-1 font-weight-bolder">Do you have any children on your Medical Services Plan account?</p>
+              <p class="mt-4 mb-1 font-weight-bolder">Do you have any children on your Medical Services Plan (MSP) account?</p>
               <Radio id="has-children"
                 name="has-children"
                 v-model="hasChildren"
@@ -72,7 +72,7 @@
                 @blur="handleBlurField(v$.hasChildren)"/>
               <div class="text-danger"
                   v-if="v$.hasChildren.$dirty && v$.hasChildren.required.$invalid"
-                    aria-live="assertive">Please indicate if you have children on your Medical Services Plan account.</div>
+                    aria-live="assertive">Please indicate if you have children on your MSP account.</div>
               <div v-if="hasChildren === 'Y'">
                 <DigitInput id="num-children"
                   label="How many children do you have on your account?"
@@ -94,7 +94,7 @@
             <div v-if="intNumChildren > 0">
               <p class="mt-4 mb-1 font-weight-bolder">How much did you claim for child care expenses in {{selectedNOAYear}}?</p>
               <CurrencyInput id="child-care-expenses"
-                label="See line 21400 of your Notice of Assessment or Notice of Reassessment."
+                label="See line 21400 of your NOA or NORA."
                 v-model="claimedChildCareExpenses"
                 :required="true"
                 maxlength="6"
@@ -103,19 +103,22 @@
               <div class="text-danger"
                 v-if="v$.claimedChildCareExpenses.$dirty && v$.claimedChildCareExpenses.required.$invalid"
                   aria-live="assertive">Your claimed child care expenses from {{selectedNOAYear}} are required.</div>
+              <div class="text-danger"
+                v-if="$v.claimedChildCareExpenses.$dirty && !$v.claimedChildCareExpenses.positiveNumberValidator"
+                  aria-live="assertive">Your claimed child care expenses must be a positive number.</div>
             </div>
 
-            <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim a disability tax credit in {{selectedNOAYear}}?</p>
+            <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your MSP account claim a disability tax credit in {{selectedNOAYear}}?</p>
             <Radio id="has-disability-credit"
               name="has-disability-credit"
-              label="See line 31600, 31800, or 32600 of your Notice of Assessment or Notice of Reassessment."
+              label="See line 31600, 31800, or 32600 of your NOA or NORA."
               v-model="hasDisabilityCredit"
               :required="true"
               :items="radioOptionsNoYes"
               @blur="handleBlurField(v$.hasDisabilityCredit)"/>
             <div class="text-danger"
                   v-if="v$.hasDisabilityCredit.$dirty && v$.hasDisabilityCredit.required.$invalid"
-                    aria-live="assertive">Please indicate if anyone on your Medical Services Plan has claimed a disability tax credit in {{selectedNOAYear}}.</div>
+                    aria-live="assertive">Please indicate if anyone on your MSP has claimed a disability tax credit in {{selectedNOAYear}}.</div>
 
             <div class="ml-5" v-if="hasDisabilityCredit === 'Y'">
               <CheckboxGroup id="selected-disability-credit-recipients"
@@ -149,7 +152,7 @@
               </div>
             </div>
 
-            <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your Medical Services Plan account have a Registered Disability Savings Plan?</p>
+            <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your MSP account have a Registered Disability Savings Plan?</p>
             <Radio id="has-disability-savings"
               name="has-disability-savings"
               v-model="hasRDSP"
@@ -158,12 +161,12 @@
               @blur="handleBlurField(v$.hasRDSP)"/>
             <div class="text-danger"
                   v-if="v$.hasRDSP.$dirty && v$.hasRDSP.required.$invalid"
-                    aria-live="assertive">Please indicate if anyone on your Medical Services Plan has a Registered Disability Savings Plan.</div>
+                    aria-live="assertive">Please indicate if anyone on your MSP has a Registered Disability Savings Plan.</div>
 
             <div class="ml-5" v-if="hasRDSP === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">How much did you report for a Registered Disability Savings Plan in {{selectedNOAYear}}?</p>
               <CurrencyInput id="disability-savings-plan"
-                label="See Line 12500 of the Notice of Assessment or Notice of Reassessment"
+                label="See Line 12500 of the NOA or NORA"
                 v-model="sbRDSPAmount"
                 :required="true"
                 maxlength="6"
@@ -172,19 +175,22 @@
               <div class="text-danger"
                 v-if="v$.sbRDSPAmount.$dirty && v$.sbRDSPAmount.required.$invalid"
                   aria-live="assertive">You must enter how much you reported for a Registered Disability Savings Plan</div>
+              <div class="text-danger"
+                v-if="v$.sbRDSPAmount.$dirty && v$.sbRDSPAmount.positiveNumberValidator.$invalid"
+                  aria-live="assertive">How much you reported for a Registered Disability Savings Plan must be a positive number.</div>
             </div>
 
-            <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your Medical Services Plan account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
+            <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your MSP account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
             <Radio id="has-attendant-nursing-expenses"
               name="has-attendant-nursing-expenses"
-              label="See line 21500 or 33099 of your Notice of Assessment or Notice of Reassessment."
+              label="See line 21500 or 33099 of your NOA or NORA."
               v-model="hasAttendantNursingExpenses"
               :required="true"
               :items="radioOptionsNoYes"
               @blur="handleBlurField(v$.hasAttendantNursingExpenses)"/>
             <div class="text-danger"
                   v-if="v$.hasAttendantNursingExpenses.$dirty && v$.hasAttendantNursingExpenses.required.$invalid"
-                    aria-live="assertive">Please indicate if anyone on your Medical Services Plan has claimed attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}.</div>
+                    aria-live="assertive">Please indicate if anyone on your MSP has claimed attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}.</div>
             <div class="ml-5" v-if="hasAttendantNursingExpenses === 'Y'">
               <CheckboxGroup id="selected-attendant-nursing-recipients"
                 name="selected-attendant-nursing-recipients"
@@ -534,6 +540,7 @@ export default {
 
     if (this.hasChildren === 'Y') {
       validations.claimedChildCareExpenses.required = required;
+      validations.claimedChildCareExpenses.positiveNumberValidator = optionalValidator(positiveNumberValidator);
     }
 
     if (this.hasDisabilityCredit === 'Y') {
@@ -548,6 +555,7 @@ export default {
 
     if (this.hasRDSP === 'Y') {
       validations.sbRDSPAmount.required = required;
+      validations.sbRDSPAmount.positiveNumberValidator = optionalValidator(positiveNumberValidator);
     }
 
     if (this.hasAttendantNursingExpenses === 'Y') {

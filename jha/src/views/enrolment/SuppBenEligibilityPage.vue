@@ -9,7 +9,7 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
-        <h1>Supplementary Benefits Eligibility</h1>
+        <h1>Supplementary Benefits eligibility</h1>
         <Radio
           id='apply-sb'
           name='apply-sb'
@@ -18,40 +18,44 @@
           :required="true"
           :items='radioOptionsYesNo' >
           <template v-slot:description>
-            <span class="field-description">Note: If you or your spouse (who may not live in BC or Canada) earned income outside Canada during the most recent tax year, you must submit your application for Supplementary Benefits using the print form (HLTH 101) available <a target="_blank" href="https://gov.bc.ca/ahdc">here</a>.</span>
+            <span class="field-description">Note: If you or your spouse (who may not live in B.C. or Canada) earned income outside Canada during the most recent tax year, you must submit your application for Supplementary Benefits using the print form (HLTH 101) available <a target="_blank" href="https://gov.bc.ca/ahdc">here</a>.</span>
           </template>  
         </Radio>
         <div v-if="eqSBIsApplying === 'Y'">
           <p class="mb-0">2. To apply for Supplementary Benefits, you must:</p>
           <div class="ml-4">
-            <p class="mb-0">a. be a resident of B.C. as defined by the <em>Medicare Protection Act</em>;</p>
-            <p class="mb-0">b. have resided in Canada as a Canadian citizen or holder of permanent resident status (landed immigrant) for at least the last 12 months immediately preceding this application;</p>
-            <p>c. not be exempt from liability to pay income tax by reason of any other Act.</p>
+            <p class="mb-0 ml-4">a. be a resident of B.C. as defined by the <em>Medicare Protection Act</em>;</p>
+            <p class="mb-0 ml-4">b. have resided in Canada as a Canadian citizen or holder of permanent resident status (landed immigrant) for at least the last 12 months immediately preceding this application;</p>
+            <p class="ml-4">c. not be exempt from liability to pay income tax by reason of any other Act.</p>
           </div>
+          <p id="eqSBMeetsCriteria" class="ml-4 mb-0">Do you meet the above eligibility criteria?</p>
           <Radio
             id='meets-sb-criteria'
             name='meets-sb-criteria'
-            label='Do you meet the above eligibility criteria?'
+            label=''
+            aria-labelledby="eqSBMeetsCriteria"
             v-model='eqSBMeetsCriteria'
             :required="true"
             :items='radioOptionsYesNo' />
           <div class="text-danger ml-4" v-if="eqSBMeetsCriteria === 'N'">
             <p>
-              You are not eligible to apply for Supplementary Benefits at this time. If you have not lived in Canada for at least the last 12 months, apply after you have met the residency requirements. For more information about eligibility, see <a target="_blank" href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits">Applying for Supplementary Benefits.</a> For assistance, contact HIBC at:
+              You are not eligible to apply for Supplementary Benefits at this time. If you have not lived in Canada for at least the last 12 months, apply after you have met the residency requirements. For more information about eligibility, see <a target="_blank" href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits">Applying for Supplementary Benefits.</a> For assistance, contact Health Insurance BC at:
             </p>
             <ContactInformation />
           </div>
           <div v-if="eqSBMeetsCriteria === 'Y'">
             <p class="mb-0">3. To apply for Supplementary Benefits, you must include the following with your application:</p>
             <div class="ml-4">
-              <p class="mb-0">a. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
-              <p class="mb-0">b. a digital copy (pdf, jpg, png) of your and if applicable, your spouse's CRA Notice of Assessment (NOA) or Notice of Reassessment (NORA) for the most recent tax year; and</p>
-              <p>c. Net Income (Line 23600) and Registered Disability Savings Plan (RDSP) income (Line 12500) from the above CRA NOA or NORA.</p>
+              <p class="mb-0 ml-4">a. Social Insurance Number (SIN) for you and (if applicable) your spouse;</p>
+              <p class="mb-0 ml-4">b. a digital copy (pdf, jpg, png) of your and if applicable, your spouse's CRA Notice of Assessment (NOA) or Notice of Reassessment (NORA) for the most recent tax year; and</p>
+              <p class="ml-4">c. Net Income (Line 23600) and Registered Disability Savings Plan (RDSP) income (Line 12500) if applicable, from the above CRA NOA or NORA.</p>
             </div>
+            <p id="eqSBHasInfo" class="ml-4 mb-0">Do you have these documents and information to include with your application?</p>
             <Radio
               id='has-sb-info'
               name='has-sb-info'
-              label='Do you have these documents and information to include with your application?'
+              label=''
+              aria-labelledby="eqSBHasInfo"
               v-model='eqSBhasInfo'
               :required="true"
               :items='radioOptionsYesNo' />
@@ -61,12 +65,13 @@
               </p>
               <ul>
                 <li>
-                  If you and/or your spouse do not have a Social Insurance Number, Contact Service Canada before you apply. If you are a new resident to Canada and do not qualify for a Social Insurance Number, contact HIBC at:
+                  If you and/or your spouse, if applicable, do not have a SIN, contact Service Canada before you apply. If you are a new resident to Canada and do not qualify for a SIN, contact Health Insurance BC at:
                   <ContactInformation />
                 </li>
                 <li>
-                  If you and/or your spouse did not file taxes with the CRA, do so as soon as possible. When you have received your NOA(s), apply for Supplementary Benefits. If you and/or your spouse were not able to file taxes with the CRA (because you did not live in Canada, were a minor, or were exempt from filing taxes), contact HIBC. 
-                &nbsp;</li>
+                  If you and/or your spouse, if applicable, did not file taxes with the CRA, do so as soon as possible. When you have received your NOA(s), apply for Supplementary Benefits. If you and/or your spouse, if applicable, were not able to file taxes with the CRA (because you did not live in Canada, were a minor, or were otherwise exempt from filing taxes), contact Health Insurance BC at:
+                  <ContactInformation />
+                </li>
               </ul>
             </div>
           </div>

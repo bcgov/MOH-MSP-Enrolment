@@ -11,11 +11,10 @@
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Child information</h1>
         <p>A child is under 19 years old, and the applicant is their parent or legal guardian.</p>
-        <p>A Dependent Post-Secondary Student is a 19- to 24-year-old who is supported by parent(s) or guardian(s), has no spouse, and is enrolled full-time in a recognized post-secondary institution.</p>
-        <p>Personal Health Number (PHN) is the number that appears on your child's BC Services Card.</p>
+        <p>A dependent post-secondary student is a 19- to 24-year-old who is supported by parent(s) or guardian(s), has no spouse, and is enrolled full-time in a recognized post-secondary institution.</p>
         <hr class="mt-0"/>
         <Radio v-if="hasChildren !== 'Y'"
-                label="Do you have a child who also needs to enrol for MSP coverage?"
+                label="Do you have a child who also needs to enrol?"
                 :id="'has-children'"
                 :name="'has-children'"
                 class="mt-3"
@@ -25,7 +24,7 @@
                 :items="radioOptionsNoYes" />
         <div class="text-danger"
           v-if="v$.hasChildren.$dirty && v$.hasChildren.required.$invalid"
-          aria-live="assertive">Please indicate if you have a child who needs to enrol for MSP coverage.</div>
+          aria-live="assertive">Please indicate if you have a child who needs to enrol.</div>
         <div v-for="(child, index) in children"
             :key="'child-' + index">
           <a :name="'child-' + index"></a>

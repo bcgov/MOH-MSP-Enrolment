@@ -24,6 +24,10 @@ import pageStateService from '@/services/page-state-service';
 import { commonRoutes } from '@/router/routes';
 import spaEnvService from '@/services/spa-env-service';
 import logService from '@/services/log-service';
+import {
+  MODULE_NAME as appModule,
+  SET_MAINTENANCE_MESSAGE,
+} from '@/store/modules/app-module';
 
 export default {
   name: 'App',
@@ -59,6 +63,7 @@ export default {
     spaEnvService.loadEnvs()
       .then(() => {
         if (spaEnvService.values && spaEnvService.values.SPA_ENV_JHA_MAINTENANCE_FLAG === 'true') {
+          this.$store.dispatch(`${appModule}/${SET_MAINTENANCE_MESSAGE}`, spaEnvService.values.SPA_ENV_JHA_MAINTENANCE_MESSAGE);
           const toPath = commonRoutes.MAINTENANCE_PAGE.path;
           pageStateService.setPageComplete(toPath);
           pageStateService.visitPage(toPath);
@@ -69,6 +74,7 @@ export default {
         logService.logError(applicationUuid, {
           event: 'HTTP error getting values from spa-env-server',
           status: error.response.status,
+          error
         });
       });
   },

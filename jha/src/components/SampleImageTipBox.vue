@@ -1,7 +1,7 @@
 <template>
   <div>
     <TipBox title="Tip">
-      <p>Document samples:</p>
+      <p v-if="hasSingleSample || hasMultipleSamples">Document samples:</p>
       <p v-if="hasSingleSample">
         <a href="javascript:void(0)"
           :title="`${documentType} sample`"

@@ -19,12 +19,12 @@
           v-model="isApplyingForMSP">
           <template v-slot:description>
             <p v-if="msgCodeMSP === eqMsgCodesMSP.NotApplying" class="mt-2">Eligibility questionnaire not answered.</p>
-            <p v-else-if="msgCodeMSP === eqMsgCodesMSP.NotLivingInBC" class="mt-2 text-danger">You might not qualify for MSP or related income_based programs if you do not live in BC. Contact Health Insurance BC for more information.</p>
+            <p v-else-if="msgCodeMSP === eqMsgCodesMSP.NotLivingInBC" class="mt-2 text-danger">You might not qualify for MSP or related income-based programs if you do not live in B.C. contact Health Insurance BC for more information.</p>
             <p v-else-if="msgCodeMSP === eqMsgCodesMSP.AwayOver30" class="mt-2 text-danger">You or your family member might not qualify for MSP or related income-based programs if you leave the province for more than 30 days in total during the first six months after you apply - doing this could mean you are no longer considered a B.C. resident. Find out more by contacting Health Insurance BC.</p>
             <div v-else-if="msgCodeMSP === eqMsgCodesMSP.StudentMinorRefugee" class="mt-2 text-danger">
               <p>You can submit an application with some assistance from one of our representatives - please contact Health Insurance BC:</p>
               <p class="mt-1">604 683-7151 (Lower Mainland)</p>
-              <p class="mt-1">1 800 663-7100 (Elsewhere in BC)</p>
+              <p class="mt-1">1 800 663-7100 (Elsewhere in B.C.)</p>
             </div>
             <p v-else-if="msgCodeMSP === eqMsgCodesMSP.NotHaveDocuments" class="mt-2 text-danger">Make sure you have digital copies of the above documents before completing your British Columbia Application for Health Drug Coverage. You will not be able to apply for MSP enrolment without these documents.</p>
           </template>

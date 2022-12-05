@@ -33,9 +33,9 @@ class ApiService {
       gender: formState.ahGender || null,
       birthDate: formatISODate(formState.ahBirthdate) || null,
       telephone: stripPhoneFormatting(formState.phone) || null,
-      addressLine1: formState.resAddressLine1 || null,
-      addressLine2: formState.resAddressLine2 || null,
-      addressLine3: formState.resAddressLine3 || null,
+      addressLine1: formState.resAddressLine1 ? replaceSpecialCharacters(formState.resAddressLine1).substring(0, 25) : null,
+      addressLine2: formState.resAddressLine2 ? replaceSpecialCharacters(formState.resAddressLine2).substring(0, 25) : null,
+      addressLine3: formState.resAddressLine3 ? replaceSpecialCharacters(formState.resAddressLine3).substring(0, 25) : null,
       city: formState.resCity || null,
       postalCode: stripSpaces(formState.resPostalCode) || null,
       provinceOrState: formState.resProvince || null,
@@ -50,9 +50,9 @@ class ApiService {
     
     // only mailing address is required for SuppBens and FPCare submissions
     if (!applyingForMSP) {
-      jsonPayload.addressLine1 = formState.mailAddressLine1 || null;
-      jsonPayload.addressLine2 = formState.mailAddressLine2 || null;
-      jsonPayload.addressLine3 = formState.mailAddressLine3 || null;
+      jsonPayload.addressLine1 = formState.mailAddressLine1 ? replaceSpecialCharacters(formState.mailAddressLine1).substring(0, 25) : null;
+      jsonPayload.addressLine2 = formState.mailAddressLine2 ? replaceSpecialCharacters(formState.mailAddressLine2).substring(0, 25) : null;
+      jsonPayload.addressLine3 = formState.mailAddressLine3 ? replaceSpecialCharacters(formState.mailAddressLine3).substring(0, 25) : null;
       jsonPayload.city = formState.mailCity || null;
       jsonPayload.postalCode = stripSpaces(formState.mailPostalCode) || null;
       jsonPayload.provinceOrState = formState.mailProvince || null;
@@ -184,9 +184,9 @@ class ApiService {
               departDateSchoolOutside: formatISODate(dependent.schoolDepartureDate) || null,
               schoolName: dependent.schoolName || null,
               schoolAddress: {
-                addressLine1: dependent.schoolAddressLine1 || null,
-                addressLine2: dependent.schoolAddressLine2 || null,
-                addressLine3: dependent.schoolAddressLine3 || null,
+                addressLine1: dependent.schoolAddressLine1 ? replaceSpecialCharacters(dependent.schoolAddressLine1).substring(0, 25) : null,
+                addressLine2: dependent.schoolAddressLine2 ? replaceSpecialCharacters(dependent.schoolAddressLine2).substring(0, 25) : null,
+                addressLine3: dependent.schoolAddressLine3 ? replaceSpecialCharacters(dependent.schoolAddressLine3).substring(0, 25) : null,
                 city: dependent.schoolCity || null,
                 postalCode: dependent.schoolPostalCode || null,
                 provinceOrState: dependent.schoolProvinceOrState || null,
@@ -221,9 +221,9 @@ class ApiService {
       // Add mailing address, copy residential address if same
       if (!formState.isMailSame) {
         jsonPayload.medicalServicesPlan.mailingAddress = {
-          addressLine1: formState.mailAddressLine1 || null,
-          addressLine2: formState.mailAddressLine2 || null,
-          addressLine3: formState.mailAddressLine3 || null,
+          addressLine1: formState.mailAddressLine1 ? replaceSpecialCharacters(formState.mailAddressLine1).substring(0, 25) : null,
+          addressLine2: formState.mailAddressLine2 ? replaceSpecialCharacters(formState.mailAddressLine2).substring(0, 25) : null,
+          addressLine3: formState.mailAddressLine3 ? replaceSpecialCharacters(formState.mailAddressLine3).substring(0, 25) : null,
           city: formState.mailCity || null,
           postalCode: stripSpaces(formState.mailPostalCode) || null,
           provinceOrState: formState.mailProvince || null,
@@ -231,9 +231,9 @@ class ApiService {
         };
       } else {
         jsonPayload.medicalServicesPlan.mailingAddress = {
-          addressLine1: formState.resAddressLine1 || null,
-          addressLine2: formState.resAddressLine2 || null,
-          addressLine3: formState.resAddressLine3 || null,
+          addressLine1: formState.resAddressLine1 ? replaceSpecialCharacters(formState.resAddressLine1).substring(0, 25) : null,
+          addressLine2: formState.resAddressLine2 ? replaceSpecialCharacters(formState.resAddressLine2).substring(0, 25) : null,
+          addressLine3: formState.resAddressLine3 ? replaceSpecialCharacters(formState.resAddressLine3).substring(0, 25) : null,
           city: formState.resCity || null,
           postalCode: stripSpaces(formState.resPostalCode) || null,
           provinceOrState: formState.resProvince || null,
@@ -321,7 +321,7 @@ class ApiService {
       if (formState.selectedDisabilityRecipients && formState.selectedDisabilityRecipients.includes('spouse')) {
         numDisabled += 1;
       }
-      // check if account holder is on disability
+      // check if applicant is on disability
       if (formState.selectedDisabilityRecipients && formState.selectedDisabilityRecipients.includes('ah')) {
         numDisabled += 1;
       }
@@ -341,7 +341,7 @@ class ApiService {
         totalDeductions: parseInt(formState.sbTotalDeductions) || 0,
         totalNetIncome: parseInt(formState.sbTotalHouseholdIncome) || 0,
         childCareExpense: Math.floor(parseInt(formState.claimedChildCareExpenses) / 2 || 0), // amount recieved is half actual child care expenses 
-        netIncomeLastYear: parseInt(formState.ahSBIncome) || 0, // Account holder net income. DB as "netIncome".
+        netIncomeLastYear: parseInt(formState.ahSBIncome) || 0, // Applicant net income. DB as "netIncome".
         numChildren: parseInt(formState.numChildren) || 0,
         numDisabled,
         spouseIncomeLine236: parseInt(formState.spouseSBIncome) || 0,
@@ -472,11 +472,30 @@ class ApiService {
           if (response && response.data && response.data.returnCode === 'success') {
             resolve(response.data);
           } else {
-            reject(response.data);
+            reject({
+              programUuid,
+              imageUuid: image && image.uuid,
+              size: image && image.size,
+              programArea,
+              docType,
+              token,
+              // getting status in ConsentPage.vue depends on response.data.response being under error.response
+              response: response && response.data && response.data.response,
+              // actual response from individual post request for extra detail
+              _response: response
+            });
           }
         })
         .catch((error) => {
-          reject(error);
+          reject({
+            programUuid,
+            imageUuid: image && image.uuid,
+            size: image && image.size,
+            programArea,
+            docType,
+            token,
+            error,
+          });
         });
     });
   }

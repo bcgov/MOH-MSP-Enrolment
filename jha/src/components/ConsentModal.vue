@@ -11,8 +11,7 @@
             <h2 class="modal-title" id="exampleModalLabel">Information collection notice</h2>
           </div>
           <div class="modal-body">
-            <p v-if="isMSPNoticeShown"><b>{{mspNoticeTitle}}:</b> Personal information is collected under the authority of the Medicare Protection Act and section 26 (a), (c) and (e) of the Freedom of Information and Protection of Privacy Act (FOIPPA) for the purposes of administration of the Medical Services Plan. Information may be disclosed pursuant to section 33 of FOIPPA. If you have any questions about the collection and use of your personal information, please contact the Health Insurance BC Chief Privacy Office at Health Insurance BC, Chief Privacy Office, PO Box 9035 STN PROV GOVT, Victoria, BC V8W 9E3 or call 604 683-7151 (Vancouver) or 1 800 663-7100 (toll-free).</p>
-            <p v-if="isFPCNoticeShown"><b>FAIR PHARMACARE:</b> Personal information on this form is collected by the Ministry of Health under s.22 of the Pharmaceutical Services Act for the purpose of determining, verifying and administering your and your family’s Fair PharmaCare coverage. If you have any questions about the collection of personal information on this form, contact the Health Insurance BC (HIBC) Chief Privacy Officer at PO Box 9035 STN Prov Govt, Victoria BC V8W 9E3; or call 604 683-7151 (Vancouver) or 1 800 663-7100 (toll free). This information will be used and disclosed in accordance with the Freedom of Information and Protection of Privacy Act and the Pharmaceutical Services Act.</p>
+            <p>Your personal information is collected by the Ministry of Health under the authority of sections 26(a) and (c) of the <em>Freedom of Information and Protection of Privacy Act (FIPPA).</em> It is collected for the purpose of administering Medical Services Plan and Supplementary Benefits under the <em>Medicare Protection Act,</em> and to determine, verify and administer your and your family’s Fair PharmaCare coverage under the <em>Pharmaceutical Services Act.</em> If you have questions about the collection of personal information on this form, contact the HIBC Chief Privacy Officer at PO Box 9035 STN Prov Govt, Victoria BC V8W 9E3; or call 604 683-7151 (Vancouver) or 1 800 663-7100 (toll free).</p>
             <Captcha v-if="!isCaptchaValid"
                     class="mt-4"
                     :apiBasePath="captchaAPIBasePath"
@@ -150,26 +149,6 @@ export default {
       }
       this.focusedEl.focus();
     },
-  },
-  computed: {
-    isMSPNoticeShown() {
-      return this.$store.state.enrolmentModule.isApplyingForMSP
-          || this.$store.state.enrolmentModule.isApplyingForSuppBen;
-    },
-    isFPCNoticeShown() {
-      return this.$store.state.enrolmentModule.isApplyingForFPCare;
-    },
-    mspNoticeTitle() {
-      if (this.$store.state.enrolmentModule.isApplyingForMSP
-        && this.$store.state.enrolmentModule.isApplyingForSuppBen) {
-        return 'MEDICAL SERVICES PLAN (MSP) AND SUPPLEMENTARY BENEFITS';
-      } else if (this.$store.state.enrolmentModule.isApplyingForMSP) {
-        return 'MEDICAL SERVICES PLAN (MSP)';
-      } else if (this.$store.state.enrolmentModule.isApplyingForSuppBen) {
-        return 'SUPPLEMENTARY BENEFITS';
-      }
-      return '';
-    }
   }
 };
 </script>

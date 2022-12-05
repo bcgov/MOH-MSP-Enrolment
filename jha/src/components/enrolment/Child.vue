@@ -143,7 +143,7 @@
 
       <div v-if="requestImmigrationStatus">
         <h2 class="mt-3">Child's status in Canada</h2>
-        <p>Provide your child's immigration status. You will need to upload documents that show your child's status in Canada.</p>
+        <p>Please provide your child's immigration status. You will be required to upload documents to support your child's status in Canada. For arrivals through the Canada-Ukraine authorization for emergency travel (CUAET) program, please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
         <hr />
         <Select 
           :id="'child-status-' + index"
@@ -204,7 +204,7 @@
           <p>Provide a copy of an accepted document that shows your child’s status in Canada. If their name is different from the name on the document, you must also upload a copy of a name change certificate that shows their full legal name.</p>
           <hr/>
           <Select 
-            label="Document Type"
+            label="Document type"
             :name="'citizen-support-document-type-' + index"
             :id="'citizen-support-document-type-' + index"
             class="mb-3"
@@ -217,7 +217,7 @@
             :inputStyle='mediumStyles' />
           <div class="text-danger"
             v-if="v$.citizenshipSupportDocumentType.$dirty && v$.citizenshipSupportDocumentType.required.$invalid"
-            aria-live="assertive">Document Type is required.</div>
+            aria-live="assertive">Document type is required.</div>
           <Radio
             label="Does the document that shows your child's status in Canada match their selected gender designation?" 
             :name="'gender-matches-' + index"
@@ -232,7 +232,7 @@
               && v$.genderMatches.required.$invalid"
             aria-live="assertive">This field is required.</div>
           <div v-if="citizenshipSupportDocumentType && genderMatches">
-            <h2>{{ supportDocumentTypeToTitle(citizenshipSupportDocumentType)}} {{ genderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+            <h2>{{ citizenshipSupportDocumentType }} {{ genderMatches === 'N' ? 'and change of gender designation' : '' }}</h2>
             <hr/>
             <div class="row">
               <div class="col-md-7">
@@ -270,7 +270,7 @@
             <p>Provide a copy of a name change certificate that shows your child's full legal name.</p>
             <hr/>
             <Select 
-              label="Document Type"
+              label="Document type"
               :name="'name-change-doc-type-' + index"
               :id="'name-change-doc-type-' + index"
               class="mb-3"
@@ -283,7 +283,7 @@
               :inputStyle='mediumStyles' />
             <div class="text-danger"
               v-if="v$.nameChangeSupportDocumentType.$dirty && v$.nameChangeSupportDocumentType.required.$invalid"
-              aria-live="assertive">Document Type is required.</div>
+              aria-live="assertive">Document type is required.</div>
             <div v-if="nameChangeSupportDocumentType">
                 <h2>{{nameChangeSupportDocumentType}}</h2>
                 <hr/>
@@ -308,7 +308,7 @@
         </div>
 
         <div v-if="requestMovingInfo">
-          <h2 class="mt-4">Moving Information</h2>
+          <h2 class="mt-4">Moving information</h2>
           <hr/>
           <div class="row">
               <div class="col-md-7">
@@ -329,7 +329,7 @@
               <div v-if="showOriginTextField">
                   <Input 
                     className="mt-3"
-                    label="From which province or jurisdiction?"
+                    label="Which province or jurisdiction did your child live in before moving to British Columbia?"
                     maxlength="25"
                     v-model="moveFromOrigin"
                     @blur="handleBlurField(v$.moveFromOrigin)"
@@ -357,7 +357,8 @@
                     aria-live="assertive">Please indicate whether your child has made a permanent move to B.C.</div>
                   <div class="text-danger"
                     v-if="madePermanentMove === 'N' && status !== statusOptions.TemporaryResident"
-                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your child is not eligible for enrolment in the Medical Services Plan. Please contact <a target="_blank" href="http://www2.go$v.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.
+                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your child is not eligible for enrolment in MSP. For more information, contact Health Insurance BC at:
+                    <ContactInformation />
                   </div>
               </div>
               <div v-if="madePermanentMove !== 'N' || status === statusOptions.TemporaryResident">
@@ -380,7 +381,7 @@
                     v-if="v$.moveFromOrigin.$dirty
                       && !v$.moveFromOrigin.required.$invalid
                       && v$.moveFromOrigin.nonBCValidator.$invalid"
-                    aria-live="assertive">Province of origin cannot be British Columbia.</div>
+                    aria-live="assertive">Province of origin cannot be B.C.</div>
                   </div>
                   <div v-if="showCountrySelector">
                     <CountrySelect 
@@ -521,7 +522,7 @@
                       :inputStyle='mediumStyles' />
                   </div>
                   <Radio
-                    label='Has your child been outside B.C. for more than 30 days in total in the past 12 months?'
+                    label='Since your child arrived in B.C., have they left the province for more than 30 days in total in the past 12 months?'
                     :id="'outside-bc-' + index"
                     :name="'outside-bc-' + index"
                     v-model='outsideBCLast12Months'
@@ -535,7 +536,7 @@
                   </Radio>
                   <div class="text-danger"
                     v-if="v$.outsideBCLast12Months.$dirty && v$.outsideBCLast12Months.required.$invalid"
-                    aria-live="assertive">Please indicate whether your child has been outside BC in the past 12 months.</div>
+                    aria-live="assertive">Please indicate whether your child has been outside B.C. in the past 12 months.</div>
                   <div v-if="outsideBCLast12Months === 'Y'" class="tabbed-section">
                     <Input 
                       className="mt-3"
@@ -611,7 +612,7 @@
                     :items='radioOptionsNoYes'/>
                   <div class="text-danger"
                     v-if="v$.hasPreviousBCHealthNumber.$dirty && v$.hasPreviousBCHealthNumber.required.$invalid"
-                    aria-live="assertive">Please indicate whether your child has a previous BC Personal Health Number.</div>
+                    aria-live="assertive">Please indicate whether your child has a previous B.C. Personal Health Number.</div>
                   <div v-if="hasPreviousBCHealthNumber === 'Y'" class="tabbed-section">
                     <PhnInput 
                       className="mt-3"
@@ -815,7 +816,7 @@
             aria-live="assertive">Expected school completion date is required.</div>
           <div class="text-danger" v-if="v$.schoolCompletionDate.$dirty && v$.schoolCompletionDate.dateDataValidator.$invalid" aria-live="assertive">Invalid estimated school completion date.</div>
           <div class="text-danger" v-if="v$.schoolCompletionDate.$dirty && v$.schoolCompletionDate.futureDateValidator.$invalid" aria-live="assertive">Estimated school completion date cannot be in the past.</div>
-          <Radio label="Will your child reside in BC after completing their studies?"
+          <Radio label="Will your child reside in B.C. after completing their studies?"
             class="mt-3"
             :id="'will-reside-in-bc-after-studies-' + index"
             :name="'will-reside-in-bc-after-studies-' + index"
@@ -904,7 +905,6 @@ import {
   StatusInCanada,
   CanadianStatusReasons, 
 } from '@/constants/immigration-status-types';
-import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import { SupportDocumentTypes } from '@/constants/document-types';
 import { ChildAgeTypes } from '../../constants/child-age-types';
 import { isAfter, isBefore } from 'date-fns';
@@ -912,7 +912,8 @@ import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import { mediumStyles, smallStyles } from '@/constants/input-styles';
 import spaEnvService from '@/services/spa-env-service';
-import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
+import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js';
+import ContactInformation from '@/components/ContactInformation.vue';
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -935,7 +936,7 @@ const birthDateStudentValidator = (value, vm) => {
 };
 
 const beforeBirthdateValidator = (value, vm) => {
-  if (vm.birthDate && vm.birthDate.getTime() > value.getTime()) {
+  if (value && vm.birthDate && vm.birthDate.getTime() > value.getTime()) {
     return false;
   } 
 
@@ -1053,6 +1054,7 @@ export default {
     TipBox,
     SampleImageTipBox,
     PostalCodeInput,
+    ContactInformation
   },
   props: {
       childData: Object,
@@ -1440,7 +1442,6 @@ export default {
         this.$emit('updateChild', childData);
       }
     },
-    supportDocumentTypeToTitle,
     handleBlurField(validationObject) {
       if (validationObject) {
         validationObject.$touch();
@@ -1471,6 +1472,14 @@ export default {
       this.schoolCompletionDateData = data;
     },
     handleSchoolAddressSelected(address) {
+      // prevent "Cannot read property of undefined" error should the address not be complete
+      if (address.addressLines) {
+        for (let i=0; i<address.addressLines.length; i++) {
+          // replace special characters PRIOR to truncating address lines
+          address.addressLines[i] = replaceSpecialCharacters(address.addressLines[i]);
+        }
+      }
+
       const addressLines = truncateAddressLines(address.addressLines, 25);
 
       // Remove all address lines.
@@ -1479,7 +1488,7 @@ export default {
       }
       // Add new address lines.
       for (let i=0; i<(addressLines.length <= 3 ? addressLines.length : 3); i++) {
-        this[`schoolAddressLine${i+1}`] = replaceSpecialCharacters(addressLines[i]);
+        this[`schoolAddressLine${i+1}`] = addressLines[i];
       }
       this.schoolCountry = replaceSpecialCharacters(address.country);
       this.schoolProvinceOrState = getProvinceNameByCode(address.province);

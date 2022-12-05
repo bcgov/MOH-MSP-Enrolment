@@ -33,7 +33,7 @@ export class GeneralAppComponent {
     // You need this small hack in order to catch application root view container ref
     this.viewContainerRef = viewContainerRef;
 
-    // Specific handling for refresh on DEAM
+    // Specific handling for refresh / first navigation
     this.handleRefresh(location.pathname);
   }
 
@@ -58,14 +58,9 @@ export class GeneralAppComponent {
       } else if (!url.includes("/confirmation")) {
         this.hardRedirect("/msp/assistance/home");
       }
-    } else if (url.includes("/benefit")) {
-      // if on the home page, don't redirect but remove any stored application data
-      if (url.includes("/eligibility")) {
-        this.clearStorage();
-        // if anywhere else besides confirmation, redirect them to the home page
-      } else if (!url.includes("/confirmation")) {
-        this.hardRedirect("/msp/benefit/eligibility");
-      }
+      // SuppBen and MSP Enrolment have been moved to JHA (AHDC)
+    } else if (url.includes("/benefit") || url.includes("/enrolment")) {
+      location.assign('https://my.gov.bc.ca/ahdc');
     }
   }
 

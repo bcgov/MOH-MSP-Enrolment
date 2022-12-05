@@ -1,6 +1,6 @@
 {
   "name": "MOH-MSP-Enrolment",
-  "version": "3.4.15",
+  "version": "3.5.1",
   "description": "MyGovBC MSP Service Provider Web App",
   "license": "Apache-2.0",
   "repository": {
@@ -53,7 +53,7 @@
     "karma-jasmine-html-reporter": "^1.5.4",
     "karma-spec-reporter": "0.0.32",
     "node-sass": "^4.12.0",
-    "pdfjs-dist": "^2.0.550",
+    "pdfjs-dist": "~2.11.338",
     "pluralize": "^3.0.0",
     "protractor": "^5.4.0",
     "rimraf": "^2.5.2",
@@ -91,7 +91,7 @@
     "jquery": "^3.5.1",
     "jxon": "git+https://github.com/bcgov/jxon.git",
     "lodash": "^4.17.20",
-    "moh-common-lib": "^3.4.8",
+    "moh-common-lib": "^3.6.2",
     "moment": "^2.22.2",
     "ngx-bootstrap": "^5.1.2",
     "ngx-mydatepicker": "^2.4.9",
@@ -103,6 +103,6 @@
     "typescript": "3.2.4",
     "url": "^0.11.0",
     "zlib": "^1.0.5",
-    "zone.js": "~0.8.26"
+    "zone.js": "^0.11.7"
   }
 }

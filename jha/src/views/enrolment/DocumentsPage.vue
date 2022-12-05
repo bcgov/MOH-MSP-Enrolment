@@ -9,12 +9,12 @@
     </div>
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
-        <h1>Upload Supporting Documents</h1>
+        <h1>Upload supporting documents</h1>
         <hr class="mt-0"/>
         <div class="row">
           <div class="col-md-8">
             <div>
-              <p class="font-weight-bold">Upload your Canada Revenue Agency Notice of Assessment or Notice of Reassessment for {{selectedNOAYear}}</p>
+              <p class="font-weight-bold">Upload your Canada Revenue Agency NOA or NORA for {{selectedNOAYear}}</p>
               <hr/>
               <FileUploader v-model="ahCRADocuments"
                 id='ah-cra-documents'
@@ -29,22 +29,20 @@
           </div>
           <div class="col-md-4">
             <TipBox title="Tip">
-              <p>
-                If you are uploading a copy of a Notice of Assessment or Notice of Reassessment from the Canada Revenue Agency website, make sure the image contains:
-              </p>
+              <p>When uploading a copy of your NOA or NORA, make sure the image contains:</p>
               <ul>
                 <li>Your name&nbsp;</li>
                 <li>The tax year&nbsp;</li>
                 <li>Your net income (Line 23600)&nbsp;</li>
                 <li>Registered Disability Savings Plan income (Line 12500) if applicable&nbsp;</li>
-                <li>A JPG, PNG, GIF, BMP or PDF file&nbsp;</li>
               </ul>
+              <p>The file must be a JPG, PNG, BMP or PDF.</p>
             </TipBox>
           </div>
         </div>
         <div v-if="hasSpouse" class="row mt-5">
           <div class="col-md-8">
-            <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency Notice of Assessment or Notice of Reassessment for {{selectedNOAYear}}</p>
+            <p class="font-weight-bold">Upload your spouse's Canada Revenue Agency NOA or NORA for {{selectedNOAYear}}</p>
             <hr/>
             <FileUploader v-model="spouseCRADocuments"
               id='spouse-cra-documents'
@@ -58,16 +56,14 @@
           </div>
           <div class="col-md-4">
             <TipBox title="Tip">
-              <p>
-                If you are uploading a copy of a Notice of Assessment or Notice of Reassessment from the Canada Revenue Agency website, make sure the image contains:
-              </p>
+              <p>When uploading a copy of your NOA or NORA, make sure the image contains:</p>
               <ul>
                 <li>Your name&nbsp;</li>
                 <li>The tax year&nbsp;</li>
                 <li>Your net income (line 23600)&nbsp;</li>
                 <li>Regisered Disability Savings Plan income (line 12500) if applicable&nbsp;</li>
-                <li>A JPG, PNG, GIF, BMP or PDF file&nbsp;</li>
               </ul>
+              <p>The file must be a JPG, PNG, BMP or PDF.</p>
             </TipBox>
           </div>
         </div>

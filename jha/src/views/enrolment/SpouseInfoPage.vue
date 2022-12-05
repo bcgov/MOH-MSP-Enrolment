@@ -12,8 +12,7 @@
         <h1>Spouse information</h1>
         <div class="heading mt-3">
           <div>
-            <p>A spouse is a person married to or cohabiting in a marriage-like relationship with the applicant. A spouse may be the same gender as the applicant. To be eligible for MSP coverage, a spouse must be a B.C. resident. </p> 
-            <p>Personal Health Number (PHN) is the number that appears on your spouse's BC Services Card.</p>
+            <p>To be eligible for coverage, a spouse must be a B.C. resident.</p> 
           </div>
           <div v-if="hasSpouse === 'Y'" class="ml-1 mb-2 remove-icon align-self-end " @click="removeSpouse()">
             <font-awesome-icon icon="times-circle" size="2x" title="Remove Spouse"/>
@@ -135,15 +134,15 @@
                 <div class="text-danger"
                   v-if="v$.spouseSocialInsuranceNumber.$dirty
                     && v$.spouseSocialInsuranceNumber.required.$invalid"
-                  aria-live="assertive">Social Insurance Number is required.</div>
+                  aria-live="assertive">SIN is required.</div>
                 <div class="text-danger"
                   v-if="v$.spouseSocialInsuranceNumber.$dirty
                     && v$.spouseSocialInsuranceNumber.sinValidator.$invalid"
-                  aria-live="assertive">Social Insurance Number is invalid.</div>
+                  aria-live="assertive">SIN is invalid.</div>
                 <div class="text-danger"
                   v-if="v$.spouseSocialInsuranceNumber.$dirty
                     && v$.spouseSocialInsuranceNumber.uniqueSINValidator.$invalid"
-                  aria-live="assertive">This Social Insurance Number (SIN) was already used for another family member. Please provide the SIN that is listed on the family member's SIN card/letter.</div>
+                  aria-live="assertive">This SIN was already used for another family member. Please provide the SIN that is listed on the family member's SIN card/letter.</div>
               </div>
 
               <div v-if="requestGender">
@@ -175,7 +174,7 @@
           <div v-if="requestImmigrationStatus">
             <h2 class="mt-4">Spouse's status in Canada</h2>
             <div class="heading mt-3">
-              <p>Provide your spouse's immigration status. You will be need to upload documents that show your spouse's status in Canada. For arrivals through the Canada-Ukraine Authorization for Emergency Travel program (CUAET) please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
+              <p>Provide your spouse's immigration status. You will be need to upload documents that show your spouse's status in Canada. For arrivals through the Canada-Ukraine authorization for emergency travel (CUAET) program, please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
             </div>
             <hr class="mt-0"/>
             <Select 
@@ -221,10 +220,10 @@
             </div>
             <div v-if="spouseStatusReason !== null && spouseStatusReason !== undefined" class="mt-3">
               <h2>Documents</h2>
-              <p>Provide a copy of an accepted document that shows your spouse’s status in Canada. If their name is different from the name on the document, you must also upload a copy of a marriage certificate or name change certificate that shows their full legal name.</p>
+              <p>Provide a copy of an accepted document that shows your spouse’s status in Canada. If their name is different from the name on the document, you must also upload a copy of a marriage certificate, divorce decree, or name change certificate that shows their full legal name.</p>
               <hr/>
               <Select 
-                label="Document Type"
+                label="Document type"
                 name="citizen-support-document-type"
                 id="citizen-support-document-type"
                 defaultOptionLabel="Please select"
@@ -237,7 +236,7 @@
                 :inputStyle='mediumStyles' />
               <div class="text-danger"
                 v-if="v$.spouseCitizenshipSupportDocumentType.$dirty && v$.spouseCitizenshipSupportDocumentType.required.$invalid"
-                aria-live="assertive">Document Type is required.</div>
+                aria-live="assertive">Document type is required.</div>
               <Radio
                 label="Does the document that shows your spouse's status in Canada match their selected gender designation?" 
                 name="spouse-gender-matches"
@@ -252,7 +251,7 @@
                   && v$.spouseGenderMatches.required.$invalid"
                 aria-live="assertive">This field is required.</div>
               <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
-                <h2>{{ supportDocumentTypeToTitle(spouseCitizenshipSupportDocumentType) }} {{ spouseGenderMatches === 'N' ? 'and Change of Gender Designation' : '' }}</h2>
+                <h2>{{ spouseCitizenshipSupportDocumentType }} {{ spouseGenderMatches === 'N' ? 'and change of gender designation' : '' }}</h2>
                 <hr/>
                 <div class="row">
                     <div class="col-md-7">
@@ -288,10 +287,10 @@
               <div v-if="spouseIsNameChanged === 'Y'"
                 class="tabbed-section">
                 <h2>Additional Documents</h2>
-                <p>Provide a copy of a marriage certificate or name change certificate that shows your spouse's full legal name.</p>
+                <p>Provide a copy of a marriage certificate, divorce decree, or name change certificate that shows your spouse's full legal name.</p>
                 <hr/>
                 <Select 
-                  label="Document Type"
+                  label="Document type"
                   name="name-change-doc-type"
                   id="name-change-doc-type"
                   defaultOptionLabel="Please select"
@@ -304,7 +303,7 @@
                   :inputStyle='mediumStyles' />
                 <div class="text-danger"
                   v-if="v$.spouseNameChangeSupportDocumentType.$dirty && v$.spouseNameChangeSupportDocumentType.required.$invalid"
-                  aria-live="assertive">Document Type is required.</div>
+                  aria-live="assertive">Document type is required.</div>
                 <div v-if="spouseNameChangeSupportDocumentType">
                   <h2>{{spouseNameChangeSupportDocumentType}}</h2>
                   <hr/>
@@ -331,7 +330,7 @@
           </div>
           <div v-if="requestMovingInfo" class="mt-3">
             <!-- Spouse moving information -->
-            <h2 class="mt-3">Residency Information</h2>
+            <h2 class="mt-3">Moving information</h2>
             <hr>
             <div class="row">
               <div class="col-md-7">
@@ -347,12 +346,12 @@
                     :items='radioOptionsNoYes' />
                   <div class="text-danger"
                     v-if="v$.spouseLivedInBCSinceBirth.$dirty && v$.spouseLivedInBCSinceBirth.required.$invalid"
-                    aria-live="assertive">Please indicate whether your spouse has lived in BC since birth.</div>
+                    aria-live="assertive">Please indicate whether your spouse has lived in B.C. since birth.</div>
                 </div>
                 <div v-if="showOriginTextField">
                   <Input 
                       className="mt-3"
-                      label="From which province or jurisdiction?"
+                      label="Which province or jurisdiction did your spouse live in before moving to British Columbia?"
                       maxlength="25"
                       v-model="spouseMoveFromOrigin"
                       @blur="handleBlurField(v$.spouseMoveFromOrigin)"
@@ -375,10 +374,12 @@
                     :items='radioOptionsNoYes'/>
                   <div class="text-danger"
                     v-if="v$.spouseMadePermanentMove.$dirty && v$.spouseMadePermanentMove.required.$invalid"
-                    aria-live="assertive">Please indicate whether your spouse has made a permanent move to BC.</div>
+                    aria-live="assertive">Please indicate whether your spouse has made a permanent move to B.C.</div>
                   <div class="text-danger"
                     v-if="spouseMadePermanentMove === 'N' && spouseStatus !== statusOptions.TemporaryResident"
-                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your spouse is not eligible for enrolment in the Medical Services Plan. Please contact <a target="_blank" href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents-contact-us">Health Insurance BC</a> for further information.</div>
+                    aria-live="assertive">You have indicated that a recent move to B.C. is not permanent. As a result, your spouse is not eligible for enrolment in MSP. For more information, contact Health Insurance BC at:
+                    <ContactInformation /> 
+                  </div>
                 </div>
                 <div v-if="spouseMadePermanentMove !== 'N' || spouseStatus === statusOptions.TemporaryResident">
                   <div v-if="showProvinceSelector">
@@ -399,7 +400,7 @@
                     <div class="text-danger"
                       v-if="v$.spouseMoveFromOrigin.$dirty
                         && v$.spouseMoveFromOrigin.nonBCValidator.$invalid"
-                      aria-live="assertive">Province of origin cannot be British Columbia.</div>
+                      aria-live="assertive">Province of origin cannot be B.C.</div>
                   </div>
                   <div v-if="showCountrySelector">
                     <CountrySelect 
@@ -537,7 +538,7 @@
                       :inputStyle='mediumStyles' />
                   </div>
                   <Radio
-                    label='Since your spouse arrived in B.C. have they left the province for more than 30 days in total in the past 12 months?'
+                    label='Since your spouse arrived in B.C., have they left the province for more than 30 days in total in the past 12 months?'
                     id='outside-bc-past-12'
                     name='outside-bc-past-12'
                     v-model='spouseOutsideBCLast12Months'
@@ -551,7 +552,7 @@
                   </Radio>
                   <div class="text-danger"
                     v-if="v$.spouseOutsideBCLast12Months.$dirty && v$.spouseOutsideBCLast12Months.required.$invalid"
-                    aria-live="assertive">Please indicate whether your spouse has been outside BC in the past 12 months.</div>
+                    aria-live="assertive">Please indicate whether your spouse has been outside B.C. in the past 12 months.</div>
                   <div v-if="spouseOutsideBCLast12Months === 'Y'" class="tabbed-section">
                     <Input 
                       id="departure-reason"
@@ -627,7 +628,7 @@
                     :items='radioOptionsNoYes'/>
                   <div class="text-danger"
                     v-if="v$.spouseHasPreviousBCHealthNumber.$dirty && v$.spouseHasPreviousBCHealthNumber.required.$invalid"
-                    aria-live="assertive">Please indicate whether your spouse has a previous BC Personal Health Number.</div>
+                    aria-live="assertive">Please indicate whether your spouse has a previous B.C. Personal Health Number.</div>
                   <div v-if="spouseHasPreviousBCHealthNumber === 'Y'" class="tabbed-section">
                     <PhnInput 
                       id="previous-bc-phn"
@@ -725,7 +726,6 @@ import {
   pastDateValidator,
   phnFirstDigitValidator
 } from '@/helpers/validators';
-import { supportDocumentTypeToTitle } from '@/helpers/form-helpers'
 import logService from '@/services/log-service';
 import {
   ContinueBar,
@@ -820,7 +820,8 @@ import {
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
-import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
+import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js';
+import ContactInformation from '@/components/ContactInformation.vue';
 
 const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
@@ -911,7 +912,8 @@ export default {
     SINInput,
     FileUploader,
     TipBox,
-    SampleImageTipBox
+    SampleImageTipBox,
+    ContactInformation
   },
   setup () {
     return { v$: useVuelidate() }
@@ -1313,7 +1315,6 @@ export default {
     removeSpouse() {
       this.hasSpouse = 'N';
     },
-    supportDocumentTypeToTitle,
     validateFields() {
       this.saveData();
 

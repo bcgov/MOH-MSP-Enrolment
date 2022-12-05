@@ -9,14 +9,14 @@ const routes: Routes = [
     component: LandingComponent,
     data: { title: 'MSP Applications', breadcrumb: 'Home' }
   },
-  {
-    path: APP_ROUTES.ENROLMENT,
-    loadChildren: 'app/modules/enrolment/enrolment.module#EnrolmentModule'
-  },
-  {
-    path: APP_ROUTES.BENEFIT,
-    loadChildren: 'app/modules/benefit/benefit.module#BenefitModule'
-  },
+  // {
+  //   path: APP_ROUTES.ENROLMENT,
+  //   loadChildren: 'app/modules/enrolment/enrolment.module#EnrolmentModule'
+  // },
+  // {
+  //   path: APP_ROUTES.BENEFIT,
+  //   loadChildren: 'app/modules/benefit/benefit.module#BenefitModule'
+  // },
   {
     path: APP_ROUTES.ASSISTANCE,
     loadChildren: 'app/modules/assistance/assistance.module#AssistanceModule'
