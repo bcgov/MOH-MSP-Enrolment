@@ -9,9 +9,6 @@ on:
       - "jha/src/**/*.vue"
       - "jha/package*.json"
   workflow_dispatch:
-defaults:
-  run:
-    working-directory: ./jha
 env:
   NAMESPACE: f0463d-tools
   ARTIFACT_BUILD_NAME: jha-web-artifact-build
@@ -23,6 +20,9 @@ env:
 jobs:
   test:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./jha
     steps:
       - uses: actions/checkout@main
       - uses: actions/setup-node@main
@@ -38,6 +38,9 @@ jobs:
       #   run: npm run test:schema
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./jha
     needs: [test]
     strategy:
       matrix:
