@@ -10,7 +10,7 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
         <p><strong>British Columbia Application for Health and Drug Coverage</strong></p> 
-        <p>B.C. residents can apply for one, two or three programs using this form: 
+        <p>B.C. residents can apply for one, two or three programs using this form:</p>
         <ul>
           <li>Medical Services Plan&nbsp;</li> 
           <li>Fair PharmaCare&nbsp;</li>

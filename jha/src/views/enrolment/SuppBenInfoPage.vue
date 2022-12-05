@@ -104,7 +104,7 @@
                 v-if="v$.claimedChildCareExpenses.$dirty && v$.claimedChildCareExpenses.required.$invalid"
                   aria-live="assertive">Your claimed child care expenses from {{selectedNOAYear}} are required.</div>
               <div class="text-danger"
-                v-if="$v.claimedChildCareExpenses.$dirty && !$v.claimedChildCareExpenses.positiveNumberValidator"
+                v-if="v$.claimedChildCareExpenses.$dirty && v$.claimedChildCareExpenses.positiveNumberValidator.$invalid"
                   aria-live="assertive">Your claimed child care expenses must be a positive number.</div>
             </div>
 
