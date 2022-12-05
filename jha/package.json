@@ -15,16 +15,16 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
-    "@fortawesome/vue-fontawesome": "^3.0.0-5",
+    "@fortawesome/vue-fontawesome": "^3.0.1",
     "@vuelidate/core": "^2.0.0-alpha.41",
     "@vuelidate/validators": "^2.0.0-alpha.29",
     "axios": "^0.21.4",
+    "common-lib-vue": "^3.0.1-alpha.6",
     "core-js": "^3.6.5",
     "date-fns": "^2.16.1",
     "uuid": "^8.3.2",
     "vue": "^3.1.0",
     "vue-router": "^4.0.15",
-    "common-lib-vue": "3.0.1-alpha.3",
     "vuex": "^4.0.2"
   },
   "devDependencies": {
@@ -36,14 +36,14 @@
     "@vue/cli-plugin-unit-jest": "^5.0.4",
     "@vue/cli-plugin-vuex": "^5.0.4",
     "@vue/cli-service": "^5.0.4",
-    "@vue/test-utils": "^2.0.0-rc.21",
-    "@vue/vue3-jest": "^27.0.0-alpha.4",
+    "@vue/compiler-sfc": "^3.1.0",
+    "@vue/test-utils": "^2.2.4",
+    "@vue/vue3-jest": "^27.0.0",
     "babel-eslint": "^10.1.0",
     "cypress": "^9.6.1",
     "eslint": "^8.10.0",
     "eslint-plugin-vue": "^8.5.0",
-    "jest": "^27.1.0",
-    "lodash": "^4.17.21",
-    "@vue/compiler-sfc": "^3.1.0"
+    "jest": "^27.5.1",
+    "lodash": "^4.17.21"
   }
 }
