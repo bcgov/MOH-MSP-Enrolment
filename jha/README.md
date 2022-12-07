@@ -1,6 +1,8 @@
 # jha
 
 ## Project setup
+Make sure you have Node.js and npm installed (Node version 12.x)
+
 ```
 npm install
 ```
@@ -29,6 +31,9 @@ npm run test:e2e
 ```
 npm run lint
 ```
+
+### Dev Settings
+Adjust the values in `src/settings.js` to more easily walk through the application during development
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
