@@ -1,4 +1,5 @@
-# jha
+# JHA / AHDC
+This code in this directory is for the Application for Health and Drug Coverage, which is a combination of MSP enrolment, Fair PharmaCare enrolment, and Supplementary Benefits enrolment. Users select the relevant combination of programs to apply for, and the resulting online form fills with the appropriate sections, inputs, and questions. It is deployed to OpenShift, for more information on this, please refer to [the docs.](doc/Overview.md)
 
 ## Project setup
 Make sure you have Node.js and npm installed (Node version 12.x)
