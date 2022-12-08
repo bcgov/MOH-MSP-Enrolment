@@ -47,6 +47,6 @@ describe('Full application for MSP FPC and SB', () => {
 
   it('Redirects user to confirmation page when successful', () => {
     cy.url().should('include', 'submission');
-    cy.contains('Confirmation of Submission')
+    cy.contains('Confirmation of submission')
   });
 });
