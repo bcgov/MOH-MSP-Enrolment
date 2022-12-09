@@ -30,7 +30,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Unit tests w/ coverage
-        run: npm run test
+        run: ng test --watch=false
       # - name: LINTing
       #   run: npm run test:lint
       # - name: OpenAPI Schema
