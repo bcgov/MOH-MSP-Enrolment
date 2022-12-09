@@ -51,7 +51,6 @@
                 <p><b>Your Fair PharmaCare form has been submitted.</b></p>
                 <p v-if="fpcApplicationResult.familyNumber"><b>Reference number is: {{fpcApplicationResult.familyNumber}}</b></p>
               </SuccessBox>
-              <div class="middleware-response" v-if="fpcApplicationResult.message" v-html="fpcApplicationResult.message"></div>
             </div>
             <ErrorBox v-else>
               <p><b>There was an issue with your Fair PharmaCare submission. Your form was not submitted.</b></p>
@@ -73,47 +72,49 @@
 
         </div>
 
-        <h3 class="mt-4">Next steps</h3>
-        <hr/>
-        <p><a href="javascript:void(0)" @click="printPage()" class="print-link">Print or save</a> this page for your records.</p>
+        <div v-if="hasAnySuccessfulForms">
+          <h3 class="mt-4">Next steps</h3>
+          <hr/>
+          <p><a href="javascript:void(0)" @click="printPage()" class="print-link">Print or save</a> this page for your records.</p>
 
-        <p class="m-0">Remember:</p>
-        <ul>
-          <li>B.C. residents must fulfill their MSP obligations under the <em>Medicare Protection Act.</em></li>
-          <li>Update your MSP account if your address or family structure changes.</li>
-        </ul>
-
-        <div v-if="mspApplicationResult && mspApplicationResult.returnCode === '0'">
-          <p class="m-0"><strong>Medical Services Plan (MSP) enrolment:</strong></p>
+          <p class="m-0">Remember:</p>
           <ul>
-            <li>Your application will be processed within 21 business days.&nbsp;</li>
-            <li>After your application is processed, HIBC will mail you a letter confirming your MSP enrolment status. You may have a <a href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/how-to-enrol/coverage-wait-period" target="_blank">wait period</a>.&nbsp;</li>
-            <li>Living outside B.C. for more than six months could cause your MSP coverage to be cancelled. <a href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/are-you-eligible" target="_blank">Learn more about MSP eligibility</a>.&nbsp;</li>
+            <li>B.C. residents must fulfill their MSP obligations under the <em>Medicare Protection Act.</em></li>
+            <li>Update your MSP account if your address or family structure changes.</li>
           </ul>
-        </div>
 
-        <div v-if="fpcApplicationResult && fpcApplicationResult.returnCode === '0'">
-          <p class="m-0"><strong>Fair PharmaCare:</strong></p>
-          <ul>
-            <li v-if="!mspApplicationResult">You are now registered for Fair PharmaCare with temporary coverage.&nbsp;</li>
-            <li v-if="mspApplicationResult && mspApplicationResult.returnCode === '0'">Your temporary Fair PharmaCare coverage will begin once you are enrolled in MSP. You will receive your registration number then.&nbsp;</li>
-            <li>We will send you a consent form in the mail soon, which will allow us to verify your income with the Canada Revenue Agency. Please sign and return the form.&nbsp;</li>
-            <li>If you don't return a signed consent form, your temporary Fair PharmaCare coverage will end and your family's coverage will not be based on income. Your family deductible will default to $10,000.&nbsp;</li>
-            <li>After we receive your consent form and verify your income, we will send you a letter that tells you what your Fair PharmaCare deductible and family maximum are.</li>
-            <li>To track your registration, go to <a href="https://my.gov.bc.ca/fpcare/registration-status/request-status" target="_blank">https://my.gov.bc.ca/fpcare/registration-status/request-status</a>.&nbsp;</li>
-          </ul>
-        </div>
+          <div v-if="mspApplicationResult && mspApplicationResult.returnCode === '0'" class="msp-success-message">
+            <p class="m-0"><strong>Medical Services Plan (MSP) enrolment:</strong></p>
+            <ul>
+              <li>Your application will be processed within 21 business days.&nbsp;</li>
+              <li>After your application is processed, HIBC will mail you a letter confirming your MSP enrolment status. You may have a <a href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/how-to-enrol/coverage-wait-period" target="_blank">wait period</a>.&nbsp;</li>
+              <li>Living outside B.C. for more than six months could cause your MSP coverage to be cancelled. <a href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/are-you-eligible" target="_blank">Learn more about MSP eligibility</a>.&nbsp;</li>
+            </ul>
+          </div>
+
+          <div v-if="fpcApplicationResult && fpcApplicationResult.returnCode === '0'" class="fpc-success-message">
+            <p class="m-0"><strong>Fair PharmaCare:</strong></p>
+            <ul>
+              <li v-if="!mspApplicationResult">You are now registered for Fair PharmaCare with temporary coverage.&nbsp;</li>
+              <li v-if="mspApplicationResult && mspApplicationResult.returnCode === '0'">Your temporary Fair PharmaCare coverage will begin once you are enrolled in MSP. You will receive your registration number then.&nbsp;</li>
+              <li>We will send you a consent form in the mail soon, which will allow us to verify your income with the Canada Revenue Agency. Please sign and return the form.&nbsp;</li>
+              <li>If you don't return a signed consent form, your temporary Fair PharmaCare coverage will end and your family's coverage will not be based on income. Your family deductible will default to $10,000.&nbsp;</li>
+              <li>After we receive your consent form and verify your income, we will send you a letter that tells you what your Fair PharmaCare deductible and family maximum are.</li>
+              <li>To track your registration, go to <a href="https://my.gov.bc.ca/fpcare/registration-status/request-status" target="_blank">https://my.gov.bc.ca/fpcare/registration-status/request-status</a>.&nbsp;</li>
+            </ul>
+          </div>
+          
+          <div v-if="sbApplicationResult && sbApplicationResult.returnCode === '0'" class="sb-success-message">
+            <p class="m-0"><strong>Supplementary Benefits:</strong></p>
+            <ul>
+              <li>The Notice of Assessment or Reassessment you submitted will be used to assess your and your family's eligibility for Supplementary Benefits.&nbsp;</li>
+              <li>After your application is processed, HIBC will mail you a letter confirming your eligibility for Supplementary Benefits.&nbsp;</li>
+              <li>File your taxes every year so that you do not have to reapply.&nbsp;</li>
+            </ul>
+          </div>
         
-        <div v-if="sbApplicationResult && sbApplicationResult.returnCode === '0'">
-          <p class="m-0"><strong>Supplementary Benefits:</strong></p>
-          <ul>
-            <li>The Notice of Assessment or Reassessment you submitted will be used to assess your and your family's eligibility for Supplementary Benefits.&nbsp;</li>
-            <li>After your application is processed, HIBC will mail you a letter confirming your eligibility for Supplementary Benefits.&nbsp;</li>
-            <li>File your taxes every year so that you do not have to reapply.&nbsp;</li>
-          </ul>
+          <p>If you have any questions, <a href="https://www2.gov.bc.ca/gov/content/health/about-bc-s-health-care-system/partners/health-insurance-bc" target="_blank">contact HIBC</a>.</p>
         </div>
-      
-        <p>If you have any questions, <a href="https://www2.gov.bc.ca/gov/content/health/about-bc-s-health-care-system/partners/health-insurance-bc" target="_blank">contact HIBC</a>.</p>
 
         <ReviewTableList className='mt-5 mb-5' />
       </main>
@@ -195,6 +196,9 @@ export default {
         programs.push('Supplementary Benefits');
       }
       return programs;
+    },
+    hasAnySuccessfulForms() {
+      return this.successfulSubmissionPrograms.length > 0;
     }
   },
   // Required in order to block back navigation.

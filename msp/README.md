@@ -2,12 +2,12 @@
 ![img](https://img.shields.io/badge/Lifecycle-Stable-97ca00)
 ## General
 
-This is MyGovBC-MSP, an Angular 6.x app. It provides the following processes:
+This is MyGovBC-MSP, an Angular 7.x app. It provides the following processes:
 
-1.  Enrolment Application
+1.  ~~Enrolment Application~~ Link to JHA
 2.  Premium Assistance Application
 3.  Account Change Application
-4.  Supplementary Benefit Application
+4.  ~~Supplementary Benefit Application~~ Link to JHA
 5.  Account Confirmation Letter (ACL) Request
 
 ## Table of contents
@@ -27,7 +27,6 @@ This is MyGovBC-MSP, an Angular 6.x app. It provides the following processes:
 
 ## Browser Compatibility
 
-- IE 11
 - Edge (evergreen)
 - Safari (evergreen)
 - Chrome (evergreen)
@@ -86,17 +85,17 @@ After a make a few more edits, I double check my work at the test site.
 
 ## Development Prerequisites
 
-- node@>=6.9.0
-- npm@>=3.10.0
-- AngularCLI (`npm install -g @angular/cli`) [Documentation](https://github.com/angular/angular-cli)
+- node@>=12.x
+- npm@>=6.x
 
 ## Development
 
 To launch dev instance
 
 ```bash
-git clone https://github.com/bcgov/MyGovBC-MSP.git
-cd MyGovBC-MSP
+git clone https://github.com/bcgov/MOH-MSP-Enrolment.git
+cd MOH-MSP-Enrolment
+cd msp
 npm install
 npm run dev
 ```
@@ -134,7 +133,7 @@ Then create the file, e.g. `src/environments/environment.local.ts`.
 
 Unit testing is implemented using karma with Jasmine framework. The implementation generally follows [Angular webpack test configuration](https://angular.io/docs/ts/latest/guide/webpack.html#test-configuration). Jenkins CI runs unit tests as part of the build, therefore all unit test scripts should be able to run unattended, headless, quickly and depend only on local resources. Unit test scripts are located side-by-side with the target component and have file extension _.spec.js_ or _.spec.ts_. For an example of unit test script, see [/src/app/components/msp/landing/landing.spec.ts](https://github.com/bcgov/MyGovBC-MSP/blob/master/src/app/components/msp/landing/landing.spec.ts)
 
-To start unit test manually, run `npm test`, which launches tests in headless PhantomJS browser. To run the unit tests in UI browser such as IE9, IE10, IE11, Firefox and Chrome, run `npm test -- --browsers Chrome`.
+To start unit test manually, run `npm test`, which launches tests in headless PhantomJS browser
 
 ## Production
 
@@ -144,7 +143,7 @@ To build production distribution of the app,
 npm run build
 ```
 
-MSP production environment is hosted on OpenShift. Check out [deployment docs](openshift/app/README.md).
+MSP production environment is hosted on OpenShift. Check out [deployment docs](doc/Overview.md).
 
 ## i18n and Markdown Support
 

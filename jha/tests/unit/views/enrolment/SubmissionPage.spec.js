@@ -31,17 +31,12 @@ jest.mock("@/services/log-service.js", () => ({
 }));
 
 describe('Enrolment - FormSelectionPage.vue', () => {
-  it('Shows returned middleware messages for successful FPC only applications', async () => {
-    const wrapper = mount(SubmissionPage, {
-      global: {
-        stubs: {
-          'font-awesome-icon': {
-              template: '<i />'
-          },
-        },
-        plugins: [router, store]
-      }
+
+  it('Shows next steps message for successful FPC only applications', () => {
+    const wrapper = shallowMount(SubmissionPage, {
+      store,
+      localVue,
     });
-    wrapper.get('.middleware-response');
+    wrapper.get('.fpc-success-message');
   });
 });
