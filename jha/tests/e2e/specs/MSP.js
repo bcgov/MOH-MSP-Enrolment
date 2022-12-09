@@ -5,7 +5,7 @@ describe('MSP only application', () => {
   const options = {includeMSP: true}
   it('Fills eligibility questionnaire', () => {
     cy.fillEligibilityQuestionnaire(options)
-  })
+  });
 
   it('Accepts valid information for the personal-info page', () => {
     cy.fillPersonalInfoPage(options)
@@ -17,16 +17,16 @@ describe('MSP only application', () => {
 
   it('Accepts valid information for the child page', () => {
     cy.fillChildPage(options)
-  })
+  });
 
   it('Accepts valid information for the contact info page', () => {
     cy.fillResidentialAddress()
-  })
+  });
 
   it('Displays the phone number with contact information', () => {
     cy.contains('(555) 555-5555')
     cy.continue();
-  })
+  });
 
   it('submits form with expected payload', () => {
     cy.fillConsent(options)
@@ -41,5 +41,4 @@ describe('MSP only application', () => {
     cy.url().should('include', 'submission');
     cy.contains('Confirmation of submission')
   });
-
 });

@@ -5,7 +5,7 @@ describe('SB only application', () => {
   const options = {includeSB: true}
   it('Fills eligibility questionnaire', () => {
     cy.fillEligibilityQuestionnaire(options)
-  })
+  });
 
   it('Accepts valid information for the personal-info page', () => {
     cy.fillPersonalInfoPage(options)
@@ -30,7 +30,7 @@ describe('SB only application', () => {
   it('Displays the phone number with contact information', () => {
     cy.contains('(555) 555-5555')
     cy.continue();
-  })
+  });
 
   it('submits form with expected payload', () => {
     cy.fillConsent(options)

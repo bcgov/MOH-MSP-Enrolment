@@ -73,14 +73,14 @@ export const generateRequestObject = () => {
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "aa8b2f14-9ec0-42b6-aafe-2ac11d43685d",
           "attachmentOrder": "3",
-          "description": "Applicant NOA/NOR"
+          "description": "Account holder NOA/NOR"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "06c3011c-4133-4777-b70d-d34fa6da144e",
           "attachmentOrder": "4",
-          "description": "Applicant NOA/NOR"
+          "description": "Account holder NOA/NOR"
         },
         {
           "contentType": "IMAGE_JPEG",
