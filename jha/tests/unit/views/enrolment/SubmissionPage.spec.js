@@ -33,9 +33,15 @@ jest.mock("@/services/log-service.js", () => ({
 describe('Enrolment - FormSelectionPage.vue', () => {
 
   it('Shows next steps message for successful FPC only applications', () => {
-    const wrapper = shallowMount(SubmissionPage, {
-      store,
-      localVue,
+    const wrapper = mount(SubmissionPage, {
+      global: {
+        stubs: {
+          'font-awesome-icon': {
+              template: '<i />'
+          },
+        },
+        plugins: [router, store]
+      }
     });
     wrapper.get('.fpc-success-message');
   });
