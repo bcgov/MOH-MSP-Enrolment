@@ -3,89 +3,112 @@ import * as Primitive from './xml-primitives';
 // Source files:
 // https://raw.githubusercontent.com/bcgov/MyGovBC-MSP/master/src/app/components/msp/api-model/xsd-flat/CommonTypes.xsd
 
-
 interface BaseType {
-	_exists: boolean;
-	_namespace: string;
-	_sequence: Array<string>;
+  _exists: boolean;
+  _namespace: string;
+  _sequence: Array<string>;
 }
+
+// tslint:disable-next-line:class-name
 interface _AddressType extends BaseType {
-	street: string;
-	addressLine1: string;
-	addressLine2?: string;
-	addressLine3?: string;
-	city?: string;
-	country?: string;
-	postalCode?: string;
-	provinceOrState?: string;
+  street: string;
+  addressLine1: string;
+  addressLine2?: string;
+  addressLine3?: string;
+  city?: string;
+  country?: string;
+  postalCode?: string;
+  provinceOrState?: string;
 }
-export interface AddressType extends _AddressType { constructor: { new(): AddressType }; }
-export let AddressType: { new(): AddressType };
+export interface AddressType extends _AddressType {
+  constructor: { new (): AddressType };
+}
+export let AddressType: { new (): AddressType };
 
 export class AddressTypeFactory {
-	static make(): AddressType {
-		const instance = <AddressType>{};
-		instance._sequence = [
-			'addressLine1',
-			'addressLine2',
-			'addressLine3',
-			'city',
-			'postalCode',
-			'provinceOrState',
-			'country'
-		];
-		return instance;
-	}
+  static make(): AddressType {
+    const instance = <AddressType>{};
+    instance._sequence = [
+      'addressLine1',
+      'addressLine2',
+      'addressLine3',
+      'city',
+      'postalCode',
+      'provinceOrState',
+      'country',
+    ];
+    return instance;
+  }
 }
 
+// tslint:disable-next-line:class-name
 interface _AttachmentUuidsType extends BaseType {
-	attachmentUuid: string[];
+  attachmentUuid: string[];
 }
-export interface AttachmentUuidsType extends _AttachmentUuidsType { constructor: { new(): AttachmentUuidsType }; }
-export let AttachmentUuidsType: { new(): AttachmentUuidsType };
+export interface AttachmentUuidsType extends _AttachmentUuidsType {
+  constructor: { new (): AttachmentUuidsType };
+}
+export let AttachmentUuidsType: { new (): AttachmentUuidsType };
 
 export class AttachmentUuidsTypeFactory {
-	static make(): AttachmentUuidsType {
-		const instance = <AttachmentUuidsType>{};
-		instance._sequence = ['attachmentUuid'];
-		return instance;
-	}
+  static make(): AttachmentUuidsType {
+    const instance = <AttachmentUuidsType>{};
+    instance._sequence = ['attachmentUuid'];
+    return instance;
+  }
 }
 
+// tslint:disable-next-line:class-name
 interface _BasicCitizenshipType extends BaseType {
-	attachmentUuids: AttachmentUuidsType;
-	citizenshipType: CitizenshipType;
+  attachmentUuids: AttachmentUuidsType;
+  citizenshipType: CitizenshipType;
 }
-export interface BasicCitizenshipType extends _BasicCitizenshipType { constructor: { new(): BasicCitizenshipType }; }
-export let BasicCitizenshipType: { new(): BasicCitizenshipType };
+export interface BasicCitizenshipType extends _BasicCitizenshipType {
+  constructor: { new (): BasicCitizenshipType };
+}
+export let BasicCitizenshipType: { new (): BasicCitizenshipType };
 
 export class BasicCitizenshipTypeFactory {
-	static make(): BasicCitizenshipType {
-		const instance = <BasicCitizenshipType>{};
-		instance._sequence = ['citizenshipType', 'attachmentUuids'];
-		return instance;
-	}
+  static make(): BasicCitizenshipType {
+    const instance = <BasicCitizenshipType>{};
+    instance._sequence = ['citizenshipType', 'attachmentUuids'];
+    return instance;
+  }
 }
 
+// tslint:disable-next-line:class-name
 export interface _BasicInfoType extends BaseType {
-	attachmentUuids?: AttachmentUuidsType;
-	birthDate: string;
-	gender?: GenderType;
-	name: NameType;
+  attachmentUuids?: AttachmentUuidsType;
+  birthDate: string;
+  gender?: GenderType;
+  name: NameType;
 }
-export interface BasicInfoType extends _BasicInfoType { constructor: { new(): BasicInfoType }; }
-export let BasicInfoType: { new(): BasicInfoType };
+export interface BasicInfoType extends _BasicInfoType {
+  constructor: { new (): BasicInfoType };
+}
+export let BasicInfoType: { new (): BasicInfoType };
 
 export class BasicInfoTypeFactory {
-	static make(): BasicInfoType {
-		const instance = <BasicInfoType>{};
-		instance._sequence = ['name', 'gender', 'birthDate', 'attachmentUuids'];
-		return instance;
-	}
+  static make(): BasicInfoType {
+    const instance = <BasicInfoType>{};
+    instance._sequence = ['name', 'gender', 'birthDate', 'attachmentUuids'];
+    return instance;
+  }
 }
 
-export type CitizenshipType = ('CanadianCitizen' | 'PermanentResident' | 'WorkPermit' | 'StudyPermit' | 'Diplomat' | 'ReligiousWorker' | 'VisitorPermit');
-interface _CitizenshipType extends Primitive._string { content: CitizenshipType; }
+export type CitizenshipType =
+  | 'CanadianCitizen'
+  | 'PermanentResident'
+  | 'WorkPermit'
+  | 'StudyPermit'
+  | 'Diplomat'
+  | 'ReligiousWorker'
+  | 'VisitorPermit';
+
+// tslint:disable-next-line:class-name
+interface _CitizenshipType extends Primitive._string {
+  content: CitizenshipType;
+}
 
 export type CityType = string;
 type _CityType = Primitive._string;
@@ -93,26 +116,33 @@ type _CityType = Primitive._string;
 export type CountryType = string;
 type _CountryType = Primitive._string;
 
-export type GenderType = ('M' | 'F');
-interface _GenderType extends Primitive._string { content: GenderType; }
+export type GenderType = 'M' | 'F';
+
+// tslint:disable-next-line:class-name
+interface _GenderType extends Primitive._string {
+  content: GenderType;
+}
 
 export type GroupNumberType = number;
 type _GroupNumberType = Primitive._number;
 
+// tslint:disable-next-line:class-name
 interface _NameType extends BaseType {
-	firstName: string;
-	lastName: string;
-	secondName?: string;
+  firstName: string;
+  lastName: string;
+  secondName?: string;
 }
-export interface NameType extends _NameType { constructor: { new(): NameType }; }
-export let NameType: { new(): NameType };
+export interface NameType extends _NameType {
+  constructor: { new (): NameType };
+}
+export let NameType: { new (): NameType };
 
 export class NameTypeFactory {
-	static make(): NameType {
-		const instance = <NameType>{};
-		instance._sequence = ['firstName', 'secondName', 'lastName'];
-		return instance;
-	}
+  static make(): NameType {
+    const instance = <NameType>{};
+    instance._sequence = ['firstName', 'secondName', 'lastName'];
+    return instance;
+  }
 }
 
 export type PHNType = number;
@@ -154,9 +184,13 @@ type _TelephoneType = Primitive._number;
 export type YearType = number;
 type _YearType = Primitive._number;
 
-export type YesOrNoType = ('Y' | 'N');
-interface _YesOrNoType extends Primitive._string { content: YesOrNoType; }
+export type YesOrNoType = 'Y' | 'N';
 
-export interface document extends BaseType {
+// tslint:disable-next-line:class-name
+interface _YesOrNoType extends Primitive._string {
+  content: YesOrNoType;
 }
+
+// tslint:disable-next-line:class-name
+export interface document extends BaseType {}
 export let document: document;

@@ -6,7 +6,7 @@ import { MspAccountMaintenanceDataService } from '../../services/msp-account-dat
 import { ContainerService } from 'moh-common-lib';
 import { PageStateService } from 'moh-common-lib';
 import { ProcessService } from '../../../../services/process.service';
-import { AccountPersonalInfoComponent } from './personal-info.component'; 
+import { AccountPersonalInfoComponent } from './personal-info.component';
 
 describe('AccountPersonalInfoComponent', () => {
   let component: AccountPersonalInfoComponent;
@@ -17,20 +17,20 @@ describe('AccountPersonalInfoComponent', () => {
       accountApp: {
         accountChangeOptions: {},
         applicant: {},
-        isUniquePhnsInPI: {}
+        isUniquePhnsInPI: {},
       },
       saveMspAccountApp: () => ({}),
       getMspAccountApp: () => ({
         accountChangeOptions: { statusUpdate: {} },
-        hasAnyVisitorInApplication: () => false
-      })
+        hasAnyVisitorInApplication: () => false,
+      }),
     });
 
     const containerServiceStub = () => ({});
     const pageStateServiceStub = () => ({});
     const processServiceStub = () => ({
       getStepNumber: () => 3,
-      setStep: (processStepNum, arg) => ({})
+      setStep: (processStepNum, arg) => ({}),
     });
 
     TestBed.configureTestingModule({
@@ -40,15 +40,13 @@ describe('AccountPersonalInfoComponent', () => {
         { provide: Router, useFactory: routerStub },
         {
           provide: MspAccountMaintenanceDataService,
-          useFactory: mspAccountMaintenanceDataServiceStub
+          useFactory: mspAccountMaintenanceDataServiceStub,
         },
         { provide: ContainerService, useFactory: containerServiceStub },
         { provide: PageStateService, useFactory: pageStateServiceStub },
-        { provide: ProcessService, useFactory: processServiceStub }
+        { provide: ProcessService, useFactory: processServiceStub },
       ],
-      imports: [
-        FormsModule
-      ]
+      imports: [FormsModule],
     });
     fixture = TestBed.createComponent(AccountPersonalInfoComponent);
     component = fixture.componentInstance;
@@ -60,6 +58,9 @@ describe('AccountPersonalInfoComponent', () => {
   });
 
   it('should have an invalid status by default', () => {
-    expect(component.hasAnyInvalidStatus()).toBe(false, 'should have hasAnyInvalidStatus false on init');
-});
+    expect(component.hasAnyInvalidStatus()).toBe(
+      false,
+      'should have hasAnyInvalidStatus false on init'
+    );
+  });
 });

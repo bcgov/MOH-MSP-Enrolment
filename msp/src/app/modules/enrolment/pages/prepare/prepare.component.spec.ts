@@ -15,17 +15,25 @@ describe('PrepareComponent', () => {
   let fixture: ComponentFixture<PrepareComponent>;
   beforeEach(async(() => {
     const routerStub = () => ({});
-    const pageStateServiceStub = () => ({ setPageIncomplete: () => {}} );
-    const enrolDataServiceStub = () => ({ application: {}, saveApplication: () => ({}) });
+    const pageStateServiceStub = () => ({ setPageIncomplete: () => {} });
+    const enrolDataServiceStub = () => ({
+      application: {},
+      saveApplication: () => ({}),
+    });
     TestBed.configureTestingModule({
       imports: [ModalModule.forRoot(), HttpClientModule],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [PrepareComponent, MspConsentModalComponent, ConsentModalComponent, NgForm],
+      declarations: [
+        PrepareComponent,
+        MspConsentModalComponent,
+        ConsentModalComponent,
+        NgForm,
+      ],
       providers: [
         { provide: Router, useFactory: routerStub },
         { provide: PageStateService, useFactory: pageStateServiceStub },
-        { provide: EnrolDataService, useFactory: enrolDataServiceStub }
-      ]
+        { provide: EnrolDataService, useFactory: enrolDataServiceStub },
+      ],
     }).compileComponents();
   }));
 
@@ -33,7 +41,7 @@ describe('PrepareComponent', () => {
     fixture = TestBed.createComponent(PrepareComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  })
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();

@@ -1,23 +1,71 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { AccountChangeAccountHolderFactory, AccountChangeAccountHolderType, AccountChangeApplicationTypeFactory, AccountChangeChildType, AccountChangeChildTypeFactory, AccountChangeChildrenFactory, AccountChangeSpouseType, AccountChangeSpouseTypeFactory, AccountChangeSpousesTypeFactory, OperationActionType } from '../modules/msp-core/api-model/accountChangeTypes';
-import { ApplicationTypeFactory, AttachmentType, AttachmentTypeFactory, AttachmentsType, AttachmentsTypeFactory, DocumentFactory, _ApplicationTypeNameSpace, document } from '../modules/msp-core/api-model/applicationTypes';
-import { AssistanceApplicantTypeFactory, AssistanceApplicationTypeFactory, AssistanceSpouseTypeFactory, FinancialsType, FinancialsTypeFactory } from '../modules/msp-core/api-model/assistanceTypes';
-import { AddressType, AddressTypeFactory, AttachmentUuidsType, AttachmentUuidsTypeFactory, CitizenshipType, GenderType, NameType, NameTypeFactory } from '../modules/msp-core/api-model/commonTypes';
-import { LivedInBCTypeFactory, OutsideBCTypeFactory, WillBeAwayTypeFactory } from '../modules/msp-core/api-model/enrolmentTypes';
+import {
+  AccountChangeAccountHolderFactory,
+  AccountChangeAccountHolderType,
+  AccountChangeApplicationTypeFactory,
+  AccountChangeChildType,
+  AccountChangeChildTypeFactory,
+  AccountChangeChildrenFactory,
+  AccountChangeSpouseType,
+  AccountChangeSpouseTypeFactory,
+  AccountChangeSpousesTypeFactory,
+  OperationActionType,
+} from '../modules/msp-core/api-model/accountChangeTypes';
+import {
+  ApplicationTypeFactory,
+  AttachmentType,
+  AttachmentTypeFactory,
+  AttachmentsType,
+  AttachmentsTypeFactory,
+  DocumentFactory,
+  _ApplicationTypeNameSpace,
+  document,
+} from '../modules/msp-core/api-model/applicationTypes';
+import {
+  AssistanceApplicantTypeFactory,
+  AssistanceApplicationTypeFactory,
+  AssistanceSpouseTypeFactory,
+  FinancialsType,
+  FinancialsTypeFactory,
+} from '../modules/msp-core/api-model/assistanceTypes';
+import {
+  AddressType,
+  AddressTypeFactory,
+  AttachmentUuidsType,
+  AttachmentUuidsTypeFactory,
+  CitizenshipType,
+  GenderType,
+  NameType,
+  NameTypeFactory,
+} from '../modules/msp-core/api-model/commonTypes';
+import {
+  LivedInBCTypeFactory,
+  OutsideBCTypeFactory,
+  WillBeAwayTypeFactory,
+} from '../modules/msp-core/api-model/enrolmentTypes';
 import { ResponseType } from '../modules/msp-core/api-model/responseTypes';
 import { MspAccountApp } from '../modules/account/models/account.model';
 import { ApplicationBase } from '../models/application-base.model';
-import { AssistanceApplicationType, FinancialAssistApplication } from '../modules/assistance/models/financial-assist-application.model';
-import { OperationActionType as OperationActionTypeEnum, MspPerson } from '../components/msp/model/msp-person.model';
+import {
+  AssistanceApplicationType,
+  FinancialAssistApplication,
+} from '../modules/assistance/models/financial-assist-application.model';
+import {
+  OperationActionType as OperationActionTypeEnum,
+  MspPerson,
+} from '../components/msp/model/msp-person.model';
 import { Address, CommonImage } from 'moh-common-lib';
 import { MspLogService } from './log.service';
 import { MspMaintenanceService } from './msp-maintenance.service';
 import { Response } from '@angular/http';
-import {ISpaEnvResponse} from '../components/msp/model/spa-env-response.interface';
+import { ISpaEnvResponse } from '../components/msp/model/spa-env-response.interface';
 import { environment } from '../../environments/environment';
-import { StatusInCanada, CanadianStatusReason } from '../modules/msp-core/models/canadian-status.enum';
+import {
+  StatusInCanada,
+  CanadianStatusReason,
+} from '../modules/msp-core/models/canadian-status.enum';
 import { Relationship } from '../models/relationship.enum';
 import { format } from 'date-fns';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
@@ -26,366 +74,427 @@ const jxon = require('jxon/jxon');
 
 @Injectable()
 export class MspApiService {
-    protected _headers: HttpHeaders = new HttpHeaders();
-    constructor(private http: HttpClient, private logService: MspLogService, private maintenanceService: MspMaintenanceService) {
-    }
+  protected _headers: HttpHeaders = new HttpHeaders();
+  constructor(
+    private http: HttpClient,
+    private logService: MspLogService,
+    private maintenanceService: MspMaintenanceService
+  ) {}
 
-    /**
-     * Sends the Application and returns an MspApplication if successful with referenceNumber populated
-     * @param app
-     * @returns {Promise<MspApplication>}
-     */
-    sendApplication(app: ApplicationBase): Promise<ApplicationBase> {
-        return new Promise<ApplicationBase>((resolve, reject) => {
-            try {
-                return this.maintenanceService.checkMaintenance().subscribe(response => {
-                    const spaResponse = <ISpaEnvResponse> response;
-                    if (spaResponse && spaResponse.SPA_ENV_MSP_MAINTENANCE_FLAG && spaResponse.SPA_ENV_MSP_MAINTENANCE_FLAG === 'true'){
-                        return reject(spaResponse);
-                    } else {
-
-                        let documentModel: document;
-                      /*  if (app instanceof MspApplication) {
+  /**
+   * Sends the Application and returns an MspApplication if successful with referenceNumber populated
+   * @param app
+   * @returns {Promise<MspApplication>}
+   */
+  sendApplication(app: ApplicationBase): Promise<ApplicationBase> {
+    return new Promise<ApplicationBase>((resolve, reject) => {
+      try {
+        return this.maintenanceService
+          .checkMaintenance()
+          .subscribe((response) => {
+            const spaResponse = <ISpaEnvResponse>response;
+            if (
+              spaResponse &&
+              spaResponse.SPA_ENV_MSP_MAINTENANCE_FLAG &&
+              spaResponse.SPA_ENV_MSP_MAINTENANCE_FLAG === 'true'
+            ) {
+              return reject(spaResponse);
+            } else {
+              let documentModel: document;
+              /*  if (app instanceof MspApplication) {
                             documentModel = this.convertMspApplication(app);
                             //documentModel = this.prepareEnrolmentApplication(app);
                         } else*/
-                        if (app instanceof FinancialAssistApplication) {
-                            documentModel = this.convertAssistance(app);
-                        } else if (app instanceof MspAccountApp) {
-                            documentModel = this.convertMspAccountApp(app);
-                        } else {
-                            throw new Error('Unknown document type');
-                        }
+              if (app instanceof FinancialAssistApplication) {
+                documentModel = this.convertAssistance(app);
+              } else if (app instanceof MspAccountApp) {
+                documentModel = this.convertMspAccountApp(app);
+              } else {
+                throw new Error('Unknown document type');
+              }
 
-                        // Check for authorization token
-                        if (app.authorizationToken == null ||
-                            app.authorizationToken.length < 1) {
-                            throw new Error('Missing authorization token.');
-                        }
+              // Check for authorization token
+              if (
+                app.authorizationToken == null ||
+                app.authorizationToken.length < 1
+              ) {
+                throw new Error('Missing authorization token.');
+              }
 
-                        // second convert to XML
-                        const convertedAppXml = this.toXmlString(documentModel);
+              // second convert to XML
+              const convertedAppXml = this.toXmlString(documentModel);
 
+              // if no errors, then we'll sendApplication all attachments
+              return this.sendAttachments(
+                app.authorizationToken,
+                documentModel.application.uuid,
+                app.getAllImages()
+              )
+                .then(() => {
+                  // once all attachments are done we can sendApplication in the data
+                  return this.sendDocument(
+                    app.authorizationToken,
+                    documentModel,
+                    convertedAppXml
+                  ).then(
+                    // tslint:disable-next-line:no-shadowed-variable
+                    (response: ResponseType) => {
+                      // Add reference number
+                      app.referenceNumber = response.referenceNumber.toString();
 
-                        // if no errors, then we'll sendApplication all attachments
-                        return this.sendAttachments(app.authorizationToken, documentModel.application.uuid, app.getAllImages()).then(() => {
-
-                            // once all attachments are done we can sendApplication in the data
-                            return this.sendDocument(app.authorizationToken, documentModel, convertedAppXml).then(
-                                (response: ResponseType) => {
-                                    // Add reference number
-                                    app.referenceNumber = response.referenceNumber.toString();
-
-                                    // Let our caller know were done passing back the application
-                                    return resolve(app);
-                                },
-
-                                (error: Response | any) => {
-                                    return reject(error);
-                                }
-                            );
-                        }).catch((error: Response | any) => {
-                                devOnlyConsoleLog('Error sending all attachments: ', error);
-                                this.logService.log(
-                                    {
-                                        text: 'API - Attachment - Send All Rejected ',
-                                        response: error,
-                                    },
-                                    'API - Attachment - Send All Rejected '
-                                );
-                                return reject(error);
-                            });
-                    } // end of else
-
-                }); // end of the return maintenance api
-            } catch (error) {
-                this.logService.log(
-                    {
-                        text: 'API - Application - Send Failure ',
-                        exception: error,
+                      // Let our caller know were done passing back the application
+                      return resolve(app);
                     },
-                    'API - Application - Send Failure '
-                );
-                devOnlyConsoleLog('Error sending application: ', error);
-                return reject(error);
-            }
-        });
-    }
 
-    private sendAttachments(token: string, applicationUUID: string, attachments: CommonImage[]): Promise<void> {
-        return new Promise<void>((resolve, reject) => {
-
-            // Instantly resolve if no attachments
-            if (!attachments || attachments.length < 1) {
-                resolve();
-            }
-
-            // Make a list of promises for each attachment
-            const attachmentPromises = new Array<Promise<ResponseType>>();
-            for (const attachment of attachments) {
-                attachmentPromises.push(this.sendAttachment(token, applicationUUID, attachment));
-            }
-
-            // Execute all promises are waiting for results
-            return Promise.all(attachmentPromises).then(
-                () => {
-                    this.logService.log(
-                        {
-                            text: "API - Send All Attachments - Success",
-                        },
-                        "API - Send All Attachments - Success"
-                    )
-                    return resolve();
-                },
-                (error: Response | any) => {
-                    this.logService.log(
-                        {
-                            text: 'API - Attachments - Send All Error ',
-                            error: error,
-                        },
-                        'API - Attachments - Send All Error '
-                    );
-                    devOnlyConsoleLog('Error sending all attachments: ', error);
-                    return reject(error);
-                }
-            )
-            .catch((error: Response | any) => {
-                this.logService.log(
+                    (error: Response | any) => {
+                      return reject(error);
+                    }
+                  );
+                })
+                .catch((error: Response | any) => {
+                  devOnlyConsoleLog('Error sending all attachments: ', error);
+                  this.logService.log(
                     {
-                        text: 'API - Attachments - Send All Error ',
-                        error: error,
+                      text: 'API - Attachment - Send All Rejected ',
+                      response: error,
                     },
-                    'API - Attachments - Send All Error '
-                );
-                devOnlyConsoleLog('Error sending all attachments: ', error);
-                return reject(error);
-            });
+                    'API - Attachment - Send All Rejected '
+                  );
+                  return reject(error);
+                });
+            } // end of else
+          }); // end of the return maintenance api
+      } catch (error) {
+        this.logService.log(
+          {
+            text: 'API - Application - Send Failure ',
+            exception: error,
+          },
+          'API - Application - Send Failure '
+        );
+        devOnlyConsoleLog('Error sending application: ', error);
+        return reject(error);
+      }
+    });
+  }
+
+  private sendAttachments(
+    token: string,
+    applicationUUID: string,
+    attachments: CommonImage[]
+  ): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
+      // Instantly resolve if no attachments
+      if (!attachments || attachments.length < 1) {
+        resolve();
+      }
+
+      // Make a list of promises for each attachment
+      const attachmentPromises = new Array<Promise<ResponseType>>();
+      for (const attachment of attachments) {
+        attachmentPromises.push(
+          this.sendAttachment(token, applicationUUID, attachment)
+        );
+      }
+
+      // Execute all promises are waiting for results
+      return Promise.all(attachmentPromises)
+        .then(
+          () => {
+            this.logService.log(
+              {
+                text: 'API - Send All Attachments - Success',
+              },
+              'API - Send All Attachments - Success'
+            );
+            return resolve();
+          },
+          (error: Response | any) => {
+            this.logService.log(
+              {
+                text: 'API - Attachments - Send All Error ',
+                error: error,
+              },
+              'API - Attachments - Send All Error '
+            );
+            devOnlyConsoleLog('Error sending all attachments: ', error);
+            return reject(error);
+          }
+        )
+        .catch((error: Response | any) => {
+          this.logService.log(
+            {
+              text: 'API - Attachments - Send All Error ',
+              error: error,
+            },
+            'API - Attachments - Send All Error '
+          );
+          devOnlyConsoleLog('Error sending all attachments: ', error);
+          return reject(error);
         });
-    }
+    });
+  }
 
-    private sendAttachment(token: string, applicationUUID: string, attachment: CommonImage): Promise<ResponseType> {
-        return new Promise<ResponseType>((resolve, reject) => {
-
-            /*
+  private sendAttachment(
+    token: string,
+    applicationUUID: string,
+    attachment: CommonImage
+  ): Promise<ResponseType> {
+    return new Promise<ResponseType>((resolve, reject) => {
+      /*
              Create URL
              /{applicationUUID}/attachment/{attachmentUUID}
              */
-            let url = environment.appConstants['apiBaseUrl']
-                +  environment.appConstants['attachment'] + applicationUUID
-                + '/attachment/' + attachment.uuid;
+      let url =
+        environment.appConstants['apiBaseUrl'] +
+        environment.appConstants['attachment'] +
+        applicationUUID +
+        '/attachment/' +
+        attachment.uuid;
 
-            // programArea
-            url += '?programArea=enrolment';
+      // programArea
+      url += '?programArea=enrolment';
 
-            // attachmentDocumentType - UI does NOT collect this property
-            url += '&attachmentDocumentType=' + MspApiService.AttachmentDocumentType;
+      // attachmentDocumentType - UI does NOT collect this property
+      url += '&attachmentDocumentType=' + MspApiService.AttachmentDocumentType;
 
-            // contentType
-            url += '&contentType=' + attachment.contentType;
+      // contentType
+      url += '&contentType=' + attachment.contentType;
 
-            // imageSize
-            url += '&imageSize=' + attachment.size;
+      // imageSize
+      url += '&imageSize=' + attachment.size;
 
-            // description - UI does NOT collect this property
+      // description - UI does NOT collect this property
 
-            // Setup headers
-            const headers = new HttpHeaders({
-                'Content-Type': attachment.contentType,
-                'Access-Control-Allow-Origin': '*',
-                'X-Authorization': 'Bearer ' + token
-            });
-            const options = {headers: headers, responseType: 'text' as 'text'};
+      // Setup headers
+      const headers = new HttpHeaders({
+        'Content-Type': attachment.contentType,
+        'Access-Control-Allow-Origin': '*',
+        'X-Authorization': 'Bearer ' + token,
+      });
+      const options = { headers: headers, responseType: 'text' as 'text' };
 
-            const binary = atob(attachment.fileContent.split(',')[1]);
-            const array = <any>[];
-            for (let i = 0; i < binary.length; i++) {
-                array.push(binary.charCodeAt(i));
-            }
-            const blob = new Blob([new Uint8Array(array)], {type: attachment.contentType});
+      const binary = atob(attachment.fileContent.split(',')[1]);
+      const array = <any>[];
+      for (let i = 0; i < binary.length; i++) {
+        array.push(binary.charCodeAt(i));
+      }
+      const blob = new Blob([new Uint8Array(array)], {
+        type: attachment.contentType,
+      });
 
-            return this.http
-                .post(url, blob, options)
-                .toPromise()
-                .then(() => {
-                        this.logService.log(
-                            {
-                                text: "API - Send Individual Attachment - Success",
-                            },
-                            "API - Send Individual Attachment - Success"
-                        )
-                        return resolve();
-                    },
-                    (error: Response | any) => {
-                        devOnlyConsoleLog('Error sending individual attachment: ', error);
-                        this.logService.log(
-                            {
-                                text: 'API - Attachment - Send Individual Error ',
-                                response: error,
-                            },
-                            'API - Attachment - Send Individual Error '
-                        );
-                        return reject(error);
-                    }
-                )
-                .catch((error: Response | any) => {
-                    devOnlyConsoleLog('Error sending individual attachment: ', error);
-                    this.logService.log(
-                        {
-                            text: 'API - Attachment - Send Individual Error ',
-                            response: error,
-                        },
-                        'API - Attachment - Send Individual Error '
-                    );
-                    const response = this.convertResponse(error);
-                    reject(response || error);
-                });
+      return this.http
+        .post(url, blob, options)
+        .toPromise()
+        .then(
+          () => {
+            this.logService.log(
+              {
+                text: 'API - Send Individual Attachment - Success',
+              },
+              'API - Send Individual Attachment - Success'
+            );
+            return resolve();
+          },
+          (error: Response | any) => {
+            devOnlyConsoleLog('Error sending individual attachment: ', error);
+            this.logService.log(
+              {
+                text: 'API - Attachment - Send Individual Error ',
+                response: error,
+              },
+              'API - Attachment - Send Individual Error '
+            );
+            return reject(error);
+          }
+        )
+        .catch((error: Response | any) => {
+          devOnlyConsoleLog('Error sending individual attachment: ', error);
+          this.logService.log(
+            {
+              text: 'API - Attachment - Send Individual Error ',
+              response: error,
+            },
+            'API - Attachment - Send Individual Error '
+          );
+          const response = this.convertResponse(error);
+          reject(response || error);
         });
-    }
+    });
+  }
 
-
-    /**
-     * Sends the application XML, last step in overall transaction
-     * @param document
-     * @returns {Promise<ResponseType>}
-     */
-    private sendDocument(token: string, document: document, documentXmlString: string): Promise<ResponseType> {
-        return new Promise<ResponseType>((resolve, reject) => {
-            /*
+  /**
+   * Sends the application XML, last step in overall transaction
+   * @param document
+   * @returns {Promise<ResponseType>}
+   */
+  // tslint:disable-next-line:no-shadowed-variable
+  private sendDocument(
+    token: string,
+    document: document,
+    documentXmlString: string
+  ): Promise<ResponseType> {
+    return new Promise<ResponseType>((resolve, reject) => {
+      /*
              Create URL
              /{applicationUUID}
              */
-            const url = environment.appConstants['apiBaseUrl']
-                + '/MSPDESubmitApplication/' + document.application.uuid
-                + '?programArea=enrolment';
+      const url =
+        environment.appConstants['apiBaseUrl'] +
+        '/MSPDESubmitApplication/' +
+        document.application.uuid +
+        '?programArea=enrolment';
 
-            // Setup headers
-            const headers = new HttpHeaders({
-                'Content-Type': 'application/xml',
-                'Response-Type': 'application/xml',
-                'X-Authorization': 'Bearer ' + token,
-            });
-            const options = {headers: headers, responseType: 'text' as 'text'};
+      // Setup headers
+      const headers = new HttpHeaders({
+        'Content-Type': 'application/xml',
+        'Response-Type': 'application/xml',
+        'X-Authorization': 'Bearer ' + token,
+      });
+      const options = { headers: headers, responseType: 'text' as 'text' };
 
-            // Convert doc to XML
-            // let documentXmlString = this.toXmlString(document);
+      // Convert doc to XML
+      // let documentXmlString = this.toXmlString(document);
 
-            return this.http.post(url, documentXmlString, options)
-                .toPromise()
-                .then((response: string) => {
-                    this.logService.log(
-                        {
-                            text: "API - Send Document XML - Success",
-                            response: response,
-                        },
-                        "API - Send Document XML - Success"
-                    )
-                    return resolve(this.convertResponse(response));
-                })
-                .catch((error) => {
-                    this.logService.log(
-                        {
-                            text: 'API - Application - XML Send Error ',
-                            response: error,
-                        },
-                        'API - Application - XML Send Error '
-                    );
-                    devOnlyConsoleLog('Error sending XML: ', error);
-                    return reject(error);
-                });
+      return this.http
+        .post(url, documentXmlString, options)
+        .toPromise()
+        .then((response: string) => {
+          this.logService.log(
+            {
+              text: 'API - Send Document XML - Success',
+              response: response,
+            },
+            'API - Send Document XML - Success'
+          );
+          return resolve(this.convertResponse(response));
+        })
+        .catch((error) => {
+          this.logService.log(
+            {
+              text: 'API - Application - XML Send Error ',
+              response: error,
+            },
+            'API - Application - XML Send Error '
+          );
+          devOnlyConsoleLog('Error sending XML: ', error);
+          return reject(error);
         });
-    }
+    });
+  }
 
-    convertResponse(responseBody: string): ResponseType {
-        return this.stringToJs<ResponseType>(responseBody)['ns2:response'];
-    }
+  convertResponse(responseBody: string): ResponseType {
+    return this.stringToJs<ResponseType>(responseBody)['ns2:response'];
+  }
 
-    /**
-     * Start of MSP Application converted converter operation
-     * @param from
-     * @returns {applicationTypes.ApplicationType}
+  /**
+   * Start of MSP Application converted converter operation
+   * @param from
+   * @returns {applicationTypes.ApplicationType}
+   */
+  convertMspAccountApp(from: MspAccountApp): document {
+    const to = DocumentFactory.make();
+    to.application = ApplicationTypeFactory.make();
+    // UUID
+    to.application.uuid = from.uuid;
+
+    to.application.accountChangeApplication =
+      AccountChangeApplicationTypeFactory.make();
+
+    to.application.accountChangeApplication.accountHolder =
+      this.convertAccountHolderFromAccountChange(from);
+
+    //spouses
+    to.application.accountChangeApplication.spouses =
+      AccountChangeSpousesTypeFactory.make();
+
+    /** the account change option check is added so that only data belonging to current selection is sent..
+     *  this avoids uncleared data being sent
+     *  so only if PI or Update status is selected ; send updated spouse and children
+     *  send add/remove only if depdent option is selected
+     *
+     *  The same login shhould in be in review screen as well
      */
-    convertMspAccountApp(from: MspAccountApp): document {
-        const to = DocumentFactory.make();
-        to.application = ApplicationTypeFactory.make();
-        // UUID
-        to.application.uuid = from.uuid;
-
-        to.application.accountChangeApplication = AccountChangeApplicationTypeFactory.make();
-
-
-        to.application.accountChangeApplication.accountHolder = this.convertAccountHolderFromAccountChange(from);
-
-        //spouses
-        to.application.accountChangeApplication.spouses = AccountChangeSpousesTypeFactory.make();
-
-        /** the account change option check is added so that only data belonging to current selection is sent..
-         *  this avoids uncleared data being sent
-         *  so only if PI or Update status is selected ; send updated spouse and children
-         *  send add/remove only if depdent option is selected
-         *
-         *  The same login shhould in be in review screen as well
-         */
-        if ((from.accountChangeOptions.statusUpdate || from.accountChangeOptions.personInfoUpdate) && from.updatedSpouse) {
-            to.application.accountChangeApplication.spouses.updatedSpouse = this.convertSpouseFromAccountChange(from.updatedSpouse);
-
-        }
-        if (from.accountChangeOptions.dependentChange && from.removedSpouse) {
-            to.application.accountChangeApplication.spouses.removedSpouse = this.convertSpouseFromAccountChange(from.removedSpouse);
-        }
-        if (from.accountChangeOptions.dependentChange && from.addedSpouse) {
-            to.application.accountChangeApplication.spouses.addedSpouse = this.convertSpouseFromAccountChange(from.addedSpouse);
-        }
-
-        // Convert children and dependants
-        if (from.getAllChildren() && from.getAllChildren().length > 0) {
-            to.application.accountChangeApplication.children = AccountChangeChildrenFactory.make();
-            to.application.accountChangeApplication.children.child = new Array<AccountChangeChildType>();
-            for (const child of from.getAllChildren()) {
-                if (child && child.firstName && child.lastName && child.gender) {
-                    to.application.accountChangeApplication.children.child.push(this.convertChildFromAccountChange(child));
-                }
-            }
-
-        }
-
-        if (from.getAllImages() && from.getAllImages().length > 0){
-            to.application.attachments = this.convertAttachments(from.getAllImages());
-        }
-
-        return to;
+    if (
+      (from.accountChangeOptions.statusUpdate ||
+        from.accountChangeOptions.personInfoUpdate) &&
+      from.updatedSpouse
+    ) {
+      to.application.accountChangeApplication.spouses.updatedSpouse =
+        this.convertSpouseFromAccountChange(from.updatedSpouse);
+    }
+    if (from.accountChangeOptions.dependentChange && from.removedSpouse) {
+      to.application.accountChangeApplication.spouses.removedSpouse =
+        this.convertSpouseFromAccountChange(from.removedSpouse);
+    }
+    if (from.accountChangeOptions.dependentChange && from.addedSpouse) {
+      to.application.accountChangeApplication.spouses.addedSpouse =
+        this.convertSpouseFromAccountChange(from.addedSpouse);
     }
 
-    convertAssistance(from: FinancialAssistApplication): document {
-        // Instantiate new object from interface
-        const to = DocumentFactory.make();
-        to.application = ApplicationTypeFactory.make();
+    // Convert children and dependants
+    if (from.getAllChildren() && from.getAllChildren().length > 0) {
+      to.application.accountChangeApplication.children =
+        AccountChangeChildrenFactory.make();
+      to.application.accountChangeApplication.children.child =
+        new Array<AccountChangeChildType>();
+      for (const child of from.getAllChildren()) {
+        if (child && child.firstName && child.lastName && child.gender) {
+          to.application.accountChangeApplication.children.child.push(
+            this.convertChildFromAccountChange(child)
+          );
+        }
+      }
+    }
 
-        // UUID
-        to.application.uuid = from.uuid;
+    if (from.getAllImages() && from.getAllImages().length > 0) {
+      to.application.attachments = this.convertAttachments(from.getAllImages());
+    }
 
-        // Init assistance
-        to.application.assistanceApplication = AssistanceApplicationTypeFactory.make();
+    return to;
+  }
 
-        /*
+  convertAssistance(from: FinancialAssistApplication): document {
+    // Instantiate new object from interface
+    const to = DocumentFactory.make();
+    to.application = ApplicationTypeFactory.make();
+
+    // UUID
+    to.application.uuid = from.uuid;
+
+    // Init assistance
+    to.application.assistanceApplication =
+      AssistanceApplicationTypeFactory.make();
+
+    /*
          attachmentUuids: AttachmentUuidsType;
          birthDate: string;
          gender: GenderType;
          name: NameType;
          */
-        to.application.assistanceApplication.applicant = AssistanceApplicantTypeFactory.make();
-        to.application.assistanceApplication.applicant.name = this.convertName(from.applicant);
+    to.application.assistanceApplication.applicant =
+      AssistanceApplicantTypeFactory.make();
+    to.application.assistanceApplication.applicant.name = this.convertName(
+      from.applicant
+    );
 
-        if (from.applicant.hasDob) {
-            to.application.assistanceApplication.applicant.birthDate = format(from.applicant.dob, this.ISO8601DateFormat);
-        }
-        if (from.applicant.gender != null) {
-            to.application.assistanceApplication.applicant.gender = <GenderType> from.applicant.gender.toString();
-        }
-        if (from.powerOfAttorneyDocs && from.powerOfAttorneyDocs.length > 0) {
-            to.application.assistanceApplication.applicant.attachmentUuids = this.convertAttachmentUuids(from.powerOfAttorneyDocs);
-        }
+    if (from.applicant.hasDob) {
+      to.application.assistanceApplication.applicant.birthDate = format(
+        from.applicant.dob,
+        this.ISO8601DateFormat
+      );
+    }
+    if (from.applicant.gender != null) {
+      to.application.assistanceApplication.applicant.gender = <GenderType>(
+        from.applicant.gender.toString()
+      );
+    }
+    if (from.powerOfAttorneyDocs && from.powerOfAttorneyDocs.length > 0) {
+      to.application.assistanceApplication.applicant.attachmentUuids =
+        this.convertAttachmentUuids(from.powerOfAttorneyDocs);
+    }
 
-        /*
+    /*
          financials: FinancialsType;
          mailingAddress?: ct.AddressType;
          phn: number;
@@ -394,49 +503,58 @@ export class MspApiService {
          SIN: number;
          telephone: number;
          */
-        to.application.assistanceApplication.applicant.financials = this.convertFinancial(from);
-        to.application.assistanceApplication.applicant.mailingAddress = this.convertAddress(from.mailingAddress);
+    to.application.assistanceApplication.applicant.financials =
+      this.convertFinancial(from);
+    to.application.assistanceApplication.applicant.mailingAddress =
+      this.convertAddress(from.mailingAddress);
 
-        if (from.applicant.previous_phn) {
-            to.application.assistanceApplication.applicant.phn = Number(from.applicant.previous_phn.replace(new RegExp('[^0-9]', 'g'), ''));
-        }
-        if (from.hasPowerOfAttorney) {
-            to.application.assistanceApplication.applicant.powerOfAttorney = 'Y';
-        } else {
-            to.application.assistanceApplication.applicant.powerOfAttorney = 'N';
-        }
+    if (from.applicant.previous_phn) {
+      to.application.assistanceApplication.applicant.phn = Number(
+        from.applicant.previous_phn.replace(new RegExp('[^0-9]', 'g'), '')
+      );
+    }
+    if (from.hasPowerOfAttorney) {
+      to.application.assistanceApplication.applicant.powerOfAttorney = 'Y';
+    } else {
+      to.application.assistanceApplication.applicant.powerOfAttorney = 'N';
+    }
 
-        if (from.applicant.sin) {
-            to.application.assistanceApplication.applicant.SIN = Number(from.applicant.sin.replace(new RegExp('[^0-9]', 'g'), ''));
-        }
-        if (from.phoneNumber) {
-            to.application.assistanceApplication.applicant.telephone = Number(from.phoneNumber.replace(new RegExp('[^0-9]', 'g'), ''));
-        }
-        /*
+    if (from.applicant.sin) {
+      to.application.assistanceApplication.applicant.SIN = Number(
+        from.applicant.sin.replace(new RegExp('[^0-9]', 'g'), '')
+      );
+    }
+    if (from.phoneNumber) {
+      to.application.assistanceApplication.applicant.telephone = Number(
+        from.phoneNumber.replace(new RegExp('[^0-9]', 'g'), '')
+      );
+    }
+    /*
          authorizedByApplicant: ct.YesOrNoType;
          authorizedByApplicantDate: Date;
          authorizedBySpouse: ct.YesOrNoType;
          authorizedBySpouseDate: Date;
          spouse?: AssistanceSpouseType;
          */
-        to.application.assistanceApplication.authorizedByApplicantDate =
-            moment(from.authorizedByApplicantDate).format(this.ISO8601DateFormat);
-        if (from.authorizedByApplicant) {
-            to.application.assistanceApplication.authorizedByApplicant = 'Y';
+    to.application.assistanceApplication.authorizedByApplicantDate = moment(
+      from.authorizedByApplicantDate
+    ).format(this.ISO8601DateFormat);
+    if (from.authorizedByApplicant) {
+      to.application.assistanceApplication.authorizedByApplicant = 'Y';
+    } else {
+      to.application.assistanceApplication.authorizedByApplicant = 'N';
+    }
+    if (from.authorizedBySpouse) {
+      to.application.assistanceApplication.authorizedBySpouse = 'Y';
+    } else {
+      to.application.assistanceApplication.authorizedBySpouse = 'N';
+    }
 
-        } else {
-            to.application.assistanceApplication.authorizedByApplicant = 'N';
-        }
-        if (from.authorizedBySpouse) {
-            to.application.assistanceApplication.authorizedBySpouse = 'Y';
-        } else {
-            to.application.assistanceApplication.authorizedBySpouse = 'N';
-        }
+    if (from.hasSpouseOrCommonLaw) {
+      to.application.assistanceApplication.spouse =
+        AssistanceSpouseTypeFactory.make();
 
-        if (from.hasSpouseOrCommonLaw) {
-            to.application.assistanceApplication.spouse = AssistanceSpouseTypeFactory.make();
-
-            /*
+      /*
              name: ct.NameType;
              birthDate?: string;
              phn?: number;
@@ -444,42 +562,53 @@ export class MspApiService {
              spouseDeduction?: number;
              spouseSixtyFiveDeduction?: number;
              */
-            to.application.assistanceApplication.spouse.name = this.convertName(from.spouse);
-            if (from.spouse.hasDob) {
-                to.application.assistanceApplication.spouse.birthDate = format(from.spouse.dob, this.ISO8601DateFormat);
-            }
-            if (from.spouse.previous_phn) {
-                to.application.assistanceApplication.spouse.phn = Number(from.spouse.previous_phn.replace(new RegExp('[^0-9]', 'g'), ''));
-            }
-            if (from.spouse.sin) {
-                to.application.assistanceApplication.spouse.SIN = Number(from.spouse.sin.replace(new RegExp('[^0-9]', 'g'), ''));
-            }
+      to.application.assistanceApplication.spouse.name = this.convertName(
+        from.spouse
+      );
+      if (from.spouse.hasDob) {
+        to.application.assistanceApplication.spouse.birthDate = format(
+          from.spouse.dob,
+          this.ISO8601DateFormat
+        );
+      }
+      if (from.spouse.previous_phn) {
+        to.application.assistanceApplication.spouse.phn = Number(
+          from.spouse.previous_phn.replace(new RegExp('[^0-9]', 'g'), '')
+        );
+      }
+      if (from.spouse.sin) {
+        to.application.assistanceApplication.spouse.SIN = Number(
+          from.spouse.sin.replace(new RegExp('[^0-9]', 'g'), '')
+        );
+      }
 
-            /*
+      /*
              spouseDeduction?: number;
              spouseSixtyFiveDeduction?: number;
              */
-            if (from.eligibility.spouseDeduction != null) {
-                to.application.assistanceApplication.spouse.spouseDeduction = from.eligibility.spouseDeduction;
-            }
-            if (from.eligibility.spouseSixtyFiveDeduction != null) {
-                to.application.assistanceApplication.spouse.spouseSixtyFiveDeduction = from.eligibility.spouseSixtyFiveDeduction;
-            }
-        }
-
-        // Convert attachments
-        const attachments = this.convertAttachments(from.getAllImages());
-        if (attachments != null) {
-            to.application.attachments = attachments;
-        }
-
-        return to;
+      if (from.eligibility.spouseDeduction != null) {
+        to.application.assistanceApplication.spouse.spouseDeduction =
+          from.eligibility.spouseDeduction;
+      }
+      if (from.eligibility.spouseSixtyFiveDeduction != null) {
+        to.application.assistanceApplication.spouse.spouseSixtyFiveDeduction =
+          from.eligibility.spouseSixtyFiveDeduction;
+      }
     }
 
-    private convertFinancial(from: FinancialAssistApplication): FinancialsType {
-        const to = FinancialsTypeFactory.make();
+    // Convert attachments
+    const attachments = this.convertAttachments(from.getAllImages());
+    if (attachments != null) {
+      to.application.attachments = attachments;
+    }
 
-        /*
+    return to;
+  }
+
+  private convertFinancial(from: FinancialAssistApplication): FinancialsType {
+    const to = FinancialsTypeFactory.make();
+
+    /*
          adjustedNetIncome?: number;          // adjustedNetIncome
          assistanceYear: AssistanceYearType;  // "CurrentPA" TODO: ticket in JIRA to address this
          childCareExpense?: number;           // claimedChildCareExpense_line214
@@ -504,528 +633,629 @@ export class MspApiService {
                                              // deductionDifference?
          */
 
-        switch (from.getAssistanceApplicationType()) {
-            case AssistanceApplicationType.CurrentYear:
-                to.assistanceYear = 'CurrentPA';
-                break;
-            case AssistanceApplicationType.PreviousTwoYears:
-                to.assistanceYear = 'PreviousTwo';
-                break;
-            case AssistanceApplicationType.MultiYear:
-                to.assistanceYear = 'MultiYear';
-                break;
-        }
-        to.taxYear = from.getTaxYear();
-        to.numberOfTaxYears = from.numberOfTaxYears();
-        if (from.eligibility.adjustedNetIncome != null) to.adjustedNetIncome = from.eligibility.adjustedNetIncome;
-        if (from.eligibility.childDeduction != null) to.childDeduction = from.eligibility.childDeduction;
-        if (from.eligibility.deductions != null) to.deductions = from.eligibility.deductions;
-        if (from.disabilityDeduction > 0) to.disabilityDeduction = from.disabilityDeduction;
-        if (from.eligibility.sixtyFiveDeduction != null) to.sixtyFiveDeduction = from.eligibility.sixtyFiveDeduction;
-        if (from.eligibility.totalDeductions != null) to.totalDeductions = from.eligibility.totalDeductions;
-        if (from.eligibility.totalNetIncome != null) to.totalNetIncome = from.eligibility.totalNetIncome;
-        if (from.claimedChildCareExpense_line214 != null) to.childCareExpense = from.claimedChildCareExpense_line214;
-        if (from.netIncomelastYear != null) to.netIncome = from.netIncomelastYear;
-        if (from.childrenCount != null && from.childrenCount > 0) to.numChildren = from.childrenCount;
-        if (from.numDisabled > 0) to.numDisabled = from.numDisabled;
-        if (from.spouseIncomeLine236 != null) to.spouseNetIncome = from.spouseIncomeLine236;
-        if (from.netIncomelastYear != null) to.netIncome = from.netIncomelastYear;
-        if (from.reportedUCCBenefit_line117 != null) to.uccb = from.reportedUCCBenefit_line117;
-        if (from.spouseDSPAmount_line125 != null) to.disabilitySavingsPlan = from.spouseDSPAmount_line125;
+    switch (from.getAssistanceApplicationType()) {
+      case AssistanceApplicationType.CurrentYear:
+        to.assistanceYear = 'CurrentPA';
+        break;
+      case AssistanceApplicationType.PreviousTwoYears:
+        to.assistanceYear = 'PreviousTwo';
+        break;
+      case AssistanceApplicationType.MultiYear:
+        to.assistanceYear = 'MultiYear';
+        break;
+    }
+    to.taxYear = from.getTaxYear();
+    to.numberOfTaxYears = from.numberOfTaxYears();
+    if (from.eligibility.adjustedNetIncome != null)
+      to.adjustedNetIncome = from.eligibility.adjustedNetIncome;
+    if (from.eligibility.childDeduction != null)
+      to.childDeduction = from.eligibility.childDeduction;
+    if (from.eligibility.deductions != null)
+      to.deductions = from.eligibility.deductions;
+    if (from.disabilityDeduction > 0)
+      to.disabilityDeduction = from.disabilityDeduction;
+    if (from.eligibility.sixtyFiveDeduction != null)
+      to.sixtyFiveDeduction = from.eligibility.sixtyFiveDeduction;
+    if (from.eligibility.totalDeductions != null)
+      to.totalDeductions = from.eligibility.totalDeductions;
+    if (from.eligibility.totalNetIncome != null)
+      to.totalNetIncome = from.eligibility.totalNetIncome;
+    if (from.claimedChildCareExpense_line214 != null)
+      to.childCareExpense = from.claimedChildCareExpense_line214;
+    if (from.netIncomelastYear != null) to.netIncome = from.netIncomelastYear;
+    if (from.childrenCount != null && from.childrenCount > 0)
+      to.numChildren = from.childrenCount;
+    if (from.numDisabled > 0) to.numDisabled = from.numDisabled;
+    if (from.spouseIncomeLine236 != null)
+      to.spouseNetIncome = from.spouseIncomeLine236;
+    if (from.netIncomelastYear != null) to.netIncome = from.netIncomelastYear;
+    if (from.reportedUCCBenefit_line117 != null)
+      to.uccb = from.reportedUCCBenefit_line117;
+    if (from.spouseDSPAmount_line125 != null)
+      to.disabilitySavingsPlan = from.spouseDSPAmount_line125;
 
+    return to;
+  }
 
-        return to;
+  /**
+   * User does NOT specify document type therefore we always say its a supporting document
+   * @type {string}
+   */
+  static readonly AttachmentDocumentType = 'SupportDocument';
+
+  /**
+   * Creates the array of attachments from applicant, spouse and all children
+   * used with both assistance and DEAM
+   * @param {CommonImage[]} from
+   * @returns {AttachmentsType}
+   */
+  private convertAttachments(from: CommonImage[]): AttachmentsType {
+    const to = AttachmentsTypeFactory.make();
+    to.attachment = new Array<AttachmentType>();
+
+    // assemble all attachments
+    const attachments: CommonImage[] = from;
+
+    // If no attachments just return
+    if (!attachments || attachments.length < 1) {
+      return null;
     }
 
-    /**
-     * User does NOT specify document type therefore we always say its a supporting document
-     * @type {string}
-     */
-    static readonly AttachmentDocumentType = 'SupportDocument';
+    // Convert each one
+    for (const attachment of attachments) {
+      if (attachment && attachment.uuid) {
+        // Init new attachment with defaults
+        const toAttachment = AttachmentTypeFactory.make();
+        toAttachment.attachmentDocumentType =
+          MspApiService.AttachmentDocumentType;
 
-    /**
-     * Creates the array of attachments from applicant, spouse and all children
-     * used with both assistance and DEAM
-     * @param {CommonImage[]} from
-     * @returns {AttachmentsType}
-     */
-    private convertAttachments(from: CommonImage[]): AttachmentsType {
-
-        const to = AttachmentsTypeFactory.make();
-        to.attachment = new Array<AttachmentType>();
-
-        // assemble all attachments
-        const attachments: CommonImage[] = from;
-
-        // If no attachments just return
-        if (!attachments || attachments.length < 1) {
-            return null;
+        // Content type
+        switch (attachment.contentType) {
+          case 'image/jpeg':
+            toAttachment.contentType = 'image/jpeg';
+            break;
+          case 'application/pdf':
+            toAttachment.contentType = 'application/pdf';
+            break;
+          default:
+          //TODO: throw error on bad content type
         }
 
-        // Convert each one
-        for (const attachment of attachments) {
-            if (attachment && attachment.uuid) {
-                // Init new attachment with defaults
-                const toAttachment = AttachmentTypeFactory.make();
-                toAttachment.attachmentDocumentType = MspApiService.AttachmentDocumentType;
+        // uuid
+        toAttachment.attachmentUuid = attachment.uuid;
+        toAttachment.attachmentOrder = String(attachment.attachmentOrder);
+        // user does NOT provide description so it's left blank for now, may be used in future
 
-                // Content type
-                switch (attachment.contentType) {
-                    case 'image/jpeg':
-                        toAttachment.contentType = 'image/jpeg';
-                        break;
-                    case 'application/pdf':
-                        toAttachment.contentType = 'application/pdf';
-                        break;
-                    default:
-                    //TODO: throw error on bad content type
-                }
-
-                // uuid
-                toAttachment.attachmentUuid = attachment.uuid;
-                toAttachment.attachmentOrder = String(attachment.attachmentOrder);
-                // user does NOT provide description so it's left blank for now, may be used in future
-
-                // Add to array
-                to.attachment.push(toAttachment);
-            }
-        }
-
-        return to;
+        // Add to array
+        to.attachment.push(toAttachment);
+      }
     }
 
-    private convertChildFromAccountChange(from: MspPerson): AccountChangeChildType {
-        const to = AccountChangeChildTypeFactory.make();
+    return to;
+  }
 
-        to.operationAction = <OperationActionType> OperationActionTypeEnum[from.operationActionType];
+  private convertChildFromAccountChange(
+    from: MspPerson
+  ): AccountChangeChildType {
+    const to = AccountChangeChildTypeFactory.make();
 
-        to.name = this.convertName(from);
-        if (from.hasDob) {
-            to.birthDate = format(from.dob, this.ISO8601DateFormat);
-        }
-        if (from.gender != null) {
-            to.gender = <GenderType> from.gender.toString();
-        }
+    to.operationAction = <OperationActionType>(
+      OperationActionTypeEnum[from.operationActionType]
+    );
 
-        if (from.previous_phn) {
-            to.phn = from.previous_phn.replace(new RegExp('[^0-9]', 'g'), '');
-        }
-
-        //TODO //FIXME once data model is implemented , verify this..Also might need another convertResidency for DEAM
-        if (from.status != null) {
-            to.citizenship = this.findCitizenShip(from.status, from.currentActivity);
-
-        }
-        if (from.isExistingBeneficiary != null) {
-            to.isExistingBeneficiary = from.isExistingBeneficiary === true ? 'Y' : 'N';
-        }
-        // only for new beneficiaries ; these fields are used
-        if (from.isExistingBeneficiary === false) {
-            this.populateNewBeneficiaryDetailsForChild(from, to);
-        }
-        // Child 19-24
-        if (from.relationship === Relationship.Child19To24) {
-            if (from.schoolName) {
-                to.schoolName = from.schoolName;
-            }
-
-
-            if (from.hasStudiesDeparture) {
-                to.departDateSchoolOutside = format(from.studiesDepartureDate, this.ISO8601DateFormat);
-            }
-
-            if (from.hasStudiesFinished) {
-                to.dateStudiesFinish = format(from.studiesFinishedDate, this.ISO8601DateFormat);
-            }
-
-            if (from.hasStudiesBegin) {
-                to.dateStudiesBegin = format(from.studiesBeginDate, this.ISO8601DateFormat);
-            }
-
-            //  Departure date if school is outszide BC //TODO
-            /*   to.departDateSchoolOutside = from.departDateSchoolOutside.format(this.ISO8601DateFormat);*/
-
-            // Assemble address string
-            to.schoolAddress = this.convertAddress(from.schoolAddress);
-
-        }
-
-
-        if (from.reasonForCancellation && from.reasonForCancellation !== 'pleaseSelect') {
-            to.cancellationReason = from.reasonForCancellation;
-            if (from.cancellationDate) {
-                to.cancellationDate = format( from.cancellationDate, this.ISO8601DateFormat);
-            }
-        }
-
-        if (from.knownMailingAddress === true ) {
-            to.mailingAddress = this.convertAddress(from.mailingAddress);
-        } else if (from.knownMailingAddress === false) {
-            to.mailingAddress = this.unknownAddress();
-        }
-
-
-
-        return to;
+    to.name = this.convertName(from);
+    if (from.hasDob) {
+      to.birthDate = format(from.dob, this.ISO8601DateFormat);
+    }
+    if (from.gender != null) {
+      to.gender = <GenderType>from.gender.toString();
     }
 
-    /*
+    if (from.previous_phn) {
+      to.phn = from.previous_phn.replace(new RegExp('[^0-9]', 'g'), '');
+    }
+
+    //TODO //FIXME once data model is implemented , verify this..Also might need another convertResidency for DEAM
+    if (from.status != null) {
+      to.citizenship = this.findCitizenShip(from.status, from.currentActivity);
+    }
+    if (from.isExistingBeneficiary != null) {
+      to.isExistingBeneficiary =
+        from.isExistingBeneficiary === true ? 'Y' : 'N';
+    }
+    // only for new beneficiaries ; these fields are used
+    if (from.isExistingBeneficiary === false) {
+      this.populateNewBeneficiaryDetailsForChild(from, to);
+    }
+    // Child 19-24
+    if (from.relationship === Relationship.Child19To24) {
+      if (from.schoolName) {
+        to.schoolName = from.schoolName;
+      }
+
+      if (from.hasStudiesDeparture) {
+        to.departDateSchoolOutside = format(
+          from.studiesDepartureDate,
+          this.ISO8601DateFormat
+        );
+      }
+
+      if (from.hasStudiesFinished) {
+        to.dateStudiesFinish = format(
+          from.studiesFinishedDate,
+          this.ISO8601DateFormat
+        );
+      }
+
+      if (from.hasStudiesBegin) {
+        to.dateStudiesBegin = format(
+          from.studiesBeginDate,
+          this.ISO8601DateFormat
+        );
+      }
+
+      //  Departure date if school is outszide BC //TODO
+      /*   to.departDateSchoolOutside = from.departDateSchoolOutside.format(this.ISO8601DateFormat);*/
+
+      // Assemble address string
+      to.schoolAddress = this.convertAddress(from.schoolAddress);
+    }
+
+    if (
+      from.reasonForCancellation &&
+      from.reasonForCancellation !== 'pleaseSelect'
+    ) {
+      to.cancellationReason = from.reasonForCancellation;
+      if (from.cancellationDate) {
+        to.cancellationDate = format(
+          from.cancellationDate,
+          this.ISO8601DateFormat
+        );
+      }
+    }
+
+    if (from.knownMailingAddress === true) {
+      to.mailingAddress = this.convertAddress(from.mailingAddress);
+    } else if (from.knownMailingAddress === false) {
+      to.mailingAddress = this.unknownAddress();
+    }
+
+    return to;
+  }
+
+  /*
     common method for spouse and child
      */
-    private populateNewBeneficiaryDetailsForChild(from: MspPerson, to: AccountChangeChildType) {
-        //Has person lived in B.C. since birth?
-        if (from.livedInBCSinceBirth != null) {
-            to.livedInBC = LivedInBCTypeFactory.make();
-            if (from.livedInBCSinceBirth === true) {
-                to.livedInBC.hasLivedInBC = 'Y';
-            } else {
-                to.livedInBC.hasLivedInBC = 'N';
-            }
+  private populateNewBeneficiaryDetailsForChild(
+    from: MspPerson,
+    to: AccountChangeChildType
+  ) {
+    //Has person lived in B.C. since birth?
+    if (from.livedInBCSinceBirth != null) {
+      to.livedInBC = LivedInBCTypeFactory.make();
+      if (from.livedInBCSinceBirth === true) {
+        to.livedInBC.hasLivedInBC = 'Y';
+      } else {
+        to.livedInBC.hasLivedInBC = 'N';
+      }
 
-            if (from.livedInBCSinceBirth === false) {
-
-                to.livedInBC.isPermanentMove = from.madePermanentMoveToBC === true ? 'Y' : 'N';
-                if (from.healthNumberFromOtherProvince) {
-                    to.livedInBC.prevHealthNumber = from.healthNumberFromOtherProvince; // out of province health numbers
-                }
-
-                if (from.movedFromProvinceOrCountry) {
-                    to.livedInBC.prevProvinceOrCountry = from.movedFromProvinceOrCountry;
-                }
-
-                // Arrival dates
-                if (from.hasArrivalToBC) {
-                    to.livedInBC.recentBCMoveDate = format(from.arrivalToBCDate, this.ISO8601DateFormat);
-                }
-            }
-
-        }
-        //Is this child newly adopted?
-        if (from.newlyAdopted) {
-            to.adoptionDate = format( from.adoptedDate, this.ISO8601DateFormat);
+      if (from.livedInBCSinceBirth === false) {
+        to.livedInBC.isPermanentMove =
+          from.madePermanentMoveToBC === true ? 'Y' : 'N';
+        if (from.healthNumberFromOtherProvince) {
+          to.livedInBC.prevHealthNumber = from.healthNumberFromOtherProvince; // out of province health numbers
         }
 
-
-        // Has this family member been outside of BC for more than a total of 30 days during the past 12 months?
-        if (from.declarationForOutsideOver30Days != null) {
-            to.outsideBC = OutsideBCTypeFactory.make();
-            to.outsideBC.beenOutsideBCMoreThan = from.declarationForOutsideOver30Days === true ? 'Y' : 'N';
-            if (from.declarationForOutsideOver30Days) {
-                if (from.outOfBCRecord.hasDeparture) {
-                    to.outsideBC.departureDate = format(from.outOfBCRecord.departureDate, this.ISO8601DateFormat);
-                }
-                if (from.outOfBCRecord.hasReturn) {
-                    to.outsideBC.returnDate = format(from.outOfBCRecord.returnDate, this.ISO8601DateFormat);
-                }
-                to.outsideBC.familyMemberReason = from.outOfBCRecord.reason;
-                to.outsideBC.destination = from.outOfBCRecord.location;
-            }
+        if (from.movedFromProvinceOrCountry) {
+          to.livedInBC.prevProvinceOrCountry = from.movedFromProvinceOrCountry;
         }
 
-        //  Will this family member be outside of BC for more than a total of 30 days during the next 6 months?
-
-        if (from.plannedAbsence != null) {
-            to.outsideBCinFuture = OutsideBCTypeFactory.make();
-            to.outsideBCinFuture.beenOutsideBCMoreThan = from.plannedAbsence === true ? 'Y' : 'N';
-            if (from.plannedAbsence) {
-                if (from.planOnBeingOutOfBCRecord.hasDeparture) {
-                    to.outsideBCinFuture.departureDate = format(from.planOnBeingOutOfBCRecord.departureDate, this.ISO8601DateFormat);
-                }
-                if (from.planOnBeingOutOfBCRecord.hasReturn) {
-                    to.outsideBCinFuture.returnDate = format(from.planOnBeingOutOfBCRecord.returnDate, this.ISO8601DateFormat);
-                }
-                to.outsideBCinFuture.familyMemberReason = from.planOnBeingOutOfBCRecord.reason;
-                to.outsideBCinFuture.destination = from.planOnBeingOutOfBCRecord.location;
-            }
+        // Arrival dates
+        if (from.hasArrivalToBC) {
+          to.livedInBC.recentBCMoveDate = format(
+            from.arrivalToBCDate,
+            this.ISO8601DateFormat
+          );
         }
-
-
-        // Have they been released from the Canadian Armed Forces or an Institution?
-        if (from.hasDischarge) {
-            to.willBeAway = WillBeAwayTypeFactory.make();
-            to.willBeAway.armedDischargeDate = format(from.dischargeDate, this.ISO8601DateFormat);
-            to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
-            to.willBeAway.isFullTimeStudent = 'N';
-        }
+      }
+    }
+    //Is this child newly adopted?
+    if (from.newlyAdopted) {
+      to.adoptionDate = format(from.adoptedDate, this.ISO8601DateFormat);
     }
 
-    private populateNewBeneficiaryDetailsForSpouse(from: MspPerson, to: AccountChangeSpouseType) {
-        //Has person lived in B.C. since birth?
-        if (from.livedInBCSinceBirth != null) {
-            to.livedInBC = LivedInBCTypeFactory.make();
-            if (from.livedInBCSinceBirth === true) {
-                to.livedInBC.hasLivedInBC = 'Y';
-            } else {
-                to.livedInBC.hasLivedInBC = 'N';
-            }
-
-            if (from.livedInBCSinceBirth === false) {
-
-                to.livedInBC.isPermanentMove = from.madePermanentMoveToBC === true ? 'Y' : 'N';
-                if (from.healthNumberFromOtherProvince) {
-                    to.livedInBC.prevHealthNumber = from.healthNumberFromOtherProvince; // out of province health numbers
-                }
-
-                if (from.movedFromProvinceOrCountry) {
-                    to.livedInBC.prevProvinceOrCountry = from.movedFromProvinceOrCountry;
-                }
-
-                // Arrival dates
-                if (from.hasArrivalToBC) {
-                    to.livedInBC.recentBCMoveDate = format(from.arrivalToBCDate, this.ISO8601DateFormat);
-                }
-            }
-
+    // Has this family member been outside of BC for more than a total of 30 days during the past 12 months?
+    if (from.declarationForOutsideOver30Days != null) {
+      to.outsideBC = OutsideBCTypeFactory.make();
+      to.outsideBC.beenOutsideBCMoreThan =
+        from.declarationForOutsideOver30Days === true ? 'Y' : 'N';
+      if (from.declarationForOutsideOver30Days) {
+        if (from.outOfBCRecord.hasDeparture) {
+          to.outsideBC.departureDate = format(
+            from.outOfBCRecord.departureDate,
+            this.ISO8601DateFormat
+          );
         }
-
-
-        // Has this family member been outside of BC for more than a total of 30 days during the past 12 months?
-        if (from.declarationForOutsideOver30Days != null) {
-            to.outsideBC = OutsideBCTypeFactory.make();
-            to.outsideBC.beenOutsideBCMoreThan = from.declarationForOutsideOver30Days === true ? 'Y' : 'N';
-            if (from.declarationForOutsideOver30Days) {
-                if (from.outOfBCRecord.hasDeparture) {
-                    to.outsideBC.departureDate = format(from.outOfBCRecord.departureDate, this.ISO8601DateFormat);
-                }
-                if (from.outOfBCRecord.hasReturn) {
-                    to.outsideBC.returnDate = format(from.outOfBCRecord.returnDate, this.ISO8601DateFormat);
-                }
-                to.outsideBC.familyMemberReason = from.outOfBCRecord.reason;
-                to.outsideBC.destination = from.outOfBCRecord.location;
-            }
+        if (from.outOfBCRecord.hasReturn) {
+          to.outsideBC.returnDate = format(
+            from.outOfBCRecord.returnDate,
+            this.ISO8601DateFormat
+          );
         }
-
-        //  Will this family member be outside of BC for more than a total of 30 days during the next 6 months?
-
-        if (from.plannedAbsence != null) {
-            to.outsideBCinFuture = OutsideBCTypeFactory.make();
-            to.outsideBCinFuture.beenOutsideBCMoreThan = from.plannedAbsence === true ? 'Y' : 'N';
-            if (from.plannedAbsence) {
-                if (from.planOnBeingOutOfBCRecord.hasDeparture) {
-                    to.outsideBCinFuture.departureDate = format(from.planOnBeingOutOfBCRecord.departureDate, this.ISO8601DateFormat);
-                }
-                if (from.planOnBeingOutOfBCRecord.hasReturn) {
-                    to.outsideBCinFuture.returnDate = format(from.planOnBeingOutOfBCRecord.returnDate, this.ISO8601DateFormat);
-                }
-                to.outsideBCinFuture.familyMemberReason = from.planOnBeingOutOfBCRecord.reason;
-                to.outsideBCinFuture.destination = from.planOnBeingOutOfBCRecord.location;
-            }
-        }
-
-
-        // Have they been released from the Canadian Armed Forces or an Institution?
-        if (from.hasDischarge) {
-            to.willBeAway = WillBeAwayTypeFactory.make();
-            to.willBeAway.armedDischargeDate = format(from.dischargeDate, this.ISO8601DateFormat);
-            to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
-            to.willBeAway.isFullTimeStudent = 'N';
-        }
+        to.outsideBC.familyMemberReason = from.outOfBCRecord.reason;
+        to.outsideBC.destination = from.outOfBCRecord.location;
+      }
     }
 
+    //  Will this family member be outside of BC for more than a total of 30 days during the next 6 months?
 
-    findCitizenShip(statusInCanada: StatusInCanada, currentActivity: CanadianStatusReason): CitizenshipType {
-        let citizen: CitizenshipType;
-        switch (statusInCanada) {
-            case StatusInCanada.CitizenAdult:
-                citizen = 'CanadianCitizen';
-                break;
-            case StatusInCanada.PermanentResident:
-                citizen = 'PermanentResident';
-                break;
-            case StatusInCanada.TemporaryResident:
-                switch (currentActivity) {
-                    case CanadianStatusReason.WorkingInBC:
-                        citizen = 'WorkPermit';
-                        break;
-                    case CanadianStatusReason.StudyingInBC:
-                        citizen = 'StudyPermit';
-                        break;
-                    case CanadianStatusReason.Diplomat:
-                        citizen = 'Diplomat';
-                        break;
-                    case CanadianStatusReason.ReligiousWorker:
-                        citizen = 'ReligiousWorker';
-                        break;
-                    case CanadianStatusReason.Visiting:
-                    default:
-                        citizen = 'VisitorPermit';
-                        break;
-                }
+    if (from.plannedAbsence != null) {
+      to.outsideBCinFuture = OutsideBCTypeFactory.make();
+      to.outsideBCinFuture.beenOutsideBCMoreThan =
+        from.plannedAbsence === true ? 'Y' : 'N';
+      if (from.plannedAbsence) {
+        if (from.planOnBeingOutOfBCRecord.hasDeparture) {
+          to.outsideBCinFuture.departureDate = format(
+            from.planOnBeingOutOfBCRecord.departureDate,
+            this.ISO8601DateFormat
+          );
         }
-        return citizen;
+        if (from.planOnBeingOutOfBCRecord.hasReturn) {
+          to.outsideBCinFuture.returnDate = format(
+            from.planOnBeingOutOfBCRecord.returnDate,
+            this.ISO8601DateFormat
+          );
+        }
+        to.outsideBCinFuture.familyMemberReason =
+          from.planOnBeingOutOfBCRecord.reason;
+        to.outsideBCinFuture.destination =
+          from.planOnBeingOutOfBCRecord.location;
+      }
     }
 
+    // Have they been released from the Canadian Armed Forces or an Institution?
+    if (from.hasDischarge) {
+      to.willBeAway = WillBeAwayTypeFactory.make();
+      to.willBeAway.armedDischargeDate = format(
+        from.dischargeDate,
+        this.ISO8601DateFormat
+      );
+      to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
+      to.willBeAway.isFullTimeStudent = 'N';
+    }
+  }
 
-    private convertAccountHolderFromAccountChange(from: MspAccountApp): AccountChangeAccountHolderType {
+  private populateNewBeneficiaryDetailsForSpouse(
+    from: MspPerson,
+    to: AccountChangeSpouseType
+  ) {
+    //Has person lived in B.C. since birth?
+    if (from.livedInBCSinceBirth != null) {
+      to.livedInBC = LivedInBCTypeFactory.make();
+      if (from.livedInBCSinceBirth === true) {
+        to.livedInBC.hasLivedInBC = 'Y';
+      } else {
+        to.livedInBC.hasLivedInBC = 'N';
+      }
 
-        const accountHolder: AccountChangeAccountHolderType = AccountChangeAccountHolderFactory.make();
-
-        accountHolder.selectedAddRemove = from.accountChangeOptions.dependentChange ? 'Y' : 'N';
-
-        accountHolder.selectedAddressChange = from.accountChangeOptions.addressUpdate ? 'Y' : 'N';
-        accountHolder.selectedPersonalInfoChange = from.accountChangeOptions.personInfoUpdate ? 'Y' : 'N';
-        accountHolder.selectedStatusChange = from.accountChangeOptions.statusUpdate ? 'Y' : 'N';
-
-        accountHolder.name = this.convertName(from.applicant);
-
-
-        if (from.applicant.hasDob) {
-            accountHolder.birthDate = format(from.applicant.dob, this.ISO8601DateFormat);
-        }
-        if (from.applicant.gender != null) {
-            accountHolder.gender = <GenderType>{};
-            accountHolder.gender = <GenderType> from.applicant.gender.toString();
-        } else {
-            accountHolder.gender = 'M';
-        }
-        if (from.authorizedByApplicant != null) {
-            accountHolder.authorizedByApplicant = from.authorizedByApplicant ? 'Y' : 'N';
-            // accountHolder.authorizedByApplicantDate = moment(from.authorizedByApplicantDate)
-            //     .format(this.ISO8601DateFormat);
-            accountHolder.authorizedByApplicantDate = format( from.authorizedByApplicantDate, this.ISO8601DateFormat );
-        }
-
-        if (from.authorizedBySpouse != null) {
-            accountHolder.authorizedBySpouse = from.authorizedBySpouse ? 'Y' : 'N';
+      if (from.livedInBCSinceBirth === false) {
+        to.livedInBC.isPermanentMove =
+          from.madePermanentMoveToBC === true ? 'Y' : 'N';
+        if (from.healthNumberFromOtherProvince) {
+          to.livedInBC.prevHealthNumber = from.healthNumberFromOtherProvince; // out of province health numbers
         }
 
-        if (!from.applicant.mailingSameAsResidentialAddress) {
-            accountHolder.mailingAddress = this.convertAddress(from.applicant.mailingAddress);
+        if (from.movedFromProvinceOrCountry) {
+          to.livedInBC.prevProvinceOrCountry = from.movedFromProvinceOrCountry;
         }
 
-        if (from.applicant.residentialAddress && from.applicant.residentialAddress.isValid) {
-            accountHolder.residenceAddress = this.convertAddress(from.applicant.residentialAddress);
-        } else {
-            accountHolder.residenceAddress = this.unknownAddress();
+        // Arrival dates
+        if (from.hasArrivalToBC) {
+          to.livedInBC.recentBCMoveDate = format(
+            from.arrivalToBCDate,
+            this.ISO8601DateFormat
+          );
         }
-
-        accountHolder.residenceAddress.city = from.residentialAddress.city;
-        accountHolder.residenceAddress.postalCode = from.residentialAddress.postal;
-        accountHolder.residenceAddress.provinceOrState = from.residentialAddress.province;
-        accountHolder.residenceAddress.country = from.residentialAddress.country;
-
-        if (from.applicant.phoneNumber) {
-            accountHolder.telephone = from.applicant.phoneNumber
-            .replace(/[() +/-]/g, '')
-            .substr(1);
-        }
-        if (from.applicant.previous_phn) {
-            accountHolder.phn = from.applicant.previous_phn.replace(new RegExp('[^0-9]', 'g'), '');
-        }
-
-        if (from.applicant.status != null) {
-            accountHolder.citizenship = this.findCitizenShip(from.applicant.status, from.applicant.currentActivity);
-
-        }
-
-
-        return accountHolder;
-
+      }
     }
 
-    private convertSpouseFromAccountChange(from: MspPerson): AccountChangeSpouseType {
-        const to = AccountChangeSpouseTypeFactory.make();
-        to.name = this.convertName(from);
-
-        if (from.hasDob) {
-            to.birthDate = format(from.dob, this.ISO8601DateFormat);
+    // Has this family member been outside of BC for more than a total of 30 days during the past 12 months?
+    if (from.declarationForOutsideOver30Days != null) {
+      to.outsideBC = OutsideBCTypeFactory.make();
+      to.outsideBC.beenOutsideBCMoreThan =
+        from.declarationForOutsideOver30Days === true ? 'Y' : 'N';
+      if (from.declarationForOutsideOver30Days) {
+        if (from.outOfBCRecord.hasDeparture) {
+          to.outsideBC.departureDate = format(
+            from.outOfBCRecord.departureDate,
+            this.ISO8601DateFormat
+          );
         }
-        if (from.gender != null) {
-            to.gender = <GenderType> from.gender.toString();
+        if (from.outOfBCRecord.hasReturn) {
+          to.outsideBC.returnDate = format(
+            from.outOfBCRecord.returnDate,
+            this.ISO8601DateFormat
+          );
         }
-
-        if (from.previous_phn) {
-            to.phn = from.previous_phn.replace(new RegExp('[^0-9]', 'g'), '');
-        }
-
-
-        //TODO //FIXME once data model is implemented , verify this..Also might need another convertResidency for DEAM
-        if (from.status != null) {
-            to.citizenship = this.findCitizenShip(from.status, from.currentActivity);
-
-        }
-
-        if (from.prevLastName) {
-            to.previousLastName = from.prevLastName;
-        }
-
-        if (from.marriageDate) {
-            to.marriageDate = format(from.marriageDate, this.ISO8601DateFormat);
-        }
-        if (from.isExistingBeneficiary != null) {
-            to.isExistingBeneficiary = from.isExistingBeneficiary === true ? 'Y' : 'N';
-        }
-
-        if (from.isExistingBeneficiary === false) {
-            this.populateNewBeneficiaryDetailsForSpouse(from, to);
-        }
-
-
-        // Removing Spouse
-
-        if (from.reasonForCancellation && from.reasonForCancellation !== 'pleaseSelect' ) {
-            to.cancellationReason = from.reasonForCancellation;
-            if (from.cancellationDate) {
-            to.cancellationDate = format( from.cancellationDate, this.ISO8601DateFormat );
-            }
-        }
-        if (from.knownMailingAddress === true ) {
-            to.mailingAddress = this.convertAddress(from.mailingAddress);
-        } else if (from.knownMailingAddress === false) {
-            to.mailingAddress = this.unknownAddress();
-        }
-
-        return to;
-
+        to.outsideBC.familyMemberReason = from.outOfBCRecord.reason;
+        to.outsideBC.destination = from.outOfBCRecord.location;
+      }
     }
 
+    //  Will this family member be outside of BC for more than a total of 30 days during the next 6 months?
 
+    if (from.plannedAbsence != null) {
+      to.outsideBCinFuture = OutsideBCTypeFactory.make();
+      to.outsideBCinFuture.beenOutsideBCMoreThan =
+        from.plannedAbsence === true ? 'Y' : 'N';
+      if (from.plannedAbsence) {
+        if (from.planOnBeingOutOfBCRecord.hasDeparture) {
+          to.outsideBCinFuture.departureDate = format(
+            from.planOnBeingOutOfBCRecord.departureDate,
+            this.ISO8601DateFormat
+          );
+        }
+        if (from.planOnBeingOutOfBCRecord.hasReturn) {
+          to.outsideBCinFuture.returnDate = format(
+            from.planOnBeingOutOfBCRecord.returnDate,
+            this.ISO8601DateFormat
+          );
+        }
+        to.outsideBCinFuture.familyMemberReason =
+          from.planOnBeingOutOfBCRecord.reason;
+        to.outsideBCinFuture.destination =
+          from.planOnBeingOutOfBCRecord.location;
+      }
+    }
 
+    // Have they been released from the Canadian Armed Forces or an Institution?
+    if (from.hasDischarge) {
+      to.willBeAway = WillBeAwayTypeFactory.make();
+      to.willBeAway.armedDischargeDate = format(
+        from.dischargeDate,
+        this.ISO8601DateFormat
+      );
+      to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
+      to.willBeAway.isFullTimeStudent = 'N';
+    }
+  }
 
-    private convertName(from: MspPerson): NameType {
-        const to = NameTypeFactory.make();
+  findCitizenShip(
+    statusInCanada: StatusInCanada,
+    currentActivity: CanadianStatusReason
+  ): CitizenshipType {
+    let citizen: CitizenshipType;
+    switch (statusInCanada) {
+      case StatusInCanada.CitizenAdult:
+        citizen = 'CanadianCitizen';
+        break;
+      case StatusInCanada.PermanentResident:
+        citizen = 'PermanentResident';
+        break;
+      case StatusInCanada.TemporaryResident:
+        switch (currentActivity) {
+          case CanadianStatusReason.WorkingInBC:
+            citizen = 'WorkPermit';
+            break;
+          case CanadianStatusReason.StudyingInBC:
+            citizen = 'StudyPermit';
+            break;
+          case CanadianStatusReason.Diplomat:
+            citizen = 'Diplomat';
+            break;
+          case CanadianStatusReason.ReligiousWorker:
+            citizen = 'ReligiousWorker';
+            break;
+          case CanadianStatusReason.Visiting:
+          default:
+            citizen = 'VisitorPermit';
+            break;
+        }
+    }
+    return citizen;
+  }
 
-        /*
+  private convertAccountHolderFromAccountChange(
+    from: MspAccountApp
+  ): AccountChangeAccountHolderType {
+    const accountHolder: AccountChangeAccountHolderType =
+      AccountChangeAccountHolderFactory.make();
+
+    accountHolder.selectedAddRemove = from.accountChangeOptions.dependentChange
+      ? 'Y'
+      : 'N';
+
+    accountHolder.selectedAddressChange = from.accountChangeOptions
+      .addressUpdate
+      ? 'Y'
+      : 'N';
+    accountHolder.selectedPersonalInfoChange = from.accountChangeOptions
+      .personInfoUpdate
+      ? 'Y'
+      : 'N';
+    accountHolder.selectedStatusChange = from.accountChangeOptions.statusUpdate
+      ? 'Y'
+      : 'N';
+
+    accountHolder.name = this.convertName(from.applicant);
+
+    if (from.applicant.hasDob) {
+      accountHolder.birthDate = format(
+        from.applicant.dob,
+        this.ISO8601DateFormat
+      );
+    }
+    if (from.applicant.gender != null) {
+      accountHolder.gender = <GenderType>{};
+      accountHolder.gender = <GenderType>from.applicant.gender.toString();
+    } else {
+      accountHolder.gender = 'M';
+    }
+    if (from.authorizedByApplicant != null) {
+      accountHolder.authorizedByApplicant = from.authorizedByApplicant
+        ? 'Y'
+        : 'N';
+      // accountHolder.authorizedByApplicantDate = moment(from.authorizedByApplicantDate)
+      //     .format(this.ISO8601DateFormat);
+      accountHolder.authorizedByApplicantDate = format(
+        from.authorizedByApplicantDate,
+        this.ISO8601DateFormat
+      );
+    }
+
+    if (from.authorizedBySpouse != null) {
+      accountHolder.authorizedBySpouse = from.authorizedBySpouse ? 'Y' : 'N';
+    }
+
+    if (!from.applicant.mailingSameAsResidentialAddress) {
+      accountHolder.mailingAddress = this.convertAddress(
+        from.applicant.mailingAddress
+      );
+    }
+
+    if (
+      from.applicant.residentialAddress &&
+      from.applicant.residentialAddress.isValid
+    ) {
+      accountHolder.residenceAddress = this.convertAddress(
+        from.applicant.residentialAddress
+      );
+    } else {
+      accountHolder.residenceAddress = this.unknownAddress();
+    }
+
+    accountHolder.residenceAddress.city = from.residentialAddress.city;
+    accountHolder.residenceAddress.postalCode = from.residentialAddress.postal;
+    accountHolder.residenceAddress.provinceOrState =
+      from.residentialAddress.province;
+    accountHolder.residenceAddress.country = from.residentialAddress.country;
+
+    if (from.applicant.phoneNumber) {
+      accountHolder.telephone = from.applicant.phoneNumber
+        .replace(/[() +/-]/g, '')
+        .substr(1);
+    }
+    if (from.applicant.previous_phn) {
+      accountHolder.phn = from.applicant.previous_phn.replace(
+        new RegExp('[^0-9]', 'g'),
+        ''
+      );
+    }
+
+    if (from.applicant.status != null) {
+      accountHolder.citizenship = this.findCitizenShip(
+        from.applicant.status,
+        from.applicant.currentActivity
+      );
+    }
+
+    return accountHolder;
+  }
+
+  private convertSpouseFromAccountChange(
+    from: MspPerson
+  ): AccountChangeSpouseType {
+    const to = AccountChangeSpouseTypeFactory.make();
+    to.name = this.convertName(from);
+
+    if (from.hasDob) {
+      to.birthDate = format(from.dob, this.ISO8601DateFormat);
+    }
+    if (from.gender != null) {
+      to.gender = <GenderType>from.gender.toString();
+    }
+
+    if (from.previous_phn) {
+      to.phn = from.previous_phn.replace(new RegExp('[^0-9]', 'g'), '');
+    }
+
+    //TODO //FIXME once data model is implemented , verify this..Also might need another convertResidency for DEAM
+    if (from.status != null) {
+      to.citizenship = this.findCitizenShip(from.status, from.currentActivity);
+    }
+
+    if (from.prevLastName) {
+      to.previousLastName = from.prevLastName;
+    }
+
+    if (from.marriageDate) {
+      to.marriageDate = format(from.marriageDate, this.ISO8601DateFormat);
+    }
+    if (from.isExistingBeneficiary != null) {
+      to.isExistingBeneficiary =
+        from.isExistingBeneficiary === true ? 'Y' : 'N';
+    }
+
+    if (from.isExistingBeneficiary === false) {
+      this.populateNewBeneficiaryDetailsForSpouse(from, to);
+    }
+
+    // Removing Spouse
+
+    if (
+      from.reasonForCancellation &&
+      from.reasonForCancellation !== 'pleaseSelect'
+    ) {
+      to.cancellationReason = from.reasonForCancellation;
+      if (from.cancellationDate) {
+        to.cancellationDate = format(
+          from.cancellationDate,
+          this.ISO8601DateFormat
+        );
+      }
+    }
+    if (from.knownMailingAddress === true) {
+      to.mailingAddress = this.convertAddress(from.mailingAddress);
+    } else if (from.knownMailingAddress === false) {
+      to.mailingAddress = this.unknownAddress();
+    }
+
+    return to;
+  }
+
+  private convertName(from: MspPerson): NameType {
+    const to = NameTypeFactory.make();
+
+    /*
          firstName: string;
          lastName: string;
          secondName?: string;
          */
-        to.firstName = from.firstName;
-        to.secondName = from.middleName;
-        to.lastName = from.lastName;
+    to.firstName = from.firstName;
+    to.secondName = from.middleName;
+    to.lastName = from.lastName;
 
-        return to;
+    return to;
+  }
+
+  private convertAttachmentUuids(from: CommonImage[]): AttachmentUuidsType {
+    const to = AttachmentUuidsTypeFactory.make();
+
+    to.attachmentUuid = new Array<string>();
+    for (const image of from) {
+      to.attachmentUuid.push(image.uuid);
     }
 
-    private convertAttachmentUuids(from: CommonImage[]): AttachmentUuidsType {
-        const to = AttachmentUuidsTypeFactory.make();
+    return to;
+  }
 
-        to.attachmentUuid = new Array<string>();
-        for (const image of from) {
-            to.attachmentUuid.push(image.uuid);
-        }
+  private unknownAddress(): AddressType {
+    const to = AddressTypeFactory.make();
+    to.addressLine1 = 'UNKNOWN';
+    to.addressLine2 = '';
+    to.addressLine3 = '';
+    to.city = '';
+    to.provinceOrState = '';
+    to.postalCode = '';
 
-        return to;
-    }
+    return to;
+  }
 
+  private convertAddress(from: Address): AddressType {
+    // Instantiate new object from interface
+    const to = AddressTypeFactory.make();
 
-    private unknownAddress(): AddressType {
-        const to = AddressTypeFactory.make();
-        to.addressLine1 = 'UNKNOWN';
-        to.addressLine2 = '';
-        to.addressLine3 = '';
-        to.city = '';
-        to.provinceOrState = '';
-        to.postalCode = '';
-
-        return to;
-    }
-
-    private convertAddress(from: Address): AddressType {
-        // Instantiate new object from interface
-        const to = AddressTypeFactory.make();
-
-        /*
+    /*
          addressLine1: string;
          addressLine2?: string;
          addressLine3?: string;
@@ -1035,105 +1265,110 @@ export class MspApiService {
          provinceOrState?: string;
          */
 
-        to.addressLine1 = from.addressLine1;
-        to.addressLine2 = from.addressLine2;
-        to.addressLine3 = from.addressLine3;
-        to.city = from.city;
-        to.country = from.country;
-        if (from.postal) {
-            to.postalCode = from.postal.toUpperCase().replace(' ', '');
+    to.addressLine1 = from.addressLine1;
+    to.addressLine2 = from.addressLine2;
+    to.addressLine3 = from.addressLine3;
+    to.city = from.city;
+    to.country = from.country;
+    if (from.postal) {
+      to.postalCode = from.postal.toUpperCase().replace(' ', '');
+    }
+    to.provinceOrState = from.province;
+
+    return to;
+  }
+
+  static ApplicationTypeNameSpace = _ApplicationTypeNameSpace;
+
+  /**
+   * Converts any JS object to XML with optional namespace
+   * @param from
+   * @param namespace
+   * @returns {any}
+   */
+  toXmlString(from: any): string {
+    const xml = jxon.jsToXml(from);
+    const xmlString = jxon.xmlToString(xml);
+    return this.correctNSinXmlString(xmlString);
+  }
+
+  stringToJs<T>(from: string): T {
+    const converted = jxon.stringToJs(from) as T;
+    return converted;
+  }
+
+  jsToXml(from: any) {
+    return jxon.jsToXml(from);
+  }
+
+  stringToXml(from: string) {
+    return jxon.stringToXml(from);
+  }
+
+  // trim in the XML the leading <xx:application xmlns="xx"> and trailing </xx:application>
+  // note that xx: might be missing
+
+  private static XmlRootSimple = '<application';
+  private static XmlRootNS = ':application';
+  private static XmlDocumentHeader =
+    '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:application xmlns:ns2="http://www.gov.bc.ca/hibc/applicationTypes">';
+  private static XmlDocumentFooter = '</ns2:application>';
+
+  correctNSinXmlString(xmlString: string): string {
+    // deal with the beginning
+    // check the simple case
+    let beginIndex = xmlString.indexOf(MspApiService.XmlRootSimple);
+    if (beginIndex >= 0) {
+      for (let i = beginIndex; i < xmlString.length; i++) {
+        if (xmlString.charAt(i) === '>') {
+          beginIndex = i + 1;
+          break;
         }
-        to.provinceOrState = from.province;
-
-        return to;
-    }
-
-    static ApplicationTypeNameSpace = _ApplicationTypeNameSpace;
-
-    /**
-     * Converts any JS object to XML with optional namespace
-     * @param from
-     * @param namespace
-     * @returns {any}
-     */
-    toXmlString(from: any): string {
-        const xml = jxon.jsToXml(from);
-        const xmlString = jxon.xmlToString(xml);
-        return this.correctNSinXmlString (xmlString);
-    }
-
-    stringToJs<T>(from: string): T {
-        const converted = jxon.stringToJs(from) as T;
-        return converted;
-    }
-
-    jsToXml(from: any) {
-        return jxon.jsToXml(from);
-    }
-
-    stringToXml(from: string) {
-        return jxon.stringToXml(from);
-    }
-
-    // trim in the XML the leading <xx:application xmlns="xx"> and trailing </xx:application>
-    // note that xx: might be missing
-
-    private static XmlRootSimple = '<application';
-    private static XmlRootNS = ':application';
-    private static XmlDocumentHeader = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><ns2:application xmlns:ns2="http://www.gov.bc.ca/hibc/applicationTypes">';
-    private static XmlDocumentFooter = '</ns2:application>';
-
-    correctNSinXmlString(xmlString: string): string {
-
-        // deal with the beginning
-        // check the simple case
-        let beginIndex = xmlString.indexOf(MspApiService.XmlRootSimple);
-        if (beginIndex >= 0) {
-            for (let i = beginIndex; i < xmlString.length; i++) {
-                if (xmlString.charAt(i) === '>') {
-                    beginIndex = i + 1;
-                    break;
-                }
-            }
-            if (beginIndex === xmlString.length)
-                beginIndex = 0;
-        } else { // not the simple case, check to see the NS case, ie <xx:application>
-            beginIndex = xmlString.indexOf(MspApiService.XmlRootNS);
-            if (beginIndex > 0) {
-                for (let i = beginIndex; i < xmlString.length; i++) {
-                    if (xmlString.charAt(i) === '>') {
-                        beginIndex = i + 1;
-                        break;
-                    }
-                }
-                if (beginIndex === xmlString.length)
-                    beginIndex = 0;
-            } else { // cannot find the element <xx:applicationxx> or <applicationxx>
-                const endHeader = xmlString.indexOf('Application>');
-                const headers = 'Header after jxon : ' + xmlString.substring(0, endHeader);
-                this.logService.log(
-                    {
-                        text: headers
-                    },
-                    'API - Application - Header Info'
-                );
-            }
+      }
+      if (beginIndex === xmlString.length) beginIndex = 0;
+    } else {
+      // not the simple case, check to see the NS case, ie <xx:application>
+      beginIndex = xmlString.indexOf(MspApiService.XmlRootNS);
+      if (beginIndex > 0) {
+        for (let i = beginIndex; i < xmlString.length; i++) {
+          if (xmlString.charAt(i) === '>') {
+            beginIndex = i + 1;
+            break;
+          }
         }
-
-        // deal with the end
-        let endre = /<\/application>/;
-        let endIndex = xmlString.search(endre);
-        if (endIndex < 0) {
-            endre = /<\/[a-z,A-Z,0-9]+:application>/;
-            endIndex = xmlString.search(endre);
-        }
-
-        if (beginIndex < 0 || endIndex <= 0) {
-            return xmlString;
-        } else {
-            return MspApiService.XmlDocumentHeader + xmlString.substring(beginIndex, endIndex) + MspApiService.XmlDocumentFooter;
-        }
+        if (beginIndex === xmlString.length) beginIndex = 0;
+      } else {
+        // cannot find the element <xx:applicationxx> or <applicationxx>
+        const endHeader = xmlString.indexOf('Application>');
+        const headers =
+          'Header after jxon : ' + xmlString.substring(0, endHeader);
+        this.logService.log(
+          {
+            text: headers,
+          },
+          'API - Application - Header Info'
+        );
+      }
     }
 
-    readonly ISO8601DateFormat = 'yyyy-MM-dd';
+    // deal with the end
+    let endre = /<\/application>/;
+    let endIndex = xmlString.search(endre);
+    if (endIndex < 0) {
+      endre = /<\/[a-z,A-Z,0-9]+:application>/;
+      endIndex = xmlString.search(endre);
+    }
+
+    if (beginIndex < 0 || endIndex <= 0) {
+      return xmlString;
+    } else {
+      return (
+        MspApiService.XmlDocumentHeader +
+        xmlString.substring(beginIndex, endIndex) +
+        MspApiService.XmlDocumentFooter
+      );
+    }
+  }
+
+  readonly ISO8601DateFormat = 'yyyy-MM-dd';
 }

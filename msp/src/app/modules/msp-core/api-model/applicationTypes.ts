@@ -6,12 +6,13 @@ import * as ac from './accountChangeTypes';
 // Source files:
 // https://raw.githubusercontent.com/bcgov/MyGovBC-MSP/master/src/app/components/msp/api-model/xsd-flat/ApplicationTypes.xsd
 
-
 interface BaseType {
   _exists: boolean;
   _namespace: string;
   _sequence: Array<string>;
 }
+
+// tslint:disable-next-line:class-name
 interface _ApplicationType extends BaseType {
   assistanceApplication: at.AssistanceApplicationType;
   enrolmentApplication: et.EnrolmentApplicationType;
@@ -23,22 +24,31 @@ interface _ApplicationType extends BaseType {
 }
 export interface ApplicationType extends _ApplicationType {
   constructor: {
-    new(): ApplicationType
+    new (): ApplicationType;
   };
 }
 export class ApplicationTypeFactory {
   static make(): ApplicationType {
     const instance = <ApplicationType>{};
-    instance._sequence = ['assistanceApplication', 'enrolmentApplication', 'accountChangeApplication', 'uuid', 'attachments', 'comment'];
+    instance._sequence = [
+      'assistanceApplication',
+      'enrolmentApplication',
+      'accountChangeApplication',
+      'uuid',
+      'attachments',
+      'comment',
+    ];
     //instance.$xmlns = _ApplicationTypeNameSpace;
     return instance;
   }
 }
 
+// tslint:disable-next-line:class-name
 interface _AttachmentsType extends BaseType {
   attachment?: AttachmentType[];
 }
-export interface AttachmentsType extends _AttachmentsType { constructor: {new(): AttachmentsType};
+export interface AttachmentsType extends _AttachmentsType {
+  constructor: { new (): AttachmentsType };
 }
 export class AttachmentsTypeFactory {
   static make(): AttachmentsType {
@@ -48,6 +58,7 @@ export class AttachmentsTypeFactory {
   }
 }
 
+// tslint:disable-next-line:class-name
 interface _AttachmentType extends BaseType {
   attachmentDocumentType: string;
   attachmentUuid: string;
@@ -55,20 +66,30 @@ interface _AttachmentType extends BaseType {
   attachmentOrder?: string;
   description?: string;
 }
-export interface AttachmentType extends _AttachmentType { constructor: {new(): AttachmentType};
+export interface AttachmentType extends _AttachmentType {
+  constructor: { new (): AttachmentType };
 }
 export class AttachmentTypeFactory {
   static make(): AttachmentType {
     const instance = <AttachmentType>{};
-    instance._sequence = ['contentType', 'attachmentDocumentType', 'attachmentUuid', 'attachmentOrder', 'description'];
+    instance._sequence = [
+      'contentType',
+      'attachmentDocumentType',
+      'attachmentUuid',
+      'attachmentOrder',
+      'description',
+    ];
     return instance;
   }
 }
 
-export type ContentType = ('image/jpeg' | 'application/pdf');
-interface _ContentType extends Primitive._string { content: ContentType;
+export type ContentType = 'image/jpeg' | 'application/pdf';
+// tslint:disable-next-line:class-name
+interface _ContentType extends Primitive._string {
+  content: ContentType;
 }
 
+// tslint:disable-next-line:class-name
 export interface document extends BaseType {
   application: ApplicationType;
   $xmlns: string;
@@ -81,4 +102,5 @@ export class DocumentFactory {
   }
 }
 
-export const _ApplicationTypeNameSpace = 'http://www.gov.bc.ca/hibc/applicationTypes';
+export const _ApplicationTypeNameSpace =
+  'http://www.gov.bc.ca/hibc/applicationTypes';

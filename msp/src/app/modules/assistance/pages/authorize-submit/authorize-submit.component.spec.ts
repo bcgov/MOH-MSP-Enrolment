@@ -15,16 +15,16 @@ describe('AssistanceAuthorizeSubmitComponent', () => {
   beforeEach(() => {
     const changeDetectorRefStub = () => ({});
     const mspDataServiceStub = () => ({
-      finAssistApp: { powerOfAttorneyDocs: []},
-      saveFinAssistApplication: () => ({})
+      finAssistApp: { powerOfAttorneyDocs: [] },
+      saveFinAssistApplication: () => ({}),
     });
     const activatedRouteStub = () => ({
-      snapshot: { routeConfig: { path: {} } }
+      snapshot: { routeConfig: { path: {} } },
     });
     const assistStateServiceStub = () => ({
-      setPageIncomplete: path => ({}),
+      setPageIncomplete: (path) => ({}),
       setPageValid: (path, arg1) => ({}),
-      touched: { asObservable: () => ({ subscribe: f => f({}) }) }
+      touched: { asObservable: () => ({ subscribe: (f) => f({}) }) },
     });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
@@ -33,9 +33,9 @@ describe('AssistanceAuthorizeSubmitComponent', () => {
         { provide: ChangeDetectorRef, useFactory: changeDetectorRefStub },
         { provide: MspDataService, useFactory: mspDataServiceStub },
         { provide: ActivatedRoute, useFactory: activatedRouteStub },
-        { provide: AssistStateService, useFactory: assistStateServiceStub }
+        { provide: AssistStateService, useFactory: assistStateServiceStub },
       ],
-      imports: [FormsModule]
+      imports: [FormsModule],
     });
     fixture = TestBed.createComponent(AssistanceAuthorizeSubmitComponent);
     component = fixture.componentInstance;
@@ -51,9 +51,8 @@ describe('AssistanceAuthorizeSubmitComponent', () => {
 
   describe('addDocument', () => {
     it('makes expected calls', () => {
-      const mspDataServiceStub: MspDataService = fixture.debugElement.injector.get(
-        MspDataService
-      );
+      const mspDataServiceStub: MspDataService =
+        fixture.debugElement.injector.get(MspDataService);
       const commonImageStub: CommonImage = <any>{};
       spyOn(mspDataServiceStub, 'saveFinAssistApplication').and.callThrough();
       component.addDocument(commonImageStub);
@@ -63,9 +62,8 @@ describe('AssistanceAuthorizeSubmitComponent', () => {
 
   describe('deleteDocument', () => {
     it('makes expected calls', () => {
-      const mspDataServiceStub: MspDataService = fixture.debugElement.injector.get(
-        MspDataService
-      );
+      const mspDataServiceStub: MspDataService =
+        fixture.debugElement.injector.get(MspDataService);
       const commonImageStub: CommonImage = <any>{};
       spyOn(mspDataServiceStub, 'saveFinAssistApplication').and.callThrough();
       component.deleteDocument(commonImageStub);
@@ -80,7 +78,7 @@ describe('AssistanceAuthorizeSubmitComponent', () => {
       component.ngOnInit();
       expect(redirectSpy).toHaveBeenCalled();
     });
-    
+
     it('does not redirect if infoCollectionAgreement is true', () => {
       const redirectSpy = spyOn(component, 'redirect').and.callFake(() => {});
       component.application.infoCollectionAgreement = true;

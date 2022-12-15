@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import { NgForm } from '@angular/forms';
@@ -12,39 +19,45 @@ import { Relationship } from '../../../../models/relationship.enum';
 @Component({
   selector: 'msp-personal-details-retro-suppben',
   templateUrl: './personal-details-retro-suppben.component.html',
-  styleUrls: ['./personal-details-retro-suppben.component.scss']
+  styleUrls: ['./personal-details-retro-suppben.component.scss'],
 })
-export class PersonalDetailsRetroSuppbenComponent extends BaseComponent  {
-
+export class PersonalDetailsRetroSuppbenComponent extends BaseComponent {
   @Input() benefitApp: BenefitApplication;
   @Input() removeable: boolean = false;
   @Input() person: MspPerson;
   @ViewChild('formRef') personalDetailsForm: NgForm;
   @Output() onChange = new EventEmitter<any>();
   @Output() docActionEvent = new EventEmitter<any>();
-  @Output() notifySpouseRemoval: EventEmitter<MspPerson> = new EventEmitter<MspPerson>();
-  @ViewChild('mspImageErrorModal') mspImageErrorModal: MspImageErrorModalComponent;
+  @Output() notifySpouseRemoval: EventEmitter<MspPerson> =
+    new EventEmitter<MspPerson>();
+  @ViewChild('mspImageErrorModal')
+  mspImageErrorModal: MspImageErrorModalComponent;
 
   Relationship = Relationship;
   subscriptions: Subscription[];
   supportDocErrorMsg: string = '';
 
-  constructor(private dataService: MspBenefitDataService,
-              private cd: ChangeDetectorRef) {
+  constructor(
+    private dataService: MspBenefitDataService,
+    private cd: ChangeDetectorRef
+  ) {
     super(cd);
     this.benefitApp = this.dataService.benefitApp;
     this.person = this.dataService.benefitApp.applicant;
   }
 
   ngAfterViewInit() {
-    this.personalDetailsForm.valueChanges.pipe(debounceTime(0))
-        .subscribe( values => {
-            this.onChange.emit(values);
-        });
+    this.personalDetailsForm.valueChanges
+      .pipe(debounceTime(0))
+      .subscribe((values) => {
+        this.onChange.emit(values);
+      });
   }
-
   get docText(): string {
-    return this.person.relationship === Relationship.Applicant ? 'your' : 'your spouse\'s';
+    return this.person.relationship === Relationship.Applicant
+      ? 'your'
+      : // tslint:disable-next-line
+        "your spouse's";
   }
 
   isSinUnique(): boolean {
@@ -68,14 +81,14 @@ export class PersonalDetailsRetroSuppbenComponent extends BaseComponent  {
     this.docActionEvent.emit(evt);
   }
   get phnList() {
-    if ( this.person.relationship === Relationship.Spouse ) {
+    if (this.person.relationship === Relationship.Spouse) {
       return [this.dataService.benefitApp.applicant.previous_phn];
     }
     return [this.dataService.benefitApp.spouse.previous_phn];
   }
 
   get sinList() {
-    if ( this.person.relationship === Relationship.Spouse ) {
+    if (this.person.relationship === Relationship.Spouse) {
       return [this.dataService.benefitApp.applicant.sin];
     }
     return [this.dataService.benefitApp.spouse.sin];
@@ -87,7 +100,7 @@ export class PersonalDetailsRetroSuppbenComponent extends BaseComponent  {
     let tooSmall = false;
     this.person.assistYearDocs = imgs;
 
-    imgs.forEach(img => { 
+    imgs.forEach((img) => {
       if (typeof img.size === 'number') {
         sum += img.size;
       }
@@ -97,14 +110,16 @@ export class PersonalDetailsRetroSuppbenComponent extends BaseComponent  {
         tooSmall = true;
       }
     });
-    
+
     // Same limit as moh-common-lib
     if (sum > 1048576) {
       // Reset the attachments for this upload
       this.person.assistYearDocs = [];
-      this.supportDocErrorMsg = 'The addition of the previous document exceeded the maximum upload size of this supporting document section.';
+      this.supportDocErrorMsg =
+        'The addition of the previous document exceeded the maximum upload size of this supporting document section.';
     } else if (tooSmall) {
-      this.supportDocErrorMsg = 'The document you attempted to upload is too small. Please try again with a larger, higher quality file.';
+      this.supportDocErrorMsg =
+        'The document you attempted to upload is too small. Please try again with a larger, higher quality file.';
     } else {
       this.supportDocErrorMsg = '';
     }

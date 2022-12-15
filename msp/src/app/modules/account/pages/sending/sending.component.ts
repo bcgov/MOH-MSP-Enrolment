@@ -1,5 +1,5 @@
 import { Component, Injectable, AfterContentInit, OnInit } from '@angular/core';
-import {  MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
+import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { MspApiAccountService } from '../../services/msp-api-account.service';
 import { Router } from '@angular/router';
 import { ResponseType } from '../../../../modules/msp-core/api-model/responseTypes';
@@ -9,16 +9,23 @@ import { MspAccountApp } from '../../models/account.model';
 import { Relationship } from '../../../../models/relationship.enum';
 import { ApiResponse } from 'app/models/api-response.interface';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ApiStatusCodes, ContainerService, PageStateService } from 'moh-common-lib';
+import {
+  ApiStatusCodes,
+  ContainerService,
+  PageStateService,
+} from 'moh-common-lib';
 import { BaseForm } from '../../models/base-form';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 
 @Component({
   templateUrl: 'sending.component.html',
-  styleUrls: ['./sending.component.scss']
+  styleUrls: ['./sending.component.scss'],
 })
 @Injectable()
-export class AccountSendingComponent extends BaseForm implements AfterContentInit, OnInit {
+export class AccountSendingComponent
+  extends BaseForm
+  implements AfterContentInit, OnInit
+{
   lang = require('./i18n');
   static ProcessStepNum = 6;
   mspAccountApp: MspAccountApp;
@@ -30,14 +37,16 @@ export class AccountSendingComponent extends BaseForm implements AfterContentIni
   hasError: boolean;
   showMoreErrorDetails: boolean;
 
-  constructor(private dataService: MspAccountMaintenanceDataService,
-              private service: MspApiAccountService,
-              private processService: ProcessService,
-              public router: Router,
-              private logService: MspLogService,
-              protected containerService: ContainerService,
-              protected pageStateService: PageStateService) {
-    super(router, containerService, pageStateService, processService)
+  constructor(
+    private dataService: MspAccountMaintenanceDataService,
+    private service: MspApiAccountService,
+    private processService: ProcessService,
+    public router: Router,
+    private logService: MspLogService,
+    protected containerService: ContainerService,
+    protected pageStateService: PageStateService
+  ) {
+    super(router, containerService, pageStateService, processService);
     this.mspAccountApp = this.dataService.accountApp;
     this.transmissionInProcess = undefined;
     this.hasError = undefined;
@@ -59,7 +68,7 @@ export class AccountSendingComponent extends BaseForm implements AfterContentIni
       {
         name: 'Account - mspAccountApp',
         residentialAddress: this.mspAccountApp.residentialAddress,
-        applicant: this.mspAccountApp.applicant
+        applicant: this.mspAccountApp.applicant,
       },
       'Account - mspAccountApp'
     );
@@ -76,101 +85,127 @@ export class AccountSendingComponent extends BaseForm implements AfterContentIni
   }
 
   transmitRequest() {
-
-  // After view inits, begin sending the application
-  this.transmissionInProcess = true;
-  this.hasError = undefined;
+    // After view inits, begin sending the application
+    this.transmissionInProcess = true;
+    this.hasError = undefined;
 
     this.service
-    .sendRequest(this.mspAccountApp)
-    .then((response: ApiResponse) => {
+      .sendRequest(this.mspAccountApp)
+      .then((response: ApiResponse) => {
+        if (response && response.op_return_code !== 'SUCCESS') {
+          devOnlyConsoleLog('Submission response: ', response.op_return_code);
+        }
 
-      if (response && response.op_return_code !== 'SUCCESS') {
-        devOnlyConsoleLog('Submission response: ', response.op_return_code);
-      }
+        if (response instanceof HttpErrorResponse) {
+          this.logService.log(
+            {
+              name: 'Account - System Error',
+              confirmationNumber: this.mspAccountApp.referenceNumber,
+              url: this.router.url,
+            },
+            'Account - Submission Response Error' + response.message
+          );
+          this.processErrorResponse(false);
+          return;
+        }
 
-      if (response instanceof HttpErrorResponse) {
+        const refNumber = response.op_reference_number;
+
+        const statusCode =
+          response.op_return_code === 'SUCCESS'
+            ? ApiStatusCodes.SUCCESS
+            : ApiStatusCodes.ERROR;
+
+        let bcServicesCardEligible = false;
+        let hasPrevMSPForChild = true;
+        const hasChildAdded = this.mspAccountApp.addedChildren.length > 0;
+        const hasChildRemoved = this.mspAccountApp.removedChildren.length > 0;
+
+        //check if there is status in canada selected
+        if (
+          this.mspAccountApp.accountChangeOptions &&
+          this.mspAccountApp.accountChangeOptions.statusUpdate
+        ) {
+          bcServicesCardEligible = true;
+        }
+
+        //check any new beneficiary is added
+        if (
+          !bcServicesCardEligible &&
+          this.mspAccountApp.accountChangeOptions &&
+          this.mspAccountApp.accountChangeOptions.dependentChange
+        ) {
+          if (
+            this.mspAccountApp.addedSpouse &&
+            !this.mspAccountApp.addedSpouse.isExistingBeneficiary &&
+            this.mspAccountApp.addedSpouse.bcServiceCardShowStatus
+          ) {
+            bcServicesCardEligible = true;
+          }
+          if (
+            this.mspAccountApp
+              .getAllChildren()
+              .filter(
+                (child) =>
+                  child.relationship === Relationship.Child19To24 &&
+                  !child.isExistingBeneficiary
+              ).length > 0
+          ) {
+            bcServicesCardEligible = true;
+          }
+        }
+
+        // Checks if at least one of the children has NO previous MSP coverage
+        if (
+          this.mspAccountApp
+            .getAllChildren()
+            .filter((child) => !child.immigrationStatusChange)
+        ) {
+          hasPrevMSPForChild = false;
+        }
+
+        //delete the application from storage
+        this.dataService.removeMspAccountApp();
+
+        this.pageStateService.setPageComplete();
+        //  go to confirmation
+        this.router.navigate(['/deam/confirmation'], {
+          queryParams: {
+            confirmationNum: refNumber,
+            showDepMsg: bcServicesCardEligible,
+            status: statusCode,
+            hasSpouseAdded: this.mspAccountApp.hasSpouseAdded,
+            hasSpouseRemoved: this.mspAccountApp.hasSpouseRemoved,
+            hasPrevMSPForSpouse:
+              this.mspAccountApp.addedSpouse.immigrationStatusChange,
+            hasChildAdded: hasChildAdded,
+            hasChildRemoved: hasChildRemoved,
+            hasPrevMSPForChild: hasPrevMSPForChild,
+          },
+        });
+      })
+      .catch((error: ResponseType | any) => {
+        devOnlyConsoleLog('Error in sending request: ', error);
+        this.hasError = true;
+        this.rawUrl = error.url;
+        this.rawError = error;
+        this.rawRequest = error._requestBody;
         this.logService.log(
           {
-            name: 'Account - System Error',
-            confirmationNumber: this.mspAccountApp.referenceNumber,
-            url: this.router.url
+            name: 'Account - Received Failure ',
+            error: error._body,
+            request: error._requestBody,
           },
-          'Account - Submission Response Error' + response.message
+          'Account - Submission Response Failure'
         );
-        this.processErrorResponse(false);
-        return;
-      }
+        this.transmissionInProcess = false;
 
-      const refNumber = response.op_reference_number;
+        const oldUUID = this.mspAccountApp.uuid;
+        this.mspAccountApp.regenUUID();
 
-      const statusCode = (response.op_return_code === 'SUCCESS' ? ApiStatusCodes.SUCCESS : ApiStatusCodes.ERROR);
-
-      let bcServicesCardEligible = false;
-      let hasPrevMSPForChild = true;
-      const hasChildAdded = (this.mspAccountApp.addedChildren.length > 0);
-      const hasChildRemoved = (this.mspAccountApp.removedChildren.length > 0);
-
-      //check if there is status in canada selected
-      if (this.mspAccountApp.accountChangeOptions && this.mspAccountApp.accountChangeOptions.statusUpdate) {
-        bcServicesCardEligible = true ;
-      }
-
-      //check any new beneficiary is added
-      if (!bcServicesCardEligible && this.mspAccountApp.accountChangeOptions && this.mspAccountApp.accountChangeOptions.dependentChange) {
-        if (this.mspAccountApp.addedSpouse && !this.mspAccountApp.addedSpouse.isExistingBeneficiary && this.mspAccountApp.addedSpouse.bcServiceCardShowStatus ) {
-            bcServicesCardEligible = true;
-        }
-        if (this.mspAccountApp.getAllChildren().filter( child => (child.relationship === Relationship.Child19To24 && !child.isExistingBeneficiary) ).length > 0) {
-            bcServicesCardEligible = true;
-        }
-      }
-
-      // Checks if at least one of the children has NO previous MSP coverage
-      if (this.mspAccountApp.getAllChildren().filter(child => (!child.immigrationStatusChange))) {
-        hasPrevMSPForChild = false;
-      }
-
-      //delete the application from storage
-      this.dataService.removeMspAccountApp();
-
-      this.pageStateService.setPageComplete();
-      //  go to confirmation
-      this.router.navigate(['/deam/confirmation'], {
-        queryParams: {
-          confirmationNum: refNumber, showDepMsg: bcServicesCardEligible, status: statusCode,
-          hasSpouseAdded: this.mspAccountApp.hasSpouseAdded,
-          hasSpouseRemoved: this.mspAccountApp.hasSpouseRemoved,
-          hasPrevMSPForSpouse: this.mspAccountApp.addedSpouse.immigrationStatusChange,
-          hasChildAdded: hasChildAdded,
-          hasChildRemoved: hasChildRemoved,
-          hasPrevMSPForChild: hasPrevMSPForChild
-        }
-      }
-    );
-
-    }).catch((error: ResponseType | any) => {
-      devOnlyConsoleLog('Error in sending request: ', error);
-      this.hasError = true;
-      this.rawUrl = error.url;
-      this.rawError = error;
-      this.rawRequest = error._requestBody;
-      this.logService.log(
-        {
-          name: 'Account - Received Failure ',
-          error: error._body,
-          request: error._requestBody
-        },
-        'Account - Submission Response Failure'
-      );
-      this.transmissionInProcess = false;
-
-      const oldUUID = this.mspAccountApp.uuid;
-      this.mspAccountApp.regenUUID();
-
-      this.mspAccountApp.authorizationToken = null;
-      this.dataService.saveMspAccountApp();
-    });
+        this.mspAccountApp.authorizationToken = null;
+        this.dataService.saveMspAccountApp();
+      });
   }
 
   processErrorResponse(transmissionInProcess: boolean) {
@@ -182,11 +217,11 @@ export class AccountSendingComponent extends BaseForm implements AfterContentIni
     this.dataService.saveMspAccountApp();
   }
 
-  toggleErrorDetails(){
+  toggleErrorDetails() {
     this.showMoreErrorDetails = !this.showMoreErrorDetails;
   }
 
-  retrySubmission(){
+  retrySubmission() {
     this.pageStateService.setPageComplete();
     this.router.navigate(['/deam/authorize']);
   }

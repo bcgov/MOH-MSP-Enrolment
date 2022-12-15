@@ -1,12 +1,24 @@
 import { Injectable } from '@angular/core';
 import { Address, AbstractHttpService, CommonImage } from 'moh-common-lib';
-import { AddressType, MSPApplicationSchema, CitizenshipType, NameType } from '../modules/msp-core/interfaces/i-api';
-import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import {
+  AddressType,
+  MSPApplicationSchema,
+  CitizenshipType,
+  NameType,
+} from '../modules/msp-core/interfaces/i-api';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { MspLogService } from './log.service';
 import { of, Observable } from 'rxjs';
 import { ApiResponse } from '../models/api-response.interface';
 import { environment } from '../../environments/environment';
-import { StatusInCanada, CanadianStatusReason } from '../modules/msp-core/models/canadian-status.enum';
+import {
+  StatusInCanada,
+  CanadianStatusReason,
+} from '../modules/msp-core/models/canadian-status.enum';
 import { BasePerson } from '../models/base-person';
 import { format } from 'date-fns';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
@@ -21,10 +33,9 @@ interface AttachmentRequestPartial {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class BaseMspApiService extends AbstractHttpService  {
-
+export class BaseMspApiService extends AbstractHttpService {
   protected _headers: HttpHeaders = new HttpHeaders();
   protected _application: string = '';
   protected _programArea: string = 'enrolment';
@@ -41,36 +52,37 @@ export class BaseMspApiService extends AbstractHttpService  {
   static readonly AttachmentDocumentType = 'SupportDocument';
   static readonly ApplicationType = 'benefitApplication';
 
-  constructor( protected http: HttpClient,
-               protected logService: MspLogService ) {
+  constructor(protected http: HttpClient, protected logService: MspLogService) {
     super(http);
   }
 
   // Set headers for request
-  setHeaders( authToken: string ) {
+  setHeaders(authToken: string) {
     this._headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Response-Type': 'application/json',
-      'X-Authorization': 'Bearer ' + authToken
+      'X-Authorization': 'Bearer ' + authToken,
     });
   }
 
   // For all applications within MSP project
-  sendApplication( app: MSPApplicationSchema, authToken: string ) {
-    const _url = environment.appConstants.apiBaseUrl +
-                 environment.appConstants.suppBenefitAPIUrl +
-                 app.uuid;
+  sendApplication(app: MSPApplicationSchema, authToken: string) {
+    const _url =
+      environment.appConstants.apiBaseUrl +
+      environment.appConstants.suppBenefitAPIUrl +
+      app.uuid;
 
     // Setup headers
-    this.setHeaders( authToken );
+    this.setHeaders(authToken);
 
-    return this.post<any>( _url, app );
+    return this.post<any>(_url, app);
   }
 
-  sendAttachments( token: string,
-                   applicationUUID: string,
-                   attachments: CommonImage[] ): Promise<string[]> {
-
+  sendAttachments(
+    token: string,
+    applicationUUID: string,
+    attachments: CommonImage[]
+  ): Promise<string[]> {
     return new Promise<string[]>((resolve, reject) => {
       // Instantly resolve if no attachments
       if (!attachments || attachments.length < 1) {
@@ -81,7 +93,7 @@ export class BaseMspApiService extends AbstractHttpService  {
       const attachmentPromises = new Array<Promise<string>>();
       for (const attachment of attachments) {
         attachmentPromises.push(
-          this.sendAttachment(token, applicationUUID, attachment )
+          this.sendAttachment(token, applicationUUID, attachment)
         );
       }
 
@@ -102,7 +114,7 @@ export class BaseMspApiService extends AbstractHttpService  {
             this.logService.log(
               {
                 text: 'Base - Attachments - Send All Error ',
-                error: _error
+                error: _error,
               },
               'Base - Attachments - Send All Error '
             );
@@ -114,7 +126,7 @@ export class BaseMspApiService extends AbstractHttpService  {
           this.logService.log(
             {
               text: 'Base - Attachments - Send All Error ',
-              error: _error
+              error: _error,
             },
             'Base - Attachments - Send All Error '
           );
@@ -124,12 +136,13 @@ export class BaseMspApiService extends AbstractHttpService  {
     });
   }
 
-
-  protected formatDate( dt: Date ) {
-    return dt ? format( dt, this.ISO8601DateFormat ) : '' ;
+  protected formatDate(dt: Date) {
+    return dt ? format(dt, this.ISO8601DateFormat) : '';
   }
 
-  protected convertToAttachment( images: CommonImage[] ): AttachmentRequestPartial[] {
+  protected convertToAttachment(
+    images: CommonImage[]
+  ): AttachmentRequestPartial[] {
     const output = [];
     images.map((image, i) => {
       const partial: AttachmentRequestPartial = {
@@ -137,7 +150,7 @@ export class BaseMspApiService extends AbstractHttpService  {
         attachmentDocumentType: BaseMspApiService.AttachmentDocumentType,
         attachmentOrder: (i + 1).toString(),
         description: '',
-        attachmentUuid: image.uuid
+        attachmentUuid: image.uuid,
       };
       output.push(partial);
     });
@@ -145,36 +158,40 @@ export class BaseMspApiService extends AbstractHttpService  {
     return output;
   }
 
-  protected convertName( person: BasePerson ): NameType {
+  protected convertName(person: BasePerson): NameType {
     return {
       firstName: person.firstName,
       lastName: person.lastName,
-      secondName: person.middleName
+      secondName: person.middleName,
     };
   }
 
   // Convert address to JSON AddressType
-  protected convertAddress( from: Address ): AddressType {
+  protected convertAddress(from: Address): AddressType {
     const addr: AddressType = {
       addressLine1: from.addressLine1,
       city: from.city,
       provinceOrState: from.province,
       country: from.country,
-      postalCode: from.postal ? from.postal.toUpperCase().replace(' ', '') : null
+      postalCode: from.postal
+        ? from.postal.toUpperCase().replace(' ', '')
+        : null,
     };
 
-    if ( from.addressLine2 ) {
+    if (from.addressLine2) {
       addr.addressLine2 = from.addressLine2;
     }
 
-    if ( from.addressLine3 ) {
+    if (from.addressLine3) {
       addr.addressLine3 = from.addressLine3;
     }
     return addr;
   }
 
-  protected getCitizenType( status: StatusInCanada,
-                            reason: CanadianStatusReason ): CitizenshipType {
+  protected getCitizenType(
+    status: StatusInCanada,
+    reason: CanadianStatusReason
+  ): CitizenshipType {
     let citizenType;
 
     // citizenship
@@ -184,46 +201,48 @@ export class BaseMspApiService extends AbstractHttpService  {
         break;
       case StatusInCanada.PermanentResident:
         citizenType = CitizenshipType.PermanentResident;
-      break;
+        break;
       case StatusInCanada.TemporaryResident:
         switch (reason) {
           case CanadianStatusReason.WorkingInBC:
             citizenType = CitizenshipType.WorkPermit;
-          break;
-        case CanadianStatusReason.StudyingInBC:
-          citizenType = CitizenshipType.StudyPermit;
-          break;
-        case CanadianStatusReason.Diplomat:
-          citizenType = CitizenshipType.Diplomat;
-          break;
-        case CanadianStatusReason.ReligiousWorker:
-          citizenType = CitizenshipType.ReligiousWorker;
-          break;
-        case CanadianStatusReason.Visiting:
-        default:
-          citizenType = CitizenshipType.VisitorPermit;
-          break;
-      }
+            break;
+          case CanadianStatusReason.StudyingInBC:
+            citizenType = CitizenshipType.StudyPermit;
+            break;
+          case CanadianStatusReason.Diplomat:
+            citizenType = CitizenshipType.Diplomat;
+            break;
+          case CanadianStatusReason.ReligiousWorker:
+            citizenType = CitizenshipType.ReligiousWorker;
+            break;
+          case CanadianStatusReason.Visiting:
+          default:
+            citizenType = CitizenshipType.VisitorPermit;
+            break;
+        }
     }
     return citizenType;
   }
 
-
   // User must remember to set the application name for logging
-  protected handleError( _error: HttpErrorResponse ) {
-
+  protected handleError(_error: HttpErrorResponse) {
     if (_error.error instanceof ErrorEvent) {
       //Client-side / network error occurred
-      console.error(`Base - ${this._application} API error: ${_error.error.message}`);
+      console.error(
+        `Base - ${this._application} API error: ${_error.error.message}`
+      );
     } else {
       // The backend returned an unsuccessful response code
-      console.error(`Base - ${this._application} Backend returned error code: ${_error.status}. Error body: ${_error.error}`);
+      console.error(
+        `Base - ${this._application} Backend returned error code: ${_error.status}. Error body: ${_error.error}`
+      );
     }
 
     this.logService.log(
       {
         text: `Base - Cannot get ${this._application} API response`,
-        response: _error
+        response: _error,
       },
       `Base - Cannot get ${this._application} API response`
     );
@@ -232,23 +251,26 @@ export class BaseMspApiService extends AbstractHttpService  {
     return of(_error);
   }
 
-  private sendAttachment( token: string,
-                          applicationUUID: string,
-                          attachment: CommonImage ): Promise<string> {
+  private sendAttachment(
+    token: string,
+    applicationUUID: string,
+    attachment: CommonImage
+  ): Promise<string> {
     return new Promise<string>((resolve, reject) => {
-
       /* Create URL /{applicationUUID}/attachment/{attachmentUUID */
-      let _url = environment.appConstants.apiBaseUrl +
-                 environment.appConstants.attachment +
-                 applicationUUID +
-                 '/attachments/' +
-                 attachment.uuid;
+      let _url =
+        environment.appConstants.apiBaseUrl +
+        environment.appConstants.attachment +
+        applicationUUID +
+        '/attachments/' +
+        attachment.uuid;
 
       // programArea
       _url += `?programArea=${this._programArea}`;
 
       // attachmentDocumentType - UI does NOT collect this property
-      _url += '&attachmentDocumentType=' + BaseMspApiService.AttachmentDocumentType;
+      _url +=
+        '&attachmentDocumentType=' + BaseMspApiService.AttachmentDocumentType;
 
       // contentType
       _url += '&contentType=' + attachment.contentType;
@@ -263,7 +285,7 @@ export class BaseMspApiService extends AbstractHttpService  {
       const headers = new HttpHeaders({
         'Content-Type': attachment.contentType,
         'Access-Control-Allow-Origin': '*',
-        'X-Authorization': 'Bearer ' + token
+        'X-Authorization': 'Bearer ' + token,
       });
       const options = { headers: headers, responseType: 'text' as 'text' };
 
@@ -275,29 +297,32 @@ export class BaseMspApiService extends AbstractHttpService  {
       }
 
       const blob = new Blob([new Uint8Array(array)], {
-        type: attachment.contentType
+        type: attachment.contentType,
       });
 
       return this.http
         .post(_url, blob, options)
         .toPromise()
         .then(
-          response => {
+          (response) => {
             this.logService.log(
               {
-                  text: "Base - Send Individual Attachment - Success",
-                  response: response,
+                text: 'Base - Send Individual Attachment - Success',
+                response: response,
               },
-              "Base - Send Individual Attachment - Success"
-            )
+              'Base - Send Individual Attachment - Success'
+            );
             return resolve(response);
           },
           (_error: Response | any) => {
-            devOnlyConsoleLog('Base - Error sending individual attachment: ', _error);
+            devOnlyConsoleLog(
+              'Base - Error sending individual attachment: ',
+              _error
+            );
             this.logService.log(
               {
                 text: 'Base - Attachment - Send Individual Error ',
-                response: _error
+                response: _error,
               },
               'Base - Attachment - Send Individual Error '
             );
@@ -309,7 +334,7 @@ export class BaseMspApiService extends AbstractHttpService  {
           this.logService.log(
             {
               text: 'Attachment - Send Individual Error ',
-              response: _error
+              response: _error,
             },
             'Attachment - Send Individual Error '
           );

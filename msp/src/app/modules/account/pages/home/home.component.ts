@@ -1,5 +1,12 @@
-import { Component, OnInit, ChangeDetectorRef, Injectable, ViewChild, ElementRef } from '@angular/core';
-import {ConsentModalComponent, PageStateService} from 'moh-common-lib';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  Injectable,
+  ViewChild,
+  ElementRef,
+} from '@angular/core';
+import { ConsentModalComponent, PageStateService } from 'moh-common-lib';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { Router } from '@angular/router';
 import { MspAccountApp } from '../../models/account.model';
@@ -14,7 +21,7 @@ import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 @Component({
   selector: 'msp-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss']
+  styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
   static ProcessStepNum = 0;
@@ -30,12 +37,14 @@ export class HomeComponent implements OnInit {
   continueButtonLoading: boolean = false;
   addressAppSent: boolean = false;
 
-  constructor(private dataService: MspAccountMaintenanceDataService,
-              private header: HeaderService,
-              private pageStateService: PageStateService,
-              private apiService: MspApiAccountService,
-              private router: Router,
-              private logService: MspLogService) {
+  constructor(
+    private dataService: MspAccountMaintenanceDataService,
+    private header: HeaderService,
+    private pageStateService: PageStateService,
+    private apiService: MspApiAccountService,
+    private router: Router,
+    private logService: MspLogService
+  ) {
     this.header.setTitle('Account Management');
     this.pageStateService.setPageComplete();
   }
@@ -46,9 +55,8 @@ export class HomeComponent implements OnInit {
 
   ngAfterViewInit() {
     if (!this.mspAccountApp.infoCollectionAgreement) {
-        this.mspConsentModal.showFullSizeView();
+      this.mspConsentModal.showFullSizeView();
     }
-
   }
   onAccept(event: boolean) {
     this.mspAccountApp.infoCollectionAgreement = event;
@@ -83,30 +91,30 @@ export class HomeComponent implements OnInit {
     this.continueButtonLoading = true;
     // On users first address change request, send notice
     if (!this.addressAppSent) {
-      this.apiService.sendChangeAddressApplication(this.mspAccountApp)
+      this.apiService
+        .sendChangeAddressApplication(this.mspAccountApp)
         .then((response: ApiResponse) => {
-  
           if (response) {
             devOnlyConsoleLog('Submission response: ', response.op_return_code);
           }
-  
+
           if (response instanceof HttpErrorResponse) {
             this.logService.log(
               {
                 name: 'Account - System Error',
                 confirmationNumber: this.mspAccountApp.referenceNumber,
-                url: this.router.url
+                url: this.router.url,
               },
               'Account - Submission Response Error' + response.message
             );
           }
-  
+
           this.addressAppSent = true;
-          
-        }).catch((error: ResponseType | any) => {
+        })
+        .catch((error: ResponseType | any) => {
           devOnlyConsoleLog('Account - Error in sending request: ', error);
         });
-      }
+    }
     this.continueButtonLoading = false;
     window.open(this.outLinkUrl, '_blank');
   }

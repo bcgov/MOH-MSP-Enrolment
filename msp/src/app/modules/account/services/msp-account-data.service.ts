@@ -5,17 +5,19 @@ import { Process } from '../../../services/process.service';
 import { MspAccountDto } from '../../../modules/account/models/account.dto';
 import {
   OperationActionType,
-  MspPerson
+  MspPerson,
 } from '../../../components/msp/model/msp-person.model';
 import { Address, CANADA, BRITISH_COLUMBIA } from 'moh-common-lib';
 import { PersonDto } from '../../../components/msp/model/msp-person.dto';
-import { OutofBCRecordDto, OutofBCRecord } from '../../../models/outof-bc-record.model';
+import {
+  OutofBCRecordDto,
+  OutofBCRecord,
+} from '../../../models/outof-bc-record.model';
 import { AddressDto } from '../../../models/address.dto';
 import { Gender } from '../../../models/gender.enum';
 
 @Injectable()
 export class MspAccountMaintenanceDataService {
-
   private _mspAccountApp: MspAccountApp;
   private mspAccountStorageKey: string = 'msp-account';
 
@@ -44,12 +46,16 @@ export class MspAccountMaintenanceDataService {
   }
 
   saveMspAccountApp(): void {
-    const dto: MspAccountDto = this.toMspAccountAppTransferObject(this._mspAccountApp);
+    const dto: MspAccountDto = this.toMspAccountAppTransferObject(
+      this._mspAccountApp
+    );
     this.localStorageService.set(this.mspAccountStorageKey, dto);
   }
 
   private fetchMspAccountApplication(): MspAccountApp {
-    const dto: MspAccountDto = this.localStorageService.get<MspAccountDto>(this.mspAccountStorageKey);
+    const dto: MspAccountDto = this.localStorageService.get<MspAccountDto>(
+      this.mspAccountStorageKey
+    );
     if (dto) {
       return this.fromMspAccountTransferObject(dto);
     } else {
@@ -105,7 +111,8 @@ export class MspAccountMaintenanceDataService {
     dto.updateNameDueToMarriageDocType = input.updateNameDueToMarriageDocType;
 
     dto.updateNameDueToNameChangeDoc = input.updateNameDueToNameChangeDoc;
-    dto.updateNameDueToNameChangeDocType = input.updateNameDueToNameChangeDocType;
+    dto.updateNameDueToNameChangeDocType =
+      input.updateNameDueToNameChangeDocType;
 
     dto.updateNameDueToErrorDoc = input.updateNameDueToErrorDoc;
     dto.updateNameDueToErrorDocType = input.updateNameDueToErrorDocType;
@@ -134,7 +141,7 @@ export class MspAccountMaintenanceDataService {
       this.convertResidentialAddress(dto, output);
     }
 
-    dto.images.forEach(img => {
+    dto.images.forEach((img) => {
       output.documents.images = [...output.documents.images, img];
     });
 
@@ -145,7 +152,8 @@ export class MspAccountMaintenanceDataService {
     output.updateNameDueToMarriageDocType = dto.updateNameDueToMarriageDocType;
 
     output.updateNameDueToNameChangeDoc = dto.updateNameDueToNameChangeDoc;
-    output.updateNameDueToNameChangeDocType = dto.updateNameDueToNameChangeDocType;
+    output.updateNameDueToNameChangeDocType =
+      dto.updateNameDueToNameChangeDocType;
 
     output.updateNameDueToErrorDoc = dto.updateNameDueToErrorDoc;
     output.updateNameDueToErrorDocType = dto.updateNameDueToErrorDocType;
@@ -169,35 +177,44 @@ export class MspAccountMaintenanceDataService {
     dto.applicant = this.toPersonDtoForAccount(input.applicant);
 
     if (input.updatedSpouse) {
-      dto.applicant.updatedSpouse = this.toPersonDtoForAccount(input.updatedSpouse);
+      dto.applicant.updatedSpouse = this.toPersonDtoForAccount(
+        input.updatedSpouse
+      );
     }
 
     if (input.addedSpouse) {
       dto.applicant.addedSpouse = this.toPersonDtoForAccount(input.addedSpouse);
-      dto.applicant.addedSpouse.outOfBCRecord = this.toOutofBCRecordDto(input.addedSpouse.outOfBCRecord);
-      dto.applicant.addedSpouse.planOnBeingOutOfBCRecord = this.toOutofBCRecordDto(input.addedSpouse.planOnBeingOutOfBCRecord);
+      dto.applicant.addedSpouse.outOfBCRecord = this.toOutofBCRecordDto(
+        input.addedSpouse.outOfBCRecord
+      );
+      dto.applicant.addedSpouse.planOnBeingOutOfBCRecord =
+        this.toOutofBCRecordDto(input.addedSpouse.planOnBeingOutOfBCRecord);
     }
 
     if (input.removedSpouse) {
-      dto.applicant.removedSpouse = this.toPersonDtoForAccount(input.removedSpouse);
+      dto.applicant.removedSpouse = this.toPersonDtoForAccount(
+        input.removedSpouse
+      );
     }
 
-    input.addedChildren.forEach(c => {
+    input.addedChildren.forEach((c) => {
       const c2: PersonDto = this.toPersonDtoForAccount(c);
       c2.outOfBCRecord = this.toOutofBCRecordDto(c.outOfBCRecord);
-      c2.planOnBeingOutOfBCRecord = this.toOutofBCRecordDto(c.planOnBeingOutOfBCRecord);
+      c2.planOnBeingOutOfBCRecord = this.toOutofBCRecordDto(
+        c.planOnBeingOutOfBCRecord
+      );
       this.convertSchoolAddress(c, c2);
       dto.applicant.addedChildren = [...dto.applicant.addedChildren, c2];
     });
 
-    input.removedChildren.forEach(c => {
+    input.removedChildren.forEach((c) => {
       const c2: PersonDto = this.toPersonDtoForAccount(c);
       c2.outOfBCRecord = this.toOutofBCRecordDto(c.outOfBCRecord);
       this.convertSchoolAddress(c, c2);
       dto.applicant.removedChildren = [...dto.applicant.removedChildren, c2];
     });
 
-    input.updatedChildren.forEach(c => {
+    input.updatedChildren.forEach((c) => {
       const c2: PersonDto = this.toPersonDtoForAccount(c);
       dto.applicant.updatedChildren = [...dto.applicant.updatedChildren, c2];
     });
@@ -233,7 +250,7 @@ export class MspAccountMaintenanceDataService {
     if (!output.applicant.residentialAddress.province) {
       output.applicant.residentialAddress.province = BRITISH_COLUMBIA;
     }
-    
+
     if (!output.applicant.residentialAddress.country) {
       output.applicant.residentialAddress.country = CANADA;
     }
@@ -250,22 +267,22 @@ export class MspAccountMaintenanceDataService {
       );
       output.addedSpouse.operationActionType = OperationActionType.Add;
     }
-    
+
     if (dto.applicant.updatedSpouse) {
       output.updatedSpouse = this.fromPersonDtoForAccount(
         dto.applicant.updatedSpouse
       );
       output.updatedSpouse.operationActionType = OperationActionType.Update;
     }
-    
+
     if (dto.applicant.removedSpouse) {
       output.removedSpouse = this.fromPersonDtoForAccount(
         dto.applicant.removedSpouse
       );
       output.removedSpouse.operationActionType = OperationActionType.Remove;
     }
-    
-    dto.applicant.addedChildren.forEach(c => {
+
+    dto.applicant.addedChildren.forEach((c) => {
       if (c) {
         const child: MspPerson = this.fromPersonDtoForAccount(c);
         child.outOfBCRecord = this.toOutofBCRecord(c.outOfBCRecord);
@@ -279,7 +296,7 @@ export class MspAccountMaintenanceDataService {
       }
     });
 
-    dto.applicant.removedChildren.forEach(c => {
+    dto.applicant.removedChildren.forEach((c) => {
       const child: MspPerson = this.fromPersonDtoForAccount(c);
       child.outOfBCRecord = this.toOutofBCRecord(c.outOfBCRecord);
       this.convertSchoolAddress(c, child);
@@ -287,21 +304,21 @@ export class MspAccountMaintenanceDataService {
       output.removedChildren = [...output.removedChildren, child];
     });
 
-    dto.applicant.updatedChildren.forEach(c => {
+    dto.applicant.updatedChildren.forEach((c) => {
       const child: MspPerson = this.fromPersonDtoForAccount(c);
       child.operationActionType = OperationActionType.Update;
       output.updatedChildren = [...output.updatedChildren, child];
     });
 
-    dto.applicant.updateNameDueToMarriageDoc.forEach(img => {
+    dto.applicant.updateNameDueToMarriageDoc.forEach((img) => {
       output.applicant.updateNameDueToMarriageDoc = [img];
     });
 
-    dto.applicant.updateNameDueToNameChangeDoc.forEach(img => {
+    dto.applicant.updateNameDueToNameChangeDoc.forEach((img) => {
       output.applicant.updateNameDueToNameChangeDoc = [img];
     });
 
-    dto.documents.forEach(img => {
+    dto.documents.forEach((img) => {
       output.documents = [...output.documents, img];
     });
 
