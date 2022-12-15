@@ -15,8 +15,7 @@ import { CommonImage } from 'moh-common-lib';
 })
 export class AssistanceAuthorizeSubmitComponent
   extends BaseComponent
-  implements OnInit
-{
+  implements OnInit {
   title = 'Authorize and submit your application';
 
   declarationOne = `The information I provide will be relevant to and used solely for the purpose of determining and verifying my entitlement to Retroactive Premium Assistance under the

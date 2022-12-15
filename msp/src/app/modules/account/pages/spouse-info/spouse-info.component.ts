@@ -30,8 +30,7 @@ const DOM_REFRESH_TIMEOUT = 50;
 })
 export class SpouseInfoComponent
   extends BaseForm
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   static ProcessStepNum = 1;
   accountApp: MspAccountApp;
   accountChangeOptions: AccountChangeOptions;

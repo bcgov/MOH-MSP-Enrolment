@@ -58,9 +58,9 @@ describe('MspMaintenanceService', () => {
     httpMock = injector.get(HttpTestingController);
   });
 
-  // tslint:disable-next-line:no-shadowed-variable
   it('should be created', inject(
     [MspMaintenanceService],
+    // tslint:disable-next-line:no-shadowed-variable
     (service: MspMaintenanceService) => {
       expect(service).toBeTruthy();
     }

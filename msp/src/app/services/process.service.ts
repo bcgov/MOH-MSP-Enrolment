@@ -43,8 +43,7 @@ export class ProcessStep {
 @Injectable()
 export class ProcessService
   extends CheckCompleteBaseService
-  implements CanActivate
-{
+  implements CanActivate {
   constructor(private dataService: MspDataService, private _router: Router) {
     super(_router);
   }

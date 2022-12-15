@@ -24,8 +24,7 @@ import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 @Injectable()
 export class AccountSendingComponent
   extends BaseForm
-  implements AfterContentInit, OnInit
-{
+  implements AfterContentInit, OnInit {
   lang = require('./i18n');
   static ProcessStepNum = 6;
   mspAccountApp: MspAccountApp;

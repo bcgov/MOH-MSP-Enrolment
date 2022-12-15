@@ -328,9 +328,9 @@ export class MspApiService {
    * @param document
    * @returns {Promise<ResponseType>}
    */
-  // tslint:disable-next-line:no-shadowed-variable
   private sendDocument(
     token: string,
+    // tslint:disable-next-line:no-shadowed-variable
     document: document,
     documentXmlString: string
   ): Promise<ResponseType> {

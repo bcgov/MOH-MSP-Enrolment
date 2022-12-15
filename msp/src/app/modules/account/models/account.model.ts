@@ -226,14 +226,14 @@ class MspAccountApp implements ApplicationBase {
 
   removeUpdatedSpouse = () => {
     this.updatedSpouse = null;
-  };
+  }
 
   addUpdatedSpouse = (sp: MspPerson) => {
     if (!this.updatedSpouse) {
       this.updatedSpouse = sp;
       this.updatedSpouse.operationActionType = OperationActionType.Update;
     }
-  };
+  }
 
   get hasValidAuthToken() {
     return this.authorizationToken && this.authorizationToken.length > 1;

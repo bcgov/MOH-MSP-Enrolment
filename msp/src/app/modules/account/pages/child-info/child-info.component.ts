@@ -31,8 +31,7 @@ const DOM_REFRESH_TIMEOUT = 50;
 })
 export class ChildInfoComponent
   extends BaseForm
-  implements OnInit, AfterViewInit, OnDestroy
-{
+  implements OnInit, AfterViewInit, OnDestroy {
   // children: MspPerson[];
   static ProcessStepNum = 2;
 
