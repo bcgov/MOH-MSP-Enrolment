@@ -11,14 +11,14 @@ import { EnrolDataService } from '../modules/enrolment/services/enrol-data.servi
 import { APP_ROUTES } from '../models/route-constants';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 
-@Injectable({
-    providedIn: 'root'
-})
-
 enum SeverityLevels {
     INFO = 'info',
     ERROR = 'error',
 }
+
+@Injectable({
+    providedIn: 'root'
+})
 
 // TODO: Replace with logService from common-lib
 export class MspLog2Service extends AbstractHttpService {
