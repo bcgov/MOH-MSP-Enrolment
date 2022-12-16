@@ -30,9 +30,9 @@ jobs:
       - name: Install dependencies
         run: npm ci
       - name: Unit tests w/ coverage
-        run: npm test -- --watch=false --browsers=ChromeHeadless
-      # - name: LINTing
-      #   run: npm run test:lint
+        run: npm test
+      - name: LINTing
+        run: npm run lint
       # - name: OpenAPI Schema
       #   run: npm run test:schema
   build:
