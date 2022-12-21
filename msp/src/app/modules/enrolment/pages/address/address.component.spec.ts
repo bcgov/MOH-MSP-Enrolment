@@ -8,9 +8,9 @@ import { EnrolAddressComponent } from './address.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MspLogService } from '../../../../services/log.service';
 
-//The following test only runs in watch mode. 
+//The following test only runs in watch mode.
 //For some reason, running it in single test mode causes it to fail.
-//I couldn't find a way to get it to work, so I'm commenting out the test 
+//I couldn't find a way to get it to work, so I'm commenting out the test
 //until someone in the future finds a way to get it to work.
 //For more information: https://stackoverflow.com/questions/32354165/error-running-tests-with-karma-only-whilst-using-single-run-flag
 
