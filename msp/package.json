@@ -15,7 +15,7 @@
     "dev-build": "ng build",
     "prebuild": "node ./src/version.js",
     "build": "ng build --prod",
-    "test": "ng test --watch=false",
+    "test": "ng test",
     "lint": "ng lint",
     "test:coverage": "echo \"Error: no test specified\" && exit 0",
     "pree2e": "npx webdriver-manager update --versions.chrome 86.0.4240.198",
