@@ -64,7 +64,7 @@
               <Input label='Last name'
                 id='last-name'
                 className='mt-3'
-                maxlength="30"
+                :maxlength="lastNameMaxLength"
                 v-model='spouseLastName'
                 :required="true"
                 @blur="handleBlurField($v.spouseLastName)"
@@ -814,7 +814,7 @@ import {
 import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
-import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js';
+import { firstNameMaxLength, middleNameMaxLength, lastNameMaxLength } from '@/constants/html-validations.js';
 import ContactInformation from '@/components/ContactInformation.vue';
 
 const birthDatePastValidator = (value) => {
@@ -914,6 +914,7 @@ export default {
       pageLoaded: false,
       firstNameMaxLength,
       middleNameMaxLength,
+      lastNameMaxLength,
       // Radio and select options
       radioGenderOptions: radioOptionsGender,
       radioOptionsNoYes: radioOptionsNoYes,

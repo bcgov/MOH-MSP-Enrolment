@@ -46,7 +46,7 @@
               class="mt-3"
               v-model="lastName"
               :required="true"
-              maxlength="30"
+              :maxlength="lastNameMaxLength"
               :inputStyle="mediumStyles"
               @blur="handleBlurField($v.lastName)" />
             <div class="text-danger"
@@ -802,7 +802,7 @@ import {
   subYears,
 } from 'date-fns';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
-import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js'
+import { firstNameMaxLength, middleNameMaxLength, lastNameMaxLength } from '@/constants/html-validations.js'
 import ContactInformation from '@/components/ContactInformation.vue';
 
 const birthdate16YearsValidator = (value) => {
@@ -869,6 +869,7 @@ export default {
       isPageLoaded: false,
       firstNameMaxLength,
       middleNameMaxLength,
+      lastNameMaxLength,
       // Constants.
       StatusInCanada,
       CanadianStatusReasons,
