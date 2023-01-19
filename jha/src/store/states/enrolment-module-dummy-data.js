@@ -6,6 +6,14 @@ import {
 import { ChildAgeTypes } from '../../constants/child-age-types'
 import { parseISO } from 'date-fns';
 
+let testDepartureDate = new Date();
+testDepartureDate.setDate(testDepartureDate.getDate() - 91);
+let testReturnDate = new Date();
+testReturnDate.setDate(testReturnDate.getDate() - 89);
+
+//The array fields have [{}] by default to populate the attachment loader with dummy info and facilitate navigation through most of the application
+//However, if you need to submit applications, these dummy attachments will cause errors. You'll need to replace these with the [] arrays and manually upload attachments
+
 export default {
   // Eligibility Questionnaires
   eqMSPIsApplying: 'Y',
@@ -36,9 +44,11 @@ export default {
   ahCitizenshipStatusReason: CanadianStatusReasons.LivingInBCWithoutMSP,
   ahCitizenshipSupportDocumentType: SupportDocumentTypes.CanadianBirthCertificate,
   ahCitizenshipSupportDocuments: [{}],
+  // ahCitizenshipSupportDocuments: [],
   ahIsNameChanged: 'Y',
   ahNameChangeSupportDocumentType: "Marriage Certificate",
   ahNameChangeSupportDocuments: [{}],
+  // ahNameChangeSupportDocuments: [],
   ahHasLivedInBCSinceBirth: 'Y',
   ahIsMovedToBCPermanently: 'Y',
   ahMoveFromOrigin: 'USA',
@@ -48,8 +58,8 @@ export default {
   ahIsOutsideBCLast12Months: 'Y',
   ahOutsideBCLast12MonthsReason: 'Vacation',
   ahOutsideBCLast12MonthsLocation: 'Bahamas',
-  ahOutsideBCLast12MonthsDepartureDate: parseISO('2022-01-15'),
-  ahOutsideBCLast12MonthsReturnDate: parseISO('2022-01-16'),
+  ahOutsideBCLast12MonthsDepartureDate: testDepartureDate,
+  ahOutsideBCLast12MonthsReturnDate: testReturnDate,
   ahHasPreviousPHN: 'Y',
   ahPreviousPHN: '9999 999 998',
   ahIsReleasedFromArmedForces: 'Y',
@@ -59,6 +69,7 @@ export default {
   ahFPCIncome: '0',
   ahFPCRDSP: '0',
   ahCRADocuments: [{}],
+  // ahCRADocuments: [],
   // Spouse info
   hasSpouse: 'Y',
   spouseStatus: StatusInCanada.Citizen,
@@ -66,9 +77,11 @@ export default {
   spouseCitizenshipSupportDocumentType: SupportDocumentTypes.CanadianBirthCertificate,
   spouseGenderMatches: 'N',
   spouseCitizenshipSupportDocuments: [{}],
+  // spouseCitizenshipSupportDocuments: [],
   spouseIsNameChanged: 'Y',
   spouseNameChangeSupportDocumentType: "Marriage Certificate",
   spouseNameChangeSupportDocuments: [{}],
+  // spouseNameChangeSupportDocuments: [],
   spouseFirstName: 'Sarah',
   spouseMiddleName: 'D',
   spouseLastName: 'CANALICULATEXB',
@@ -85,8 +98,8 @@ export default {
   spouseOutsideBCLast12Months: 'Y',
   spouseOutsideBCLast12MonthsReason: 'Vacation',
   spouseOutsideBCLast12MonthsDestination: 'Florida',
-  spouseOutsideBCLast12MonthsDepartureDate: parseISO('2022-01-03'),
-  spouseOutsideBCLast12MonthsReturnDate: parseISO('2022-01-04'),
+  spouseOutsideBCLast12MonthsDepartureDate: testDepartureDate,
+  spouseOutsideBCLast12MonthsReturnDate: testReturnDate,
   spouseHasPreviousBCHealthNumber: 'Y',
   spousePreviousBCHealthNumber: '9999 999 998',
   spouseBeenReleasedFromInstitution: 'Y',
@@ -94,6 +107,8 @@ export default {
   spouseFPCIncome: '20000',
   spouseFPCRDSP: '2000',
   spouseCRADocuments: [{}],
+  // spouseCRADocuments: [],
+
   // Child info
   hasChildren: 'Y',
   children: [
@@ -105,6 +120,7 @@ export default {
       citizenshipSupportDocumentType: SupportDocumentTypes.CanadianBirthCertificate,
       genderMatches: 'N',
       citizenshipSupportDocuments: [{}],
+      // citizenshipSupportDocuments: [],
       isNameChanged: 'N',
       nameChangeSupportDocumentType: null,
       nameChangeSupportDocuments: [],
@@ -152,9 +168,11 @@ export default {
       citizenshipSupportDocumentType: "Canadian Birth Certificate",
       genderMatches: 'Y',
       citizenshipSupportDocuments: [{}],
+      // citizenshipSupportDocuments: [],
       isNameChanged: "Y",
       nameChangeSupportDocumentType: "Marriage Certificate",
       nameChangeSupportDocuments: [{}],
+      // nameChangeSupportDocuments: [],
       moveFromOrigin: "Afghanistan",
       livedInBCSinceBirth: null,
       previousHealthNumber: null,
@@ -197,6 +215,8 @@ export default {
   selectedAttendantNursingRecipients: ['spouse'],
   numAttendantNursingChildren: '1',
   attendantNursingReceipts: [{}],
+  // attendantNursingReceipts: [],
+
   // ContactInfoPage
   resAddressLine1: '1234 White House Ln.',
   resAddressLine2: null,
