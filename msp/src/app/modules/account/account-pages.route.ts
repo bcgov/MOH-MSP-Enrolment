@@ -1,13 +1,12 @@
-import { ACCOUNT_PAGES } from "./account.constants";
+import { ACCOUNT_PAGES } from './account.constants';
 import { ProcessService } from '../../services/process.service';
-import { AccountPersonalInfoComponent } from "./pages/personal-info/personal-info.component";
-import { SpouseInfoComponent } from "./pages/spouse-info/spouse-info.component";
-import { ChildInfoComponent } from "./pages/child-info/child-info.component";
-import { AccountReviewComponent } from "./pages/review/review.component";
-import { ContactInfoComponent } from "./pages/contact-info/contact-info.component";
-import { AuthorizeComponent } from "./pages/authorize/authorize.component";
-import { Routes } from "@angular/router";
-
+import { AccountPersonalInfoComponent } from './pages/personal-info/personal-info.component';
+import { SpouseInfoComponent } from './pages/spouse-info/spouse-info.component';
+import { ChildInfoComponent } from './pages/child-info/child-info.component';
+import { AccountReviewComponent } from './pages/review/review.component';
+import { ContactInfoComponent } from './pages/contact-info/contact-info.component';
+import { AuthorizeComponent } from './pages/authorize/authorize.component';
+import { Routes } from '@angular/router';
 
 export const accountPageRoutes: Routes = [
   {

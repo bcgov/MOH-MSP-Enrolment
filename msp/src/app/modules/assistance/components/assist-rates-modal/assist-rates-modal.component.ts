@@ -5,14 +5,14 @@ import {
   Input,
   EventEmitter,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
   selector: 'msp-assist-rates-modal',
-  templateUrl:'./assist-rates-modal.component.html',
-  styleUrls: ['./assist-rates-modal.component.scss']
+  templateUrl: './assist-rates-modal.component.html',
+  styleUrls: ['./assist-rates-modal.component.scss'],
 })
 export class AssistRatesModalComponent implements OnInit {
   @Input() entries: any[];
@@ -26,7 +26,7 @@ export class AssistRatesModalComponent implements OnInit {
     ['Child care expenses on tax return', '50% of line 214'],
     ['Universal Child Care Benefit', 'line 117'],
     ['number of individuals', '$3,000 per individual', 'Disability: '],
-    ['Registered Disability Savings Plan', 'line 125']
+    ['Registered Disability Savings Plan', 'line 125'],
   ];
 
   constructor() {
@@ -36,12 +36,11 @@ export class AssistRatesModalComponent implements OnInit {
       { year: '2015', amount: '$30,000' },
       { year: '2016', amount: '$42,000' },
       { year: '2017', amount: '$42,000' },
-      { year: '2018', amount: '$42,000' }
+      { year: '2018', amount: '$42,000' },
     ];
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   close() {
     this.closeModal.emit(true);

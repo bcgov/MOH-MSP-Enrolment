@@ -3,7 +3,7 @@ import { MspLogService } from '../../../services/log.service';
 import {
   HttpClient,
   HttpHeaders,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { BenefitApplication } from '../models/benefit-application.model';
 import { _ApplicationTypeNameSpace } from '../../msp-core/api-model/applicationTypes';
@@ -19,14 +19,14 @@ import { Router } from '@angular/router';
 import { MspBenefitDataService } from './msp-benefit-data.service';
 import {
   SupplementaryBenefitsApplicationType,
-  MSPApplicationSchema
+  MSPApplicationSchema,
 } from 'app/modules/msp-core/interfaces/i-api';
 import { FieldPageMap } from '../models/field-page-map';
 import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { format } from 'date-fns';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 
 //TODO - nothing has been done on these service except the skeleton.
@@ -35,7 +35,6 @@ export class MspApiBenefitService extends AbstractHttpService {
   protected _headers: HttpHeaders = new HttpHeaders();
   readonly ISO8601DateFormat = 'yyyy-MM-dd';
   suppBenefitResponse: ApiResponse;
-
 
   constructor(
     protected http: HttpClient,
@@ -59,7 +58,7 @@ export class MspApiBenefitService extends AbstractHttpService {
 
     return new Promise<ApiResponse>((resolve, reject) => {
       //Validating the response against the schema
-      this.schemaSvc.validate(suppBenefitRequest).then(res => {
+      this.schemaSvc.validate(suppBenefitRequest).then((res) => {
         if (res.errors) {
           let errorField: string;
           let errorMessage: string;
@@ -74,9 +73,11 @@ export class MspApiBenefitService extends AbstractHttpService {
           if (errorField && errorMessage) {
             this.logService.log(
               {
-                text: 'Supplementary Benefit - API validation against schema failed because of ' +
-                errorField + ' field',
-                response: errorMessage
+                text:
+                  'Supplementary Benefit - API validation against schema failed because of ' +
+                  errorField +
+                  ' field',
+                response: errorMessage,
               },
               'Supplementary Benefit -  API validation against schema failed'
             );
@@ -95,7 +96,7 @@ export class MspApiBenefitService extends AbstractHttpService {
           app.uuid,
           app.getAllImages()
         )
-          .then(attachmentResponse => {
+          .then((attachmentResponse) => {
             // TODO - Likely have to store all the responses for image uploads, so we can use those UUIDs with our application upload
             // unless we can just use our pre-uploaded ones? though that has potential for missing records.
             // once all attachments are done we can sendApplication in the data
@@ -103,7 +104,7 @@ export class MspApiBenefitService extends AbstractHttpService {
               suppBenefitRequest,
               app.uuid,
               app.authorizationToken
-            ).subscribe(response => {
+            ).subscribe((response) => {
               // Add reference number
               if (response && response.referenceNumber) {
                 app.referenceNumber = response.referenceNumber.toString();
@@ -117,7 +118,7 @@ export class MspApiBenefitService extends AbstractHttpService {
             this.logService.log(
               {
                 text: 'Supplementary Benefits - Attachment - Send All Rejected ',
-                response: error
+                response: error,
               },
               'Supplementary Benefits - Attachment - Send All Rejected '
             );
@@ -141,7 +142,7 @@ export class MspApiBenefitService extends AbstractHttpService {
     this._headers = new HttpHeaders({
       'Content-Type': 'application/json',
       'Response-Type': 'application/json',
-      'X-Authorization': 'Bearer ' + authToken
+      'X-Authorization': 'Bearer ' + authToken,
     });
     return this.post<BenefitApplication>(url, app);
   }
@@ -171,19 +172,18 @@ export class MspApiBenefitService extends AbstractHttpService {
           (responses: string[]) => {
             this.logService.log(
               {
-
-                  text: "Supplementary Benefits - Send All Attachments - Success",
-                  response: responses,
+                text: 'Supplementary Benefits - Send All Attachments - Success',
+                response: responses,
               },
-              "Send All Attachments - Success"
-            )
+              'Send All Attachments - Success'
+            );
             return resolve(responses);
           },
           (error: Response | any) => {
             this.logService.log(
               {
                 text: 'Supplementary Benefits - Attachments - Send All Error ',
-                error: error
+                error: error,
               },
               'Supplementary Benefits Attachments - Send All Error '
             );
@@ -194,7 +194,7 @@ export class MspApiBenefitService extends AbstractHttpService {
           this.logService.log(
             {
               text: 'Supplementary Benefits - Attachments - Send All Error ',
-              error: error
+              error: error,
             },
             'Supplementary Benefits - Attachments - Send All Error '
           );
@@ -240,7 +240,7 @@ export class MspApiBenefitService extends AbstractHttpService {
       const headers = new HttpHeaders({
         'Content-Type': attachment.contentType,
         'Access-Control-Allow-Origin': '*',
-        'X-Authorization': 'Bearer ' + token
+        'X-Authorization': 'Bearer ' + token,
       });
       const options = { headers: headers, responseType: 'text' as 'text' };
 
@@ -250,27 +250,28 @@ export class MspApiBenefitService extends AbstractHttpService {
         array.push(binary.charCodeAt(i));
       }
       const blob = new Blob([new Uint8Array(array)], {
-        type: attachment.contentType
+        type: attachment.contentType,
       });
 
       return this.http
         .post(url, blob, options)
         .toPromise()
         .then(
-          response => {
+          (response) => {
             this.logService.log(
               {
-                  text: "Supplementary Benefits - Send Individual Attachment - Success",
-                  response: response,
-              }, "Supplementary Benefits - Send Individual Attachment - Success"
-            )
+                text: 'Supplementary Benefits - Send Individual Attachment - Success',
+                response: response,
+              },
+              'Supplementary Benefits - Send Individual Attachment - Success'
+            );
             return resolve(response);
           },
           (error: Response | any) => {
             this.logService.log(
               {
                 text: 'Supplementary Benefits - Attachment - Send Individual Error ',
-                response: error
+                response: error,
               },
               'Supplementary Benefits - Attachment - Send Individual Error '
             );
@@ -281,7 +282,7 @@ export class MspApiBenefitService extends AbstractHttpService {
           this.logService.log(
             {
               text: 'Supplementary Benefits - Attachment - Send Individual Error ',
-              response: error
+              response: error,
             },
             'Supplementary Benefits - Attachment - Send Individual Error '
           );
@@ -298,16 +299,14 @@ export class MspApiBenefitService extends AbstractHttpService {
     } else {
       // The backend returned an unsuccessful response code
       console.error(
-        `Msp Supp Benefit Backend returned error code: ${
-          error.status
-        }.  Error body: ${error.error}`
+        `Msp Supp Benefit Backend returned error code: ${error.status}.  Error body: ${error.error}`
       );
     }
 
     this.logService.log(
       {
         text: 'Supplementary Benefit - Cannot get API response',
-        response: error
+        response: error,
       },
       'Supplementary Benefit - Cannot get API response'
     );
@@ -360,7 +359,7 @@ export class MspApiBenefitService extends AbstractHttpService {
 
                 const spouseBirthDate = `${spouseBirthMonth}-${from.spouse.dobSimple.day.toString()}-${from.spouse.dobSimple.year.toString()}`;*/
         to.spouseBirthdate = String(
-          format( from.spouse.dob, this.ISO8601DateFormat)
+          format(from.spouse.dob, this.ISO8601DateFormat)
         );
       }
       to.spousePHN = from.spouse.previous_phn
@@ -371,7 +370,6 @@ export class MspApiBenefitService extends AbstractHttpService {
       to.spouseSIN = from.spouse.sin
         ? String(from.spouse.sin.replace(new RegExp('[^0-9]', 'g'), ''))
         : '';
-
     }
 
     // Capturing Financial-info page response
@@ -394,10 +392,7 @@ export class MspApiBenefitService extends AbstractHttpService {
       from.eligibility.sixtyFiveDeduction != null
         ? from.eligibility.sixtyFiveDeduction
         : 0;
-    to.totalDeductions =
-      from.totalDeduction != null
-        ? from.totalDeduction
-        : 0;
+    to.totalDeductions = from.totalDeduction != null ? from.totalDeduction : 0;
     to.totalNetIncome =
       from.eligibility.totalNetIncome != null
         ? from.eligibility.totalNetIncome
@@ -407,26 +402,41 @@ export class MspApiBenefitService extends AbstractHttpService {
     to.spouseAttendantCareExpense = from.spouseAttendantCareExpense;
     to.childAttendantCareExpense = from.childAttendantCareExpense;
 
-    to.childCareExpense = from.claimedChildCareExpense_line214 != null ? (from.claimedChildCareExpense_line214 / 2) * 1 : 0 ;
+    to.childCareExpense =
+      from.claimedChildCareExpense_line214 != null
+        ? (from.claimedChildCareExpense_line214 / 2) * 1
+        : 0;
 
     to.netIncomeLastYear = Number(from.netIncomelastYear);
 
-    to.numChildren = (!!from.childrenCount && from.childrenCount > 0) ? from.childrenCount * 1 : 0;
+    to.numChildren =
+      !!from.childrenCount && from.childrenCount > 0
+        ? from.childrenCount * 1
+        : 0;
 
     let numDis = 0;
 
     // applicant
-    if ( from.applicantEligibleForDisabilityCredit != null && from.applicantEligibleForDisabilityCredit === true) {
-      numDis = numDis + 1 ;
+    if (
+      from.applicantEligibleForDisabilityCredit != null &&
+      from.applicantEligibleForDisabilityCredit === true
+    ) {
+      numDis = numDis + 1;
     }
 
     // spouse
-    if ( from.spouseEligibleForDisabilityCredit != null && from.spouseEligibleForDisabilityCredit === true) {
-      numDis = numDis + 1 ;
+    if (
+      from.spouseEligibleForDisabilityCredit != null &&
+      from.spouseEligibleForDisabilityCredit === true
+    ) {
+      numDis = numDis + 1;
     }
 
-    if ( from.childWithDisabilityCount != null && from.childWithDisabilityCount >= 0) {
-      numDis =  (numDis * 1 + from.childWithDisabilityCount * 1);
+    if (
+      from.childWithDisabilityCount != null &&
+      from.childWithDisabilityCount >= 0
+    ) {
+      numDis = numDis * 1 + from.childWithDisabilityCount * 1;
     }
 
     to.numDisabled = numDis * 1;
@@ -436,7 +446,7 @@ export class MspApiBenefitService extends AbstractHttpService {
     to.reportedUCCBenefit = from.reportedUCCBenefit_line117;
     to.spouseDSPAmount = from.spouseDSPAmount_line125 * 1;
     to.spouseDeduction = from.eligibility.spouseDeduction;
-    to.spouseSixtyFiveDeduction = (from.spouseAgeOver65 === true) ? 3000 : 0;
+    to.spouseSixtyFiveDeduction = from.spouseAgeOver65 === true ? 3000 : 0;
 
     // Capturing Address page response
     to.applicantAddressLine1 = from.mailingAddress.addressLine1;
@@ -456,7 +466,10 @@ export class MspApiBenefitService extends AbstractHttpService {
     }
 
     // Capturing Authorization page response
-    to.authorizedByApplicantDate = format( from.authorizedByApplicantDate, this.ISO8601DateFormat );
+    to.authorizedByApplicantDate = format(
+      from.authorizedByApplicantDate,
+      this.ISO8601DateFormat
+    );
 
     to.authorizedByApplicant = from.authorizedByApplicant ? 'Y' : 'N';
     to.authorizedBySpouse = from.authorizedBySpouse ? 'Y' : 'N';
@@ -472,12 +485,14 @@ export class MspApiBenefitService extends AbstractHttpService {
     const object = {
       supplementaryBenefitsApplication: this.convertBenefitApplication(from),
       attachments: this.convertToAttachment(from.getAllImages()),
-      uuid: from.uuid
+      uuid: from.uuid,
     };
     return object;
   }
 
-  private convertToAttachment(images: CommonImage[]): AttachmentRequestPartial[] {
+  private convertToAttachment(
+    images: CommonImage[]
+  ): AttachmentRequestPartial[] {
     const output = [];
     images.map((image, i) => {
       const partial: AttachmentRequestPartial = {
@@ -486,7 +501,7 @@ export class MspApiBenefitService extends AbstractHttpService {
         attachmentOrder: (i + 1).toString(),
         description: '',
         // TODO - Sure this is the correct UUID here?
-        attachmentUuid: image.uuid
+        attachmentUuid: image.uuid,
       };
       output.push(partial);
     });

@@ -11,18 +11,18 @@ describe('AclConfirmationComponent', () => {
   beforeEach(() => {
     const unsubcribeStub = () => {};
     const activatedRouteStub = () => {
-      return { 
+      return {
         queryParams: {
-          subscribe: f => {
-            return new Subscription(unsubcribeStub)
-          }
-        }
-      }
+          subscribe: (f) => {
+            return new Subscription(unsubcribeStub);
+          },
+        },
+      };
     };
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [AclConfirmationComponent],
-      providers: [{ provide: ActivatedRoute, useFactory: activatedRouteStub }]
+      providers: [{ provide: ActivatedRoute, useFactory: activatedRouteStub }],
     });
     fixture = TestBed.createComponent(AclConfirmationComponent);
     component = fixture.componentInstance;
@@ -32,7 +32,7 @@ describe('AclConfirmationComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
+
   it('should have default status value', () => {
     expect(component.status).toEqual(ApiStatusCodes.ERROR);
   });

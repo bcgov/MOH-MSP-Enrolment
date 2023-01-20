@@ -4,7 +4,7 @@ import { MSPApplicationSchema } from 'app/modules/msp-core/interfaces/i-api';
 import {
   HttpClient,
   HttpHeaders,
-  HttpErrorResponse
+  HttpErrorResponse,
 } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { MspApiService } from 'app/services/msp-api.service';
@@ -15,14 +15,18 @@ import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 import { MspLogService } from 'app/services/log.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ApiSendService extends AbstractHttpService {
   protected _headers: HttpHeaders;
   protected handleError(error: HttpErrorResponse) {
     throw new Error('Method not implemented.');
   }
-  constructor(private schemaSvc: SchemaService, http: HttpClient, private logService: MspLogService) {
+  constructor(
+    private schemaSvc: SchemaService,
+    http: HttpClient,
+    private logService: MspLogService
+  ) {
     super(http);
   }
 
@@ -73,13 +77,13 @@ export class ApiSendService extends AbstractHttpService {
 
     try {
       const res = await Promise.all(attachmentPromises);
-      return
+      return;
     } catch (err) {
       devOnlyConsoleLog(err);
       this.logService.log(
         {
           name: 'PA - Error in sendFiles',
-          applicationUUID
+          applicationUUID,
         },
         'PA - Error in sendFiles:' + err
       );
@@ -99,10 +103,12 @@ export class ApiSendService extends AbstractHttpService {
       array.push(binary.charCodeAt(i));
     }
     const blob = new Blob([new Uint8Array(array)], {
-      type: attachment.contentType
+      type: attachment.contentType,
     });
 
-    return this.http.post(url, blob, options).pipe(catchError(err => of(err)));
+    return this.http
+      .post(url, blob, options)
+      .pipe(catchError((err) => of(err)));
   }
 
   setHeaders(contentType: string, token: string): HttpHeaders {
@@ -110,12 +116,12 @@ export class ApiSendService extends AbstractHttpService {
       ? new HttpHeaders({
           'Content-Type': contentType,
           'Response-Type': 'application/json',
-          'X-Authorization': 'Bearer ' + token
+          'X-Authorization': 'Bearer ' + token,
         })
       : new HttpHeaders({
           'Content-Type': contentType,
           'Access-Control-Allow-Origin': '*',
-          'X-Authorization': 'Bearer ' + token
+          'X-Authorization': 'Bearer ' + token,
         });
   }
 
