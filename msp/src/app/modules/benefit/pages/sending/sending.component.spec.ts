@@ -17,10 +17,10 @@ describe('BenefitSendingComponent', () => {
     const mspBenefitDataServiceStub = () => ({
       benefitApp: { isCutoffDate: {}, cutoffYear: {}, taxYear: {} },
       removeMspBenefitApp: () => ({}),
-      saveBenefitApplication: () => ({})
+      saveBenefitApplication: () => ({}),
     });
     const mspApiBenefitServiceStub = () => ({
-      sendRequest: application => ({ then: () => ({}) })
+      sendRequest: (application) => ({ then: () => ({}) }),
     });
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],
@@ -31,10 +31,10 @@ describe('BenefitSendingComponent', () => {
         { provide: MspLogService, useFactory: mspLogServiceStub },
         {
           provide: MspBenefitDataService,
-          useFactory: mspBenefitDataServiceStub
+          useFactory: mspBenefitDataServiceStub,
         },
-        { provide: MspApiBenefitService, useFactory: mspApiBenefitServiceStub }
-      ]
+        { provide: MspApiBenefitService, useFactory: mspApiBenefitServiceStub },
+      ],
     });
     fixture = TestBed.createComponent(BenefitSendingComponent);
     component = fixture.componentInstance;
@@ -43,7 +43,7 @@ describe('BenefitSendingComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
- 
+
   describe('retrySubmission', () => {
     it('makes expected calls', () => {
       const routerStub: Router = fixture.debugElement.injector.get(Router);

@@ -11,6 +11,10 @@ import { EnrolDataService } from '../modules/enrolment/services/enrol-data.servi
 import { APP_ROUTES } from '../models/route-constants';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 
+enum SeverityLevels {
+    INFO = 'info',
+    ERROR = 'error',
+}
 
 @Injectable({
     providedIn: 'root'
@@ -181,11 +185,6 @@ export class MspLog2Service extends AbstractHttpService {
           return  this.benefitDataService.benefitApp.uuid ;
         }
     }
-}
-
-enum SeverityLevels {
-    INFO = 'info',
-    ERROR = 'error',
 }
 
 interface LogMessage {

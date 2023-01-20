@@ -11,10 +11,11 @@ import { BaseComponent } from '../../../../models/base.component';
 import { CommonImage } from 'moh-common-lib';
 
 @Component({
-  templateUrl: './authorize-submit.component.html'
+  templateUrl: './authorize-submit.component.html',
 })
-export class AssistanceAuthorizeSubmitComponent extends BaseComponent implements OnInit {
-
+export class AssistanceAuthorizeSubmitComponent
+  extends BaseComponent
+  implements OnInit {
   title = 'Authorize and submit your application';
 
   declarationOne = `The information I provide will be relevant to and used solely for the purpose of determining and verifying my entitlement to Retroactive Premium Assistance under the
@@ -27,15 +28,14 @@ export class AssistanceAuthorizeSubmitComponent extends BaseComponent implements
 
   agreeLabel = 'Yes, I agree';
 
-  poaAgreeLabel = 'Yes, I have Power of Attorney or another legal representation agreement';
+  poaAgreeLabel =
+    'Yes, I have Power of Attorney or another legal representation agreement';
 
   private hasToken = false;
   touched$ = this.stateSvc.touched.asObservable();
 
   get questionApplicant() {
-    return `${
-      this.applicantName
-      } (or legal representative), do you agree?`;
+    return `${this.applicantName} (or legal representative), do you agree?`;
   }
 
   get questionForAttorney() {
@@ -72,7 +72,7 @@ export class AssistanceAuthorizeSubmitComponent extends BaseComponent implements
     this.stateSvc.setPageIncomplete(this.route.snapshot.routeConfig.path);
 
     /*
-    If info collection bool has been set false they have already 
+    If info collection bool has been set false they have already
     successfully submitted and have just hit the back button
     (would have used auth token as the other apps do but assistance app doesn't make use it's auth token property)
     */
@@ -85,8 +85,10 @@ export class AssistanceAuthorizeSubmitComponent extends BaseComponent implements
   ngAfterViewInit(): void {
     this.subscriptionList.push(
       this.form.valueChanges.subscribe(() => {
-
-        this.stateSvc.setPageValid(this.route.snapshot.routeConfig.path, this.isPageValid());
+        this.stateSvc.setPageValid(
+          this.route.snapshot.routeConfig.path,
+          this.isPageValid()
+        );
         this.dataService.saveFinAssistApplication();
       })
     );
@@ -94,7 +96,7 @@ export class AssistanceAuthorizeSubmitComponent extends BaseComponent implements
     setTimeout(
       () =>
         this.subscriptionList.push(
-          this.stateSvc.touched.asObservable().subscribe(obs => {
+          this.stateSvc.touched.asObservable().subscribe((obs) => {
             if (obs) {
               const controls = this.form.form.controls;
               for (const control in controls) {
@@ -108,9 +110,8 @@ export class AssistanceAuthorizeSubmitComponent extends BaseComponent implements
   }
 
   addDocument(mspImage: CommonImage) {
-    this.application.powerOfAttorneyDocs = this.application.powerOfAttorneyDocs.concat(
-      mspImage
-    );
+    this.application.powerOfAttorneyDocs =
+      this.application.powerOfAttorneyDocs.concat(mspImage);
     this.dataService.saveFinAssistApplication();
   }
 
@@ -121,11 +122,10 @@ export class AssistanceAuthorizeSubmitComponent extends BaseComponent implements
   }
 
   deleteDocument(mspImage: CommonImage) {
-    this.application.powerOfAttorneyDocs = this.application.powerOfAttorneyDocs.filter(
-      (doc: CommonImage) => {
+    this.application.powerOfAttorneyDocs =
+      this.application.powerOfAttorneyDocs.filter((doc: CommonImage) => {
         return doc.uuid !== mspImage.uuid;
-      }
-    );
+      });
     this.dataService.saveFinAssistApplication();
   }
 
@@ -159,12 +159,15 @@ export class AssistanceAuthorizeSubmitComponent extends BaseComponent implements
   setToken(token): void {
     this.hasToken = true;
 
-    this.stateSvc.setPageValid(this.route.snapshot.routeConfig.path, this.isPageValid());
+    this.stateSvc.setPageValid(
+      this.route.snapshot.routeConfig.path,
+      this.isPageValid()
+    );
     this.application.authorizationToken = token;
   }
 
   ngOnDestroy() {
-    this.subscriptionList.forEach(itm => itm.unsubscribe());
+    this.subscriptionList.forEach((itm) => itm.unsubscribe());
   }
 
   redirect(path) {

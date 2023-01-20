@@ -1,4 +1,11 @@
-import { Component, forwardRef, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  forwardRef,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { nameChangeSupportDocs } from '../../../../msp-core/components/support-documents/support-documents.component';
 import { NgForm, ControlContainer } from '@angular/forms';
 import { MspAccountMaintenanceDataService } from '../../../services/msp-account-data.service';
@@ -13,42 +20,47 @@ import { SupportDocuments } from '../../../../msp-core/models/support-documents.
   selector: 'msp-add-child',
   templateUrl: './add-child.component.html',
   styleUrls: ['./add-child.component.scss'],
-  viewProviders: [{
-    provide: ControlContainer,
-    useExisting: forwardRef(() => NgForm)
-  }]
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useExisting: forwardRef(() => NgForm),
+    },
+  ],
 })
-
 export class AddChildComponent extends Base implements OnInit {
-
+  // tslint:disable-next-line
   statusLabel: string = "Child's immigration status in Canada";
   relationShip: Relationship;
 
   childAgeCategory = [
-    {label: '0-18 years', value: Relationship.ChildUnder19},
-    {label: '19-24 years (must be a full-time student)', value: Relationship.Child19To24},
+    { label: '0-18 years', value: Relationship.ChildUnder19 },
+    {
+      label: '19-24 years (must be a full-time student)',
+      value: Relationship.Child19To24,
+    },
   ];
 
   status: StatusInCanada[] = [
     StatusInCanada.CitizenAdult,
     StatusInCanada.PermanentResident,
-    StatusInCanada.TemporaryResident
+    StatusInCanada.TemporaryResident,
   ];
 
   supportDocList: SupportDocumentTypes[] = [
     SupportDocumentTypes.CanadianBirthCertificate,
     SupportDocumentTypes.CanadianPassport,
-    SupportDocumentTypes.CanadianCitizenCard
+    SupportDocumentTypes.CanadianCitizenCard,
   ];
 
   nameChangeDocList = nameChangeSupportDocs();
 
   // @Input() accountChangeOptions: AccountChangeOptions;
-  @Input() child: MspPerson ;
+  @Input() child: MspPerson;
   // @Input() accountApp: MspAccountApp;
   @Input() index: number;
   @Input() phns: string[];
-  @Output() personChange: EventEmitter<MspPerson> = new EventEmitter<MspPerson>();
+  @Output() personChange: EventEmitter<MspPerson> =
+    new EventEmitter<MspPerson>();
 
   constructor(public dataService: MspAccountMaintenanceDataService) {
     super();
@@ -59,7 +71,8 @@ export class AddChildComponent extends Base implements OnInit {
   }
 
   get childRelationship() {
-    this.child.fullTimeStudent = (this.child.relationship === Relationship.Child19To24) ? true : false;
+    this.child.fullTimeStudent =
+      this.child.relationship === Relationship.Child19To24 ? true : false;
     this.personChange.emit(this.child);
     return this.child.relationship;
   }

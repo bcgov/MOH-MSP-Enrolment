@@ -1,8 +1,14 @@
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
-import { NgForm, ControlContainer} from '@angular/forms';
-import { CancellationReasons, CancellationReasonsStrings } from '../../../../../models/status-activities-documents';
+import { NgForm, ControlContainer } from '@angular/forms';
+import {
+  CancellationReasons,
+  CancellationReasonsStrings,
+} from '../../../../../models/status-activities-documents';
 import { MspAccountMaintenanceDataService } from '../../../services/msp-account-data.service';
-import { MspAccountApp, AccountChangeOptions } from '../../../models/account.model';
+import {
+  MspAccountApp,
+  AccountChangeOptions,
+} from '../../../models/account.model';
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
 import { ErrorMessage } from 'moh-common-lib';
 import { UUID } from 'angular2-uuid';
@@ -16,51 +22,54 @@ import { environment } from 'environments/environment';
   viewProviders: [
     {
       provide: ControlContainer,
-      useExisting: forwardRef(() => NgForm)
-    }
-  ]
+      useExisting: forwardRef(() => NgForm),
+    },
+  ],
 })
-
 export class RemoveChildComponent implements OnInit {
-  public readonly addressServiceUrl: string = environment.appConstants.addressApiBaseUrl;
+  public readonly addressServiceUrl: string =
+    environment.appConstants.addressApiBaseUrl;
 
-  constructor( public dataService: MspAccountMaintenanceDataService,
-               private spaEnvService: SpaEnvService) { }
+  constructor(
+    public dataService: MspAccountMaintenanceDataService,
+    private spaEnvService: SpaEnvService
+  ) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   @Input() accountChangeOptions: AccountChangeOptions;
-  @Input() child: MspPerson ;
+  @Input() child: MspPerson;
   @Input() accountApp: MspAccountApp;
   @Input() index: number;
   @Input() phns: string[];
   listofCancellationReasons = [
     {
-      'label': 'No longer in full time studies',
-      'value': CancellationReasons.NoLongerInFullTimeStudies
+      label: 'No longer in full time studies',
+      value: CancellationReasons.NoLongerInFullTimeStudies,
     },
     {
-      'label': 'Deceased',
-      'value': CancellationReasons.Deceased
+      label: 'Deceased',
+      value: CancellationReasons.Deceased,
     },
     {
-      'label': 'Out of province / Out of Country',
-      'value': CancellationReasons.OutOfProvinceOrCountry
+      label: 'Out of province / Out of Country',
+      value: CancellationReasons.OutOfProvinceOrCountry,
     },
     {
-      'label': 'Armed Forces',
-      'value': CancellationReasons.ArmedForces
+      label: 'Armed Forces',
+      value: CancellationReasons.ArmedForces,
     },
     {
-      'label': 'Incarcerated',
-      'value': CancellationReasons.Incarcerated
+      label: 'Incarcerated',
+      value: CancellationReasons.Incarcerated,
     },
   ];
 
   cancellationDateErrorMessage: ErrorMessage = {
-    invalidRange: 'Date may not be in the future and must be after the child\'s birthday'
-  }
+    invalidRange:
+      // tslint:disable-next-line
+      "Date may not be in the future and must be after the child's birthday",
+  };
   objectId: string = UUID.UUID().toString();
 
   get dateToday(): Date {

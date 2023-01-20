@@ -14,7 +14,7 @@ export class PremiumRatesYear {
     '$24,001 - $26,000',
     '$26,0001 - $28,000',
     '$28,0001 - $30,000',
-    'Over $30,000'
+    'Over $30,000',
   ];
 
   netIncomeOptions2018 = [
@@ -24,7 +24,7 @@ export class PremiumRatesYear {
     '$30,001 - $34,000',
     '$34,001 - $38,000',
     '$38,001 - $42,000',
-    'Over $42,000'
+    'Over $42,000',
   ];
 
   netIncomeOptions2017 = [
@@ -35,7 +35,7 @@ export class PremiumRatesYear {
     '$30,001 - $34,000',
     '$34,001 - $38,000',
     '$38,001 - $42,000',
-    'Over $42,000'
+    'Over $42,000',
   ];
 
   baseRates2018 = [0, 11.5, 17.5, 23, 28, 32.5, 37.5];
@@ -47,11 +47,13 @@ export class PremiumRatesYear {
     2016: this.netIncomeOptionsStd,
     2015: this.netIncomeOptionsStd,
     2014: this.netIncomeOptionsStd,
-    2013: this.netIncomeOptionsStd
+    2013: this.netIncomeOptionsStd,
   };
 
   constructor() {
+    // tslint:disable-next-line
     for (let opt in this.options) {
+      // tslint:disable-next-line
       const num = parseInt(opt);
       if (num === 2018) {
         this.brackets.push(
@@ -66,6 +68,7 @@ export class PremiumRatesYear {
         continue;
       } else {
         const brackets = [];
+        // tslint:disable-next-line
         for (let opt of this.netIncomeOptionsStd) {
           const i = this.netIncomeOptionsStd.indexOf(opt);
           brackets.push(this.genBrackets(this.netIncomeOptionsStd[i], i));
@@ -77,6 +80,7 @@ export class PremiumRatesYear {
 
   genBracketsToo(incomeOpts: string[], baseRatesOpts: number[]) {
     const brackets = [];
+    // tslint:disable-next-line
     for (let income of incomeOpts) {
       const i = incomeOpts.indexOf(income);
 
@@ -84,7 +88,7 @@ export class PremiumRatesYear {
       brackets.push({
         netIncome: income,
         onePerson: baseRate * 1,
-        twoFamily: baseRate * 2
+        twoFamily: baseRate * 2,
       });
     }
 
@@ -99,7 +103,7 @@ export class PremiumRatesYear {
       netIncome,
       onePerson: base1 * index,
       twoFamily: base2 * index,
-      threeFamily: base3 * index
+      threeFamily: base3 * index,
     };
   }
 }

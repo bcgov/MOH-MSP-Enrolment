@@ -1,7 +1,7 @@
 import { Component, OnDestroy } from '@angular/core';
-import {Subscription} from 'rxjs';
+import { Subscription } from 'rxjs';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
-import {ActivatedRoute} from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MspAccountApp } from '../../models/account.model';
 import * as moment from 'moment';
 import { ApiStatusCodes } from 'moh-common-lib';
@@ -11,7 +11,7 @@ import { format } from 'date-fns';
 @Component({
   selector: 'msp-confirmation',
   templateUrl: './confirmation.component.html',
-  styleUrls: ['./confirmation.component.scss']
+  styleUrls: ['./confirmation.component.scss'],
 })
 export class AccountConfirmationComponent implements OnDestroy {
   confirmationNum: string;
@@ -30,30 +30,30 @@ export class AccountConfirmationComponent implements OnDestroy {
   hasChildRemoved: boolean;
   hasPrevMSPForChild: boolean;
 
-  constructor(private route: ActivatedRoute, public dataService: MspAccountMaintenanceDataService) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    public dataService: MspAccountMaintenanceDataService
+  ) {}
 
   ngOnInit(): void {
-    this.subscription = this.route.queryParams.subscribe(
-      params => {
-        const statusCode = params['status'];
-        if ( statusCode ) {
-          this.status = statusCode;
-        }
-        this.confirmationNum = params['confirmationNum'];
-        this.nextSteps = params['nextSteps'];
-        this.message = params['message'];
-        this.hasSpouseAdded = params['hasSpouseAdded'];
-        this.hasSpouseRemoved = params['hasSpouseRemoved'];
-        this.hasPrevMSPForSpouse = params['hasPrevMSPForSpouse'];
-        this.hasChildAdded = params['hasChildAdded'];
-        this.hasChildRemoved = params['hasChildRemoved'];
-        this.hasPrevMSPForChild = params['hasPrevMSPForChild'];
+    this.subscription = this.route.queryParams.subscribe((params) => {
+      const statusCode = params['status'];
+      if (statusCode) {
+        this.status = statusCode;
       }
-    );
+      this.confirmationNum = params['confirmationNum'];
+      this.nextSteps = params['nextSteps'];
+      this.message = params['message'];
+      this.hasSpouseAdded = params['hasSpouseAdded'];
+      this.hasSpouseRemoved = params['hasSpouseRemoved'];
+      this.hasPrevMSPForSpouse = params['hasPrevMSPForSpouse'];
+      this.hasChildAdded = params['hasChildAdded'];
+      this.hasChildRemoved = params['hasChildRemoved'];
+      this.hasPrevMSPForChild = params['hasPrevMSPForChild'];
+    });
   }
 
-  ngAfterViewChecked(){
+  ngAfterViewChecked() {
     //this.dataService.removeMspBenefitApp();
   }
 
@@ -66,10 +66,10 @@ export class AccountConfirmationComponent implements OnDestroy {
   }
 
   get hasRemovedSpouseOrChild() {
-    if (this.hasSpouseRemoved !== undefined){
+    if (this.hasSpouseRemoved !== undefined) {
       return this.hasSpouseRemoved.toString() === 'true';
     }
-    if (this.hasChildRemoved !== undefined){
+    if (this.hasChildRemoved !== undefined) {
       return this.hasChildRemoved.toString() === 'true';
     }
     return false;
@@ -77,10 +77,16 @@ export class AccountConfirmationComponent implements OnDestroy {
 
   get hasAddedSpouseOrChildWithNoPrevMSP() {
     if (this.hasSpouseAdded !== undefined) {
-      return (this.hasSpouseAdded.toString() === 'true' && this.hasPrevMSPForSpouse.toString() === 'false');
+      return (
+        this.hasSpouseAdded.toString() === 'true' &&
+        this.hasPrevMSPForSpouse.toString() === 'false'
+      );
     }
-    if (this.hasChildAdded !== undefined){
-      return (this.hasChildAdded.toString() === 'true' && this.hasPrevMSPForChild.toString() === 'false');
+    if (this.hasChildAdded !== undefined) {
+      return (
+        this.hasChildAdded.toString() === 'true' &&
+        this.hasPrevMSPForChild.toString() === 'false'
+      );
     }
     return false;
   }
@@ -96,14 +102,15 @@ export class AccountConfirmationComponent implements OnDestroy {
   get dateStamp(): string {
     return format(new Date(), 'MMMM dd, yyyy');
   }
-  
+
   printPage() {
     window.print();
     return false;
   }
 
-  keyPress(event){
-    if (event.keyCode === 13){ // code for Enter key
+  keyPress(event) {
+    if (event.keyCode === 13) {
+      // code for Enter key
       this.printPage();
     }
   }

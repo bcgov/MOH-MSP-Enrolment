@@ -17,15 +17,21 @@ describe('HomeComponent', () => {
     const pageStateServiceStub = () => ({ setPageComplete: () => ({}) });
     const mspAccountMaintenanceDataServiceStub = () => ({
       getMspAccountApp: () => ({}),
-      saveMspAccountApp: () => ({})
+      saveMspAccountApp: () => ({}),
     });
-    const headerServiceStub = () => ({ setTitle: string => ({}) });
+    const headerServiceStub = () => ({ setTitle: (string) => ({}) });
     const mspApiAccountServiceStub = () => ({
       sendChangeAddressApplication: (mspAccountApp): Promise<ApiResponse> => {
         return new Promise((res, rej) => {
-          return res({op_return_code: 'SUCCESS', op_technical_error: '', dbErrorMessage: '', op_reference_number: '', req_num: ''})
-        })
-      }
+          return res({
+            op_return_code: 'SUCCESS',
+            op_technical_error: '',
+            dbErrorMessage: '',
+            op_reference_number: '',
+            req_num: '',
+          });
+        });
+      },
     });
     const mspLogServiceStub = () => ({ log: (object, arg) => ({}) });
     TestBed.configureTestingModule({
@@ -36,12 +42,12 @@ describe('HomeComponent', () => {
         { provide: PageStateService, useFactory: pageStateServiceStub },
         {
           provide: MspAccountMaintenanceDataService,
-          useFactory: mspAccountMaintenanceDataServiceStub
+          useFactory: mspAccountMaintenanceDataServiceStub,
         },
         { provide: HeaderService, useFactory: headerServiceStub },
         { provide: MspApiAccountService, useFactory: mspApiAccountServiceStub },
-        { provide: MspLogService, useFactory: mspLogServiceStub }
-      ]
+        { provide: MspLogService, useFactory: mspLogServiceStub },
+      ],
     });
     fixture = TestBed.createComponent(HomeComponent);
     component = fixture.componentInstance;
@@ -53,18 +59,30 @@ describe('HomeComponent', () => {
 
   describe('continue', () => {
     it('should call sendChangeAddressApplication when addressAppSent is false', () => {
-      const mspApiAccountServiceStub: MspApiAccountService = fixture.debugElement.injector.get(MspApiAccountService);
-      spyOn(mspApiAccountServiceStub, 'sendChangeAddressApplication').and.callThrough();
+      const mspApiAccountServiceStub: MspApiAccountService =
+        fixture.debugElement.injector.get(MspApiAccountService);
+      spyOn(
+        mspApiAccountServiceStub,
+        'sendChangeAddressApplication'
+      ).and.callThrough();
       component.continue();
-      expect(mspApiAccountServiceStub.sendChangeAddressApplication).toHaveBeenCalled();
+      expect(
+        mspApiAccountServiceStub.sendChangeAddressApplication
+      ).toHaveBeenCalled();
     });
 
     it('should not call sendChangeAddressApplication when addressAppSent is true', () => {
-      const mspApiAccountServiceStub: MspApiAccountService = fixture.debugElement.injector.get(MspApiAccountService);
-      spyOn(mspApiAccountServiceStub, 'sendChangeAddressApplication').and.callThrough();
+      const mspApiAccountServiceStub: MspApiAccountService =
+        fixture.debugElement.injector.get(MspApiAccountService);
+      spyOn(
+        mspApiAccountServiceStub,
+        'sendChangeAddressApplication'
+      ).and.callThrough();
       component.addressAppSent = true;
       component.continue();
-      expect(mspApiAccountServiceStub.sendChangeAddressApplication).not.toHaveBeenCalled();
+      expect(
+        mspApiAccountServiceStub.sendChangeAddressApplication
+      ).not.toHaveBeenCalled();
     });
   });
 });

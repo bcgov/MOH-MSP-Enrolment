@@ -100,7 +100,7 @@ export class MspApiAccountService extends AbstractHttpService {
 
     return new Promise<ApiResponse>((resolve, reject) => {
       //Validating the response against the schema
-      this.schemaSvc.validate(suppBenefitRequest).then(res => {
+      this.schemaSvc.validate(suppBenefitRequest).then((res) => {
         if (res.errors) {
           let errorField;
           let errorMessage;
@@ -115,9 +115,11 @@ export class MspApiAccountService extends AbstractHttpService {
           if (errorField && errorMessage) {
             this.logService.log(
               {
-                text: 'Account - API validation against schema failed because of ' +
-                errorField + ' field',
-                response: errorMessage
+                text:
+                  'Account - API validation against schema failed because of ' +
+                  errorField +
+                  ' field',
+                response: errorMessage,
               },
               'Account - API validation against schema failed'
             );
@@ -132,7 +134,7 @@ export class MspApiAccountService extends AbstractHttpService {
           app.uuid,
           app.getAllImages()
         )
-          .then(attachmentResponse => {
+          .then((attachmentResponse) => {
             // TODO - Likely have to store all the responses for image uploads, so we can use those UUIDs with our application upload
             // unless we can just use our pre-uploaded ones? though that has potential for missing records.
             // once all attachments are done we can sendApplication in the data
@@ -141,7 +143,7 @@ export class MspApiAccountService extends AbstractHttpService {
               suppBenefitRequest,
               app.uuid,
               app.authorizationToken
-            ).subscribe(response => {
+            ).subscribe((response) => {
               // Add reference number
               if (response && response.op_reference_number) {
                 app.referenceNumber = response.op_reference_number.toString();
@@ -204,15 +206,16 @@ export class MspApiAccountService extends AbstractHttpService {
         mspAccountApp.uuid,
         mspAccountApp.authorizationToken
       ).subscribe(
-        response => {
+        (response) => {
           // Add reference number
           if (response && response.op_reference_number) {
-            mspAccountApp.referenceNumber = response.op_reference_number.toString();
+            mspAccountApp.referenceNumber =
+              response.op_reference_number.toString();
           }
           // Let our caller know were done passing back the application
           return resolve(response);
         },
-        error => {
+        (error) => {
           return reject(error);
         }
       );
@@ -263,11 +266,11 @@ export class MspApiAccountService extends AbstractHttpService {
           (responses: string[]) => {
             this.logService.log(
               {
-                text: "Account - Send All Attachments - Success",
+                text: 'Account - Send All Attachments - Success',
                 response: responses,
               },
-              "Account - Send All Attachments - Success"
-            )
+              'Account - Send All Attachments - Success'
+            );
             return resolve(responses);
           },
           (error: Response | any) => {
@@ -348,14 +351,14 @@ export class MspApiAccountService extends AbstractHttpService {
         .post(url, blob, options)
         .toPromise()
         .then(
-          response => {
+          (response) => {
             this.logService.log(
               {
-                text: "Account - Send Individual Attachment - Success",
+                text: 'Account - Send Individual Attachment - Success',
                 response: response,
               },
-              "Account - Send Individual Attachment - Success"
-            )
+              'Account - Send Individual Attachment - Success'
+            );
             return resolve(response);
           },
           (error: Response | any) => {
@@ -592,10 +595,16 @@ export class MspApiAccountService extends AbstractHttpService {
       to.outsideBC.familyMemberReason = from.departureReason12Months;
       to.outsideBC.destination = from.departureDestination12Months;
       if (from.departureDateDuring12MonthsDate) {
-        to.outsideBC.departureDate = format(from.departureDateDuring12MonthsDate, this.ISO8601DateFormat);
+        to.outsideBC.departureDate = format(
+          from.departureDateDuring12MonthsDate,
+          this.ISO8601DateFormat
+        );
       }
       if (from.returnDateDuring12MonthsDate) {
-        to.outsideBC.returnDate = format(from.returnDateDuring12MonthsDate, this.ISO8601DateFormat);
+        to.outsideBC.returnDate = format(
+          from.returnDateDuring12MonthsDate,
+          this.ISO8601DateFormat
+        );
       }
     } else if (from.declarationForOutsideOver30Days === false) {
       to.outsideBC = OutsideBCTypeFactory.make();
@@ -608,10 +617,16 @@ export class MspApiAccountService extends AbstractHttpService {
       to.outsideBCinFuture.familyMemberReason = from.departureReason;
       to.outsideBCinFuture.destination = from.departureDestination;
       if (from.departureDateDuring6MonthsDate) {
-        to.outsideBCinFuture.departureDate = format(from.departureDateDuring6MonthsDate, this.ISO8601DateFormat);
+        to.outsideBCinFuture.departureDate = format(
+          from.departureDateDuring6MonthsDate,
+          this.ISO8601DateFormat
+        );
       }
       if (from.returnDateDuring6MonthsDate) {
-        to.outsideBCinFuture.returnDate = format(from.returnDateDuring6MonthsDate, this.ISO8601DateFormat);
+        to.outsideBCinFuture.returnDate = format(
+          from.returnDateDuring6MonthsDate,
+          this.ISO8601DateFormat
+        );
       }
     } else if (from.declarationForOutsideOver60Days === false) {
       to.outsideBCinFuture = OutsideBCTypeFactory.make();
@@ -647,7 +662,8 @@ export class MspApiAccountService extends AbstractHttpService {
         this.ISO8601DateFormat
       );
       to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
-      to.willBeAway.isFullTimeStudent = from.relationship === Relationship.Child19To24 ? 'Y' : 'N';
+      to.willBeAway.isFullTimeStudent =
+        from.relationship === Relationship.Child19To24 ? 'Y' : 'N';
     }
 
     return to;
@@ -753,10 +769,16 @@ export class MspApiAccountService extends AbstractHttpService {
       to.outsideBC.familyMemberReason = from.departureReason12Months;
       to.outsideBC.destination = from.departureDestination12Months;
       if (from.departureDateDuring12MonthsDate) {
-        to.outsideBC.departureDate = format(from.departureDateDuring12MonthsDate, this.ISO8601DateFormat);
+        to.outsideBC.departureDate = format(
+          from.departureDateDuring12MonthsDate,
+          this.ISO8601DateFormat
+        );
       }
       if (from.returnDateDuring12MonthsDate) {
-        to.outsideBC.returnDate = format(from.returnDateDuring12MonthsDate, this.ISO8601DateFormat);
+        to.outsideBC.returnDate = format(
+          from.returnDateDuring12MonthsDate,
+          this.ISO8601DateFormat
+        );
       }
     } else if (from.declarationForOutsideOver30Days === false) {
       to.outsideBC = OutsideBCTypeFactory.make();
@@ -769,10 +791,16 @@ export class MspApiAccountService extends AbstractHttpService {
       to.outsideBCinFuture.familyMemberReason = from.departureReason;
       to.outsideBCinFuture.destination = from.departureDestination;
       if (from.departureDateDuring6MonthsDate) {
-        to.outsideBCinFuture.departureDate = format(from.departureDateDuring6MonthsDate, this.ISO8601DateFormat);
+        to.outsideBCinFuture.departureDate = format(
+          from.departureDateDuring6MonthsDate,
+          this.ISO8601DateFormat
+        );
       }
       if (from.returnDateDuring6MonthsDate) {
-        to.outsideBCinFuture.returnDate = format(from.returnDateDuring6MonthsDate, this.ISO8601DateFormat);
+        to.outsideBCinFuture.returnDate = format(
+          from.returnDateDuring6MonthsDate,
+          this.ISO8601DateFormat
+        );
       }
     } else if (from.declarationForOutsideOver60Days === false) {
       to.outsideBCinFuture = OutsideBCTypeFactory.make();
@@ -838,7 +866,8 @@ export class MspApiAccountService extends AbstractHttpService {
         this.ISO8601DateFormat
       );
       to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
-      to.willBeAway.isFullTimeStudent = from.relationship === Relationship.Child19To24 ? 'Y' : 'N';
+      to.willBeAway.isFullTimeStudent =
+        from.relationship === Relationship.Child19To24 ? 'Y' : 'N';
     }
 
     if (from.inBCafterStudies !== undefined && from.inBCafterStudies !== null) {
@@ -1154,7 +1183,8 @@ export class MspApiAccountService extends AbstractHttpService {
   private convertAccountHolderFromAccountChange(
     from: MspAccountApp
   ): AccountChangeAccountHolderType {
-    const accountHolder: AccountChangeAccountHolderType = AccountChangeAccountHolderFactory.make();
+    const accountHolder: AccountChangeAccountHolderType =
+      AccountChangeAccountHolderFactory.make();
 
     accountHolder.selectedAddRemove =
       from.accountChangeOptions.dependentChange ||
@@ -1166,10 +1196,11 @@ export class MspApiAccountService extends AbstractHttpService {
       .addressUpdate
       ? 'Y'
       : 'N';
-    accountHolder.selectedPersonalInfoChange = (from.accountChangeOptions
-      .personInfoUpdate || from.applicant.updatingPersonalInfo === true)
-      ? 'Y'
-      : 'N';
+    accountHolder.selectedPersonalInfoChange =
+      from.accountChangeOptions.personInfoUpdate ||
+      from.applicant.updatingPersonalInfo === true
+        ? 'Y'
+        : 'N';
     accountHolder.selectedStatusChange =
       from.applicant.updateStatusInCanada ||
       (from.addedSpouse && from.addedSpouse.updateStatusInCanada) ||
@@ -1225,7 +1256,9 @@ export class MspApiAccountService extends AbstractHttpService {
     }
 
     if (from.residentialAddress) {
-      accountHolder.residenceAddress = this.convertAddress(from.residentialAddress);
+      accountHolder.residenceAddress = this.convertAddress(
+        from.residentialAddress
+      );
     }
 
     // If mailing is same as residential address, use residential address as the mailing address.

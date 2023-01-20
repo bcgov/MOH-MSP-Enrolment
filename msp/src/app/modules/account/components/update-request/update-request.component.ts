@@ -1,11 +1,21 @@
-import { EventEmitter, Output, Component, Input, forwardRef } from '@angular/core';
-import { MspAccountApp, UpdateList, ItemList } from '../../models/account.model';
+import {
+  EventEmitter,
+  Output,
+  Component,
+  Input,
+  forwardRef,
+} from '@angular/core';
+import {
+  MspAccountApp,
+  UpdateList,
+  ItemList,
+} from '../../models/account.model';
 import {
   nameChangeSupportDocs,
   nameChangeDueToMarriageOrDivorceDocuments,
   genderDesignationChangeDocuments,
   nameChangeDueToErrorDocuments,
-  genderBirthDateChangeDocuments
+  genderBirthDateChangeDocuments,
 } from '../../../msp-core/components/support-documents/support-documents.component';
 import { SupportDocuments } from '../../../msp-core/models/support-documents.model';
 import { SupportDocumentTypes } from 'app/modules/msp-core/models/support-documents.enum';
@@ -20,12 +30,13 @@ import { SupportDocumentList } from '../../../msp-core/models/support-documents.
   selector: 'msp-update-request',
   templateUrl: './update-request.component.html',
   styleUrls: ['./update-request.component.scss'],
-  viewProviders: [{
-    provide: ControlContainer,
-    useExisting: forwardRef(() => NgForm)
-  }]
+  viewProviders: [
+    {
+      provide: ControlContainer,
+      useExisting: forwardRef(() => NgForm),
+    },
+  ],
 })
-
 export class UpdateRequestComponent extends Base {
   @Input() person: MspPerson;
   @Input() activitiesTable: any[];
@@ -34,7 +45,7 @@ export class UpdateRequestComponent extends Base {
   @Input() title: string;
   @Input() subtitle: string;
   @Input() status: boolean;
-  @Input() updateList: UpdateList[] ;
+  @Input() updateList: UpdateList[];
 
   itemList: ItemList[];
   @Output() statusChange: EventEmitter<boolean>; //  = new EventEmitter<boolean>();
@@ -42,16 +53,16 @@ export class UpdateRequestComponent extends Base {
   canadianCitizenDocList: SupportDocumentTypes[] = [
     SupportDocumentTypes.CanadianBirthCertificate,
     SupportDocumentTypes.CanadianPassport,
-    SupportDocumentTypes.CanadianCitizenCard
+    SupportDocumentTypes.CanadianCitizenCard,
   ];
   permanentResidentDocList: SupportDocumentTypes[] = [
     SupportDocumentTypes.PermanentResidentConfirmation,
     SupportDocumentTypes.RecordOfLanding,
-    SupportDocumentTypes.PermanentResidentCard
+    SupportDocumentTypes.PermanentResidentCard,
   ];
   hideStatus: StatusInCanada[] = [
     StatusInCanada.CitizenAdult,
-    StatusInCanada.PermanentResident
+    StatusInCanada.PermanentResident,
   ];
 
   nameChangeDueToMarriageDocs = nameChangeDueToMarriageOrDivorceDocuments();
@@ -61,7 +72,7 @@ export class UpdateRequestComponent extends Base {
   genderChangeDocs = genderDesignationChangeDocuments();
 
   //statusValue: number;
- //  = legalStatus;
+  //  = legalStatus;
   constructor() {
     super();
     //this.mspAccountApp = dataService.getMspAccountApp();
@@ -69,7 +80,7 @@ export class UpdateRequestComponent extends Base {
 
   ngOnInit() {
     //this.person = this.dataService.getMspAccountApp().applicant ;
-    if (this.person.status >= 0 &&  this.person.status !== undefined) {
+    if (this.person.status >= 0 && this.person.status !== undefined) {
       //this.itemList = this.item(this.person.status);
     }
   }
@@ -116,21 +127,26 @@ export class UpdateRequestComponent extends Base {
   }
 
   getDocList() {
-    if (this.person.status === StatusInCanada.CitizenAdult){
+    if (this.person.status === StatusInCanada.CitizenAdult) {
       return this.canadianCitizenDocList;
-    } else if (this.person.status === StatusInCanada.PermanentResident){
+    } else if (this.person.status === StatusInCanada.PermanentResident) {
       return this.permanentResidentDocList;
     }
   }
 
   checkStatus() {
-    return (this.person.status === StatusInCanada.CitizenAdult ||
+    return (
+      this.person.status === StatusInCanada.CitizenAdult ||
       this.person.status === StatusInCanada.PermanentResident ||
-      this.person.currentActivity !== undefined);
+      this.person.currentActivity !== undefined
+    );
   }
 
   get isChild() {
-    return this.person.relationship === Relationship.Child || this.person.relationship === undefined;
+    return (
+      this.person.relationship === Relationship.Child ||
+      this.person.relationship === undefined
+    );
   }
 
   get relationshipText() {
@@ -140,7 +156,7 @@ export class UpdateRequestComponent extends Base {
       case Relationship.Spouse:
         return 'Spouse';
       default:
-        return 'Child'
+        return 'Child';
     }
   }
 
@@ -149,9 +165,11 @@ export class UpdateRequestComponent extends Base {
       case Relationship.Applicant:
         return 'your';
       case Relationship.Spouse:
-        return 'your spouse\'s';
+        // tslint:disable-next-line
+        return "your spouse's";
       default:
-        return 'the child\'s'
+        // tslint:disable-next-line
+        return "the child's";
     }
   }
 

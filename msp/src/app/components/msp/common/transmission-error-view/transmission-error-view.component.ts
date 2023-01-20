@@ -1,18 +1,17 @@
-import {Component, Input} from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'msp-transmission-error-view',
   templateUrl: './transmission-error-view.component.html',
-  styleUrls: ['./transmission-error-view.scss']
+  styleUrls: ['./transmission-error-view.scss'],
 })
+// tslint:disable-next-line
 export class TransmissionErrorView {
-
   @Input('rawError')
   rawError: any;
   public showMoreErrorDetails: boolean;
 
-  toggleErrorDetails(){
+  toggleErrorDetails() {
     this.showMoreErrorDetails = !this.showMoreErrorDetails;
   }
-
 }

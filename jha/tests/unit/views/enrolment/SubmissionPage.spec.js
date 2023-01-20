@@ -1,6 +1,5 @@
 import { shallowMount, createLocalVue } from '@vue/test-utils';
 import Vuex from 'vuex';
-import Vue from 'vue';
 import SubmissionPage from '@/views/enrolment/SubmissionPage.vue';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { fpcAddressUpdateMiddlewareHTML } from "../../fixtures.js";
@@ -44,5 +43,6 @@ describe('Enrolment - FormSelectionPage.vue', () => {
       localVue,
     });
     const middlwareResponseContainer = wrapper.get('.fpc-success-message');
+    expect(middlwareResponseContainer).not.toBeFalsy();
   });
 });

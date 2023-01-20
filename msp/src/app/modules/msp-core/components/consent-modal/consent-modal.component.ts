@@ -1,4 +1,10 @@
-import {Component, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { environment } from '../../../../../environments/environment';
 import { ConsentModalComponent } from 'moh-common-lib';
 
@@ -8,31 +14,30 @@ import { ConsentModalComponent } from 'moh-common-lib';
  */
 
 @Component({
-    selector: 'msp-consent-modal',
-    templateUrl: './consent-modal.component.html',
+  selector: 'msp-consent-modal',
+  templateUrl: './consent-modal.component.html',
 })
 export class MspConsentModalComponent {
-    
-    constructor() {}
+  constructor() {}
 
-    @Input() isMaintenanceMode: boolean = true;
-    @Input() consentProcessName: string = 'Unknown Process Name';
-    @ViewChild('mspConsentModal') public mspConsentModal: ConsentModalComponent;
+  @Input() isMaintenanceMode: boolean = true;
+  @Input() consentProcessName: string = 'Unknown Process Name';
+  @ViewChild('mspConsentModal') public mspConsentModal: ConsentModalComponent;
 
-    @Output() accept: EventEmitter<any> = new EventEmitter<any>();
-    @Output() close: EventEmitter<void> = new EventEmitter<void>();
+  @Output() accept: EventEmitter<any> = new EventEmitter<any>();
+  @Output() close: EventEmitter<void> = new EventEmitter<void>();
 
-    links = environment.links;
+  links = environment.links;
 
-    onAccept( $event ) {
-        this.accept.emit( $event );
-    }
+  onAccept($event) {
+    this.accept.emit($event);
+  }
 
-    onClose(){
-        this.close.emit();
-    }
+  onClose() {
+    this.close.emit();
+  }
 
-    showFullSizeView() {
-        this.mspConsentModal.showFullSizeView();
-    }
+  showFullSizeView() {
+    this.mspConsentModal.showFullSizeView();
+  }
 }

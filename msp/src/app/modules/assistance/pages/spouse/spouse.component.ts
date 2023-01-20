@@ -1,4 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef, ViewChild, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ChangeDetectorRef,
+  ViewChild,
+  SimpleChanges,
+} from '@angular/core';
 import { FinancialAssistApplication } from '../../models/financial-assist-application.model';
 import { MspDataService } from 'app/services/msp-data.service';
 import { AssistanceYear } from '../../models/assistance-year.model';
@@ -17,17 +23,17 @@ export interface SpouseYears {
 @Component({
   selector: 'msp-spouse',
   templateUrl: './spouse.component.html',
-  styleUrls: ['./spouse.component.scss']
+  styleUrls: ['./spouse.component.scss'],
 })
 export class SpouseComponent extends BaseComponent implements OnInit {
-
   @ViewChild('formRef') spouseInfoForm: NgForm;
 
   touched$ = this.stateSvc.touched.asObservable();
   title = 'Add spouse information and upload documents';
   description =
     'Did you have a spouse or common-law partner during any of the years you are requesting Retroactive Premium Assistance? ' +
-    'If so, you are required to upload your spouse\'s Notice of Assessment or Reassessment.';
+    // tslint:disable-next-line
+    "If so, you are required to upload your spouse's Notice of Assessment or Reassessment.";
   yearTitle = 'Your spouse or common-law partner';
   yearDescription = 'Select the tax year when you had a spouse';
   documentsTitle = 'Documents';
@@ -46,7 +52,7 @@ export class SpouseComponent extends BaseComponent implements OnInit {
 
   get validSelection() {
     const app = this.finAssistApp.assistYears;
-    return app.some(itm => itm.hasSpouse);
+    return app.some((itm) => itm.hasSpouse);
   }
 
   constructor(
@@ -59,7 +65,6 @@ export class SpouseComponent extends BaseComponent implements OnInit {
     this.finAssistApp = this.dataSvc.finAssistApp;
   }
 
-
   ngOnInit() {
     const assistYears = this.finAssistApp.assistYears;
     const arr = [];
@@ -69,7 +74,9 @@ export class SpouseComponent extends BaseComponent implements OnInit {
     for (const year of assistYears) {
       arr.push(checkYear(year));
     }
-    this.assistanceYears = arr.filter(itm => itm != null).map(itm => itm.year);
+    this.assistanceYears = arr
+      .filter((itm) => itm != null)
+      .map((itm) => itm.year);
 
     this.assistanceYearsDocs = arr;
     this.showTaxYears = this.finAssistApp.hasSpouseOrCommonLaw;
@@ -78,28 +85,27 @@ export class SpouseComponent extends BaseComponent implements OnInit {
     }
 
     const years = this.finAssistApp.assistYears;
-    const hasSpouse = years.some(itm => itm.hasSpouse);
+    const hasSpouse = years.some((itm) => itm.hasSpouse);
     if (hasSpouse) {
       this.parseSpouse(years);
     }
 
-    if (this.finAssistApp.assistYears.some(itm => itm.hasSpouse))
+    if (this.finAssistApp.assistYears.some((itm) => itm.hasSpouse))
       this.documentsDescription = `Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for ${this.createDocumentDesc(
         this.selectedYears
       )}`;
 
-    this.urlIndex = this.stateSvc.findIndex( this.route.snapshot.routeConfig.path );
-    this.stateSvc.setPageIncomplete( this.route.snapshot.routeConfig.path );
+    this.urlIndex = this.stateSvc.findIndex(
+      this.route.snapshot.routeConfig.path
+    );
+    this.stateSvc.setPageIncomplete(this.route.snapshot.routeConfig.path);
     this.setPageStatus();
   }
 
   ngAfterViewInit() {
     this.subscriptionList.push(
       this.spouseInfoForm.valueChanges
-        .pipe(
-          debounceTime(250),
-          distinctUntilChanged()
-        )
+        .pipe(debounceTime(250), distinctUntilChanged())
         .subscribe(() => {
           this.setPageStatus();
           this.dataSvc.saveFinAssistApplication();
@@ -108,8 +114,8 @@ export class SpouseComponent extends BaseComponent implements OnInit {
 
     setTimeout(
       () =>
-      this.subscriptionList.push(
-          this.stateSvc.touched.asObservable().subscribe(obs => {
+        this.subscriptionList.push(
+          this.stateSvc.touched.asObservable().subscribe((obs) => {
             if (obs) {
               const controls = this.spouseInfoForm.form.controls;
               for (const control in controls) {
@@ -125,21 +131,22 @@ export class SpouseComponent extends BaseComponent implements OnInit {
   // Ensure at least one document has been uploaded for every spouse assistance year
   hasFiles() {
     let hasAllFiles = true;
-    this.finAssistApp.assistYears.forEach(yr => {
+    this.finAssistApp.assistYears.forEach((yr) => {
       if (yr.spouseFiles && yr.spouseFiles.length < 1) {
         hasAllFiles = false;
       }
-    })
-    
+    });
+
     return hasAllFiles;
   }
 
   setPageStatus() {
     let valid = true;
-    if ( this.finAssistApp.hasSpouseOrCommonLaw  ) {
-      valid = this.spouseInfoForm.valid && this.validSelection && this.hasFiles();
+    if (this.finAssistApp.hasSpouseOrCommonLaw) {
+      valid =
+        this.spouseInfoForm.valid && this.validSelection && this.hasFiles();
     }
-    this.stateSvc.setPageValid( this.route.snapshot.routeConfig.path, valid );
+    this.stateSvc.setPageValid(this.route.snapshot.routeConfig.path, valid);
   }
 
   parseSpouse(arr: AssistanceYear[]) {
@@ -157,14 +164,16 @@ export class SpouseComponent extends BaseComponent implements OnInit {
   addSpouse() {
     this.finAssistApp.setSpouse = true;
     this.showTaxYears = this.finAssistApp.hasSpouseOrCommonLaw;
-    this.stateSvc.finAssistApp.pageStatus[this.urlIndex - 1].btnLabel = 'Continue';
+    this.stateSvc.finAssistApp.pageStatus[this.urlIndex - 1].btnLabel =
+      'Continue';
     this.dataSvc.saveFinAssistApplication();
   }
 
   removeSpouse() {
     this.finAssistApp.setSpouse = false;
     this.showTaxYears = this.finAssistApp.hasSpouseOrCommonLaw;
-    this.stateSvc.finAssistApp.pageStatus[this.urlIndex - 1].btnLabel = 'No Spouse';
+    this.stateSvc.finAssistApp.pageStatus[this.urlIndex - 1].btnLabel =
+      'No Spouse';
     this.dataSvc.saveFinAssistApplication();
   }
 
@@ -180,12 +189,11 @@ export class SpouseComponent extends BaseComponent implements OnInit {
       // There's a bug that can lead to duplicate records here that only comes
       // up during automation testing.  Here we are directly scanning for dupes
       // before inserting into the array.
-      const duplicate = this.selectedYears.filter(x => x.year === year);
-      if (!duplicate || duplicate.length === 0){
+      const duplicate = this.selectedYears.filter((x) => x.year === year);
+      if (!duplicate || duplicate.length === 0) {
         // Only add item is unique
         this.selectedYears.push(itm);
       }
-
     } else {
       const itm = this.findYear(year);
       itm.hasSpouse = false;
@@ -194,10 +202,10 @@ export class SpouseComponent extends BaseComponent implements OnInit {
         if (assistYear.year === year) this.finAssistApp.assistYears[i] = itm;
         i++;
       }
-      this.selectedYears = this.selectedYears.filter(x => x.year !== year);
+      this.selectedYears = this.selectedYears.filter((x) => x.year !== year);
     }
     this.dataSvc.saveFinAssistApplication();
-    if (this.finAssistApp.assistYears.some(itm => itm.hasSpouse))
+    if (this.finAssistApp.assistYears.some((itm) => itm.hasSpouse))
       this.documentsDescription = `Upload your spouse's Canada Revenue Agency Notice of Assessment or Reassessment for ${this.createDocumentDesc(
         this.selectedYears
       )}`;
@@ -205,7 +213,7 @@ export class SpouseComponent extends BaseComponent implements OnInit {
 
   findYear(year: number) {
     const [...years] = this.finAssistApp.assistYears.filter(
-      x => x.year === year
+      (x) => x.year === year
     );
     const { ...itm } = years[0];
     if (!itm.spouseFiles) itm.spouseFiles = [];
@@ -225,8 +233,8 @@ export class SpouseComponent extends BaseComponent implements OnInit {
   }
   createDocumentDesc(years: any[]) {
     return years
-      .filter(itm => itm.hasSpouse)
-      .map(itm => itm.year)
+      .filter((itm) => itm.hasSpouse)
+      .map((itm) => itm.year)
       .sort((a, b) => a - b)
       .reduce((a, b, i, arr) =>
         i === arr.length - 1 ? `${a} and ${b}.` : `${a}, ${b}`
@@ -234,6 +242,6 @@ export class SpouseComponent extends BaseComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscriptionList.forEach(itm => itm.unsubscribe());
+    this.subscriptionList.forEach((itm) => itm.unsubscribe());
   }
 }

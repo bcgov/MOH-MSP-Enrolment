@@ -1,4 +1,4 @@
-import { APP_ROUTES } from "../../models/route-constants";
+import { APP_ROUTES } from '../../models/route-constants';
 
 const PAGE_NAMES = {
   home: 'home',
