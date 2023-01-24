@@ -16,6 +16,7 @@ export const generateRequestObject = () => {
     "provinceOrState": "British Columbia",
     "country": "Canada",
     "authorizedByApplicant": "Y",
+    "authorizedByApplicantDate": new Date().toLocaleDateString(),
     "powerOfAttorney": "N",
     "spousePowerOfAttorney": "N",
     "authorizedBySpouse": "Y",
@@ -31,8 +32,8 @@ export const generateRequestObject = () => {
     },
     "supplementaryBenefits": {
       "uuid": "2412695f-3383-416d-90be-e0cfc3127058",
-      "assistanceYear": "2022",
-      "taxYear": "2021",
+      "assistanceYear": String(new Date().getFullYear()),
+      "taxYear": String(new Date().getFullYear() - 1),
       "numberOfTaxYears": 0,
       "adjustedNetIncome": 8100,
       "childDeduction": 36000,

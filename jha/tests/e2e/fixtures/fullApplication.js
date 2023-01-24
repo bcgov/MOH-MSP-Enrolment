@@ -172,8 +172,8 @@ export const generateRequestObject = () => {
       ]
     },
     "supplementaryBenefits": {
-      "assistanceYear": "2022",
-      "taxYear": "2021",
+      "assistanceYear": String(new Date().getFullYear()),
+      "taxYear": String(new Date().getFullYear() - 1),
       "numberOfTaxYears": 0,
       "adjustedNetIncome": 41100,
       "childDeduction": 3000,
