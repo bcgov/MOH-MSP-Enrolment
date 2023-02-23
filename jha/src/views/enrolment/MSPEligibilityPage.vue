@@ -23,6 +23,7 @@
           name='apply-msp'
           label='1. Will you use this form to apply for MSP?'
           v-model='eqMSPIsApplying'
+          cypressId='apply-msp-'
           :required="true"
           :items='radioOptionsApplyMSP' />
         <div v-if="eqMSPIsApplying === 'Y'">
@@ -31,6 +32,7 @@
             name='live-in-bc'
             label='2. Do you currently live in B.C. and have a B.C. address where you can receive mail?'
             v-model='eqMSPLiveInBC'
+            cypressId='live-in-bc-'
             :required="true"
             :items='radioOptionsYesNo' />
           <div class="text-danger ml-4" v-if="eqMSPLiveInBC === 'N'">
@@ -45,6 +47,7 @@
               name='away-over-30'
               label='3. Will anyone included in this application be away from B.C. for more than 30 days in total during the next six months?'
               v-model='eqMSPAwayOver30'
+              cypressId='away-over-30-'
               :required="true"
               :items='radioOptionsYesNo' />
             <div class="text-danger ml-4" v-if="eqMSPAwayOver30 === 'Y'">
@@ -59,6 +62,7 @@
                 name='student-minor-refugee'
                 label='4. Is anyone included in this application: a student returning to a province outside B.C. at the end of a course or program; an unaccompanied minor; or a person seeking refugee status?'
                 v-model='eqMSPStudentMinorRefugee'
+                cypressId='student-minor-refugee-'
                 :required="true"
                 :items='radioOptionsYesNo' />
               <div class="text-danger ml-4" v-if="eqMSPStudentMinorRefugee === 'Y'">
@@ -73,6 +77,7 @@
                   name='has-documents'
                   label='Do you have digital copies of the documents for each person included in this application?'
                   v-model='eqMSPHasDocuments'
+                  cypressId='has-documents-'
                   :required="true"
                   :items='radioOptionsYesNo' />
                 <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">You must have digital copies of the documents to apply for MSP using this form. If you are not able to make digital copies, you can apply with print copies using the printable form (HLTH 101) available at <a target="_blank" href="https://gov.bc.ca/AHDC">gov.bc.ca/AHDC</a>.</p>
@@ -86,7 +91,8 @@
       </main>
     </PageContent>
     <ContinueBar
-    @continue="validateFields()" />
+    @continue="validateFields()"
+    cypressId='continue' />
   </div>
 </template>
 
