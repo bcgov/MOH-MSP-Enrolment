@@ -4,6 +4,8 @@ import { SupportDocumentTypes } from '../../../src/constants/document-types';
 export const generateRequestObject = () => {
   const currentDate = new Date();
   const lastMonthDate = new Date();
+  const lastYearDate = new Date();
+  lastYearDate.setFullYear(currentDate.getFullYear() - 1);
   lastMonthDate.setMonth(currentDate.getMonth() - 1);
 
   return {
@@ -125,13 +127,13 @@ export const generateRequestObject = () => {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "3",
-          "description": "Marriage Certificate"
+          "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "4",
-          "description": "Marriage Certificate"
+          "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
@@ -149,13 +151,13 @@ export const generateRequestObject = () => {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "7",
-          "description": "Marriage Certificate"
+          "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "8",
-          "description": "Marriage Certificate"
+          "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
@@ -172,8 +174,8 @@ export const generateRequestObject = () => {
       ]
     },
     "supplementaryBenefits": {
-      "assistanceYear": "2022",
-      "taxYear": "2021",
+      "assistanceYear": formatISODate(currentDate.getFullYear()).toString(),
+      "taxYear": formatISODate(lastYearDate.getFullYear()).toString(),
       "numberOfTaxYears": 0,
       "adjustedNetIncome": 41100,
       "childDeduction": 3000,
@@ -211,13 +213,13 @@ export const generateRequestObject = () => {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "3",
-          "description": "Applicant NOA/NOR"
+          "description": "Account holder NOA/NOR"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentOrder": "4",
-          "description": "Applicant NOA/NOR"
+          "description": "Account holder NOA/NOR"
         },
         {
           "contentType": "IMAGE_JPEG",
