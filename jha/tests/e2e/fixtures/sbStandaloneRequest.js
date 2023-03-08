@@ -1,4 +1,10 @@
+import { formatISODate } from 'common-lib-vue';
+
 export const generateRequestObject = () => {
+  const currentDate = new Date();
+  const lastYearDate = new Date();
+  lastYearDate.setFullYear(lastYearDate.getFullYear() - 1);
+
   return {
     "firstName": "alex",
     "secondName": "jaimie",
@@ -31,8 +37,8 @@ export const generateRequestObject = () => {
     },
     "supplementaryBenefits": {
       "uuid": "2412695f-3383-416d-90be-e0cfc3127058",
-      "assistanceYear": "2022",
-      "taxYear": "2021",
+      "assistanceYear": formatISODate(currentDate.getFullYear()).toString(),
+      "taxYear": formatISODate(lastYearDate.getFullYear()).toString(),
       "numberOfTaxYears": 0,
       "adjustedNetIncome": 8100,
       "childDeduction": 36000,
@@ -73,14 +79,14 @@ export const generateRequestObject = () => {
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "aa8b2f14-9ec0-42b6-aafe-2ac11d43685d",
           "attachmentOrder": "3",
-          "description": "Applicant NOA/NOR"
+          "description": "Account holder NOA/NOR"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "06c3011c-4133-4777-b70d-d34fa6da144e",
           "attachmentOrder": "4",
-          "description": "Applicant NOA/NOR"
+          "description": "Account holder NOA/NOR"
         },
         {
           "contentType": "IMAGE_JPEG",
