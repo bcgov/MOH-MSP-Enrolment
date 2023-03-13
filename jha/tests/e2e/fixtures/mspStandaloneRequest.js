@@ -4,7 +4,7 @@ import { SupportDocumentTypes } from '../../../src/constants/document-types';
 export const generateRequestObject = () => {
   const currentDate = new Date();
   const lastMonthDate = new Date();
-  lastMonthDate.setMonth(currentDate.getMonth() - 1);
+  lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
 
   return {
     "uuid": "412d35d7-8446-4dfa-ac03-d19d3dd2ad03",
@@ -148,14 +148,14 @@ export const generateRequestObject = () => {
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "45c86f8d-9e64-4d9b-8326-85349a8080b1",
           "attachmentOrder": "3",
-          "description": "Marriage Certificate"
+          "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "c23e0467-8f6c-45ca-b797-4876fbd1843f",
           "attachmentOrder": "4",
-          "description": "Marriage Certificate"
+          "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
@@ -176,14 +176,14 @@ export const generateRequestObject = () => {
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "eedbf9ff-3970-4895-92d2-253dfd9cf767",
           "attachmentOrder": "7",
-          "description": "Marriage Certificate"
+          "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
           "attachmentUuid": "976f4ab1-41e1-4e14-8efc-847b34392db4",
           "attachmentOrder": "8",
-          "description": "Marriage Certificate"
+          "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
