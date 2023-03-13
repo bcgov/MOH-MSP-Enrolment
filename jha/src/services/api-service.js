@@ -54,7 +54,7 @@ class ApiService {
       jsonPayload.addressLine1 = formState.mailAddressLine1 ? replaceSpecialCharacters(formState.mailAddressLine1).substring(0, 25) : null;
       jsonPayload.addressLine2 = formState.mailAddressLine2 ? replaceSpecialCharacters(formState.mailAddressLine2).substring(0, 25) : null;
       jsonPayload.addressLine3 = formState.mailAddressLine3 ? replaceSpecialCharacters(formState.mailAddressLine3).substring(0, 25) : null;
-      jsonPayload.city = formState.mailCity || null;
+      jsonPayload.city = formState.mailCity ? replaceSpecialCharacters(formState.mailCity).substring(0, 25) : null;
       jsonPayload.postalCode = stripSpaces(formState.mailPostalCode) || null;
       jsonPayload.provinceOrState = formState.mailProvince || null;
       jsonPayload.country = formState.mailCountry ? replaceSpecialCharacters(formState.mailCountry).substring(0, 25) : null;
