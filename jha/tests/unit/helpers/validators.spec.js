@@ -4,6 +4,8 @@ import {
   yesValidator,
   nonBCValidator,
   nonCanadaValidator,
+  dateDataRequiredValidator,
+  dateDataValidator
 } from "@/helpers/validators";
 
 describe("bcPostalCodeValidator()", () => {
@@ -125,6 +127,134 @@ describe("nonCanadaValidator()", () => {
 
   it("returns true when passed non-alphanumeric characters", async () => {
     expect(nonCanadaValidator("#$%$#")).toBe(true);
+  });
+});
+
+describe("dateDataRequiredValidator()", () => {
+  it("returns false when dateData is not passed", async () => {
+    expect(dateDataRequiredValidator().$validator()).toBe(false);
+  });
+
+  it("returns false when passed specific dateData", async () => {
+    //null year, null day, month can't be a number
+    expect(
+      dateDataRequiredValidator({
+        date: null,
+        month: "a",
+        day: null,
+        year: null,
+      }).$validator()
+    ).toBe(false);
+  });
+
+  it("returns true when passed any other format of dateData", async () => {
+    expect(
+      dateDataRequiredValidator({
+        date: null,
+        month: 5,
+        day: 1,
+        year: 2023,
+      }).$validator()
+    ).toBe(true);
+  });
+});
+
+describe("dateDataValidator()", () => {
+  it("returns true when dateData is not passed", async () => {
+    expect(dateDataValidator().$validator()).toBe(true);
+  });
+
+  it("returns true when passed specific dateData", async () => {
+    //null year, null day, month can't be a number
+    expect(
+      dateDataValidator({
+        date: null,
+        month: "a",
+        day: null,
+        year: null,
+      }).$validator()
+    ).toBe(true);
+  });
+
+  it("returns false when passed a different specific format of dateData", async () => {
+    //the year and day must be present and the month must be a number
+    //if at least one of those things is not true and at least one is true, return false
+    expect(
+      dateDataValidator({
+        date: null,
+        month: null,
+        day: 1,
+        year: 2023,
+      }).$validator()
+    ).toBe(false);
+  });
+
+  it("returns false when passed a different specific format of dateData (2)", async () => {
+    expect(
+      dateDataValidator({
+        date: null,
+        month: 5,
+        day: null,
+        year: 2023,
+      }).$validator()
+    ).toBe(false);
+  })
+
+  it("returns false when passed a different specific format of dateData (3)", async () => {
+    expect(
+      dateDataValidator({
+        date: null,
+        month: 5,
+        day: 1,
+        year: null,
+      }).$validator()
+    ).toBe(false);
+  })
+
+  it("returns false when otherwise valid data does not convert to a valid ISODateString", async () => {
+    expect(
+      dateDataValidator({
+        date: null,
+        month: 13,
+        day: 1,
+        year: 2023,
+      }).$validator()
+    ).toBe(false);
+  });
+
+  it("returns false when otherwise valid data does not convert to a valid ISODateString (2)", async () => {
+    expect(
+      dateDataValidator({
+        date: null,
+        month: 9,
+        day: 32,
+        year: 2023,
+      }).$validator()
+    ).toBe(false);
+  });
+
+  it("returns false when otherwise valid data does not convert to a valid ISODateString (3)", async () => {
+    //when the 0-based index gets converted to a month digit, the number increments by 1
+    //this means 11 becomes December and 12 needs to be invalid
+    expect(
+      dateDataValidator({
+        date: null,
+        month: 12,
+        day: 32,
+        year: 2023,
+      }).$validator()
+    ).toBe(false);
+  });
+
+  it("returns true when given valid data", async () => {
+    expect(
+      dateDataValidator({
+        date: null,
+        month: 9,
+        day: 13,
+        year: 2023,
+      }).$validator()
+    ).toBe(true);
   });
 });
 
