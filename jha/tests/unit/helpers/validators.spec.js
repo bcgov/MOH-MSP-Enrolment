@@ -1,4 +1,10 @@
-import { bcPostalCodeValidator, nameValidator, yesValidator, nonBCValidator } from "@/helpers/validators";
+import {
+  bcPostalCodeValidator,
+  nameValidator,
+  yesValidator,
+  nonBCValidator,
+  nonCanadaValidator,
+} from "@/helpers/validators";
 
 describe("bcPostalCodeValidator()", () => {
   it("returns false when passed no input", async () => {
@@ -78,7 +84,7 @@ describe("yesValidator()", () => {
   });
 });
 
-describe.only("nonBCValidator()", () => {
+describe("nonBCValidator()", () => {
   it("returns true when passed no input", async () => {
     expect(nonBCValidator()).toBe(true);
   });
@@ -101,6 +107,24 @@ describe.only("nonBCValidator()", () => {
 
   it("returns true when passed non-alphanumeric characters", async () => {
     expect(nonBCValidator("#$%$#")).toBe(true);
+  });
+});
+
+describe("nonCanadaValidator()", () => {
+  it("returns true when passed no input", async () => {
+    expect(nonCanadaValidator()).toBe(true);
+  });
+
+  it("returns false when passed 'Canada'", async () => {
+    expect(nonCanadaValidator("Canada")).toBe(false);
+  });
+
+  it("returns true when passed 'United States'", async () => {
+    expect(nonCanadaValidator("United States")).toBe(true);
+  });
+
+  it("returns true when passed non-alphanumeric characters", async () => {
+    expect(nonCanadaValidator("#$%$#")).toBe(true);
   });
 });
 
