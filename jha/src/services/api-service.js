@@ -7,6 +7,7 @@ import {
 } from 'common-lib-vue';
 import { ChildAgeTypes } from '@/constants/child-age-types';
 import { getCitizenshipType } from '@/constants/immigration-status-types';
+import { firstNameMaxLength, middleNameMaxLength, lastNameMaxLength } from '@/constants/html-validations.js';
 
 const BASE_API_PATH = '/ahdc/api';
 const SUBMIT_APPLICATION_URL = `${BASE_API_PATH}/jhaIntegration/application`;
@@ -25,9 +26,9 @@ class ApiService {
 
     const jsonPayload = {
       uuid: formState.applicationUuid,
-      firstName: formState.ahFirstName || null,
-      secondName: formState.ahMiddleName || null,
-      lastName: formState.ahLastName || null,
+      firstName: formState.ahFirstName ? formState.ahFirstName.substring(0, firstNameMaxLength) : null,
+      secondName: formState.ahMiddleName ? formState.ahMiddleName.substring(0, middleNameMaxLength) : null,
+      lastName: formState.ahLastName ? formState.ahLastName.substring(0, lastNameMaxLength) : null,
       sin: stripSpaces(formState.ahSIN) || null,
       phn: stripSpaces(formState.ahPHN) || null,
       gender: formState.ahGender || null,
@@ -53,7 +54,7 @@ class ApiService {
       jsonPayload.addressLine1 = formState.mailAddressLine1 ? replaceSpecialCharacters(formState.mailAddressLine1).substring(0, 25) : null;
       jsonPayload.addressLine2 = formState.mailAddressLine2 ? replaceSpecialCharacters(formState.mailAddressLine2).substring(0, 25) : null;
       jsonPayload.addressLine3 = formState.mailAddressLine3 ? replaceSpecialCharacters(formState.mailAddressLine3).substring(0, 25) : null;
-      jsonPayload.city = formState.mailCity || null;
+      jsonPayload.city = formState.mailCity ? replaceSpecialCharacters(formState.mailCity).substring(0, 25) : null;
       jsonPayload.postalCode = stripSpaces(formState.mailPostalCode) || null;
       jsonPayload.provinceOrState = formState.mailProvince || null;
       jsonPayload.country = formState.mailCountry ? replaceSpecialCharacters(formState.mailCountry).substring(0, 25) : null;
@@ -62,9 +63,9 @@ class ApiService {
     if (formState.hasSpouse === 'Y') {
       jsonPayload.authorizedBySpouse = 'Y';
       jsonPayload.spouse = {
-        firstName: formState.spouseFirstName || null,
-        secondName: formState.spouseMiddleName || null,
-        lastName: formState.spouseLastName || null,
+        firstName: formState.spouseFirstName ? formState.spouseFirstName.substring(0, firstNameMaxLength) : null,
+        secondName: formState.spouseMiddleName ? formState.spouseMiddleName.substring(0, middleNameMaxLength) : null,
+        lastName: formState.spouseLastName ? formState.spouseLastName.substring(0, lastNameMaxLength) : null,
         gender: formState.spouseGender || null,
         birthDate: formatISODate(formState.spouseBirthDate) || null,
         telephone: stripPhoneFormatting(formState.phone) || null,
@@ -141,9 +142,9 @@ class ApiService {
         if (children.length > 0) {
           jsonPayload.medicalServicesPlan.children = children.map((child) => {
             return {
-              firstName: child.firstName || null,
-              secondName: child.middleName || null,
-              lastName: child.lastName || null,
+              firstName: child.firstName ? child.firstName.substring(0, firstNameMaxLength) : null,
+              secondName: child.middleName ? child.middleName.substring(0, middleNameMaxLength) : null,
+              lastName: child.lastName ? child.lastName.substring(0, lastNameMaxLength) : null,
               gender: child.gender || null,
               birthDate: formatISODate(child.birthDate) || null,
               citizenshipType: getCitizenshipType(child.status, child.statusReason) || null,

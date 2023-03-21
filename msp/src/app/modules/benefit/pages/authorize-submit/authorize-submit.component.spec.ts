@@ -14,14 +14,14 @@ describe('BenefitAuthorizeSubmitComponent', () => {
   let fixture: ComponentFixture<BenefitAuthorizeSubmitComponent>;
 
   beforeEach(async(() => {
-    const routerStub = () => ({ navigate: array => ({}) });
+    const routerStub = () => ({ navigate: (array) => ({}) });
     const completenessCheckServiceStub = () => ({});
     const processServiceStub = () => ({
-      setStep: (processStepNum, arg) => ({})
+      setStep: (processStepNum, arg) => ({}),
     });
     const mspBenefitDataServiceStub = () => ({
-      benefitApp: new BenefitApplication,
-      saveBenefitApplication: () => ({})
+      benefitApp: new BenefitApplication(),
+      saveBenefitApplication: () => ({}),
     });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
@@ -30,15 +30,15 @@ describe('BenefitAuthorizeSubmitComponent', () => {
         { provide: Router, useFactory: routerStub },
         {
           provide: CompletenessCheckService,
-          useFactory: completenessCheckServiceStub
+          useFactory: completenessCheckServiceStub,
         },
         { provide: ProcessService, useFactory: processServiceStub },
         {
           provide: MspBenefitDataService,
-          useFactory: mspBenefitDataServiceStub
-        }
+          useFactory: mspBenefitDataServiceStub,
+        },
       ],
-      imports: [FormsModule]
+      imports: [FormsModule],
     }).compileComponents();
   }));
 
@@ -46,7 +46,7 @@ describe('BenefitAuthorizeSubmitComponent', () => {
     fixture = TestBed.createComponent(BenefitAuthorizeSubmitComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
-  })
+  });
 
   it('should create', () => {
     expect(component).toBeTruthy();
@@ -58,9 +58,8 @@ describe('BenefitAuthorizeSubmitComponent', () => {
 
   describe('addDocument', () => {
     it('makes expected calls', () => {
-      const mspBenefitDataServiceStub: MspBenefitDataService = fixture.debugElement.injector.get(
-        MspBenefitDataService
-      );
+      const mspBenefitDataServiceStub: MspBenefitDataService =
+        fixture.debugElement.injector.get(MspBenefitDataService);
       const commonImageStub: CommonImage = <any>{};
       spyOn(
         mspBenefitDataServiceStub,
@@ -75,9 +74,8 @@ describe('BenefitAuthorizeSubmitComponent', () => {
 
   describe('deleteDocument', () => {
     it('makes expected calls', () => {
-      const mspBenefitDataServiceStub: MspBenefitDataService = fixture.debugElement.injector.get(
-        MspBenefitDataService
-      );
+      const mspBenefitDataServiceStub: MspBenefitDataService =
+        fixture.debugElement.injector.get(MspBenefitDataService);
       const commonImageStub: CommonImage = <any>{};
       spyOn(
         mspBenefitDataServiceStub,
@@ -89,13 +87,12 @@ describe('BenefitAuthorizeSubmitComponent', () => {
       ).toHaveBeenCalled();
     });
   });
-  
+
   describe('continue', () => {
     it('makes expected calls', () => {
       const routerStub: Router = fixture.debugElement.injector.get(Router);
-      const processServiceStub: ProcessService = fixture.debugElement.injector.get(
-        ProcessService
-      );
+      const processServiceStub: ProcessService =
+        fixture.debugElement.injector.get(ProcessService);
       spyOn(routerStub, 'navigate').and.callThrough();
       spyOn(processServiceStub, 'setStep').and.callThrough();
       component.continue();

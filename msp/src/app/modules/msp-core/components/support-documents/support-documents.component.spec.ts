@@ -17,7 +17,10 @@ describe('SupportDocumentsComponent', () => {
       imports: [FormsModule],
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [SupportDocumentsComponent],
-      providers: [{ provide: MspLogService, useFactory: mspLogServiceStub }, NgForm]
+      providers: [
+        { provide: MspLogService, useFactory: mspLogServiceStub },
+        NgForm,
+      ],
     });
     fixture = TestBed.createComponent(SupportDocumentsComponent);
     component = fixture.componentInstance;
@@ -50,25 +53,31 @@ describe('SupportDocumentsComponent', () => {
       component.handleImagesChange(mockImg);
       expect(component.supportDocErrorMsg).toBe('');
     });
-    
+
     it('sets no error when images collectively of the appropriate size are uploaded', () => {
       component.handleImagesChange(mockImgs);
       expect(component.supportDocErrorMsg).toBe('');
     });
-    
+
     it('sets an error when an image too large is uploaded', () => {
       component.handleImagesChange(mockImgTooLarge);
-      expect(component.supportDocErrorMsg).toBe('The addition of the previous document exceeded the maximum upload size of this supporting document section.');
+      expect(component.supportDocErrorMsg).toBe(
+        'The addition of the previous document exceeded the maximum upload size of this supporting document section.'
+      );
     });
 
     it('sets an error when image collectively too large are uplaoded', () => {
       component.handleImagesChange(mockImgsTooLarge);
-      expect(component.supportDocErrorMsg).toBe('The addition of the previous document exceeded the maximum upload size of this supporting document section.');
+      expect(component.supportDocErrorMsg).toBe(
+        'The addition of the previous document exceeded the maximum upload size of this supporting document section.'
+      );
     });
 
     it('sets an error when images are too small', () => {
       component.handleImagesChange(mockImgTooSmall);
-      expect(component.supportDocErrorMsg).toBe('The document you attempted to upload is too small. Please try again with a larger, higher quality file.');
+      expect(component.supportDocErrorMsg).toBe(
+        'The document you attempted to upload is too small. Please try again with a larger, higher quality file.'
+      );
     });
   });
 });

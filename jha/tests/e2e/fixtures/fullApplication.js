@@ -4,6 +4,8 @@ import { SupportDocumentTypes } from '../../../src/constants/document-types';
 export const generateRequestObject = () => {
   const currentDate = new Date();
   const lastMonthDate = new Date();
+  const lastYearDate = new Date();
+  lastYearDate.setFullYear(currentDate.getFullYear() - 1);
   lastMonthDate.setMonth(currentDate.getMonth() - 1);
 
   return {
@@ -172,8 +174,8 @@ export const generateRequestObject = () => {
       ]
     },
     "supplementaryBenefits": {
-      "assistanceYear": String(new Date().getFullYear()),
-      "taxYear": String(new Date().getFullYear() - 1),
+      "assistanceYear": formatISODate(currentDate.getFullYear()).toString(),
+      "taxYear": formatISODate(lastYearDate.getFullYear()).toString(),
       "numberOfTaxYears": 0,
       "adjustedNetIncome": 41100,
       "childDeduction": 3000,

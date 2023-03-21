@@ -4,7 +4,7 @@ import { SupportDocumentTypes } from '../../../src/constants/document-types';
 export const generateRequestObject = () => {
   const currentDate = new Date();
   const lastMonthDate = new Date();
-  lastMonthDate.setMonth(currentDate.getMonth() - 1);
+  lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
 
   return {
     "uuid": "412d35d7-8446-4dfa-ac03-d19d3dd2ad03",

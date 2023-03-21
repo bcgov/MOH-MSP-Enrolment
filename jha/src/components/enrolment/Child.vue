@@ -45,8 +45,8 @@
           <Input label='Last name'
             :id="'child-last-name-' + index"
             className='mt-3'
-            maxlength="30"
-            @blur="handleBlurField(v$.lastName)"
+            :maxlength="lastNameMaxLength"
+            @blur="handleBlurField($v.lastName)"
             v-model='lastName'
             :required="true"
             :inputStyle='mediumStyles' />
@@ -912,7 +912,7 @@ import TipBox from '@/components/TipBox.vue';
 import SampleImageTipBox from '@/components/SampleImageTipBox.vue';
 import { mediumStyles, smallStyles } from '@/constants/input-styles';
 import spaEnvService from '@/services/spa-env-service';
-import { firstNameMaxLength, middleNameMaxLength } from '@/constants/html-validations.js';
+import { firstNameMaxLength, middleNameMaxLength, lastNameMaxLength } from '@/constants/html-validations.js';
 import ContactInformation from '@/components/ContactInformation.vue';
 
 const birthDatePastValidator = (value) => {
@@ -1074,6 +1074,7 @@ export default {
       pageLoaded: false,
       firstNameMaxLength,
       middleNameMaxLength,
+      lastNameMaxLength,
       // Radio and select options
       radioChildAgeOptions: radioOptionsChildAge,
       radioGenderOptions: radioOptionsGender,

@@ -12,7 +12,7 @@ describe('AssistCraDocumentsComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [AssistCraDocumentsComponent]
+      declarations: [AssistCraDocumentsComponent],
     });
     fixture = TestBed.createComponent(AssistCraDocumentsComponent);
     component = fixture.componentInstance;
@@ -22,7 +22,7 @@ describe('AssistCraDocumentsComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
-  
+
   describe('handleImagesChange', () => {
     const img1 = new CommonImage();
     img1.size = 20000;
@@ -44,25 +44,31 @@ describe('AssistCraDocumentsComponent', () => {
       component.handleImagesChange(mockImg, year);
       expect(year.fileError).toBe('');
     });
-    
+
     it('sets no error when images collectively of the appropriate size are uploaded', () => {
       component.handleImagesChange(mockImgs, year);
       expect(year.fileError).toBe('');
     });
-    
+
     it('sets an error when an image too large is uploaded', () => {
       component.handleImagesChange(mockImgTooLarge, year);
-      expect(year.fileError).toBe('The addition of the previous document exceeded the maximum upload size of this supporting document section.');
+      expect(year.fileError).toBe(
+        'The addition of the previous document exceeded the maximum upload size of this supporting document section.'
+      );
     });
 
     it('sets an error when image collectively too large are uplaoded', () => {
       component.handleImagesChange(mockImgsTooLarge, year);
-      expect(year.fileError).toBe('The addition of the previous document exceeded the maximum upload size of this supporting document section.');
+      expect(year.fileError).toBe(
+        'The addition of the previous document exceeded the maximum upload size of this supporting document section.'
+      );
     });
 
     it('sets an error when images are too small', () => {
       component.handleImagesChange(mockImgTooSmall, year);
-      expect(year.fileError).toBe('The document you attempted to upload is too small. Please try again with a larger, higher quality file.');
+      expect(year.fileError).toBe(
+        'The document you attempted to upload is too small. Please try again with a larger, higher quality file.'
+      );
     });
   });
 });

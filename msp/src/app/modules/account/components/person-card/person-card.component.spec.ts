@@ -4,12 +4,16 @@ import { Router } from '@angular/router';
 import { AccountPersonCardComponent } from './person-card.component';
 import { MspDataService } from '../../../../services/msp-data.service';
 import { LocalStorageModule } from 'angular-2-local-storage';
-import {ModalModule} from 'ngx-bootstrap/modal';
-import {RouterTestingModule} from '@angular/router/testing';
+import { ModalModule } from 'ngx-bootstrap/modal';
+import { RouterTestingModule } from '@angular/router/testing';
 import { MspCoreModule } from '../../../msp-core/msp-core.module';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import { Relationship } from '../../../../models/relationship.enum';
-import { StatusInCanada, CanadianStatusReason, CanadianStatusReasonStrings } from '../../../msp-core/models/canadian-status.enum';
+import {
+  StatusInCanada,
+  CanadianStatusReason,
+  CanadianStatusReasonStrings,
+} from '../../../msp-core/models/canadian-status.enum';
 import { SupportDocuments } from '../../../msp-core/models/support-documents.model';
 import { CommonImage } from 'moh-common-lib';
 import { parseISO } from 'date-fns';
@@ -18,7 +22,7 @@ describe('MspPersonCardComponent', () => {
   let fixture;
   let component;
   const routerStub = {
-    navigate: jasmine.createSpy('navigate')
+    navigate: jasmine.createSpy('navigate'),
   };
 
   beforeEach(() => {
@@ -30,21 +34,21 @@ describe('MspPersonCardComponent', () => {
         RouterTestingModule,
         LocalStorageModule.withConfig({
           prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
+          storageType: 'sessionStorage',
         }),
-        MspCoreModule
+        MspCoreModule,
       ],
-      providers: [
-        MspDataService,
-        { provide: Router, useValue: routerStub }
-      ]
+      providers: [MspDataService, { provide: Router, useValue: routerStub }],
     });
     fixture = TestBed.createComponent(AccountPersonCardComponent);
     component = fixture.componentInstance;
     component.person = new MspPerson(Relationship.Applicant);
   });
   it('should work', () => {
-    expect(component instanceof AccountPersonCardComponent).toBe(true, 'should create MspPersonCardComponent');
+    expect(component instanceof AccountPersonCardComponent).toBe(
+      true,
+      'should create MspPersonCardComponent'
+    );
   });
 
   describe('editPersonalInfo', () => {
@@ -56,7 +60,8 @@ describe('MspPersonCardComponent', () => {
   });
 
   describe('statusInCanadaLabel', () => {
-    it('should return the person\'s status in Canada.', () => {
+    // tslint:disable-next-line
+    it("should return the person's status in Canada.", () => {
       component.person.status = StatusInCanada.CitizenAdult;
       expect(component.statusInCanadaLabel).toEqual('Canadian citizen');
     });
@@ -76,16 +81,19 @@ describe('MspPersonCardComponent', () => {
         'StudyingInBC',
         'ReligiousWorker',
         'Diplomat',
-        'Visiting'
+        'Visiting',
       ].forEach((name) => {
         component.person.currentActivity = CanadianStatusReason[name];
-        expect(component.currentActivityLabel).toEqual('> ' + CanadianStatusReasonStrings[name]);
+        expect(component.currentActivityLabel).toEqual(
+          '> ' + CanadianStatusReasonStrings[name]
+        );
       });
     });
   });
 
   describe('hasDocumentAttached', () => {
-    it('should return false when doesn\'t have attached documents.', () => {
+    // tslint:disable-next-line
+    it("should return false when doesn't have attached documents.", () => {
       expect(component.hasDocumentAttached).toBe(false);
     });
 
@@ -96,21 +104,27 @@ describe('MspPersonCardComponent', () => {
   });
 
   describe('documentCount', () => {
-    it('should return 0 when doesn\'t have attached documents.', () => {
+    // tslint:disable-next-line
+    it("should return 0 when doesn't have attached documents.", () => {
       expect(component.documentCount).toBe(0);
     });
 
     it('should return value when does have attached documents.', () => {
       component.person.updateStatusInCanadaDocType = new SupportDocuments();
-      component.person.updateStatusInCanadaDocType.images.push(new CommonImage());
+      component.person.updateStatusInCanadaDocType.images.push(
+        new CommonImage()
+      );
       expect(component.documentCount).toBe(1);
-      component.person.updateStatusInCanadaDocType.images.push(new CommonImage());
+      component.person.updateStatusInCanadaDocType.images.push(
+        new CommonImage()
+      );
       expect(component.documentCount).toBe(2);
     });
   });
 
   describe('movedFromLabel', () => {
-    it('should return \'Moved from jurisdiction\' when is temporary resident or is moving from country.', () => {
+    // tslint:disable-next-line
+    it("should return 'Moved from jurisdiction' when is temporary resident or is moving from country.", () => {
       component.person.status = StatusInCanada.TemporaryResident;
       expect(component.movedFromLabel).toEqual('Moved from jurisdiction');
       component.person.status = null;
@@ -118,40 +132,50 @@ describe('MspPersonCardComponent', () => {
       expect(component.movedFromLabel).toEqual('Moved from jurisdiction');
     });
 
-    it('should return \'Moved from province\' for all other cases.', () => {
+    // tslint:disable-next-line
+    it("should return 'Moved from province' for all other cases.", () => {
       expect(component.movedFromLabel).toEqual('Moved from province');
     });
   });
 
   describe('fileLabel', () => {
-    it('should return \'File\' documentCount is 1.', () => {
+    // tslint:disable-next-line
+    it("should return 'File' documentCount is 1.", () => {
       spyOnProperty(component, 'documentCount').and.returnValue(1);
       expect(component.fileLabel).toEqual('File');
     });
 
-    it('should return \'Files\' documentCount is more than 1.', () => {
+    // tslint:disable-next-line
+    it("should return 'Files' documentCount is more than 1.", () => {
       spyOnProperty(component, 'documentCount').and.returnValue(2);
       expect(component.fileLabel).toEqual('Files');
     });
   });
 
   describe('movedFromProvinceOrCountry', () => {
-    it('should return \'Canada\' when given \'CAN\'.', () => {
+    // tslint:disable-next-line
+    it("should return 'Canada' when given 'CAN'.", () => {
       component.person.currentActivity = CanadianStatusReason.MovingFromCountry;
       component.person.movedFromProvinceOrCountry = 'CAN';
       expect(component.movedFromProvinceOrCountry).toEqual('Canada');
     });
-    
-    it('should return \'British Columbia\' when given \'BC\'.', () => {
+
+    // tslint:disable-next-line
+    it("should return 'British Columbia' when given 'BC'.", () => {
       component.person.movedFromProvinceOrCountry = 'BC';
       expect(component.movedFromProvinceOrCountry).toEqual('British Columbia');
     });
   });
 
   describe('formatDateField', () => {
-    it('should return \'Canada\' when given \'CAN\'.', () => {
-      expect(component.formatDateField(parseISO('2020-04-01'))).toEqual('April 1, 2020');
-      expect(component.formatDateField(parseISO('2020-04-10'))).toEqual('April 10, 2020');
+    // tslint:disable-next-line
+    it("should return 'Canada' when given 'CAN'.", () => {
+      expect(component.formatDateField(parseISO('2020-04-01'))).toEqual(
+        'April 1, 2020'
+      );
+      expect(component.formatDateField(parseISO('2020-04-10'))).toEqual(
+        'April 10, 2020'
+      );
     });
   });
 

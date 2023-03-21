@@ -14,7 +14,7 @@ describe('PersonalDetailsRetroSuppbenComponent', () => {
     const changeDetectorRefStub = () => ({});
     const mspBenefitDataServiceStub = () => ({
       benefitApp: { applicant: {}, setSpouse: {}, spouse: {} },
-      saveBenefitApplication: () => ({})
+      saveBenefitApplication: () => ({}),
     });
 
     TestBed.configureTestingModule({
@@ -24,12 +24,10 @@ describe('PersonalDetailsRetroSuppbenComponent', () => {
         { provide: ChangeDetectorRef, useFactory: changeDetectorRefStub },
         {
           provide: MspBenefitDataService,
-          useFactory: mspBenefitDataServiceStub
-        }
+          useFactory: mspBenefitDataServiceStub,
+        },
       ],
-      imports: [
-        FormsModule
-      ]
+      imports: [FormsModule],
     }).compileComponents();
   }));
 
@@ -42,11 +40,11 @@ describe('PersonalDetailsRetroSuppbenComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
- 
+
   it(`should have default removeable value`, () => {
     expect(component.removeable).toEqual(false);
   });
- 
+
   it(`should have default Relationship value`, () => {
     expect(component.Relationship).toEqual(Relationship);
   });

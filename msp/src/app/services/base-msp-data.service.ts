@@ -1,8 +1,14 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from 'angular-2-local-storage';
 import { BasePersonDto, BasePerson } from '../models/base-person';
-import { BaseApplicationDto, BaseApplication } from '../models/base-application';
-import { SupportDocumentsDto, SupportDocuments } from '../modules/msp-core/models/support-documents.model';
+import {
+  BaseApplicationDto,
+  BaseApplication,
+} from '../models/base-application';
+import {
+  SupportDocumentsDto,
+  SupportDocuments,
+} from '../modules/msp-core/models/support-documents.model';
 import { AddressDto } from '../models/address.dto';
 import { Address, CommonImage } from 'moh-common-lib';
 import { CommonImageDto } from '../models/common-image.dto';
@@ -13,21 +19,19 @@ export class MspPagesDto {
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export abstract class BaseMspDataService {
-
   // Set key for page status storage
-  protected  _pageStorageKey: string = 'msp-pages';
+  protected _pageStorageKey: string = 'msp-pages';
 
   // Application storage key set in derived service
   protected abstract _storageKey: string;
 
-  constructor( protected localStorageService: LocalStorageService ) { }
+  constructor(protected localStorageService: LocalStorageService) {}
 
   abstract saveApplication(): void;
   abstract removeApplication(): void;
-
 
   /** Storage methods */
   protected destroyAll() {
@@ -35,16 +39,18 @@ export abstract class BaseMspDataService {
   }
 
   /** Method to save page statuses */
-  protected savePageStatus( pageStatus: any[] ): void {
+  protected savePageStatus(pageStatus: any[]): void {
     const dto: MspPagesDto = new MspPagesDto();
     dto.pageStatus = pageStatus;
-    this.localStorageService.set( this._pageStorageKey, dto );
+    this.localStorageService.set(this._pageStorageKey, dto);
   }
 
   protected fetchPageStatus(): any[] {
     let pageStatus: any[] = [];
-    const dto: MspPagesDto = this.localStorageService.get<MspPagesDto>( this._pageStorageKey );
-    if ( dto ) {
+    const dto: MspPagesDto = this.localStorageService.get<MspPagesDto>(
+      this._pageStorageKey
+    );
+    if (dto) {
       pageStatus = dto.pageStatus;
     }
     return pageStatus;
@@ -55,8 +61,10 @@ export abstract class BaseMspDataService {
    * @param dto data to be copied to new instance of class
    * @param c class to create
    */
-  protected fromBasePersonTransferObject<T extends BasePerson>( dto: BasePersonDto, c: {new(): T; } ): T {
-
+  protected fromBasePersonTransferObject<T extends BasePerson>(
+    dto: BasePersonDto,
+    c: { new (): T }
+  ): T {
     const output = new c();
 
     output.firstName = dto.firstName;
@@ -65,9 +73,9 @@ export abstract class BaseMspDataService {
 
     output.relationship = dto.relationship;
     output.gender = dto.gender;
-    output.dateOfBirth = this.convertNumberToDate( dto.dateOfBirth );
+    output.dateOfBirth = this.convertNumberToDate(dto.dateOfBirth);
 
-    output.documents = this.fromSupportDocumentTransferObject( dto.documents );
+    output.documents = this.fromSupportDocumentTransferObject(dto.documents);
 
     return output;
   }
@@ -77,8 +85,10 @@ export abstract class BaseMspDataService {
    * @param input data to be copied to new instance of storage object
    * @param c storage object to create
    */
-  protected toBasePersonTransferObject<T extends BasePersonDto>( input: BasePerson, c: {new(): T; } ): T {
-
+  protected toBasePersonTransferObject<T extends BasePersonDto>(
+    input: BasePerson,
+    c: { new (): T }
+  ): T {
     const dto = new c();
 
     dto.firstName = input.firstName;
@@ -87,15 +97,18 @@ export abstract class BaseMspDataService {
 
     dto.relationship = input.relationship;
     dto.gender = input.gender;
-    dto.dateOfBirth = this.convertDateToNumber( input.dateOfBirth );
+    dto.dateOfBirth = this.convertDateToNumber(input.dateOfBirth);
 
     // SupportDocuments
-    dto.documents = this.toSupportDocumentTransferObject( input.documents );
+    dto.documents = this.toSupportDocumentTransferObject(input.documents);
 
     return dto;
   }
 
-  protected toBaseApplicationTransferObject<T extends BaseApplicationDto>( input: BaseApplication, c: {new(): T; } ): T {
+  protected toBaseApplicationTransferObject<T extends BaseApplicationDto>(
+    input: BaseApplication,
+    c: { new (): T }
+  ): T {
     const dto = new c();
 
     dto.infoCollectionAgreement = input.infoCollectionAgreement;
@@ -103,12 +116,17 @@ export abstract class BaseMspDataService {
     // Authorization
     dto.authorizedByApplicant = input.authorizedByApplicant;
     dto.authorizedBySpouse = input.authorizedBySpouse;
-    dto.authorizedByApplicantDate = this.convertDateToNumber( input.authorizedByApplicantDate );
+    dto.authorizedByApplicantDate = this.convertDateToNumber(
+      input.authorizedByApplicantDate
+    );
 
     return dto;
   }
 
-  protected fromBaseApplicationTransferObject<T extends BaseApplication>( dto: BaseApplicationDto, c: {new(): T; } ): T {
+  protected fromBaseApplicationTransferObject<T extends BaseApplication>(
+    dto: BaseApplicationDto,
+    c: { new (): T }
+  ): T {
     const output = new c();
 
     output.infoCollectionAgreement = dto.infoCollectionAgreement;
@@ -116,12 +134,14 @@ export abstract class BaseMspDataService {
     // Authorization
     output.authorizedByApplicant = dto.authorizedByApplicant;
     output.authorizedBySpouse = dto.authorizedBySpouse;
-    output.authorizedByApplicantDate = this.convertNumberToDate( dto.authorizedByApplicantDate );
+    output.authorizedByApplicantDate = this.convertNumberToDate(
+      dto.authorizedByApplicantDate
+    );
 
     return output;
   }
 
-  protected toAddressTransferObject( input: Address ): AddressDto {
+  protected toAddressTransferObject(input: Address): AddressDto {
     const dto = new AddressDto();
 
     dto.addressLine1 = input.addressLine1;
@@ -136,7 +156,7 @@ export abstract class BaseMspDataService {
     return dto;
   }
 
-  protected fromAddressTransferObject( dto: AddressDto ): Address {
+  protected fromAddressTransferObject(dto: AddressDto): Address {
     const output = new Address();
 
     output.addressLine1 = dto.addressLine1;
@@ -151,30 +171,34 @@ export abstract class BaseMspDataService {
     return output;
   }
 
-  protected toSupportDocumentTransferObject( input: SupportDocuments ): SupportDocumentsDto {
+  protected toSupportDocumentTransferObject(
+    input: SupportDocuments
+  ): SupportDocumentsDto {
     const dto = new SupportDocumentsDto();
 
     dto.documentType = input.documentType;
-    
+
     const transferredImgs: CommonImageDto[] = [];
-    
+
     // Convert each CommonImage to storable dto
     for (const img of input.images) {
       transferredImgs.push(this.toCommonImageTransferObject(img));
     }
-    
+
     dto.images = transferredImgs;
 
     return dto;
   }
 
-  protected fromSupportDocumentTransferObject( dto: SupportDocumentsDto ): SupportDocuments {
+  protected fromSupportDocumentTransferObject(
+    dto: SupportDocumentsDto
+  ): SupportDocuments {
     const output = new SupportDocuments();
 
     output.documentType = dto.documentType;
 
     const transferredImgs: CommonImage[] = [];
-    
+
     // Convert each image from stored dto to CommonImage
     for (const img of dto.images) {
       transferredImgs.push(this.fromCommonImageTransferObject(img));
@@ -200,7 +224,7 @@ export abstract class BaseMspDataService {
     dto.name = input.name;
     dto.id = input.id;
     dto.attachmentOrder = input.attachmentOrder;
-    
+
     if (input.error) {
       dto.error = input.error;
     }
@@ -223,7 +247,7 @@ export abstract class BaseMspDataService {
     output.name = dto.name;
     output.id = dto.id;
     output.attachmentOrder = dto.attachmentOrder;
-    
+
     if (dto.error) {
       output.error = dto.error;
     }
@@ -235,10 +259,10 @@ export abstract class BaseMspDataService {
    * Converts date object to number
    * @param dt Date
    */
-  protected convertDateToNumber( dt: Date ): number {
+  protected convertDateToNumber(dt: Date): number {
     // Date exists convert date to milliseconds since January 1, 1970, 00:00:00 UTC
-    if ( dt ) {
-      return Date.parse( dt.toString() );
+    if (dt) {
+      return Date.parse(dt.toString());
     }
     return undefined;
   }
@@ -247,8 +271,7 @@ export abstract class BaseMspDataService {
    * Converts number to Date object
    * @param dtInMsec Time in milliseconds since January 1, 1970, 00:00:00 UTC
    */
-  protected convertNumberToDate( dtInMsec: number ): Date {
-    return isNaN( dtInMsec ) ? undefined : new Date( dtInMsec );
+  protected convertNumberToDate(dtInMsec: number): Date {
+    return isNaN(dtInMsec) ? undefined : new Date(dtInMsec);
   }
 }
-

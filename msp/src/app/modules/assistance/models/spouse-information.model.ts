@@ -13,26 +13,27 @@ export class SpouseInformation implements ISpouseInformation {
   getData(): ISpouseInformation {
     return {
       years: this.years,
-      documents: this.documents
+      documents: this.documents,
     };
   }
   constructor(mspApp: FinancialAssistApplication) {
     const { ...app } = { ...mspApp };
     const spouseDocuments = [];
 
+    // tslint:disable-next-line
     for (let year of app.assistYears) {
       this.years = this.makeYears(app.assistYears);
 
-      let i = this.years.indexOf(year.year);
+      const i = this.years.indexOf(year.year);
       if (i >= 0) {
         spouseDocuments.push(year.spouseFiles);
       }
     }
-    const docCount = deepFlatten(spouseDocuments).map(itm => itm.name).length;
+    const docCount = deepFlatten(spouseDocuments).map((itm) => itm.name).length;
     // .reduce((a, b) => `${a}, ${b}`);
     this.documents = docCount > 1 ? `${docCount} files` : `${docCount} file`;
   }
   makeYears(years: AssistanceYear[]) {
-    return years.filter(year => year.hasSpouse).map(year => year.year);
+    return years.filter((year) => year.hasSpouse).map((year) => year.year);
   }
 }

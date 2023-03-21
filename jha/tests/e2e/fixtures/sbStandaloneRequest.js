@@ -1,4 +1,10 @@
+import { formatISODate } from 'common-lib-vue';
+
 export const generateRequestObject = () => {
+  const currentDate = new Date();
+  const lastYearDate = new Date();
+  lastYearDate.setFullYear(lastYearDate.getFullYear() - 1);
+
   return {
     "firstName": "alex",
     "secondName": "jaimie",
@@ -32,8 +38,8 @@ export const generateRequestObject = () => {
     },
     "supplementaryBenefits": {
       "uuid": "2412695f-3383-416d-90be-e0cfc3127058",
-      "assistanceYear": String(new Date().getFullYear()),
-      "taxYear": String(new Date().getFullYear() - 1),
+      "assistanceYear": formatISODate(currentDate.getFullYear()).toString(),
+      "taxYear": formatISODate(lastYearDate.getFullYear()).toString(),
       "numberOfTaxYears": 0,
       "adjustedNetIncome": 8100,
       "childDeduction": 36000,

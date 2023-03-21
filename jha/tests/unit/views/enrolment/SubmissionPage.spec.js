@@ -43,6 +43,7 @@ describe('Enrolment - FormSelectionPage.vue', () => {
         plugins: [router, store]
       }
     });
-    wrapper.get('.fpc-success-message');
+    const middlwareResponseContainer = wrapper.get('.fpc-success-message');
+    expect(middlwareResponseContainer).not.toBeFalsy();
   });
 });

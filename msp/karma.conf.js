@@ -51,7 +51,7 @@ module.exports = function (config) {
       logLevel: config.LOG_INFO,
       autoWatch: true,
       browsers: ['ChromeHeadless'],
-      singleRun: false,
+      singleRun: true,
 
       /** * maximum number of tries a browser will attempt in the case of a disconnection */
       browserDisconnectTolerance: 3,

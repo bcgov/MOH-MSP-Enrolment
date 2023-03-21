@@ -8,25 +8,21 @@ describe('AccountContainerComponent', () => {
   let component: AccountContainerComponent;
   let fixture: ComponentFixture<AccountContainerComponent>;
   const headerServiceStub = {
-    setTitle: jasmine.createSpy('setTitle')
-  }
+    setTitle: jasmine.createSpy('setTitle'),
+  };
   const pageStateServiceStub = {
-    setPages: jasmine.createSpy('setPages')
-  }
+    setPages: jasmine.createSpy('setPages'),
+  };
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AccountContainerComponent ],
-      imports: [
-        RouterTestingModule,
-        SharedCoreModule
-      ],
+      declarations: [AccountContainerComponent],
+      imports: [RouterTestingModule, SharedCoreModule],
       providers: [
         { provide: HeaderService, useValue: headerServiceStub },
-        { provide: PageStateService, useValue: pageStateServiceStub }
-      ]
-    })
-    .compileComponents();
+        { provide: PageStateService, useValue: pageStateServiceStub },
+      ],
+    }).compileComponents();
   }));
 
   beforeEach(() => {
@@ -40,7 +36,9 @@ describe('AccountContainerComponent', () => {
   });
 
   it('should set the header title', () => {
-    expect(headerServiceStub.setTitle).toHaveBeenCalledWith('Account Management');
+    expect(headerServiceStub.setTitle).toHaveBeenCalledWith(
+      'Account Management'
+    );
   });
 
   it('should set the page state', () => {
