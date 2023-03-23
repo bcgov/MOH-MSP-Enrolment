@@ -5,7 +5,12 @@ import {
   nonBCValidator,
   nonCanadaValidator,
   dateDataRequiredValidator,
-  dateDataValidator
+  dateDataValidator,
+  dateDataOptionalValidator,
+  pastDateValidator,
+  optionalInvalidDateValidator,
+  reasonDestinationContentValidator,
+  phnFirstDigitValidator,
 } from "@/helpers/validators";
 
 describe("bcPostalCodeValidator()", () => {
@@ -198,7 +203,7 @@ describe("dateDataValidator()", () => {
         year: 2023,
       }).$validator()
     ).toBe(false);
-  })
+  });
 
   it("returns false when passed a different specific format of dateData (3)", async () => {
     expect(
@@ -209,7 +214,7 @@ describe("dateDataValidator()", () => {
         year: null,
       }).$validator()
     ).toBe(false);
-  })
+  });
 
   it("returns false when otherwise valid data does not convert to a valid ISODateString", async () => {
     expect(
@@ -258,8 +263,112 @@ describe("dateDataValidator()", () => {
   });
 });
 
-// describe("yesValidator()", () => {
-//   it("returns false when passed no input", async () => {
-//     expect(yesValidator()).toBe(false);
-//   });
-// });
+describe("dateDataOptionalValidator()", () => {
+  it("returns true when passed no input", async () => {
+    expect(dateDataOptionalValidator().$validator()).toBe(true);
+  });
+
+  it("returns true when passed no input", async () => {
+    expect(dateDataOptionalValidator("input").$validator()).toBe(true);
+  });
+});
+
+describe("pastDateValidator()", () => {
+  it("returns false when passed no input", async () => {
+    expect(pastDateValidator()).toBe(false);
+  });
+
+  it("returns true when passed a past date", async () => {
+    expect(
+      pastDateValidator(new Date().setFullYear(new Date().getFullYear() - 1))
+    ).toBe(true);
+  });
+
+  it("returns false when passed a future date", async () => {
+    expect(
+      pastDateValidator(new Date().setFullYear(new Date().getFullYear() + 1))
+    ).toBe(false);
+  });
+});
+
+describe("optionalInvalidDateValidator()", () => {
+  const testValidatorFalsy = (value) => {
+    return !value;
+  };
+
+  const testValidatorTruthy = (value) => {
+    return !!value;
+  };
+
+  it("returns true when passed no input", async () => {
+    expect(optionalInvalidDateValidator(testValidatorFalsy)()).toBe(true);
+  });
+
+  it("returns true when passed input that is not a number", async () => {
+    expect(optionalInvalidDateValidator(testValidatorFalsy)("potato")).toBe(true);
+  });
+
+  it("returns true when passed input that is not a date", async () => {
+    expect(optionalInvalidDateValidator(testValidatorFalsy)(3.14159)).toBe(true);
+  });
+
+  it("returns the validator result when passed a date (false)", async () => {
+    expect(optionalInvalidDateValidator(testValidatorFalsy)(new Date())).toBe(false);
+  });
+
+  it("returns the validator result when passed a date (true)", async () => {
+    expect(optionalInvalidDateValidator(testValidatorTruthy)(new Date())).toBe(true);
+  });
+});
+
+describe("reasonDestinationContentValidator()", () => {
+  it("returns true when passed no input", async () => {
+    expect(reasonDestinationContentValidator()).toBe(true);
+  });
+
+  it("returns true when passed standard text input", async () => {
+    expect(
+      reasonDestinationContentValidator(
+        "My reason for going to a foreign country is because I'm a fan of going on vacation sometimes."
+      )
+    ).toBe(true);
+  });
+
+  it("returns true when passed input containing permitted special characters", async () => {
+    expect(reasonDestinationContentValidator("0-9a-zA-Z-.'#& ")).toBe(true);
+  });
+
+  it("returns false when passed input containing permitted special characters but no letters", async () => {
+    expect(reasonDestinationContentValidator("0-9-.'#& ")).toBe(false);
+  });
+
+  it("returns false when passed input containing non-permitted special characters", async () => {
+    expect(reasonDestinationContentValidator("$%$%$%$%$%$%$")).toBe(false);
+  });
+});
+
+describe("phnFirstDigitValidator()", () => {
+  it("returns false when passed no input", async () => {
+    expect(phnFirstDigitValidator()).toBe(false);
+  });
+
+  it("returns false when passed non-string input", async () => {
+    expect(phnFirstDigitValidator(9)).toBe(false);
+  });
+
+  it("returns false when passed non-string input (2)", async () => {
+    expect(phnFirstDigitValidator([9])).toBe(false);
+  });
+
+  it("returns false when passed non-string input (3)", async () => {
+    expect(phnFirstDigitValidator({ 9: 9 })).toBe(false);
+  });
+
+  it("returns false when passed a string that does not start with 9", async () => {
+    expect(phnFirstDigitValidator("777")).toBe(false);
+  });
+
+  it("returns true when passed a string that starts with 9", async () => {
+    expect(phnFirstDigitValidator("977")).toBe(true);
+  });
+});
