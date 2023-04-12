@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -58,7 +58,7 @@
           </template>
         </Checkbox>
         <div class="text-danger mt-3"
-          v-if="$v.$dirty && !$v.atLeastOne"
+          v-if="v$.$dirty && v$.atLeastOne.$invalid"
           aria-live="assertive">You must select at least one program.</div>
       </main>
     </PageContent>
@@ -67,6 +67,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import logService from '@/services/log-service';
 import {
@@ -121,6 +122,9 @@ export default {
     Checkbox,
     ContinueBar,
     PageContent,
+  },
+  setup () {
+    return { v$: useVuelidate() }
   },
   data: () => {
     return {
@@ -184,8 +188,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -204,7 +208,7 @@ export default {
     navigateToNextPage() {
       // Navigate to next path.
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.PERSONAL_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -222,7 +226,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.FORM_SELECTION_PAGE.path
       );
       next({

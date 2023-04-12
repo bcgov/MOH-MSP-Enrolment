@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -54,8 +54,8 @@
             <div
               class="text-danger"
               v-if="
-                $v.powerOfAttorneyDocuments.$dirty &&
-                !$v.powerOfAttorneyDocuments.required
+                v$.powerOfAttorneyDocuments.$dirty &&
+                v$.powerOfAttorneyDocuments.required.$invalid
               "
               aria-live="assertive"
             >
@@ -80,21 +80,21 @@
           <Checkbox :label="ahConsentLabel"
             id="msp-ah"
             v-model="isAuthorizedMSPAH"
-            @blur="handleBlurField($v.isAuthorizedMSPAH)" />
+            @blur="handleBlurField(v$.isAuthorizedMSPAH)" />
           <div class="text-danger mt-1"
-            v-if="$v.isAuthorizedMSPAH.$dirty
-              && !$v.isAuthorizedMSPAH.requiredTrue"
+            v-if="v$.isAuthorizedMSPAH.$dirty
+              && v$.isAuthorizedMSPAH.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
           <Checkbox v-if="hasSpouse"
             :label="spouseConsentLabel"
             id="msp-spouse"
             class="mt-3"
             v-model="isAuthorizedMSPSpouse"
-            @blur="handleBlurField($v.isAuthorizedMSPSpouse)" />
+            @blur="handleBlurField(v$.isAuthorizedMSPSpouse)" />
           <div class="text-danger mt-1"
             v-if="hasSpouse
-              && $v.isAuthorizedMSPSpouse.$dirty
-              && !$v.isAuthorizedMSPSpouse.requiredTrue"
+              && v$.isAuthorizedMSPSpouse.$dirty
+              && v$.isAuthorizedMSPSpouse.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
         </div>
 
@@ -121,21 +121,21 @@
           <Checkbox :label="ahConsentLabel"
             id="fpc-ah"
             v-model="isAuthorizedFPCAH"
-            @blur="handleBlurField($v.isAuthorizedFPCAH)" />
+            @blur="handleBlurField(v$.isAuthorizedFPCAH)" />
           <div class="text-danger mt-1"
-            v-if="$v.isAuthorizedFPCAH.$dirty
-              && !$v.isAuthorizedFPCAH.requiredTrue"
+            v-if="v$.isAuthorizedFPCAH.$dirty
+              && v$.isAuthorizedFPCAH.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
           <Checkbox v-if="hasSpouse"
             :label="spouseConsentLabel"
             id="fpc-spouse"
             class="mt-3"
             v-model="isAuthorizedFPCSpouse"
-            @blur="handleBlurField($v.isAuthorizedFPCSpouse)" />
+            @blur="handleBlurField(v$.isAuthorizedFPCSpouse)" />
           <div class="text-danger mt-1"
             v-if="hasSpouse
-              && $v.isAuthorizedFPCSpouse.$dirty
-              && !$v.isAuthorizedFPCSpouse.requiredTrue"
+              && v$.isAuthorizedFPCSpouse.$dirty
+              && v$.isAuthorizedFPCSpouse.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
         </div>
 
@@ -151,21 +151,21 @@
           <Checkbox :label="ahConsentLabel"
             id="sb-ah"
             v-model="isAuthorizedSBAH"
-            @blur="handleBlurField($v.isAuthorizedSBAH)" />
+            @blur="handleBlurField(v$.isAuthorizedSBAH)" />
           <div class="text-danger mt-1"
-            v-if="$v.isAuthorizedSBAH.$dirty
-              && !$v.isAuthorizedSBAH.requiredTrue"
+            v-if="v$.isAuthorizedSBAH.$dirty
+              && v$.isAuthorizedSBAH.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
           <Checkbox v-if="hasSpouse"
             :label="spouseConsentLabel"
             id="sb-spouse"
             class="mt-3"
             v-model="isAuthorizedSBSpouse"
-            @blur="handleBlurField($v.isAuthorizedSBSpouse)" />
+            @blur="handleBlurField(v$.isAuthorizedSBSpouse)" />
           <div class="text-danger mt-1"
             v-if="hasSpouse
-              && $v.isAuthorizedSBSpouse.$dirty
-              && !$v.isAuthorizedSBSpouse.requiredTrue"
+              && v$.isAuthorizedSBSpouse.$dirty
+              && v$.isAuthorizedSBSpouse.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
         </div>
         
@@ -181,6 +181,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
@@ -217,7 +218,7 @@ import {
 import SampleImageTipBox from "@/components/SampleImageTipBox";
 import pageContentMixin from '@/mixins/page-content-mixin';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
-import { required } from "vuelidate/lib/validators";
+import { required } from "@vuelidate/validators";
 
 const requiredTrue = (value) => {
   return value === true;
@@ -277,10 +278,13 @@ export default {
       enrolmentRoutes.CONSENT_PAGE.title
     );
   },
+  setup () {
+    return { v$: useVuelidate() }
+  },
   methods: {
     continueHandler() {
-      this.$v.$touch();
-      if (this.$v.$invalid) {
+      this.v$.$touch();
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -398,7 +402,7 @@ export default {
     },
     navigateToSubmissionPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUBMISSION_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -408,7 +412,7 @@ export default {
     },
     navigateToSubmissionErrorPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUBMISSION_ERROR_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -447,7 +451,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.REVIEW_PAGE.path
       );
       next({

@@ -8,5 +8,5 @@ module.exports = {
       },
     }
   },
-  lintOnSave: true
+  lintOnSave: true,
 };

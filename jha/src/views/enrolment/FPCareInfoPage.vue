@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -17,18 +17,18 @@
               <CurrencyInput v-model="ahIncome"
                 id="ah-income"
                 :required="true"
-                @blur="handleBlurField($v.ahIncome)">
+                @blur="handleBlurField(v$.ahIncome)">
                 <template v-slot:description>
                   <label for="ah-income">Enter the net income (Line 23600) from your {{noaYear}} CRA Notice of Assessment (NOA, <a href="javascript:void(0)" @click="handleClickIncomeSample()">sample</a>).</label>
                 </template>
               </CurrencyInput>
               <div class="text-danger"
-                v-if="$v.ahIncome.$dirty
-                  && !$v.ahIncome.required"
+                v-if="v$.ahIncome.$dirty
+                  && v$.ahIncome.required.$invalid"
                 aria-live="assertive">Your net income from {{noaYear}} is required.</div>
               <div class="text-danger"
-                v-if="$v.ahIncome.$dirty
-                  && !$v.ahIncome.positiveNumberValidator"
+                v-if="v$.ahIncome.$dirty
+                  && v$.ahIncome.positiveNumberValidator.$invalid"
                 aria-live="assertive">Your net income from {{noaYear}} is must be a positive number.</div>
             </div>
             <div v-if="hasSpouse">
@@ -36,20 +36,20 @@
                 id="spouse-income"
                 class="mt-3"
                 :required="true"
-                @blur="handleBlurField($v.spouseIncome)">
+                @blur="handleBlurField(v$.spouseIncome)">
                 <template v-slot:description>
                   <label for="spouse-income">Enter the net income (Line 23600) from your spouse's {{noaYear}} CRA Notice of Assessment (NOA, <a href="javscript:void(0)" @click="handleClickIncomeSample()">sample</a>).</label>
                 </template>
               </CurrencyInput>
               <div class="text-danger"
-                v-if="$v.spouseIncome.$dirty
+                v-if="v$.spouseIncome.$dirty
                   && hasSpouse
-                  && !$v.spouseIncome.required"
+                  && v$.spouseIncome.required.$invalid"
                 aria-live="assertive">Your spouse/common-law partner's net income from {{noaYear}} is required.</div>
               <div class="text-danger"
-                v-if="$v.spouseIncome.$dirty
+                v-if="v$.spouseIncome.$dirty
                   && hasSpouse
-                  && !$v.spouseIncome.positiveNumberValidator"
+                  && v$.spouseIncome.positiveNumberValidator.$invalid"
                 aria-live="assertive">Your spouse/common-law partner's net income from {{noaYear}} must be a positive number.</div>
             </div>
             <h2 class="mt-5">Registered Disability Savings Plan</h2>
@@ -59,10 +59,10 @@
                 v-model="ahRDSP"
                 id="ah-disability-savings"
                 class="mt-3"
-                @blur="handleBlurField($v.ahRDSP)"/>
+                @blur="handleBlurField(v$.ahRDSP)"/>
               <div class="text-danger"
-                v-if="$v.ahRDSP.$dirty
-                  && !$v.ahRDSP.positiveNumberValidator"
+                v-if="v$.ahRDSP.$dirty
+                  && v$.ahRDSP.positiveNumberValidator.$invalid"
                 aria-live="assertive">Your Registered Disability Savings Plan amount from {{noaYear}} must be a positive number.</div>
             </div>
             <div v-if="hasSpouse">
@@ -70,10 +70,10 @@
                 v-model="spouseRDSP"
                 id="spouse-disability-savings"
                 class="mt-3"
-                @blur="handleBlurField($v.spouseRDSP)"/>
+                @blur="handleBlurField(v$.spouseRDSP)"/>
               <div class="text-danger"
-                v-if="$v.spouseRDSP.$dirty
-                  && !$v.spouseRDSP.positiveNumberValidator"
+                v-if="v$.spouseRDSP.$dirty
+                  && v$.spouseRDSP.positiveNumberValidator.$invalid"
                 aria-live="assertive">Your spouse/common-law partner's Registered Disability Savings Plan amount from {{noaYear}} must be a positive number.</div>
             </div>
           </div>
@@ -92,8 +92,8 @@
           v-html="checkEligibilityErrorMessage"></div>
       </main>
     </PageContent>
-    <portal v-if="isSampleModalOpen"
-      to="modal">
+    <Teleport v-if="isSampleModalOpen"
+      to="#modal-target">
       <ContentModal @close="handleCloseSampleModal()"
         title="Tax Documents">
         <p>Income Tax T1 General Sample</p>
@@ -102,7 +102,7 @@
             alt="Income tax T1 sample" />
         </div>
       </ContentModal>
-    </portal>
+    </Teleport>
     <ContinueBar @continue="validateFields()"
       :hasLoader='isLoading'
       class="continue-bar" />
@@ -144,8 +144,9 @@ import {
 import pageContentMixin from '@/mixins/page-content-mixin';
 import TipBox from '@/components/TipBox.vue';
 import FPCWidget from '@/components/enrolment/FPCWidget.vue';
-import { required } from 'vuelidate/lib/validators';
+import { required } from '@vuelidate/validators';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
+import useVuelidate from '@vuelidate/core'
 
 export default {
   name: 'FPCareInfoPage',
@@ -173,6 +174,9 @@ export default {
       isSystemUnavailable: false,
       checkEligibilityErrorMessage: null,
     };
+  },
+  setup () {
+    return { v$: useVuelidate() }
   },
   created() {
     this.noaYear = new Date().getFullYear() - 2;
@@ -211,8 +215,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -257,7 +261,7 @@ export default {
       // Navigate to next path.
       const nextPath = this.$store.state.enrolmentModule.isApplyingForSuppBen ? enrolmentRoutes.SUPP_BEN_INFO_PAGE.path : enrolmentRoutes.CONTACT_INFO_PAGE.path;
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         nextPath
       );
       pageStateService.setPageComplete(toPath);
@@ -306,7 +310,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.FPCARE_INFO_PAGE.path
       );
       next({

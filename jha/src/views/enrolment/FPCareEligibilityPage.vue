@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -81,7 +81,7 @@
           </div>
         </div>
         <div class="text-danger"
-          v-if="$v.eqFPCIsApplying.$dirty && !$v.eqFPCIsApplying.validateQuestionsAnswered"
+          v-if="v$.eqFPCIsApplying.$dirty && v$.eqFPCIsApplying.validateQuestionsAnswered.$invalid"
           aria-live="assertive">Please complete the questionnaire to continue.</div>
       </main>
     </PageContent>
@@ -93,6 +93,7 @@
 <script>
 import pageStateService from '@/services/page-state-service';
 import logService from '@/services/log-service';
+import useVuelidate from '@vuelidate/core'
 import {
   enrolmentRoutes,
   isPastPath,
@@ -141,6 +142,9 @@ export default {
     pageContentMixin,
     pageStepperMixin,
   ],
+  setup () {
+    return { v$: useVuelidate() }
+  },
   components: {
     ContinueBar,
     PageContent,
@@ -194,8 +198,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -212,7 +216,7 @@ export default {
     navigateToNextPage() {
       // Navigate to next path.
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -259,7 +263,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.path
       );
       next({

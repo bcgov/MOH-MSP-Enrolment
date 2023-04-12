@@ -5,7 +5,7 @@ describe('Full application for MSP FPC and SB', () => {
   const options = {includeMSP: true, includeFPC: false, includeSB: true}
   it('Fills eligibility questionnaire', () => {
     cy.fillEligibilityQuestionnaire(options)
-  })
+  });
 
   it('Accepts valid information for the personal-info page', () => {
     cy.fillPersonalInfoPage(options)
@@ -29,12 +29,12 @@ describe('Full application for MSP FPC and SB', () => {
 
   it('Accepts valid information for the contact info page', () => {
     cy.fillResidentialAddress()
-  })
+  });
 
   it('Displays the phone number with contact information', () => {
     cy.contains('(555) 555-5555')
     cy.continue();
-  })
+  });
 
   it('submits form with expected payload', () => {
     cy.fillConsent(options)

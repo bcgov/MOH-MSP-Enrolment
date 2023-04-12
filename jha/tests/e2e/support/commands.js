@@ -120,7 +120,6 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
 
 Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   cy.visit('/')
-  // cy.contains('h1', 'Eligibility Questionnaire');
 
   if (!options.includeMSP) {
     cy.get('label[for=apply-msp-no]').click();
@@ -133,7 +132,6 @@ Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   }
   cy.continue()
 
-  // cy.contains('h1', 'Eligibility Questionnaire')
   if (!options.includeFPC) {
     cy.get('label[for=apply-fpc-no]').click();
   } else {
@@ -143,7 +141,6 @@ Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   }
   cy.continue()
 
-  // cy.contains('h1', 'Eligibility Questionnaire')
   if (!options.includeSB) {
     cy.get('label[for=apply-sb-no]').click();
   } else {

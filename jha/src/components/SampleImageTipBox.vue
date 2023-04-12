@@ -23,8 +23,8 @@
         <li>A JPG, PNG, GIF, BMP or PDF file&nbsp;</li>
       </ul>
     </TipBox>
-    <portal v-if="isModalOpen"
-      to="modal">
+    <Teleport v-if="isModalOpen"
+      to="#modal-target">
       <ContentModal :title="modalTitle"
         size="lg"
         @close="closeModal()">
@@ -40,7 +40,7 @@
           />
         </div>
       </ContentModal>
-    </portal>
+    </Teleport>
   </div>
 </template>
 

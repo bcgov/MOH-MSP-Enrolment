@@ -105,7 +105,7 @@ export const commonRoutes = {
     pageTitle: 'Maintenance | AHDC'
   },
   PAGE_NOT_FOUND_PAGE: {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     title: 'Page not found',
     name: 'PageNotFoundPage',
     pageTitle: '404 | AHDC'

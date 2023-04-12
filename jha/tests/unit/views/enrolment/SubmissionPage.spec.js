@@ -1,46 +1,47 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
+import { mount } from '@vue/test-utils';
+import { createStore } from 'vuex';
+import router from '@/router';
 import SubmissionPage from '@/views/enrolment/SubmissionPage.vue';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
+import appModule from "@/store/modules/app-module.js";
 import { fpcAddressUpdateMiddlewareHTML } from "../../fixtures.js";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.component('font-awesome-icon', FontAwesomeIcon);
+const enrolmentModuleState = {
+  applicationUuid: null,
+  submissionAPIResponse: {
+    fpc: {
+      returnCode: '0',
+      message: fpcAddressUpdateMiddlewareHTML,
+    }
+  },
+  children: [],
+};
+
+const store = createStore({
+  modules: {
+    appModule,
+    enrolmentModule: {
+      state: () => enrolmentModuleState,
+    },
+  }
+});
+
+jest.mock("@/services/log-service.js", () => ({
+  logError: jest.fn(() => Promise.resolve(true)),
+  logNavigation: jest.fn(() => Promise.resolve(true)),
+}));
 
 describe('Enrolment - FormSelectionPage.vue', () => {
-  let state;
-  let store;
-
-  beforeEach(() => {
-    state = {
-      applicationUuid: null,
-      submissionAPIResponse: {
-        fpc: {
-          returnCode: '0',
-          message: fpcAddressUpdateMiddlewareHTML,
-        }
-      },
-    };    
-
-    store = new Vuex.Store({
-      modules: {
-        appModule: {
-          state: {
-            showMobileStepperDetails: false,
-          }
-        },
-        enrolmentModule: {
-          state,
-        }
-      }
-    });
-  });
 
   it('Shows next steps message for successful FPC only applications', () => {
-    const wrapper = shallowMount(SubmissionPage, {
-      store,
-      localVue,
+    const wrapper = mount(SubmissionPage, {
+      global: {
+        stubs: {
+          'font-awesome-icon': {
+              template: '<i />'
+          },
+        },
+        plugins: [router, store]
+      }
     });
     const middlwareResponseContainer = wrapper.get('.fpc-success-message');
     expect(middlwareResponseContainer).not.toBeFalsy();

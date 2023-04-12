@@ -56,7 +56,6 @@ export const generateRequestObject = () => {
       "isPermanentMove": "Y",
       "prevProvinceOrCountry": "Alberta",
       "beenOutsideBCMoreThan": "Y",
-      /* "departureDate": "2022-03-17", */
       "departureDate": formatISODate(lastMonthDate),
       "returnDate": formatISODate(currentDate),
       "familyMemberReason": "vacation",

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -77,7 +77,7 @@
           </div>
         </div>
         <div class="text-danger"
-                      v-if="$v.applyFPC.$dirty && !$v.applyFPC.validateQuestionsAnswered"
+                      v-if="v$.eqSBIsApplying.$dirty && v$.eqSBIsApplying.validateQuestionsAnswered.$invalid"
                       aria-live="assertive">Please complete the questionnaire to continue.</div>
       </main>
     </PageContent>
@@ -86,6 +86,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import logService from '@/services/log-service';
 import {
@@ -142,6 +143,9 @@ export default {
     Radio,
     ContactInformation,
   },
+  setup () {
+    return { v$: useVuelidate() }
+  },
   data: () => {
     return {
       isPageLoaded: false,
@@ -167,7 +171,7 @@ export default {
   },
   validations() {
     const validations = {
-      applyFPC: {
+      eqSBIsApplying: {
         validateQuestionsAnswered,
       }
     };
@@ -175,8 +179,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -193,7 +197,7 @@ export default {
     navigateToNextPage() {
       // Navigate to next path.
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.FORM_SELECTION_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -240,7 +244,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path
       );
       next({
