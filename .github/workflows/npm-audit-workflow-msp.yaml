@@ -1,8 +1,8 @@
 name: npm audit workflow msp
 on:
   push:
-    # branches:
-      # - main
+    branches:
+      - main
   workflow_dispatch:
   schedule:
     - cron: "0 0 1 * *"
@@ -11,7 +11,7 @@ defaults:
     working-directory: ./msp
 jobs:
   scan:
-    name: npm audit
+    name: npm audit msp
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2

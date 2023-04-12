@@ -1,8 +1,8 @@
 name: npm audit workflow jha
 on:
   push:
-    # branches:
-      # - main
+    branches:
+      - main
   workflow_dispatch:
   schedule:
     - cron: "0 0 1 * *"
@@ -11,7 +11,7 @@ defaults:
     working-directory: ./jha
 jobs:
   scan:
-    name: npm audit
+    name: npm audit jha
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
