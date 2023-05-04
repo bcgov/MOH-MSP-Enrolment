@@ -35,6 +35,16 @@ describe.only("copyPowerOfAttorneyDocuments()", () => {
   //   fpcPowerOfAttorneyDocuments: [],
   //   sbPowerOfAttorneyDocuments: [],
   // }
+  const documentStructureObject = {
+    isApplyingForMSP: true,
+    isApplyingForFPCare: true,
+    isApplyingForSuppBen: true,
+  };
+
+  const documentStructureArray = [
+    { description: "Power Of Attorney Supporting Documents" },
+    { description: "Power Of Attorney Supporting Documents2" },
+  ];
 
   it("returns an object containing three properties", async () => {
     const result = copyPowerOfAttorneyDocuments({}, []);
@@ -42,22 +52,69 @@ describe.only("copyPowerOfAttorneyDocuments()", () => {
     expect(Object.keys(result).length).toEqual(3);
   });
 
-  it.only("returns an object when passed required input", async () => {
+  it("returns an object with specific key values when passed required input", async () => {
     const result = copyPowerOfAttorneyDocuments(
-      {
-        isApplyingForMSP: true,
-        isApplyingForFPCare: true,
-        isApplyingForSuppBen: true,
-      },
+      documentStructureObject,
+      documentStructureArray
+    );
+    expect(Object.keys(result).sort()).toEqual(
       [
-        { description: "Power Of Attorney Supporting Documents" },
-        { description: "Power Of Attorney Supporting Documents2" },
-      ]
+        "fpcPowerOfAttorneyDocuments",
+        "mspPowerOfAttorneyDocuments",
+        "sbPowerOfAttorneyDocuments",
+      ].sort()
+    );
+  });
+
+  it("returns specifically formatted child objects when passed required input", async () => {
+    const result = copyPowerOfAttorneyDocuments(
+      documentStructureObject,
+      documentStructureArray
     );
     console.log("kumquat", result);
-    expect(typeof result).toBe("object");
-    expect(Object.keys(result).length).toEqual(3);
-    expect(Object.keys(result).sort()).toEqual(['foo', 'biz'].sort());
 
+    //long story short, the result should contain an object with three values, one for each application
+    //each application (msp, fpc, and sb) should contain an array
+    //each array should contain two objects, since the template has two documents
+    //each document object should contain a description matching the description passed to it initially
+
+    //msp expectations
+    expect(result.mspPowerOfAttorneyDocuments[0]).toBeTruthy();
+    expect(typeof result.mspPowerOfAttorneyDocuments[0]).toBe("object");
+    expect(result.mspPowerOfAttorneyDocuments[0].description).toEqual(
+      documentStructureArray[0].description
+    );
+    expect(result.mspPowerOfAttorneyDocuments[1]).toBeTruthy();
+    expect(typeof result.mspPowerOfAttorneyDocuments[1]).toBe("object");
+    expect(result.mspPowerOfAttorneyDocuments[1].description).toEqual(
+      documentStructureArray[1].description
+    );
+    expect(result.mspPowerOfAttorneyDocuments[2]).toBeUndefined();
+
+    //fpc expectations
+    expect(result.fpcPowerOfAttorneyDocuments[0]).toBeTruthy();
+    expect(typeof result.fpcPowerOfAttorneyDocuments[0]).toBe("object");
+    expect(result.fpcPowerOfAttorneyDocuments[0].description).toEqual(
+      documentStructureArray[0].description
+    );
+    expect(result.fpcPowerOfAttorneyDocuments[1]).toBeTruthy();
+    expect(typeof result.fpcPowerOfAttorneyDocuments[1]).toBe("object");
+    expect(result.fpcPowerOfAttorneyDocuments[1].description).toEqual(
+      documentStructureArray[1].description
+    );
+    expect(result.fpcPowerOfAttorneyDocuments[2]).toBeUndefined();
+
+    //sb expectations
+    expect(result.sbPowerOfAttorneyDocuments[0]).toBeTruthy();
+    expect(typeof result.sbPowerOfAttorneyDocuments[0]).toBe("object");
+    expect(result.sbPowerOfAttorneyDocuments[0].description).toEqual(
+      documentStructureArray[0].description
+    );
+    expect(result.sbPowerOfAttorneyDocuments[1]).toBeTruthy();
+    expect(typeof result.sbPowerOfAttorneyDocuments[1]).toBe("object");
+    expect(result.sbPowerOfAttorneyDocuments[1].description).toEqual(
+      documentStructureArray[1].description
+    );
+    expect(result.sbPowerOfAttorneyDocuments[2]).toBeUndefined();
   });
 });
