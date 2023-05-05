@@ -71,7 +71,6 @@ describe.only("copyPowerOfAttorneyDocuments()", () => {
       documentStructureObject,
       documentStructureArray
     );
-    console.log("kumquat", result);
 
     //long story short, the result should contain an object with three values, one for each application
     //each application (msp, fpc, and sb) should contain an array
@@ -116,5 +115,46 @@ describe.only("copyPowerOfAttorneyDocuments()", () => {
       documentStructureArray[1].description
     );
     expect(result.sbPowerOfAttorneyDocuments[2]).toBeUndefined();
+  });
+
+  it("returns specifically formatted child objects when passed required input (2)", async () => {
+    //similar test to before but with different passed values and different numbers of documents
+    const result = copyPowerOfAttorneyDocuments(
+      {
+        isApplyingForMSP: true,
+        isApplyingForFPCare: false,
+        isApplyingForSuppBen: false,
+      },
+      [
+        { description: "Power Of Attorney Supporting Documents" },
+        { description: "Power Of Attorney Supporting Documents2" },
+        { description: "Power Of Attorney Supporting Documents3" },
+      ]
+    );
+
+
+    //msp expectations
+    expect(result.mspPowerOfAttorneyDocuments[0]).toBeTruthy();
+    expect(typeof result.mspPowerOfAttorneyDocuments[0]).toBe("object");
+    expect(result.mspPowerOfAttorneyDocuments[0].description).toEqual(
+      documentStructureArray[0].description
+    );
+    expect(result.mspPowerOfAttorneyDocuments[1]).toBeTruthy();
+    expect(typeof result.mspPowerOfAttorneyDocuments[1]).toBe("object");
+    expect(result.mspPowerOfAttorneyDocuments[1].description).toEqual(
+      documentStructureArray[1].description
+    );
+    expect(result.mspPowerOfAttorneyDocuments[2]).toBeTruthy();
+    expect(typeof result.mspPowerOfAttorneyDocuments[2]).toBe("object");
+    expect(result.mspPowerOfAttorneyDocuments[2].description).toEqual(
+      "Power Of Attorney Supporting Documents3"
+    );
+    expect(result.mspPowerOfAttorneyDocuments[3]).toBeUndefined();
+
+    //fpc expectations
+    expect(result.fpcPowerOfAttorneyDocuments[0]).toBeUndefined();
+
+    //sb expectations
+    expect(result.sbPowerOfAttorneyDocuments[0]).toBeUndefined();
   });
 });
