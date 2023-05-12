@@ -586,12 +586,50 @@ describe("getCoverageTier()", () => {
       },
     ],
   };
+  const sample1939Tiers = [
+    {
+      startRange: 0.0,
+      endRange: 1000.0,
+      deductible: 1000,
+      pharmaCarePortion: 1100,
+      maximum: 1200,
+    },
+    {
+      startRange: 1000.01,
+      endRange: 2000.0,
+      deductible: 1000,
+      pharmaCarePortion: 1100,
+      maximum: 1200,
+    },
+  ];
+  const sampleDeductibleTiers = [
+    {
+      startRange: 0.0,
+      endRange: 1000.0,
+      deductible: 500,
+      pharmaCarePortion: 600,
+      maximum: 700,
+    },
+    {
+      startRange: 1000.01,
+      endRange: 2000.0,
+      deductible: 500,
+      pharmaCarePortion: 600,
+      maximum: 700,
+    },
+  ];
 
-  //this function throws an error when not passed an object
+  //this function throws an error when not passed an argument
+  //so no test for that scenario
+
+  it("returns null when passed non-object argument", async () => {
+    expect(getCoverageTier("a")).toBeNull();
+  });
 
   it("returns null when passed empty object", async () => {
     expect(getCoverageTier({})).toBeNull();
   });
+
   it("returns null when passed object containing empty values", async () => {
     expect(
       getCoverageTier({
@@ -652,7 +690,6 @@ describe("getCoverageTier()", () => {
         },
       ],
     });
-    console.log("kumquat", result)
     expect(typeof result).toBe("object");
     expect(Object.keys(result).length).toEqual(5);
     expect(Object.keys(result).sort()).toEqual(sampleKeys);
@@ -668,5 +705,25 @@ describe("getCoverageTier()", () => {
     expect(Object.keys(result).length).toEqual(5);
     expect(Object.keys(result).sort()).toEqual(sampleKeys);
   });
-});
+  it("checks the date of birth and correctly returns result if both birth dates are from before 1939", async () => {
+    const result = getCoverageTier({
+      ahBirthdate: new Date("1938-01-01"),
+      spouseBirthdate: new Date("1938-01-01"),
+      adjustedIncome: 1500,
+      pre1939DeductibleTiers: sample1939Tiers,
+      deductibleTiers: sampleDeductibleTiers,
+    });
+    expect(result.maximum).toEqual(1200);
+  });
 
+  it("checks the date of birth and correctly returns result if one birth date is from after 1939", async () => {
+    const result = getCoverageTier({
+      ahBirthdate: "1937-09-23T07:00:00.000Z",
+      spouseBirthdate: "1948-03-08T08:00:00.000Z",
+      adjustedIncome: 1500,
+      pre1939DeductibleTiers: sample1939Tiers,
+      deductibleTiers: sampleDeductibleTiers,
+    });
+    expect(result.maximum).toEqual(700);
+  });
+});
