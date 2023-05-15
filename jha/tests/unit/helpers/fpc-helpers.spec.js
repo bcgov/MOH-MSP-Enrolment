@@ -598,7 +598,7 @@ describe("getCoverageTier()", () => {
       startRange: 1000.01,
       endRange: 2000.0,
       deductible: 1000,
-      pharmaCarePortion: 1100,
+      pharmaCarePortion: 1200,
       maximum: 1200,
     },
   ];
@@ -607,14 +607,14 @@ describe("getCoverageTier()", () => {
       startRange: 0.0,
       endRange: 1000.0,
       deductible: 500,
-      pharmaCarePortion: 600,
+      pharmaCarePortion: 1300,
       maximum: 700,
     },
     {
       startRange: 1000.01,
       endRange: 2000.0,
       deductible: 500,
-      pharmaCarePortion: 600,
+      pharmaCarePortion: 1400,
       maximum: 700,
     },
   ];
@@ -705,7 +705,7 @@ describe("getCoverageTier()", () => {
     expect(Object.keys(result).length).toEqual(5);
     expect(Object.keys(result).sort()).toEqual(sampleKeys);
   });
-  it("checks the date of birth and correctly returns result if both birth dates are from before 1939", async () => {
+  it("checks the date of birth and correctly returns result if one of the birth dates is from before 1939", async () => {
     const result = getCoverageTier({
       ahBirthdate: new Date("1938-01-01"),
       spouseBirthdate: new Date("1938-01-01"),
@@ -716,10 +716,43 @@ describe("getCoverageTier()", () => {
     expect(result.maximum).toEqual(1200);
   });
 
-  it("checks the date of birth and correctly returns result if one birth date is from after 1939", async () => {
+  it("checks the date of birth and correctly returns result if both birth dates are from after 1939", async () => {
     const result = getCoverageTier({
-      ahBirthdate: "1937-09-23T07:00:00.000Z",
-      spouseBirthdate: "1948-03-08T08:00:00.000Z",
+      ahBirthdate: new Date("1948-01-01"),
+      spouseBirthdate: new Date("1948-01-01"),
+      adjustedIncome: 1500,
+      pre1939DeductibleTiers: sample1939Tiers,
+      deductibleTiers: sampleDeductibleTiers,
+    });
+    expect(result.maximum).toEqual(700);
+  });
+
+  it("returns the tier with the highest end range if adjusted income falls outside the tiers", async () => {
+    const result = getCoverageTier({
+      ahBirthdate: new Date("1948-01-01"),
+      spouseBirthdate: new Date("1948-01-01"),
+      adjustedIncome: 2500,
+      pre1939DeductibleTiers: sample1939Tiers,
+      deductibleTiers: sampleDeductibleTiers,
+    });
+    expect(result.pharmaCarePortion).toEqual(1400);
+  });
+
+  it("returns the tier with the highest end range if adjusted income falls outside the tiers (1939 version)", async () => {
+    const result = getCoverageTier({
+      ahBirthdate: new Date("1938-01-01"),
+      spouseBirthdate: new Date("1938-01-01"),
+      adjustedIncome: 2500,
+      pre1939DeductibleTiers: sample1939Tiers,
+      deductibleTiers: sampleDeductibleTiers,
+    });
+    expect(result.pharmaCarePortion).toEqual(1200);
+  });
+
+  it("returns non-1939 deductible tiers if passed two invalid dates of birth", async () => {
+    const result = getCoverageTier({
+      ahBirthdate: "a",
+      spouseBirthdate: "a",
       adjustedIncome: 1500,
       pre1939DeductibleTiers: sample1939Tiers,
       deductibleTiers: sampleDeductibleTiers,
