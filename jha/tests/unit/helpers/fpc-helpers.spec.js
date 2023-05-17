@@ -1,4 +1,8 @@
-import { formatCurrencyNumber, getCoverageTier } from "@/helpers/fpc-helpers";
+import {
+  formatCurrencyNumber,
+  getCoverageTier,
+  getDistributionBarItems,
+} from "@/helpers/fpc-helpers";
 
 describe("formatCurrencyNumber()", () => {
   it("returns $0 when passed no input", async () => {
@@ -758,5 +762,50 @@ describe("getCoverageTier()", () => {
       deductibleTiers: sampleDeductibleTiers,
     });
     expect(result.maximum).toEqual(700);
+  });
+});
+
+describe("getDistributionBarItems()", () => {
+  //function needs to be passed a tier object containing the following keys
+  const defaultTier = {
+    startRange: 316667.01,
+    endRange: 999999999,
+    deductible: 10000,
+    pharmaCarePortion: 100,
+    maximum: 10000,
+  };
+
+  //function returns an array containing two objects, eg
+  /*
+    [
+      {
+        color: '#036',
+        barLabel: '$10,000',
+        label: 'You pay 100% of eligible drug costs (between $0 and $10,000)'
+      },
+      {
+        color: '#486446',
+        barLabel: '&infin;',
+        label: 'PharmaCare pays 100% of eligible drug costs after you reach the family maximum ($10,000)'
+      }
+    ] 
+  */
+
+  const sampleKeys = ["color", "barLabel", "label"].sort();
+
+  it("returns an empty array when passed no input", async () => {
+    expect(getDistributionBarItems()).toBe([]);
+  });
+
+  it.only("returns a specifically formatted array when passed default tier", async () => {
+    const result = getDistributionBarItems(defaultTier);
+    console.log("kumquat", result);
+    expect(Array.isArray(result)).toBe(true);
+    expect(typeof result[0]).toBe("object");
+    expect(Object.keys(result[0]).length).toEqual(3);
+    expect(Object.keys(result[0]).sort()).toEqual(sampleKeys);
+    expect(typeof result[1]).toBe("object");
+    expect(Object.keys(result[1]).length).toEqual(3);
+    expect(Object.keys(result[1]).sort()).toEqual(sampleKeys);
   });
 });
