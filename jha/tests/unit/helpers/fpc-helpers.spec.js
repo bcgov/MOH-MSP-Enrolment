@@ -2,9 +2,10 @@ import {
   formatCurrencyNumber,
   getCoverageTier,
   getDistributionBarItems,
+  formatServerData,
   BLUE,
   YELLOW,
-  GREEN
+  GREEN,
 } from "@/helpers/fpc-helpers";
 
 describe("formatCurrencyNumber()", () => {
@@ -819,7 +820,6 @@ describe("getDistributionBarItems()", () => {
       pharmaCarePortion: 100,
       maximum: 0,
     });
-    console.log("kumquat", result);
     expect(result[0].color).toEqual(GREEN);
     expect(result[1]).toBeUndefined();
   });
@@ -832,7 +832,6 @@ describe("getDistributionBarItems()", () => {
       pharmaCarePortion: 100,
       maximum: 500,
     });
-    console.log("kumquat", result);
     expect(result[0].color).toEqual(YELLOW);
     expect(result[1].color).toEqual(GREEN);
     expect(result[2]).toBeUndefined();
@@ -863,5 +862,58 @@ describe("getDistributionBarItems()", () => {
     expect(result[1].color).toEqual(YELLOW);
     expect(result[2].color).toEqual(GREEN);
     expect(result[3]).toBeUndefined();
+  });
+});
+
+describe("formatServerData()", () => {
+  //function breaks if not passed a specifically formatted array
+  //array must contain exclusively objects, and these objects must have keys as follows
+
+  const defaultData = [
+    {
+      startRange: "87500.01",
+      endRange: "92500",
+      deductible: "$1800.00",
+      pharmaCarePortion: "75%",
+      maximum: "$2700.00",
+    },
+    {
+      startRange: "92500.01",
+      endRange: "97500",
+      deductible: "$1900.00",
+      pharmaCarePortion: "75%",
+      maximum: "$2850.00",
+    },
+  ];
+
+  const sampleKeys = [
+    "deductible",
+    "endRange",
+    "maximum",
+    "pharmaCarePortion",
+    "startRange",
+  ].sort();
+
+  it("returns a specifically formatted array when passed default data", async () => {
+    const result = formatServerData(defaultData);
+    expect(Array.isArray(result)).toBe(true);
+    expect(typeof result[0]).toBe("object");
+    expect(Object.keys(result[0]).length).toEqual(5);
+    expect(Object.keys(result[0]).sort()).toEqual(sampleKeys);
+    expect(typeof result[1]).toBe("object");
+    expect(Object.keys(result[1]).length).toEqual(5);
+    expect(Object.keys(result[1]).sort()).toEqual(sampleKeys);
+    expect(result[2]).toBeUndefined();
+  });
+
+  it("returns the same array/object structure but with its data converted from text to numbers", async () => {
+    const result = formatServerData(defaultData);
+    for (let i = 0; i < 2; i++) {
+      for (let sampleKey of sampleKeys) {
+        expect(result[i][sampleKey]).toEqual(
+          Number(defaultData[i][sampleKey].replace("$", "").replace("%", ""))
+        );
+      }
+    }
   });
 });
