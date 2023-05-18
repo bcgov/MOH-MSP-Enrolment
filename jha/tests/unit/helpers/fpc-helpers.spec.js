@@ -2,6 +2,9 @@ import {
   formatCurrencyNumber,
   getCoverageTier,
   getDistributionBarItems,
+  BLUE,
+  YELLOW,
+  GREEN
 } from "@/helpers/fpc-helpers";
 
 describe("formatCurrencyNumber()", () => {
@@ -794,12 +797,11 @@ describe("getDistributionBarItems()", () => {
   const sampleKeys = ["color", "barLabel", "label"].sort();
 
   it("returns an empty array when passed no input", async () => {
-    expect(getDistributionBarItems()).toBe([]);
+    expect(getDistributionBarItems()).toStrictEqual([]);
   });
 
-  it.only("returns a specifically formatted array when passed default tier", async () => {
+  it("returns a specifically formatted array when passed default tier", async () => {
     const result = getDistributionBarItems(defaultTier);
-    console.log("kumquat", result);
     expect(Array.isArray(result)).toBe(true);
     expect(typeof result[0]).toBe("object");
     expect(Object.keys(result[0]).length).toEqual(3);
@@ -807,5 +809,59 @@ describe("getDistributionBarItems()", () => {
     expect(typeof result[1]).toBe("object");
     expect(Object.keys(result[1]).length).toEqual(3);
     expect(Object.keys(result[1]).sort()).toEqual(sampleKeys);
+  });
+
+  it("returns green when result maximum is 0", async () => {
+    const result = getDistributionBarItems({
+      startRange: 316667.01,
+      endRange: 999999999,
+      deductible: 10000,
+      pharmaCarePortion: 100,
+      maximum: 0,
+    });
+    console.log("kumquat", result);
+    expect(result[0].color).toEqual(GREEN);
+    expect(result[1]).toBeUndefined();
+  });
+
+  it("returns yellow and green when maximum > 0 and deductible is 0", async () => {
+    const result = getDistributionBarItems({
+      startRange: 316667.01,
+      endRange: 999999999,
+      deductible: 0,
+      pharmaCarePortion: 100,
+      maximum: 500,
+    });
+    console.log("kumquat", result);
+    expect(result[0].color).toEqual(YELLOW);
+    expect(result[1].color).toEqual(GREEN);
+    expect(result[2]).toBeUndefined();
+  });
+
+  it("returns blue and green when maximum and deductible are > 0 and pharmaCarePortion is 100", async () => {
+    const result = getDistributionBarItems({
+      startRange: 316667.01,
+      endRange: 999999999,
+      deductible: 500,
+      pharmaCarePortion: 100,
+      maximum: 500,
+    });
+    expect(result[0].color).toEqual(BLUE);
+    expect(result[1].color).toEqual(GREEN);
+    expect(result[2]).toBeUndefined();
+  });
+
+  it("returns blue, yellow, and green when maximum and deductible are > 0 and pharmaCarePortion is not 100", async () => {
+    const result = getDistributionBarItems({
+      startRange: 316667.01,
+      endRange: 999999999,
+      deductible: 500,
+      pharmaCarePortion: 50,
+      maximum: 500,
+    });
+    expect(result[0].color).toEqual(BLUE);
+    expect(result[1].color).toEqual(YELLOW);
+    expect(result[2].color).toEqual(GREEN);
+    expect(result[3]).toBeUndefined();
   });
 });
