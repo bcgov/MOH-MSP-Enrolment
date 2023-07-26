@@ -21,7 +21,7 @@ describe("isCorrespondenceAttachedAbleToSubmit()", () => {
   });
 });
 
-describe.only("copyPowerOfAttorneyDocuments()", () => {
+describe("copyPowerOfAttorneyDocuments()", () => {
   //function needs to be passed an object and an array or it throws an error
   //return format:
   // {
