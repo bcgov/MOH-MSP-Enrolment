@@ -220,6 +220,58 @@ describe ("SuppBenData getters childDeduction()", () => {
   });
 });
 
+describe ("SuppBenData getters claimedChildCareExpensesReduction()", () => {
+  it("returns zero when child care expenses are zero", async () => {
+    result.claimedChildCareExpenses = 0;
+    result.numChildren = 1;
+    expect(result.claimedChildCareExpensesReduction).toEqual(0);
+  });
+
+  it("returns zero when number of children is zero", async () => {
+    result.claimedChildCareExpenses = 1;
+    result.numChildren = 0;
+    expect(result.claimedChildCareExpensesReduction).toEqual(0);
+  });
+
+  it("returns expense formula when expenses and children are both greater than zero", async () => {
+    const testExpenses = 500;
+    result.claimedChildCareExpenses = testExpenses;
+    result.numChildren = 1;
+    expect(result.claimedChildCareExpensesReduction).toEqual(testExpenses / 2 * -1);
+  });
+});
+
+describe ("SuppBenData getters childAdjustedDeduction()", () => {
+  it("should return zero when childDeduction and claimedChildCareExpensesReduction are both zero", async () => {
+    result.numChildren = 0;
+    result.claimedChildCareExpenses = 0;
+    expect(result.childAdjustedDeduction).toEqual(0);
+  });
+
+  it("should return a positive value when childDeduction > claimedChildCareExpensesReduction", async () => {
+    result.numChildren = 1;
+    result.claimedChildCareExpenses = 0;
+    expect(result.childAdjustedDeduction).toBeGreaterThan(0);
+  });
+
+  it("should return zero when childDeduction = claimedChildCareExpensesReduction", async () => {
+    //each child (numChildren) adds 3000
+    //cCCER subtracts expenses (claimedChildCareExpenses) / 2
+    //6000 / 2 = 3000
+    //when these two things cancel each other out, function should return zero
+    result.numChildren = 1;
+    result.claimedChildCareExpenses = 6000;
+    expect(result.childAdjustedDeduction).toEqual(0);
+  });
+
+  it("should return zero when childDeduction < claimedChildCareExpensesReduction", async () => {
+    //similar to the above, if the cCCER vastly outweighs the childDeduction 
+    //the function should still return zero
+    result.numChildren = 1;
+    result.claimedChildCareExpenses = 12000;
+    expect(result.childAdjustedDeduction).toEqual(0);
+  });
+});
 
 
 describe("SuppBenData removeCommas()", () => {
