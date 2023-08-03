@@ -92,6 +92,136 @@ describe("SuppBenData getters/setters hasAttendantNursingExpenses()", () => {
   });
 });
 
+describe ("SuppBenData getters totalHouseholdIncome()", () => {
+  it("returns 0 when passed null values", async () => {
+    result.ahIncome = null;
+    result.hasSpouse = null;
+    result.spouseIncome = null;
+    expect(result.totalHouseholdIncome).toEqual(0);
+  });
+
+  it("returns ah income + spouse income total when hasSpouse = Y", async () => {
+    result.ahIncome = 1;
+    result.hasSpouse = "Y";
+    result.spouseIncome = 1;
+    expect(result.totalHouseholdIncome).toEqual(2);
+  });
+
+  it("returns ah income total alone when hasSpouse = N", async () => {
+    result.ahIncome = 1;
+    result.hasSpouse = "N";
+    result.spouseIncome = 1;
+    expect(result.totalHouseholdIncome).toEqual(1);
+  });
+
+  it("returns ah income total alone when hasSpouse is falsy", async () => {
+    result.ahIncome = 1;
+    result.hasSpouse = null;
+    result.spouseIncome = 1;
+    expect(result.totalHouseholdIncome).toEqual(1);
+  });
+
+  it("returns 0 when ah income + spouse income equals zero", async () => {
+    result.ahIncome = 0;
+    result.hasSpouse = "Y";
+    result.spouseIncome = 0;
+    expect(result.totalHouseholdIncome).toEqual(0);
+  });
+
+  it("returns 0 when ah income + spouse income are less than zero", async () => {
+    result.ahIncome = -1;
+    result.hasSpouse = "Y";
+    result.spouseIncome = -1;
+    expect(result.totalHouseholdIncome).toEqual(0);
+  });
+});
+
+describe ("SuppBenData getters ah65Deduction()", () => {
+  it("returns 0 when passed null values", async () => {
+    result.ahBirthdate = null;
+    expect(result.ah65Deduction).toEqual(0);
+  });
+
+  it("returns 0 when passed number below 65", async () => {
+    const testBirthDate = new Date();
+    const testYear = new Date().getFullYear() - 64;
+    testBirthDate.setFullYear(testYear)
+    result.ahBirthdate = testBirthDate;
+    expect(result.ah65Deduction).toEqual(0);
+  });
+
+  it("returns non-zero value when passed number 65 or higher", async () => {
+    const testBirthDate = new Date();
+    testBirthDate.setFullYear(new Date().getFullYear() - 65)
+    result.ahBirthdate = testBirthDate;
+    expect(result.ah65Deduction).not.toEqual(0);
+  });
+});
+
+describe ("SuppBenData getters spouseDeduction()", () => {
+  //the hasSpouse setter changes Y to true and N to false
+  it("returns 0 when relevant value is null", async () => {
+    result.hasSpouse = null;
+    expect(result.spouseDeduction).toEqual(0);
+  });
+
+  it("returns non-zero value when relevant value is true", async () => {
+    result.hasSpouse = "Y";
+    expect(result.spouseDeduction).not.toEqual(0);
+  });
+
+  it("returns 0 when relevant value is false", async () => {
+    result.hasSpouse = "N";
+    expect(result.spouseDeduction).toEqual(0);
+  });
+
+  it("returns 0 when relevant value is anything other than Y/N", async () => {
+    result.hasSpouse = "potato";
+    expect(result.spouseDeduction).toEqual(0);
+  });
+});
+
+describe ("SuppBenData getters spouse65Deduction()", () => {
+  it("returns 0 when passed null values", async () => {
+    result.spouseBirthdate = null;
+    expect(result.spouse65Deduction).toEqual(0);
+  });
+
+  it("returns 0 when passed number below 65", async () => {
+    const testBirthDate = new Date();
+    const testYear = new Date().getFullYear() - 64;
+    testBirthDate.setFullYear(testYear)
+    result.spouseBirthdate = testBirthDate;
+    expect(result.spouse65Deduction).toEqual(0);
+  });
+
+  it("returns non-zero value when passed number 65 or higher", async () => {
+    const testBirthDate = new Date();
+    testBirthDate.setFullYear(new Date().getFullYear() - 65)
+    result.spouseBirthdate = testBirthDate;
+    expect(result.spouse65Deduction).not.toEqual(0);
+  });
+});
+
+describe ("SuppBenData getters childDeduction()", () => {
+  it("returns 0 when relevant value is null", async () => {
+    result.numChildren = null;
+    expect(result.childDeduction).toEqual(0);
+  });
+
+  it("returns 3000 * 1 when number of children = 1", async () => {
+    result.numChildren = 1;
+    expect(result.childDeduction).toEqual(3000);
+  });
+
+  it("returns 3000 * 2 when number of children = 2", async () => {
+    result.numChildren = 2;
+    expect(result.childDeduction).toEqual(6000);
+  });
+});
+
+
+
 describe("SuppBenData removeCommas()", () => {
   it("returns identical output when passed string without commas", async () => {
     expect(result.removeCommas("a")).toEqual("a");
