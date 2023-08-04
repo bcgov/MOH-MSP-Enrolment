@@ -92,7 +92,7 @@ describe("SuppBenData getters/setters hasAttendantNursingExpenses()", () => {
   });
 });
 
-describe ("SuppBenData getters totalHouseholdIncome()", () => {
+describe("SuppBenData getters totalHouseholdIncome()", () => {
   it("returns 0 when passed null values", async () => {
     result.ahIncome = null;
     result.hasSpouse = null;
@@ -136,7 +136,7 @@ describe ("SuppBenData getters totalHouseholdIncome()", () => {
   });
 });
 
-describe ("SuppBenData getters ah65Deduction()", () => {
+describe("SuppBenData getters ah65Deduction()", () => {
   it("returns 0 when passed null values", async () => {
     result.ahBirthdate = null;
     expect(result.ah65Deduction).toEqual(0);
@@ -145,20 +145,20 @@ describe ("SuppBenData getters ah65Deduction()", () => {
   it("returns 0 when passed number below 65", async () => {
     const testBirthDate = new Date();
     const testYear = new Date().getFullYear() - 64;
-    testBirthDate.setFullYear(testYear)
+    testBirthDate.setFullYear(testYear);
     result.ahBirthdate = testBirthDate;
     expect(result.ah65Deduction).toEqual(0);
   });
 
   it("returns non-zero value when passed number 65 or higher", async () => {
     const testBirthDate = new Date();
-    testBirthDate.setFullYear(new Date().getFullYear() - 65)
+    testBirthDate.setFullYear(new Date().getFullYear() - 65);
     result.ahBirthdate = testBirthDate;
     expect(result.ah65Deduction).not.toEqual(0);
   });
 });
 
-describe ("SuppBenData getters spouseDeduction()", () => {
+describe("SuppBenData getters spouseDeduction()", () => {
   //the hasSpouse setter changes Y to true and N to false
   it("returns 0 when relevant value is null", async () => {
     result.hasSpouse = null;
@@ -181,7 +181,7 @@ describe ("SuppBenData getters spouseDeduction()", () => {
   });
 });
 
-describe ("SuppBenData getters spouse65Deduction()", () => {
+describe("SuppBenData getters spouse65Deduction()", () => {
   it("returns 0 when passed null values", async () => {
     result.spouseBirthdate = null;
     expect(result.spouse65Deduction).toEqual(0);
@@ -190,20 +190,20 @@ describe ("SuppBenData getters spouse65Deduction()", () => {
   it("returns 0 when passed number below 65", async () => {
     const testBirthDate = new Date();
     const testYear = new Date().getFullYear() - 64;
-    testBirthDate.setFullYear(testYear)
+    testBirthDate.setFullYear(testYear);
     result.spouseBirthdate = testBirthDate;
     expect(result.spouse65Deduction).toEqual(0);
   });
 
   it("returns non-zero value when passed number 65 or higher", async () => {
     const testBirthDate = new Date();
-    testBirthDate.setFullYear(new Date().getFullYear() - 65)
+    testBirthDate.setFullYear(new Date().getFullYear() - 65);
     result.spouseBirthdate = testBirthDate;
     expect(result.spouse65Deduction).not.toEqual(0);
   });
 });
 
-describe ("SuppBenData getters childDeduction()", () => {
+describe("SuppBenData getters childDeduction()", () => {
   it("returns 0 when relevant value is null", async () => {
     result.numChildren = null;
     expect(result.childDeduction).toEqual(0);
@@ -220,7 +220,7 @@ describe ("SuppBenData getters childDeduction()", () => {
   });
 });
 
-describe ("SuppBenData getters claimedChildCareExpensesReduction()", () => {
+describe("SuppBenData getters claimedChildCareExpensesReduction()", () => {
   it("returns zero when child care expenses are zero", async () => {
     result.claimedChildCareExpenses = 0;
     result.numChildren = 1;
@@ -237,11 +237,13 @@ describe ("SuppBenData getters claimedChildCareExpensesReduction()", () => {
     const testExpenses = 500;
     result.claimedChildCareExpenses = testExpenses;
     result.numChildren = 1;
-    expect(result.claimedChildCareExpensesReduction).toEqual(testExpenses / 2 * -1);
+    expect(result.claimedChildCareExpensesReduction).toEqual(
+      (testExpenses / 2) * -1
+    );
   });
 });
 
-describe ("SuppBenData getters childAdjustedDeduction()", () => {
+describe("SuppBenData getters childAdjustedDeduction()", () => {
   it("should return zero when childDeduction and claimedChildCareExpensesReduction are both zero", async () => {
     result.numChildren = 0;
     result.claimedChildCareExpenses = 0;
@@ -265,7 +267,7 @@ describe ("SuppBenData getters childAdjustedDeduction()", () => {
   });
 
   it("should return zero when childDeduction < claimedChildCareExpensesReduction", async () => {
-    //similar to the above, if the cCCER vastly outweighs the childDeduction 
+    //similar to the above, if the cCCER vastly outweighs the childDeduction
     //the function should still return zero
     result.numChildren = 1;
     result.claimedChildCareExpenses = 12000;
@@ -273,6 +275,32 @@ describe ("SuppBenData getters childAdjustedDeduction()", () => {
   });
 });
 
+describe.only("SuppBenData getters ahDisabilityCreditDeduction()", () => {
+  it("returns a nonzero value if everything's correct ", async () => {
+    //hasDisabilityCredit needs to be Y and selectedDisabilityRecipients needs to contain "ah"
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["ah"];
+    expect(result.ahDisabilityCreditDeduction).not.toEqual(0);
+  });
+
+  it("returns 0 if hasDisabilityCredit does not equal Y", async () => {
+    result.hasDisabilityCredit = "N";
+    result.selectedDisabilityRecipients = ["ah"];
+    expect(result.ahDisabilityCreditDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedDisabilityRecipients is empty", async () => {
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = [];
+    expect(result.ahDisabilityCreditDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedDisabilityRecipients doesn't contain 'ah'", async () => {
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["potato"];
+    expect(result.ahDisabilityCreditDeduction).toEqual(0);
+  });
+});
 
 describe("SuppBenData removeCommas()", () => {
   it("returns identical output when passed string without commas", async () => {
