@@ -275,7 +275,7 @@ describe("SuppBenData getters childAdjustedDeduction()", () => {
   });
 });
 
-describe.only("SuppBenData getters ahDisabilityCreditDeduction()", () => {
+describe("SuppBenData getters ahDisabilityCreditDeduction()", () => {
   it("returns a nonzero value if everything's correct ", async () => {
     //hasDisabilityCredit needs to be Y and selectedDisabilityRecipients needs to contain "ah"
     result.hasDisabilityCredit = "Y";
@@ -299,6 +299,264 @@ describe.only("SuppBenData getters ahDisabilityCreditDeduction()", () => {
     result.hasDisabilityCredit = "Y";
     result.selectedDisabilityRecipients = ["potato"];
     expect(result.ahDisabilityCreditDeduction).toEqual(0);
+  });
+});
+
+describe("SuppBenData getters spouseDisabilityCreditDeduction()", () => {
+  it("returns a nonzero value if everything's correct ", async () => {
+    //hasDisabilityCredit needs to be Y and selectedDisabilityRecipients needs to contain "spouse"
+    //hasSpouse also needs to be Y
+    result.hasSpouse = "Y";
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["spouse"];
+    expect(result.spouseDisabilityCreditDeduction).not.toEqual(0);
+  });
+
+  it("returns 0 if hasSpouse does not equal Y", async () => {
+    result.hasSpouse = "N";
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["spouse"];
+    expect(result.spouseDisabilityCreditDeduction).toEqual(0);
+  });
+
+  it("returns 0 if hasDisabilityCredit does not equal Y", async () => {
+    result.hasSpouse = "Y";
+    result.hasDisabilityCredit = "N";
+    result.selectedDisabilityRecipients = ["spouse"];
+    expect(result.spouseDisabilityCreditDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedDisabilityRecipients is empty", async () => {
+    result.hasSpouse = "Y";
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = [];
+    expect(result.spouseDisabilityCreditDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedDisabilityRecipients doesn't contain 'ah'", async () => {
+    result.hasSpouse = "Y";
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["potato"];
+    expect(result.spouseDisabilityCreditDeduction).toEqual(0);
+  });
+});
+
+describe("SuppBenData getters childDisabilityCreditDeduction()", () => {
+  it("returns a nonzero value if everything's correct ", async () => {
+    result.numChildren = 1;
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["child"];
+    result.numDisabilityChildren = 1;    
+    expect(result.childDisabilityCreditDeduction).not.toEqual(0);
+  });
+
+  it("returns a nonzero value multiplied by the number of disability children", async () => {
+    result.numChildren = 3;
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["child"];
+    result.numDisabilityChildren = 2;    
+    expect(result.childDisabilityCreditDeduction).toEqual(6000);
+  });
+
+  it("returns 0 if number of children is not greater than 0", async () => {
+    result.numChildren = 0;
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["child"];
+    result.numDisabilityChildren = 1; 
+    expect(result.childDisabilityCreditDeduction).toEqual(0);
+  });
+
+  it("returns 0 if hasDisabilityCredit does not equal Y", async () => {
+    result.numChildren = 1;
+    result.hasDisabilityCredit = "N";
+    result.selectedDisabilityRecipients = ["child"];
+    result.numDisabilityChildren = 1; 
+    expect(result.childDisabilityCreditDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedDisabilityRecipients is empty", async () => {
+    result.numChildren = 1;
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = [];
+    result.numDisabilityChildren = 1; 
+    expect(result.childDisabilityCreditDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedDisabilityRecipients doesn't contain 'child'", async () => {
+    result.numChildren = 1;
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["potato"];
+    result.numDisabilityChildren = 1; 
+    expect(result.childDisabilityCreditDeduction).toEqual(0);
+  });
+
+  it("returns 0 if number of disability children is not greater than 0", async () => {
+    result.numChildren = 1;
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["child"];
+    result.numDisabilityChildren = 0; 
+    expect(result.childDisabilityCreditDeduction).toEqual(0);
+  });
+
+  it("returns 0 if number of disability children greater than number of children", async () => {
+    result.numChildren = 1;
+    result.hasDisabilityCredit = "Y";
+    result.selectedDisabilityRecipients = ["child"];
+    result.numDisabilityChildren = 2; 
+    expect(result.childDisabilityCreditDeduction).toEqual(0);
+  });
+});
+
+describe("SuppBenData getters rdspDeduction()", () => {
+  it("returns test amount when hasRDSP is Y and RDSPamount > 0", async () => {
+    result.hasRDSP = "Y";
+    const testAmount = 500;
+    result.rdspAmount = testAmount;
+    expect(result.rdspDeduction).toEqual(testAmount);
+  });
+
+  it("returns zero when hasRDSP is N and RDSPamount > 0", async () => {
+    result.hasRDSP = "N";
+    result.rdspAmount = 0;
+    expect(result.rdspDeduction).toEqual(0);
+  });
+
+  it("returns zero when hasRDSP is Y and RDSPamount = 0", async () => {
+    result.hasRDSP = "Y";
+    result.rdspAmount = 0;
+    expect(result.rdspDeduction).toEqual(0);
+  });
+});
+
+describe("SuppBenData getters ahAttendantNursingDeduction()", () => {
+  it("returns a nonzero value if everything's correct ", async () => {
+    //hasAttendantNursingExpenses needs to be Y and selectedAttendantNursingRecipients needs to contain "ah"
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["ah"];
+    expect(result.ahAttendantNursingDeduction).not.toEqual(0);
+  });
+
+  it("returns 0 if hasAttendantNursingExpenses does not equal Y", async () => {
+    result.hasAttendantNursingExpenses = "N";
+    result.selectedAttendantNursingRecipients = ["ah"];
+    expect(result.ahAttendantNursingDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedAttendantNursingRecipients is empty", async () => {
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = [];
+    expect(result.ahAttendantNursingDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedAttendantNursingRecipients doesn't contain 'ah'", async () => {
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["potato"];
+    expect(result.ahAttendantNursingDeduction).toEqual(0);
+  });
+});
+
+describe("SuppBenData getters spouseAttendantNursingDeduction()", () => {
+  it("returns a nonzero value if everything's correct ", async () => {
+    //hasAttendantNursingExpenses needs to be Y and selectedAttendantNursingRecipients needs to contain "spouse"
+    //hasSpouse also needs to be Y
+    result.hasSpouse = "Y";
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["spouse"];
+    expect(result.spouseAttendantNursingDeduction).not.toEqual(0);
+  });
+
+  it("returns 0 if hasSpouse does not equal Y", async () => {
+    result.hasSpouse = "N";
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["spouse"];
+    expect(result.spouseAttendantNursingDeduction).toEqual(0);
+  });
+
+  it("returns 0 if hasAttendantNursingExpenses does not equal Y", async () => {
+    result.hasSpouse = "Y";
+    result.hasAttendantNursingExpenses = "N";
+    result.selectedAttendantNursingRecipients = ["spouse"];
+    expect(result.spouseAttendantNursingDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedAttendantNursingRecipients is empty", async () => {
+    result.hasSpouse = "Y";
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = [];
+    expect(result.spouseAttendantNursingDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedAttendantNursingRecipients doesn't contain 'ah'", async () => {
+    result.hasSpouse = "Y";
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["potato"];
+    expect(result.spouseAttendantNursingDeduction).toEqual(0);
+  });
+});
+
+describe("SuppBenData getters childAttendantNursingDeduction()", () => {
+  it("returns a nonzero value if everything's correct ", async () => {
+    result.numChildren = 1;
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["child"];
+    result.numAttendantNursingChildren = 1;    
+    expect(result.childAttendantNursingDeduction).not.toEqual(0);
+  });
+
+  it("returns a nonzero value multiplied by the number of AttendantNursing children", async () => {
+    result.numChildren = 3;
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["child"];
+    result.numAttendantNursingChildren = 2;    
+    expect(result.childAttendantNursingDeduction).toEqual(6000);
+  });
+
+  it("returns 0 if number of children is not greater than 0", async () => {
+    result.numChildren = 0;
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["child"];
+    result.numAttendantNursingChildren = 1; 
+    expect(result.childAttendantNursingDeduction).toEqual(0);
+  });
+
+  it("returns 0 if hasAttendantNursingExpenses does not equal Y", async () => {
+    result.numChildren = 1;
+    result.hasAttendantNursingExpenses = "N";
+    result.selectedAttendantNursingRecipients = ["child"];
+    result.numAttendantNursingChildren = 1; 
+    expect(result.childAttendantNursingDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedAttendantNursingRecipients is empty", async () => {
+    result.numChildren = 1;
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = [];
+    result.numAttendantNursingChildren = 1; 
+    expect(result.childAttendantNursingDeduction).toEqual(0);
+  });
+
+  it("returns 0 if selectedAttendantNursingRecipients doesn't contain 'child'", async () => {
+    result.numChildren = 1;
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["potato"];
+    result.numAttendantNursingChildren = 1; 
+    expect(result.childAttendantNursingDeduction).toEqual(0);
+  });
+
+  it("returns 0 if number of AttendantNursing children is not greater than 0", async () => {
+    result.numChildren = 1;
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["child"];
+    result.numAttendantNursingChildren = 0; 
+    expect(result.childAttendantNursingDeduction).toEqual(0);
+  });
+
+  it("returns 0 if number of AttendantNursing children greater than number of children", async () => {
+    result.numChildren = 1;
+    result.hasAttendantNursingExpenses = "Y";
+    result.selectedAttendantNursingRecipients = ["child"];
+    result.numAttendantNursingChildren = 2; 
+    expect(result.childAttendantNursingDeduction).toEqual(0);
   });
 });
 
