@@ -346,7 +346,7 @@ describe("SuppBenData getters childDisabilityCreditDeduction()", () => {
     result.numChildren = 1;
     result.hasDisabilityCredit = "Y";
     result.selectedDisabilityRecipients = ["child"];
-    result.numDisabilityChildren = 1;    
+    result.numDisabilityChildren = 1;
     expect(result.childDisabilityCreditDeduction).not.toEqual(0);
   });
 
@@ -354,7 +354,7 @@ describe("SuppBenData getters childDisabilityCreditDeduction()", () => {
     result.numChildren = 3;
     result.hasDisabilityCredit = "Y";
     result.selectedDisabilityRecipients = ["child"];
-    result.numDisabilityChildren = 2;    
+    result.numDisabilityChildren = 2;
     expect(result.childDisabilityCreditDeduction).toEqual(6000);
   });
 
@@ -362,7 +362,7 @@ describe("SuppBenData getters childDisabilityCreditDeduction()", () => {
     result.numChildren = 0;
     result.hasDisabilityCredit = "Y";
     result.selectedDisabilityRecipients = ["child"];
-    result.numDisabilityChildren = 1; 
+    result.numDisabilityChildren = 1;
     expect(result.childDisabilityCreditDeduction).toEqual(0);
   });
 
@@ -370,7 +370,7 @@ describe("SuppBenData getters childDisabilityCreditDeduction()", () => {
     result.numChildren = 1;
     result.hasDisabilityCredit = "N";
     result.selectedDisabilityRecipients = ["child"];
-    result.numDisabilityChildren = 1; 
+    result.numDisabilityChildren = 1;
     expect(result.childDisabilityCreditDeduction).toEqual(0);
   });
 
@@ -378,7 +378,7 @@ describe("SuppBenData getters childDisabilityCreditDeduction()", () => {
     result.numChildren = 1;
     result.hasDisabilityCredit = "Y";
     result.selectedDisabilityRecipients = [];
-    result.numDisabilityChildren = 1; 
+    result.numDisabilityChildren = 1;
     expect(result.childDisabilityCreditDeduction).toEqual(0);
   });
 
@@ -386,7 +386,7 @@ describe("SuppBenData getters childDisabilityCreditDeduction()", () => {
     result.numChildren = 1;
     result.hasDisabilityCredit = "Y";
     result.selectedDisabilityRecipients = ["potato"];
-    result.numDisabilityChildren = 1; 
+    result.numDisabilityChildren = 1;
     expect(result.childDisabilityCreditDeduction).toEqual(0);
   });
 
@@ -394,7 +394,7 @@ describe("SuppBenData getters childDisabilityCreditDeduction()", () => {
     result.numChildren = 1;
     result.hasDisabilityCredit = "Y";
     result.selectedDisabilityRecipients = ["child"];
-    result.numDisabilityChildren = 0; 
+    result.numDisabilityChildren = 0;
     expect(result.childDisabilityCreditDeduction).toEqual(0);
   });
 
@@ -402,7 +402,7 @@ describe("SuppBenData getters childDisabilityCreditDeduction()", () => {
     result.numChildren = 1;
     result.hasDisabilityCredit = "Y";
     result.selectedDisabilityRecipients = ["child"];
-    result.numDisabilityChildren = 2; 
+    result.numDisabilityChildren = 2;
     expect(result.childDisabilityCreditDeduction).toEqual(0);
   });
 });
@@ -499,7 +499,7 @@ describe("SuppBenData getters childAttendantNursingDeduction()", () => {
     result.numChildren = 1;
     result.hasAttendantNursingExpenses = "Y";
     result.selectedAttendantNursingRecipients = ["child"];
-    result.numAttendantNursingChildren = 1;    
+    result.numAttendantNursingChildren = 1;
     expect(result.childAttendantNursingDeduction).not.toEqual(0);
   });
 
@@ -507,7 +507,7 @@ describe("SuppBenData getters childAttendantNursingDeduction()", () => {
     result.numChildren = 3;
     result.hasAttendantNursingExpenses = "Y";
     result.selectedAttendantNursingRecipients = ["child"];
-    result.numAttendantNursingChildren = 2;    
+    result.numAttendantNursingChildren = 2;
     expect(result.childAttendantNursingDeduction).toEqual(6000);
   });
 
@@ -515,7 +515,7 @@ describe("SuppBenData getters childAttendantNursingDeduction()", () => {
     result.numChildren = 0;
     result.hasAttendantNursingExpenses = "Y";
     result.selectedAttendantNursingRecipients = ["child"];
-    result.numAttendantNursingChildren = 1; 
+    result.numAttendantNursingChildren = 1;
     expect(result.childAttendantNursingDeduction).toEqual(0);
   });
 
@@ -523,7 +523,7 @@ describe("SuppBenData getters childAttendantNursingDeduction()", () => {
     result.numChildren = 1;
     result.hasAttendantNursingExpenses = "N";
     result.selectedAttendantNursingRecipients = ["child"];
-    result.numAttendantNursingChildren = 1; 
+    result.numAttendantNursingChildren = 1;
     expect(result.childAttendantNursingDeduction).toEqual(0);
   });
 
@@ -531,7 +531,7 @@ describe("SuppBenData getters childAttendantNursingDeduction()", () => {
     result.numChildren = 1;
     result.hasAttendantNursingExpenses = "Y";
     result.selectedAttendantNursingRecipients = [];
-    result.numAttendantNursingChildren = 1; 
+    result.numAttendantNursingChildren = 1;
     expect(result.childAttendantNursingDeduction).toEqual(0);
   });
 
@@ -539,7 +539,7 @@ describe("SuppBenData getters childAttendantNursingDeduction()", () => {
     result.numChildren = 1;
     result.hasAttendantNursingExpenses = "Y";
     result.selectedAttendantNursingRecipients = ["potato"];
-    result.numAttendantNursingChildren = 1; 
+    result.numAttendantNursingChildren = 1;
     expect(result.childAttendantNursingDeduction).toEqual(0);
   });
 
@@ -547,7 +547,7 @@ describe("SuppBenData getters childAttendantNursingDeduction()", () => {
     result.numChildren = 1;
     result.hasAttendantNursingExpenses = "Y";
     result.selectedAttendantNursingRecipients = ["child"];
-    result.numAttendantNursingChildren = 0; 
+    result.numAttendantNursingChildren = 0;
     expect(result.childAttendantNursingDeduction).toEqual(0);
   });
 
@@ -555,8 +555,124 @@ describe("SuppBenData getters childAttendantNursingDeduction()", () => {
     result.numChildren = 1;
     result.hasAttendantNursingExpenses = "Y";
     result.selectedAttendantNursingRecipients = ["child"];
-    result.numAttendantNursingChildren = 2; 
+    result.numAttendantNursingChildren = 2;
     expect(result.childAttendantNursingDeduction).toEqual(0);
+  });
+});
+
+describe("SuppBenData getters totalDeductions()", () => {
+  it("returns zero when the data adds up to zero", async () => {
+    jest
+      .spyOn(SuppBenData.prototype, "ah65Deduction", "get")
+      .mockReturnValueOnce(0);
+    jest
+      .spyOn(SuppBenData.prototype, "spouseDeduction", "get")
+      .mockReturnValueOnce(0);
+    jest
+      .spyOn(SuppBenData.prototype, "spouse65Deduction", "get")
+      .mockReturnValueOnce(0);
+    jest
+      .spyOn(SuppBenData.prototype, "childAdjustedDeduction", "get")
+      .mockReturnValueOnce(0);
+    jest
+      .spyOn(SuppBenData.prototype, "ahDisabilityCreditDeduction", "get")
+      .mockReturnValueOnce(0);
+    jest
+      .spyOn(SuppBenData.prototype, "spouseDisabilityCreditDeduction", "get")
+      .mockReturnValueOnce(0);
+    jest
+      .spyOn(SuppBenData.prototype, "childDisabilityCreditDeduction", "get")
+      .mockReturnValueOnce(0);
+    jest
+      .spyOn(SuppBenData.prototype, "ahAttendantNursingDeduction", "get")
+      .mockReturnValueOnce(0);
+    jest
+      .spyOn(SuppBenData.prototype, "spouseAttendantNursingDeduction", "get")
+      .mockReturnValueOnce(0);
+    jest
+      .spyOn(SuppBenData.prototype, "childAttendantNursingDeduction", "get")
+      .mockReturnValueOnce(0);
+
+    expect(result.totalDeductions).toEqual(0);
+  });
+
+  it("returns the total of all deductions", async () => {
+    jest
+      .spyOn(SuppBenData.prototype, "ah65Deduction", "get")
+      .mockReturnValueOnce(500);
+    jest
+      .spyOn(SuppBenData.prototype, "spouseDeduction", "get")
+      .mockReturnValueOnce(500);
+    jest
+      .spyOn(SuppBenData.prototype, "spouse65Deduction", "get")
+      .mockReturnValueOnce(500);
+    jest
+      .spyOn(SuppBenData.prototype, "childAdjustedDeduction", "get")
+      .mockReturnValueOnce(500);
+    jest
+      .spyOn(SuppBenData.prototype, "ahDisabilityCreditDeduction", "get")
+      .mockReturnValueOnce(500);
+    jest
+      .spyOn(SuppBenData.prototype, "spouseDisabilityCreditDeduction", "get")
+      .mockReturnValueOnce(500);
+    jest
+      .spyOn(SuppBenData.prototype, "childDisabilityCreditDeduction", "get")
+      .mockReturnValueOnce(500);
+    jest
+      .spyOn(SuppBenData.prototype, "ahAttendantNursingDeduction", "get")
+      .mockReturnValueOnce(500);
+    jest
+      .spyOn(SuppBenData.prototype, "spouseAttendantNursingDeduction", "get")
+      .mockReturnValueOnce(500);
+    jest
+      .spyOn(SuppBenData.prototype, "childAttendantNursingDeduction", "get")
+      .mockReturnValueOnce(500);
+
+    expect(result.totalDeductions).toEqual(5000);
+  });
+});
+
+describe("SuppBenData getters adjustedIncome()", () => {
+  it("returns totalHouseholdIncome - totalDeductions, as long as the former > the latter", async () => {
+    jest
+      .spyOn(SuppBenData.prototype, "totalHouseholdIncome", "get")
+      .mockReturnValueOnce(5500);
+    jest
+      .spyOn(SuppBenData.prototype, "totalDeductions", "get")
+      .mockReturnValueOnce(5000);
+
+    expect(result.adjustedIncome).toEqual(500);
+  });
+
+  it("returns zero when totalHouseholdIncome <= totalDeductions", async () => {
+    jest
+      .spyOn(SuppBenData.prototype, "totalHouseholdIncome", "get")
+      .mockReturnValueOnce(5000);
+    jest
+      .spyOn(SuppBenData.prototype, "totalDeductions", "get")
+      .mockReturnValueOnce(5500);
+
+    expect(result.adjustedIncome).toEqual(0);
+  });
+});
+
+describe("SuppBenData getters incomeUnderThreshold()", () => {
+  it("returns true when adjusted income <= qualification threshold", async () => {
+    jest
+      .spyOn(SuppBenData.prototype, "adjustedIncome", "get")
+      .mockReturnValueOnce(5000);
+    result.qualificationThreshhold = 5500;
+
+    expect(result.incomeUnderThreshold).toEqual(true);
+  });
+
+  it("returns false when adjusted income > qualification threshold", async () => {
+    jest
+      .spyOn(SuppBenData.prototype, "adjustedIncome", "get")
+      .mockReturnValueOnce(5500);
+    result.qualificationThreshhold = 5000;
+
+    expect(result.incomeUnderThreshold).toEqual(false);
   });
 });
 
