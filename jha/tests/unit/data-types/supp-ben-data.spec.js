@@ -772,9 +772,3 @@ describe("SuppBenData stringToFloat()", () => {
     expect(result.stringToFloat("31.415")).toEqual(31.415);
   });
 });
-
-// describe("new Supp Ben Data structure", () => {
-//   it("returns false when passed no input", async () => {
-//     expect(result).toEqual({});
-//   });
-// });
