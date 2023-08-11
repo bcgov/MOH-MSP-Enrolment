@@ -32,7 +32,7 @@ describe("isPastPath()", () => {
   });
 });
 
-describe.only("isEQPath()", () => {
+describe("isEQPath()", () => {
   it("returns false when passed no input", async () => {
     expect(isEQPath()).toBe(false);
   });
