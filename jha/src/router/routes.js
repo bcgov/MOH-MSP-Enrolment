@@ -129,7 +129,7 @@ export const enrolmentRouteStepOrder = [
   enrolmentRoutes.SUBMISSION_PAGE
 ];
 
-const eqRoutes = [
+export const eqRoutes = [
   enrolmentRoutes.MSP_ELIGIBILITY_PAGE,
   enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE,
   enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE,
