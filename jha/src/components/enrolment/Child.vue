@@ -915,11 +915,11 @@ import spaEnvService from '@/services/spa-env-service';
 import { firstNameMaxLength, middleNameMaxLength, lastNameMaxLength } from '@/constants/html-validations.js';
 import ContactInformation from '@/components/ContactInformation.vue';
 
-const birthDatePastValidator = (value) => {
+export const birthDatePastValidator = (value) => {
   return pastDateValidator(value) || isSameDay(value, startOfToday());
 };
 
-const birthDateYouthValidator = (value, vm) => {
+export const birthDateYouthValidator = (value, vm) => {
   if (vm.ageRange === ChildAgeTypes.Child0To18) {
     return isAfter(value, addYears(startOfToday(), -19));
   }
@@ -927,7 +927,7 @@ const birthDateYouthValidator = (value, vm) => {
   return true;
 };
             
-const birthDateStudentValidator = (value, vm) => {
+export const birthDateStudentValidator = (value, vm) => {
   if (vm.ageRange === ChildAgeTypes.Child19To24) {
     return isAfter(value, addYears(startOfToday(), -25)) && isBefore(value, addDays(addYears(startOfToday(), -19), 1));
   }
@@ -935,7 +935,7 @@ const birthDateStudentValidator = (value, vm) => {
   return true;
 };
 
-const beforeBirthdateValidator = (value, vm) => {
+export const beforeBirthdateValidator = (value, vm) => {
   if (value && vm.birthDate && vm.birthDate.getTime() > value.getTime()) {
     return false;
   } 
@@ -943,7 +943,7 @@ const beforeBirthdateValidator = (value, vm) => {
   return true;
 };
 
-const dateOrderValidator = (value, vm) => {
+export const dateOrderValidator = (value, vm) => {
   if (!value) {
     return false;
   }
@@ -965,7 +965,7 @@ const dateOrderValidator = (value, vm) => {
   return true;
 };
 
-const departureDateValidator = (value, vm) => {
+export const departureDateValidator = (value, vm) => {
   const past12Months = subYears(subDays(startOfToday(), 1), 1);
   const returnDate = vm.outsideBCLast12MonthsReturnDate;
   return isAfter(value, past12Months) // Is within the last 12 months
@@ -973,7 +973,7 @@ const departureDateValidator = (value, vm) => {
       && isBefore(value, startOfToday()); // Is before or equal to date today
 };
 
-const returnDateValidator = (value, vm) => {
+export const returnDateValidator = (value, vm) => {
   const past12Months = subYears(subDays(startOfToday(), 1), 1);
   const departureDate = vm.outsideBCLast12MonthsDepartureDate;
   return isAfter(value, past12Months) // Is within the last 12 months
@@ -981,7 +981,7 @@ const returnDateValidator = (value, vm) => {
       && isBefore(value, startOfToday()); // Is before or equal to date today
 };
 
-const dischargeDateValidator = (value, vm) => {
+export const dischargeDateValidator = (value, vm) => {
   if(vm.birthDate && vm.birthDate.getTime() > value.getTime()) {
     return false;
   }
@@ -989,11 +989,11 @@ const dischargeDateValidator = (value, vm) => {
   return true;
 };
 
-const permanentMoveValidator = (value, vm) => {
+export const permanentMoveValidator = (value, vm) => {
   return value === 'Y' || (vm && vm.status === StatusInCanada.TemporaryResident);
 };
 
-const completePostalCodeValidator = (value) => {
+export const completePostalCodeValidator = (value) => {
   if (value === "" || value === null) {
     // Don't show error if field is blank.
     return true;
@@ -1001,7 +1001,7 @@ const completePostalCodeValidator = (value) => {
   return value.length === 7;
 };
 
-const schoolNameContentValidator = (value) => {
+export const schoolNameContentValidator = (value) => {
   if (value === "" || value === null || value === undefined) {
     // Don't show content error if field is blank.
     return true;
@@ -1012,7 +1012,7 @@ const schoolNameContentValidator = (value) => {
           && criteriaMustHaveLetter.test(value);
 };
 
-const addressLineContentValidator = (value) => {
+export const addressLineContentValidator = (value) => {
   if (value === "" || value === null || value === undefined) {
     // Don't show content error if field is blank.
     return true;
@@ -1022,7 +1022,7 @@ const addressLineContentValidator = (value) => {
   return criteriaAllowedCharecters.test(value) && criteriaMustHaveLetterOrNumber.test(value);
 };
 
-const cityStateProvinceContentValidator = (value) => {
+export const cityStateProvinceContentValidator = (value) => {
   if (value === "" || value === null || value === undefined) {
     // Don't show content error if field is blank.
     return true;
@@ -1033,7 +1033,7 @@ const cityStateProvinceContentValidator = (value) => {
           && criteriaMustHaveLetter.test(value);
 };
 
-const uniquePHNValidator = (value, vm) => {
+export const uniquePHNValidator = (value, vm) => {
   const phns = vm.usedPHNs.filter((phn) => phn === value);
   return !!value && phns.length <= 1;
 };
