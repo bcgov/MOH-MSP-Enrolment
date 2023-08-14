@@ -4,7 +4,7 @@ import {
 } from "@/helpers/form-helpers";
 
 describe("isCorrespondenceAttachedAbleToSubmit()", () => {
-  it("returns false when passed no input", async () => {
+  it("returns true when passed no input", async () => {
     expect(isCorrespondenceAttachedAbleToSubmit()).toBe(true);
   });
 
