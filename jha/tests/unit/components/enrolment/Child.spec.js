@@ -1,6 +1,7 @@
 import {
   birthDatePastValidator,
   birthDateYouthValidator,
+  birthDateStudentValidator,
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from '../../../../src/constants/child-age-types';
 
@@ -50,5 +51,39 @@ describe("birthDateYouthValidator()", () => {
     const testYear = new Date().getFullYear() - 18;
     testDate.setFullYear(testYear);
     expect(birthDateYouthValidator(testDate, testObject)).toBe(true);
+  });
+});
+
+describe("birthDateStudentValidator()", () => {
+  //function breaks if not passed an object with an ageRange key
+  const testObject = {ageRange: ChildAgeTypes.Child19To24}
+
+  it("returns true when passed object with a nonsense ageRange", async () => {
+    expect(birthDateStudentValidator("", {ageRange: "potato"})).toBe(true);
+  });
+
+  it("returns false when passed an empty value", async () => {
+    expect(birthDateStudentValidator("", testObject)).toBe(false);
+  });
+
+  it("returns false when passed a date 25+ years in the past", async () => {
+    const testDate = new Date();
+    const testYear = new Date().getFullYear() - 26;
+    testDate.setFullYear(testYear);
+    expect(birthDateStudentValidator(testDate, testObject)).toBe(false);
+  });
+
+  it("returns false when passed a date less than 19 years in the past", async () => {
+    const testDate = new Date();
+    const testYear = new Date().getFullYear() - 18;
+    testDate.setFullYear(testYear);
+    expect(birthDateStudentValidator(testDate, testObject)).toBe(false);
+  });
+  
+  it("returns true when passed a date between 19 and 24 years in the past", async () => {
+    const testDate = new Date();
+    const testYear = new Date().getFullYear() - 22;
+    testDate.setFullYear(testYear);
+    expect(birthDateStudentValidator(testDate, testObject)).toBe(true);
   });
 });
