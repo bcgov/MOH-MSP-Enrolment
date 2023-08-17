@@ -4,6 +4,7 @@ import {
   birthDateStudentValidator,
   beforeBirthdateValidator,
   dateOrderValidator,
+  departureDateValidator,
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 
@@ -213,5 +214,70 @@ describe("dateOrderValidator()", () => {
       recentBCMoveDate: testDate,
     };
     expect(dateOrderValidator(testDate, testObject)).toBe(true);
+  });
+});
+
+describe("departureDateValidator()", () => {
+  //breaks if not passed two aruments
+  //second argument needs to be an object containing the outsideBCLast12MonthsReturnDate key
+
+  const testDate = new Date();
+  testDate.setDate(testDate.getDate() - 4);
+
+  const yearAgoTestDate = new Date();
+  yearAgoTestDate.setDate(yearAgoTestDate.getDate() - 367);
+
+  const twoDaysAgoTestDate = new Date();
+  twoDaysAgoTestDate.setDate(twoDaysAgoTestDate.getDate() - 6);
+
+  const twoDaysFutureTestDate = new Date();
+  twoDaysFutureTestDate.setDate(twoDaysFutureTestDate.getDate() + 2);
+
+  it("returns true when passed correct input", async () => {
+    expect(
+      departureDateValidator(testDate, {
+        outsideBCLast12MonthsReturnDate: testDate,
+      })
+    ).toBe(true);
+  });
+
+  it("returns false when first argument is over a year in the past", async () => {
+    expect(
+      departureDateValidator(yearAgoTestDate, {
+        outsideBCLast12MonthsReturnDate: testDate,
+      })
+    ).toBe(false);
+  });
+
+  it("returns false when first argument is in the future (relative to the present day)", async () => {
+    expect(
+      departureDateValidator(twoDaysFutureTestDate, {
+        outsideBCLast12MonthsReturnDate: testDate,
+      })
+    ).toBe(false);
+  });
+
+  it("returns false when second argument is further in the past than the first argument)", async () => {
+    expect(
+      departureDateValidator(testDate, {
+        outsideBCLast12MonthsReturnDate: twoDaysAgoTestDate,
+      })
+    ).toBe(false);
+  });
+  
+  it("returns true when passed correct input with a null second argument", async () => {
+    expect(
+      departureDateValidator(testDate, {
+        outsideBCLast12MonthsReturnDate: null,
+      })
+    ).toBe(true);
+  });
+
+  it("returns true when second argument is further in the future than the first argument", async () => {
+    expect(
+      departureDateValidator(twoDaysAgoTestDate, {
+        outsideBCLast12MonthsReturnDate: testDate,
+      })
+    ).toBe(true);
   });
 });
