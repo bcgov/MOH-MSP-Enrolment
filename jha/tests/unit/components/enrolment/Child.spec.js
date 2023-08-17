@@ -2,6 +2,8 @@ import {
   birthDatePastValidator,
   birthDateYouthValidator,
   birthDateStudentValidator,
+  beforeBirthdateValidator,
+  dateOrderValidator,
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 
@@ -92,6 +94,7 @@ describe("birthDateStudentValidator()", () => {
 
 describe("beforeBirthdateValidator()", () => {
   //function breaks if not passed two arguments
+  //second argument also needs to be an object containing a date object under the key "birthDate"
 
   const testDate = new Date();
   const testYear = new Date().getFullYear() - 20;
@@ -101,23 +104,114 @@ describe("beforeBirthdateValidator()", () => {
   const earlierTestYear = new Date().getFullYear() - 25;
   earlierTestDate.setFullYear(earlierTestYear);
 
-  it("returns true when passed two empty arguments", async () => {
-    expect(birthDateStudentValidator("", "")).toBe(true);
-  });
-
-  it("returns true when passed two nonsense strings", async () => {
-    expect(birthDateStudentValidator("potato", "potato")).toBe(true);
+  it("returns true if first argument is blank", async () => {
+    expect(beforeBirthdateValidator(null, { birthDate: testDate })).toBe(true);
   });
 
   it("returns true when passed the same date twice", async () => {
-    expect(birthDateStudentValidator(testDate, testDate)).toBe(true);
+    expect(beforeBirthdateValidator(testDate, { birthDate: testDate })).toBe(
+      true
+    );
   });
 
-  it("returns true when passed earlier date first", async () => {
-    expect(birthDateStudentValidator(earlierTestDate, testDate)).toBe(true);
+  it("returns false when passed earlier date first", async () => {
+    expect(
+      beforeBirthdateValidator(earlierTestDate, { birthDate: testDate })
+    ).toBe(false);
   });
 
   it("returns true when passed earlier date second", async () => {
-    expect(birthDateStudentValidator(testDate, earlierTestDate)).toBe(true);
+    expect(
+      beforeBirthdateValidator(testDate, { birthDate: earlierTestDate })
+    ).toBe(true);
+  });
+});
+
+describe("dateOrderValidator()", () => {
+  it("returns false if passed two null arguments", async () => {
+    expect(dateOrderValidator(null, null)).toBe(false);
+  });
+
+  //the rest of these tests need the second argument to have certain data
+  //or else the function breaks
+
+  const testDate = new Date();
+  const testYear = new Date().getFullYear() - 20;
+  testDate.setFullYear(testYear);
+
+  const earlierTestDate = new Date();
+  const earlierTestYear = new Date().getFullYear() - 25;
+  earlierTestDate.setFullYear(earlierTestYear);
+
+  it("returns true if passed test date and test object full of null values", async () => {
+    const testObject = {
+      birthDate: null,
+      canadaArrivalDate: null,
+      recentBCMoveDate: null,
+    };
+    expect(dateOrderValidator(testDate, testObject)).toBe(true);
+  });
+
+  it("returns true if passed test date and test object full of null values", async () => {
+    const testObject = {
+      birthDate: testDate,
+      canadaArrivalDate: null,
+      recentBCMoveDate: null,
+    };
+    expect(dateOrderValidator(testDate, testObject)).toBe(true);
+  });
+
+  it("returns false if passed first argument date later than birthDate", async () => {
+    const testObject = {
+      birthDate: testDate,
+      canadaArrivalDate: null,
+      recentBCMoveDate: null,
+    };
+    expect(dateOrderValidator(earlierTestDate, testObject)).toBe(false);
+  });
+
+  it("returns true if passed first argument date earlier than birthDate and null canadaArrivalDate", async () => {
+    const testObject = {
+      birthDate: earlierTestDate,
+      canadaArrivalDate: null,
+      recentBCMoveDate: testDate,
+    };
+    expect(dateOrderValidator(testDate, testObject)).toBe(true);
+  });
+
+  it("returns true if passed first argument date earlier than birthDate and null recentBCMoveDate", async () => {
+    const testObject = {
+      birthDate: earlierTestDate,
+      canadaArrivalDate: testDate,
+      recentBCMoveDate: null,
+    };
+    expect(dateOrderValidator(testDate, testObject)).toBe(true);
+  });
+
+  it("returns true if present canadaArrivalDate + recentBCMoveDate, and canadaArrivalDate is earlier", async () => {
+    const testObject = {
+      birthDate: null,
+      canadaArrivalDate: earlierTestDate,
+      recentBCMoveDate: testDate,
+    };
+    expect(dateOrderValidator(testDate, testObject)).toBe(true);
+  });
+
+  it("returns false if present canadaArrivalDate + recentBCMoveDate, and canadaArrivalDate is later", async () => {
+    const testObject = {
+      birthDate: null,
+      canadaArrivalDate: testDate,
+      recentBCMoveDate: earlierTestDate,
+    };
+    expect(dateOrderValidator(testDate, testObject)).toBe(false);
+  });
+
+  it("returns true if present canadaArrivalDate + recentBCMoveDate, and both dates match", async () => {
+    const testObject = {
+      birthDate: null,
+      canadaArrivalDate: testDate,
+      recentBCMoveDate: testDate,
+    };
+    expect(dateOrderValidator(testDate, testObject)).toBe(true);
   });
 });
