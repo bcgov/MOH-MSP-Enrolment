@@ -7,6 +7,7 @@ import {
   departureDateValidator,
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
+import { parseISO } from 'date-fns';
 
 describe("birthDatePastValidator()", () => {
   it("returns false when passed no input", async () => {
@@ -35,11 +36,12 @@ describe("birthDateYouthValidator()", () => {
   const testObject = { ageRange: ChildAgeTypes.Child0To18 };
 
   it("returns true when passed object with a nonsense ageRange", async () => {
-    expect(birthDateYouthValidator("", { ageRange: "potato" })).toBe(true);
+    //date-fns generates console errors when passed strings that haven't been run through parseISO
+    expect(birthDateYouthValidator(parseISO(""), { ageRange: "potato" })).toBe(true);
   });
 
   it("returns false when passed an empty value", async () => {
-    expect(birthDateYouthValidator("", testObject)).toBe(false);
+    expect(birthDateYouthValidator(parseISO(""), testObject)).toBe(false);
   });
 
   it("returns false when passed a date 19+ years in the past", async () => {
@@ -64,11 +66,11 @@ describe("birthDateStudentValidator()", () => {
   const testObject = { ageRange: ChildAgeTypes.Child19To24 };
 
   it("returns true when passed object with a nonsense ageRange", async () => {
-    expect(birthDateStudentValidator("", { ageRange: "potato" })).toBe(true);
+    expect(birthDateStudentValidator(parseISO(""), { ageRange: "potato" })).toBe(true);
   });
 
   it("returns false when passed an empty value with a test ageRange", async () => {
-    expect(birthDateStudentValidator("", testObject)).toBe(false);
+    expect(birthDateStudentValidator(parseISO(""), testObject)).toBe(false);
   });
 
   it("returns false when passed a date 25+ years in the past", async () => {
