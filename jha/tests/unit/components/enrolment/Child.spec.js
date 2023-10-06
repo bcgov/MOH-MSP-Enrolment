@@ -5,7 +5,8 @@ import {
   beforeBirthdateValidator,
   dateOrderValidator,
   departureDateValidator,
-  returnDateValidator
+  returnDateValidator,
+  dischargeDateValidator
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 import { parseISO } from 'date-fns';
@@ -347,5 +348,33 @@ describe("returnDateValidator()", () => {
         outsideBCLast12MonthsDepartureDate: twoDaysAgoTestDate,
       })
     ).toBe(true);
+  });
+});
+
+describe("dischargeDateValidator()", () => {
+  //breaks if not passed two aruments
+  //second argument needs to be an object containing the birthDate key
+  //both the first argument and the birthDate value need to be date instances
+
+  const testDate = new Date();
+  testDate.setDate(testDate.getDate() - 4);
+
+  const yearAgoTestDate = new Date();
+  yearAgoTestDate.setDate(yearAgoTestDate.getDate() - 367);
+
+  it("returns true when passed two matching dates", async () => {
+    expect(dischargeDateValidator(testDate, {
+      birthDate: testDate,
+    })).toBe(true);
+  });
+  it("returns false when first date is earlier than the second date", async () => {
+    expect(dischargeDateValidator(yearAgoTestDate, {
+      birthDate: testDate,
+    })).toBe(false);
+  });
+  it("returns true when first date is later than the second date", async () => {
+    expect(dischargeDateValidator(testDate, {
+      birthDate: yearAgoTestDate,
+    })).toBe(true);
   });
 });
