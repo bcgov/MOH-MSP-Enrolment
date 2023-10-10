@@ -8,6 +8,7 @@ import {
   returnDateValidator,
   dischargeDateValidator,
   permanentMoveValidator,
+  completePostalCodeValidator
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 import { parseISO } from 'date-fns';
@@ -403,5 +404,21 @@ describe("permanentMoveValidator()", () => {
     expect(permanentMoveValidator("", {
       status: "potato",
     })).toBe(false);
+  });
+});
+
+describe("completePostalCodeValidator()", () => {
+  //breaks if not passed a string or array
+  it("returns false when passed an empty string", async () => {
+    expect(completePostalCodeValidator("")).toBe(true);
+  });
+  it("returns false when passed a null value", async () => {
+    expect(completePostalCodeValidator(null)).toBe(true);
+  });
+  it("returns false when passed 6 character value", async () => {
+    expect(completePostalCodeValidator("123456")).toBe(false);
+  });
+  it("returns true when passed 7 character value", async () => {
+    expect(completePostalCodeValidator("1234567")).toBe(true);
   });
 });
