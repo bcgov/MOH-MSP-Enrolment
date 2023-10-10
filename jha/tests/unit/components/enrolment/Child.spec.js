@@ -6,10 +6,14 @@ import {
   dateOrderValidator,
   departureDateValidator,
   returnDateValidator,
-  dischargeDateValidator
+  dischargeDateValidator,
+  permanentMoveValidator,
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 import { parseISO } from 'date-fns';
+import { 
+  StatusInCanada, 
+} from '@/constants/immigration-status-types';
 
 describe("birthDatePastValidator()", () => {
   it("returns false when passed no input", async () => {
@@ -376,5 +380,28 @@ describe("dischargeDateValidator()", () => {
     expect(dischargeDateValidator(testDate, {
       birthDate: yearAgoTestDate,
     })).toBe(true);
+  });
+});
+
+describe("permanentMoveValidator()", () => {
+  it("returns true when status is temporary resident", async () => {
+    expect(permanentMoveValidator("", {
+      status: StatusInCanada.TemporaryResident,
+    })).toBe(true);
+  });
+  it("returns true when first argument = Y", async () => {
+    expect(permanentMoveValidator("Y", {
+      status: "potato",
+    })).toBe(true);
+  });
+  it("returns true when first argument equals Y and status is temporary resident", async () => {
+    expect(permanentMoveValidator("Y", {
+      status: StatusInCanada.TemporaryResident,
+    })).toBe(true);
+  });
+  it("returns false when first argument does not equal Y and status is not temporary resident", async () => {
+    expect(permanentMoveValidator("", {
+      status: "potato",
+    })).toBe(false);
   });
 });
