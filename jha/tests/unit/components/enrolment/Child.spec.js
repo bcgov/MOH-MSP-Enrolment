@@ -12,6 +12,7 @@ import {
   schoolNameContentValidator,
   addressLineContentValidator,
   cityStateProvinceContentValidator,
+  uniquePHNValidator
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 import { parseISO } from 'date-fns';
@@ -512,5 +513,26 @@ describe("cityStateProvinceContentValidator()", () => {
 
   it("returns true when passed a string in lowercase", async () => {
     expect(cityStateProvinceContentValidator("placeholder")).toBe(true);
+  });
+});
+
+describe("uniquePHNValidator()", () => {
+  //function breaks if not passed two arguments
+  //second argument also needs to be an array in an object under the key "usedPHNs"
+
+  it("returns false if passed an empty first argument", async () => {
+    expect(uniquePHNValidator("", {
+      usedPHNs: [],
+    })).toBe(false);
+  });
+  it("returns true if first argument is in the usedPHNs array exactly once", async () => {
+    expect(uniquePHNValidator("111", {
+      usedPHNs: ["111"],
+    })).toBe(true);
+  });
+  it("returns false if first argument is in the usedPHNs array more than once", async () => {
+    expect(uniquePHNValidator("111", {
+      usedPHNs: ["111", "111"],
+    })).toBe(false);
   });
 });
