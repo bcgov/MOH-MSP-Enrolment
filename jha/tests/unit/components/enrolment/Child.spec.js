@@ -8,7 +8,9 @@ import {
   returnDateValidator,
   dischargeDateValidator,
   permanentMoveValidator,
-  completePostalCodeValidator
+  completePostalCodeValidator,
+  schoolNameContentValidator,
+  addressLineContentValidator,
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 import { parseISO } from 'date-fns';
@@ -420,5 +422,59 @@ describe("completePostalCodeValidator()", () => {
   });
   it("returns true when passed 7 character value", async () => {
     expect(completePostalCodeValidator("1234567")).toBe(true);
+  });
+});
+
+describe("schoolNameContentValidator()", () => {
+  //breaks if not passed a string or array
+  it("returns true when passed an empty string", async () => {
+    expect(schoolNameContentValidator("")).toBe(true);
+  });
+  it("returns true when passed a null value", async () => {
+    expect(schoolNameContentValidator(null)).toBe(true);
+  });
+  it("returns true when passed an undefined value", async () => {
+    expect(schoolNameContentValidator(undefined)).toBe(true);
+  });
+  it("returns false when passed a string with unallowed characters", async () => {
+    expect(schoolNameContentValidator("$%^")).toBe(false);
+  });
+  it("returns true when passed a string with allowed characters", async () => {
+    expect(schoolNameContentValidator("09azAZ-.'#& /")).toBe(true);
+  });
+  it("returns false when passed a string without letters", async () => {
+    expect(schoolNameContentValidator("0123456789")).toBe(false);
+  });
+  it("returns true when passed a string in uppercase", async () => {
+    expect(schoolNameContentValidator("PLACEHOLDER SCHOOL NAME")).toBe(true);
+  });
+
+  it("returns true when passed a string in lowercase", async () => {
+    expect(schoolNameContentValidator("placeholder school name")).toBe(true);
+  });
+});
+
+describe("addressLineContentValidator()", () => {
+  //breaks if not passed a string or array
+  it("returns true when passed an empty string", async () => {
+    expect(addressLineContentValidator("")).toBe(true);
+  });
+  it("returns true when passed a null value", async () => {
+    expect(addressLineContentValidator(null)).toBe(true);
+  });
+  it("returns true when passed an undefined value", async () => {
+    expect(addressLineContentValidator(undefined)).toBe(true);
+  });
+  it("returns false when passed a string with unallowed characters", async () => {
+    expect(addressLineContentValidator("$%^")).toBe(false);
+  });
+  it("returns true when passed a string with allowed characters", async () => {
+    expect(addressLineContentValidator("09azAZ-.'#& /")).toBe(true);
+  });
+  it("returns true when passed a string with only numbers", async () => {
+    expect(addressLineContentValidator("0123456789")).toBe(true);
+  });
+  it("returns true when passed a string with only letters", async () => {
+    expect(addressLineContentValidator("placeholder")).toBe(true);
   });
 });
