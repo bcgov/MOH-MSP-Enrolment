@@ -11,6 +11,7 @@ import {
   completePostalCodeValidator,
   schoolNameContentValidator,
   addressLineContentValidator,
+  cityStateProvinceContentValidator,
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 import { parseISO } from 'date-fns';
@@ -426,7 +427,9 @@ describe("completePostalCodeValidator()", () => {
 });
 
 describe("schoolNameContentValidator()", () => {
-  //breaks if not passed a string or array
+  it("returns true when passed no input", async () => {
+    expect(schoolNameContentValidator()).toBe(true);
+  });
   it("returns true when passed an empty string", async () => {
     expect(schoolNameContentValidator("")).toBe(true);
   });
@@ -455,7 +458,9 @@ describe("schoolNameContentValidator()", () => {
 });
 
 describe("addressLineContentValidator()", () => {
-  //breaks if not passed a string or array
+  it("returns true when passed no input", async () => {
+    expect(addressLineContentValidator()).toBe(true);
+  });
   it("returns true when passed an empty string", async () => {
     expect(addressLineContentValidator("")).toBe(true);
   });
@@ -476,5 +481,36 @@ describe("addressLineContentValidator()", () => {
   });
   it("returns true when passed a string with only letters", async () => {
     expect(addressLineContentValidator("placeholder")).toBe(true);
+  });
+});
+
+describe("cityStateProvinceContentValidator()", () => {
+  it("returns true when passed no input", async () => {
+    expect(cityStateProvinceContentValidator()).toBe(true);
+  });
+  it("returns true when passed an empty string", async () => {
+    expect(cityStateProvinceContentValidator("")).toBe(true);
+  });
+  it("returns true when passed a null value", async () => {
+    expect(cityStateProvinceContentValidator(null)).toBe(true);
+  });
+  it("returns true when passed an undefined value", async () => {
+    expect(cityStateProvinceContentValidator(undefined)).toBe(true);
+  });
+  it("returns false when passed a string with unallowed characters", async () => {
+    expect(cityStateProvinceContentValidator("$%^")).toBe(false);
+  });
+  it("returns true when passed a string with allowed characters", async () => {
+    expect(cityStateProvinceContentValidator("09azAZ-.' ")).toBe(true);
+  });
+  it("returns false when passed a string without letters", async () => {
+    expect(cityStateProvinceContentValidator("0123456789")).toBe(false);
+  });
+  it("returns true when passed a string in uppercase", async () => {
+    expect(cityStateProvinceContentValidator("PLACEHOLDER")).toBe(true);
+  });
+
+  it("returns true when passed a string in lowercase", async () => {
+    expect(cityStateProvinceContentValidator("placeholder")).toBe(true);
   });
 });
