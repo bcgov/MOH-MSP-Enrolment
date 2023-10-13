@@ -1,3 +1,11 @@
+import Component from "@/components/enrolment/Child";
+import { shallowMount } from "@vue/test-utils";
+import { createStore } from "vuex";
+import appModule from "@/store/modules/app-module";
+import enrolmentModule from "@/store/modules/enrolment-module";
+import { createRouter, createWebHistory } from "vue-router";
+import { routeCollection } from "@/router/index";
+import { cloneDeep } from "common-lib-vue";
 import {
   birthDatePastValidator,
   birthDateYouthValidator,
@@ -12,13 +20,92 @@ import {
   schoolNameContentValidator,
   addressLineContentValidator,
   cityStateProvinceContentValidator,
-  uniquePHNValidator
+  uniquePHNValidator,
 } from "../../../../src/components/enrolment/Child.vue";
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
-import { parseISO } from 'date-fns';
-import { 
-  StatusInCanada, 
-} from '@/constants/immigration-status-types';
+import { parseISO } from "date-fns";
+import { StatusInCanada } from "@/constants/immigration-status-types";
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: routeCollection,
+});
+
+const childDataTemplate = {
+  collapsed: false,
+  ageRange: null,
+  firstName: null,
+  middleName: null,
+  lastName: null,
+  birthDate: null,
+  personalHealthNumber: null,
+  gender: null,
+  status: null,
+  statusReason: null,
+  citizenshipSupportDocumentType: null,
+  citizenshipSupportDocuments: [],
+  isNameChanged: null,
+  nameChangeSupportDocumentType: null,
+  genderMatches: null,
+  nameChangeSupportDocuments: [],
+  moveFromOrigin: null,
+  livedInBCSinceBirth: null,
+  previousHealthNumber: null,
+  recentBCMoveDate: null,
+  canadaArrivalDate: null,
+  madePermanentMove: null,
+  outsideBCLast12Months: null,
+  outsideBCLast12MonthsReason: null,
+  outsideBCLast12MonthsDestination: null,
+  outsideBCLast12MonthsDepartureDate: null,
+  outsideBCLast12MonthsReturnDate: null,
+  hasPreviousBCHealthNumber: null,
+  previousBCHealthNumber: null,
+  hasBeenReleasedFromInstitution: null,
+  dischargeDate: null,
+  schoolName: null,
+  schoolAddressLine1: null,
+  schoolAddressLine2: null,
+  schoolAddressLine3: null,
+  schoolCity: null,
+  schoolProvinceOrState: null,
+  schoolCountry: null,
+  schoolPostalCode: null,
+  schoolDepartureDate: null,
+  schoolCompletionDate: null,
+  willResideInBCAfterStudies: null,
+};
+
+describe("render test", () => {
+  let wrapper;
+  let store;
+
+  beforeEach(() => {
+    store = createStore({
+      modules: {
+        appModule: cloneDeep(appModule),
+        enrolmentModule: cloneDeep(enrolmentModule),
+      },
+    });
+    wrapper = shallowMount(Component, {
+      propsData: {
+        childData: cloneDeep(childDataTemplate),
+      },
+      global: {
+        plugins: [store, router],
+      },
+    });
+  });
+
+  afterEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  it("renders", () => {
+    expect(wrapper.element).toBeDefined();
+  });
+});
 
 describe("birthDatePastValidator()", () => {
   it("returns false when passed no input", async () => {
@@ -48,7 +135,9 @@ describe("birthDateYouthValidator()", () => {
 
   it("returns true when passed object with a nonsense ageRange", async () => {
     //date-fns generates console errors when passed strings that haven't been run through parseISO
-    expect(birthDateYouthValidator(parseISO(""), { ageRange: "potato" })).toBe(true);
+    expect(birthDateYouthValidator(parseISO(""), { ageRange: "potato" })).toBe(
+      true
+    );
   });
 
   it("returns false when passed an empty value", async () => {
@@ -77,7 +166,9 @@ describe("birthDateStudentValidator()", () => {
   const testObject = { ageRange: ChildAgeTypes.Child19To24 };
 
   it("returns true when passed object with a nonsense ageRange", async () => {
-    expect(birthDateStudentValidator(parseISO(""), { ageRange: "potato" })).toBe(true);
+    expect(
+      birthDateStudentValidator(parseISO(""), { ageRange: "potato" })
+    ).toBe(true);
   });
 
   it("returns false when passed an empty value with a test ageRange", async () => {
@@ -277,7 +368,7 @@ describe("departureDateValidator()", () => {
       })
     ).toBe(false);
   });
-  
+
   it("returns true when passed correct input with a null second argument", async () => {
     expect(
       departureDateValidator(testDate, {
@@ -342,7 +433,7 @@ describe("returnDateValidator()", () => {
       })
     ).toBe(false);
   });
-  
+
   it("returns true when passed correct input with a null second argument", async () => {
     expect(
       returnDateValidator(testDate, {
@@ -372,42 +463,56 @@ describe("dischargeDateValidator()", () => {
   yearAgoTestDate.setDate(yearAgoTestDate.getDate() - 367);
 
   it("returns true when passed two matching dates", async () => {
-    expect(dischargeDateValidator(testDate, {
-      birthDate: testDate,
-    })).toBe(true);
+    expect(
+      dischargeDateValidator(testDate, {
+        birthDate: testDate,
+      })
+    ).toBe(true);
   });
   it("returns false when first date is earlier than the second date", async () => {
-    expect(dischargeDateValidator(yearAgoTestDate, {
-      birthDate: testDate,
-    })).toBe(false);
+    expect(
+      dischargeDateValidator(yearAgoTestDate, {
+        birthDate: testDate,
+      })
+    ).toBe(false);
   });
   it("returns true when first date is later than the second date", async () => {
-    expect(dischargeDateValidator(testDate, {
-      birthDate: yearAgoTestDate,
-    })).toBe(true);
+    expect(
+      dischargeDateValidator(testDate, {
+        birthDate: yearAgoTestDate,
+      })
+    ).toBe(true);
   });
 });
 
 describe("permanentMoveValidator()", () => {
   it("returns true when status is temporary resident", async () => {
-    expect(permanentMoveValidator("", {
-      status: StatusInCanada.TemporaryResident,
-    })).toBe(true);
+    expect(
+      permanentMoveValidator("", {
+        status: StatusInCanada.TemporaryResident,
+      })
+    ).toBe(true);
   });
   it("returns true when first argument = Y", async () => {
-    expect(permanentMoveValidator("Y", {
-      status: "potato",
-    })).toBe(true);
+    expect(
+      permanentMoveValidator("Y", {
+        status: "potato",
+      })
+    ).toBe(true);
   });
   it("returns true when first argument equals Y and status is temporary resident", async () => {
-    expect(permanentMoveValidator("Y", {
-      status: StatusInCanada.TemporaryResident,
-    })).toBe(true);
+    expect(
+      permanentMoveValidator("Y", {
+        status: StatusInCanada.TemporaryResident,
+      })
+    ).toBe(true);
   });
   it("returns false when first argument does not equal Y and status is not temporary resident", async () => {
-    expect(permanentMoveValidator("", {
-      status: "potato",
-    })).toBe(false);
+    expect(
+      permanentMoveValidator("", {
+        status: "potato",
+      })
+    ).toBe(false);
   });
 });
 
@@ -521,18 +626,24 @@ describe("uniquePHNValidator()", () => {
   //second argument also needs to be an array in an object under the key "usedPHNs"
 
   it("returns false if passed an empty first argument", async () => {
-    expect(uniquePHNValidator("", {
-      usedPHNs: [],
-    })).toBe(false);
+    expect(
+      uniquePHNValidator("", {
+        usedPHNs: [],
+      })
+    ).toBe(false);
   });
   it("returns true if first argument is in the usedPHNs array exactly once", async () => {
-    expect(uniquePHNValidator("111", {
-      usedPHNs: ["111"],
-    })).toBe(true);
+    expect(
+      uniquePHNValidator("111", {
+        usedPHNs: ["111"],
+      })
+    ).toBe(true);
   });
   it("returns false if first argument is in the usedPHNs array more than once", async () => {
-    expect(uniquePHNValidator("111", {
-      usedPHNs: ["111", "111"],
-    })).toBe(false);
+    expect(
+      uniquePHNValidator("111", {
+        usedPHNs: ["111", "111"],
+      })
+    ).toBe(false);
   });
 });
