@@ -25,7 +25,7 @@ import PageNotFoundPage from '@/views/PageNotFoundPage.vue';
 pageStateService.importPageRoutes(commonRoutes);
 pageStateService.importPageRoutes(enrolmentRoutes);
 
-const routeCollection = [
+export const routeCollection = [
   {
     path: commonRoutes.MAINTENANCE_PAGE.path,
     name: commonRoutes.MAINTENANCE_PAGE.name,
