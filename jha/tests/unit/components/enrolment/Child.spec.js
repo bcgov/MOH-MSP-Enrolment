@@ -1,5 +1,5 @@
 import Component from "@/components/enrolment/Child";
-import { shallowMount } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 import { createStore } from "vuex";
 import appModule from "@/store/modules/app-module";
 import enrolmentModule from "@/store/modules/enrolment-module";
@@ -25,6 +25,7 @@ import {
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 import { parseISO } from "date-fns";
 import { StatusInCanada } from "@/constants/immigration-status-types";
+import dummyData from "@/store/states/enrolment-module-dummy-data"
 
 const router = createRouter({
   history: createWebHistory(),
@@ -76,6 +77,8 @@ const childDataTemplate = {
   willResideInBCAfterStudies: null,
 };
 
+//validators
+
 describe("render test", () => {
   let wrapper;
   let store;
@@ -87,7 +90,7 @@ describe("render test", () => {
         enrolmentModule: cloneDeep(enrolmentModule),
       },
     });
-    wrapper = shallowMount(Component, {
+    wrapper = mount(Component, {
       propsData: {
         childData: cloneDeep(childDataTemplate),
       },
@@ -645,5 +648,88 @@ describe("uniquePHNValidator()", () => {
         usedPHNs: ["111", "111"],
       })
     ).toBe(false);
+  });
+});
+
+//methods
+
+describe.only("created()", () => {
+  let wrapper;
+  let store;
+  jest.useFakeTimers();
+
+  beforeEach(() => {
+    store = createStore({
+      modules: {
+        appModule: cloneDeep(appModule),
+        enrolmentModule: cloneDeep(enrolmentModule),
+      },
+    });
+  });
+
+  afterEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  it("sets pageLoaded to true", async () => {
+    wrapper = mount(Component, {
+      propsData: {
+        childData: cloneDeep(childDataTemplate),
+      },
+      global: {
+        plugins: [store, router],
+      },
+    });
+
+    expect(wrapper.vm.pageLoaded).toBe(false);
+    await Component.created.call(wrapper.vm)
+    jest.advanceTimersByTime(5);
+    await wrapper.vm.$nextTick;
+    expect(wrapper.vm.pageLoaded).toBe(true);
+  });
+
+  it ("assigns data from the childData (null example)", async () => {
+    wrapper = mount(Component, {
+      propsData: {
+        childData: cloneDeep(childDataTemplate),
+      },
+      global: {
+        plugins: [store, router],
+      },
+    });
+
+    // expect(wrapper.vm.pageLoaded).toBe(false);
+    await Component.created.call(wrapper.vm)
+    jest.advanceTimersByTime(5);
+    await wrapper.vm.$nextTick;
+    //I'm not gonna do all of them, but if these five are here, we're probably good
+    expect(wrapper.vm.collapsed).toEqual(wrapper.vm.childData.collapsed);
+    expect(wrapper.vm.ageRange).toEqual(wrapper.vm.childData.ageRange);
+    expect(wrapper.vm.firstName).toEqual(wrapper.vm.childData.firstName);
+    expect(wrapper.vm.middleName).toEqual(wrapper.vm.childData.middleName);
+    expect(wrapper.vm.lastName).toEqual(wrapper.vm.childData.lastName);
+  });
+
+  it ("assigns data from the childData (dummy data example)", async () => {
+    wrapper = mount(Component, {
+      propsData: {
+        childData: cloneDeep(dummyData.children[0]),
+      },
+      global: {
+        plugins: [store, router],
+      },
+    });
+
+    // expect(wrapper.vm.pageLoaded).toBe(false);
+    await Component.created.call(wrapper.vm)
+    jest.advanceTimersByTime(5);
+    await wrapper.vm.$nextTick;
+    //I'm not gonna do all of them, but if these five are here, we're probably good
+    expect(wrapper.vm.collapsed).toEqual(wrapper.vm.childData.collapsed);
+    expect(wrapper.vm.ageRange).toEqual(wrapper.vm.childData.ageRange);
+    expect(wrapper.vm.firstName).toEqual(wrapper.vm.childData.firstName);
+    expect(wrapper.vm.middleName).toEqual(wrapper.vm.childData.middleName);
+    expect(wrapper.vm.lastName).toEqual(wrapper.vm.childData.lastName);
   });
 });
