@@ -25,7 +25,7 @@ import {
 import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 import { parseISO } from "date-fns";
 import { StatusInCanada } from "@/constants/immigration-status-types";
-import dummyData from "@/store/states/enrolment-module-dummy-data"
+import dummyData from "@/store/states/enrolment-module-dummy-data";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -653,7 +653,7 @@ describe("uniquePHNValidator()", () => {
 
 //methods
 
-describe.only("created()", () => {
+describe("created()", () => {
   let wrapper;
   let store;
   jest.useFakeTimers();
@@ -683,13 +683,13 @@ describe.only("created()", () => {
     });
 
     expect(wrapper.vm.pageLoaded).toBe(false);
-    await Component.created.call(wrapper.vm)
+    await Component.created.call(wrapper.vm);
     jest.advanceTimersByTime(5);
     await wrapper.vm.$nextTick;
     expect(wrapper.vm.pageLoaded).toBe(true);
   });
 
-  it ("assigns data from the childData (null example)", async () => {
+  it("assigns data from the childData (null example)", async () => {
     wrapper = mount(Component, {
       propsData: {
         childData: cloneDeep(childDataTemplate),
@@ -700,7 +700,7 @@ describe.only("created()", () => {
     });
 
     // expect(wrapper.vm.pageLoaded).toBe(false);
-    await Component.created.call(wrapper.vm)
+    await Component.created.call(wrapper.vm);
     jest.advanceTimersByTime(5);
     await wrapper.vm.$nextTick;
     //I'm not gonna do all of them, but if these five are here, we're probably good
@@ -711,7 +711,7 @@ describe.only("created()", () => {
     expect(wrapper.vm.lastName).toEqual(wrapper.vm.childData.lastName);
   });
 
-  it ("assigns data from the childData (dummy data example)", async () => {
+  it("assigns data from the childData (dummy data example)", async () => {
     wrapper = mount(Component, {
       propsData: {
         childData: cloneDeep(dummyData.children[0]),
@@ -722,7 +722,7 @@ describe.only("created()", () => {
     });
 
     // expect(wrapper.vm.pageLoaded).toBe(false);
-    await Component.created.call(wrapper.vm)
+    await Component.created.call(wrapper.vm);
     jest.advanceTimersByTime(5);
     await wrapper.vm.$nextTick;
     //I'm not gonna do all of them, but if these five are here, we're probably good
@@ -731,5 +731,50 @@ describe.only("created()", () => {
     expect(wrapper.vm.firstName).toEqual(wrapper.vm.childData.firstName);
     expect(wrapper.vm.middleName).toEqual(wrapper.vm.childData.middleName);
     expect(wrapper.vm.lastName).toEqual(wrapper.vm.childData.lastName);
+  });
+});
+
+describe("saveData()", () => {
+  let wrapper;
+  let store;
+
+  beforeEach(() => {
+    store = createStore({
+      modules: {
+        appModule: cloneDeep(appModule),
+        enrolmentModule: cloneDeep(enrolmentModule),
+      },
+    });
+    wrapper = mount(Component, {
+      propsData: {
+        childData: cloneDeep(childDataTemplate),
+      },
+      global: {
+        plugins: [store, router],
+      },
+    });
+  });
+
+  afterEach(() => {
+    jest.resetModules();
+    jest.clearAllMocks();
+  });
+
+  it("does not emit updateChild event when page is not loaded", () => {
+    expect(wrapper.vm.pageLoaded).toBe(false);
+    wrapper.vm.saveData();
+    console.log("kumquat", wrapper.emitted());
+    expect(wrapper.emitted()).not.toHaveProperty("updateChild");
+  });
+
+  it("does emit updateChild event with child object when page is loaded", async () => {
+    expect(wrapper.vm.pageLoaded).toBe(false);
+    await wrapper.setData({ pageLoaded: true });
+    expect(wrapper.vm.pageLoaded).toBe(true);
+    wrapper.vm.saveData();
+    expect(wrapper.emitted()).toHaveProperty("updateChild");
+    const result = wrapper.emitted().updateChild;
+    expect(result).not.toBeNull();
+    expect(Array.isArray(result)).toEqual(true);
   });
 });
