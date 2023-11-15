@@ -30,7 +30,7 @@
     "request": "^2.88.0",
     "serve-index": "^1.9.1",
     "winston": "^3.1.0",
-    "winston-daily-rotate-file": "^3.3.3"
+    "winston-daily-rotate-file": "^4.7.1"
   },
   "devDependencies": {
     "gulp": "^4.0.2",
