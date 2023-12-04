@@ -46,7 +46,7 @@
             :id="'child-last-name-' + index"
             className='mt-3'
             :maxlength="lastNameMaxLength"
-            @blur="handleBlurField($v.lastName)"
+            @blur="handleBlurField(v$.lastName)"
             v-model='lastName'
             :required="true"
             :inputStyle='mediumStyles' />
