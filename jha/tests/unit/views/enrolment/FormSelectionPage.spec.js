@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils';
-import { createStore } from 'vuex';
-import { createRouter } from 'vue-router';
+// import { createStore } from 'vuex';
+// import { createRouter } from 'vue-router';
 import router from '@/router';
 import store from '@/store';
 import FormSelectionPage from '@/views/enrolment/FormSelectionPage.vue';

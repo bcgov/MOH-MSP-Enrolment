@@ -1,4 +1,4 @@
-import { mount, createLocalVue } from "@vue/test-utils";
+import { mount } from "@vue/test-utils";
 import router from '@/router';
 import { createStore } from 'vuex'
 import ConsentPage from "@/views/enrolment/ConsentPage.vue";
