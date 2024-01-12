@@ -63,13 +63,12 @@ export class AccountSendingComponent
       location.assign('/msp/deam/home');
     }
 
+    // Logs a successful submission for MSP DEAM
     this.logService.log(
       {
-        name: 'Account - mspAccountApp',
-        residentialAddress: this.mspAccountApp.residentialAddress,
-        applicant: this.mspAccountApp.applicant,
+        name: 'MSP DEAM - Submission Response Success',
       },
-      'Account - mspAccountApp'
+      'MSP DEAM - Submission Response Success'
     );
   }
 
