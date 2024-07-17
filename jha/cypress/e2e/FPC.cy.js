@@ -21,6 +21,9 @@ describe('FPC only application', () => {
 
   it('Accepts valid information for the FPC info page', () => {
     cy.fillFPCInfoPage()
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/contact-info");
+    });
   })
 
   it('Accepts valid information for the contact info page', () => {

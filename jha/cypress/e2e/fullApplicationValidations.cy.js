@@ -1,7 +1,7 @@
 // import { generateRequestObject } from '../fixtures/fullApplication.js';
 // import { removeUniqueFields } from '../helpers';
 
-describe('Full application for MSP FPC and SB', () => {
+describe('Full application for MSP FPC and SB (validations)', () => {
   // const options = {includeMSP: true, includeFPC: false, includeSB: true}
   it('Navigates the MSP Elibility page', () => {
     const eligibilityError = "Please complete the questionnaire to continue.";
