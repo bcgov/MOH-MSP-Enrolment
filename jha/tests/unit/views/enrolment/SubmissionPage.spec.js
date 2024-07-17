@@ -4,6 +4,7 @@ import router from '@/router';
 import SubmissionPage from '@/views/enrolment/SubmissionPage.vue';
 import appModule from "@/store/modules/app-module.js";
 import { fpcAddressUpdateMiddlewareHTML } from "../../fixtures.js";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 const enrolmentModuleState = {
   applicationUuid: null,
@@ -25,10 +26,14 @@ const store = createStore({
   }
 });
 
-jest.mock("@/services/log-service.js", () => ({
-  logError: jest.fn(() => Promise.resolve(true)),
-  logNavigation: jest.fn(() => Promise.resolve(true)),
-}));
+vi.mock("@/services/log-service.js", () => {
+  return {
+    default: {
+      logError: vi.fn(() => Promise.resolve(true)),
+      logNavigation: vi.fn(() => Promise.resolve(true)),
+    },
+  };
+});
 
 describe('Enrolment - FormSelectionPage.vue', () => {
 

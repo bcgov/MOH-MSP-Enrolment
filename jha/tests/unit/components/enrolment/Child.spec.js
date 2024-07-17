@@ -27,6 +27,7 @@ import { parseISO } from "date-fns";
 import { StatusInCanada } from "@/constants/immigration-status-types";
 import dummyData from "@/store/states/enrolment-module-dummy-data";
 import { not } from "@vuelidate/validators";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -102,8 +103,8 @@ describe("render test", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("renders", () => {
@@ -657,7 +658,7 @@ describe("uniquePHNValidator()", () => {
 describe("created()", () => {
   let wrapper;
   let store;
-  jest.useFakeTimers();
+  vi.useFakeTimers();
 
   beforeEach(() => {
     store = createStore({
@@ -669,8 +670,8 @@ describe("created()", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("sets pageLoaded to true", async () => {
@@ -685,7 +686,7 @@ describe("created()", () => {
 
     expect(wrapper.vm.pageLoaded).toBe(false);
     await Component.created.call(wrapper.vm);
-    jest.advanceTimersByTime(5);
+    vi.advanceTimersByTime(5);
     await wrapper.vm.$nextTick;
     expect(wrapper.vm.pageLoaded).toBe(true);
   });
@@ -702,7 +703,7 @@ describe("created()", () => {
 
     // expect(wrapper.vm.pageLoaded).toBe(false);
     await Component.created.call(wrapper.vm);
-    jest.advanceTimersByTime(5);
+    vi.advanceTimersByTime(5);
     await wrapper.vm.$nextTick;
     //I'm not gonna do all of them, but if these five are here, we're probably good
     expect(wrapper.vm.collapsed).toEqual(wrapper.vm.childData.collapsed);
@@ -724,7 +725,7 @@ describe("created()", () => {
 
     // expect(wrapper.vm.pageLoaded).toBe(false);
     await Component.created.call(wrapper.vm);
-    jest.advanceTimersByTime(5);
+    vi.advanceTimersByTime(5);
     await wrapper.vm.$nextTick;
     //I'm not gonna do all of them, but if these five are here, we're probably good
     expect(wrapper.vm.collapsed).toEqual(wrapper.vm.childData.collapsed);
@@ -757,8 +758,8 @@ describe("saveData()", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("does not emit updateChild event when page is not loaded", () => {
@@ -785,9 +786,9 @@ describe("handleBlurField()", () => {
   let store;
 
   const exampleTrueValidation = {
-    $touch: jest.fn,
+    $touch: vi.fn,
   };
-  const spyOnTrueTouch = jest.spyOn(exampleTrueValidation, "$touch");
+  const spyOnTrueTouch = vi.spyOn(exampleTrueValidation, "$touch");
 
   beforeEach(() => {
     store = createStore({
@@ -807,8 +808,8 @@ describe("handleBlurField()", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("does not break when called with an empty argument", () => {
@@ -843,8 +844,8 @@ describe("data handler methods", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   const testArgument = "foobar";
@@ -961,8 +962,8 @@ describe("handleSchoolAddressSelected()", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it.skip("does not break when called with an empty argument", () => {

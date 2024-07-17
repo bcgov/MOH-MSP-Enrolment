@@ -1,24 +1,40 @@
 import { mount } from "@vue/test-utils";
-import router from '@/router';
-import { createStore } from 'vuex'
+import router from "@/router";
+import { createStore } from "vuex";
 import ConsentPage from "@/views/enrolment/ConsentPage.vue";
 import apiService from "@/services/api-service.js";
 import enrolmentModule from "@/store/modules/enrolment-module.js";
 import appModule from "@/store/modules/app-module.js";
 import dummyData from "@/store/states/enrolment-module-dummy-data.js";
-import { completedConsentPageState /*, mockFile */} from "../../fixtures.js";
+import { completedConsentPageState /*, mockFile */ } from "../../fixtures.js";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 const store = createStore({
   modules: {
     appModule,
     enrolmentModule: { ...enrolmentModule, state: () => dummyData },
-  }
+  },
 });
 
-jest.mock("@/services/api-service.js", () => ({
-  sendApplication: jest.fn(() => Promise.resolve(true)),
-  sendAttachments: jest.fn(() => Promise.resolve(true)),
-}));
+vi.mock("axios");
+
+vi.mock("@/services/api-service.js", () => {
+  return {
+    default: {
+      sendApplication: vi.fn(() => Promise.resolve(true)),
+      sendAttachments: vi.fn(() => Promise.resolve(true)),
+    },
+  };
+});
+
+vi.mock("@/services/log-service.js", () => {
+  return {
+    default: {
+      logError: vi.fn(() => Promise.resolve(true)),
+      logNavigation: vi.fn(() => Promise.resolve(true)),
+    },
+  };
+});
 
 const getUuid = (doc) => doc.uuid;
 const arrayHasUniqueValues = (arr) => new Set(arr).size === arr.length;
@@ -32,8 +48,8 @@ describe("Consent Page UI", () => {
   it("toggles form widget when Power of Attorney checkbox is toggled", async () => {
     const wrapper = mount(ConsentPage, {
       global: {
-        plugins: [router, store]
-      }
+        plugins: [router, store],
+      },
     });
     const PoACheckbox = wrapper.find(PoACheckboxId);
     expect(PoACheckbox.element.checked).toBeFalsy();
@@ -47,8 +63,8 @@ describe("Consent Page UI", () => {
   it('Adds users names to consent labels, and includes "or legal representative" suffix if PoA checked', async () => {
     const wrapper = mount(ConsentPage, {
       global: {
-        plugins: [router, store]
-      }
+        plugins: [router, store],
+      },
     });
 
     ahConsentIds.forEach((id) => {
@@ -81,10 +97,10 @@ describe("form consent and submission", () => {
   let submitButton;
 
   beforeEach(async () => {
-    jest.clearAllMocks();
+    vi.clearAllMocks();
     wrapper = mount(ConsentPage, {
       global: {
-        plugins: [router, store]
+        plugins: [router, store],
       },
       data() {
         return completedConsentPageState;

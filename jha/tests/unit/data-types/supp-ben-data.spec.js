@@ -1,4 +1,5 @@
 import SuppBenData from "@/data-types/supp-ben-data";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 const result = new SuppBenData();
 
@@ -562,34 +563,34 @@ describe("SuppBenData getters childAttendantNursingDeduction()", () => {
 
 describe("SuppBenData getters totalDeductions()", () => {
   it("returns zero when the data adds up to zero", async () => {
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "ah65Deduction", "get")
       .mockReturnValueOnce(0);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "spouseDeduction", "get")
       .mockReturnValueOnce(0);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "spouse65Deduction", "get")
       .mockReturnValueOnce(0);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "childAdjustedDeduction", "get")
       .mockReturnValueOnce(0);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "ahDisabilityCreditDeduction", "get")
       .mockReturnValueOnce(0);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "spouseDisabilityCreditDeduction", "get")
       .mockReturnValueOnce(0);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "childDisabilityCreditDeduction", "get")
       .mockReturnValueOnce(0);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "ahAttendantNursingDeduction", "get")
       .mockReturnValueOnce(0);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "spouseAttendantNursingDeduction", "get")
       .mockReturnValueOnce(0);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "childAttendantNursingDeduction", "get")
       .mockReturnValueOnce(0);
 
@@ -597,34 +598,34 @@ describe("SuppBenData getters totalDeductions()", () => {
   });
 
   it("returns the total of all deductions", async () => {
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "ah65Deduction", "get")
       .mockReturnValueOnce(500);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "spouseDeduction", "get")
       .mockReturnValueOnce(500);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "spouse65Deduction", "get")
       .mockReturnValueOnce(500);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "childAdjustedDeduction", "get")
       .mockReturnValueOnce(500);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "ahDisabilityCreditDeduction", "get")
       .mockReturnValueOnce(500);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "spouseDisabilityCreditDeduction", "get")
       .mockReturnValueOnce(500);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "childDisabilityCreditDeduction", "get")
       .mockReturnValueOnce(500);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "ahAttendantNursingDeduction", "get")
       .mockReturnValueOnce(500);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "spouseAttendantNursingDeduction", "get")
       .mockReturnValueOnce(500);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "childAttendantNursingDeduction", "get")
       .mockReturnValueOnce(500);
 
@@ -634,10 +635,10 @@ describe("SuppBenData getters totalDeductions()", () => {
 
 describe("SuppBenData getters adjustedIncome()", () => {
   it("returns totalHouseholdIncome - totalDeductions, as long as the former > the latter", async () => {
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "totalHouseholdIncome", "get")
       .mockReturnValueOnce(5500);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "totalDeductions", "get")
       .mockReturnValueOnce(5000);
 
@@ -645,10 +646,10 @@ describe("SuppBenData getters adjustedIncome()", () => {
   });
 
   it("returns zero when totalHouseholdIncome <= totalDeductions", async () => {
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "totalHouseholdIncome", "get")
       .mockReturnValueOnce(5000);
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "totalDeductions", "get")
       .mockReturnValueOnce(5500);
 
@@ -658,7 +659,7 @@ describe("SuppBenData getters adjustedIncome()", () => {
 
 describe("SuppBenData getters incomeUnderThreshold()", () => {
   it("returns true when adjusted income <= qualification threshold", async () => {
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "adjustedIncome", "get")
       .mockReturnValueOnce(5000);
     result.qualificationThreshhold = 5500;
@@ -667,7 +668,7 @@ describe("SuppBenData getters incomeUnderThreshold()", () => {
   });
 
   it("returns false when adjusted income > qualification threshold", async () => {
-    jest
+    vi
       .spyOn(SuppBenData.prototype, "adjustedIncome", "get")
       .mockReturnValueOnce(5500);
     result.qualificationThreshhold = 5000;

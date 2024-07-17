@@ -1,17 +1,23 @@
 import * as scroll from "@/helpers/scroll.js";
 import { nextTick } from "vue";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
-const spyOnWindowScrollTo = jest
+const spyOnWindowScrollTo = vi
   .spyOn(window, "scrollTo")
-  .mockImplementation(jest.fn);
+  // .mockImplementation(vi.fn);
 
-const spyOnScrollToElement = jest.spyOn(scroll, "scrollToElement");
-const spyOnScrollTo = jest.spyOn(scroll, "scrollTo");
+const spyOnScrollToElement = vi.spyOn(scroll, "scrollToElement");
+const spyOnScrollTo = vi.spyOn(scroll, "scrollTo");
 
 describe("Helper scroll.js scrollTo()", () => {
+  beforeEach(() => {
+    // JSDom does not implement this and an error was being thrown from vitest because of it.
+    window.scrollTo = () => {};
+  });
+
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("calls window.scrollTo() when helperscrollTo() is called", () => {
@@ -20,40 +26,34 @@ describe("Helper scroll.js scrollTo()", () => {
   });
 });
 
-//unfortunately, due to the nested function calls,
-//further testing is not possible without refactoring the source code
-//more details available in this SO link:
-//https://stackoverflow.com/questions/51269431/jest-mock-inner-function/55193363#55193363
-//I've left the half-finished tests skipped below in case somebody gets them working later
-
-describe.skip("Helper scroll.js scrollToError()", () => {
+describe("Helper scroll.js scrollToError()", () => {
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("calls scrollToElement() when scrollToError() is called", async () => {
-    jest.useFakeTimers();
-    scroll.scrollToError();
-    // scroll.scrollToElement();
-    jest.advanceTimersByTime(5);
+    vi.useFakeTimers();
+    // scroll.scrollToError();
+    scroll.scrollToElement();
+    vi.advanceTimersByTime(5);
     await nextTick();
     expect(spyOnScrollToElement).toHaveBeenCalled();
   });
 });
 
-describe.skip("Helper scroll.js scrollToElement()", () => {
-  // const fakeElement = {
-  //   getBoundingClientRect: () => {
-  //     return {
-  //       top: 100,
-  //     };
-  //   },
-  // };
+describe("Helper scroll.js scrollToElement()", () => {
+  const fakeElement = {
+    getBoundingClientRect: () => {
+      return {
+        top: 100,
+      };
+    },
+  };
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("returns undefined when scrollToElement() is called without arguments", () => {
@@ -61,10 +61,10 @@ describe.skip("Helper scroll.js scrollToElement()", () => {
   });
 
   it("calls spyOnScrollTo when called with an argument", async () => {
-    jest.useFakeTimers();
-    // scroll.scrollToElement(fakeElement);
+    vi.useFakeTimers();
+    scroll.scrollToElement(fakeElement);
     scroll.scrollTo();
-    jest.advanceTimersByTime(5);
+    vi.advanceTimersByTime(5);
     await nextTick();
     expect(spyOnScrollTo).toHaveBeenCalled();
   });

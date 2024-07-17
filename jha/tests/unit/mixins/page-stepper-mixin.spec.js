@@ -1,11 +1,12 @@
 import mixin from "@/mixins/page-stepper-mixin";
 import pageStateService from "@/services/page-state-service";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
-const spyOnSetPageIncomplete = jest
+const spyOnSetPageIncomplete = vi
   .spyOn(pageStateService, "setPageIncomplete")
   .mockImplementation(() => Promise.resolve("logged"));
 
-const spyOnSetPageComplete = jest
+const spyOnSetPageComplete = vi
   .spyOn(pageStateService, "setPageComplete")
   .mockImplementation(() => Promise.resolve("logged"));
 

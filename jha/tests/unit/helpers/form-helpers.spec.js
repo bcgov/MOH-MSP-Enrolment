@@ -2,6 +2,7 @@ import {
   isCorrespondenceAttachedAbleToSubmit,
   copyPowerOfAttorneyDocuments,
 } from "@/helpers/form-helpers";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 describe("isCorrespondenceAttachedAbleToSubmit()", () => {
   it("returns true when passed no input", async () => {

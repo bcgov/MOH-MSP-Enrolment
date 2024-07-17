@@ -1,8 +1,9 @@
 import { isCSR, convertURLToCSR, getConvertedPath } from "@/helpers/url.js";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 describe("url.js isCSR()", () => {
   afterEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
 
   it("returns false if not given a value", () => {
@@ -34,7 +35,7 @@ describe("url.js isCSR()", () => {
 //the following tests need revisions when the -csr duplication bug is fixed
 describe.skip("url.js convertURLToCSR()", () => {
   afterEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
 
   it("throws error if not given a value", () => {
@@ -50,7 +51,7 @@ describe.skip("url.js convertURLToCSR()", () => {
 
 describe.skip("url.js getConvertedPath()", () => {
   afterEach(() => {
-    jest.resetModules();
+    vi.resetModules();
   });
 
   it("doesn't duplicate suffix", () => {

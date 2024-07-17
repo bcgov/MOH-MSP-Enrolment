@@ -7,6 +7,7 @@ import {
   YELLOW,
   GREEN,
 } from "@/helpers/fpc-helpers";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 describe("formatCurrencyNumber()", () => {
   it("returns $0 when passed no input", async () => {

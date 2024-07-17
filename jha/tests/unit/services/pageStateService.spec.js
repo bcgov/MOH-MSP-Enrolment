@@ -1,6 +1,7 @@
 import pageStateService from "@/services/page-state-service";
 import { enrolmentRoutes } from "@/router/routes";
 import { cloneDeep } from "lodash";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 const stepRoutes = [
   { ...enrolmentRoutes.MSP_ELIGIBILITY_PAGE },
@@ -18,8 +19,8 @@ describe("pageStateService test", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("imports a defined service", () => {
@@ -34,8 +35,8 @@ describe("pageStateService importPageRoutes()", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("sets PageStateService pages array to routes", () => {
@@ -54,8 +55,8 @@ describe("setPageIncomplete()", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("sets to incomplete", () => {
@@ -72,8 +73,8 @@ describe("setPageComplete()", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("sets to complete", () => {
@@ -90,8 +91,8 @@ describe("isPageComplete()", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("returns true if isComplete equals true", () => {
@@ -114,8 +115,8 @@ describe("visitPage()", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("sets isVisited to true for path passed", () => {
@@ -138,8 +139,8 @@ describe("isPageVisited()", () => {
   });
 
   afterEach(() => {
-    jest.resetModules();
-    jest.clearAllMocks();
+    vi.resetModules();
+    vi.clearAllMocks();
   });
 
   it("returns false when isVisited is false", () => {

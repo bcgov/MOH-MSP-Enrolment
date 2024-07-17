@@ -1,8 +1,10 @@
 import mixin from "@/mixins/page-content-mixin";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 describe("mixin methods", () => {
   it("returns 0 when the offsets all add up to 0", async () => {
-    jest.spyOn(document, "querySelector").mockImplementation((selector) => {
+    vi
+    .spyOn(document, "querySelector").mockImplementation((selector) => {
       switch (selector) {
         case "header":
           return { offsetHeight: 0 };
@@ -18,7 +20,7 @@ describe("mixin methods", () => {
   });
 
   it("returns 100 when the offsets all add up to 100", async () => {
-    jest.spyOn(document, "querySelector").mockImplementation((selector) => {
+    vi.spyOn(document, "querySelector").mockImplementation((selector) => {
       switch (selector) {
         case "header":
           return { offsetHeight: 10 };
