@@ -33,8 +33,6 @@ const currentDate = new Date();
 const lastMonthDate = new Date();
 lastMonthDate.setMonth(currentDate.getMonth() - 1);
 
-const DOCUMENT_WAIT_TIME = 750;
-
 
 Cypress.Commands.add('fillName', (firstName = 'alex', middleName = 'jaimie', lastName = 'doe') => {
   cy.get('input#first-name').type(firstName);
@@ -276,14 +274,23 @@ Cypress.Commands.add('fillSBInfoPage', (options) => {
   cy.get('input#attendant-nursing-receipts').selectFile(samplePDF, { force: true });
   
   // wait for file to fully upload
-  cy.wait(DOCUMENT_WAIT_TIME);
+  cy.get("#attendant-nursing-receipts").parent().within(() => {
+    cy.get(".thumbnail-image-container", { timeout: 20000 })
+      .first()
+      .should("exist");
+  });
   cy.continue();  
 })
 
 Cypress.Commands.add('fillDocumentsPage', () => {
   cy.get('input#ah-cra-documents').selectFile(samplePDF, { force: true });
   cy.get('input#spouse-cra-documents').selectFile(samplePDF, { force: true });
-  cy.wait(DOCUMENT_WAIT_TIME);
+  // wait for file to fully upload
+  cy.get("#spouse-cra-documents").parent().within(() => {
+    cy.get(".thumbnail-image-container", { timeout: 20000 })
+      .first()
+      .should("exist");
+  });
   cy.continue();
 });
 
