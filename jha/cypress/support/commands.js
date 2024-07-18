@@ -70,10 +70,20 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
     cy.get('label[for=gender-matches-no]').click();
 
     cy.get('input#citizenship-support-documents').selectFile(samplePDF, { force: true });
+    cy.get("#citizenship-support-documents").parent().within(() => {
+      cy.get(".thumbnail-image-container", { timeout: 20000 })
+        .first()
+        .should("exist");
+    });
     cy.get('label[for=name-change-yes]').click();
 
     cy.get('select#name-change-doc-type').select(SupportDocumentTypes.MarriageCertificate);
     cy.get('#name-change-support-documents').selectFile(samplePDF, { force: true });
+    cy.get("#name-change-support-documents").parent().within(() => {
+      cy.get(".thumbnail-image-container", { timeout: 20000 })
+        .first()
+        .should("exist");
+    });
 
     cy.get('label[for=is-moved-to-bc-permanently-yes]').click();
 
@@ -185,10 +195,20 @@ Cypress.Commands.add('fillSpousePage', (options) => {
     cy.get('label[for=spouse-gender-matches-no]').click();
 
     cy.get('input#spouse-citizenship-support-documents').selectFile(samplePDF, { force: true });
+    cy.get("#spouse-citizenship-support-documents").parent().within(() => {
+      cy.get(".thumbnail-image-container", { timeout: 20000 })
+        .first()
+        .should("exist");
+    });
     cy.get('label[for=name-change-yes]').click();
     cy.get('select#name-change-doc-type').select(SupportDocumentTypes.MarriageCertificate);
 
     cy.get('input#spouse-name-change-support-documents').selectFile(samplePDF, { force: true });
+    cy.get("#spouse-name-change-support-documents").parent().within(() => {
+      cy.get(".thumbnail-image-container", { timeout: 20000 })
+        .first()
+        .should("exist");
+    });
 
     cy.get('label[for=permanent-move-yes]').click();
 
@@ -236,6 +256,11 @@ Cypress.Commands.add('fillChildPage', (options) => {
     cy.get('label[for=gender-matches-0-yes]').click()
 
     cy.get('input#child-citizenship-support-documents-0').selectFile(samplePDF, { force: true });
+    cy.get("#child-citizenship-support-documents-0").parent().within(() => {
+      cy.get(".thumbnail-image-container", { timeout: 20000 })
+        .first()
+        .should("exist");
+    });
 
     cy.get('label[for=name-change-0-no]').click()
 
@@ -272,6 +297,11 @@ Cypress.Commands.add('fillSBInfoPage', (options) => {
   cy.get('label[for=selected-attendant-nursing-recipients-ah').click()
 
   cy.get('input#attendant-nursing-receipts').selectFile(samplePDF, { force: true });
+  cy.get("#attendant-nursing-receipts").parent().within(() => {
+    cy.get(".thumbnail-image-container", { timeout: 20000 })
+      .first()
+      .should("exist");
+  });
   
   // wait for file to fully upload
   cy.get("#attendant-nursing-receipts").parent().within(() => {
@@ -284,7 +314,17 @@ Cypress.Commands.add('fillSBInfoPage', (options) => {
 
 Cypress.Commands.add('fillDocumentsPage', () => {
   cy.get('input#ah-cra-documents').selectFile(samplePDF, { force: true });
+  cy.get("#ah-cra-documents").parent().within(() => {
+    cy.get(".thumbnail-image-container", { timeout: 20000 })
+      .first()
+      .should("exist");
+  });
   cy.get('input#spouse-cra-documents').selectFile(samplePDF, { force: true });
+  cy.get("#spouse-cra-documents").parent().within(() => {
+    cy.get(".thumbnail-image-container", { timeout: 20000 })
+      .first()
+      .should("exist");
+  });
   // wait for file to fully upload
   cy.get("#spouse-cra-documents").parent().within(() => {
     cy.get(".thumbnail-image-container", { timeout: 20000 })
