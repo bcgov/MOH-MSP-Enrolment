@@ -31,7 +31,7 @@
             
           </div>
           <div class="modal-footer justify-content-center">
-            <Button label="Continue"
+            <ButtonComponent label="Continue"
                     @click="closeModal()"
                     :disabled="!isCaptchaValid || !isTermsAccepted"/>
           </div>
@@ -43,7 +43,7 @@
 
 <script>
 import {
-  Button,
+  ButtonComponent,
   Captcha,
 } from "common-lib-vue";
 import {
@@ -55,7 +55,7 @@ import apiService from '@/services/api-service';
 export default {
   name: "ConsentModal",
   components: {
-    Button,
+    ButtonComponent,
     Captcha,
   },
   data: () => {

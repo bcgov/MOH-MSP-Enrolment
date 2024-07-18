@@ -113,7 +113,7 @@
             </div>
             <hr class="mt-0"/>
             <div v-if="isMailSame">
-              <Button label='My Mailing Address is Different'
+              <ButtonComponent label='My Mailing Address is Different'
                 @click='handleClickDifferentAddress()'
                 color='gold'
                 class='different-address'/>
@@ -320,7 +320,7 @@ import {
 import logService from '@/services/log-service';
 import {
   AddressDoctorInput,
-  Button,
+  ButtonComponent,
   Checkbox,
   ContinueBar,
   CountrySelect,
@@ -394,7 +394,7 @@ export default {
   ],
   components: {
     AddressDoctorInput,
-    Button,
+    ButtonComponent,
     Checkbox,
     ContinueBar,
     CountrySelect,

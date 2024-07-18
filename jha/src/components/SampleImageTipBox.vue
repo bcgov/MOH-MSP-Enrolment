@@ -32,7 +32,7 @@
           <img :src="`/ahdc/images/samples/${sampleImageFileName}`" />
         </div>
         <div class="modal-footer">
-          <Button 
+          <ButtonComponent 
             label='Close'
             @click='closeModal()'
             color='gold'
@@ -46,7 +46,7 @@
 
 <script>
 import TipBox from './TipBox.vue';
-import { ContentModal, Button } from 'common-lib-vue';
+import { ContentModal, ButtonComponent } from 'common-lib-vue';
 import { SupportDocumentSamples } from '../constants/document-types';
 
 export default {
@@ -54,7 +54,7 @@ export default {
   components: {
     ContentModal,
     TipBox,
-    Button,
+    ButtonComponent,
   },
   props: {
     documentType: {
