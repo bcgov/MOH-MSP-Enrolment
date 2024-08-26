@@ -69,67 +69,6 @@ utils.formatTime = function(time) {
 };
 
 /**
- * Converts an iterable into to an array.
- *
- * @param {(Array|Object)} iterable - Thing to convert to an <code>Array</code>.
- * @returns {Array}
- * @static
- */
-utils.toArray = function(iterable) {
-    return Array.prototype.slice.call(iterable);
-};
-
-// TODO: this isn't used anymore, remove it
-/**
- * Run async function in a chain, like {@link https://github.com/caolan/async#waterfall|Async.waterfall}.
- *
- * @param {(function[]|function)} tasks - <code>Array</code> of callback functions.
- * @param {function} [callback] - Final callback.
- * @static
- */
-utils.chain = function(tasks, callback) {
-    // Allow for just a list of functions
-    if (arguments.length > 1 && typeof arguments[0] === "function") {
-        var args = utils.toArray(arguments);
-        tasks = args.slice(0, args.length - 1);
-        callback = args[args.length - 1];
-    }
-
-    tasks = tasks || [];
-    callback = callback || function() {};
-
-    if (tasks.length === 0) {
-        callback();
-    }
-    else {
-        var nextTask = function(task, remainingTasks, result) {
-            var taskCallback = function(err) {
-                if (err) {
-                    callback(err);
-                }
-                else {
-                    var args = utils.toArray(arguments);
-                    args.shift();
-                    nextTask(remainingTasks[0], remainingTasks.slice(1), args);
-                }
-            };
-
-            var args = result;
-            if (remainingTasks.length === 0) {
-                args.push(callback);
-            }
-            else {
-                args.push(taskCallback);
-            }
-
-            task.apply(null, args);
-        };
-
-        nextTask(tasks[0], tasks.slice(1), []);
-    }
-};
-
-/**
  * Asynchronous while loop.
  *
  * @param {function} [condition] - A function returning a boolean, the loop condition.
@@ -221,21 +160,6 @@ utils.copyObject = function(obj) {
         if (obj.hasOwnProperty(key)) {
             ret[key] = obj[key];
         }
-    }
-    return ret;
-};
-
-/**
- * Copies all elements into a new array, which is returned.
- *
- * @param {array} [arr] - Array to copy elements from.
- * @returns {array}
- * @static
- */
-utils.copyArray = function(arr) {
-    var ret = [];
-    for (var i = 0; arr && i < arr.length; i++) {
-        ret[i] = arr[i];
     }
     return ret;
 };
