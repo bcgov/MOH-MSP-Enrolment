@@ -20,7 +20,7 @@ describe("utils.formatTime()", () => {
 });
 
 describe("utils.whilst()", () => {
-  const mock = vi.fn(() => console.log("executed"));
+  const mock = vi.fn(() => {});
 
   afterEach(() => {
     vi.restoreAllMocks();
