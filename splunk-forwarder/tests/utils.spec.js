@@ -63,7 +63,7 @@ describe("utils.expBackoff()", () => {
     vi.restoreAllMocks();
   });
 
-  const mock = vi.fn(() => console.log("executed"));
+  const mock = vi.fn(() => {});
 
   it("returns undefined when passed a null value", () => {
     expect(utils.expBackoff()).toBeUndefined();
