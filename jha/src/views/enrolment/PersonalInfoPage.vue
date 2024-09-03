@@ -15,7 +15,7 @@
         <!-- Bootstrap row and column classes for gender tipbox placement -->
         <div class="row">
           <div class="col-md-7">
-            <Input label="First name"
+            <InputComponent label="First name"
               id="first-name"
               v-model="firstName"
               :maxlength="firstNameMaxLength"
@@ -30,7 +30,7 @@
               v-if="v$.firstName.$dirty
                 && v$.firstName.nameValidator.$invalid"
               aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-            <Input label="Middle name (optional)"
+            <InputComponent label="Middle name (optional)"
               id="middle-name"
               class="mt-3"
               v-model="middleName"
@@ -41,7 +41,7 @@
               v-if="v$.middleName.$dirty
                 && v$.middleName.nameValidator.$invalid"
               aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-            <Input label="Last name"
+            <InputComponent label="Last name"
               id="last-name"
               class="mt-3"
               v-model="lastName"
@@ -121,7 +121,7 @@
                 aria-live="assertive">SIN is invalid.</div>
             </div>
             <div v-if="requestGender">
-              <Radio label="Gender"
+              <RadioComponent label="Gender"
                 id="gender"
                 name="gender"
                 class="mt-3"
@@ -147,7 +147,7 @@
           <h2 class="mt-4">Your status in Canada</h2>
           <p>Provide your immigration status. You will need to upload documents that show your status in Canada. For arrivals through the Canada-Ukraine authorization for emergency travel (CUAET) program, please select 'Temporary Permit Holder or Diplomat' from the menu below.</p>
           <hr/>
-          <Select label="Immigration status in Canada"
+          <SelectComponent label="Immigration status in Canada"
             id="immigration-status"
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
@@ -162,7 +162,7 @@
             aria-live="assertive">Please select your immigration status.</div>
           <div v-if="citizenshipStatus === StatusInCanada.Citizen
               || citizenshipStatus === StatusInCanada.PermanentResident">
-            <Radio name="citizen-status-reason"
+            <RadioComponent name="citizen-status-reason"
               class="mt-3"
               v-model="citizenshipStatusReason"
               :required="true"
@@ -174,7 +174,7 @@
               aria-live="assertive">This field is required.</div>
           </div>
           <div v-if="citizenshipStatus === StatusInCanada.TemporaryResident">
-            <Radio name="citizen-status-reason"
+            <RadioComponent name="citizen-status-reason"
               class="mt-3"
               v-model="citizenshipStatusReason"
               :required="true"
@@ -191,7 +191,7 @@
           <h2 class="mt-4">Documents</h2>
           <p>Provide a copy of an accepted document that shows your status in Canada. If your name is different from the name on the document, you must also upload a copy of a marriage certificate, divorce decree, or name change certificate that shows your full legal name.</p>
           <hr/>
-          <Select label="Document type"
+          <SelectComponent label="Document type"
             id="citizen-support-document-type"
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
@@ -204,7 +204,7 @@
             v-if="v$.citizenshipSupportDocumentType.$dirty
               && v$.citizenshipSupportDocumentType.required.$invalid"
             aria-live="assertive">Document type is required.</div>
-          <Radio
+          <RadioComponent
             label="Does the document that shows your status in Canada match your selected gender designation?" 
             name="gender-matches"
             id="gender-matches"
@@ -242,7 +242,7 @@
         </div>
 
         <div v-if="requestIsNameChanged">
-          <Radio label="Is your name different from the name on your document?"
+          <RadioComponent label="Is your name different from the name on your document?"
             id="name-change"
             name="name-change"
             class="mt-3"
@@ -260,7 +260,7 @@
           <h2 class="mt-4">Additional Documents</h2>
           <p>Provide a copy of a marriage certificate, divorce decree, or name change certificate that shows your full legal name.</p>
           <hr/>
-          <Select label="Document type"
+          <SelectComponent label="Document type"
             id="name-change-doc-type"
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
@@ -303,7 +303,7 @@
           <div class="row">
             <div class="col-md-7">
               <div v-if="requestFromProvinceOrCountry">
-                <Input label="Which province or jurisdiction did you live in before moving to British Columbia?"
+                <InputComponent label="Which province or jurisdiction did you live in before moving to British Columbia?"
                   id="from-province-or-country"
                   class="mt-3"
                   maxlength="25"
@@ -317,7 +317,7 @@
                   aria-live="assertive">Province or jurisdiction of origin is required.</div>
               </div>
               <div v-if="requestLivedInBCSinceBirth">
-                <Radio label="Have you lived in B.C. since birth?"
+                <RadioComponent label="Have you lived in B.C. since birth?"
                   id="has-live-in-bc-since-birth"
                   name="has-live-in-bc-since-birth"
                   class="mt-3"
@@ -331,7 +331,7 @@
                   aria-live="assertive">Please indicate whether you have lived in B.C. since birth.</div>
               </div>
               <div v-if="requestPermanentMoveInfo">
-                <Radio label="Have you moved to B.C. permanently?"
+                <RadioComponent label="Have you moved to B.C. permanently?"
                   id="is-moved-to-bc-permanently"
                   name="is-moved-to-bc-permanently"
                   class="mt-3"
@@ -452,7 +452,7 @@
                     aria-live="assertive">Arrival date in Canada cannot be in the future.</div>
                 </div>
                 <div v-if="requestProvHealthNumber">
-                  <Input label="Health Number from that province (optional)"
+                  <InputComponent label="Health Number from that province (optional)"
                     id="previous-health-number"
                     class="mt-3"
                     v-model="previousHealthNumber"
@@ -461,7 +461,7 @@
                     @blur="handleBlurField(v$.previousHealthNumber)" />
                 </div>
                 <div>
-                  <Radio label="Since you arrived in B.C., have you left the province for more than 30 days in total in the past 12 months?"
+                  <RadioComponent label="Since you arrived in B.C., have you left the province for more than 30 days in total in the past 12 months?"
                     class="mt-3"
                     id="outside-bc-12-months"
                     name="outside-bc-12-months"
@@ -472,7 +472,7 @@
                     <template v-slot:description>
                       <span class="field-description">If you have been living in B.C. for less than 12 months, please indicate any absences since arrival.</span>
                     </template>
-                  </Radio>
+                  </RadioComponent>
                   <div class="text-danger"
                     v-if="v$.isOutsideBCInLast12Months.$dirty
                       && v$.isOutsideBCInLast12Months.required.$invalid"
@@ -480,7 +480,7 @@
                 </div>
                 <div v-if="isOutsideBCInLast12Months === 'Y'"
                   class="tabbed-section">
-                  <Input label="Reason for departure"
+                  <InputComponent label="Reason for departure"
                     id="departure-reason"
                     class="mt-3"
                     v-model="departureReason"
@@ -496,7 +496,7 @@
                     v-if="v$.departureReason.$dirty 
                       && v$.departureReason.reasonDestinationContentValidator.$invalid" 
                     aria-live="assertive">Reason must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-                  <Input label="Location"
+                  <InputComponent label="Location"
                     id="departure-location"
                     class="mt-3"
                     v-model="departureLocation"
@@ -552,7 +552,7 @@
                     aria-live="assertive">Return date must be within the last 12 months and after departure date.</div>
                 </div>
                 <div>
-                  <Radio label="Do you have a previous B.C. Personal Health Number?"
+                  <RadioComponent label="Do you have a previous B.C. Personal Health Number?"
                     class="mt-3"
                     id="has-previous-phn"
                     name="has-previous-phn"
@@ -582,7 +582,7 @@
                     aria-live="assertive">Personal Health Number is not valid.</div>
                 </div>
                 <div v-if="requestArmedForceInfo">
-                  <Radio label="Have you been released from the Canadian Armed Forces or an institution?"
+                  <RadioComponent label="Have you been released from the Canadian Armed Forces or an institution?"
                     class="mt-3"
                     id="is-released-from-armed-forces"
                     name="is-released-from-armed-forces"
@@ -627,7 +627,7 @@
                     aria-live="assertive">Discharge date cannot be before the applicant's date of birth.</div>
                 </div>
                 <div v-if="requestIsStudent">
-                  <Radio label="Are you a full-time student in B.C.?"
+                  <RadioComponent label="Are you a full-time student in B.C.?"
                     class="mt-3"
                     id="is-student"
                     name="is-student"
@@ -642,7 +642,7 @@
                 </div>
                 <div v-if="requestWillStudentResideInBC"
                   class="tabbed-section">
-                  <Radio label="Will you reside in B.C. on completion of your studies?"
+                  <RadioComponent label="Will you reside in B.C. on completion of your studies?"
                     id="will-student-reside-in-bc"
                     name="will-student-reside-in-bc"
                     class="mt-3"
@@ -737,12 +737,12 @@ import {
   CountrySelect,
   DateInput,
   FileUploader,
-  Input,
+  InputComponent,
   PageContent,
   PhnInput,
-  Radio,
+  RadioComponent,
   RegionSelect,
-  Select,
+  SelectComponent,
   SINInput,
   distantPastValidator,
   optionalValidator,
@@ -856,13 +856,13 @@ export default {
     CountrySelect,
     DateInput,
     FileUploader,
-    Input,
+    InputComponent,
     PageContent,
     PhnInput,
-    Radio,
+    RadioComponent,
     RegionSelect,
     SampleImageTipBox,
-    Select,
+    SelectComponent,
     SINInput,
     TipBox,
     ContactInformation

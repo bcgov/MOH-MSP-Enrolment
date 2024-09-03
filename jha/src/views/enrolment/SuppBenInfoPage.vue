@@ -17,7 +17,7 @@
         <div class="row">
           <div class="col-md-7">
             <h2>Which year's NOA or NORA will you upload?</h2>
-            <Radio id="select-noa-year"
+            <RadioComponent id="select-noa-year"
                     name="select-noa-year"
                     class="mt-3"
                     v-model="selectedNOAYear"
@@ -64,7 +64,7 @@
 
             <div v-if="onlySuppBen">
               <p class="mt-4 mb-1 font-weight-bolder">Do you have any children on your Medical Services Plan (MSP) account?</p>
-              <Radio id="has-children"
+              <RadioComponent id="has-children"
                 name="has-children"
                 v-model="hasChildren"
                 :required="true"
@@ -109,7 +109,7 @@
             </div>
 
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your MSP account claim a disability tax credit in {{selectedNOAYear}}?</p>
-            <Radio id="has-disability-credit"
+            <RadioComponent id="has-disability-credit"
               name="has-disability-credit"
               label="See line 31600, 31800, or 32600 of your NOA or NORA."
               v-model="hasDisabilityCredit"
@@ -153,7 +153,7 @@
             </div>
 
             <p class="mt-4 mb-1 font-weight-bolder">Does anyone on your MSP account have a Registered Disability Savings Plan?</p>
-            <Radio id="has-disability-savings"
+            <RadioComponent id="has-disability-savings"
               name="has-disability-savings"
               v-model="hasRDSP"
               :required="true"
@@ -181,7 +181,7 @@
             </div>
 
             <p class="mt-4 mb-1 font-weight-bolder">Did anyone on your MSP account claim attendant or nursing home expenses in place of a disability in {{selectedNOAYear}}?</p>
-            <Radio id="has-attendant-nursing-expenses"
+            <RadioComponent id="has-attendant-nursing-expenses"
               name="has-attendant-nursing-expenses"
               label="See line 21500 or 33099 of your NOA or NORA."
               v-model="hasAttendantNursingExpenses"
@@ -332,7 +332,7 @@ import logService from '@/services/log-service';
 import {
   ContinueBar,
   PageContent,
-  Radio,
+  RadioComponent,
   CurrencyInput,
   FileUploader,
   DigitInput,
@@ -374,7 +374,7 @@ export default {
   components: {
     ContinueBar,
     PageContent,
-    Radio,
+    RadioComponent,
     CurrencyInput,
     FileUploader,
     DigitInput,

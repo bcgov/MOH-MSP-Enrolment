@@ -10,7 +10,7 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Supplementary Benefits eligibility</h1>
-        <Radio
+        <RadioComponent
           id='apply-sb'
           name='apply-sb'
           label='1. Will you use this form to apply for Supplementary Benefits?'
@@ -20,7 +20,7 @@
           <template v-slot:description>
             <span class="field-description">Note: If you or your spouse (who may not live in B.C. or Canada) earned income outside Canada during the most recent tax year, you must submit your application for Supplementary Benefits using the print form (HLTH 101) available <a target="_blank" href="https://gov.bc.ca/ahdc">here</a>.</span>
           </template>  
-        </Radio>
+        </RadioComponent>
         <div v-if="eqSBIsApplying === 'Y'">
           <p class="mb-0">2. To apply for Supplementary Benefits, you must:</p>
           <div class="ml-4">
@@ -29,7 +29,7 @@
             <p class="ml-4">c. not be exempt from liability to pay income tax by reason of any other Act.</p>
           </div>
           <p id="eqSBMeetsCriteria" class="ml-4 mb-0">Do you meet the above eligibility criteria?</p>
-          <Radio
+          <RadioComponent
             id='meets-sb-criteria'
             name='meets-sb-criteria'
             label=''
@@ -51,7 +51,7 @@
               <p class="ml-4">c. Net Income (Line 23600) and Registered Disability Savings Plan (RDSP) income (Line 12500) if applicable, from the above CRA NOA or NORA.</p>
             </div>
             <p id="eqSBHasInfo" class="ml-4 mb-0">Do you have these documents and information to include with your application?</p>
-            <Radio
+            <RadioComponent
               id='has-sb-info'
               name='has-sb-info'
               label=''
@@ -107,7 +107,7 @@ import {
 import {
   PageContent,
   ContinueBar,
-  Radio,
+  RadioComponent,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import {
@@ -140,7 +140,7 @@ export default {
   components: {
     ContinueBar,
     PageContent,
-    Radio,
+    RadioComponent,
     ContactInformation,
   },
   setup () {

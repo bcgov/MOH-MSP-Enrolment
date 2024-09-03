@@ -72,7 +72,7 @@
         <h3>Level of coverage</h3>
         <div v-if="isFPCDataLoading"
           class="text-center">
-          <Loader color="#000"
+          <LoaderComponent color="#000"
             size="24px" />
         </div>
         <div v-if="isFPCDataUnavailable"
@@ -129,7 +129,7 @@ import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
 import {
   DistributionBar,
-  Loader,
+  LoaderComponent,
   formatDate,
 } from 'common-lib-vue';
 import { getConvertedPath } from '@/helpers/url';
@@ -155,7 +155,7 @@ export default {
   name: 'ReviewTableList',
   components: {
     DistributionBar,
-    Loader,
+    LoaderComponent,
     ReviewTable,
   },
   props: {

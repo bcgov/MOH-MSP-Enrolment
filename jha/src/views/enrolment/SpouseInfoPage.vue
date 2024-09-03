@@ -19,7 +19,7 @@
           </div>
         </div>
         <hr class="mt-0"/>
-        <Radio
+        <RadioComponent
           v-if="hasSpouse !== 'Y'"
           id='has-spouse'
           name='has-spouse'
@@ -37,7 +37,7 @@
           <!-- Bootstrap row and column classes for gender tipbox placement -->
           <div class="row">
             <div class="col-md-7">
-              <Input label='First name'
+              <InputComponent label='First name'
                 id='first-name'
                 className='mt-3'
                 :maxlength="firstNameMaxLength"
@@ -51,7 +51,7 @@
               <div class="text-danger"
                 v-if="v$.spouseFirstName.$dirty && !v$.spouseFirstName.required.$invalid && v$.spouseFirstName.nameValidator.$invalid"
                 aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-              <Input label='Middle name (optional)'
+              <InputComponent label='Middle name (optional)'
                 id='middle-name'
                 className='mt-3'
                 :maxlength="middleNameMaxLength"
@@ -61,7 +61,7 @@
               <div class="text-danger"
                 v-if="v$.spouseMiddleName.$dirty && v$.spouseMiddleName.nameValidator.$invalid"
                 aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-              <Input label='Last name'
+              <InputComponent label='Last name'
                 id='last-name'
                 className='mt-3'
                 :maxlength="lastNameMaxLength"
@@ -146,7 +146,7 @@
               </div>
 
               <div v-if="requestGender">
-                <Radio
+                <RadioComponent
                   label='Gender'
                   id='spouse-gender'
                   name='spouse-gender'
@@ -177,7 +177,7 @@
               <p>Provide your spouse's immigration status. You will be need to upload documents that show your spouse's status in Canada. For arrivals through the Canada-Ukraine authorization for emergency travel (CUAET) program, please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
             </div>
             <hr class="mt-0"/>
-            <Select 
+            <SelectComponent 
               id='spouse-status'
               name='spouse-status'
               defaultOptionLabel="Please select"
@@ -193,7 +193,7 @@
               v-if="v$.spouseStatus.$dirty && v$.spouseStatus.required.$invalid"
               aria-live="assertive">Please select your spouse's immigration status.</div>
             <div v-if="spouseStatus === statusOptions.Citizen || spouseStatus === statusOptions.PermanentResident">
-              <Radio
+              <RadioComponent
                 id='spouse-status-reason'
                 name='spouse-status-reason'
                 label=''
@@ -206,7 +206,7 @@
                 aria-live="assertive">This field is required.</div>
             </div>
             <div v-if="spouseStatus === statusOptions.TemporaryResident">
-              <Radio
+              <RadioComponent
                 id='spouse-status-reason'
                 name='spouse-status-reason'
                 label=''
@@ -222,7 +222,7 @@
               <h2>Documents</h2>
               <p>Provide a copy of an accepted document that shows your spouse’s status in Canada. If their name is different from the name on the document, you must also upload a copy of a marriage certificate, divorce decree, or name change certificate that shows their full legal name.</p>
               <hr/>
-              <Select 
+              <SelectComponent 
                 label="Document type"
                 name="citizen-support-document-type"
                 id="citizen-support-document-type"
@@ -237,7 +237,7 @@
               <div class="text-danger"
                 v-if="v$.spouseCitizenshipSupportDocumentType.$dirty && v$.spouseCitizenshipSupportDocumentType.required.$invalid"
                 aria-live="assertive">Document type is required.</div>
-              <Radio
+              <RadioComponent
                 label="Does the document that shows your spouse's status in Canada match their selected gender designation?" 
                 name="spouse-gender-matches"
                 id="spouse-gender-matches"
@@ -272,7 +272,7 @@
               </div>
 
               <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
-                <Radio label="Is your spouse's name different from the name on their document?"
+                <RadioComponent label="Is your spouse's name different from the name on their document?"
                   id="name-change"
                   name="name-change"
                   class="mt-3 mb-3"
@@ -289,7 +289,7 @@
                 <h2>Additional Documents</h2>
                 <p>Provide a copy of a marriage certificate, divorce decree, or name change certificate that shows your spouse's full legal name.</p>
                 <hr/>
-                <Select 
+                <SelectComponent 
                   label="Document type"
                   name="name-change-doc-type"
                   id="name-change-doc-type"
@@ -335,7 +335,7 @@
             <div class="row">
               <div class="col-md-7">
                 <div v-if="showLivedInBCSinceBirth">
-                  <Radio 
+                  <RadioComponent 
                     label='Has your spouse lived in B.C. since birth?'
                     id='lived-in-bc'
                     name='lived-in-bc'
@@ -349,7 +349,7 @@
                     aria-live="assertive">Please indicate whether your spouse has lived in B.C. since birth.</div>
                 </div>
                 <div v-if="showOriginTextField">
-                  <Input 
+                  <InputComponent 
                       className="mt-3"
                       label="Which province or jurisdiction did your spouse live in before moving to British Columbia?"
                       maxlength="25"
@@ -363,7 +363,7 @@
                       aria-live="assertive">Province or jurisdiction of origin is required.</div>
                 </div>
                 <div v-if="showMovedPermanentlyQuestion">
-                  <Radio
+                  <RadioComponent
                     label='Has your spouse moved to B.C. permanently?'
                     id='permanent-move'
                     name='permanent-move'
@@ -530,14 +530,14 @@
                       aria-live="assertive">The spouse's arrival date in Canada cannot be after the move to B.C. date.</div>
                   </div>
                   <div v-if="showPreviousHealthNumber">
-                    <Input 
+                    <InputComponent 
                       className="mt-3"
                       label="Health Number from that province (optional)"
                       maxlength="50"
                       v-model="spousePreviousHealthNumber"
                       :inputStyle='mediumStyles' />
                   </div>
-                  <Radio
+                  <RadioComponent
                     label='Since your spouse arrived in B.C., have they left the province for more than 30 days in total in the past 12 months?'
                     id='outside-bc-past-12'
                     name='outside-bc-past-12'
@@ -549,12 +549,12 @@
                     <template v-slot:description>
                       <span class="field-description">If your spouse has been living in B.C. for less than 12 months, please indicate any absences since arrival.</span>
                     </template>
-                  </Radio>
+                  </RadioComponent>
                   <div class="text-danger"
                     v-if="v$.spouseOutsideBCLast12Months.$dirty && v$.spouseOutsideBCLast12Months.required.$invalid"
                     aria-live="assertive">Please indicate whether your spouse has been outside B.C. in the past 12 months.</div>
                   <div v-if="spouseOutsideBCLast12Months === 'Y'" class="tabbed-section">
-                    <Input 
+                    <InputComponent 
                       id="departure-reason"
                       className="mt-3"
                       label="Reason for departure"
@@ -567,7 +567,7 @@
                       v-if="v$.spouseOutsideBCLast12MonthsReason.$dirty && v$.spouseOutsideBCLast12MonthsReason.required.$invalid"
                       aria-live="assertive">Reason for departure is required.</div>
                     <div class="text-danger" v-if="v$.spouseOutsideBCLast12MonthsReason.$dirty && v$.spouseOutsideBCLast12MonthsReason.reasonDestinationContentValidator.$invalid" aria-live="assertive">Reason must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-                    <Input 
+                    <InputComponent 
                       id="departure-location"
                       className="mt-3"
                       label="Location"
@@ -617,7 +617,7 @@
                         && v$.spouseOutsideBCLast12MonthsReturnDate.returnDateValidator.$invalid"
                       aria-live="assertive">Return date must be within the last 12 months and after departure date.</div>
                   </div>
-                  <Radio
+                  <RadioComponent
                     label='Does your spouse have a previous B.C. Personal Health Number?'
                     id='has-previous-bc-health-number'
                     name='has-previous-bc-health-number'
@@ -646,7 +646,7 @@
                       aria-live="assertive">Personal Health Number is not valid.</div>
                   </div>
                   <div v-if="showDischargeInputs">
-                    <Radio
+                    <RadioComponent
                       label='Has your spouse been released from the Canadian Armed Forces or an institution?'
                       id='been-released-from-institution'
                       name='been-released-from-institution'
@@ -732,9 +732,9 @@ import {
   CountrySelect,
   RegionSelect,
   PageContent,
-  Select,
-  Radio,
-  Input,
+  SelectComponent,
+  RadioComponent,
+  InputComponent,
   DateInput,
   PhnInput,
   SINInput,
@@ -904,9 +904,9 @@ export default {
     CountrySelect,
     RegionSelect,
     PageContent,
-    Select,
-    Radio,
-    Input,
+    SelectComponent,
+    RadioComponent,
+    InputComponent,
     DateInput,
     PhnInput,
     SINInput,

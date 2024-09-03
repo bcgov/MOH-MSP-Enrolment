@@ -29,7 +29,7 @@
                 :required="true"
                 @addressSelected="handleResAddressSelected($event)"
                 @blur="handleBlurField(v$.resAddressLine1)" />
-              <Input v-else
+              <InputComponent v-else
                 class="mt-3"
                 label="Full street address"
                 id="res-address-line1"
@@ -42,7 +42,7 @@
               <div class="text-danger"
                   v-if="v$.resAddressLine1.$dirty && !v$.resAddressLine1.required.$invalid && v$.resAddressLine1.addressLineContentValidator.$invalid"
                   aria-live="assertive">Full street address must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="Address Line 2 (optional)"
                 id="res-address-line2"
                 v-model="resAddressLine2"
@@ -52,7 +52,7 @@
               <div class="text-danger"
                   v-if="v$.resAddressLine2.$dirty && v$.resAddressLine2.addressLineContentValidator.$invalid"
                   aria-live="assertive">Full street address must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="Address Line 3 (optional)"
                 id="res-address-line3"
                 v-model="resAddressLine3"
@@ -62,7 +62,7 @@
               <div class="text-danger"
                   v-if="v$.resAddressLine3.$dirty && v$.resAddressLine3.addressLineContentValidator.$invalid"
                   aria-live="assertive">Full street address must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="City"
                 id="res-city"
                 v-model="resCity"
@@ -130,7 +130,7 @@
                 :required="true"
                 @addressSelected="handleMailAddressSelected($event)"
                 @blur="handleBlurField(v$.mailAddressLine1)" />
-              <Input v-else
+              <InputComponent v-else
                 class="mt-3"
                 label="Full street address, rural route, PO box, or general delivery"
                 id="mail-address-line1"
@@ -145,7 +145,7 @@
               <div class="text-danger"
                 v-if="v$.mailAddressLine1.$dirty && !v$.mailAddressLine1.required.$invalid && v$.mailAddressLine1.addressLineContentValidator.$invalid"
                 aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="Address Line 2 (optional)"
                 id="mail-address-line2"
                 v-model="mailAddressLine2"
@@ -155,7 +155,7 @@
               <div class="text-danger"
                 v-if="v$.mailAddressLine2.$dirty && v$.mailAddressLine2.addressLineContentValidator.$invalid"
                 aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="Address Line 3 (optional)"
                 id="mail-address-line3"
                 v-model="mailAddressLine3"
@@ -165,7 +165,7 @@
               <div class="text-danger"
                 v-if="v$.mailAddressLine3.$dirty && v$.mailAddressLine3.addressLineContentValidator.$invalid"
                 aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="City"
                 id="mail-city"
                 v-model="mailCity"
@@ -185,7 +185,7 @@
                 :required="true"
                 :disablePlaceholder="true"
                 @blur="handleBlurField(v$.mailProvince)" />
-              <Input v-else
+              <InputComponent v-else
                 class="mt-3"
                 label="Province or State"
                 id="mail-province"
@@ -224,7 +224,7 @@
                 <div class="text-danger" v-if="v$.mailPostalCode.$dirty && v$.mailPostalCode.required.$invalid" aria-live="assertive">Postal Code is required.</div>
               </div>
               <div v-else>
-                <Input
+                <InputComponent
                   class="mt-3"
                   label="Postal Code or Zip Code"
                   id="mail-postal-code"
@@ -243,7 +243,7 @@
           </div>
         </div>
         <div v-if="applyingForMSP">
-          <Checkbox class="mt-3"
+          <CheckboxComponent class="mt-3"
                 id="same-address-check"
                 v-model="isMailSame"
                 label="This is my mailing address."/>
@@ -321,10 +321,10 @@ import logService from '@/services/log-service';
 import {
   AddressDoctorInput,
   ButtonComponent,
-  Checkbox,
+  CheckboxComponent,
   ContinueBar,
   CountrySelect,
-  Input,
+  InputComponent,
   PageContent,
   PhoneNumberInput,
   PostalCodeInput,
@@ -395,10 +395,10 @@ export default {
   components: {
     AddressDoctorInput,
     ButtonComponent,
-    Checkbox,
+    CheckboxComponent,
     ContinueBar,
     CountrySelect,
-    Input,
+    InputComponent,
     PageContent,
     PhoneNumberInput,
     PostalCodeInput,

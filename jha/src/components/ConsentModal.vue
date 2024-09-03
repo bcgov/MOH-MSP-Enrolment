@@ -12,7 +12,7 @@
           </div>
           <div class="modal-body">
             <p>Your personal information is collected by the Ministry of Health under the authority of sections 26(a) and (c) of the <em>Freedom of Information and Protection of Privacy Act (FIPPA).</em> It is collected for the purpose of administering Medical Services Plan and Supplementary Benefits under the <em>Medicare Protection Act,</em> and to determine, verify and administer your and your family’s Fair PharmaCare coverage under the <em>Pharmaceutical Services Act.</em> If you have questions about the collection of personal information on this form, contact the HIBC Chief Privacy Officer at PO Box 9035 STN Prov Govt, Victoria BC V8W 9E3; or call 604 683-7151 (Vancouver) or 1 800 663-7100 (toll free).</p>
-            <Captcha v-if="!isCaptchaValid"
+            <CaptchaComponent v-if="!isCaptchaValid"
                     class="mt-4"
                     :apiBasePath="captchaAPIBasePath"
                     :nonce="applicationUuid"
@@ -44,7 +44,7 @@
 <script>
 import {
   ButtonComponent,
-  Captcha,
+  CaptchaComponent,
 } from "common-lib-vue";
 import {
   MODULE_NAME as enrolmentModule,
@@ -56,7 +56,7 @@ export default {
   name: "ConsentModal",
   components: {
     ButtonComponent,
-    Captcha,
+    CaptchaComponent,
   },
   data: () => {
     return {

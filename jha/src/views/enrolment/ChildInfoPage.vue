@@ -13,7 +13,7 @@
         <p>A child is under 19 years old, and the applicant is their parent or legal guardian.</p>
         <p>A dependent post-secondary student is a 19- to 24-year-old who is supported by parent(s) or guardian(s), has no spouse, and is enrolled full-time in a recognized post-secondary institution.</p>
         <hr class="mt-0"/>
-        <Radio v-if="hasChildren !== 'Y'"
+        <RadioComponent v-if="hasChildren !== 'Y'"
                 label="Do you have a child who also needs to enrol?"
                 :id="'has-children'"
                 :name="'has-children'"
@@ -83,7 +83,7 @@ import logService from '@/services/log-service';
 import {
   ContinueBar,
   PageContent,
-  Radio,
+  RadioComponent,
   cloneDeep
 } from 'common-lib-vue';
 import {
@@ -111,7 +111,7 @@ export default {
   components: {
     ContinueBar,
     PageContent,
-    Radio,
+    RadioComponent,
     Child,
   },
   data: () => {

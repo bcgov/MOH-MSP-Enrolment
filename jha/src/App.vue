@@ -1,24 +1,24 @@
 <template>
   <div>
     <div :aria-hidden="isModalOpen">
-      <Header :title='pageTitle'
+      <HeaderComponent :title='pageTitle'
               imagePath='/ahdc/images/' />
       <router-view/>
-      <Footer :version='version' />
+      <FooterComponent :version='version' />
     </div>
     <div id="modal-target" name="modal" ref="modal"></div>
   </div>
 </template>
 
 <script>
-import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
+import "@bcgov/bootstrap-v5-theme/css/bootstrap-theme.min.css";
 import 'common-lib-vue/dist/common-lib-vue.css';
 import './styles/styles.css';
 
 import project from '../package.json';
 import {
-  Header,
-  Footer,
+  HeaderComponent,
+  FooterComponent,
 } from 'common-lib-vue';
 import pageStateService from '@/services/page-state-service';
 import { commonRoutes } from '@/router/routes';
@@ -32,8 +32,8 @@ import {
 export default {
   name: 'App',
   components: {
-    Header,
-    Footer,
+    HeaderComponent,
+    FooterComponent,
   },
   data: () => {
     return {

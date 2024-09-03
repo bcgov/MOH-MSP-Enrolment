@@ -10,7 +10,7 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Fair PharmaCare eligibility</h1>
-        <Radio
+        <RadioComponent
           id='apply-fpc'
           name='apply-fpc'
           label='1. Will you use this form to apply for Fair PharmaCare?'
@@ -24,7 +24,7 @@
             <p class="mb-0 ml-4">b. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
           </div>
           <p id="eqFPCMeetsCriteria" class="ml-4 mb-0">Do you meet the above eligibility criteria?</p>
-          <Radio
+          <RadioComponent
             id='meets-fpc-criteria'
             name='meets-fpc-criteria'
             label=''
@@ -55,7 +55,7 @@
               <p class="ml-4">c. Registered Disability Savings Plan (RDSP) income (Line 12500) if applicable.</p>
             </div>
             <p id="eqFPCHasInfo" class="ml-4 mb-0">Do you have this information to include with your application?</p>
-            <Radio
+            <RadioComponent
               id='has-fpc-info'
               name='has-fpc-info'
               label=''
@@ -112,7 +112,7 @@ import {
 import {
   PageContent,
   ContinueBar,
-  Radio,
+  RadioComponent,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import {
@@ -148,7 +148,7 @@ export default {
   components: {
     ContinueBar,
     PageContent,
-    Radio,
+    RadioComponent,
     ContactInformation,
 },
   data: () => {

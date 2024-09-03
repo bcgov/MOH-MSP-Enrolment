@@ -4,7 +4,7 @@
       <div class="row">
         <div class="col-md-7">
           <div v-if="requestAgeRange">
-            <Radio
+            <RadioComponent
               label='How old is your child?'
               :id="'child-age-range-' + index"
               :name="'child-age-range-' + index"
@@ -18,7 +18,7 @@
               v-if="v$.ageRange.$dirty && v$.ageRange.required.$invalid"
               aria-live="assertive">Please indicate your child's age range.</div>
           </div>
-          <Input label='First name'
+          <InputComponent label='First name'
             :id="'child-first-name-' + index"
             className='mt-3'
             @blur="handleBlurField(v$.firstName)"
@@ -32,7 +32,7 @@
           <div class="text-danger"
             v-if="v$.firstName.$dirty && !v$.firstName.required.$invalid && v$.firstName.nameValidator.$invalid"
             aria-live="assertive">First name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-          <Input label='Middle name (optional)'
+          <InputComponent label='Middle name (optional)'
             :id="'child-middle-name-' + index"
             className='mt-3'
             @blur="handleBlurField(v$.middleName)"
@@ -42,7 +42,7 @@
           <div class="text-danger"
             v-if="v$.middleName.$dirty && v$.middleName.nameValidator.$invalid"
             aria-live="assertive">Middle name must begin with a letter and cannot include special characters except hyphens, periods, apostrophes and blank characters.</div>
-          <Input label='Last name'
+          <InputComponent label='Last name'
             :id="'child-last-name-' + index"
             className='mt-3'
             :maxlength="lastNameMaxLength"
@@ -111,7 +111,7 @@
               aria-live="assertive">This Personal Health Number (PHN) was already used for another family member. Please provide the PHN that is listed on the family member's PHN card/letter.</div>
           </div>
           <div v-if="requestGender">
-            <Radio
+            <RadioComponent
               label='Gender'
               :id="'child-gender-' + index"
               :name="'child-gender-' + index"
@@ -145,7 +145,7 @@
         <h2 class="mt-3">Child's status in Canada</h2>
         <p>Please provide your child's immigration status. You will be required to upload documents to support your child's status in Canada. For arrivals through the Canada-Ukraine authorization for emergency travel (CUAET) program, please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
         <hr />
-        <Select 
+        <SelectComponent 
           :id="'child-status-' + index"
           :name="'child-status-' + index"
           label="Immigration status in Canada"
@@ -161,7 +161,7 @@
           v-if="v$.status.$dirty && v$.status.required.$invalid"
           aria-live="assertive">Please select your child's immigration status.</div>
         <div v-if="status === statusOptions.Citizen || status === statusOptions.PermanentResident">
-          <Radio
+          <RadioComponent
             :id="'child-status-reason-' + index"
             :name="'child-status-reason-' + index"
             label=''
@@ -174,7 +174,7 @@
             aria-live="assertive">This field is required.</div>
         </div>
         <div v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child19To24">
-          <Radio
+          <RadioComponent
             :id="'child-status-reason' + index"
             :name="'child-status-reason' + index"
             label=''
@@ -187,7 +187,7 @@
             aria-live="assertive">This field is required.</div>
         </div>
         <div v-if="status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child19To24">
-          <Radio
+          <RadioComponent
             :id="'child-status-reason' + index"
             :name="'child-status-reason' + index"
             label=''
@@ -203,7 +203,7 @@
           <h2>Documents</h2>
           <p>Provide a copy of an accepted document that shows your child’s status in Canada. If their name is different from the name on the document, you must also upload a copy of a name change certificate that shows their full legal name.</p>
           <hr/>
-          <Select 
+          <SelectComponent 
             label="Document type"
             :name="'citizen-support-document-type-' + index"
             :id="'citizen-support-document-type-' + index"
@@ -218,7 +218,7 @@
           <div class="text-danger"
             v-if="v$.citizenshipSupportDocumentType.$dirty && v$.citizenshipSupportDocumentType.required.$invalid"
             aria-live="assertive">Document type is required.</div>
-          <Radio
+          <RadioComponent
             label="Does the document that shows your child's status in Canada match their selected gender designation?" 
             :name="'gender-matches-' + index"
             :id="'gender-matches-' + index"
@@ -253,7 +253,7 @@
           </div>
 
           <div v-if="citizenshipSupportDocumentType && genderMatches">
-            <Radio label="Is your child's name different from the name on their document?"
+            <RadioComponent label="Is your child's name different from the name on their document?"
               :id="'name-change-' + index"
               :name="'name-change-' + index"
               class="mt-3 mb-3"
@@ -269,7 +269,7 @@
             <h2>Additional Documents</h2>
             <p>Provide a copy of a name change certificate that shows your child's full legal name.</p>
             <hr/>
-            <Select 
+            <SelectComponent 
               label="Document type"
               :name="'name-change-doc-type-' + index"
               :id="'name-change-doc-type-' + index"
@@ -313,7 +313,7 @@
           <div class="row">
               <div class="col-md-7">
               <div v-if="showLivedInBCSinceBirth">
-                  <Radio 
+                  <RadioComponent 
                     label='Has your child lived in B.C. since birth?'
                     :id="'lived-in-bc-' + index"
                     :name="'lived-in-bc-' + index"
@@ -327,7 +327,7 @@
                     aria-live="assertive">Please indicate whether your child has lived in B.C. since birth.</div>
               </div>
               <div v-if="showOriginTextField">
-                  <Input 
+                  <InputComponent 
                     className="mt-3"
                     label="Which province or jurisdiction did your child live in before moving to British Columbia?"
                     maxlength="25"
@@ -343,7 +343,7 @@
                     aria-live="assertive">Province or jurisdiction of origin must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters.</div>
               </div>
               <div v-if="showMovedPermanentlyQuestion">
-                  <Radio
+                  <RadioComponent
                     label='Has your child moved to B.C. permanently?'
                     :id="'permanent-move-' + index"
                     :name="'permanent-move-' + index"
@@ -512,7 +512,7 @@
                       aria-live="assertive">Your child's arrival date in Canada cannot be after the move to B.C. date.</div>
                   </div>
                   <div v-if="showPreviousHealthNumber">
-                    <Input 
+                    <InputComponent 
                       className="mt-3"
                       :id="'health-number-' + index"
                       :name="'health-number-' + index"
@@ -521,7 +521,7 @@
                       v-model="previousHealthNumber"
                       :inputStyle='mediumStyles' />
                   </div>
-                  <Radio
+                  <RadioComponent
                     label='Since your child arrived in B.C., have they left the province for more than 30 days in total in the past 12 months?'
                     :id="'outside-bc-' + index"
                     :name="'outside-bc-' + index"
@@ -533,12 +533,12 @@
                     <template v-slot:description>
                       <span class="field-description">If your child has been living in B.C. for less than 12 months, please indicate any absences since arrival.</span>
                     </template>
-                  </Radio>
+                  </RadioComponent>
                   <div class="text-danger"
                     v-if="v$.outsideBCLast12Months.$dirty && v$.outsideBCLast12Months.required.$invalid"
                     aria-live="assertive">Please indicate whether your child has been outside B.C. in the past 12 months.</div>
                   <div v-if="outsideBCLast12Months === 'Y'" class="tabbed-section">
-                    <Input 
+                    <InputComponent 
                       className="mt-3"
                       :id="'outside-bc-reason-' + index"
                       :name="'outside-bc-reason-' + index"
@@ -552,7 +552,7 @@
                       v-if="v$.outsideBCLast12MonthsReason.$dirty && v$.outsideBCLast12MonthsReason.required.$invalid"
                       aria-live="assertive">Reason for departure is required.</div>
                     <div class="text-danger" v-if="v$.outsideBCLast12MonthsReason.$dirty && v$.outsideBCLast12MonthsReason.reasonDestinationContentValidator.$invalid" aria-live="assertive">Reason must contain letters and may include numbers and special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-                    <Input 
+                    <InputComponent 
                       className="mt-3"
                       :id="'outside-bc-destination-' + index"
                       :name="'outside-bc-destination-' + index"
@@ -601,7 +601,7 @@
                       v-if="v$.outsideBCLast12MonthsReturnDate.$dirty && v$.outsideBCLast12MonthsReturnDate.returnDateValidator.$invalid"
                       aria-live="assertive">Return date must be within the last 12 months and after departure date.</div>
                   </div>
-                  <Radio
+                  <RadioComponent
                     label='Does your child have a previous B.C. Personal Health Number?'
                     :id="'has-bc-health-number-' + index"
                     :name="'has-bc-health-number-' + index"
@@ -630,7 +630,7 @@
                       aria-live="assertive">Personal Health Number is not valid.</div>
                   </div>
                   <div v-if="showDischargeInputs">
-                    <Radio
+                    <RadioComponent
                       label='Has your child been released from the Canadian Armed Forces or an institution?'
                       :id="'been-released-' + index"
                       :name="'been-released-' + index"
@@ -677,7 +677,7 @@
           <h2 class="mt-3">School Information</h2>
           <p class="m-0">Enter information for the school that your child is attending. (They must be in full-time attendance.)</p>
           <hr/>
-          <Input label='School name'
+          <InputComponent label='School name'
             :id="'school-name-' + index"
             className='mt-3'
             maxlength="50"
@@ -698,7 +698,7 @@
             :inputStyle='mediumStyles'
             @addressSelected="handleSchoolAddressSelected($event)"
             @blur="handleBlurField(v$.schoolAddressLine1)" />
-          <Input v-else
+          <InputComponent v-else
             label="Full street address, rural route, PO box or general delivery"
             :id="'school-address-line1-' + index"
             className='mt-3'
@@ -710,7 +710,7 @@
           <div class="text-danger"
               v-if="v$.schoolAddressLine1.$dirty && v$.schoolAddressLine1.addressLineContentValidator.$invalid"
               aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-          <Input label="Address Line 2 (optional)"
+          <InputComponent label="Address Line 2 (optional)"
             :id="'school-address-line2-' + index"
             className='mt-3'
             v-model="schoolAddressLine2"
@@ -720,7 +720,7 @@
           <div class="text-danger"
               v-if="v$.schoolAddressLine2.$dirty && v$.schoolAddressLine2.addressLineContentValidator.$invalid"
               aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-          <Input label="Address Line 3 (optional)"
+          <InputComponent label="Address Line 3 (optional)"
             :id="'school-address-line3-' + index"
             className='mt-3'
             v-model="schoolAddressLine3"
@@ -730,7 +730,7 @@
           <div class="text-danger"
               v-if="v$.schoolAddressLine3.$dirty && v$.schoolAddressLine3.addressLineContentValidator.$invalid"
               aria-live="assertive">Full street address, rural route, PO box or general delivery must contain letters or numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-          <Input label="City"
+          <InputComponent label="City"
             :id="'school-city-' + index"
             className='mt-3'
             v-model="schoolCity"
@@ -740,7 +740,7 @@
           <div class="text-danger" v-if="v$.schoolCity.$dirty && v$.schoolCity.required.$invalid" aria-live="assertive">City is required.</div>
           <div class="text-danger" v-if="v$.schoolCity.$dirty && v$.schoolCity.cityStateProvinceContentValidator.$invalid" aria-live="assertive">City must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes and blank characters.</div>
           <div v-if="schoolCountry !== 'Canada'"> 
-            <Input label="Province or state"
+            <InputComponent label="Province or state"
               :id="'school-province-' + index"
               className='mt-3'
               maxlength="25"
@@ -785,7 +785,7 @@
             <div class="text-danger" v-if="v$.schoolPostalCode.$dirty && !v$.schoolPostalCode.required.$invalid && v$.schoolPostalCode.completePostalCodeValidator.$invalid" aria-live="assertive">Must be in the format A1A 1A1.</div>
           </div>
           <div v-else>
-            <Input label="Postal Code or Zip Code"
+            <InputComponent label="Postal Code or Zip Code"
               :id="'school-zip-code-' + index"
               className='mt-3'
               maxlength="20"
@@ -816,7 +816,7 @@
             aria-live="assertive">Expected school completion date is required.</div>
           <div class="text-danger" v-if="v$.schoolCompletionDate.$dirty && v$.schoolCompletionDate.dateDataValidator.$invalid" aria-live="assertive">Invalid estimated school completion date.</div>
           <div class="text-danger" v-if="v$.schoolCompletionDate.$dirty && v$.schoolCompletionDate.futureDateValidator.$invalid" aria-live="assertive">Estimated school completion date cannot be in the past.</div>
-          <Radio label="Will your child reside in B.C. after completing their studies?"
+          <RadioComponent label="Will your child reside in B.C. after completing their studies?"
             class="mt-3"
             :id="'will-reside-in-bc-after-studies-' + index"
             :name="'will-reside-in-bc-after-studies-' + index"
@@ -854,9 +854,9 @@ import {
   AddressDoctorInput,
   CountrySelect,
   RegionSelect,
-  Select,
-  Radio,
-  Input,
+  SelectComponent,
+  RadioComponent,
+  InputComponent,
   DateInput,
   PhnInput,
   PostalCodeInput,
@@ -1045,9 +1045,9 @@ export default {
     AddressDoctorInput,
     CountrySelect,
     RegionSelect,
-    Select,
-    Radio,
-    Input,
+    SelectComponent,
+    RadioComponent,
+    InputComponent,
     DateInput,
     PhnInput,
     FileUploader,

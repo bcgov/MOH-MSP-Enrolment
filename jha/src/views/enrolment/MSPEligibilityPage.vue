@@ -18,7 +18,7 @@
         </ul> 
         <p>Answer the following questions to see which programs you are eligible for and make sure you have what you need to apply.</p>
         <h1>Medical Services Plan (MSP) eligibility</h1>
-        <Radio
+        <RadioComponent
           id='apply-msp'
           name='apply-msp'
           label='1. Will you use this form to apply for MSP?'
@@ -27,7 +27,7 @@
           :required="true"
           :items='radioOptionsApplyMSP' />
         <div v-if="eqMSPIsApplying === 'Y'">
-          <Radio
+          <RadioComponent
             id='live-in-bc'
             name='live-in-bc'
             label='2. Do you currently live in B.C. and have a B.C. address where you can receive mail?'
@@ -42,7 +42,7 @@
             <ContactInformation />
           </div>
           <div v-if="eqMSPLiveInBC === 'Y'">
-            <Radio
+            <RadioComponent
               id='away-over-30'
               name='away-over-30'
               label='3. Will anyone included in this application be away from B.C. for more than 30 days in total during the next six months?'
@@ -57,7 +57,7 @@
               <ContactInformation/>
             </div>
             <div v-if="eqMSPAwayOver30 === 'N'">
-              <Radio
+              <RadioComponent
                 id='student-minor-refugee'
                 name='student-minor-refugee'
                 label='4. Is anyone included in this application: a student returning to a province outside B.C. at the end of a course or program; an unaccompanied minor; or a person seeking refugee status?'
@@ -72,7 +72,7 @@
               <div v-if="eqMSPStudentMinorRefugee === 'N'">
                 <p>5. To apply for MSP, you must upload a digital copy of one the documents below for each person included in this application. The document must show full legal name and legal status in Canada.</p>
                 <IdTable />
-                <Radio 
+                <RadioComponent 
                   id='has-documents'
                   name='has-documents'
                   label='Do you have digital copies of the documents for each person included in this application?'
@@ -118,7 +118,7 @@ import {
 import {
   PageContent,
   ContinueBar,
-  Radio,
+  RadioComponent,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import {
@@ -159,7 +159,7 @@ export default {
   components: {
     ContinueBar,
     PageContent,
-    Radio,
+    RadioComponent,
     IdTable,
     ContactInformation,
   },

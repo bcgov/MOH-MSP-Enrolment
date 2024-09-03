@@ -12,7 +12,7 @@
         <h1>Select programs </h1>
         <p>Based on the information you provided, you are eligible to apply for the programs indicated below. If you choose not to apply for a program, remove the checkmark from that program.</p>
         <hr class="mt-0"/>
-        <Checkbox label="MSP Enrolment"
+        <CheckboxComponent label="MSP Enrolment"
           id="msp"
           class="pb-1"
           :disabled="true"
@@ -28,8 +28,8 @@
             </div>
             <p v-else-if="msgCodeMSP === eqMsgCodesMSP.NotHaveDocuments" class="mt-2 text-danger">Make sure you have digital copies of the above documents before completing your British Columbia Application for Health Drug Coverage. You will not be able to apply for MSP enrolment without these documents.</p>
           </template>
-        </Checkbox>
-        <Checkbox label="Fair PharmaCare"
+        </CheckboxComponent>
+        <CheckboxComponent label="Fair PharmaCare"
           id="fpc"
           :disabled="!isEligibleForFPCare"
           class="pb-1"
@@ -42,8 +42,8 @@
               <li>If you (or your spouse) did not submit a tax return for the taxation year two years before the current year: file an income tax return with the Canada Revenue Agency for the required taxation year as soon as possible. When you have submitted your tax return(s), register your family for Fair PharmaCare. If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.&nbsp;</li>
             </ul>
           </template>
-        </Checkbox>
-        <Checkbox label="Supplementary Benefits"
+        </CheckboxComponent>
+        <CheckboxComponent label="Supplementary Benefits"
           id="sb"
           :disabled="!isEligibleForSuppBen"
           class="pb-1"
@@ -56,7 +56,7 @@
               <li>If you (or your spouse) did not submit a tax return for a valid taxation year: file an income tax return with the Canada Revenue Agency for the required year as soon as possible. When you have received an NOA/NORA, apply for supplementary benefits. If you cannot file an income tax return for the relevant year because you are a new resident of Canada, contact Health Insurance BC.&nbsp;</li>
             </ul>
           </template>
-        </Checkbox>
+        </CheckboxComponent>
         <div class="text-danger mt-3"
           v-if="v$.$dirty && v$.atLeastOne.$invalid"
           aria-live="assertive">You must select at least one program.</div>
@@ -92,7 +92,7 @@ import {
   SET_SB_UUID,
 } from '@/store/modules/enrolment-module';
 import {
-  Checkbox,
+  CheckboxComponent,
   PageContent,
   ContinueBar,
 } from 'common-lib-vue';
@@ -119,7 +119,7 @@ export default {
     pageStepperMixin,
   ],
   components: {
-    Checkbox,
+    CheckboxComponent,
     ContinueBar,
     PageContent,
   },

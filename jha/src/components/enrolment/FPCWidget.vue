@@ -38,7 +38,7 @@
     <h3>Level of coverage</h3>
     <div v-if="isLoading"
       class="text-center">
-      <Loader color="#000"
+      <LoaderComponent color="#000"
         size="24px" />
     </div>
     <div v-if="isSystemUnavailable"
@@ -53,7 +53,7 @@
 <script>
 import {
   DistributionBar,
-  Loader,
+  LoaderComponent,
 } from 'common-lib-vue';
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
@@ -72,7 +72,7 @@ export default {
   name: 'FPCWidget',
   components: {
     DistributionBar,
-    Loader,
+    LoaderComponent,
   },
   props: {
     value: {
