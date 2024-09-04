@@ -128,13 +128,33 @@ describe("Full application for MSP FPC and SB (validations)", () => {
     cy.get("[data-cy=has-documents-yes]").click({
       force: true,
     });
+    //Navigates forward
     cy.get("[data-cy=continue]").click();
     cy.location().should((loc) => {
       expect(loc.pathname).to.eq("/ahdc/fpcare-eligibility");
     });
+    cy.get("[data-cy=apply-fpc-no]").click({
+      force: true,
+    });
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/supp-ben-eligibility");
+    });
+    cy.get("[data-cy=apply-sb-no]").click({
+      force: true,
+    });
+    cy.get("[data-cy=continue]").click();   
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/form-selection");
+    });
+    //Successfully reaches personal info page
+    cy.get("[data-cy=continue]").click();   
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/personal-info");
+    });
   });
 
-  it('Validates the FPC Eligibility page', () => {
+  it("Validates the FPC Eligibility page", () => {
     //Skip MSP portion of form
     cy.visit("/msp-eligibility");
     cy.location().should((loc) => {
@@ -175,7 +195,9 @@ describe("Full application for MSP FPC and SB (validations)", () => {
       expect(loc.pathname).to.eq("/ahdc/form-selection");
     });
     //Next page contains different error
-    cy.contains("You are not eligible to register for Fair PharmaCare at this time");
+    cy.contains(
+      "You are not eligible to register for Fair PharmaCare at this time"
+    );
     //Stops form progress
     cy.get("[data-cy=continue]").click();
     cy.contains("You must select at least one program.");
@@ -194,9 +216,7 @@ describe("Full application for MSP FPC and SB (validations)", () => {
       force: true,
     });
     //Contains error
-    cy.contains(
-      "You must have this information to apply for Fair PharmaCare."
-    );
+    cy.contains("You must have this information to apply for Fair PharmaCare.");
     //Click continue
     cy.get("[data-cy=continue]").click();
     cy.location().should((loc) => {
@@ -210,7 +230,9 @@ describe("Full application for MSP FPC and SB (validations)", () => {
       expect(loc.pathname).to.eq("/ahdc/form-selection");
     });
     //Next page contains different error
-    cy.contains("If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada");
+    cy.contains(
+      "If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada"
+    );
     //Stops form progress
     cy.get("[data-cy=continue]").click();
     cy.contains("You must select at least one program.");
@@ -228,6 +250,115 @@ describe("Full application for MSP FPC and SB (validations)", () => {
     cy.location().should((loc) => {
       expect(loc.pathname).to.eq("/ahdc/supp-ben-eligibility");
     });
+    cy.get("[data-cy=apply-sb-no]").click({
+      force: true,
+    });
+    cy.get("[data-cy=continue]").click();   
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/form-selection");
+    });
+    //Successfully reaches personal info page
+    cy.get("[data-cy=continue]").click();   
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/personal-info");
+    });
+  });
+
+  it("Validates the Supplementary Benefits Eligibility page", () => {
+    //Skip MSP portion of form
+    cy.visit("/msp-eligibility");
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/msp-eligibility");
+    });
+    cy.get("[data-cy=apply-msp-no]").click({
+      force: true,
+    });
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/fpcare-eligibility");
+    });
+    //Skip FPC portion of form
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/fpcare-eligibility");
+    });
+    cy.get("[data-cy=apply-fpc-no]").click({
+      force: true,
+    });
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/supp-ben-eligibility");
+    });
+    //Question 1: Will you use this form to apply for Supplementary Benefits? (e2e test assumes yes)
+    //Click yes
+    cy.get("[data-cy=apply-sb-yes]").click({
+      force: true,
+    });
+    //Question 2: Do you meet the above eligibility criteria?
+    //Click no
+    cy.get("[data-cy=meets-sb-criteria-no]").click({
+      force: true,
+    });
+    //Contains error
+    cy.contains(
+      "You are not eligible to apply for Supplementary Benefits at this time."
+    );
+    //Click continue
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/form-selection");
+    });
+    //Next page contains different error
+    cy.contains(
+      "You are not eligible to apply for supplementary benefits at this time."
+    );
+    //Stops form progress
+    cy.get("[data-cy=continue]").click();
+    cy.contains("You must select at least one program.");
+    //Go back, set up form correctly for next question
+    cy.go("back");
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/supp-ben-eligibility");
+    });
+    cy.get("[data-cy=meets-sb-criteria-yes]").click({
+      force: true,
+    });
+    //Question 3: Do you have these documents?
+    //Click no
+    cy.get("[data-cy=has-sb-info-no]").click({
+      force: true,
+    });
+    //Contains error
+    cy.contains(
+      "You must have the above documents and information to apply for Supplementary Benefits."
+    );
+    //Click continue
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/form-selection");
+    });
+    //Next page contains different error
+    cy.contains(
+      "If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada before submitting an application."
+    );
+    //Stops form progress
+    cy.get("[data-cy=continue]").click();
+    cy.contains("You must select at least one program.");
+    //Go back, set up form correctly for next question
+    cy.go("back");
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/supp-ben-eligibility");
+    });
+    cy.get("[data-cy=has-sb-info-yes]").click({
+      force: true,
+    });
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/form-selection");
+    });
+    cy.get("[data-cy=continue]").click();   
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/personal-info");
+    }); 
   });
 
   // it('Fills eligibility questionnaire', () => {

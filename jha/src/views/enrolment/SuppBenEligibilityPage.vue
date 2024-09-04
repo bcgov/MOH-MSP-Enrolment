@@ -34,6 +34,7 @@
             id='meets-sb-criteria'
             name='meets-sb-criteria'
             label=''
+            cypressId='meets-sb-criteria-'
             aria-labelledby="eqSBMeetsCriteria"
             v-model='eqSBMeetsCriteria'
             :required="true"
@@ -56,6 +57,7 @@
               id='has-sb-info'
               name='has-sb-info'
               label=''
+              cypressId='has-sb-info-'
               aria-labelledby="eqSBHasInfo"
               v-model='eqSBhasInfo'
               :required="true"
