@@ -3,8 +3,7 @@
 
 describe("Full application for MSP FPC and SB (validations)", () => {
   // const options = {includeMSP: true, includeFPC: false, includeSB: true}
-  it("Validates the MSP Elibility page", () => {
-    const eligibilityError = "Please complete the questionnaire to continue.";
+  it("Validates the MSP Eligibility page", () => {
     cy.visit("/msp-eligibility");
     cy.location().should((loc) => {
       expect(loc.pathname).to.eq("/ahdc/msp-eligibility");
@@ -14,7 +13,7 @@ describe("Full application for MSP FPC and SB (validations)", () => {
       force: true,
     });
     cy.get("[data-cy=continue]").click();
-    cy.contains(eligibilityError);
+    cy.contains("Please complete the questionnaire to continue");
     //Question 2: Do you live in BC Y/N
     //Click no
     cy.get("[data-cy=live-in-bc-no]").click({
@@ -132,6 +131,102 @@ describe("Full application for MSP FPC and SB (validations)", () => {
     cy.get("[data-cy=continue]").click();
     cy.location().should((loc) => {
       expect(loc.pathname).to.eq("/ahdc/fpcare-eligibility");
+    });
+  });
+
+  it('Validates the FPC Eligibility page', () => {
+    //Skip MSP portion of form
+    cy.visit("/msp-eligibility");
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/msp-eligibility");
+    });
+    cy.get("[data-cy=apply-msp-no]").click({
+      force: true,
+    });
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/fpcare-eligibility");
+    });
+    //Question 1: Will you apply for FPC? (e2e test assumes yes)
+    cy.get("[data-cy=apply-fpc-yes]").click({
+      force: true,
+    });
+    cy.get("[data-cy=continue]").click();
+    cy.contains("Please complete the questionnaire to continue");
+    //Question 2: Do you meet the above eligibility criteria?
+    //Click no
+    cy.get("[data-cy=meets-fpc-criteria-no]").click({
+      force: true,
+    });
+    //Contains error
+    cy.contains(
+      "You are not eligible to apply for Fair PharmaCare at this time."
+    );
+    //Click continue
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/supp-ben-eligibility");
+    });
+    cy.get("[data-cy=apply-sb-no]").click({
+      force: true,
+    });
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/form-selection");
+    });
+    //Next page contains different error
+    cy.contains("You are not eligible to register for Fair PharmaCare at this time");
+    //Stops form progress
+    cy.get("[data-cy=continue]").click();
+    cy.contains("You must select at least one program.");
+    //Go back, set up form correctly for next question
+    cy.go("back");
+    cy.go("back");
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/fpcare-eligibility");
+    });
+    cy.get("[data-cy=meets-fpc-criteria-yes]").click({
+      force: true,
+    });
+    //Question 3: Do you have this information?
+    //Click no
+    cy.get("[data-cy=has-fpc-info-no]").click({
+      force: true,
+    });
+    //Contains error
+    cy.contains(
+      "You must have this information to apply for Fair PharmaCare."
+    );
+    //Click continue
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/supp-ben-eligibility");
+    });
+    cy.get("[data-cy=apply-sb-no]").click({
+      force: true,
+    });
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/form-selection");
+    });
+    //Next page contains different error
+    cy.contains("If you (or your spouse) do not have a Social Insurance Number: Contact Service Canada");
+    //Stops form progress
+    cy.get("[data-cy=continue]").click();
+    cy.contains("You must select at least one program.");
+    //Go back, set up form correctly for next question
+    cy.go("back");
+    cy.go("back");
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/fpcare-eligibility");
+    });
+    cy.get("[data-cy=has-fpc-info-yes]").click({
+      force: true,
+    });
+    //Click continue, navigates to next page
+    cy.get("[data-cy=continue]").click();
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/supp-ben-eligibility");
     });
   });
 

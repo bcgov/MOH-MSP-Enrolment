@@ -14,6 +14,7 @@
           id='apply-fpc'
           name='apply-fpc'
           label='1. Will you use this form to apply for Fair PharmaCare?'
+          cypressId='apply-fpc-'
           v-model='eqFPCIsApplying'
           :required="true"
           :items='radioOptionsApplyFPC' />
@@ -28,6 +29,7 @@
             id='meets-fpc-criteria'
             name='meets-fpc-criteria'
             label=''
+            cypressId='meets-fpc-criteria-'
             aria-labelledby="eqFPCMeetsCriteria"
             v-model='eqFPCMeetsCriteria'
             :required="true"
@@ -59,6 +61,7 @@
               id='has-fpc-info'
               name='has-fpc-info'
               label=''
+              cypressId='has-fpc-info-'
               v-model='eqFPCHasInfo'
               aria-labelledby="eqFPCHasInfo"
               :required="true"
@@ -86,7 +89,8 @@
       </main>
     </PageContent>
     <ContinueBar
-    @continue="validateFields()" />
+    @continue="validateFields()"
+    cypressId='continue' />
   </div>
 </template>
 

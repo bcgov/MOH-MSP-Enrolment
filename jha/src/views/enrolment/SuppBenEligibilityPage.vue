@@ -14,6 +14,7 @@
           id='apply-sb'
           name='apply-sb'
           label='1. Will you use this form to apply for Supplementary Benefits?'
+          cypressId='apply-sb-'
           v-model='eqSBIsApplying'
           :required="true"
           :items='radioOptionsYesNo' >
@@ -81,7 +82,7 @@
                       aria-live="assertive">Please complete the questionnaire to continue.</div>
       </main>
     </PageContent>
-    <ContinueBar @continue="validateFields()" />
+    <ContinueBar @continue="validateFields()" cypressId='continue' />
   </div>
 </template>
 
