@@ -62,7 +62,7 @@
           aria-live="assertive">You must select at least one program.</div>
       </main>
     </PageContent>
-    <ContinueBar @continue="validateFields()" />
+    <ContinueBar cypressId='continue' @continue="validateFields()" />
   </div>
 </template>
 
