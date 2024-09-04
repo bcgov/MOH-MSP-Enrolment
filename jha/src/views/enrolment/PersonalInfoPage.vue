@@ -18,6 +18,7 @@
             <InputComponent label="First name"
               id="first-name"
               v-model="firstName"
+              cypressId='first-name'
               :maxlength="firstNameMaxLength"
               :inputStyle="mediumStyles"
               :required="true"
@@ -34,6 +35,7 @@
               id="middle-name"
               class="mt-3"
               v-model="middleName"
+              cypressId='middle-name'
               :maxlength="middleNameMaxLength"
               :inputStyle="mediumStyles"
               @blur="handleBlurField(v$.middleName)" />
@@ -45,6 +47,7 @@
               id="last-name"
               class="mt-3"
               v-model="lastName"
+              cypressId='last-name'
               :required="true"
               :maxlength="lastNameMaxLength"
               :inputStyle="mediumStyles"
@@ -670,7 +673,7 @@
         </div>
       </main>
     </PageContent>
-    <ContinueBar @continue="validateFields()" />
+    <ContinueBar @continue="validateFields()" cypressId='continue'/>
     <Teleport v-if="isInfoCollectionNoticeOpen"
       to="#modal-target">
       <ConsentModal @close="handleCloseConsentModal"/>

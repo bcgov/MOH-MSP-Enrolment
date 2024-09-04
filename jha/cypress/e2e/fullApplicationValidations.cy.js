@@ -361,6 +361,20 @@ describe("Full application for MSP FPC and SB (validations)", () => {
     }); 
   });
 
+  it.only('Validates the applicant page (MSP)', () => {
+    const options = {includeMSP: true, includeFPC: false, includeSB: false}
+    cy.fillEligibilityQuestionnaire(options);
+    cy.fillPersonalInfoPage(options);
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/spouse-info");
+    });
+    cy.go("back");
+    cy.location().should((loc) => {
+      expect(loc.pathname).to.eq("/ahdc/personal-info");
+    });
+    cy.validateApplicant();
+  });
+
   // it('Fills eligibility questionnaire', () => {
   //   cy.fillEligibilityQuestionnaire(options)
   // });

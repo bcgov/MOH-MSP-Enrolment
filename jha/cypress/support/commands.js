@@ -376,3 +376,35 @@ Cypress.Commands.add('fillConsent', (options) => {
 Cypress.Commands.add('submitApplication', () => {
   cy.get('div.continue-bar').contains('Submit').click()
 })
+
+Cypress.Commands.add('validateApplicant', () => {
+  //First name
+  cy.get('[data-cy=first-name]').clear()
+  cy.get("[data-cy=continue]").click();
+  cy.contains(
+    "First name is required."
+  );
+  cy.get('[data-cy=first-name]').type("111")
+  cy.get("[data-cy=continue]").click();
+  cy.contains(
+    "First name must begin with a letter"
+  );
+  cy.get('[data-cy=first-name]').clear()
+  cy.get('[data-cy=first-name]').type("alex")
+  //Middle name
+  cy.get('[data-cy=middle-name]').clear()
+  cy.get('[data-cy=middle-name]').type("111")
+  cy.contains(
+    "Middle name must begin with a letter"
+  );
+  cy.get('[data-cy=middle-name]').clear()
+  cy.get('[data-cy=middle-name]').type("jaimie")
+  //Last name
+  cy.get('[data-cy=last-name]').clear()
+  cy.get('[data-cy=last-name]').type("111")
+  cy.contains(
+    "Last name must begin with a letter"
+  );
+  cy.get('[data-cy=last-name]').clear()
+  cy.get('[data-cy=last-name]').type("doe")
+})
