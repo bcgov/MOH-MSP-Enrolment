@@ -24,6 +24,7 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
+import envData from '../fixtures/env-data.js'
 import { padInteger } from './helpers';
 import { SupportDocumentTypes } from '../../src/constants/document-types';
 import { StatusInCanada } from '../../src/constants/immigration-status-types';
@@ -34,13 +35,15 @@ const lastMonthDate = new Date();
 lastMonthDate.setMonth(currentDate.getMonth() - 1);
 
 
-Cypress.Commands.add('fillName', (firstName = 'alex', middleName = 'jaimie', lastName = 'doe') => {
+Cypress.Commands.add('fillName', (firstName = envData.firstName, middleName = envData.middleName, lastName = envData.lastName) => {
   cy.get('input#first-name').type(firstName);
-  cy.get('input#middle-name').type(middleName);
+  if (middleName) {
+    cy.get('input#middle-name').type(middleName);
+  }
   cy.get('input#last-name').type(lastName);
 });
 
-Cypress.Commands.add('fillIdFields', (phn = '9999999998', sin = '238795439') => {
+Cypress.Commands.add('fillIdFields', (phn = envData.phn, sin = envData.sin) => {
   cy.get('input#personal-health-number').type(phn)
   cy.get('input#social-insurance-number').type(sin)
 })
@@ -52,15 +55,17 @@ Cypress.Commands.add('continue', () => {
 Cypress.Commands.add("fillPersonalInfoPage", (options) => {
   cy.fillName();
 
-  cy.get('select#birthdate-month').select('0');
-  cy.get('input#birthdate-day').type('01');
-  cy.get('input#birthdate-year').type('2000');
+  const selectOption = parseInt(envData.birthMonth);
+
+  cy.get('select#birthdate-month').select(selectOption);
+  cy.get('input#birthdate-day').type(envData.birthDay);
+  cy.get('input#birthdate-year').type(envData.birthYear);
 
   if (!options?.includeMSP) {
     cy.fillIdFields();
   } else {
     if (options.includeSB || options.includeFPC) {
-      cy.get('input#social-insurance-number').type('238795439')
+      cy.get('input#social-insurance-number').type(envData.sin)
     }
     cy.get('label[for=gender-x]').click();
 
@@ -164,7 +169,7 @@ Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   cy.get('input#sb').should(options.includeSB ? 'be.checked' : 'not.be.checked')
   cy.continue()
 
-  cy.get('input#input-answer').type('aaaaaa');
+  cy.get('input#input-answer').type('irobot');
   cy.get('input#is-terms-accepted').click();
   cy.get('div.modal-footer').contains('Continue').click()
 
@@ -228,6 +233,11 @@ Cypress.Commands.add('fillSpousePage', (options) => {
   cy.continue()
 })
 
+Cypress.Commands.add('skipSpousePage', () => {
+  cy.get('label[for=has-spouse-no').click();
+  cy.continue()
+})
+
 Cypress.Commands.add('fillChildPage', (options) => {
   cy.get('label[for=has-children-yes]').click()
 
@@ -272,6 +282,11 @@ Cypress.Commands.add('fillChildPage', (options) => {
     cy.get('label[for=has-bc-health-number-0-no]').click()
     cy.get('label[for=been-released-0-no]').click()
   }
+  cy.continue()
+})
+
+Cypress.Commands.add('skipChildPage', () => {
+  cy.get('label[for=has-children-no').click();
   cy.continue()
 })
 
@@ -352,9 +367,13 @@ Cypress.Commands.add('fillMailingAddress', () => {
 
 Cypress.Commands.add('fillFPCInfoPage', () => {
   cy.get('input#ah-income').type('20000')
-  cy.get('input#spouse-income').type('20000')
   cy.get('input#ah-disability-savings').type('2000')
-  cy.get('input#spouse-disability-savings').type('2000')
+  if (!envData.skipSpouse) {
+    //in the local environment, we intercept API responses and can easily verify that adding spouse info works as intended
+    //in other environments, we may want to skip this entry so the test data validates against the API correctly
+    cy.get('input#spouse-income').type('20000')
+    cy.get('input#spouse-disability-savings').type('2000')
+  }
   cy.continue()
 })
 
@@ -365,7 +384,11 @@ Cypress.Commands.add('fillConsent', (options) => {
   }
   if (options?.includeFPC) {
     cy.get('label[for=fpc-ah]').click()
-    cy.get('label[for=fpc-spouse]').click()
+    if (!envData.skipSpouse) {
+      //in the local environment, we intercept API responses and can easily verify that adding spouse info works as intended
+      //in other environments, we may want to skip this entry so the test data validates against the API correctly
+      cy.get('label[for=fpc-spouse]').click()
+    }
   }
   if (options?.includeSB) {
     cy.get('label[for=sb-ah]').click()

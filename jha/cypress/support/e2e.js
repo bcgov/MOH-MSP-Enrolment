@@ -15,40 +15,46 @@
 
 // Import commands.js using ES2015 syntax:
 import './commands'
+import envData from '../fixtures/env-data.js'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
 
 beforeEach(() => {
-    cy.intercept('POST', '/ahdc/api/jhaIntegration/getDeductibles', {
-      statusCode: 200,
-    })
-  
-    cy.intercept('POST', '/ahdc/api/jhaIntegration/forwardCheckEligibility', {
-      statusCode: 200,
-      body: {
-        regStatusCode: '0'
-      }
-    })
-  
-    cy.intercept('POST', '/ahdc/api/jhaIntegration/application/**', { statusCode: 200 } ).as('submitApplication')
-  
-    cy.intercept('/ahdc/api/jhaIntegration/version', {
-      statusCode: 200,
-    })
-  
-    cy.intercept('POST', '/ahdc/api/captcha/verify/captcha', {
-      statusCode: 200,
-      body: {
-        valid: true,
-      }
-    });
+    if (envData.enableIntercepts || envData.forceFPCIntercept) {
+      cy.intercept('POST', '/ahdc/api/jhaIntegration/forwardCheckEligibility', {
+        statusCode: 200,
+        body: {
+          regStatusCode: '0'
+        }
+      })
+    }
+
+    if (envData.enableIntercepts) {
+      cy.intercept('POST', '/ahdc/api/jhaIntegration/getDeductibles', {
+        statusCode: 200,
+        assistanceLevels: [],
+        pre1939AssistanceLevels: []
+      })    
+      cy.intercept('POST', '/ahdc/api/jhaIntegration/application/**', { statusCode: 200 } ).as('submitApplication')
     
-    cy.intercept('POST', '/ahdc/api/submit-attachment/**', {
-      statusCode: 200,
-      body: {
-        returnCode: 'success'
-      }
-    })
+      cy.intercept('/ahdc/api/jhaIntegration/version', {
+        statusCode: 200,
+      })
+    
+      cy.intercept('POST', '/ahdc/api/captcha/verify/captcha', {
+        statusCode: 200,
+        body: {
+          valid: true,
+        }
+      });
+      
+      cy.intercept('POST', '/ahdc/api/submit-attachment/**', {
+        statusCode: 200,
+        body: {
+          returnCode: 'success'
+        }
+      })
+    }
   })
   

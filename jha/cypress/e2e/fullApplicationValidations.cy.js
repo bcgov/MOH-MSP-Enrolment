@@ -361,7 +361,7 @@ describe("Full application for MSP FPC and SB (validations)", () => {
     }); 
   });
 
-  it.only('Validates the applicant page (MSP)', () => {
+  it('Validates the applicant page (MSP)', () => {
     const options = {includeMSP: true, includeFPC: false, includeSB: false}
     cy.fillEligibilityQuestionnaire(options);
     cy.fillPersonalInfoPage(options);

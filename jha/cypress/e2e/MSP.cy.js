@@ -1,5 +1,6 @@
 import { generateRequestObject } from '../fixtures/mspStandaloneRequest.js';
 import { removeUniqueFields } from '../support/helpers';
+import envData from '../fixtures/env-data.js'
 
 describe('MSP only application', () => {
   const options = {includeMSP: true}
@@ -31,14 +32,17 @@ describe('MSP only application', () => {
   it('submits form with expected payload', () => {
     cy.fillConsent(options)
     cy.submitApplication()
-    cy.wait('@submitApplication')
+    if (envData.enableIntercepts) {
+      //in the local environment, we want to check that the intercepted API response matches what it should
+      cy.wait('@submitApplication')
       .then(interception => {
         expect(removeUniqueFields(interception.request.body)).to.deep.equal(removeUniqueFields(generateRequestObject()))
       })
+    }    
   });
 
   it('Redirects user to confirmation page when successful', () => {
-    cy.url().should('include', 'submission');
+    cy.url({ timeout: 20000 }).should('include', 'submission');
     cy.contains('Confirmation of submission')
   });
 });
