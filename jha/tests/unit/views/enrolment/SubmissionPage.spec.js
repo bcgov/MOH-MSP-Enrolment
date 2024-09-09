@@ -26,6 +26,15 @@ const store = createStore({
   }
 });
 
+vi.mock("@/services/api-service.js", () => {
+  return {
+    default: {
+      logError: vi.fn(() => Promise.resolve(true)),
+      logNavigation: vi.fn(() => Promise.resolve(true)),
+    },
+  };
+});
+
 vi.mock("@/services/log-service.js", () => {
   return {
     default: {
