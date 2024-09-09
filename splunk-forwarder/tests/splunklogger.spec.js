@@ -190,30 +190,18 @@ describe("SplunkLogger._makeBody()", () => {
   });
 });
 
-describe("SplunkLogger._post()", () => {
-  vi.mock("request");
+describe("SplunkLogger._sendEvents()", () => {
   let splunkLogger;
   beforeEach(() => {
     splunkLogger = new SplunkLoggerTemplate(defaultSettings);
   });
 
   it("throws an error when passed a null value", () => {
-    expect(() => splunkLogger._post()).toThrowError();
+    expect(() => splunkLogger._sendEvents()).toThrowError();
+  });
+  it("does not throw an error when passed correct arguments", () => {
+    expect(() =>
+      splunkLogger._sendEvents({ message: "" }, {})
+    ).not.toThrowError();
   });
 });
-
-// describe.only("SplunkLogger asdf", () => {
-//   let splunkLogger;
-//   beforeEach(() => {
-//     splunkLogger = new SplunkLoggerTemplate(defaultSettings);
-//   });
-
-//   it("throws an error when passed a null value", () => {
-//     expect(() => splunkLogger._enableTimer()).toThrowError();
-//   });
-// });
-
-// SplunkLogger.prototype._post
-// SplunkLogger.prototype._sendEvents
-// SplunkLogger.prototype.send
-// SplunkLogger.prototype.flush
