@@ -4,23 +4,12 @@ module.exports = {
     node: true,
     es2022: true,
   },
-  'extends': [
-    'plugin:vue/essential',
-    'eslint:recommended'
-  ],  
-  rules: {
-    'no-console': process.env.NODE_ENV === 'production' ? 'warn' : 'off',
-    'no-debugger': process.env.NODE_ENV === 'production' ? 'warn' : 'off'
+  extends: ["plugin:vue/essential", "eslint:recommended"],
+  parserOptions: {
+    ecmaVersion: 13,
   },
-  overrides: [
-    {
-      files: [
-        '**/__tests__/*.{j,t}s?(x)',
-        '**/tests/unit/**/*.spec.{j,t}s?(x)'
-      ],
-      env: {
-        jest: true
-      }
-    }
-  ]
-}
+  rules: {
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
+  },
+};
