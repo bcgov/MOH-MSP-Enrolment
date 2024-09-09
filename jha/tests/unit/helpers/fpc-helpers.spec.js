@@ -913,6 +913,8 @@ describe("formatServerData()", () => {
       for (let sampleKey of sampleKeys) {
         expect(result[i][sampleKey]).toEqual(
           Number(defaultData[i][sampleKey].replace("$", "").replace("%", ""))
+          //CodeQL pointed out that this code only replaces the first $ and % of each key
+          //I think it's fine as is, but feel free to refactor if it starts failing
         );
       }
     }
