@@ -22,9 +22,9 @@
   },
   "homepage": "https://github.com/bcgov/MOH-MSP-Enrolment/address-service/#readme",
   "dependencies": {
-    "axios": "^0.21.1",
+    "axios": "^0.21.4",
     "easy-soap-request": "^3.2.0",
-    "express": "^4.15.0",
+    "express": "^4.18.2",
     "http-proxy-middleware": "^0.20.0",
     "json-stringify-safe": "^5.0.1",
     "winston": "^2.3.1",
@@ -35,7 +35,7 @@
     "gulp-clean": "^0.4.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^6.0.0-alpha.1",
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.22"
   },
   "engines": {
     "node": ">=10.0.0"
