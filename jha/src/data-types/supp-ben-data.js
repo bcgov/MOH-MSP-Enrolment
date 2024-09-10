@@ -248,6 +248,9 @@ export default class SuppBenData{
       parseFloat(this.removeCommas(stringNumber)) : 0;
   }
   removeCommas(stringNumber) {
-    return stringNumber.replace(/[,]/g, '');
+    if (typeof stringNumber === 'string' || stringNumber instanceof String) {
+      return stringNumber.replace(/[,]/g, '');
+    }
+    return stringNumber;
   }
 }

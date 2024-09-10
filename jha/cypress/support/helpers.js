@@ -11,6 +11,7 @@ export const removeUniqueFields = (baseApplicationObj) => {
   delete applicationObj?.medicalServicesPlan?.spouse?.attachmentUuids;
   delete applicationObj?.medicalServicesPlan?.children?.attachmentUuids;
   delete applicationObj?.authorizedByApplicantDate;
+  delete applicationObj?.fairPharmaCare?.processDate;
 
   applicationObj?.medicalServicesPlan?.children?.forEach(child => {
     delete child.attachmentUuids
@@ -28,4 +29,4 @@ export const removeUniqueFields = (baseApplicationObj) => {
 }
 
 export const padInteger = (int, spaces = 2, padChar = '0') => String(int).padStart(spaces, padChar);
-export const formatDate = (date) => `${date.getFullYear()}-${padInteger(date.getMonth())}-${date.getDate()}`
+export const formatDate = (date) => `${date.getFullYear()}-${padInteger(date.getMonth())}-${padInteger(date.getDate())}`

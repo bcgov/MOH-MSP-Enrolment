@@ -8,6 +8,10 @@ import {
   startOfToday,
 } from 'date-fns';
 
+// Wrapping validator with helpers.withParams only required if a reactive value is needed in a returned function.
+// See here: https://vuelidate-next.netlify.app/custom_validators.html#passing-extra-reactive-properties
+import { helpers } from '@vuelidate/validators';
+
 export const bcPostalCodeValidator = (value) => {
   const criteria = RegExp('^[Vv]\\d[A-Za-z][ ]?\\d[A-Za-z]\\d$');
   return criteria.test(value);
@@ -31,17 +35,22 @@ export const nonCanadaValidator = (value) => {
   return value !== 'Canada';
 };
 
-export const dateDataRequiredValidator = (dateData) => {
-  return () => {
+export const dateDataRequiredValidator = (dateData) => helpers.withParams(
+  {
+    type: 'dateDataRequiredValidator',
+    value: dateData,
+  }, () => {
     if (!dateData || !dateData.year && typeof dateData.month !== 'number' && !dateData.day) {
       return false;
     }
     return true;
-  };
-};
+  })
 
-export const dateDataValidator = (dateData) => {
-  return () => {
+export const dateDataValidator = (dateData) => helpers.withParams(
+  {
+    type: 'dateDataValidator',
+    value: dateData,
+  }, () => {
     if (!dateData || !dateData.year && typeof dateData.month !== 'number' && !dateData.day) {
       return true;
     }
@@ -54,8 +63,17 @@ export const dateDataValidator = (dateData) => {
     }
     const isoDateString = getISODateString(year, month + 1, day);
     return isValidISODateString(isoDateString);
-  };
-};
+  })
+
+/* A validator that is initially setup using the withParams helper 
+ expects any overwrites of that validator to also use withParams.
+ Although this validator does not use paramaters,
+ helpers.withParams is required to overwrite the dataDateRequired 
+ validator without reference errors */
+export const dateDataOptionalValidator = () => {
+  return helpers.withParams(
+  {}, () => true)
+}
 
 export const pastDateValidator = (value) => {
   return isBefore(value, addDays(startOfToday(), 1));

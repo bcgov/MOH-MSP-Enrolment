@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -10,17 +10,18 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Supplementary Benefits eligibility</h1>
-        <Radio
+        <RadioComponent
           id='apply-sb'
           name='apply-sb'
           label='1. Will you use this form to apply for Supplementary Benefits?'
+          cypressId='apply-sb-'
           v-model='eqSBIsApplying'
           :required="true"
           :items='radioOptionsYesNo' >
           <template v-slot:description>
             <span class="field-description">Note: If you or your spouse (who may not live in B.C. or Canada) earned income outside Canada during the most recent tax year, you must submit your application for Supplementary Benefits using the print form (HLTH 101) available <a target="_blank" href="https://gov.bc.ca/ahdc">here</a>.</span>
           </template>  
-        </Radio>
+        </RadioComponent>
         <div v-if="eqSBIsApplying === 'Y'">
           <p class="mb-0">2. To apply for Supplementary Benefits, you must:</p>
           <div class="ml-4">
@@ -29,10 +30,11 @@
             <p class="ml-4">c. not be exempt from liability to pay income tax by reason of any other Act.</p>
           </div>
           <p id="eqSBMeetsCriteria" class="ml-4 mb-0">Do you meet the above eligibility criteria?</p>
-          <Radio
+          <RadioComponent
             id='meets-sb-criteria'
             name='meets-sb-criteria'
             label=''
+            cypressId='meets-sb-criteria-'
             aria-labelledby="eqSBMeetsCriteria"
             v-model='eqSBMeetsCriteria'
             :required="true"
@@ -51,10 +53,11 @@
               <p class="ml-4">c. Net Income (Line 23600) and Registered Disability Savings Plan (RDSP) income (Line 12500) if applicable, from the above CRA NOA or NORA.</p>
             </div>
             <p id="eqSBHasInfo" class="ml-4 mb-0">Do you have these documents and information to include with your application?</p>
-            <Radio
+            <RadioComponent
               id='has-sb-info'
               name='has-sb-info'
               label=''
+              cypressId='has-sb-info-'
               aria-labelledby="eqSBHasInfo"
               v-model='eqSBhasInfo'
               :required="true"
@@ -77,15 +80,16 @@
           </div>
         </div>
         <div class="text-danger"
-                      v-if="$v.applyFPC.$dirty && !$v.applyFPC.validateQuestionsAnswered"
+                      v-if="v$.eqSBIsApplying.$dirty && v$.eqSBIsApplying.validateQuestionsAnswered.$invalid"
                       aria-live="assertive">Please complete the questionnaire to continue.</div>
       </main>
     </PageContent>
-    <ContinueBar @continue="validateFields()" />
+    <ContinueBar @continue="validateFields()" cypressId='continue' />
   </div>
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import logService from '@/services/log-service';
 import {
@@ -106,7 +110,7 @@ import {
 import {
   PageContent,
   ContinueBar,
-  Radio,
+  RadioComponent,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import {
@@ -139,8 +143,11 @@ export default {
   components: {
     ContinueBar,
     PageContent,
-    Radio,
+    RadioComponent,
     ContactInformation,
+  },
+  setup () {
+    return { v$: useVuelidate() }
   },
   data: () => {
     return {
@@ -167,7 +174,7 @@ export default {
   },
   validations() {
     const validations = {
-      applyFPC: {
+      eqSBIsApplying: {
         validateQuestionsAnswered,
       }
     };
@@ -175,8 +182,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -193,7 +200,7 @@ export default {
     navigateToNextPage() {
       // Navigate to next path.
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.FORM_SELECTION_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -240,7 +247,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path
       );
       next({

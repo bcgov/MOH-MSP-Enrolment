@@ -56,7 +56,7 @@ export default {
       next();
     } else {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path
       );
       next({ path: toPath });

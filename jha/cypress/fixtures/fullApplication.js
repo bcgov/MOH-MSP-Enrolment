@@ -1,17 +1,17 @@
 import { formatISODate } from 'common-lib-vue';
-import { SupportDocumentTypes } from '../../../src/constants/document-types';
 
 export const generateRequestObject = () => {
   const currentDate = new Date();
   const lastMonthDate = new Date();
-  lastMonthDate.setMonth(lastMonthDate.getMonth() - 1);
+  const lastYearDate = new Date();
+  lastYearDate.setFullYear(currentDate.getFullYear() - 1);
+  lastMonthDate.setMonth(currentDate.getMonth() - 1);
 
   return {
-    "uuid": "412d35d7-8446-4dfa-ac03-d19d3dd2ad03",
     "firstName": "alex",
     "secondName": "jaimie",
     "lastName": "doe",
-    "sin": null,
+    "sin": "238795439",
     "phn": null,
     "gender": "X",
     "birthDate": "2000-01-01",
@@ -24,7 +24,6 @@ export const generateRequestObject = () => {
     "provinceOrState": "British Columbia",
     "country": "Canada",
     "authorizedByApplicant": "Y",
-    "authorizedByApplicantDate": "2022-05-17",
     "powerOfAttorney": "N",
     "spousePowerOfAttorney": "N",
     "authorizedBySpouse": "Y",
@@ -35,18 +34,11 @@ export const generateRequestObject = () => {
       "gender": "X",
       "birthDate": "1990-06-20",
       "telephone": "5555555555",
-      "sin": null,
+      "sin": "195544135",
       "phn": null
     },
     "medicalServicesPlan": {
-      "uuid": "e744361d-335a-4fc8-8f6e-fedf9675a96b",
       "citizenshipType": "CanadianCitizen",
-      "attachmentUuids": [
-        "45c86f8d-9e64-4d9b-8326-85349a8080b1",
-        "c23e0467-8f6c-45ca-b797-4876fbd1843f",
-        "95d272ee-b5ce-45c2-8dfb-3b0979d86068",
-        "3984a7ec-7a20-46d1-bfb6-5c986d4bb052"
-      ],
       "hasPreviousCoverage": "Y",
       "prevPHN": "9999999998",
       "hasLivedInBC": null,
@@ -56,7 +48,6 @@ export const generateRequestObject = () => {
       "isPermanentMove": "Y",
       "prevProvinceOrCountry": "Alberta",
       "beenOutsideBCMoreThan": "Y",
-      /* "departureDate": "2022-03-17", */
       "departureDate": formatISODate(lastMonthDate),
       "returnDate": formatISODate(currentDate),
       "familyMemberReason": "vacation",
@@ -66,12 +57,6 @@ export const generateRequestObject = () => {
       "armedDischargeDate": "2010-02-01",
       "spouse": {
         "citizenshipType": "PermanentResident",
-        "attachmentUuids": [
-          "eedbf9ff-3970-4895-92d2-253dfd9cf767",
-          "976f4ab1-41e1-4e14-8efc-847b34392db4",
-          "65ba6bd8-11af-462b-8eb5-6259c0d368d4",
-          "cc0d7067-c495-434f-aa35-d066af2053f5"
-        ],
         "hasPreviousCoverage": "N",
         "prevPHN": null,
         "hasLivedInBC": null,
@@ -97,10 +82,6 @@ export const generateRequestObject = () => {
           "gender": "M",
           "birthDate": "2019-02-01",
           "citizenshipType": "CanadianCitizen",
-          "attachmentUuids": [
-            "4c502613-0298-4f48-a9aa-23831038e247",
-            "033350b3-3ff8-483f-9095-aab0af58f44c"
-          ],
           "hasPreviousCoverage": "N",
           "prevPHN": null,
           "hasLivedInBC": "Y",
@@ -132,72 +113,124 @@ export const generateRequestObject = () => {
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
-          "attachmentUuid": "95d272ee-b5ce-45c2-8dfb-3b0979d86068",
           "attachmentOrder": "1",
-          "description": SupportDocumentTypes.CanadianBirthCertificate
+          "description": "Canadian birth certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
-          "attachmentUuid": "3984a7ec-7a20-46d1-bfb6-5c986d4bb052",
           "attachmentOrder": "2",
-          "description": SupportDocumentTypes.CanadianBirthCertificate
+          "description": "Canadian birth certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
-          "attachmentUuid": "45c86f8d-9e64-4d9b-8326-85349a8080b1",
           "attachmentOrder": "3",
           "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
-          "attachmentUuid": "c23e0467-8f6c-45ca-b797-4876fbd1843f",
           "attachmentOrder": "4",
           "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
-          "attachmentUuid": "65ba6bd8-11af-462b-8eb5-6259c0d368d4",
           "attachmentOrder": "5",
           "description": "Confirmation of Permanent Residence"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
-          "attachmentUuid": "cc0d7067-c495-434f-aa35-d066af2053f5",
           "attachmentOrder": "6",
           "description": "Confirmation of Permanent Residence"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
-          "attachmentUuid": "eedbf9ff-3970-4895-92d2-253dfd9cf767",
           "attachmentOrder": "7",
           "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
-          "attachmentUuid": "976f4ab1-41e1-4e14-8efc-847b34392db4",
           "attachmentOrder": "8",
           "description": "Marriage certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
-          "attachmentUuid": "4c502613-0298-4f48-a9aa-23831038e247",
           "attachmentOrder": "9",
-          "description": SupportDocumentTypes.CanadianBirthCertificate
+          "description": "Canadian birth certificate"
         },
         {
           "contentType": "IMAGE_JPEG",
           "attachmentDocumentType": "SupportDocument",
-          "attachmentUuid": "033350b3-3ff8-483f-9095-aab0af58f44c",
           "attachmentOrder": "10",
-          "description": SupportDocumentTypes.CanadianBirthCertificate
+          "description": "Canadian birth certificate"
+        }
+      ]
+    },
+    "supplementaryBenefits": {
+      "assistanceYear": formatISODate(currentDate.getFullYear()).toString(),
+      "taxYear": formatISODate(lastYearDate.getFullYear()).toString(),
+      "numberOfTaxYears": 0,
+      "adjustedNetIncome": 41100,
+      "childDeduction": 3000,
+      "deductions": 2900,
+      "disabilityDeduction": 3000,
+      "sixtyFiveDeduction": 0,
+      "totalDeductions": 12900,
+      "totalNetIncome": 54000,
+      "childCareExpense": 100,
+      "netIncomeLastYear": 50000,
+      "numChildren": 1,
+      "numDisabled": 1,
+      "spouseIncomeLine236": 4000,
+      "reportedUCCBenefit": 0,
+      "spouseDSPAmount": 1000,
+      "spouseDeduction": 3000,
+      "applicantAttendantCareExpense": 3000,
+      "spouseAttendantCareExpense": 0,
+      "childAttendantCareExpense": 0,
+      "spouseSixtyFiveDeduction": 0,
+      "attachments": [
+        {
+          "contentType": "IMAGE_JPEG",
+          "attachmentDocumentType": "SupportDocument",
+          "attachmentOrder": "1",
+          "description": null
+        },
+        {
+          "contentType": "IMAGE_JPEG",
+          "attachmentDocumentType": "SupportDocument",
+          "attachmentOrder": "2",
+          "description": null
+        },
+        {
+          "contentType": "IMAGE_JPEG",
+          "attachmentDocumentType": "SupportDocument",
+          "attachmentOrder": "3",
+          "description": "Account holder NOA/NOR"
+        },
+        {
+          "contentType": "IMAGE_JPEG",
+          "attachmentDocumentType": "SupportDocument",
+          "attachmentOrder": "4",
+          "description": "Account holder NOA/NOR"
+        },
+        {
+          "contentType": "IMAGE_JPEG",
+          "attachmentDocumentType": "SupportDocument",
+          "attachmentOrder": "5",
+          "description": "Spouse NOA/NOR"
+        },
+        {
+          "contentType": "IMAGE_JPEG",
+          "attachmentDocumentType": "SupportDocument",
+          "attachmentOrder": "6",
+          "description": "Spouse NOA/NOR"
         }
       ]
     }

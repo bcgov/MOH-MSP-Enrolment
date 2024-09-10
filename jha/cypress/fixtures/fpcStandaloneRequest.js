@@ -1,16 +1,17 @@
 import { formatISODate } from 'common-lib-vue';
+import envData from '../fixtures/env-data.js';
 
 export const generateRequestObject = () => {
   const currentDate = new Date();
 
   return {
-    "firstName": "alex",
-    "secondName": "jaimie",
-    "lastName": "doe",
-    "sin": "238795439",
-    "phn": "9999999998",
+    "firstName": envData.firstName,
+    "secondName": envData.middleName,
+    "lastName": envData.lastName,
+    "sin": envData.sin,
+    "phn": envData.phn,
     "gender": null,
-    "birthDate": "2000-01-01",
+    "birthDate": envData.birthDateTotal,
     "telephone": "5555555555",
     "addressLine1": "123 fake st.",
     "addressLine2": null,

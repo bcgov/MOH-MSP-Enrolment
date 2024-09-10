@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -10,7 +10,7 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
         <p><strong>British Columbia Application for Health and Drug Coverage</strong></p> 
-        <p>B.C. residents can apply for one, two or three programs using this form: 
+        <p>B.C. residents can apply for one, two or three programs using this form:</p>
         <ul>
           <li>Medical Services Plan&nbsp;</li> 
           <li>Fair PharmaCare&nbsp;</li>
@@ -18,19 +18,21 @@
         </ul> 
         <p>Answer the following questions to see which programs you are eligible for and make sure you have what you need to apply.</p>
         <h1>Medical Services Plan (MSP) eligibility</h1>
-        <Radio
+        <RadioComponent
           id='apply-msp'
           name='apply-msp'
           label='1. Will you use this form to apply for MSP?'
           v-model='eqMSPIsApplying'
+          cypressId='apply-msp-'
           :required="true"
           :items='radioOptionsApplyMSP' />
         <div v-if="eqMSPIsApplying === 'Y'">
-          <Radio
+          <RadioComponent
             id='live-in-bc'
             name='live-in-bc'
             label='2. Do you currently live in B.C. and have a B.C. address where you can receive mail?'
             v-model='eqMSPLiveInBC'
+            cypressId='live-in-bc-'
             :required="true"
             :items='radioOptionsYesNo' />
           <div class="text-danger ml-4" v-if="eqMSPLiveInBC === 'N'">
@@ -40,11 +42,12 @@
             <ContactInformation />
           </div>
           <div v-if="eqMSPLiveInBC === 'Y'">
-            <Radio
+            <RadioComponent
               id='away-over-30'
               name='away-over-30'
               label='3. Will anyone included in this application be away from B.C. for more than 30 days in total during the next six months?'
               v-model='eqMSPAwayOver30'
+              cypressId='away-over-30-'
               :required="true"
               :items='radioOptionsYesNo' />
             <div class="text-danger ml-4" v-if="eqMSPAwayOver30 === 'Y'">
@@ -54,11 +57,12 @@
               <ContactInformation/>
             </div>
             <div v-if="eqMSPAwayOver30 === 'N'">
-              <Radio
+              <RadioComponent
                 id='student-minor-refugee'
                 name='student-minor-refugee'
                 label='4. Is anyone included in this application: a student returning to a province outside B.C. at the end of a course or program; an unaccompanied minor; or a person seeking refugee status?'
                 v-model='eqMSPStudentMinorRefugee'
+                cypressId='student-minor-refugee-'
                 :required="true"
                 :items='radioOptionsYesNo' />
               <div class="text-danger ml-4" v-if="eqMSPStudentMinorRefugee === 'Y'">
@@ -68,11 +72,12 @@
               <div v-if="eqMSPStudentMinorRefugee === 'N'">
                 <p>5. To apply for MSP, you must upload a digital copy of one the documents below for each person included in this application. The document must show full legal name and legal status in Canada.</p>
                 <IdTable />
-                <Radio 
+                <RadioComponent 
                   id='has-documents'
                   name='has-documents'
                   label='Do you have digital copies of the documents for each person included in this application?'
                   v-model='eqMSPHasDocuments'
+                  cypressId='has-documents-'
                   :required="true"
                   :items='radioOptionsYesNo' />
                 <p class="text-danger ml-4" v-if="eqMSPHasDocuments === 'N'">You must have digital copies of the documents to apply for MSP using this form. If you are not able to make digital copies, you can apply with print copies using the printable form (HLTH 101) available at <a target="_blank" href="https://gov.bc.ca/AHDC">gov.bc.ca/AHDC</a>.</p>
@@ -81,16 +86,18 @@
           </div>
         </div>
         <div class="text-danger"
-          v-if="$v.eqMSPIsApplying.$dirty && !$v.eqMSPIsApplying.validateQuestionsAnswered"
+          v-if="v$.eqMSPIsApplying.$dirty && v$.eqMSPIsApplying.validateQuestionsAnswered.$invalid"
           aria-live="assertive">Please complete the questionnaire to continue.</div>
       </main>
     </PageContent>
     <ContinueBar
-    @continue="validateFields()" />
+    @continue="validateFields()"
+    cypressId='continue' />
   </div>
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import logService from '@/services/log-service';
 import {
@@ -111,7 +118,7 @@ import {
 import {
   PageContent,
   ContinueBar,
-  Radio,
+  RadioComponent,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import {
@@ -142,6 +149,9 @@ const validateQuestionsAnswered = (_value, vm) => {
 
 export default {
   name: 'MSPEligibilityPage',
+  setup () {
+    return { v$: useVuelidate() }
+  },
   mixins: [
     pageContentMixin,
     pageStepperMixin,
@@ -149,7 +159,7 @@ export default {
   components: {
     ContinueBar,
     PageContent,
-    Radio,
+    RadioComponent,
     IdTable,
     ContactInformation,
   },
@@ -204,8 +214,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -230,7 +240,7 @@ export default {
     navigateToNextPage() {
       // Navigate to next path.
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -241,7 +251,7 @@ export default {
     navigateToFormSelectionPage() {
       // Navigate to next path.
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.FORM_SELECTION_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -304,7 +314,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path
       );
       next({

@@ -32,9 +32,17 @@ npm run test:e2e
 ```
 npm run lint
 ```
+This project uses ESLint for linting.
+
+```sh
+npm run format
+```
+
+This project uses Prettier for code formatting.
 
 ### Dev Settings
 Adjust the values in `src/settings.js` to more easily walk through the application during development
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### Other important notes
+
+This library requires a minimum of node 18 for compatibility with Vite and other dependencies, and a minimum of node 22 for compatibility with the pdf-js package used by the common library dependency.

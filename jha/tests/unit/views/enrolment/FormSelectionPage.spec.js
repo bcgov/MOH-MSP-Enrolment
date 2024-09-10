@@ -1,64 +1,29 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
-import Vuex from 'vuex';
-import VueRouter from 'vue-router';
-import Vue from 'vue';
-import Vuelidate from 'vuelidate';
+import { shallowMount } from '@vue/test-utils';
+// import { createStore } from 'vuex';
+// import { createRouter } from 'vue-router';
+import router from '@/router';
+import store from '@/store';
 import FormSelectionPage from '@/views/enrolment/FormSelectionPage.vue';
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-localVue.use(VueRouter);
-Vue.use(Vuelidate);
+vi.mock("@/services/log-service.js", () => {
+  return {
+    default: {
+      logError: vi.fn(() => Promise.resolve(true)),
+      logNavigation: vi.fn(() => Promise.resolve(true)),
+    },
+  };
+});
 
 describe('Enrolment - FormSelectionPage.vue', () => {
-  let state;
-  let router;
-  let store;
 
-  beforeEach(() => {
-    state = {
-      applicationUuid: null,
-    };    
-
-    store = new Vuex.Store({
-      modules: {
-        appModule: {
-          state: {
-            showMobileStepperDetails: false,
-          }
-        },
-        enrolmentModule: {
-          state,
-          namespaced: true,
-          actions: {
-            setApplicationUuid() {},
-            setIsApplyingForMSP() {},
-            setIsApplyingForFPCare() {},
-            setIsApplyingForSuppBen() {},
-          },
-          getters: {
-            isEligibleForMSP() {
-              return true;
-            },
-            isEligibleForFPCare() {
-              return true;
-            },
-            isEligibleForSuppBen() {
-              return true;
-            },
-          }
-        }
+  it('renders', () => {
+    const wrapper = shallowMount(FormSelectionPage, {
+      global: {
+        plugins: [router, store]
       }
     });
 
-    router = new VueRouter();
-  });
-  it('renders', () => {
-    const wrapper = shallowMount(FormSelectionPage, {
-      store,
-      router,
-      localVue,
-    });
     expect(wrapper.element).toBeDefined();
   });
 });

@@ -22,6 +22,7 @@ export const generateRequestObject = () => {
     "provinceOrState": "British Columbia",
     "country": "Canada",
     "authorizedByApplicant": "Y",
+    "authorizedByApplicantDate": new Date().toLocaleDateString(),
     "powerOfAttorney": "N",
     "spousePowerOfAttorney": "N",
     "authorizedBySpouse": "Y",

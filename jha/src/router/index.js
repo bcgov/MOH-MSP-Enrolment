@@ -1,5 +1,4 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router';
 import {
   enrolmentRoutes,
   commonRoutes,
@@ -23,12 +22,10 @@ import SubmissionErrorPage from '@/views/enrolment/SubmissionErrorPage.vue';
 import MaintenancePage from '@/views/MaintenancePage.vue';
 import PageNotFoundPage from '@/views/PageNotFoundPage.vue';
 
-Vue.use(VueRouter);
-
 pageStateService.importPageRoutes(commonRoutes);
 pageStateService.importPageRoutes(enrolmentRoutes);
 
-const routeCollection = [
+export const routeCollection = [
   {
     path: commonRoutes.MAINTENANCE_PAGE.path,
     name: commonRoutes.MAINTENANCE_PAGE.name,
@@ -398,9 +395,8 @@ const routeCollection = [
   },
 ];
 
-const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
+const router = createRouter({
+  history: createWebHistory('ahdc'),
   routes: routeCollection
 });
 
@@ -408,7 +404,7 @@ router.beforeEach((to, from, next) => {
   // Home redirects.
   if (to.path !== enrolmentRoutes.HOME_PAGE.path
     && !pageStateService.isPageVisited(to.path)) {
-    next({ name: enrolmentRoutes.HOME_PAGE.name });
+    return next({ name: enrolmentRoutes.HOME_PAGE.name });
   }
   // This goes through the matched routes from last to first, finding the closest route with a title
   // e.g., if we have `/some/deep/nested/route` and `/some`, `/deep`, and `/nested` have titles,

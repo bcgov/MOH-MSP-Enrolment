@@ -105,7 +105,7 @@ export const commonRoutes = {
     pageTitle: 'Maintenance | AHDC'
   },
   PAGE_NOT_FOUND_PAGE: {
-    path: '*',
+    path: '/:pathMatch(.*)*',
     title: 'Page not found',
     name: 'PageNotFoundPage',
     pageTitle: '404 | AHDC'
@@ -129,7 +129,7 @@ export const enrolmentRouteStepOrder = [
   enrolmentRoutes.SUBMISSION_PAGE
 ];
 
-const eqRoutes = [
+export const eqRoutes = [
   enrolmentRoutes.MSP_ELIGIBILITY_PAGE,
   enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE,
   enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE,
