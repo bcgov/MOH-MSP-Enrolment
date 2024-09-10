@@ -1,6 +1,4 @@
-import Vue from 'vue';
-import Vuelidate from 'vuelidate';
-import PortalVue from 'portal-vue';
+import { createApp } from 'vue';
 import App from '@/App.vue';
 import router from '@/router';
 import store from '@/store';
@@ -24,7 +22,6 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import 'core-js/es/number'; // IE polyfill for `Number.isNaN()`.
-import { isIE } from '@/helpers/user-agent';
 
 library.add(faAngleDown);
 library.add(faAngleRight);
@@ -41,20 +38,13 @@ library.add(faPrint);
 library.add(faTimesCircle);
 library.add(faInfoCircle);
 library.add(faExclamationCircle);
-Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-Vue.use(Vuelidate);
-Vue.use(PortalVue);
-
-Vue.config.productionTip = false;
-
-// Add 'ie' class name when is IE browser.
-if (isIE()) {
-  document.body.classList.add('ie');
-}
-
-new Vue({
+const app = createApp({
   router,
-  store,
-  render: h => h(App)
-}).$mount('#app');
+  ...App,
+})
+app
+  .use(store)
+  .use(router)
+  .component("font-awesome-icon", FontAwesomeIcon)
+  .mount('#app');

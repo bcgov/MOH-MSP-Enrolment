@@ -2,18 +2,19 @@ import apiService from "@/services/api-service";
 import dummyData from "@/store/states/enrolment-module-dummy-data.js";
 import { mockFile } from "../fixtures.js";
 import { stripSpaces, formatISODate } from "common-lib-vue";
+import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 const postRequestSuccessResult = {
   data: {
     returnCode: "success",
   },
 };
-apiService._sendPostRequest = jest.fn(() =>
+apiService._sendPostRequest = vi.fn(() =>
   Promise.resolve(postRequestSuccessResult)
 );
 
 beforeEach(() => {
-  jest.clearAllMocks();
+  vi.clearAllMocks();
 });
 
 describe("Power Of Attorney", () => {

@@ -4,9 +4,9 @@ import {
   parseISO,
 } from 'date-fns';
 
-const BLUE = '#036';
-const YELLOW = '#f3cd65';
-const GREEN = '#486446';
+export const BLUE = '#036';
+export const YELLOW = '#f3cd65';
+export const GREEN = '#486446';
 
 export const formatCurrencyNumber = (value) => {
   if (typeof value !== 'number') {

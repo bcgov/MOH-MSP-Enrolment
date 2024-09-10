@@ -28,7 +28,7 @@ export default {
       this.$store.dispatch(appModule + '/' + SET_SHOW_MOBILE_STEPPER_DETAILS, isDetailsShown);
     },
     handleClickStepperLink(path) {
-      pageStateService.setPageIncomplete(this.$router.currentRoute.path);
+      pageStateService.setPageIncomplete(this.$router.currentRoute.value.path);
       pageStateService.setPageComplete(path);
       this.$router.push(path);
       scrollTo(0);
@@ -39,7 +39,7 @@ export default {
       return this.$store.state.appModule.showMobileStepperDetails;
     },
     stepRoutes() {
-      const currentPath = this.$router.currentRoute.path;
+      const currentPath = this.$router.currentRoute.value.path;
       const hasCompletedEQ = this.$store.state.enrolmentModule.hasCompletedEQ;
 
       switch(currentPath) {

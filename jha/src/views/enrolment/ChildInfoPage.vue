@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -13,17 +13,17 @@
         <p>A child is under 19 years old, and the applicant is their parent or legal guardian.</p>
         <p>A dependent post-secondary student is a 19- to 24-year-old who is supported by parent(s) or guardian(s), has no spouse, and is enrolled full-time in a recognized post-secondary institution.</p>
         <hr class="mt-0"/>
-        <Radio v-if="hasChildren !== 'Y'"
+        <RadioComponent v-if="hasChildren !== 'Y'"
                 label="Do you have a child who also needs to enrol?"
                 :id="'has-children'"
                 :name="'has-children'"
                 class="mt-3"
                 v-model="hasChildren"
+                @blur="handleBlurField(v$.hasChildren)"
                 :required="true"
-                @blur="handleBlurField($v.hasChildren)"
                 :items="radioOptionsNoYes" />
         <div class="text-danger"
-          v-if="$v.hasChildren.$dirty && !$v.hasChildren.required"
+          v-if="v$.hasChildren.$dirty && v$.hasChildren.required.$invalid"
           aria-live="assertive">Please indicate if you have a child who needs to enrol.</div>
         <div v-for="(child, index) in children"
             :key="'child-' + index">
@@ -64,6 +64,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
@@ -82,12 +83,12 @@ import logService from '@/services/log-service';
 import {
   ContinueBar,
   PageContent,
-  Radio,
+  RadioComponent,
   cloneDeep
 } from 'common-lib-vue';
 import {
   required
-} from 'vuelidate/lib/validators';
+} from '@vuelidate/validators';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import { 
   radioOptionsNoYes
@@ -110,7 +111,7 @@ export default {
   components: {
     ContinueBar,
     PageContent,
-    Radio,
+    RadioComponent,
     Child,
   },
   data: () => {
@@ -148,6 +149,9 @@ export default {
     };
 
     return validations;
+  },
+  setup () {
+    return { v$: useVuelidate() }
   },
   methods: {
     addChild() {
@@ -248,15 +252,15 @@ export default {
       }
 
       // touch parent forms inputs
-      this.$v.$touch();
+      this.v$.$touch();
       // touch all children
       let validChildren = true;
       if (this.$refs && this.$refs.children) {
         for (let child of this.$refs.children) {
-          if (child.$v) {
-            child.$v.$touch();
+          if (child.v$) {
+            child.v$.$touch();
             
-            if (child.$v.$invalid) {
+            if (child.v$.$invalid) {
               validChildren = false;
             }
           }
@@ -264,7 +268,7 @@ export default {
       }
 
       // if the parent form or any children have invalid inputs
-      if (this.$v.$invalid || !validChildren) {
+      if (this.v$.$invalid || !validChildren) {
         if (!validChildren) {
           // only call this function if there are children, lest it unnecessarily triggers the watcher for this.children
           this.expandAllChildren();
@@ -293,7 +297,7 @@ export default {
 
       // Navigate to next path
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         routePath
       );
       pageStateService.setPageComplete(toPath);
@@ -352,7 +356,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.CHILD_INFO_PAGE.path
       );
       next({

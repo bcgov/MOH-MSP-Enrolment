@@ -23,8 +23,8 @@
         <li>A JPG, PNG, GIF, BMP or PDF file&nbsp;</li>
       </ul>
     </TipBox>
-    <portal v-if="isModalOpen"
-      to="modal">
+    <Teleport v-if="isModalOpen"
+      to="#modal-target">
       <ContentModal :title="modalTitle"
         size="lg"
         @close="closeModal()">
@@ -32,7 +32,7 @@
           <img :src="`/ahdc/images/samples/${sampleImageFileName}`" />
         </div>
         <div class="modal-footer">
-          <Button 
+          <ButtonComponent 
             label='Close'
             @click='closeModal()'
             color='gold'
@@ -40,13 +40,13 @@
           />
         </div>
       </ContentModal>
-    </portal>
+    </Teleport>
   </div>
 </template>
 
 <script>
 import TipBox from './TipBox.vue';
-import { ContentModal, Button } from 'common-lib-vue';
+import { ContentModal, ButtonComponent } from 'common-lib-vue';
 import { SupportDocumentSamples } from '../constants/document-types';
 
 export default {
@@ -54,7 +54,7 @@ export default {
   components: {
     ContentModal,
     TipBox,
-    Button,
+    ButtonComponent,
   },
   props: {
     documentType: {

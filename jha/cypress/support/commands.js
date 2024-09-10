@@ -24,25 +24,26 @@
 // -- This is will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
-import { padInteger } from '../helpers';
-import { SupportDocumentTypes } from '../../../src/constants/document-types';
-import { StatusInCanada } from '../../../src/constants/immigration-status-types';
-// NOTE: using cy.fixture for the sampe pdf multiple times has issues, using dir works better with selectFile
-const samplePDF = 'tests/e2e/fixtures/sample.pdf';
+import envData from '../fixtures/env-data.js'
+import { padInteger } from './helpers';
+import { SupportDocumentTypes } from '../../src/constants/document-types';
+import { StatusInCanada } from '../../src/constants/immigration-status-types';
+// NOTE: using cy.fixture for the sample pdf multiple times has issues, using dir works better with selectFile
+const samplePDF = 'cypress/fixtures/sample.pdf';
 const currentDate = new Date();
 const lastMonthDate = new Date();
 lastMonthDate.setMonth(currentDate.getMonth() - 1);
 
-const DOCUMENT_WAIT_TIME = 750;
 
-
-Cypress.Commands.add('fillName', (firstName = 'alex', middleName = 'jaimie', lastName = 'doe') => {
+Cypress.Commands.add('fillName', (firstName = envData.firstName, middleName = envData.middleName, lastName = envData.lastName) => {
   cy.get('input#first-name').type(firstName);
-  cy.get('input#middle-name').type(middleName);
+  if (middleName) {
+    cy.get('input#middle-name').type(middleName);
+  }
   cy.get('input#last-name').type(lastName);
 });
 
-Cypress.Commands.add('fillIdFields', (phn = '9999999998', sin = '238795439') => {
+Cypress.Commands.add('fillIdFields', (phn = envData.phn, sin = envData.sin) => {
   cy.get('input#personal-health-number').type(phn)
   cy.get('input#social-insurance-number').type(sin)
 })
@@ -54,15 +55,17 @@ Cypress.Commands.add('continue', () => {
 Cypress.Commands.add("fillPersonalInfoPage", (options) => {
   cy.fillName();
 
-  cy.get('select#birthdate-month').select('0');
-  cy.get('input#birthdate-day').type('01');
-  cy.get('input#birthdate-year').type('2000');
+  const selectOption = parseInt(envData.birthMonth);
+
+  cy.get('select#birthdate-month').select(selectOption);
+  cy.get('input#birthdate-day').type(envData.birthDay);
+  cy.get('input#birthdate-year').type(envData.birthYear);
 
   if (!options?.includeMSP) {
     cy.fillIdFields();
   } else {
     if (options.includeSB || options.includeFPC) {
-      cy.get('input#social-insurance-number').type('238795439')
+      cy.get('input#social-insurance-number').type(envData.sin)
     }
     cy.get('label[for=gender-x]').click();
 
@@ -72,10 +75,20 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
     cy.get('label[for=gender-matches-no]').click();
 
     cy.get('input#citizenship-support-documents').selectFile(samplePDF, { force: true });
+    cy.get("#citizenship-support-documents").parent().within(() => {
+      cy.get(".thumbnail-image-container", { timeout: 20000 })
+        .first()
+        .should("exist");
+    });
     cy.get('label[for=name-change-yes]').click();
 
     cy.get('select#name-change-doc-type').select(SupportDocumentTypes.MarriageCertificate);
     cy.get('#name-change-support-documents').selectFile(samplePDF, { force: true });
+    cy.get("#name-change-support-documents").parent().within(() => {
+      cy.get(".thumbnail-image-container", { timeout: 20000 })
+        .first()
+        .should("exist");
+    });
 
     cy.get('label[for=is-moved-to-bc-permanently-yes]').click();
 
@@ -120,7 +133,6 @@ Cypress.Commands.add("fillPersonalInfoPage", (options) => {
 
 Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   cy.visit('/')
-  // cy.contains('h1', 'Eligibility Questionnaire');
 
   if (!options.includeMSP) {
     cy.get('label[for=apply-msp-no]').click();
@@ -133,7 +145,6 @@ Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   }
   cy.continue()
 
-  // cy.contains('h1', 'Eligibility Questionnaire')
   if (!options.includeFPC) {
     cy.get('label[for=apply-fpc-no]').click();
   } else {
@@ -143,7 +154,6 @@ Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   }
   cy.continue()
 
-  // cy.contains('h1', 'Eligibility Questionnaire')
   if (!options.includeSB) {
     cy.get('label[for=apply-sb-no]').click();
   } else {
@@ -159,7 +169,7 @@ Cypress.Commands.add('fillEligibilityQuestionnaire', (options) => {
   cy.get('input#sb').should(options.includeSB ? 'be.checked' : 'not.be.checked')
   cy.continue()
 
-  cy.get('input#input-answer').type('aaaaaa');
+  cy.get('input#input-answer').type('irobot');
   cy.get('input#is-terms-accepted').click();
   cy.get('div.modal-footer').contains('Continue').click()
 
@@ -190,10 +200,20 @@ Cypress.Commands.add('fillSpousePage', (options) => {
     cy.get('label[for=spouse-gender-matches-no]').click();
 
     cy.get('input#spouse-citizenship-support-documents').selectFile(samplePDF, { force: true });
+    cy.get("#spouse-citizenship-support-documents").parent().within(() => {
+      cy.get(".thumbnail-image-container", { timeout: 20000 })
+        .first()
+        .should("exist");
+    });
     cy.get('label[for=name-change-yes]').click();
     cy.get('select#name-change-doc-type').select(SupportDocumentTypes.MarriageCertificate);
 
     cy.get('input#spouse-name-change-support-documents').selectFile(samplePDF, { force: true });
+    cy.get("#spouse-name-change-support-documents").parent().within(() => {
+      cy.get(".thumbnail-image-container", { timeout: 20000 })
+        .first()
+        .should("exist");
+    });
 
     cy.get('label[for=permanent-move-yes]').click();
 
@@ -210,6 +230,11 @@ Cypress.Commands.add('fillSpousePage', (options) => {
     cy.get('label[for=outside-bc-past-12-no]').click();
     cy.get('label[for=has-previous-bc-health-number-no]').click();
   }
+  cy.continue()
+})
+
+Cypress.Commands.add('skipSpousePage', () => {
+  cy.get('label[for=has-spouse-no').click();
   cy.continue()
 })
 
@@ -241,6 +266,11 @@ Cypress.Commands.add('fillChildPage', (options) => {
     cy.get('label[for=gender-matches-0-yes]').click()
 
     cy.get('input#child-citizenship-support-documents-0').selectFile(samplePDF, { force: true });
+    cy.get("#child-citizenship-support-documents-0").parent().within(() => {
+      cy.get(".thumbnail-image-container", { timeout: 20000 })
+        .first()
+        .should("exist");
+    });
 
     cy.get('label[for=name-change-0-no]').click()
 
@@ -252,6 +282,11 @@ Cypress.Commands.add('fillChildPage', (options) => {
     cy.get('label[for=has-bc-health-number-0-no]').click()
     cy.get('label[for=been-released-0-no]').click()
   }
+  cy.continue()
+})
+
+Cypress.Commands.add('skipChildPage', () => {
+  cy.get('label[for=has-children-no').click();
   cy.continue()
 })
 
@@ -277,16 +312,40 @@ Cypress.Commands.add('fillSBInfoPage', (options) => {
   cy.get('label[for=selected-attendant-nursing-recipients-ah').click()
 
   cy.get('input#attendant-nursing-receipts').selectFile(samplePDF, { force: true });
+  cy.get("#attendant-nursing-receipts").parent().within(() => {
+    cy.get(".thumbnail-image-container", { timeout: 20000 })
+      .first()
+      .should("exist");
+  });
   
   // wait for file to fully upload
-  cy.wait(DOCUMENT_WAIT_TIME);
+  cy.get("#attendant-nursing-receipts").parent().within(() => {
+    cy.get(".thumbnail-image-container", { timeout: 20000 })
+      .first()
+      .should("exist");
+  });
   cy.continue();  
 })
 
 Cypress.Commands.add('fillDocumentsPage', () => {
   cy.get('input#ah-cra-documents').selectFile(samplePDF, { force: true });
+  cy.get("#ah-cra-documents").parent().within(() => {
+    cy.get(".thumbnail-image-container", { timeout: 20000 })
+      .first()
+      .should("exist");
+  });
   cy.get('input#spouse-cra-documents').selectFile(samplePDF, { force: true });
-  cy.wait(DOCUMENT_WAIT_TIME);
+  cy.get("#spouse-cra-documents").parent().within(() => {
+    cy.get(".thumbnail-image-container", { timeout: 20000 })
+      .first()
+      .should("exist");
+  });
+  // wait for file to fully upload
+  cy.get("#spouse-cra-documents").parent().within(() => {
+    cy.get(".thumbnail-image-container", { timeout: 20000 })
+      .first()
+      .should("exist");
+  });
   cy.continue();
 });
 
@@ -308,9 +367,13 @@ Cypress.Commands.add('fillMailingAddress', () => {
 
 Cypress.Commands.add('fillFPCInfoPage', () => {
   cy.get('input#ah-income').type('20000')
-  cy.get('input#spouse-income').type('20000')
   cy.get('input#ah-disability-savings').type('2000')
-  cy.get('input#spouse-disability-savings').type('2000')
+  if (!envData.skipSpouse) {
+    //in the local environment, we intercept API responses and can easily verify that adding spouse info works as intended
+    //in other environments, we may want to skip this entry so the test data validates against the API correctly
+    cy.get('input#spouse-income').type('20000')
+    cy.get('input#spouse-disability-savings').type('2000')
+  }
   cy.continue()
 })
 
@@ -321,7 +384,11 @@ Cypress.Commands.add('fillConsent', (options) => {
   }
   if (options?.includeFPC) {
     cy.get('label[for=fpc-ah]').click()
-    cy.get('label[for=fpc-spouse]').click()
+    if (!envData.skipSpouse) {
+      //in the local environment, we intercept API responses and can easily verify that adding spouse info works as intended
+      //in other environments, we may want to skip this entry so the test data validates against the API correctly
+      cy.get('label[for=fpc-spouse]').click()
+    }
   }
   if (options?.includeSB) {
     cy.get('label[for=sb-ah]').click()
@@ -331,4 +398,36 @@ Cypress.Commands.add('fillConsent', (options) => {
 
 Cypress.Commands.add('submitApplication', () => {
   cy.get('div.continue-bar').contains('Submit').click()
+})
+
+Cypress.Commands.add('validateApplicant', () => {
+  //First name
+  cy.get('[data-cy=first-name]').clear()
+  cy.get("[data-cy=continue]").click();
+  cy.contains(
+    "First name is required."
+  );
+  cy.get('[data-cy=first-name]').type("111")
+  cy.get("[data-cy=continue]").click();
+  cy.contains(
+    "First name must begin with a letter"
+  );
+  cy.get('[data-cy=first-name]').clear()
+  cy.get('[data-cy=first-name]').type("alex")
+  //Middle name
+  cy.get('[data-cy=middle-name]').clear()
+  cy.get('[data-cy=middle-name]').type("111")
+  cy.contains(
+    "Middle name must begin with a letter"
+  );
+  cy.get('[data-cy=middle-name]').clear()
+  cy.get('[data-cy=middle-name]').type("jaimie")
+  //Last name
+  cy.get('[data-cy=last-name]').clear()
+  cy.get('[data-cy=last-name]').type("111")
+  cy.contains(
+    "Last name must begin with a letter"
+  );
+  cy.get('[data-cy=last-name]').clear()
+  cy.get('[data-cy=last-name]').type("doe")
 })

@@ -11,8 +11,12 @@ testDepartureDate.setDate(testDepartureDate.getDate() - 91);
 let testReturnDate = new Date();
 testReturnDate.setDate(testReturnDate.getDate() - 89);
 
-//The array fields have [{}] by default to populate the attachment loader with dummy info and facilitate navigation through most of the application
-//However, if you need to submit applications, these dummy attachments will cause errors. You'll need to replace these with the [] arrays and manually upload attachments
+//For faster navigation, set placeholderAttachment to [{}]
+//This populates file uploaders with a fake file to make it quicker to click through the application
+//If you need to submit applications, set placeholderAttachment to []
+//This allows you to submit without "no attachment" errors
+
+const placeholderAttachment = [];
 
 export default {
   // Eligibility Questionnaires
@@ -43,12 +47,10 @@ export default {
   ahCitizenshipStatus: StatusInCanada.Citizen,
   ahCitizenshipStatusReason: CanadianStatusReasons.LivingInBCWithoutMSP,
   ahCitizenshipSupportDocumentType: SupportDocumentTypes.CanadianBirthCertificate,
-  ahCitizenshipSupportDocuments: [{}],
-  // ahCitizenshipSupportDocuments: [],
+  ahCitizenshipSupportDocuments: placeholderAttachment,
   ahIsNameChanged: 'Y',
   ahNameChangeSupportDocumentType: "Marriage Certificate",
-  ahNameChangeSupportDocuments: [{}],
-  // ahNameChangeSupportDocuments: [],
+  ahNameChangeSupportDocuments: placeholderAttachment,
   ahHasLivedInBCSinceBirth: 'Y',
   ahIsMovedToBCPermanently: 'Y',
   ahMoveFromOrigin: 'USA',
@@ -68,20 +70,17 @@ export default {
   ahWillStudentResideInBC: 'Y',
   ahFPCIncome: '0',
   ahFPCRDSP: '0',
-  ahCRADocuments: [{}],
-  // ahCRADocuments: [],
+  ahCRADocuments: placeholderAttachment,
   // Spouse info
   hasSpouse: 'Y',
   spouseStatus: StatusInCanada.Citizen,
   spouseStatusReason: CanadianStatusReasons.LivingInBCWithoutMSP,
   spouseCitizenshipSupportDocumentType: SupportDocumentTypes.CanadianBirthCertificate,
   spouseGenderMatches: 'N',
-  spouseCitizenshipSupportDocuments: [{}],
-  // spouseCitizenshipSupportDocuments: [],
+  spouseCitizenshipSupportDocuments: placeholderAttachment,
   spouseIsNameChanged: 'Y',
   spouseNameChangeSupportDocumentType: "Marriage Certificate",
-  spouseNameChangeSupportDocuments: [{}],
-  // spouseNameChangeSupportDocuments: [],
+  spouseNameChangeSupportDocuments: placeholderAttachment,
   spouseFirstName: 'Sarah',
   spouseMiddleName: 'D',
   spouseLastName: 'CANALICULATEXB',
@@ -106,8 +105,7 @@ export default {
   spouseDischargeDate: parseISO('2022-01-04'),
   spouseFPCIncome: '20000',
   spouseFPCRDSP: '2000',
-  spouseCRADocuments: [{}],
-  // spouseCRADocuments: [],
+  spouseCRADocuments: placeholderAttachment,
 
   // Child info
   hasChildren: 'Y',
@@ -119,8 +117,7 @@ export default {
       statusReason: CanadianStatusReasons.LivingInBCWithoutMSP,
       citizenshipSupportDocumentType: SupportDocumentTypes.CanadianBirthCertificate,
       genderMatches: 'N',
-      citizenshipSupportDocuments: [{}],
-      // citizenshipSupportDocuments: [],
+      citizenshipSupportDocuments: placeholderAttachment,
       isNameChanged: 'N',
       nameChangeSupportDocumentType: null,
       nameChangeSupportDocuments: [],
@@ -167,12 +164,10 @@ export default {
       statusReason: "Moved to B.C. from another country",
       citizenshipSupportDocumentType: "Canadian Birth Certificate",
       genderMatches: 'Y',
-      citizenshipSupportDocuments: [{}],
-      // citizenshipSupportDocuments: [],
+      citizenshipSupportDocuments: placeholderAttachment,
       isNameChanged: "Y",
       nameChangeSupportDocumentType: "Marriage Certificate",
-      nameChangeSupportDocuments: [{}],
-      // nameChangeSupportDocuments: [],
+      nameChangeSupportDocuments: placeholderAttachment,
       moveFromOrigin: "Afghanistan",
       livedInBCSinceBirth: null,
       previousHealthNumber: null,
@@ -182,8 +177,8 @@ export default {
       outsideBCLast12Months: "Y",
       outsideBCLast12MonthsReason: "Vacation",
       outsideBCLast12MonthsDestination: "VacationDestination",
-      outsideBCLast12MonthsDepartureDate: parseISO('2022-02-02'),
-      outsideBCLast12MonthsReturnDate: parseISO('2022-02-02'),
+      outsideBCLast12MonthsDepartureDate: testDepartureDate,
+      outsideBCLast12MonthsReturnDate: testReturnDate,
       hasPreviousBCHealthNumber: "Y",
       previousBCHealthNumber: "9999 999 998",
       hasBeenReleasedFromInstitution: "Y",
@@ -214,8 +209,7 @@ export default {
   hasAttendantNursingExpenses: 'Y',
   selectedAttendantNursingRecipients: ['spouse'],
   numAttendantNursingChildren: '1',
-  attendantNursingReceipts: [{}],
-  // attendantNursingReceipts: [],
+  attendantNursingReceipts: placeholderAttachment,
 
   // ContactInfoPage
   resAddressLine1: '1234 White House Ln.',

@@ -1,28 +1,27 @@
 <template>
-  <div id="app">
+  <div>
     <div :aria-hidden="isModalOpen">
-      <Header :title='pageTitle'
+      <HeaderComponent :title='pageTitle'
               imagePath='/ahdc/images/' />
       <router-view/>
-      <Footer :version='version' />
+      <FooterComponent :version='version' />
     </div>
-    <portal-target id="modal-target" name="modal"></portal-target>
+    <div id="modal-target" name="modal" ref="modal"></div>
   </div>
 </template>
 
 <script>
-import "@bcgov/bootstrap-theme/dist/css/bootstrap-theme.min.css";
+import "@bcgov/bootstrap-v5-theme/css/bootstrap-theme.min.css";
 import 'common-lib-vue/dist/common-lib-vue.css';
 import './styles/styles.css';
 
 import project from '../package.json';
 import {
-  Header,
-  Footer,
+  HeaderComponent,
+  FooterComponent,
 } from 'common-lib-vue';
 import pageStateService from '@/services/page-state-service';
 import { commonRoutes } from '@/router/routes';
-import { Wormhole } from 'portal-vue';
 import spaEnvService from '@/services/spa-env-service';
 import logService from '@/services/log-service';
 import {
@@ -33,14 +32,27 @@ import {
 export default {
   name: 'App',
   components: {
-    Header,
-    Footer,
+    HeaderComponent,
+    FooterComponent,
   },
   data: () => {
     return {
       version: project.version,
       pageTitle: 'British Columbia Application for Health and Drug Coverage (AHDC)',
+      isModalOpen: false,
+      modalObserver: null,
     };
+  },
+  methods: {
+    initModalObserver() {
+      const modalObserver = new MutationObserver(() => {
+        const modalTargetEl = this.$refs.modal;
+        const modalTargetHasChildren = modalTargetEl && modalTargetEl.children.length > 0;
+        this.isModalOpen = modalTargetHasChildren;
+      });
+      modalObserver.observe(this.$refs.modal, {childList: true})
+      this.modalObserver = modalObserver;
+    }
   },
   created() {
     document.title = this.pageTitle;
@@ -66,11 +78,12 @@ export default {
         });
       });
   },
-  computed: {
-    isModalOpen() {
-      return Wormhole.hasContentFor('modal');
-    }
+  mounted() {
+    this.initModalObserver();
   },
+  beforeDestroy() {
+    if(this.modalObserver) this.modalObserver.disconnect();
+  }
 }
 </script>
 

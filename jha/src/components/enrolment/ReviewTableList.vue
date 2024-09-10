@@ -72,7 +72,7 @@
         <h3>Level of coverage</h3>
         <div v-if="isFPCDataLoading"
           class="text-center">
-          <Loader color="#000"
+          <LoaderComponent color="#000"
             size="24px" />
         </div>
         <div v-if="isFPCDataUnavailable"
@@ -129,7 +129,7 @@ import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
 import {
   DistributionBar,
-  Loader,
+  LoaderComponent,
   formatDate,
 } from 'common-lib-vue';
 import { getConvertedPath } from '@/helpers/url';
@@ -155,7 +155,7 @@ export default {
   name: 'ReviewTableList',
   components: {
     DistributionBar,
-    Loader,
+    LoaderComponent,
     ReviewTable,
   },
   props: {
@@ -1112,7 +1112,7 @@ export default {
   methods: {
     navigateToPersonalInfoPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.PERSONAL_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -1121,7 +1121,7 @@ export default {
     },
     navigateToSpouseInfoPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SPOUSE_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -1130,7 +1130,7 @@ export default {
     },
     navigateToChildInfoPage(anchorName) {
         const toPath = getConvertedPath(
-          this.$router.currentRoute.path,
+          this.$router.currentRoute.value.path,
           enrolmentRoutes.CHILD_INFO_PAGE.path
         );
         pageStateService.setPageComplete(toPath);
@@ -1142,7 +1142,7 @@ export default {
     },
     navigateToFPCInfoPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.FPCARE_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -1151,7 +1151,7 @@ export default {
     },
     navigateToSuppBenInfoPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUPP_BEN_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -1160,7 +1160,7 @@ export default {
     },
     navigateToContactInfoPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.CONTACT_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);

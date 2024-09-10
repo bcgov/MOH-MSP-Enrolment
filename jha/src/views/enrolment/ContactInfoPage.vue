@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -28,8 +28,8 @@
                 :inputStyle='mediumStyles'
                 :required="true"
                 @addressSelected="handleResAddressSelected($event)"
-                @blur="handleBlurField($v.resAddressLine1)" />
-              <Input v-else
+                @blur="handleBlurField(v$.resAddressLine1)" />
+              <InputComponent v-else
                 class="mt-3"
                 label="Full street address"
                 id="res-address-line1"
@@ -37,57 +37,57 @@
                 :required="true"
                 maxlength="25"
                 :inputStyle='mediumStyles'
-                @blur="handleBlurField($v.resAddressLine1)" />
-              <div class="text-danger" v-if="$v.resAddressLine1.$dirty && !$v.resAddressLine1.required" aria-live="assertive">Full street address is required.</div>
+                @blur="handleBlurField(v$.resAddressLine1)" />
+              <div class="text-danger" v-if="v$.resAddressLine1.$dirty && v$.resAddressLine1.required.$invalid" aria-live="assertive">Full street address is required.</div>
               <div class="text-danger"
-                  v-if="$v.resAddressLine1.$dirty && $v.resAddressLine1.required && !$v.resAddressLine1.addressLineContentValidator"
+                  v-if="v$.resAddressLine1.$dirty && !v$.resAddressLine1.required.$invalid && v$.resAddressLine1.addressLineContentValidator.$invalid"
                   aria-live="assertive">Full street address must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="Address Line 2 (optional)"
                 id="res-address-line2"
                 v-model="resAddressLine2"
                 maxlength="25"
                 :inputStyle='mediumStyles'
-                @blur="handleBlurField($v.resAddressLine2)" />
+                @blur="handleBlurField(v$.resAddressLine2)" />
               <div class="text-danger"
-                  v-if="$v.resAddressLine2.$dirty && !$v.resAddressLine2.addressLineContentValidator"
+                  v-if="v$.resAddressLine2.$dirty && v$.resAddressLine2.addressLineContentValidator.$invalid"
                   aria-live="assertive">Full street address must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="Address Line 3 (optional)"
                 id="res-address-line3"
                 v-model="resAddressLine3"
                 maxlength="25"
                 :inputStyle='mediumStyles'
-                @blur="handleBlurField($v.resAddressLine3)" />
+                @blur="handleBlurField(v$.resAddressLine3)" />
               <div class="text-danger"
-                  v-if="$v.resAddressLine3.$dirty && !$v.resAddressLine3.addressLineContentValidator"
+                  v-if="v$.resAddressLine3.$dirty && v$.resAddressLine3.addressLineContentValidator.$invalid"
                   aria-live="assertive">Full street address must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="City"
                 id="res-city"
                 v-model="resCity"
                 maxlength="25"
                 :inputStyle='mediumStyles'
-                @blur="handleBlurField($v.resCity)" />
-              <div class="text-danger" v-if="$v.resCity.$dirty && !$v.resCity.required" aria-live="assertive">City is required.</div>
+                @blur="handleBlurField(v$.resCity)" />
+              <div class="text-danger" v-if="v$.resCity.$dirty && v$.resCity.required.$invalid" aria-live="assertive">City is required.</div>
               <div class="text-danger"
-                  v-if="$v.resCity.$dirty && !$v.resCity.cityContentValidator"
+                  v-if="v$.resCity.$dirty && v$.resCity.cityContentValidator.$invalid"
                   aria-live="assertive">City must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes, and blank characters.</div>
               <RegionSelect class="mt-3"
                 label="Province"
                 id="res-province"
                 v-model="resProvince"
                 :inputStyle='mediumStyles'
+                @blur="handleBlurField(v$.resProvince)"
                 :required="true"
-                @blur="handleBlurField($v.resProvince)"
                 :disabled='true' />
               <CountrySelect class="mt-3"
                 label="Jurisdiction"
                 id="res-country"
                 v-model="resCountry"
                 :inputStyle='mediumStyles'
+                @blur="handleBlurField(v$.resCountry)"
                 :required="true"
-                @blur="handleBlurField($v.resCountry)"
                 :disabled='true' />
               <PostalCodeInput class="mt-3"
                 label="Postal Code"
@@ -95,15 +95,15 @@
                 v-model="resPostalCode"
                 :inputStyle='smallStyles'
                 :required="true"
-                @blur="handleBlurField($v.resPostalCode)" />
-              <div class="text-danger" v-if="$v.resPostalCode.$dirty && !$v.resPostalCode.required" aria-live="assertive">Postal code is required.</div>
-              <div class="text-danger" v-if="$v.resPostalCode.$dirty
-                                          && $v.resPostalCode.required
-                                          && !$v.resPostalCode.completePostalCodeValidator" aria-live="assertive">Must be in the format A1A 1A1.</div>
-              <div class="text-danger" v-if="$v.resPostalCode.$dirty
-                                          && $v.resPostalCode.required
-                                          && $v.resPostalCode.completePostalCodeValidator
-                                          && !$v.resPostalCode.bcPostalCodeValidator" aria-live="assertive">Invalid postal code for British Columbia.</div>
+                @blur="handleBlurField(v$.resPostalCode)" />
+              <div class="text-danger" v-if="v$.resPostalCode.$dirty && v$.resPostalCode.required.$invalid" aria-live="assertive">Postal code is required.</div>
+              <div class="text-danger" v-if="v$.resPostalCode.$dirty
+                                          && !v$.resPostalCode.required.$invalid
+                                          && v$.resPostalCode.completePostalCodeValidator.$invalid" aria-live="assertive">Must be in the format A1A 1A1.</div>
+              <div class="text-danger" v-if="v$.resPostalCode.$dirty
+                                          && !v$.resPostalCode.required.$invalid
+                                          && !v$.resPostalCode.completePostalCodeValidator.$invalid
+                                          && v$.resPostalCode.bcPostalCodeValidator.$invalid" aria-live="assertive">Invalid postal code for British Columbia.</div>
             </div>
           <div class="col-md-6">
             <div>
@@ -113,7 +113,7 @@
             </div>
             <hr class="mt-0"/>
             <div v-if="isMailSame">
-              <Button label='My Mailing Address is Different'
+              <ButtonComponent label='My Mailing Address is Different'
                 @click='handleClickDifferentAddress()'
                 color='gold'
                 class='different-address'/>
@@ -129,8 +129,8 @@
                 :inputStyle='mediumStyles'
                 :required="true"
                 @addressSelected="handleMailAddressSelected($event)"
-                @blur="handleBlurField($v.mailAddressLine1)" />
-              <Input v-else
+                @blur="handleBlurField(v$.mailAddressLine1)" />
+              <InputComponent v-else
                 class="mt-3"
                 label="Full street address, rural route, PO box, or general delivery"
                 id="mail-address-line1"
@@ -138,43 +138,43 @@
                 maxlength="25"
                 :inputStyle='mediumStyles'
                 :required="true"
-                @blur="handleBlurField($v.mailAddressLine1)" />
-              <div class="text-danger" v-if="$v.mailAddressLine1.$dirty && !$v.mailAddressLine1.required" aria-live="assertive">
+                @blur="handleBlurField(v$.mailAddressLine1)" />
+              <div class="text-danger" v-if="v$.mailAddressLine1.$dirty && v$.mailAddressLine1.required.$invalid" aria-live="assertive">
                 Full street address, rural route, PO box, or general delivery is required.
               </div>
               <div class="text-danger"
-                v-if="$v.mailAddressLine1.$dirty && $v.mailAddressLine1.required && !$v.mailAddressLine1.addressLineContentValidator"
+                v-if="v$.mailAddressLine1.$dirty && !v$.mailAddressLine1.required.$invalid && v$.mailAddressLine1.addressLineContentValidator.$invalid"
                 aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="Address Line 2 (optional)"
                 id="mail-address-line2"
                 v-model="mailAddressLine2"
                 maxlength="25"
                 :inputStyle='mediumStyles'
-                @blur="handleBlurField($v.mailAddressLine2)" />
+                @blur="handleBlurField(v$.mailAddressLine2)" />
               <div class="text-danger"
-                v-if="$v.mailAddressLine2.$dirty && !$v.mailAddressLine2.addressLineContentValidator"
+                v-if="v$.mailAddressLine2.$dirty && v$.mailAddressLine2.addressLineContentValidator.$invalid"
                 aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="Address Line 3 (optional)"
                 id="mail-address-line3"
                 v-model="mailAddressLine3"
                 maxlength="25"
                 :inputStyle='mediumStyles'
-                @blur="handleBlurField($v.mailAddressLine3)" />
+                @blur="handleBlurField(v$.mailAddressLine3)" />
               <div class="text-danger"
-                v-if="$v.mailAddressLine3.$dirty && !$v.mailAddressLine3.addressLineContentValidator"
+                v-if="v$.mailAddressLine3.$dirty && v$.mailAddressLine3.addressLineContentValidator.$invalid"
                 aria-live="assertive">Full street address, rural route, PO box, or general delivery must contain letters, numbers, and may include special characters such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank characters.</div>
-              <Input class="mt-3"
+              <InputComponent class="mt-3"
                 label="City"
                 id="mail-city"
                 v-model="mailCity"
                 maxlength="25"
                 :inputStyle='mediumStyles'
-                @blur="handleBlurField($v.mailCity)" />
-              <div class="text-danger" v-if="$v.mailCity.$dirty && !$v.mailCity.required" aria-live="assertive">City is required.</div>
+                @blur="handleBlurField(v$.mailCity)" />
+              <div class="text-danger" v-if="v$.mailCity.$dirty && v$.mailCity.required.$invalid" aria-live="assertive">City is required.</div>
               <div class="text-danger"
-                v-if="$v.mailCity.$dirty && !$v.mailCity.cityContentValidator"
+                v-if="v$.mailCity.$dirty && v$.mailCity.cityContentValidator.$invalid"
                   aria-live="assertive">City must contain letters and may include numbers and special characters such as hyphens, periods, apostrophes, and blank characters.</div>
               <RegionSelect v-if="mailCountry === 'Canada'"
                 class="mt-3"
@@ -184,8 +184,8 @@
                 :inputStyle='mediumStyles'
                 :required="true"
                 :disablePlaceholder="true"
-                @blur="handleBlurField($v.mailProvince)" />
-              <Input v-else
+                @blur="handleBlurField(v$.mailProvince)" />
+              <InputComponent v-else
                 class="mt-3"
                 label="Province or State"
                 id="mail-province"
@@ -193,10 +193,10 @@
                 maxlength="25"
                 :inputStyle='mediumStyles'
                 :required="true"
-                @blur="handleBlurField($v.mailProvince)" />
-              <div class="text-danger" v-if="$v.mailProvince.$dirty && !$v.mailProvince.required" aria-live="assertive">Province or state is required.</div>
+                @blur="handleBlurField(v$.mailProvince)" />
+              <div class="text-danger" v-if="v$.mailProvince.$dirty && v$.mailProvince.required.$invalid" aria-live="assertive">Province or state is required.</div>
               <div class="text-danger"
-                v-if="$v.mailProvince.$dirty && !$v.mailProvince.provinceContentValidator"
+                v-if="v$.mailProvince.$dirty && v$.mailProvince.provinceContentValidator.$invalid"
                 aria-live="assertive">Province or State must contain letters and may include special characters such as hyphens, periods, apostrophes, and blank characters.</div>
               <CountrySelect class="mt-3"
                 label="Jurisdiction"
@@ -205,8 +205,8 @@
                 :inputStyle='mediumStyles'
                 :required="true"
                 :disablePlaceholder="true"
-                @blur="handleBlurField($v.mailCountry)" />
-              <div class="text-danger" v-if="$v.mailCountry.$dirty && !$v.mailCountry.required" aria-live="assertive">Jurisdiction is required.</div>
+                @blur="handleBlurField(v$.mailCountry)" />
+              <div class="text-danger" v-if="v$.mailCountry.$dirty && v$.mailCountry.required.$invalid" aria-live="assertive">Jurisdiction is required.</div>
 
               <div v-if="mailCountry === 'Canada'">
                 <PostalCodeInput 
@@ -217,14 +217,14 @@
                   maxlength="25"
                   :inputStyle='smallStyles'
                   :required="true"
-                  @blur="handleBlurField($v.mailPostalCode)" />
-                <div class="text-danger" v-if="$v.mailPostalCode.$dirty
-                                            && $v.mailPostalCode.required
-                                            && !$v.mailPostalCode.completePostalCodeValidator" aria-live="assertive">Must be in the format A1A 1A1.</div>
-                <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal Code is required.</div>
+                  @blur="handleBlurField(v$.mailPostalCode)" />
+                <div class="text-danger" v-if="v$.mailPostalCode.$dirty
+                                            && !v$.mailPostalCode.required.$invalid
+                                            && v$.mailPostalCode.completePostalCodeValidator.$invalid" aria-live="assertive">Must be in the format A1A 1A1.</div>
+                <div class="text-danger" v-if="v$.mailPostalCode.$dirty && v$.mailPostalCode.required.$invalid" aria-live="assertive">Postal Code is required.</div>
               </div>
               <div v-else>
-                <Input
+                <InputComponent
                   class="mt-3"
                   label="Postal Code or Zip Code"
                   id="mail-postal-code"
@@ -232,18 +232,18 @@
                   maxlength="25"
                   :inputStyle='smallStyles'
                   :required="true"
-                  @blur="handleBlurField($v.mailPostalCode)" />
+                  @blur="handleBlurField(v$.mailPostalCode)" />
                 <div class="text-danger"
-                  v-if="$v.mailPostalCode.$dirty && $v.mailPostalCode.required && !$v.mailPostalCode.specialCharacterValidator"
+                  v-if="v$.mailPostalCode.$dirty && !v$.mailPostalCode.required.$invalid && v$.mailPostalCode.specialCharacterValidator.$invalid"
                   aria-live="assertive">Postal Code or Zip Code cannot include special characters except hyphen, period, apostrophe, number sign and blank space.</div>
-                <div class="text-danger" v-if="$v.mailPostalCode.$dirty && !$v.mailPostalCode.required" aria-live="assertive">Postal Code or Zip Code is required.</div>
+                <div class="text-danger" v-if="v$.mailPostalCode.$dirty && v$.mailPostalCode.required.$invalid" aria-live="assertive">Postal Code or Zip Code is required.</div>
               </div>
               
             </div>
           </div>
         </div>
         <div v-if="applyingForMSP">
-          <Checkbox class="mt-3"
+          <CheckboxComponent class="mt-3"
                 id="same-address-check"
                 v-model="isMailSame"
                 label="This is my mailing address."/>
@@ -260,7 +260,7 @@
               class='phone-number'
               :inputStyle='smallStyles' />
             <div class="text-danger"
-                v-if="!$v.phone.phoneValidator"
+                v-if="v$.phone.phoneValidator.$invalid"
                 aria-live="assertive">Phone number does not appear to be valid.</div>
             <br/>
           </div>
@@ -279,6 +279,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
@@ -319,11 +320,11 @@ import {
 import logService from '@/services/log-service';
 import {
   AddressDoctorInput,
-  Button,
-  Checkbox,
+  ButtonComponent,
+  CheckboxComponent,
   ContinueBar,
   CountrySelect,
-  Input,
+  InputComponent,
   PageContent,
   PhoneNumberInput,
   PostalCodeInput,
@@ -337,7 +338,7 @@ import {
 } from 'common-lib-vue';
 import {
   required,
-} from 'vuelidate/lib/validators';
+} from '@vuelidate/validators';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import TipBox from '@/components/TipBox';
@@ -393,16 +394,19 @@ export default {
   ],
   components: {
     AddressDoctorInput,
-    Button,
-    Checkbox,
+    ButtonComponent,
+    CheckboxComponent,
     ContinueBar,
     CountrySelect,
-    Input,
+    InputComponent,
     PageContent,
     PhoneNumberInput,
     PostalCodeInput,
     RegionSelect,
     TipBox
+  },
+  setup () {
+    return { v$: useVuelidate() }
   },
   data: () => {
     return {
@@ -526,8 +530,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -556,7 +560,7 @@ export default {
     navigateToNextPage() {
       // Navigate to next path.
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.REVIEW_PAGE.path,
       );
       pageStateService.setPageComplete(toPath);
@@ -657,7 +661,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.CONTACT_INFO_PAGE.path
       );
       next({

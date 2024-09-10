@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -26,7 +26,7 @@
             forwarded to the CRA if they request it.
           </li>
         </ul>
-        <Checkbox
+        <CheckboxComponent
           label="I have power of attorney or another legal representation agreement"
           id="power-of-attorney-checkbox"
           class="mt-3"
@@ -54,8 +54,8 @@
             <div
               class="text-danger"
               v-if="
-                $v.powerOfAttorneyDocuments.$dirty &&
-                !$v.powerOfAttorneyDocuments.required
+                v$.powerOfAttorneyDocuments.$dirty &&
+                v$.powerOfAttorneyDocuments.required.$invalid
               "
               aria-live="assertive"
             >
@@ -77,24 +77,24 @@
             <li>I authorize the Ministry of Health and the Medical Services Commission to collect my health information from practitioners who provide publicly funded health care service(s) to me under MSP and other publicly funded health care programs, and I provide consent for those practitioners to disclose such information to the Ministry of Health and the Medical Services Commission for the purposes of assessing eligibility for, and in regard to the administration of, MSP and other Ministry of Health and the Medical Services Commission publicly funded health care programs.&nbsp;</li>
             <li>I declare that all information provided is true and I understand that the Ministry of Health and the Medical Services Commission and/or Health Insurance BC may verify this information with immigration authorities, law enforcement authorities and other public authorities, agencies and persons, as appropriate. I declare that all persons listed are residents of British Columbia.&nbsp;</li>
           </ul>
-          <Checkbox :label="ahConsentLabel"
+          <CheckboxComponent :label="ahConsentLabel"
             id="msp-ah"
             v-model="isAuthorizedMSPAH"
-            @blur="handleBlurField($v.isAuthorizedMSPAH)" />
+            @blur="handleBlurField(v$.isAuthorizedMSPAH)" />
           <div class="text-danger mt-1"
-            v-if="$v.isAuthorizedMSPAH.$dirty
-              && !$v.isAuthorizedMSPAH.requiredTrue"
+            v-if="v$.isAuthorizedMSPAH.$dirty
+              && v$.isAuthorizedMSPAH.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
-          <Checkbox v-if="hasSpouse"
+          <CheckboxComponent v-if="hasSpouse"
             :label="spouseConsentLabel"
             id="msp-spouse"
             class="mt-3"
             v-model="isAuthorizedMSPSpouse"
-            @blur="handleBlurField($v.isAuthorizedMSPSpouse)" />
+            @blur="handleBlurField(v$.isAuthorizedMSPSpouse)" />
           <div class="text-danger mt-1"
             v-if="hasSpouse
-              && $v.isAuthorizedMSPSpouse.$dirty
-              && !$v.isAuthorizedMSPSpouse.requiredTrue"
+              && v$.isAuthorizedMSPSpouse.$dirty
+              && v$.isAuthorizedMSPSpouse.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
         </div>
 
@@ -118,24 +118,24 @@
             <li>filed tax returns for the tax year two years prior to this application, and&nbsp;</li>
             <li>agree to allow the CRA to share your income information with PharmaCare.&nbsp;</li>
           </ul>
-          <Checkbox :label="ahConsentLabel"
+          <CheckboxComponent :label="ahConsentLabel"
             id="fpc-ah"
             v-model="isAuthorizedFPCAH"
-            @blur="handleBlurField($v.isAuthorizedFPCAH)" />
+            @blur="handleBlurField(v$.isAuthorizedFPCAH)" />
           <div class="text-danger mt-1"
-            v-if="$v.isAuthorizedFPCAH.$dirty
-              && !$v.isAuthorizedFPCAH.requiredTrue"
+            v-if="v$.isAuthorizedFPCAH.$dirty
+              && v$.isAuthorizedFPCAH.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
-          <Checkbox v-if="hasSpouse"
+          <CheckboxComponent v-if="hasSpouse"
             :label="spouseConsentLabel"
             id="fpc-spouse"
             class="mt-3"
             v-model="isAuthorizedFPCSpouse"
-            @blur="handleBlurField($v.isAuthorizedFPCSpouse)" />
+            @blur="handleBlurField(v$.isAuthorizedFPCSpouse)" />
           <div class="text-danger mt-1"
             v-if="hasSpouse
-              && $v.isAuthorizedFPCSpouse.$dirty
-              && !$v.isAuthorizedFPCSpouse.requiredTrue"
+              && v$.isAuthorizedFPCSpouse.$dirty
+              && v$.isAuthorizedFPCSpouse.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
         </div>
 
@@ -148,24 +148,24 @@
           <ul>
             <li>I am a resident of British Columbia as defined by the Medicare Protection Act. I have resided in Canada as a Canadian citizen or holder of permanent resident status (landed immigrant) for at least the last 12 months immediately preceding this application. I am not exempt from liability to pay income tax by reason of any other Act. I consent to the release of information from my income tax returns and other taxpayer information, by the CRA to the Ministry of Health and/or Health Insurance BC. The information obtained will be relevant to and used for the purpose of determining and verifying my initial and ongoing entitlement to the Supplementary Benefits Program under the Medicare Protection Act, and will not be disclosed to any other party. This authorization is valid for the taxation year prior to the signature of this application, the year of the signature, and for each subsequent consecutive taxation year for determining Supplementary Benefits. It may be revoked by sending a written notice to Health Insurance BC.&nbsp;</li>
           </ul>
-          <Checkbox :label="ahConsentLabel"
+          <CheckboxComponent :label="ahConsentLabel"
             id="sb-ah"
             v-model="isAuthorizedSBAH"
-            @blur="handleBlurField($v.isAuthorizedSBAH)" />
+            @blur="handleBlurField(v$.isAuthorizedSBAH)" />
           <div class="text-danger mt-1"
-            v-if="$v.isAuthorizedSBAH.$dirty
-              && !$v.isAuthorizedSBAH.requiredTrue"
+            v-if="v$.isAuthorizedSBAH.$dirty
+              && v$.isAuthorizedSBAH.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
-          <Checkbox v-if="hasSpouse"
+          <CheckboxComponent v-if="hasSpouse"
             :label="spouseConsentLabel"
             id="sb-spouse"
             class="mt-3"
             v-model="isAuthorizedSBSpouse"
-            @blur="handleBlurField($v.isAuthorizedSBSpouse)" />
+            @blur="handleBlurField(v$.isAuthorizedSBSpouse)" />
           <div class="text-danger mt-1"
             v-if="hasSpouse
-              && $v.isAuthorizedSBSpouse.$dirty
-              && !$v.isAuthorizedSBSpouse.requiredTrue"
+              && v$.isAuthorizedSBSpouse.$dirty
+              && v$.isAuthorizedSBSpouse.requiredTrue.$invalid"
             aria-live="assertive">Field is required.</div>
         </div>
         
@@ -181,6 +181,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
@@ -209,7 +210,7 @@ import {
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
 import {
-  Checkbox,
+  CheckboxComponent,
   ContinueBar,
   PageContent,
   FileUploader,
@@ -217,7 +218,7 @@ import {
 import SampleImageTipBox from "@/components/SampleImageTipBox";
 import pageContentMixin from '@/mixins/page-content-mixin';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
-import { required } from "vuelidate/lib/validators";
+import { required } from "@vuelidate/validators";
 
 const requiredTrue = (value) => {
   return value === true;
@@ -230,7 +231,7 @@ export default {
     pageStepperMixin,
   ],
   components: {
-    Checkbox,
+    CheckboxComponent,
     ContinueBar,
     PageContent,
     FileUploader,
@@ -277,10 +278,13 @@ export default {
       enrolmentRoutes.CONSENT_PAGE.title
     );
   },
+  setup () {
+    return { v$: useVuelidate() }
+  },
   methods: {
     continueHandler() {
-      this.$v.$touch();
-      if (this.$v.$invalid) {
+      this.v$.$touch();
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -398,7 +402,7 @@ export default {
     },
     navigateToSubmissionPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUBMISSION_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -408,7 +412,7 @@ export default {
     },
     navigateToSubmissionErrorPage() {
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUBMISSION_ERROR_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -447,7 +451,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.REVIEW_PAGE.path
       );
       next({

@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -23,7 +23,7 @@
                 documentType="Account holder NOA/NOR support documents"
                 description="Account holder NOA/NOR" />
               <div class="text-danger"
-                      v-if="$v.ahCRADocuments.$dirty && !$v.ahCRADocuments.required"
+                      v-if="v$.ahCRADocuments.$dirty && v$.ahCRADocuments.required.$invalid"
                       aria-live="assertive">File upload required.</div>
             </div>
           </div>
@@ -51,7 +51,7 @@
               documentType="Spouse NOA/NOR support documents"
               description="Spouse NOA/NOR" />
             <div class="text-danger"
-              v-if="$v.spouseCRADocuments.$dirty && !$v.spouseCRADocuments.required"
+              v-if="v$.spouseCRADocuments.$dirty && v$.spouseCRADocuments.required.$invalid"
               aria-live="assertive">File upload required.</div>
           </div>
           <div class="col-md-4">
@@ -74,6 +74,7 @@
 </template>
 
 <script>
+import useVuelidate from '@vuelidate/core'
 import pageStateService from '@/services/page-state-service';
 import {
   enrolmentRoutes,
@@ -101,7 +102,7 @@ import {
 } from 'common-lib-vue';
 import {
   required
-} from 'vuelidate/lib/validators';
+} from '@vuelidate/validators';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import pageStepperMixin from '@/mixins/page-stepper-mixin';
 import TipBox from '@/components/TipBox';
@@ -125,6 +126,9 @@ export default {
       hasSpouse: false,
       selectedNOAYear: null,
     };
+  },
+  setup () {
+    return { v$: useVuelidate() }
   },
   created() {
     logService.logNavigation(
@@ -152,8 +156,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -166,7 +170,7 @@ export default {
     navigateToNextPage() {
       // Navigate to next path.
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.CONTACT_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -186,7 +190,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.DOCUMENTS_PAGE.path
       );
       next({

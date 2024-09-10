@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-sm-7">Total net income</div>
       <div class="col-sm-5">
-        <b>{{totalIncome | currencyFilter}}</b>
+        <b>{{totalIncome}}</b>
       </div>
     </div>
 
@@ -14,13 +14,13 @@
     <div class="row">
       <div class="col-sm-7">Total RDSP income</div>
       <div class="col-sm-5">
-        <b>{{RDSP | currencyFilter}}</b>
+        <b>{{RDSP}}</b>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col-sm-7">Total deductions</div>
       <div class="col-sm-5">
-        <b>{{RDSP | currencyFilter}}</b>
+        <b>{{RDSP}}</b>
       </div>
     </div>
 
@@ -28,7 +28,7 @@
     <div class="row">
       <div class="col-sm-7">Adjusted income</div>
       <div class="col-sm-5">
-        <b>{{adjustedIncome | currencyFilter}}</b>
+        <b>{{adjustedIncome}}</b>
       </div>
     </div>
 
@@ -38,7 +38,7 @@
     <h3>Level of coverage</h3>
     <div v-if="isLoading"
       class="text-center">
-      <Loader color="#000"
+      <LoaderComponent color="#000"
         size="24px" />
     </div>
     <div v-if="isSystemUnavailable"
@@ -53,7 +53,7 @@
 <script>
 import {
   DistributionBar,
-  Loader,
+  LoaderComponent,
 } from 'common-lib-vue';
 import apiService from '@/services/api-service';
 import logService from '@/services/log-service';
@@ -72,7 +72,7 @@ export default {
   name: 'FPCWidget',
   components: {
     DistributionBar,
-    Loader,
+    LoaderComponent,
   },
   props: {
     value: {
@@ -126,13 +126,13 @@ export default {
       const ahIncome = parseFloat(this.value.ahIncome) || 0;
       const spouseIncome = parseFloat(this.value.spouseIncome) || 0;
       const totalIncome = ahIncome + spouseIncome;
-      return totalIncome;
+      return formatCurrencyNumber(totalIncome);
     },
     RDSP() {
       const ahRDSP = parseFloat(this.value.ahRDSP) || 0;
       const spouseRDSP = parseFloat(this.value.spouseRDSP) || 0;
       const totalRDSP = ahRDSP + spouseRDSP;
-      return totalRDSP;
+      return formatCurrencyNumber(totalRDSP);
     },
     adjustedIncome() {
       const ahIncome = parseFloat(this.value.ahIncome) || 0;
@@ -140,7 +140,7 @@ export default {
       const ahRDSP = parseFloat(this.value.ahRDSP) || 0;
       const spouseRDSP = parseFloat(this.value.spouseRDSP) || 0;
       const adjustedIncome = ahIncome + spouseIncome - ahRDSP - spouseRDSP;
-      return adjustedIncome;
+      return formatCurrencyNumber(adjustedIncome);
     },
     distributionBarItems() {
       const tier = getCoverageTier({
@@ -153,11 +153,6 @@ export default {
       return getDistributionBarItems(tier);
     },
   },
-  filters: {
-    currencyFilter(value) {
-      return formatCurrencyNumber(value);
-    }
-  }
 }
 </script>
 

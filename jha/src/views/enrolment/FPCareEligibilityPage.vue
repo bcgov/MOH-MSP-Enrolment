@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.path'
+      <PageStepper :currentPath='$router.currentRoute.value.path'
         :routes='stepRoutes'
         @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
         :isMobileStepperOpen='isMobileStepperOpen'
@@ -10,10 +10,11 @@
     <PageContent :deltaHeight='pageContentDeltaHeight'>
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Fair PharmaCare eligibility</h1>
-        <Radio
+        <RadioComponent
           id='apply-fpc'
           name='apply-fpc'
           label='1. Will you use this form to apply for Fair PharmaCare?'
+          cypressId='apply-fpc-'
           v-model='eqFPCIsApplying'
           :required="true"
           :items='radioOptionsApplyFPC' />
@@ -24,10 +25,11 @@
             <p class="mb-0 ml-4">b. have filed an income tax return with the Canada Revenue Agency (CRA) for the relevant taxation year (two years before the current year).</p>
           </div>
           <p id="eqFPCMeetsCriteria" class="ml-4 mb-0">Do you meet the above eligibility criteria?</p>
-          <Radio
+          <RadioComponent
             id='meets-fpc-criteria'
             name='meets-fpc-criteria'
             label=''
+            cypressId='meets-fpc-criteria-'
             aria-labelledby="eqFPCMeetsCriteria"
             v-model='eqFPCMeetsCriteria'
             :required="true"
@@ -55,10 +57,11 @@
               <p class="ml-4">c. Registered Disability Savings Plan (RDSP) income (Line 12500) if applicable.</p>
             </div>
             <p id="eqFPCHasInfo" class="ml-4 mb-0">Do you have this information to include with your application?</p>
-            <Radio
+            <RadioComponent
               id='has-fpc-info'
               name='has-fpc-info'
               label=''
+              cypressId='has-fpc-info-'
               v-model='eqFPCHasInfo'
               aria-labelledby="eqFPCHasInfo"
               :required="true"
@@ -81,18 +84,20 @@
           </div>
         </div>
         <div class="text-danger"
-          v-if="$v.eqFPCIsApplying.$dirty && !$v.eqFPCIsApplying.validateQuestionsAnswered"
+          v-if="v$.eqFPCIsApplying.$dirty && v$.eqFPCIsApplying.validateQuestionsAnswered.$invalid"
           aria-live="assertive">Please complete the questionnaire to continue.</div>
       </main>
     </PageContent>
     <ContinueBar
-    @continue="validateFields()" />
+    @continue="validateFields()"
+    cypressId='continue' />
   </div>
 </template>
 
 <script>
 import pageStateService from '@/services/page-state-service';
 import logService from '@/services/log-service';
+import useVuelidate from '@vuelidate/core'
 import {
   enrolmentRoutes,
   isPastPath,
@@ -111,7 +116,7 @@ import {
 import {
   PageContent,
   ContinueBar,
-  Radio,
+  RadioComponent,
 } from 'common-lib-vue';
 import pageContentMixin from '@/mixins/page-content-mixin';
 import {
@@ -141,10 +146,13 @@ export default {
     pageContentMixin,
     pageStepperMixin,
   ],
+  setup () {
+    return { v$: useVuelidate() }
+  },
   components: {
     ContinueBar,
     PageContent,
-    Radio,
+    RadioComponent,
     ContactInformation,
 },
   data: () => {
@@ -194,8 +202,8 @@ export default {
   },
   methods: {
     validateFields() {
-      this.$v.$touch()
-      if (this.$v.$invalid) {
+      this.v$.$touch()
+      if (this.v$.$invalid) {
         scrollToError();
         return;
       }
@@ -212,7 +220,7 @@ export default {
     navigateToNextPage() {
       // Navigate to next path.
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
@@ -259,7 +267,7 @@ export default {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
-        this.$router.currentRoute.path,
+        this.$router.currentRoute.value.path,
         enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.path
       );
       next({
