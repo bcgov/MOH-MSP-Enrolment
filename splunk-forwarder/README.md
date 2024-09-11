@@ -139,3 +139,15 @@ Also notice the format of the Authorization header as required by Splunk HEC.
 ## Production Setup
 
 See [Deploy to OpenShift](openshift/README.md) docs.
+
+# Run Locally
+
+To run the forwarder locally, use the following steps:
+
+1. Run the `npm run start-mock-logger` script to run a stand-in for the Splunk/Dynatrace service
+2. Run the `npm run start-local-forwarder` script to run the local forwarder code from the /src folder
+3. Use the `npm run send-test-log` to send mock logs to the local forwarder as needed
+
+The local forwarder is configured to create a "logs" folder in the project folder to store any logs that are created in the course of development. This folder is in the .gitignore file so it won't be accidentally committed.
+
+Both the mock logger and local forwarder use nodemon, so they should be responsive to file changes you make. 
