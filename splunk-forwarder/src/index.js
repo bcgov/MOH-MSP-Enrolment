@@ -226,9 +226,9 @@ var getLog = function (req) {
                 };
                 winstonLogger.debug('sending payload');
                 splunkLogger.send(payload, function (err, resp, body) {
-                    //TODO: Once sending to Splunk is setup, double check if err
-                    //is falsy on success or if we have to modify the check
-                    if (ONLY_LOG_WHEN_SPLUNK_FAILS && resp && resp.statusCode != 200){
+                    //On a successful call, Splunk sends back 200 and Dynatrace sends back 204
+                    //Any other response code should constitute a failure and trigger a backup log
+                    if (ONLY_LOG_WHEN_SPLUNK_FAILS && resp && resp.statusCode != 200 && resp.statusCode != 204){
                         winstonLogger.info(logString);
                     }
                     winstonLogger.debug('ONLY_LOG_WHEN_SPLUNK_FAILS=' + ONLY_LOG_WHEN_SPLUNK_FAILS + ' resp=' + JSON.stringify(resp) + ' body=' + JSON.stringify(body) + ' Response from Splunk Server' + body);
