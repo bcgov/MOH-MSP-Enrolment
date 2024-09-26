@@ -16,6 +16,7 @@
     "start-mock-logger": "nodemon bin/mock-logger.js",
     "send-test-log": "bin/send-test-log.sh",
     "dev": "nodemon --watch src --inspect=0.0.0.0:9229 --exec node ./src/index.js server",
+    "test": "vitest --coverage",
     "test:coverage": "echo \"WARNING: No test specified\" && exit 0",
     "test:lint": "echo \"WARNING: No LINTer specified\" && exit 0",
     "test:schema": "echo \"WARNING: No schema specified\" && exit 0"
@@ -33,11 +34,13 @@
     "winston-daily-rotate-file": "^1.7.2"
   },
   "devDependencies": {
+    "@vitest/coverage-v8": "^2.1.1",
     "gulp": "^5.0.0",
     "gulp-clean": "^0.4.0",
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^6.0.0-alpha.1",
-    "nodemon": "^3.1.4"
+    "nodemon": "^3.1.4",
+    "vitest": "^2.1.1"
   },
   "engines": {
     "node": ">=18.0.0"
