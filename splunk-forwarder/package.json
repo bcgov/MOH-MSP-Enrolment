@@ -16,8 +16,8 @@
     "start-mock-logger": "nodemon bin/mock-logger.js",
     "send-test-log": "bin/send-test-log.sh",
     "dev": "nodemon --watch src --inspect=0.0.0.0:9229 --exec node ./src/index.js server",
-    "test": "vitest --coverage",
-    "test:coverage": "echo \"WARNING: No test specified\" && exit 0",
+    "test": "vitest",
+    "test:coverage": "vitest --coverage",
     "test:lint": "echo \"WARNING: No LINTer specified\" && exit 0",
     "test:schema": "echo \"WARNING: No schema specified\" && exit 0"
   },
