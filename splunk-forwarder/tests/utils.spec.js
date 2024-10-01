@@ -1,4 +1,3 @@
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 import * as utils from "../src/utils.js";
 
 describe("utils.formatTime()", () => {

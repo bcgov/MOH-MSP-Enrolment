@@ -1,5 +1,3 @@
-import { it, describe, expect, beforeEach, afterEach, vi, mock } from "vitest";
-
 const SplunkLoggerTemplate = require("../src/splunklogger.js");
 
 const defaultSettings = {
