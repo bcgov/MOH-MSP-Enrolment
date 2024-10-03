@@ -30,6 +30,17 @@ app.post("/mock-logger", (req, res) => {
     minute: "numeric",
     second: "numeric",
   });
-  console.log(date, "-- Responded with ", responseCode);
+  console.log("[MOCKLOGGER] ", date, "-- Responded with ", responseCode, "(POST)");
   res.status(responseCode).end();
+});
+
+app.head("/", (req, res) => {
+  //this helps start-server-and-test work properly
+  const date = new Date().toLocaleDateString("en-US", {
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  });
+  console.log("[MOCKLOGGER] ", date, "-- Responded with 200 (HEAD)");
+  res.status(200).end();
 });
