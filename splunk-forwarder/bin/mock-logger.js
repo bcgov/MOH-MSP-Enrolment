@@ -35,7 +35,6 @@ app.post("/mock-logger", (req, res) => {
 });
 
 app.head("/", (req, res) => {
-  //this helps start-server-and-test work properly
   const date = new Date().toLocaleDateString("en-US", {
     hour: "numeric",
     minute: "numeric",
