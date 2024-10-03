@@ -17,6 +17,7 @@
     "send-test-log": "bin/send-test-log.sh",
     "dev": "nodemon --watch src --inspect=0.0.0.0:9229 --exec node ./src/index.js server",
     "test": "vitest",
+    "test:all": "start-test 'bin/start-local-forwarder.sh' http://localhost:8080/hello vitest",
     "test:coverage": "vitest run --coverage",
     "test:lint": "echo \"WARNING: No LINTer specified\" && exit 0",
     "test:schema": "echo \"WARNING: No schema specified\" && exit 0"
@@ -40,6 +41,7 @@
     "gulp-sourcemaps": "^2.6.5",
     "gulp-typescript": "^6.0.0-alpha.1",
     "nodemon": "^3.1.4",
+    "start-server-and-test": "^2.0.8",
     "vitest": "^2.1.1"
   },
   "engines": {
