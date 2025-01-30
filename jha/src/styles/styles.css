@@ -63,3 +63,7 @@ body.no-scroll {
     padding: 0;
   }
 }
+
+.b {
+  font-weight: bold;
+}

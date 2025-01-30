@@ -143,7 +143,7 @@
 
       <div v-if="requestImmigrationStatus">
         <h2 class="mt-3">Child's status in Canada</h2>
-        <p>Please provide your child's immigration status. You will be required to upload documents to support your child's status in Canada. For arrivals through the Canada-Ukraine authorization for emergency travel (CUAET) program, please select "Temporary Permit Holder or Diplomat" from the menu below.</p>
+        <p>Please provide your child's immigration status. You will be required to upload documents to support your child's status in Canada. For arrivals through the Canada-Ukraine authorization for emergency travel program (CUAET), please select "Temporary Permit Holder or Diplomat" from the drop down below.</p>
         <hr />
         <SelectComponent 
           :id="'child-status-' + index"
@@ -201,7 +201,7 @@
         </div>
         <div v-if="statusReason !== null && statusReason !== undefined" class="mt-3">
           <h2>Documents</h2>
-          <p>Provide a copy of an accepted document that shows your child’s status in Canada. If their name is different from the name on the document, you must also upload a copy of a name change certificate that shows their full legal name.</p>
+          <p>Provide one of the required documents to support your child’s status in Canada. If your child's name has changed since their document was issued, you are also required to upload document to support the name change.</p>
           <hr/>
           <SelectComponent 
             label="Document type"
@@ -218,6 +218,17 @@
           <div class="text-danger"
             v-if="v$.citizenshipSupportDocumentType.$dirty && v$.citizenshipSupportDocumentType.required.$invalid"
             aria-live="assertive">Document type is required.</div>
+            <div v-if= "citizenshipSupportDocumentType && citizenshipSupportDocumentType == supportDocumentTypes.WorkPermit">
+              <p>
+              If submitting a <span class="b">Working Holiday Permit</span>, you may also provide a letter of employment (issued by the employer) with the following details:
+              </p>
+              <ul>
+                <li>Confirmation of employment for at least six consecutive months during the valid period of the permit.</li>
+                <li>The number of hours worked per week (a minimum of 18 hours per week is required).</li>
+                <li>The start date of employment.</li>
+                <li>The expected end date of employment.</li>
+              </ul>
+            </div>
           <RadioComponent
             label="Does the document that shows your child's status in Canada match their selected gender designation?" 
             :name="'gender-matches-' + index"
@@ -1087,6 +1098,7 @@ export default {
       nameChangeSupportDocumentOptions: selectOptionsChildNameChangeSupportDocuments,
       temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
       overageChildTemporaryResidentStatusReasonOptions: radioOptionsOverageChildTemporaryResidentStatusReasons,
+      supportDocumentTypes: SupportDocumentTypes,
       mediumStyles: mediumStyles,
       smallStyles: smallStyles,
       // Data to be saved
