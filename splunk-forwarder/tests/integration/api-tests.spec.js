@@ -1,11 +1,12 @@
+import { tryServer } from '../test-helpers.js'
+
 const { exec } = require("node:child_process");
 
-//these need to match the values in start-local-forwarder.sh
+//these need to match the values in start-local-service.sh
 const monitorUsername = "monitorusername";
 const monitorPassword = "monitorpassword";
 const mockLoggerUrl = "http://localhost:3000";
 const localForwarderUrl = "http://localhost:8080";
-
 
 const startMockLogger = async () => {
   //create child process to run the mock-logger for the duration of the tests
@@ -18,33 +19,9 @@ const startMockLogger = async () => {
 
 const startLocalForwarder = async () => {
   const childProcess = await exec(
-    "timeout 45s bin/start-local-forwarder.sh --test",
+    "timeout 45s bin/start-local-service.sh --test",
     (err, stdout, stderr) => {}
   );
-};
-
-const tryServer = async (website, HTTPMethod) => {
-  const retryAttempts = 10;
-
-  for (let i = 0; i < retryAttempts; i++) {
-    try {
-      await fetch(website, {
-        method: HTTPMethod,
-      });
-      // console.log(`successfully reached ${website}!`);
-      return new Promise((resolve, reject) => {
-        resolve();
-      });
-    } catch (error) {
-      // console.log(`failed to reach ${website}, attempt `, i);
-      await new Promise((resolve) => setTimeout(resolve, 200));
-    }
-  }
-  return new Promise((resolve, reject) => {
-    reject(
-      `Couldn't reach ${website} (tried ${retryAttempts} times and gave up)`
-    );
-  });
 };
 
 
