@@ -4,7 +4,7 @@ const defaultSettings = {
   token: "foobar",
   cacert: "foobar",
   level: "info",
-  url: "https://jsonplaceholder.typicode.com/",
+  url: "https://dev.my.gov.bc.ca/ccup/hello",
   maxRetries: 3,
   batchInterval: 0,
 };
