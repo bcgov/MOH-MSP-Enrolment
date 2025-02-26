@@ -2,7 +2,7 @@
 =                Dependencies                 =
 =============================================*/
 const winston = require('winston');
-require('winston-daily-rotate-file');
+const DailyRotateFile = require('winston-daily-rotate-file');
 const bodyParser = require('body-parser');
 const stringify = require('json-stringify-safe');
 const express = require('express')
@@ -55,22 +55,27 @@ const FILE_LOG_NAME = LOG_DIR_NAME ?
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 
 // Daily rotate file transport for logs
-var transport = new winston.transports.DailyRotateFile({
-    filename: FILE_LOG_NAME,
-    datePattern: 'yyyy-MM-dd-',
+var transport = {
+    filename: '%DATE%sf.log',
+    dirname: LOG_DIR_NAME,
+    datePattern: 'yyyy-MM-DD-',
+    frequency: '5s',
+    zippedArchive: false,
     prepend: true,
     level: FILE_LOG_LEVEL,
     timestamp: true,
-    maxsize: MAX_BYTE_SIZE_PER_FILE,
+    auditFile: `${LOG_DIR_NAME}/${FILE_LOG_LEVEL}-audit.json`,
+    maxSize: MAX_BYTE_SIZE_PER_FILE,
     maxFiles: MAX_FILES,
-});
+};
 
 // Winston Logger init
-var winstonLogger = new winston.Logger({
+var winstonLogger = new winston.createLogger({
     level: FILE_LOG_LEVEL,
+    format: winston.format.combine(winston.format.timestamp(), winston.format.json()),
     transports: [
-        new winston.transports.Console({ timestamp: true }),
-        transport
+        new winston.transports.Console(),
+        new DailyRotateFile(transport),
     ]
 });
 
