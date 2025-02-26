@@ -4,7 +4,7 @@
 const express = require("express");
 const app = express();
 
-const MOCK_LOGGER_PORT = 3000; //needs to match the SPLUNK_URL in start-local-forwarder.sh
+const MOCK_LOGGER_PORT = 3000; //needs to match the SPLUNK_URL in start-local-service.sh
 const responseCode = 200; //set this to whatever you like, eg. 200, 204, or 500
 
 app.listen(MOCK_LOGGER_PORT, () => {
