@@ -258,8 +258,9 @@
             <a
               href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information"
               target="_blank"
-              >Change Your Personal Information</a
-            >.
+              >
+            Change Your Personal Information
+            </a>.
           </p>
         </TipBox>
       </div>
@@ -407,7 +408,7 @@
         >
           <p>
             If submitting a <span class="b">Working Holiday Permit</span>, you
-            may also provide a letter of employment (issued by the employer)
+            must also provide a letter of employment (issued by the employer)
             with the following details:
           </p>
           <ul>

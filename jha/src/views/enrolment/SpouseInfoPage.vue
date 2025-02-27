@@ -449,6 +449,30 @@
               >
                 Document type is required.
               </div>
+              <div
+                v-if="
+                  spouseCitizenshipSupportDocumentType &&
+                  spouseCitizenshipSupportDocumentType == supportDocumentTypes.WorkPermit
+                "
+              >
+                <p>
+                  If submitting a <span class="b">Working Holiday Permit</span>, you
+                  must also provide a letter of employment (issued by the employer)
+                  with the following details:
+                </p>
+                <ul>
+                  <li>
+                    Confirmation of employment for at least six consecutive months
+                    during the valid period of the permit.
+                  </li>
+                  <li>
+                    The number of hours worked per week (a minimum of 18 hours per
+                    week is required).
+                  </li>
+                  <li>The start date of employment.</li>
+                  <li>The expected end date of employment.</li>
+                </ul>
+              </div>
               <RadioComponent
                 label="Does the document that shows your spouse's status in Canada match their selected gender designation?"
                 name="spouse-gender-matches"
