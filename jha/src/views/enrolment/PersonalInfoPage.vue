@@ -1448,6 +1448,7 @@ export default {
         radioOptionsAHTemporaryResidentStatusReasons,
       radioOptionsNoYes: radioOptionsNoYes,
       nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
+      supportDocumentTypes: SupportDocumentTypes,
       // Data to be saved.
       firstName: null,
       middleName: null,

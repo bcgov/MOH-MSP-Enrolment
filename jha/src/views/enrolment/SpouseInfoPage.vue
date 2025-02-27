@@ -1622,8 +1622,8 @@ export default {
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
       nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
-      temporaryResidentStatusReasonOptions:
-        radioOptionsTemporaryResidentStatusReasons,
+      temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
+      supportDocumentTypes: SupportDocumentTypes,
       mediumStyles: mediumStyles,
       smallStyles: smallStyles,
       // Data to be saved

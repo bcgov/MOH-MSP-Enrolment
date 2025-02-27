@@ -1950,12 +1950,9 @@ export default {
       childAgeTypes: ChildAgeTypes,
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
-      nameChangeSupportDocumentOptions:
-        selectOptionsChildNameChangeSupportDocuments,
-      temporaryResidentStatusReasonOptions:
-        radioOptionsTemporaryResidentStatusReasons,
-      overageChildTemporaryResidentStatusReasonOptions:
-        radioOptionsOverageChildTemporaryResidentStatusReasons,
+      nameChangeSupportDocumentOptions: selectOptionsChildNameChangeSupportDocuments,
+      temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
+      overageChildTemporaryResidentStatusReasonOptions: radioOptionsOverageChildTemporaryResidentStatusReasons,
       supportDocumentTypes: SupportDocumentTypes,
       mediumStyles: mediumStyles,
       smallStyles: smallStyles,
