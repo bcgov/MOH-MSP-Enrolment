@@ -22,13 +22,13 @@
           :items="radioOptionsYesNo"
         >
           <template v-slot:description>
-            <span class="field-description"
-              >Note: If you or your spouse (who may not live in B.C. or Canada)
+            <span class="field-description">
+              Note: If you or your spouse (who may not live in B.C. or Canada)
               earned income outside Canada during the most recent tax year, you
               must submit your application for Supplementary Benefits using the
               print form (HLTH 101) available
-              <a target="_blank" href="https://gov.bc.ca/ahdc">here</a>.</span
-            >
+              <a target="_blank" href="https://gov.bc.ca/ahdc">here</a>.
+            </span>
           </template>
         </RadioComponent>
         <div v-if="eqSBIsApplying === 'Y'">
@@ -70,8 +70,9 @@
               <a
                 target="_blank"
                 href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits"
-                >Applying for Supplementary Benefits.</a
-              >
+                >
+                Applying for Supplementary Benefits.
+              </a>
               For assistance, contact Health Insurance BC at:
             </p>
             <ContactInformation />

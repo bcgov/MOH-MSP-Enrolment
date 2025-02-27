@@ -176,9 +176,9 @@
             :required="true"
             @blur="handleBlurField(v$.personalHealthNumber)"
           />
-          <span class="field-description"
-            >This number appears on the BC Services Card</span
-          >
+          <span class="field-description">
+            This number appears on the BC Services Card
+          </span>
           <div
             class="text-danger"
             v-if="
@@ -965,10 +965,10 @@
                 :items="radioOptionsNoYes"
               >
                 <template v-slot:description>
-                  <span class="field-description"
-                    >If your child has been living in B.C. for less than 12
-                    months, please indicate any absences since arrival.</span
-                  >
+                  <span class="field-description">
+                    If your child has been living in B.C. for less than 12
+                    months, please indicate any absences since arrival.
+                  </span>
                 </template>
               </RadioComponent>
               <div
@@ -1173,9 +1173,9 @@
                   @blur="handleBlurField(v$.previousBCHealthNumber)"
                   :inputStyle="mediumStyles"
                 />
-                <span class="field-description"
-                  >This number appears on the BC Services Card</span
-                >
+                <span class="field-description">
+                  This number appears on the BC Services Card
+                </span>
                 <div
                   class="text-danger"
                   v-if="

@@ -149,9 +149,9 @@
                 :required="true"
                 @blur="handleBlurField(v$.personalHealthNumber)"
               />
-              <span class="field-description"
-                >This number appears on the BC Services Card</span
-              >
+              <span class="field-description">
+                This number appears on the BC Services Card
+              </span>
               <div
                 class="text-danger"
                 v-if="
@@ -185,10 +185,10 @@
                 :required="true"
                 @blur="handleBlurField(v$.socialInsuranceNumber)"
               />
-              <span class="field-description"
-                >Your SIN will be used to verify your income for Fair Pharmacare
-                and Supplementary Benefits (as applicable)</span
-              >
+              <span class="field-description">
+                Your SIN will be used to verify your income for Fair Pharmacare
+                and Supplementary Benefits (as applicable)
+              </span>
               <div
                 class="text-danger"
                 v-if="
@@ -240,8 +240,9 @@
                 <a
                   href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information"
                   target="_blank"
-                  >Change Your Personal Information</a
-                >.
+                  >Change Your Personal Information
+                </a>
+                .
               </p>
             </TipBox>
           </div>
@@ -853,11 +854,11 @@
                     @blur="handleBlurField(v$.isOutsideBCInLast12Months)"
                   >
                     <template v-slot:description>
-                      <span class="field-description"
-                        >If you have been living in B.C. for less than 12
+                      <span class="field-description">
+                        If you have been living in B.C. for less than 12
                         months, please indicate any absences since
-                        arrival.</span
-                      >
+                        arrival.
+                      </span>
                     </template>
                   </RadioComponent>
                   <div
@@ -1057,9 +1058,9 @@
                     :inputStyle="mediumStyles"
                     @blur="handleBlurField(v$.previousPHN)"
                   />
-                  <span class="field-description"
-                    >This number appears on the BC Services Card</span
-                  >
+                  <span class="field-description">
+                    This number appears on the BC Services Card
+                  </span>
                   <div
                     class="text-danger"
                     v-if="

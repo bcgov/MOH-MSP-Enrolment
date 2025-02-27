@@ -140,9 +140,11 @@
           <h3 class="mt-4">Next steps</h3>
           <hr />
           <p>
-            <a href="javascript:void(0)" @click="printPage()" class="print-link"
-              >Print or save</a
+            <a 
+              href="javascript:void(0)" @click="printPage()" class="print-link"
             >
+            Print or save
+            </a>
             this page for your records.
           </p>
 
@@ -178,8 +180,10 @@
                 <a
                   href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/how-to-enrol/coverage-wait-period"
                   target="_blank"
-                  >wait period</a
-                >.&nbsp;
+                  >
+                wait period
+                </a>
+                .&nbsp;
               </li>
               <li>
                 Living outside B.C. for more than six months could cause your
@@ -187,8 +191,10 @@
                 <a
                   href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/are-you-eligible"
                   target="_blank"
-                  >Learn more about MSP eligibility</a
-                >.&nbsp;
+                  >
+                Learn more about MSP eligibility
+                </a>
+                .&nbsp;
               </li>
             </ul>
           </div>
@@ -236,8 +242,10 @@
                 <a
                   href="https://my.gov.bc.ca/fpcare/registration-status/request-status"
                   target="_blank"
-                  >https://my.gov.bc.ca/fpcare/registration-status/request-status</a
-                >.&nbsp;
+                  >
+                https://my.gov.bc.ca/fpcare/registration-status/request-status
+                </a>
+                .&nbsp;
               </li>
             </ul>
           </div>
@@ -269,8 +277,10 @@
             <a
               href="https://www2.gov.bc.ca/gov/content/health/about-bc-s-health-care-system/partners/health-insurance-bc"
               target="_blank"
-              >contact HIBC</a
-            >.
+              >
+            contact HIBC
+            </a>
+            .
           </p>
         </div>
 

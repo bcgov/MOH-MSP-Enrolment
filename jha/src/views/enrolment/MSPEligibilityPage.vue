@@ -120,8 +120,9 @@
                   you can apply with print copies using the printable form (HLTH
                   101) available at
                   <a target="_blank" href="https://gov.bc.ca/AHDC"
-                    >gov.bc.ca/AHDC</a
-                  >.
+                    >gov.bc.ca/AHDC
+                  </a>
+                  .
                 </p>
               </div>
             </div>

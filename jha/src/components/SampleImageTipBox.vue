@@ -7,8 +7,9 @@
           href="javascript:void(0)"
           :title="`${documentType} sample`"
           @click="openModal()"
-          >{{ documentType }}</a
-        >
+          >
+          {{ documentType }}
+        </a>
       </p>
       <div v-if="hasMultipleSamples">
         <p v-for="(sample, index) in documentType" :key="index">
@@ -16,8 +17,9 @@
             href="javascript:void(0)"
             :title="`${sample} samples`"
             @click="openModal(index)"
-            >{{ sample }}</a
-          >
+            >
+          {{ sample }}
+          </a>
         </p>
       </div>
       <p>Scan the document or take a photo of it.</p>

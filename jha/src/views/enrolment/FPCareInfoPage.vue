@@ -29,9 +29,11 @@
                     <a
                       href="javascript:void(0)"
                       @click="handleClickIncomeSample()"
-                      >sample</a
-                    >).</label
-                  >
+                      >
+                    sample
+                    </a>
+                    ).
+                  </label>
                 </template>
               </CurrencyInput>
               <div
@@ -67,9 +69,10 @@
                     <a
                       href="javscript:void(0)"
                       @click="handleClickIncomeSample()"
-                      >sample</a
-                    >).</label
-                  >
+                      >sample
+                    </a>
+                    ).
+                    </label>
                 </template>
               </CurrencyInput>
               <div

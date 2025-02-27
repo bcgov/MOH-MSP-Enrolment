@@ -140,8 +140,9 @@
               <a
                 target="_blank"
                 href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits"
-                >Applying for Supplementary Benefits.</a
-              >
+                >
+              Applying for Supplementary Benefits.
+              </a>
             </p>
             <ul
               v-else-if="msgCodeSB === eqMsgCodesSB.NotHasInfo"
