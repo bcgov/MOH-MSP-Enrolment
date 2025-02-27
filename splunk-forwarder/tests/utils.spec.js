@@ -32,7 +32,7 @@ describe("utils.whilst()", () => {
     expect(utils.whilst(null, null, mock)).toBeUndefined();
     expect(mock).toHaveBeenCalledTimes(1);
   });
-  it("calls the mock function passed down in the third argument", () => {
+  it("calls the mock function passed down in the first argument", () => {
     expect(utils.whilst(mock, null, null)).toBeUndefined();
     expect(mock).toHaveBeenCalledTimes(1);
   });
