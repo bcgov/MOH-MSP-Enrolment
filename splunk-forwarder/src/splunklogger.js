@@ -419,30 +419,7 @@ SplunkLogger.prototype._makeBody = function(context) {
  * @private
  */
 SplunkLogger.prototype._post = function(requestOptions, callback) {
-    // request.post(requestOptions, callback);
-    
-    const sslOptions = {
-        ca: requestOptions.ca,
-    }
-    const sslConfiguredAgent = new https.Agent(sslOptions);
-    
-    fetch(requestOptions.url, {
-        method: "POST",
-        headers: requestOptions.headers,
-        body: requestOptions.body,
-        agent: sslConfiguredAgent
-        //strictSSL: false (if this doesn't work, I can disable SSL https://stackoverflow.com/questions/52478069/node-fetch-disable-ssl-verification)
-    })
-    // .then((res) => {console.log("potato reached", res)})
-    // .then((data) => {
-    //   console.log("response data: ", data);
-    // })
-    .catch((err) => {
-        winstonLogger.error = function (err) {
-            winstonLogger.error(`SplunkLogger error: Unable to fetch. Error: ` + err );
-        };
-        callback();
-    });
+    request.post(requestOptions, callback);
 };
 
 /**
