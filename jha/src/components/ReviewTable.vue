@@ -1,30 +1,37 @@
 <template>
-  <div class="bcgov-table-body p-3"
-      :style="{'background-color': backgroundColor}">
-    <div v-for="(element, index) in elements"
-        :key="element.label + '-' + index"
-        class="bcgov-row d-flex">
+  <div
+    class="bcgov-table-body p-3"
+    :style="{ 'background-color': backgroundColor }"
+  >
+    <div
+      v-for="(element, index) in elements"
+      :key="element.label + '-' + index"
+      class="bcgov-row d-flex"
+    >
       <div class="bcgov-table-cell label">
-        <div :class="['table-cell-max', {'underlined': element.underlined}]">{{element.label}}</div>
+        <div :class="['table-cell-max', { underlined: element.underlined }]">
+          {{ element.label }}
+        </div>
       </div>
-      <div class="bcgov-table-cell value"><b>{{element.value}}</b></div>
+      <div class="bcgov-table-cell value">
+        <b>{{ element.value }}</b>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
-  name: 'ReviewTable',
+  name: "ReviewTable",
   components: {},
   props: {
     elements: Array,
     backgroundColor: {
       type: String,
-      default: 'white',
-    }
+      default: "white",
+    },
   },
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -33,7 +40,7 @@ export default {
   display: flex;
   flex-direction: column;
   /* background-color: #EEE; */
-  border-top: 1px solid rgba(0,0,0,0.3);
+  border-top: 1px solid rgba(0, 0, 0, 0.3);
   line-height: 1.5rem;
 }
 

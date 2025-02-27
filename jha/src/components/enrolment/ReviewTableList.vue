@@ -5,100 +5,113 @@
         <div class="col-9">
           <h2 class="mb-2">Applicant information</h2>
         </div>
-        <div v-if='showEditButtons'
-            class="col-3 text-right">
-          <a href="javascript:void(0)"
-            @click="navigateToPersonalInfoPage()">Edit 
+        <div v-if="showEditButtons" class="col-3 text-right">
+          <a href="javascript:void(0)" @click="navigateToPersonalInfoPage()"
+            >Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
       </div>
-      <ReviewTable :elements='accountHolderData'
-                  :backgroundColor='tableBackgroundColor'/>
+      <ReviewTable
+        :elements="accountHolderData"
+        :backgroundColor="tableBackgroundColor"
+      />
     </div>
-    
-    <div class="col-lg-6 mb-3" v-if='hasSpouse'>
+
+    <div class="col-lg-6 mb-3" v-if="hasSpouse">
       <div class="row align-items-end mt-3">
         <div class="col-9">
           <h2 class="mb-2">Spouse information</h2>
         </div>
-        <div v-if='showEditButtons'
-            class="col-3 text-right">
-          <a href="javascript:void(0)"
-            @click="navigateToSpouseInfoPage()">Edit 
+        <div v-if="showEditButtons" class="col-3 text-right">
+          <a href="javascript:void(0)" @click="navigateToSpouseInfoPage()"
+            >Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
       </div>
-      <ReviewTable :elements='spouseData'
-                  :backgroundColor='tableBackgroundColor'/>
+      <ReviewTable
+        :elements="spouseData"
+        :backgroundColor="tableBackgroundColor"
+      />
     </div>
 
-    <div class="col-lg-6 mb-3" v-for="(childData, index) in childrenData"
-        :key="'child-data-' + index">
+    <div
+      class="col-lg-6 mb-3"
+      v-for="(childData, index) in childrenData"
+      :key="'child-data-' + index"
+    >
       <div class="row align-items-end mt-3">
         <div class="col-9">
-          <h2 class="mb-2">{{getChildTitle(index)}}</h2>
+          <h2 class="mb-2">{{ getChildTitle(index) }}</h2>
         </div>
-        <div v-if='showEditButtons'
-            class="col-3 text-right">
-          <a href="javascript:void(0)"
-            @click="navigateToChildInfoPage('child-' + index)">Edit 
+        <div v-if="showEditButtons" class="col-3 text-right">
+          <a
+            href="javascript:void(0)"
+            @click="navigateToChildInfoPage('child-' + index)"
+            >Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
       </div>
-      <ReviewTable :elements='childData'
-                  :backgroundColor='tableBackgroundColor'/>
+      <ReviewTable
+        :elements="childData"
+        :backgroundColor="tableBackgroundColor"
+      />
     </div>
-    
+
     <div v-if="isApplyingForFPCare" class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
           <h2 class="mb-2">Fair PharmaCare financial information</h2>
         </div>
-        <div v-if='showEditButtons'
-            class="col-3 text-right">
-          <a href="javascript:void(0)"
-            @click="navigateToFPCInfoPage()">Edit 
+        <div v-if="showEditButtons" class="col-3 text-right">
+          <a href="javascript:void(0)" @click="navigateToFPCInfoPage()"
+            >Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
       </div>
-      <ReviewTable :elements='fpcData'
-                  :backgroundColor='tableBackgroundColor'/>
-      <div class="p-3"
-        :style="{'background-color': tableBackgroundColor}">
+      <ReviewTable
+        :elements="fpcData"
+        :backgroundColor="tableBackgroundColor"
+      />
+      <div class="p-3" :style="{ 'background-color': tableBackgroundColor }">
         <h3>Level of coverage</h3>
-        <div v-if="isFPCDataLoading"
-          class="text-center">
-          <LoaderComponent color="#000"
-            size="24px" />
+        <div v-if="isFPCDataLoading" class="text-center">
+          <LoaderComponent color="#000" size="24px" />
         </div>
-        <div v-if="isFPCDataUnavailable"
+        <div
+          v-if="isFPCDataUnavailable"
           class="text-danger mt-3 mb-3"
-          aria-live="assertive">Unable to retrieve assistance levels, system unavailable.</div>
-        <DistributionBar v-if="!isFPCDataLoading && !isFPCDataUnavailable"
+          aria-live="assertive"
+        >
+          Unable to retrieve assistance levels, system unavailable.
+        </div>
+        <DistributionBar
+          v-if="!isFPCDataLoading && !isFPCDataUnavailable"
           startingLabel="$0"
-          :items="FPCDistributionBarItems"/>
+          :items="FPCDistributionBarItems"
+        />
       </div>
     </div>
-    
+
     <div v-if="isApplyingForSuppBen" class="col-lg-6 mb-3">
       <div class="row align-items-end mt-3">
         <div class="col-9">
           <h2 class="mb-2">Supplementary Benefits financial information</h2>
         </div>
-        <div v-if='showEditButtons'
-            class="col-3 text-right">
-          <a href="javascript:void(0)"
-            @click="navigateToSuppBenInfoPage()">Edit 
+        <div v-if="showEditButtons" class="col-3 text-right">
+          <a href="javascript:void(0)" @click="navigateToSuppBenInfoPage()"
+            >Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
       </div>
-      <ReviewTable :elements='suppBenData'
-                  :backgroundColor='tableBackgroundColor'/>
+      <ReviewTable
+        :elements="suppBenData"
+        :backgroundColor="tableBackgroundColor"
+      />
     </div>
 
     <div class="col-lg-6 mb-3">
@@ -106,53 +119,53 @@
         <div class="col-9">
           <h2 class="mb-2">Contact information</h2>
         </div>
-        <div v-if='showEditButtons'
-            class="col-3 text-right">
-          <a href="javascript:void(0)"
-            @click="navigateToContactInfoPage()">Edit 
+        <div v-if="showEditButtons" class="col-3 text-right">
+          <a href="javascript:void(0)" @click="navigateToContactInfoPage()"
+            >Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
       </div>
-      <ReviewTable :elements='contactData'
-                  :backgroundColor='tableBackgroundColor'/>
+      <ReviewTable
+        :elements="contactData"
+        :backgroundColor="tableBackgroundColor"
+      />
     </div>
   </div>
 </template>
 
 <script>
-import ReviewTable from '@/components/ReviewTable.vue';
-import { enrolmentRoutes } from '@/router/routes';
-import { scrollTo, scrollToElement } from '@/helpers/scroll';
-import pageStateService from '@/services/page-state-service';
-import apiService from '@/services/api-service';
-import logService from '@/services/log-service';
+import ReviewTable from "@/components/ReviewTable.vue";
+import { enrolmentRoutes } from "@/router/routes";
+import { scrollTo, scrollToElement } from "@/helpers/scroll";
+import pageStateService from "@/services/page-state-service";
+import apiService from "@/services/api-service";
+import logService from "@/services/log-service";
+import { DistributionBar, LoaderComponent, formatDate } from "common-lib-vue";
+import { getConvertedPath } from "@/helpers/url";
+import { ChildAgeTypes } from "../../constants/child-age-types";
 import {
-  DistributionBar,
-  LoaderComponent,
-  formatDate,
-} from 'common-lib-vue';
-import { getConvertedPath } from '@/helpers/url';
-import { ChildAgeTypes } from '../../constants/child-age-types';
-import { StatusInCanada, CanadianStatusReasons } from '../../constants/immigration-status-types';
-import { radioOptionsGender } from '../../constants/radio-options'
+  StatusInCanada,
+  CanadianStatusReasons,
+} from "../../constants/immigration-status-types";
+import { radioOptionsGender } from "../../constants/radio-options";
 import {
   MODULE_NAME as appModule,
-  SET_DEDUCTIBLES_API_DATA
-} from '@/store/modules/app-module';
+  SET_DEDUCTIBLES_API_DATA,
+} from "@/store/modules/app-module";
 import {
   formatServerData,
   getCoverageTier,
   getDistributionBarItems,
-} from '@/helpers/fpc-helpers';
+} from "@/helpers/fpc-helpers";
 
-const moneyFormatter = new Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
+const moneyFormatter = new Intl.NumberFormat("en-US", {
+  style: "currency",
+  currency: "USD",
 });
 
 export default {
-  name: 'ReviewTableList',
+  name: "ReviewTableList",
   components: {
     DistributionBar,
     LoaderComponent,
@@ -165,11 +178,11 @@ export default {
     },
     className: {
       type: String,
-      default: '',
+      default: "",
     },
     tableBackgroundColor: {
       type: String,
-    }
+    },
   },
   data: () => {
     return {
@@ -180,12 +193,14 @@ export default {
       isFPCDataUnavailable: false,
       deductibleTiers: [],
       pre1939DeductibleTiers: [],
-    }
+    };
   },
   async created() {
     this.isApplyingForMSP = this.$store.state.enrolmentModule.isApplyingForMSP;
-    this.isApplyingForFPCare = this.$store.state.enrolmentModule.isApplyingForFPCare;
-    this.isApplyingForSuppBen = this.$store.state.enrolmentModule.isApplyingForSuppBen;
+    this.isApplyingForFPCare =
+      this.$store.state.enrolmentModule.isApplyingForFPCare;
+    this.isApplyingForSuppBen =
+      this.$store.state.enrolmentModule.isApplyingForSuppBen;
 
     let apiData = this.$store.state.appModule.deductiblesAPIData;
 
@@ -196,33 +211,45 @@ export default {
       if (!apiData) {
         const response = await apiService.getDeductibles(
           this.$store.state.enrolmentModule.captchaToken,
-          this.$store.state.enrolmentModule.fpcUuid
+          this.$store.state.enrolmentModule.fpcUuid,
         );
         apiData = response.data;
-        if (!apiData || !apiData.assistanceLevels || !apiData.pre1939AssistanceLevels) {
-          throw new Error('response data does not include assistance levels.');
+        if (
+          !apiData ||
+          !apiData.assistanceLevels ||
+          !apiData.pre1939AssistanceLevels
+        ) {
+          throw new Error("response data does not include assistance levels.");
         }
-        this.$store.dispatch(`${appModule}/${SET_DEDUCTIBLES_API_DATA}`, apiData);
+        this.$store.dispatch(
+          `${appModule}/${SET_DEDUCTIBLES_API_DATA}`,
+          apiData,
+        );
       }
       this.deductibleTiers = formatServerData(apiData.assistanceLevels) || [];
-      this.pre1939DeductibleTiers = formatServerData(apiData.pre1939AssistanceLevels) || [];
+      this.pre1939DeductibleTiers =
+        formatServerData(apiData.pre1939AssistanceLevels) || [];
       this.isFPCDataLoading = false;
     } catch (error) {
       this.isFPCDataLoading = false;
       this.isFPCDataUnavailable = true;
 
       logService.logError(this.$store.state.enrolmentModule.applicationUuid, {
-        event: 'error getting values from getDeductibles endpoint',
+        event: "error getting values from getDeductibles endpoint",
         error,
       });
     }
   },
   computed: {
     FPCDistributionBarItems() {
-      const ahIncome = parseFloat(this.$store.state.enrolmentModule.ahFPCIncome) || 0;
-      const spouseIncome = parseFloat(this.$store.state.enrolmentModule.spouseFPCIncome) || 0;
-      const ahRDSP = parseFloat(this.$store.state.enrolmentModule.ahFPCRDSP) || 0;
-      const spouseRDSP = parseFloat(this.$store.state.enrolmentModule.spouseFPCRDSP) || 0;
+      const ahIncome =
+        parseFloat(this.$store.state.enrolmentModule.ahFPCIncome) || 0;
+      const spouseIncome =
+        parseFloat(this.$store.state.enrolmentModule.spouseFPCIncome) || 0;
+      const ahRDSP =
+        parseFloat(this.$store.state.enrolmentModule.ahFPCRDSP) || 0;
+      const spouseRDSP =
+        parseFloat(this.$store.state.enrolmentModule.spouseFPCRDSP) || 0;
       const adjustedIncome = ahIncome + spouseIncome - ahRDSP - spouseRDSP;
 
       const tier = getCoverageTier({
@@ -247,7 +274,7 @@ export default {
         value: name,
       });
       const birthdate = formatDate(
-        this.$store.state.enrolmentModule.ahBirthdate
+        this.$store.state.enrolmentModule.ahBirthdate,
       );
       items.push({
         label: "Birthdate",
@@ -268,7 +295,9 @@ export default {
       if (this.isApplyingForMSP) {
         items.push({
           label: "Gender",
-          value: this.getFormattedGender(this.$store.state.enrolmentModule.ahGender),
+          value: this.getFormattedGender(
+            this.$store.state.enrolmentModule.ahGender,
+          ),
         });
         const statusInCanada =
           this.$store.state.enrolmentModule.ahCitizenshipStatus +
@@ -280,12 +309,15 @@ export default {
         });
         items.push({
           label: "Support document type",
-          value: this.$store.state.enrolmentModule
-            .ahCitizenshipSupportDocumentType,
+          value:
+            this.$store.state.enrolmentModule.ahCitizenshipSupportDocumentType,
         });
         items.push({
           label: "Does status document match gender designation",
-          value: this.$store.state.enrolmentModule.ahGenderMatches === "Y" ? "Yes" : "No"
+          value:
+            this.$store.state.enrolmentModule.ahGenderMatches === "Y"
+              ? "Yes"
+              : "No",
         });
         items.push({
           label: "Has name changed",
@@ -297,12 +329,16 @@ export default {
         if (this.$store.state.enrolmentModule.ahIsNameChanged === "Y") {
           items.push({
             label: "Name change support document type",
-            value: this.$store.state.enrolmentModule
-              .ahNameChangeSupportDocumentType,
+            value:
+              this.$store.state.enrolmentModule.ahNameChangeSupportDocumentType,
           });
         }
-        if (this.$store.state.enrolmentModule.ahCitizenshipStatus === StatusInCanada.Citizen
-          && this.$store.state.enrolmentModule.ahCitizenshipStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP) {
+        if (
+          this.$store.state.enrolmentModule.ahCitizenshipStatus ===
+            StatusInCanada.Citizen &&
+          this.$store.state.enrolmentModule.ahCitizenshipStatusReason ===
+            CanadianStatusReasons.LivingInBCWithoutMSP
+        ) {
           items.push({
             label: "Lived in B.C. since birth",
             value:
@@ -312,11 +348,11 @@ export default {
           });
         }
         items.push({
-            label: "Moved to B.C. permanently",
-            value:
-              this.$store.state.enrolmentModule.ahIsMovedToBCPermanently === "Y"
-                ? "Yes"
-                : "No",
+          label: "Moved to B.C. permanently",
+          value:
+            this.$store.state.enrolmentModule.ahIsMovedToBCPermanently === "Y"
+              ? "Yes"
+              : "No",
         });
         if (
           this.$store.state.enrolmentModule.ahCitizenshipStatusReason !==
@@ -325,43 +361,51 @@ export default {
         ) {
           let displayMoveFromLocation = "";
           if (this.$store.state.enrolmentModule.ahMoveFromOrigin) {
-            displayMoveFromLocation = this.$store.state.enrolmentModule.ahMoveFromOrigin;
-          } else if (this.$store.state.enrolmentModule.ahFromProvinceOrCountry) {
-            displayMoveFromLocation = this.$store.state.enrolmentModule.ahFromProvinceOrCountry;
+            displayMoveFromLocation =
+              this.$store.state.enrolmentModule.ahMoveFromOrigin;
+          } else if (
+            this.$store.state.enrolmentModule.ahFromProvinceOrCountry
+          ) {
+            displayMoveFromLocation =
+              this.$store.state.enrolmentModule.ahFromProvinceOrCountry;
           }
           items.push({
             label: this.getMoveFromLabel(
               this.$store.state.enrolmentModule.ahCitizenshipStatus,
               this.$store.state.enrolmentModule.ahCitizenshipStatusReason,
-              this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth
+              this.$store.state.enrolmentModule.ahHasLivedInBCSinceBirth,
             ),
             value: displayMoveFromLocation,
           });
           items.push({
             label: "Date arrived in B.C.",
             value: formatDate(
-              this.$store.state.enrolmentModule.ahArrivalDateInBC
+              this.$store.state.enrolmentModule.ahArrivalDateInBC,
             ),
           });
           if (this.$store.state.enrolmentModule.ahArrivalDateInCanada) {
             items.push({
               label: "Date arrived in Canada",
               value: formatDate(
-                this.$store.state.enrolmentModule.ahArrivalDateInCanada
+                this.$store.state.enrolmentModule.ahArrivalDateInCanada,
               ),
             });
           }
         }
-        const ahCitizenshipStatus = this.$store.state.enrolmentModule.ahCitizenshipStatus;
-        if ((ahCitizenshipStatus === StatusInCanada.Citizen 
-          || ahCitizenshipStatus === StatusInCanada.PermanentResident)
-          && this.$store.state.enrolmentModule.ahCitizenshipStatusReason === CanadianStatusReasons.MovingFromProvince) {
-            const ahPreviousHealthNumber = this.$store.state.enrolmentModule
-              .ahPreviousHealthNumber;
-            items.push({
-              label: "Health number from previous residence",
-              value: ahPreviousHealthNumber ? ahPreviousHealthNumber : "No",
-            });
+        const ahCitizenshipStatus =
+          this.$store.state.enrolmentModule.ahCitizenshipStatus;
+        if (
+          (ahCitizenshipStatus === StatusInCanada.Citizen ||
+            ahCitizenshipStatus === StatusInCanada.PermanentResident) &&
+          this.$store.state.enrolmentModule.ahCitizenshipStatusReason ===
+            CanadianStatusReasons.MovingFromProvince
+        ) {
+          const ahPreviousHealthNumber =
+            this.$store.state.enrolmentModule.ahPreviousHealthNumber;
+          items.push({
+            label: "Health number from previous residence",
+            value: ahPreviousHealthNumber ? ahPreviousHealthNumber : "No",
+          });
         }
         items.push({
           label: "Has previous B.C. PHN",
@@ -388,26 +432,26 @@ export default {
         ) {
           items.push({
             label: "Reason for leaving",
-            value: this.$store.state.enrolmentModule
-              .ahOutsideBCLast12MonthsReason,
+            value:
+              this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsReason,
           });
           items.push({
             label: "Location",
-            value: this.$store.state.enrolmentModule
-              .ahOutsideBCLast12MonthsLocation,
+            value:
+              this.$store.state.enrolmentModule.ahOutsideBCLast12MonthsLocation,
           });
           items.push({
             label: "Departure date",
             value: formatDate(
               this.$store.state.enrolmentModule
-                .ahOutsideBCLast12MonthsDepartureDate
+                .ahOutsideBCLast12MonthsDepartureDate,
             ),
           });
           items.push({
             label: "Return date",
             value: formatDate(
               this.$store.state.enrolmentModule
-                .ahOutsideBCLast12MonthsReturnDate
+                .ahOutsideBCLast12MonthsReturnDate,
             ),
           });
         }
@@ -426,7 +470,7 @@ export default {
             items.push({
               label: "Date discharged",
               value: formatDate(
-                this.$store.state.enrolmentModule.ahArmedForcesDischargeDate
+                this.$store.state.enrolmentModule.ahArmedForcesDischargeDate,
               ),
             });
           }
@@ -447,8 +491,10 @@ export default {
         }
       }
       if (this.isApplyingForMSP) {
-        const documentCount = this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments.length 
-        + this.$store.state.enrolmentModule.ahNameChangeSupportDocuments.length;
+        const documentCount =
+          this.$store.state.enrolmentModule.ahCitizenshipSupportDocuments
+            .length +
+          this.$store.state.enrolmentModule.ahNameChangeSupportDocuments.length;
         items.push({
           label: "Documents",
           value: `${documentCount} ${this.getFilePlural(documentCount)}`,
@@ -470,7 +516,7 @@ export default {
         value: name,
       });
       const birthdate = formatDate(
-        this.$store.state.enrolmentModule.spouseBirthDate
+        this.$store.state.enrolmentModule.spouseBirthDate,
       );
       items.push({
         label: "Birthdate",
@@ -491,7 +537,9 @@ export default {
       if (this.isApplyingForMSP) {
         items.push({
           label: "Gender",
-          value: this.getFormattedGender(this.$store.state.enrolmentModule.spouseGender),
+          value: this.getFormattedGender(
+            this.$store.state.enrolmentModule.spouseGender,
+          ),
         });
         const statusInCanada =
           this.$store.state.enrolmentModule.spouseStatus +
@@ -503,12 +551,16 @@ export default {
         });
         items.push({
           label: "Support document type",
-          value: this.$store.state.enrolmentModule
-            .spouseCitizenshipSupportDocumentType,
+          value:
+            this.$store.state.enrolmentModule
+              .spouseCitizenshipSupportDocumentType,
         });
         items.push({
           label: "Does status document match gender designation",
-          value: this.$store.state.enrolmentModule.spouseGenderMatches === "Y" ? "Yes" : "No"
+          value:
+            this.$store.state.enrolmentModule.spouseGenderMatches === "Y"
+              ? "Yes"
+              : "No",
         });
         items.push({
           label: "Has name changed",
@@ -520,16 +572,22 @@ export default {
         if (this.$store.state.enrolmentModule.spouseIsNameChanged === "Y") {
           items.push({
             label: "Name change support document type",
-            value: this.$store.state.enrolmentModule
-              .spouseNameChangeSupportDocumentType,
+            value:
+              this.$store.state.enrolmentModule
+                .spouseNameChangeSupportDocumentType,
           });
         }
-        if (this.$store.state.enrolmentModule.spouseStatus === StatusInCanada.Citizen
-        && this.$store.state.enrolmentModule.spouseStatusReason === CanadianStatusReasons.LivingInBCWithoutMSP ) {
+        if (
+          this.$store.state.enrolmentModule.spouseStatus ===
+            StatusInCanada.Citizen &&
+          this.$store.state.enrolmentModule.spouseStatusReason ===
+            CanadianStatusReasons.LivingInBCWithoutMSP
+        ) {
           items.push({
             label: "Lived in B.C. since birth",
             value:
-              this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth === "Y"
+              this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth ===
+              "Y"
                 ? "Yes"
                 : "No",
           });
@@ -550,35 +608,41 @@ export default {
             label: this.getMoveFromLabel(
               this.$store.state.enrolmentModule.spouseStatus,
               this.$store.state.enrolmentModule.spouseStatusReason,
-              this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth
+              this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth,
             ),
             value: this.$store.state.enrolmentModule.spouseMoveFromOrigin,
           });
           items.push({
             label: "Date arrived in B.C.",
             value: formatDate(
-              this.$store.state.enrolmentModule.spouseRecentBCMoveDate
+              this.$store.state.enrolmentModule.spouseRecentBCMoveDate,
             ),
           });
           if (this.$store.state.enrolmentModule.spouseCanadaArrivalDate) {
             items.push({
               label: "Date arrived in Canada",
               value: formatDate(
-                this.$store.state.enrolmentModule.spouseCanadaArrivalDate
+                this.$store.state.enrolmentModule.spouseCanadaArrivalDate,
               ),
             });
           }
         }
         const spouseStatus = this.$store.state.enrolmentModule.spouseStatus;
-        if ((spouseStatus === StatusInCanada.Citizen 
-          || spouseStatus === StatusInCanada.PermanentResident)
-          && this.$store.state.enrolmentModule.spouseStatusReason === CanadianStatusReasons.MovingFromProvince) {
-            const spousePreviousHealthNumber = this.$store.state.enrolmentModule.spousePreviousHealthNumber;
-            items.push({
-              label: "Health number from previous residence",
-              value: spousePreviousHealthNumber ? spousePreviousHealthNumber : "No",
-            });
-        }        
+        if (
+          (spouseStatus === StatusInCanada.Citizen ||
+            spouseStatus === StatusInCanada.PermanentResident) &&
+          this.$store.state.enrolmentModule.spouseStatusReason ===
+            CanadianStatusReasons.MovingFromProvince
+        ) {
+          const spousePreviousHealthNumber =
+            this.$store.state.enrolmentModule.spousePreviousHealthNumber;
+          items.push({
+            label: "Health number from previous residence",
+            value: spousePreviousHealthNumber
+              ? spousePreviousHealthNumber
+              : "No",
+          });
+        }
         items.push({
           label: "Has previous B.C. PHN",
           value:
@@ -593,8 +657,8 @@ export default {
         ) {
           items.push({
             label: "Previous B.C. PHN",
-            value: this.$store.state.enrolmentModule
-              .spousePreviousBCHealthNumber,
+            value:
+              this.$store.state.enrolmentModule.spousePreviousBCHealthNumber,
           });
         }
         items.push({
@@ -610,26 +674,28 @@ export default {
         ) {
           items.push({
             label: "Reason for leaving",
-            value: this.$store.state.enrolmentModule
-              .spouseOutsideBCLast12MonthsReason,
+            value:
+              this.$store.state.enrolmentModule
+                .spouseOutsideBCLast12MonthsReason,
           });
           items.push({
             label: "Location",
-            value: this.$store.state.enrolmentModule
-              .spouseOutsideBCLast12MonthsDestination,
+            value:
+              this.$store.state.enrolmentModule
+                .spouseOutsideBCLast12MonthsDestination,
           });
           items.push({
             label: "Departure date",
             value: formatDate(
               this.$store.state.enrolmentModule
-                .spouseOutsideBCLast12MonthsDepartureDate
+                .spouseOutsideBCLast12MonthsDepartureDate,
             ),
           });
           items.push({
             label: "Return date",
             value: formatDate(
               this.$store.state.enrolmentModule
-                .spouseOutsideBCLast12MonthsReturnDate
+                .spouseOutsideBCLast12MonthsReturnDate,
             ),
           });
         }
@@ -648,15 +714,18 @@ export default {
             items.push({
               label: "Date discharged",
               value: formatDate(
-                this.$store.state.enrolmentModule.spouseDischargeDate
+                this.$store.state.enrolmentModule.spouseDischargeDate,
               ),
             });
           }
         }
       }
       if (this.isApplyingForMSP) {
-        const documentCount = this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments.length 
-        + this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments.length
+        const documentCount =
+          this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments
+            .length +
+          this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments
+            .length;
         items.push({
           label: "Documents",
           value: `${documentCount} ${this.getFilePlural(documentCount)}`,
@@ -712,12 +781,15 @@ export default {
             value: child.isNameChanged === "Y" ? "Yes" : "No",
           });
           if (child.isNameChanged === "Y") {
-              childData.push({
-                label: "Name change support document type",
-                value: child.nameChangeSupportDocumentType,
-              });
-            }
-          if (child.status === StatusInCanada.Citizen && child.statusReason === CanadianStatusReasons.LivingInBCWithoutMSP ) {
+            childData.push({
+              label: "Name change support document type",
+              value: child.nameChangeSupportDocumentType,
+            });
+          }
+          if (
+            child.status === StatusInCanada.Citizen &&
+            child.statusReason === CanadianStatusReasons.LivingInBCWithoutMSP
+          ) {
             childData.push({
               label: "Lived in B.C. since birth",
               value: child.livedInBCSinceBirth === "Y" ? "Yes" : "No",
@@ -735,7 +807,7 @@ export default {
               label: this.getMoveFromLabel(
                 child.status,
                 child.statusReason,
-                child.livedInBCSinceBirth
+                child.livedInBCSinceBirth,
               ),
               value: child.moveFromOrigin,
             });
@@ -747,11 +819,13 @@ export default {
               childData.push({
                 label: "Date arrived in Canada",
                 value: formatDate(child.canadaArrivalDate),
-              });            
+              });
             }
-            if ((child.status === StatusInCanada.Citizen 
-            || child.status === StatusInCanada.PermanentResident)
-            && child.statusReason === CanadianStatusReasons.MovingFromProvince) {
+            if (
+              (child.status === StatusInCanada.Citizen ||
+                child.status === StatusInCanada.PermanentResident) &&
+              child.statusReason === CanadianStatusReasons.MovingFromProvince
+            ) {
               childData.push({
                 label: "Health number from previous residence",
                 value: child.previousHealthNumber
@@ -847,7 +921,7 @@ export default {
             childData.push({
               label: "Postal code",
               value: child.schoolPostalCode,
-            });            
+            });
             childData.push({
               label: "School departure date",
               value: formatDate(child.schoolDepartureDate),
@@ -864,7 +938,9 @@ export default {
           }
         }
         if (this.isApplyingForMSP) {
-          const documentCount = child.citizenshipSupportDocuments.length + child.nameChangeSupportDocuments.length;
+          const documentCount =
+            child.citizenshipSupportDocuments.length +
+            child.nameChangeSupportDocuments.length;
           childData.push({
             label: "Documents",
             value: `${documentCount} ${this.getFilePlural(documentCount)}`,
@@ -885,13 +961,13 @@ export default {
           : moneyFormatter.format("0"),
       });
       if (this.$store.state.enrolmentModule.hasSpouse === "Y") {
-        const spouseFPCIncome = this.$store.state.enrolmentModule
-          .spouseFPCIncome;
+        const spouseFPCIncome =
+          this.$store.state.enrolmentModule.spouseFPCIncome;
         items.push({
           label: `Spouse/common-law partner net income for ${noaYear}`,
           value: spouseFPCIncome
             ? moneyFormatter.format(
-                this.$store.state.enrolmentModule.spouseFPCIncome
+                this.$store.state.enrolmentModule.spouseFPCIncome,
               )
             : moneyFormatter.format("0"),
         });
@@ -920,14 +996,14 @@ export default {
       items.push({
         label: `Applicant net income for ${selectedYear}`,
         value: moneyFormatter.format(
-          this.$store.state.enrolmentModule.ahSBIncome
+          this.$store.state.enrolmentModule.ahSBIncome,
         ),
       });
       if (this.$store.state.enrolmentModule.hasSpouse === "Y") {
         items.push({
           label: `Spouse/common-law partner's net income from ${selectedYear}`,
           value: moneyFormatter.format(
-            this.$store.state.enrolmentModule.spouseSBIncome
+            this.$store.state.enrolmentModule.spouseSBIncome,
           ),
         });
       }
@@ -938,8 +1014,8 @@ export default {
           : "0",
       });
       if (this.$store.state.enrolmentModule.hasChildren === "Y") {
-        const claimedChildCareExpenses = this.$store.state.enrolmentModule
-          .claimedChildCareExpenses;
+        const claimedChildCareExpenses =
+          this.$store.state.enrolmentModule.claimedChildCareExpenses;
         items.push({
           label: `Claimed childcare expenses`,
           value: claimedChildCareExpenses
@@ -958,15 +1034,15 @@ export default {
         this.$store.state.enrolmentModule.selectedDisabilityRecipients.length >
         0
       ) {
-        const selectedDisabilityRecipients = this.$store.state.enrolmentModule
-          .selectedDisabilityRecipients;
-        const numDisabilityChildren = this.$store.state.enrolmentModule
-          .numDisabilityChildren;
+        const selectedDisabilityRecipients =
+          this.$store.state.enrolmentModule.selectedDisabilityRecipients;
+        const numDisabilityChildren =
+          this.$store.state.enrolmentModule.numDisabilityChildren;
         items.push({
           label: `Who claimed`,
           value: this.getWhoClaimed(
             selectedDisabilityRecipients,
-            numDisabilityChildren
+            numDisabilityChildren,
           ),
         });
       }
@@ -978,7 +1054,7 @@ export default {
         items.push({
           label: `RDSP amount`,
           value: moneyFormatter.format(
-            this.$store.state.enrolmentModule.sbRDSPAmount
+            this.$store.state.enrolmentModule.sbRDSPAmount,
           ),
         });
       }
@@ -992,21 +1068,22 @@ export default {
       if (
         this.$store.state.enrolmentModule.hasAttendantNursingExpenses === "Y"
       ) {
-        const selectedAttendantNursingRecipients = this.$store.state
-          .enrolmentModule.selectedAttendantNursingRecipients;
-        const numAttendantNursingChildren = this.$store.state.enrolmentModule
-          .numAttendantNursingChildren;
+        const selectedAttendantNursingRecipients =
+          this.$store.state.enrolmentModule.selectedAttendantNursingRecipients;
+        const numAttendantNursingChildren =
+          this.$store.state.enrolmentModule.numAttendantNursingChildren;
         items.push({
           label: `Who claimed`,
           value: this.getWhoClaimed(
             selectedAttendantNursingRecipients,
-            numAttendantNursingChildren
+            numAttendantNursingChildren,
           ),
         });
       }
-      const documentCount = this.$store.state.enrolmentModule.attendantNursingReceipts.length 
-      + this.$store.state.enrolmentModule.ahCRADocuments.length 
-      + this.$store.state.enrolmentModule.spouseCRADocuments.length;
+      const documentCount =
+        this.$store.state.enrolmentModule.attendantNursingReceipts.length +
+        this.$store.state.enrolmentModule.ahCRADocuments.length +
+        this.$store.state.enrolmentModule.spouseCRADocuments.length;
       items.push({
         label: "Documents",
         value: `${documentCount} ${this.getFilePlural(documentCount)}`,
@@ -1020,7 +1097,7 @@ export default {
         items.push({
           label: "Residential Address:",
           value: "",
-          underlined: true
+          underlined: true,
         });
         items.push({
           label: "Street Address",
@@ -1054,13 +1131,15 @@ export default {
           label: "Jurisdiction",
           value: this.$store.state.enrolmentModule.resCountry,
         });
-
       }
-      if (!this.$store.state.enrolmentModule.isMailSame || !this.isApplyingForMSP) {
+      if (
+        !this.$store.state.enrolmentModule.isMailSame ||
+        !this.isApplyingForMSP
+      ) {
         items.push({
           label: "Mailing Address:",
           value: "",
-          underlined: true
+          underlined: true,
         });
         items.push({
           label: "Street Address",
@@ -1106,14 +1185,14 @@ export default {
       return items;
     },
     hasSpouse() {
-      return (this.$store.state.enrolmentModule.hasSpouse === "Y")
-    }
+      return this.$store.state.enrolmentModule.hasSpouse === "Y";
+    },
   },
   methods: {
     navigateToPersonalInfoPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.value.path,
-        enrolmentRoutes.PERSONAL_INFO_PAGE.path
+        enrolmentRoutes.PERSONAL_INFO_PAGE.path,
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);
@@ -1122,28 +1201,28 @@ export default {
     navigateToSpouseInfoPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.value.path,
-        enrolmentRoutes.SPOUSE_INFO_PAGE.path
+        enrolmentRoutes.SPOUSE_INFO_PAGE.path,
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);
       scrollTo();
     },
     navigateToChildInfoPage(anchorName) {
-        const toPath = getConvertedPath(
-          this.$router.currentRoute.value.path,
-          enrolmentRoutes.CHILD_INFO_PAGE.path
-        );
-        pageStateService.setPageComplete(toPath);
-        this.$router.push(toPath);
-        this.$nextTick(() => {
-          const anchorEl = document.querySelector(`a[name="${anchorName}"`);
-          scrollToElement(anchorEl, false, 0);
-        });
+      const toPath = getConvertedPath(
+        this.$router.currentRoute.value.path,
+        enrolmentRoutes.CHILD_INFO_PAGE.path,
+      );
+      pageStateService.setPageComplete(toPath);
+      this.$router.push(toPath);
+      this.$nextTick(() => {
+        const anchorEl = document.querySelector(`a[name="${anchorName}"`);
+        scrollToElement(anchorEl, false, 0);
+      });
     },
     navigateToFPCInfoPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.value.path,
-        enrolmentRoutes.FPCARE_INFO_PAGE.path
+        enrolmentRoutes.FPCARE_INFO_PAGE.path,
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);
@@ -1152,7 +1231,7 @@ export default {
     navigateToSuppBenInfoPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.value.path,
-        enrolmentRoutes.SUPP_BEN_INFO_PAGE.path
+        enrolmentRoutes.SUPP_BEN_INFO_PAGE.path,
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);
@@ -1161,7 +1240,7 @@ export default {
     navigateToContactInfoPage() {
       const toPath = getConvertedPath(
         this.$router.currentRoute.value.path,
-        enrolmentRoutes.CONTACT_INFO_PAGE.path
+        enrolmentRoutes.CONTACT_INFO_PAGE.path,
       );
       pageStateService.setPageComplete(toPath);
       this.$router.push(toPath);
@@ -1172,7 +1251,7 @@ export default {
       if (children && children.length > 1) {
         return `Child ${index + 1} Information`;
       }
-      return 'Child Information';
+      return "Child Information";
     },
     getWhoClaimed(array, numberOfChildren) {
       //takes an array containing some combination of the values ah, spouse, and child
@@ -1206,7 +1285,7 @@ export default {
     },
     getFilePlural(count) {
       //takes an integer, returns single or plural form of word
-      return (count === 1) ? 'file' : 'files';
+      return count === 1 ? "file" : "files";
     },
     getFormattedGender(genderInitial) {
       if (!genderInitial) {
@@ -1253,8 +1332,8 @@ export default {
       //default
       return "Moved from location";
     },
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

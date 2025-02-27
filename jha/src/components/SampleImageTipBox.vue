@@ -3,15 +3,21 @@
     <TipBox title="Tip">
       <p v-if="hasSingleSample || hasMultipleSamples">Document samples:</p>
       <p v-if="hasSingleSample">
-        <a href="javascript:void(0)"
+        <a
+          href="javascript:void(0)"
           :title="`${documentType} sample`"
-          @click="openModal()">{{documentType}}</a>
+          @click="openModal()"
+          >{{ documentType }}</a
+        >
       </p>
       <div v-if="hasMultipleSamples">
         <p v-for="(sample, index) in documentType" :key="index">
-          <a href="javascript:void(0)"
+          <a
+            href="javascript:void(0)"
             :title="`${sample} samples`"
-            @click="openModal(index)">{{sample}}</a>
+            @click="openModal(index)"
+            >{{ sample }}</a
+          >
         </p>
       </div>
       <p>Scan the document or take a photo of it.</p>
@@ -23,19 +29,16 @@
         <li>A JPG, PNG, GIF, BMP or PDF file&nbsp;</li>
       </ul>
     </TipBox>
-    <Teleport v-if="isModalOpen"
-      to="#modal-target">
-      <ContentModal :title="modalTitle"
-        size="lg"
-        @close="closeModal()">
+    <Teleport v-if="isModalOpen" to="#modal-target">
+      <ContentModal :title="modalTitle" size="lg" @close="closeModal()">
         <div class="sample-image-container text-center">
           <img :src="`/ahdc/images/samples/${sampleImageFileName}`" />
         </div>
         <div class="modal-footer">
-          <ButtonComponent 
-            label='Close'
-            @click='closeModal()'
-            color='gold'
+          <ButtonComponent
+            label="Close"
+            @click="closeModal()"
+            color="gold"
             class="full-width"
           />
         </div>
@@ -45,12 +48,12 @@
 </template>
 
 <script>
-import TipBox from './TipBox.vue';
-import { ContentModal, ButtonComponent } from 'common-lib-vue';
-import { SupportDocumentSamples } from '../constants/document-types';
+import TipBox from "./TipBox.vue";
+import { ContentModal, ButtonComponent } from "common-lib-vue";
+import { SupportDocumentSamples } from "../constants/document-types";
 
 export default {
-  name: 'SampleImageTipBox',
+  name: "SampleImageTipBox",
   components: {
     ContentModal,
     TipBox,
@@ -60,13 +63,13 @@ export default {
     documentType: {
       type: [String, Array],
       default: null,
-    }
+    },
   },
   data: () => {
     return {
       isModalOpen: false,
       sampleIndex: 0,
-    }
+    };
   },
   methods: {
     openModal(sampleIndex) {
@@ -79,7 +82,10 @@ export default {
   },
   computed: {
     hasSingleSample() {
-      return typeof this.documentType === 'string' && SupportDocumentSamples[this.documentType];
+      return (
+        typeof this.documentType === "string" &&
+        SupportDocumentSamples[this.documentType]
+      );
     },
     hasMultipleSamples() {
       return Array.isArray(this.documentType);
@@ -97,9 +103,9 @@ export default {
       } else {
         return `${this.documentType} samples`;
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style scoped>

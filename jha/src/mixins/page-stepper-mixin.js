@@ -1,13 +1,11 @@
-import pageStateService from '@/services/page-state-service';
-import { scrollTo } from '@/helpers/scroll';
+import pageStateService from "@/services/page-state-service";
+import { scrollTo } from "@/helpers/scroll";
 import {
   MODULE_NAME as appModule,
   SET_SHOW_MOBILE_STEPPER_DETAILS,
-} from '@/store/modules/app-module';
-import { PageStepper } from 'common-lib-vue';
-import {
-  enrolmentRoutes,
-} from '@/router/routes';
+} from "@/store/modules/app-module";
+import { PageStepper } from "common-lib-vue";
+import { enrolmentRoutes } from "@/router/routes";
 
 export default {
   components: {
@@ -16,23 +14,26 @@ export default {
   data: () => {
     return {
       eligibilityStepRoutes: [
-        {...enrolmentRoutes.MSP_ELIGIBILITY_PAGE},
-        {...enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE},
-        {...enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE},
-        {...enrolmentRoutes.FORM_SELECTION_PAGE},
+        { ...enrolmentRoutes.MSP_ELIGIBILITY_PAGE },
+        { ...enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE },
+        { ...enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE },
+        { ...enrolmentRoutes.FORM_SELECTION_PAGE },
       ],
     };
   },
   methods: {
     handleToggleShowMobileStepperDetails(isDetailsShown) {
-      this.$store.dispatch(appModule + '/' + SET_SHOW_MOBILE_STEPPER_DETAILS, isDetailsShown);
+      this.$store.dispatch(
+        appModule + "/" + SET_SHOW_MOBILE_STEPPER_DETAILS,
+        isDetailsShown,
+      );
     },
     handleClickStepperLink(path) {
       pageStateService.setPageIncomplete(this.$router.currentRoute.value.path);
       pageStateService.setPageComplete(path);
       this.$router.push(path);
       scrollTo(0);
-    }
+    },
   },
   computed: {
     isMobileStepperOpen() {
@@ -42,7 +43,7 @@ export default {
       const currentPath = this.$router.currentRoute.value.path;
       const hasCompletedEQ = this.$store.state.enrolmentModule.hasCompletedEQ;
 
-      switch(currentPath) {
+      switch (currentPath) {
         case enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path:
           return this.eligibilityStepRoutes;
         case enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.path:
@@ -50,7 +51,9 @@ export default {
         case enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path:
           return this.eligibilityStepRoutes;
         case enrolmentRoutes.FORM_SELECTION_PAGE.path:
-          return hasCompletedEQ ? this.mainFormStepRoutes : this.eligibilityStepRoutes;
+          return hasCompletedEQ
+            ? this.mainFormStepRoutes
+            : this.eligibilityStepRoutes;
         default:
           return this.mainFormStepRoutes;
       }
@@ -61,23 +64,26 @@ export default {
           ...enrolmentRoutes.FORM_SELECTION_PAGE,
           isClickable: false,
         },
-        {...enrolmentRoutes.PERSONAL_INFO_PAGE},
-        {...enrolmentRoutes.SPOUSE_INFO_PAGE},
+        { ...enrolmentRoutes.PERSONAL_INFO_PAGE },
+        { ...enrolmentRoutes.SPOUSE_INFO_PAGE },
       ];
-      if (this.$store.state.enrolmentModule.isApplyingForFPCare || this.$store.state.enrolmentModule.isApplyingForMSP) {
-        routes.push({...enrolmentRoutes.CHILD_INFO_PAGE});
+      if (
+        this.$store.state.enrolmentModule.isApplyingForFPCare ||
+        this.$store.state.enrolmentModule.isApplyingForMSP
+      ) {
+        routes.push({ ...enrolmentRoutes.CHILD_INFO_PAGE });
       }
       if (this.$store.state.enrolmentModule.isApplyingForFPCare) {
-        routes.push({...enrolmentRoutes.FPCARE_INFO_PAGE});
+        routes.push({ ...enrolmentRoutes.FPCARE_INFO_PAGE });
       }
       if (this.$store.state.enrolmentModule.isApplyingForSuppBen) {
-        routes.push({...enrolmentRoutes.SUPP_BEN_INFO_PAGE});
-        routes.push({...enrolmentRoutes.DOCUMENTS_PAGE});
+        routes.push({ ...enrolmentRoutes.SUPP_BEN_INFO_PAGE });
+        routes.push({ ...enrolmentRoutes.DOCUMENTS_PAGE });
       }
-      routes.push({...enrolmentRoutes.CONTACT_INFO_PAGE});
-      routes.push({...enrolmentRoutes.REVIEW_PAGE});
-      routes.push({...enrolmentRoutes.CONSENT_PAGE});
+      routes.push({ ...enrolmentRoutes.CONTACT_INFO_PAGE });
+      routes.push({ ...enrolmentRoutes.REVIEW_PAGE });
+      routes.push({ ...enrolmentRoutes.CONSENT_PAGE });
       return routes;
     },
-  }
+  },
 };

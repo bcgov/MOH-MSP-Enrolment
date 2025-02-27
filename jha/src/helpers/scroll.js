@@ -2,13 +2,14 @@ export const scrollTo = (top, smoothScroll) => {
   if (!top) {
     top = 0;
   }
-  const supportsNativeSmoothScroll = 'scrollBehavior' in document.documentElement.style;
+  const supportsNativeSmoothScroll =
+    "scrollBehavior" in document.documentElement.style;
 
-  if ( supportsNativeSmoothScroll ) {
+  if (supportsNativeSmoothScroll) {
     if (smoothScroll) {
-      window.scrollTo({top: top, behavior: 'smooth'});
+      window.scrollTo({ top: top, behavior: "smooth" });
     } else {
-      window.scrollTo({top: top});
+      window.scrollTo({ top: top });
     }
   } else {
     /**
@@ -21,7 +22,7 @@ export const scrollTo = (top, smoothScroll) => {
 
 export const scrollToError = () => {
   setTimeout(() => {
-    const el = document.querySelector('.text-danger');
+    const el = document.querySelector(".text-danger");
     scrollToElement(el, true);
   }, 0);
 };
@@ -34,12 +35,13 @@ export const scrollToElement = (element, smoothScroll, yOffset) => {
     yOffset = -75;
   }
   setTimeout(() => {
-    const top = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    const top =
+      element.getBoundingClientRect().top + window.pageYOffset + yOffset;
     scrollTo(top, smoothScroll);
   }, 0);
 };
 
 export const getTopScrollPosition = () => {
   const doc = document.documentElement;
-  return (window.pageYOffset || doc.scrollTop)  - (doc.clientTop || 0);
+  return (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 };

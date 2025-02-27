@@ -1,19 +1,12 @@
-import {
-  getISODateString,
-  isValidISODateString,
-} from 'common-lib-vue';
-import {
-  addDays,
-  isBefore,
-  startOfToday,
-} from 'date-fns';
+import { getISODateString, isValidISODateString } from "common-lib-vue";
+import { addDays, isBefore, startOfToday } from "date-fns";
 
 // Wrapping validator with helpers.withParams only required if a reactive value is needed in a returned function.
 // See here: https://vuelidate-next.netlify.app/custom_validators.html#passing-extra-reactive-properties
-import { helpers } from '@vuelidate/validators';
+import { helpers } from "@vuelidate/validators";
 
 export const bcPostalCodeValidator = (value) => {
-  const criteria = RegExp('^[Vv]\\d[A-Za-z][ ]?\\d[A-Za-z]\\d$');
+  const criteria = RegExp("^[Vv]\\d[A-Za-z][ ]?\\d[A-Za-z]\\d$");
   return criteria.test(value);
 };
 
@@ -23,47 +16,60 @@ export const nameValidator = (value) => {
 };
 
 export const yesValidator = (value) => {
-  return value === 'Y';
+  return value === "Y";
 };
 
 export const nonBCValidator = (value) => {
-  return value !== 'BC'
-      && value !== 'British Columbia';
+  return value !== "BC" && value !== "British Columbia";
 };
 
 export const nonCanadaValidator = (value) => {
-  return value !== 'Canada';
+  return value !== "Canada";
 };
 
-export const dateDataRequiredValidator = (dateData) => helpers.withParams(
-  {
-    type: 'dateDataRequiredValidator',
-    value: dateData,
-  }, () => {
-    if (!dateData || !dateData.year && typeof dateData.month !== 'number' && !dateData.day) {
-      return false;
-    }
-    return true;
-  })
-
-export const dateDataValidator = (dateData) => helpers.withParams(
-  {
-    type: 'dateDataValidator',
-    value: dateData,
-  }, () => {
-    if (!dateData || !dateData.year && typeof dateData.month !== 'number' && !dateData.day) {
+export const dateDataRequiredValidator = (dateData) =>
+  helpers.withParams(
+    {
+      type: "dateDataRequiredValidator",
+      value: dateData,
+    },
+    () => {
+      if (
+        !dateData ||
+        (!dateData.year && typeof dateData.month !== "number" && !dateData.day)
+      ) {
+        return false;
+      }
       return true;
-    }
-    const year = dateData.year;
-    const month = dateData.month;
-    const day = dateData.day;
-    if (!(year && typeof month === 'number' && day)
-      && (year || typeof month === 'number' || day)) {
-      return false;
-    }
-    const isoDateString = getISODateString(year, month + 1, day);
-    return isValidISODateString(isoDateString);
-  })
+    },
+  );
+
+export const dateDataValidator = (dateData) =>
+  helpers.withParams(
+    {
+      type: "dateDataValidator",
+      value: dateData,
+    },
+    () => {
+      if (
+        !dateData ||
+        (!dateData.year && typeof dateData.month !== "number" && !dateData.day)
+      ) {
+        return true;
+      }
+      const year = dateData.year;
+      const month = dateData.month;
+      const day = dateData.day;
+      if (
+        !(year && typeof month === "number" && day) &&
+        (year || typeof month === "number" || day)
+      ) {
+        return false;
+      }
+      const isoDateString = getISODateString(year, month + 1, day);
+      return isValidISODateString(isoDateString);
+    },
+  );
 
 /* A validator that is initially setup using the withParams helper 
  expects any overwrites of that validator to also use withParams.
@@ -71,9 +77,8 @@ export const dateDataValidator = (dateData) => helpers.withParams(
  helpers.withParams is required to overwrite the dataDateRequired 
  validator without reference errors */
 export const dateDataOptionalValidator = () => {
-  return helpers.withParams(
-  {}, () => true)
-}
+  return helpers.withParams({}, () => true);
+};
 
 export const pastDateValidator = (value) => {
   return isBefore(value, addDays(startOfToday(), 1));
@@ -95,13 +100,14 @@ export const reasonDestinationContentValidator = (value) => {
   }
   const criteriaAllowedCharecters = /^[0-9a-zA-Z-.'#& /]*$/;
   const criteriaMustHaveLetter = /.*[a-z].*/i;
-  return criteriaAllowedCharecters.test(value)
-          && criteriaMustHaveLetter.test(value);
+  return (
+    criteriaAllowedCharecters.test(value) && criteriaMustHaveLetter.test(value)
+  );
 };
 
 export const phnFirstDigitValidator = (value) => {
-  if (typeof(value) !== 'string') {
+  if (typeof value !== "string") {
     return false;
   }
-  return value[0] === '9';
+  return value[0] === "9";
 };
