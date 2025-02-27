@@ -33,9 +33,7 @@
                 >Your {{ formattedSuccessfulSubmissionPrograms }} form{{
                   successfulSubmissionPrograms.length > 1 ? "s" : ""
                 }}
-                {{
-                  successfulSubmissionPrograms.length > 1 ? "have" : "has"
-                }}
+                {{ successfulSubmissionPrograms.length > 1 ? "have" : "has" }}
                 been submitted.</b
               >
             </p>
