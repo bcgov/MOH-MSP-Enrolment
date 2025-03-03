@@ -7,8 +7,8 @@
             <h1 class="mb-0">Confirmation of submission</h1>
           </div>
           <div class="col-3 text-right">
-            <a href="javascript:void(0)" class="print-btn" @click="printPage()"
-              >Print or save as PDF
+            <a href="javascript:void(0)" class="print-btn" @click="printPage()">
+              Print or save as PDF
               <font-awesome-icon icon="print" />
             </a>
             <div class="tip-container">
@@ -29,27 +29,24 @@
         <div v-if="mspApplicationResult" class="mb-4">
           <SuccessBox v-if="mspApplicationResult.returnCode === '0'">
             <p>
-              <b
-                >Your {{ formattedSuccessfulSubmissionPrograms }} form{{
+              <b>
+                Your {{ formattedSuccessfulSubmissionPrograms }} form{{
                   successfulSubmissionPrograms.length > 1 ? "s" : ""
                 }}
                 {{ successfulSubmissionPrograms.length > 1 ? "have" : "has" }}
-                been submitted.</b
-              >
+                been submitted.</b>
             </p>
             <p v-if="mspApplicationResult.referenceNumber">
-              <b
-                >Reference number is:
-                {{ mspApplicationResult.referenceNumber }}</b
-              >
+              <b>Reference number is:
+                {{ mspApplicationResult.referenceNumber }}
+              </b>
             </p>
           </SuccessBox>
           <ErrorBox v-else>
             <p>
-              <b
-                >There was an issue with your Medical Services Plan submission.
-                Your form was not submitted.</b
-              >
+              <b>
+                There was an issue with your Medical Services Plan submission.
+                Your form was not submitted.</b>
             </p>
             <p v-if="mspApplicationResult.message">
               <b>{{ mspApplicationResult.message }}</b>
@@ -61,10 +58,10 @@
             "
           >
             <p>
-              <b
-                >There was an issue with your Fair PharmaCare submission. Your
-                form was not submitted.</b
-              >
+              <b>
+                There was an issue with your Fair PharmaCare submission. Your
+                form was not submitted.
+              </b>
             </p>
             <p v-if="fpcApplicationResult.message">
               <b>{{ fpcApplicationResult.message }}</b>
@@ -74,10 +71,10 @@
             v-if="sbApplicationResult && sbApplicationResult.returnCode !== '0'"
           >
             <p>
-              <b
-                >There was an issue with your Supplementary Benefits submission.
-                Your form was not submitted.</b
-              >
+              <b>
+                There was an issue with your Supplementary Benefits submission.
+                Your form was not submitted.
+              </b>
             </p>
             <p v-if="sbApplicationResult.message">
               <b>{{ sbApplicationResult.message }}</b>
@@ -92,19 +89,19 @@
               <SuccessBox>
                 <p><b>Your Fair PharmaCare form has been submitted.</b></p>
                 <p v-if="fpcApplicationResult.familyNumber">
-                  <b
-                    >Reference number is:
-                    {{ fpcApplicationResult.familyNumber }}</b
-                  >
+                  <b>
+                    Reference number is:
+                    {{ fpcApplicationResult.familyNumber }}
+                  </b>
                 </p>
               </SuccessBox>
             </div>
             <ErrorBox v-else>
               <p>
-                <b
-                  >There was an issue with your Fair PharmaCare submission. Your
-                  form was not submitted.</b
-                >
+                <b>
+                  There was an issue with your Fair PharmaCare submission. Your
+                  form was not submitted.
+                </b>
               </p>
               <p v-if="fpcApplicationResult.message">
                 <b v-html="fpcApplicationResult.message" />
@@ -116,18 +113,18 @@
             <SuccessBox v-if="sbApplicationResult.returnCode === '0'">
               <p><b>Your Supplementary Benefits form has been submitted.</b></p>
               <p v-if="sbApplicationResult.referenceNumber">
-                <b
-                  >Reference number is:
-                  {{ sbApplicationResult.referenceNumber }}</b
-                >
+                <b>
+                  Reference number is:
+                  {{ sbApplicationResult.referenceNumber }}
+                </b>
               </p>
             </SuccessBox>
             <ErrorBox v-else>
               <p>
-                <b
-                  >There was an issue with your Supplementary Benefits
-                  submission. Your form was not submitted.</b
-                >
+                <b>
+                  There was an issue with your Supplementary Benefits
+                  submission. Your form was not submitted.
+                </b>
               </p>
               <p v-if="sbApplicationResult.message">
                 <b>{{ sbApplicationResult.message }}</b>

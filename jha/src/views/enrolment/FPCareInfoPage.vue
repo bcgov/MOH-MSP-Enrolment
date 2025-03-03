@@ -23,8 +23,8 @@
                 @blur="handleBlurField(v$.ahIncome)"
               >
                 <template v-slot:description>
-                  <label for="ah-income"
-                    >Enter the net income (Line 23600) from your
+                  <label for="ah-income">
+                    Enter the net income (Line 23600) from your
                     {{ noaYear }} CRA Notice of Assessment (NOA,
                     <a
                       href="javascript:void(0)"
@@ -63,8 +63,8 @@
                 @blur="handleBlurField(v$.spouseIncome)"
               >
                 <template v-slot:description>
-                  <label for="spouse-income"
-                    >Enter the net income (Line 23600) from your spouse's
+                  <label for="spouse-income">
+                    Enter the net income (Line 23600) from your spouse's
                     {{ noaYear }} CRA Notice of Assessment (NOA,
                     <a
                       href="javscript:void(0)"

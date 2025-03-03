@@ -6,8 +6,8 @@
           <h2 class="mb-2">Applicant information</h2>
         </div>
         <div v-if="showEditButtons" class="col-3 text-right">
-          <a href="javascript:void(0)" @click="navigateToPersonalInfoPage()"
-            >Edit
+          <a href="javascript:void(0)" @click="navigateToPersonalInfoPage()">
+            Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
@@ -24,8 +24,8 @@
           <h2 class="mb-2">Spouse information</h2>
         </div>
         <div v-if="showEditButtons" class="col-3 text-right">
-          <a href="javascript:void(0)" @click="navigateToSpouseInfoPage()"
-            >Edit
+          <a href="javascript:void(0)" @click="navigateToSpouseInfoPage()">
+            Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
@@ -66,8 +66,8 @@
           <h2 class="mb-2">Fair PharmaCare financial information</h2>
         </div>
         <div v-if="showEditButtons" class="col-3 text-right">
-          <a href="javascript:void(0)" @click="navigateToFPCInfoPage()"
-            >Edit
+          <a href="javascript:void(0)" @click="navigateToFPCInfoPage()">
+            Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
@@ -102,8 +102,8 @@
           <h2 class="mb-2">Supplementary Benefits financial information</h2>
         </div>
         <div v-if="showEditButtons" class="col-3 text-right">
-          <a href="javascript:void(0)" @click="navigateToSuppBenInfoPage()"
-            >Edit
+          <a href="javascript:void(0)" @click="navigateToSuppBenInfoPage()">
+            Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>
@@ -120,8 +120,8 @@
           <h2 class="mb-2">Contact information</h2>
         </div>
         <div v-if="showEditButtons" class="col-3 text-right">
-          <a href="javascript:void(0)" @click="navigateToContactInfoPage()"
-            >Edit
+          <a href="javascript:void(0)" @click="navigateToContactInfoPage()">
+            Edit
             <font-awesome-icon icon="pencil-alt" />
           </a>
         </div>

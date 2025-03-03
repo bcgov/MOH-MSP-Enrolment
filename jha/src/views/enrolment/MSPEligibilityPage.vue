@@ -12,9 +12,7 @@
     <PageContent :deltaHeight="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
         <p>
-          <strong
-            >British Columbia Application for Health and Drug Coverage</strong
-          >
+          <strong>British Columbia Application for Health and Drug Coverage</strong>
         </p>
         <p>
           B.C. residents can apply for one, two or three programs using this
@@ -119,8 +117,8 @@
                   using this form. If you are not able to make digital copies,
                   you can apply with print copies using the printable form (HLTH
                   101) available at
-                  <a target="_blank" href="https://gov.bc.ca/AHDC"
-                    >gov.bc.ca/AHDC
+                  <a target="_blank" href="https://gov.bc.ca/AHDC">
+                    gov.bc.ca/AHDC
                   </a>
                   .
                 </p>
