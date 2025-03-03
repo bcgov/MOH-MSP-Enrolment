@@ -1,8 +1,8 @@
-export const MODULE_NAME = 'appModule';
+export const MODULE_NAME = "appModule";
 
-export const SET_MAINTENANCE_MESSAGE = 'setMaintenanceMessage';
-export const SET_SHOW_MOBILE_STEPPER_DETAILS = 'setShowMobileStepperDetails';
-export const SET_DEDUCTIBLES_API_DATA = 'setDeductiblesAPIData';
+export const SET_MAINTENANCE_MESSAGE = "setMaintenanceMessage";
+export const SET_SHOW_MOBILE_STEPPER_DETAILS = "setShowMobileStepperDetails";
+export const SET_DEDUCTIBLES_API_DATA = "setDeductiblesAPIData";
 
 export default {
   namespaced: true,
@@ -10,7 +10,8 @@ export default {
     const state = {
       showMobileStepperDetails: false,
       deductiblesAPIData: null,
-      maintenanceMessage: 'This application is currently unavailable due to maintenance. Please try again later.'
+      maintenanceMessage:
+        "This application is currently unavailable due to maintenance. Please try again later.",
     };
     return state;
   },
@@ -23,7 +24,7 @@ export default {
     },
     [SET_MAINTENANCE_MESSAGE](state, payload) {
       state.maintenanceMessage = payload;
-    }
+    },
   },
   actions: {
     [SET_SHOW_MOBILE_STEPPER_DETAILS]({ commit }, payload) {
@@ -32,9 +33,9 @@ export default {
     [SET_DEDUCTIBLES_API_DATA]({ commit }, payload) {
       commit(SET_DEDUCTIBLES_API_DATA, payload);
     },
-    [SET_MAINTENANCE_MESSAGE]({commit}, payload) {
+    [SET_MAINTENANCE_MESSAGE]({ commit }, payload) {
       commit(SET_MAINTENANCE_MESSAGE, payload);
-    }
+    },
   },
-  getters: {}
+  getters: {},
 };

@@ -11,12 +11,12 @@ export default {
   },
   methods: {
     getPageContentDeltaHeight() {
-      const headerEl = document.querySelector('header');
-      const footerEl = document.querySelector('footer');
-      const stepperEl = document.querySelector('.progress-bar-component');
-      const continueBarEl = document.querySelector('.continue-bar');
+      const headerEl = document.querySelector("header");
+      const footerEl = document.querySelector("footer");
+      const stepperEl = document.querySelector(".progress-bar-component");
+      const continueBarEl = document.querySelector(".continue-bar");
       let delta = 0;
-    
+
       if (headerEl) {
         delta += headerEl.offsetHeight;
       }
@@ -30,6 +30,6 @@ export default {
         delta += continueBarEl.offsetHeight;
       }
       return delta;
-    }    
-  }
+    },
+  },
 };

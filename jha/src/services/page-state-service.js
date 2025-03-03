@@ -1,4 +1,4 @@
-import settings from '../settings';
+import settings from "../settings";
 
 class PageStateService {
   pages = [];
@@ -10,7 +10,7 @@ class PageStateService {
   importPageRoutes(routes) {
     for (let key in routes) {
       this.pages.push(routes[key]);
-      this.pages[this.pages.length-1].isVisited = false;
+      this.pages[this.pages.length - 1].isVisited = false;
     }
   }
 

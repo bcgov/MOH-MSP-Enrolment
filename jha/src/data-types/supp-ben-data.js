@@ -1,8 +1,6 @@
-import {
-  calculateAge,
-} from 'common-lib-vue';
+import { calculateAge } from "common-lib-vue";
 
-export default class SuppBenData{
+export default class SuppBenData {
   #selectedNOAYear;
   #ahIncome;
   #ahAge;
@@ -23,7 +21,7 @@ export default class SuppBenData{
   #qualificationThreshhold;
 
   constructor() {
-    this.#selectedNOAYear = (new Date()).getFullYear() - 1;
+    this.#selectedNOAYear = new Date().getFullYear() - 1;
     this.#ahIncome = 0;
     this.#ahAge = undefined;
     this.#hasSpouse = false;
@@ -91,7 +89,7 @@ export default class SuppBenData{
   get hasDisabilityCredit() {
     return this.#hasDisabilityCredit ? "Y" : "N";
   }
-  set selectedDisabilityRecipients(selected){
+  set selectedDisabilityRecipients(selected) {
     this.#selectedDisabilityRecipients = selected;
   }
   get selectedDisabilityRecipients() {
@@ -121,7 +119,7 @@ export default class SuppBenData{
   get hasAttendantNursingExpenses() {
     return this.#hasAttendantNursingExpenses ? "Y" : "N";
   }
-  set selectedAttendantNursingRecipients(selected){
+  set selectedAttendantNursingRecipients(selected) {
     this.#selectedAttendantNursingRecipients = selected;
   }
   get selectedAttendantNursingRecipients() {
@@ -146,16 +144,16 @@ export default class SuppBenData{
   // Getters for Calculated Values
   get totalHouseholdIncome() {
     let income = this.#ahIncome;
-    if( this.#hasSpouse ) {
+    if (this.#hasSpouse) {
       income += this.#spouseIncome;
     }
-    return (income > 0) ? income : 0;
+    return income > 0 ? income : 0;
   }
   get ah65Deduction() {
     return this.#ahAge && this.#ahAge >= 65 ? 3000 : 0;
   }
   get spouseDeduction() {
-    return (this.#hasSpouse) ? 3000 : 0;
+    return this.#hasSpouse ? 3000 : 0;
   }
   get spouse65Deduction() {
     return this.#spouseAge && this.#spouseAge >= 65 ? 3000 : 0;
@@ -164,75 +162,85 @@ export default class SuppBenData{
     return 3000 * this.#children;
   }
   get claimedChildCareExpensesReduction() {
-    return this.#claimedChildCareExpenses > 0 && this.#children > 0 ?
-      (this.#claimedChildCareExpenses / 2) * -1 : 0;
+    return this.#claimedChildCareExpenses > 0 && this.#children > 0
+      ? (this.#claimedChildCareExpenses / 2) * -1
+      : 0;
   }
   get childAdjustedDeduction() {
-    let adjusted = this.childDeduction + this.claimedChildCareExpensesReduction
+    let adjusted = this.childDeduction + this.claimedChildCareExpensesReduction;
     return adjusted > 0 ? adjusted : 0;
   }
   get ahDisabilityCreditDeduction() {
-    return this.#hasDisabilityCredit && this.#selectedDisabilityRecipients
-      && this.#selectedDisabilityRecipients.includes('ah') ?
-        3000 : 0;
+    return this.#hasDisabilityCredit &&
+      this.#selectedDisabilityRecipients &&
+      this.#selectedDisabilityRecipients.includes("ah")
+      ? 3000
+      : 0;
   }
   get spouseDisabilityCreditDeduction() {
-    return this.#hasSpouse
-      && this.#hasDisabilityCredit
-      && this.#selectedDisabilityRecipients
-      && this.#selectedDisabilityRecipients.includes('spouse') ?
-        3000 : 0;
+    return this.#hasSpouse &&
+      this.#hasDisabilityCredit &&
+      this.#selectedDisabilityRecipients &&
+      this.#selectedDisabilityRecipients.includes("spouse")
+      ? 3000
+      : 0;
   }
   get childDisabilityCreditDeduction() {
-    return this.#children > 0
-      && this.#hasDisabilityCredit
-      && this.#selectedDisabilityRecipients
-      && this.#selectedDisabilityRecipients.includes('child')
-      && this.#numDisabilityChildren > 0
-      && this.#numDisabilityChildren <= this.#children ?
-        this.#numDisabilityChildren * 3000 : 0;
+    return this.#children > 0 &&
+      this.#hasDisabilityCredit &&
+      this.#selectedDisabilityRecipients &&
+      this.#selectedDisabilityRecipients.includes("child") &&
+      this.#numDisabilityChildren > 0 &&
+      this.#numDisabilityChildren <= this.#children
+      ? this.#numDisabilityChildren * 3000
+      : 0;
   }
   get rdspDeduction() {
     return this.#hasRDSP && this.#rdspAmount > 0 ? this.#rdspAmount : 0;
   }
   get ahAttendantNursingDeduction() {
-    return this.#hasAttendantNursingExpenses
-      && this.#selectedAttendantNursingRecipients
-      && this.#selectedAttendantNursingRecipients.includes('ah') ?
-        3000 : 0;
+    return this.#hasAttendantNursingExpenses &&
+      this.#selectedAttendantNursingRecipients &&
+      this.#selectedAttendantNursingRecipients.includes("ah")
+      ? 3000
+      : 0;
   }
   get spouseAttendantNursingDeduction() {
-    return this.#hasSpouse
-      && this.#hasAttendantNursingExpenses
-      && this.#selectedAttendantNursingRecipients
-      && this.#selectedAttendantNursingRecipients.includes('spouse') ?
-        3000 : 0;
+    return this.#hasSpouse &&
+      this.#hasAttendantNursingExpenses &&
+      this.#selectedAttendantNursingRecipients &&
+      this.#selectedAttendantNursingRecipients.includes("spouse")
+      ? 3000
+      : 0;
   }
   get childAttendantNursingDeduction() {
-    return this.#children > 0
-      && this.#hasAttendantNursingExpenses
-      && this.#selectedAttendantNursingRecipients
-      && this.#selectedAttendantNursingRecipients.includes('child')
-      && this.#numAttendantNursingChildren > 0
-      && this.#numAttendantNursingChildren <= this.#children ?
-        this.#numAttendantNursingChildren * 3000 : 0;
+    return this.#children > 0 &&
+      this.#hasAttendantNursingExpenses &&
+      this.#selectedAttendantNursingRecipients &&
+      this.#selectedAttendantNursingRecipients.includes("child") &&
+      this.#numAttendantNursingChildren > 0 &&
+      this.#numAttendantNursingChildren <= this.#children
+      ? this.#numAttendantNursingChildren * 3000
+      : 0;
   }
   get totalDeductions() {
-    return this.ah65Deduction
-      + this.spouseDeduction
-      + this.spouse65Deduction
-      + this.childAdjustedDeduction
-      + this.ahDisabilityCreditDeduction
-      + this.spouseDisabilityCreditDeduction
-      + this.childDisabilityCreditDeduction
-      + this.rdspDeduction
-      + this.ahAttendantNursingDeduction
-      + this.spouseAttendantNursingDeduction
-      + this.childAttendantNursingDeduction;
+    return (
+      this.ah65Deduction +
+      this.spouseDeduction +
+      this.spouse65Deduction +
+      this.childAdjustedDeduction +
+      this.ahDisabilityCreditDeduction +
+      this.spouseDisabilityCreditDeduction +
+      this.childDisabilityCreditDeduction +
+      this.rdspDeduction +
+      this.ahAttendantNursingDeduction +
+      this.spouseAttendantNursingDeduction +
+      this.childAttendantNursingDeduction
+    );
   }
   get adjustedIncome() {
     let adjusted = this.totalHouseholdIncome - this.totalDeductions;
-    return (adjusted > 0) ? adjusted : 0;
+    return adjusted > 0 ? adjusted : 0;
   }
   get incomeUnderThreshold() {
     return this.adjustedIncome <= this.#qualificationThreshhold;
@@ -240,16 +248,18 @@ export default class SuppBenData{
 
   // Helpers
   stringToInt(stringNumber) {
-    return (stringNumber && !isNaN(stringNumber)) ? 
-      parseInt(this.removeCommas(stringNumber)) : 0;
+    return stringNumber && !isNaN(stringNumber)
+      ? parseInt(this.removeCommas(stringNumber))
+      : 0;
   }
   stringToFloat(stringNumber) {
-    return (stringNumber && !isNaN(stringNumber)) ? 
-      parseFloat(this.removeCommas(stringNumber)) : 0;
+    return stringNumber && !isNaN(stringNumber)
+      ? parseFloat(this.removeCommas(stringNumber))
+      : 0;
   }
   removeCommas(stringNumber) {
-    if (typeof stringNumber === 'string' || stringNumber instanceof String) {
-      return stringNumber.replace(/[,]/g, '');
+    if (typeof stringNumber === "string" || stringNumber instanceof String) {
+      return stringNumber.replace(/[,]/g, "");
     }
     return stringNumber;
   }

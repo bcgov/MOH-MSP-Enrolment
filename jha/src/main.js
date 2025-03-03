@@ -1,8 +1,8 @@
-import { createApp } from 'vue';
-import App from '@/App.vue';
-import router from '@/router';
-import store from '@/store';
-import { library } from '@fortawesome/fontawesome-svg-core';
+import { createApp } from "vue";
+import App from "@/App.vue";
+import router from "@/router";
+import store from "@/store";
+import { library } from "@fortawesome/fontawesome-svg-core";
 import {
   faAngleDown,
   faAngleRight,
@@ -19,9 +19,9 @@ import {
   faTimesCircle,
   faInfoCircle,
   faExclamationCircle,
-} from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import 'core-js/es/number'; // IE polyfill for `Number.isNaN()`.
+} from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
+import "core-js/es/number"; // IE polyfill for `Number.isNaN()`.
 
 library.add(faAngleDown);
 library.add(faAngleRight);
@@ -42,9 +42,9 @@ library.add(faExclamationCircle);
 const app = createApp({
   router,
   ...App,
-})
+});
 app
   .use(store)
   .use(router)
   .component("font-awesome-icon", FontAwesomeIcon)
-  .mount('#app');
+  .mount("#app");

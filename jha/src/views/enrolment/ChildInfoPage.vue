@@ -1,113 +1,123 @@
 <template>
   <div>
     <div class="container stepper">
-      <PageStepper :currentPath='$router.currentRoute.value.path'
-        :routes='stepRoutes'
-        @toggleShowMobileDetails='handleToggleShowMobileStepperDetails($event)'
-        :isMobileStepperOpen='isMobileStepperOpen'
-        @onClickLink='handleClickStepperLink($event)'/>
+      <PageStepper
+        :currentPath="$router.currentRoute.value.path"
+        :routes="stepRoutes"
+        @toggleShowMobileDetails="handleToggleShowMobileStepperDetails($event)"
+        :isMobileStepperOpen="isMobileStepperOpen"
+        @onClickLink="handleClickStepperLink($event)"
+      />
     </div>
-    <PageContent :deltaHeight='pageContentDeltaHeight'>
+    <PageContent :deltaHeight="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Child information</h1>
-        <p>A child is under 19 years old, and the applicant is their parent or legal guardian.</p>
-        <p>A dependent post-secondary student is a 19- to 24-year-old who is supported by parent(s) or guardian(s), has no spouse, and is enrolled full-time in a recognized post-secondary institution.</p>
-        <hr class="mt-0"/>
-        <RadioComponent v-if="hasChildren !== 'Y'"
-                label="Do you have a child who also needs to enrol?"
-                :id="'has-children'"
-                :name="'has-children'"
-                class="mt-3"
-                v-model="hasChildren"
-                @blur="handleBlurField(v$.hasChildren)"
-                :required="true"
-                :items="radioOptionsNoYes" />
-        <div class="text-danger"
+        <p>
+          A child is under 19 years old, and the applicant is their parent or
+          legal guardian.
+        </p>
+        <p>
+          A dependent post-secondary student is a 19- to 24-year-old who is
+          supported by parent(s) or guardian(s), has no spouse, and is enrolled
+          full-time in a recognized post-secondary institution.
+        </p>
+        <hr class="mt-0" />
+        <RadioComponent
+          v-if="hasChildren !== 'Y'"
+          label="Do you have a child who also needs to enrol?"
+          :id="'has-children'"
+          :name="'has-children'"
+          class="mt-3"
+          v-model="hasChildren"
+          @blur="handleBlurField(v$.hasChildren)"
+          :required="true"
+          :items="radioOptionsNoYes"
+        />
+        <div
+          class="text-danger"
           v-if="v$.hasChildren.$dirty && v$.hasChildren.required.$invalid"
-          aria-live="assertive">Please indicate if you have a child who needs to enrol.</div>
-        <div v-for="(child, index) in children"
-            :key="'child-' + index">
+          aria-live="assertive"
+        >
+          Please indicate if you have a child who needs to enrol.
+        </div>
+        <div v-for="(child, index) in children" :key="'child-' + index">
           <a :name="'child-' + index"></a>
           <div class="heading mt-3">
-            <div v-if="!child.collapsed" @click="collapseChild(index)" class="icon-header">
+            <div
+              v-if="!child.collapsed"
+              @click="collapseChild(index)"
+              class="icon-header"
+            >
               <font-awesome-icon icon="angle-down" size="3x" />
-              <h2 class="m-0 ml-2">{{getChildTitle(index)}}</h2>
+              <h2 class="m-0 ml-2">{{ getChildTitle(index) }}</h2>
             </div>
-            <div v-if="child.collapsed" @click="expandChild(index)" class="icon-header">
+            <div
+              v-if="child.collapsed"
+              @click="expandChild(index)"
+              class="icon-header"
+            >
               <font-awesome-icon icon="angle-right" size="3x" />
-              <h2 class="m-0 ml-2">{{getChildTitle(index)}}</h2>
+              <h2 class="m-0 ml-2">{{ getChildTitle(index) }}</h2>
             </div>
             <div class="remove-icon" @click="removeChild(index)">
-                <font-awesome-icon icon="times-circle" size="2x"/>
+              <font-awesome-icon icon="times-circle" size="2x" />
             </div>
           </div>
-          <hr/>
-          <div :class="{'collapsed': child.collapsed}">
-            <Child 
+          <hr />
+          <div :class="{ collapsed: child.collapsed }">
+            <Child
               :key="'child-' + index"
               ref="children"
               :index="index"
               :childData="child"
               :usedPHNs="usedPHNs"
-              @updateChild="handleChildUpdate($event, index)" />
+              @updateChild="handleChildUpdate($event, index)"
+            />
           </div>
         </div>
       </main>
     </PageContent>
-    <ContinueBar 
-      @continue="validateFields()" 
+    <ContinueBar
+      @continue="validateFields()"
       @secondary="addChild()"
       :hasSecondaryButton="hasChildren === 'Y' && !maximumChildrenReached"
-      :secondaryButtonLabel="'Add Child'"  
+      :secondaryButtonLabel="'Add Child'"
     />
   </div>
 </template>
 
 <script>
-import useVuelidate from '@vuelidate/core'
-import pageStateService from '@/services/page-state-service';
-import {
-  enrolmentRoutes,
-  isEQPath,
-  isPastPath,
-} from '@/router/routes';
+import useVuelidate from "@vuelidate/core";
+import pageStateService from "@/services/page-state-service";
+import { enrolmentRoutes, isEQPath, isPastPath } from "@/router/routes";
 import {
   scrollTo,
   scrollToError,
-  getTopScrollPosition
-} from '@/helpers/scroll';
-import {
-  getConvertedPath,
-} from '@/helpers/url';
-import logService from '@/services/log-service';
+  getTopScrollPosition,
+} from "@/helpers/scroll";
+import { getConvertedPath } from "@/helpers/url";
+import logService from "@/services/log-service";
 import {
   ContinueBar,
   PageContent,
   RadioComponent,
-  cloneDeep
-} from 'common-lib-vue';
-import {
-  required
-} from '@vuelidate/validators';
-import pageContentMixin from '@/mixins/page-content-mixin';
-import { 
-  radioOptionsNoYes
-} from '@/constants/radio-options';
+  cloneDeep,
+} from "common-lib-vue";
+import { required } from "@vuelidate/validators";
+import pageContentMixin from "@/mixins/page-content-mixin";
+import { radioOptionsNoYes } from "@/constants/radio-options";
 import {
   MODULE_NAME as enrolmentModule,
   SET_HAS_CHILDREN,
   SET_NUM_CHILDREN,
   SET_CHILDREN,
-} from '@/store/modules/enrolment-module';
-import Child from '@/components/enrolment/Child.vue';
-import pageStepperMixin from '@/mixins/page-stepper-mixin';
+} from "@/store/modules/enrolment-module";
+import Child from "@/components/enrolment/Child.vue";
+import pageStepperMixin from "@/mixins/page-stepper-mixin";
 
 export default {
-  name: 'ChildInfoPage',
-  mixins: [
-    pageContentMixin, 
-    pageStepperMixin
-  ],
+  name: "ChildInfoPage",
+  mixins: [pageContentMixin, pageStepperMixin],
   components: {
     ContinueBar,
     PageContent,
@@ -127,10 +137,12 @@ export default {
   },
   created() {
     this.hasChildren = this.$store.state.enrolmentModule.hasChildren;
-    this.children = this.$store.state.enrolmentModule.children ? cloneDeep(this.$store.state.enrolmentModule.children) : [];
+    this.children = this.$store.state.enrolmentModule.children
+      ? cloneDeep(this.$store.state.enrolmentModule.children)
+      : [];
     this.calculateUsedPHNs();
     this.expandAllChildren();
-    
+
     setTimeout(() => {
       this.pageLoaded = true;
     }, 0);
@@ -138,27 +150,27 @@ export default {
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.CHILD_INFO_PAGE.path,
-      enrolmentRoutes.CHILD_INFO_PAGE.title
+      enrolmentRoutes.CHILD_INFO_PAGE.title,
     );
   },
   validations() {
     const validations = {
-      hasChildren: { 
-        required
-      }
+      hasChildren: {
+        required,
+      },
     };
 
     return validations;
   },
-  setup () {
-    return { v$: useVuelidate() }
+  setup() {
+    return { v$: useVuelidate() };
   },
   methods: {
     addChild() {
       this.collapseAllChildren();
       this.children.push({
         collapsed: false,
-        
+
         ageRange: null,
         firstName: null,
         middleName: null,
@@ -166,7 +178,7 @@ export default {
         birthDate: null,
         personalHealthNumber: null,
         gender: null,
-        
+
         status: null,
         statusReason: null,
         citizenshipSupportDocumentType: null,
@@ -175,7 +187,7 @@ export default {
         nameChangeSupportDocumentType: null,
         genderMatches: null,
         nameChangeSupportDocuments: [],
-        
+
         moveFromOrigin: null,
         livedInBCSinceBirth: null,
         previousHealthNumber: null,
@@ -191,7 +203,7 @@ export default {
         previousBCHealthNumber: null,
         hasBeenReleasedFromInstitution: null,
         dischargeDate: null,
-        
+
         schoolName: null,
         schoolAddressLine1: null,
         schoolAddressLine2: null,
@@ -209,7 +221,7 @@ export default {
       this.children.splice(index, 1);
     },
     getChildTitle(index) {
-      return 'Child ' + (index + 1) + ' information';
+      return "Child " + (index + 1) + " information";
     },
     collapseChild(index) {
       this.children[index].collapsed = true;
@@ -217,7 +229,7 @@ export default {
     },
     collapseAllChildren() {
       const children = this.children;
-      children.forEach(child => {
+      children.forEach((child) => {
         child.collapsed = true;
       });
       this.children = [...children];
@@ -228,7 +240,7 @@ export default {
     },
     expandAllChildren() {
       const children = this.children;
-      children.forEach(child => {
+      children.forEach((child) => {
         child.collapsed = false;
       });
       this.children = [...children];
@@ -246,7 +258,7 @@ export default {
     validateFields() {
       this.saveData();
 
-      if (this.hasChildren === 'N') {
+      if (this.hasChildren === "N") {
         this.navigateToNextPage();
         return;
       }
@@ -259,7 +271,7 @@ export default {
         for (let child of this.$refs.children) {
           if (child.v$) {
             child.v$.$touch();
-            
+
             if (child.v$.$invalid) {
               validChildren = false;
             }
@@ -280,9 +292,15 @@ export default {
       this.navigateToNextPage();
     },
     saveData() {
-      this.$store.dispatch(enrolmentModule + '/' + SET_HAS_CHILDREN, this.hasChildren);
-      this.$store.dispatch(enrolmentModule + '/' + SET_NUM_CHILDREN, this.children.length);
-      this.$store.dispatch(enrolmentModule + '/' + SET_CHILDREN, this.children);
+      this.$store.dispatch(
+        enrolmentModule + "/" + SET_HAS_CHILDREN,
+        this.hasChildren,
+      );
+      this.$store.dispatch(
+        enrolmentModule + "/" + SET_NUM_CHILDREN,
+        this.children.length,
+      );
+      this.$store.dispatch(enrolmentModule + "/" + SET_CHILDREN, this.children);
     },
     navigateToNextPage() {
       // Determine which page to navigate to next
@@ -298,7 +316,7 @@ export default {
       // Navigate to next path
       const toPath = getConvertedPath(
         this.$router.currentRoute.value.path,
-        routePath
+        routePath,
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -319,27 +337,27 @@ export default {
         }
       });
       this.usedPHNs = phns;
-    }
+    },
   },
   watch: {
     children(arr) {
       if (this.pageLoaded) {
         if (arr.length > 0) {
-          this.hasChildren = 'Y';
+          this.hasChildren = "Y";
         } else {
-          this.hasChildren = 'N';
+          this.hasChildren = "N";
         }
         this.saveData();
       }
     },
     hasChildren(val) {
       if (this.pageLoaded) {
-        if (val === 'Y') {
+        if (val === "Y") {
           this.addChild();
         }
         this.saveData();
       }
-    }
+    },
   },
   computed: {
     maximumChildrenReached() {
@@ -349,26 +367,28 @@ export default {
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
-    if ((pageStateService.isPageComplete(to.path)) || isPastPath(to.path, from.path)
-      && !isEQPath(to.path)) {
+    if (
+      pageStateService.isPageComplete(to.path) ||
+      (isPastPath(to.path, from.path) && !isEQPath(to.path))
+    ) {
       next();
     } else {
       // Navigate to self.
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.value.path,
-        enrolmentRoutes.CHILD_INFO_PAGE.path
+        enrolmentRoutes.CHILD_INFO_PAGE.path,
       );
       next({
         path: toPath,
-        replace: true
+        replace: true,
       });
       setTimeout(() => {
         scrollTo(topScrollPosition);
       }, 0);
     }
-  }
-}
+  },
+};
 </script>
 
 <style scoped>

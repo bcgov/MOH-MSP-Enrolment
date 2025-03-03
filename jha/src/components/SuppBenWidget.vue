@@ -27,91 +27,73 @@
       <tr v-if="inputData.ah65Deduction > 0">
         <td>Age over 65</td>
         <td>
-          {{currencyString(inputData.ah65Deduction)}}
+          {{ currencyString(inputData.ah65Deduction) }}
         </td>
       </tr>
       <tr v-if="inputData.spouseDeduction > 0">
         <td>Spouse</td>
         <td>
-          {{currencyString(inputData.spouseDeduction)}}
+          {{ currencyString(inputData.spouseDeduction) }}
         </td>
       </tr>
       <tr v-if="inputData.spouse65Deduction > 0">
+        <td>Spouse age over 65</td>
         <td>
-          Spouse age over 65
-        </td>
-        <td>
-          {{currencyString(inputData.spouse65Deduction)}}
+          {{ currencyString(inputData.spouse65Deduction) }}
         </td>
       </tr>
       <tr v-if="inputData.childDeduction > 0">
         <td>Children</td>
         <td>
-          {{currencyString(inputData.childDeduction)}}
+          {{ currencyString(inputData.childDeduction) }}
         </td>
       </tr>
       <tr v-if="inputData.claimedChildCareExpensesReduction < 0">
+        <td>50% of child care expenses</td>
         <td>
-          50% of child care expenses
-        </td>
-        <td>
-          {{currencyString(inputData.claimedChildCareExpensesReduction)}}
+          {{ currencyString(inputData.claimedChildCareExpensesReduction) }}
         </td>
       </tr>
       <tr v-if="inputData.ahDisabilityCreditDeduction > 0">
-        <td>
-          Applicant disability credit
-        </td>
+        <td>Applicant disability credit</td>
         <td>
           {{ currencyString(inputData.ahDisabilityCreditDeduction) }}
         </td>
       </tr>
       <tr v-if="inputData.spouseDisabilityCreditDeduction > 0">
+        <td>Spouse disability credit</td>
         <td>
-          Spouse disability credit
-        </td>
-        <td>
-          {{currencyString(inputData.spouseDisabilityCreditDeduction)}}
+          {{ currencyString(inputData.spouseDisabilityCreditDeduction) }}
         </td>
       </tr>
       <tr v-if="inputData.childDisabilityCreditDeduction > 0">
+        <td>Child disability credit</td>
         <td>
-          Child disability credit
-        </td>
-        <td>
-          {{currencyString(inputData.childDisabilityCreditDeduction)}}
+          {{ currencyString(inputData.childDisabilityCreditDeduction) }}
         </td>
       </tr>
       <tr v-if="inputData.rdspDeduction > 0">
+        <td>Disability savings plan</td>
         <td>
-          Disability savings plan
-        </td>
-        <td>
-          {{currencyString(inputData.rdspDeduction)}}
+          {{ currencyString(inputData.rdspDeduction) }}
         </td>
       </tr>
       <tr v-if="inputData.ahAttendantNursingDeduction > 0">
+        <td>Applicant attendant care expense</td>
         <td>
-          Applicant attendant care expense
-        </td>
-        <td>
-          {{currencyString(inputData.ahAttendantNursingDeduction) }}
+          {{ currencyString(inputData.ahAttendantNursingDeduction) }}
         </td>
       </tr>
       <tr v-if="inputData.spouseAttendantNursingDeduction > 0">
+        <td>Spouse attendant care expense</td>
         <td>
-          Spouse attendant care expense
-        </td>
-        <td>
-          {{currencyString(inputData.spouseAttendantNursingDeduction)}}
+          {{ currencyString(inputData.spouseAttendantNursingDeduction) }}
         </td>
       </tr>
       <tr v-if="inputData.childAttendantNursingDeduction > 0">
+        <td>Child attendant care expense</td>
         <td>
-          Child attendant care expense
-        </td>
-        <td>
-          {{currencyString(inputData.childAttendantNursingDeduction)}}
+          {{ currencyString(inputData.childAttendantNursingDeduction) }}
         </td>
       </tr>
       <tr>
@@ -119,14 +101,14 @@
           <h4>Total deductions</h4>
         </td>
         <td>
-          <span v-if="inputData.totalDeductions > 0" >
-            {{currencyString(inputData.totalDeductions)}}
+          <span v-if="inputData.totalDeductions > 0">
+            {{ currencyString(inputData.totalDeductions) }}
           </span>
           <span v-else> - - </span>
         </td>
       </tr>
     </table>
-    <hr style="border: 1px solid black;">
+    <hr style="border: 1px solid black" />
 
     <table class="table table-borderless">
       <tbody>
@@ -135,32 +117,44 @@
             <h4>Adjusted net income:</h4>
           </td>
           <td>
-            <span v-if="inputData.adjustedIncome === null || inputData.adjustedIncome === undefined || inputData.adjustedIncome === ''"> - - </span>
+            <span
+              v-if="
+                inputData.adjustedIncome === null ||
+                inputData.adjustedIncome === undefined ||
+                inputData.adjustedIncome === ''
+              "
+            >
+              - -
+            </span>
             <span v-else-if="inputData.adjustedIncome > 0">
-              {{currencyString(inputData.adjustedIncome)}}
+              {{ currencyString(inputData.adjustedIncome) }}
             </span>
             <span v-else>
-              {{currencyString(0)}}
+              {{ currencyString(0) }}
             </span>
           </td>
         </tr>
       </tbody>
     </table>
-    <p v-if="inputData.adjustedIncome >= 0 && inputData.incomeUnderThreshold" class="result-message-success">
+    <p
+      v-if="inputData.adjustedIncome >= 0 && inputData.incomeUnderThreshold"
+      class="result-message-success"
+    >
       It is likely that you will qualify for Supplementary Benefits.
     </p>
-    <p v-if="!inputData.incomeUnderThreshold" class="result-message-failure" aria-live="assertive">
+    <p
+      v-if="!inputData.incomeUnderThreshold"
+      class="result-message-failure"
+      aria-live="assertive"
+    >
       You might not qualify for Supplementary Benefits.
     </p>
   </div>
 </template>
 
 <script>
-
-import {
-  convertNumberToFormattedString,
-} from 'common-lib-vue';
-import SuppBenData from '@/data-types/supp-ben-data';
+import { convertNumberToFormattedString } from "common-lib-vue";
+import SuppBenData from "@/data-types/supp-ben-data";
 
 export default {
   name: "SuppBenWidget",
@@ -174,14 +168,13 @@ export default {
     },
   },
   data: () => {
-    return {
-    };
+    return {};
   },
   methods: {
     currencyString(num) {
-      return (num >= 0) ?
-          `$${convertNumberToFormattedString(num)}`
-          : `-$${convertNumberToFormattedString(num * -1)}`;
+      return num >= 0
+        ? `$${convertNumberToFormattedString(num)}`
+        : `-$${convertNumberToFormattedString(num * -1)}`;
     },
   },
 };

@@ -1,26 +1,23 @@
-import { createRouter, createWebHistory } from 'vue-router';
-import {
-  enrolmentRoutes,
-  commonRoutes,
-} from './routes';
-import pageStateService from '@/services/page-state-service';
-import FormSelectionPage from '@/views/enrolment/FormSelectionPage.vue';
-import MSPEligibilityPage from '@/views/enrolment/MSPEligibilityPage.vue';
-import FPCareEligibilityPage from '@/views/enrolment/FPCareEligibilityPage.vue';
-import SuppBenEligibilityPage from '@/views/enrolment/SuppBenEligibilityPage.vue';
-import PersonalInfoPage from '@/views/enrolment/PersonalInfoPage.vue';
-import SpouseInfoPage from '@/views/enrolment/SpouseInfoPage.vue';
-import ChildInfoPage from '@/views/enrolment/ChildInfoPage.vue';
-import ContactInfoPage from '@/views/enrolment/ContactInfoPage.vue';
-import FPCareInfoPage from '@/views/enrolment/FPCareInfoPage.vue';
-import SuppBenInfoPage from '@/views/enrolment/SuppBenInfoPage.vue';
-import DocumentsPage from '@/views/enrolment/DocumentsPage.vue';
-import ReviewPage from '@/views/enrolment/ReviewPage.vue';
-import ConsentPage from '@/views/enrolment/ConsentPage.vue';
-import SubmissionPage from '@/views/enrolment/SubmissionPage.vue';
-import SubmissionErrorPage from '@/views/enrolment/SubmissionErrorPage.vue';
-import MaintenancePage from '@/views/MaintenancePage.vue';
-import PageNotFoundPage from '@/views/PageNotFoundPage.vue';
+import { createRouter, createWebHistory } from "vue-router";
+import { enrolmentRoutes, commonRoutes } from "./routes";
+import pageStateService from "@/services/page-state-service";
+import FormSelectionPage from "@/views/enrolment/FormSelectionPage.vue";
+import MSPEligibilityPage from "@/views/enrolment/MSPEligibilityPage.vue";
+import FPCareEligibilityPage from "@/views/enrolment/FPCareEligibilityPage.vue";
+import SuppBenEligibilityPage from "@/views/enrolment/SuppBenEligibilityPage.vue";
+import PersonalInfoPage from "@/views/enrolment/PersonalInfoPage.vue";
+import SpouseInfoPage from "@/views/enrolment/SpouseInfoPage.vue";
+import ChildInfoPage from "@/views/enrolment/ChildInfoPage.vue";
+import ContactInfoPage from "@/views/enrolment/ContactInfoPage.vue";
+import FPCareInfoPage from "@/views/enrolment/FPCareInfoPage.vue";
+import SuppBenInfoPage from "@/views/enrolment/SuppBenInfoPage.vue";
+import DocumentsPage from "@/views/enrolment/DocumentsPage.vue";
+import ReviewPage from "@/views/enrolment/ReviewPage.vue";
+import ConsentPage from "@/views/enrolment/ConsentPage.vue";
+import SubmissionPage from "@/views/enrolment/SubmissionPage.vue";
+import SubmissionErrorPage from "@/views/enrolment/SubmissionErrorPage.vue";
+import MaintenancePage from "@/views/MaintenancePage.vue";
+import PageNotFoundPage from "@/views/PageNotFoundPage.vue";
 
 pageStateService.importPageRoutes(commonRoutes);
 pageStateService.importPageRoutes(enrolmentRoutes);
@@ -35,16 +32,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Maintenance page, Application for Health and Drug Coverage"
+          content: "Maintenance page, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Maintenance page, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Maintenance page, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: commonRoutes.PAGE_NOT_FOUND_PAGE.path,
@@ -55,18 +50,16 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Page not found, Application for Health and Drug Coverage"
+          content: "Page not found, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Page not found, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Page not found, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
-  
+
   // Enrolment routes.
   {
     path: enrolmentRoutes.HOME_PAGE.path,
@@ -82,16 +75,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Home page, Application for Health and Drug Coverage"
+          content: "Home page, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Home page, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Home page, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.MSP_ELIGIBILITY_PAGE.path,
@@ -102,16 +93,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "MSP Eligbility, Application for Health and Drug Coverage"
+          content: "MSP Eligbility, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "MSP Eligbility, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "MSP Eligbility, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.FPCARE_ELIGIBILITY_PAGE.path,
@@ -123,15 +112,15 @@ export const routeCollection = [
         {
           name: "description",
           content:
-            "FPCare Eligibility, Application for Health and Drug Coverage"
+            "FPCare Eligibility, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
           content:
-            "FPCare Eligibility, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+            "FPCare Eligibility, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path,
@@ -143,15 +132,15 @@ export const routeCollection = [
         {
           name: "description",
           content:
-            "Supplementary Benefits Eligibility, Application for Health and Drug Coverage"
+            "Supplementary Benefits Eligibility, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
           content:
-            "Supplementary Benefits Eligibility, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+            "Supplementary Benefits Eligibility, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.FORM_SELECTION_PAGE.path,
@@ -162,16 +151,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Form selection, Application for Health and Drug Coverage"
+          content: "Form selection, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Form selection, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Form selection, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.PERSONAL_INFO_PAGE.path,
@@ -182,16 +169,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Personal info, Application for Health and Drug Coverage"
+          content: "Personal info, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Personal info, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Personal info, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.SPOUSE_INFO_PAGE.path,
@@ -202,16 +187,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Spouse info, Application for Health and Drug Coverage"
+          content: "Spouse info, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Spouse info, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Spouse info, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.CHILD_INFO_PAGE.path,
@@ -222,16 +205,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Child info, Application for Health and Drug Coverage"
+          content: "Child info, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Child info, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Child info, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.CONTACT_INFO_PAGE.path,
@@ -242,16 +223,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Contact info, Application for Health and Drug Coverage"
+          content: "Contact info, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Contact info, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Contact info, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.FPCARE_INFO_PAGE.path,
@@ -263,15 +242,15 @@ export const routeCollection = [
         {
           name: "description",
           content:
-            "Fair PharmaCare info, Application for Health and Drug Coverage"
+            "Fair PharmaCare info, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
           content:
-            "Fair PharmaCare info, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+            "Fair PharmaCare info, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.SUPP_BEN_INFO_PAGE.path,
@@ -283,15 +262,15 @@ export const routeCollection = [
         {
           name: "description",
           content:
-            "Supplementary Benefits info, Application for Health and Drug Coverage"
+            "Supplementary Benefits info, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
           content:
-            "Supplementary Benefits info, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+            "Supplementary Benefits info, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.DOCUMENTS_PAGE.path,
@@ -302,16 +281,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Document upload, Application for Health and Drug Coverage"
+          content: "Document upload, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Document upload, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Document upload, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.REVIEW_PAGE.path,
@@ -322,16 +299,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Review, Application for Health and Drug Coverage"
+          content: "Review, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Review, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Review, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.CONSENT_PAGE.path,
@@ -342,16 +317,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Consent, Application for Health and Drug Coverage"
+          content: "Consent, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Consent, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Consent, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.SUBMISSION_PAGE.path,
@@ -362,16 +335,14 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Submission, Application for Health and Drug Coverage"
+          content: "Submission, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Submission, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Submission, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
   {
     path: enrolmentRoutes.SUBMISSION_ERROR_PAGE.path,
@@ -382,28 +353,28 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Error, Application for Health and Drug Coverage"
+          content: "Error, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Error, Application for Health and Drug Coverage"
-        }
-      ]
-    }
+          content: "Error, Application for Health and Drug Coverage",
+        },
+      ],
+    },
   },
 ];
 
 const router = createRouter({
-  history: createWebHistory('ahdc'),
-  routes: routeCollection
+  history: createWebHistory("ahdc"),
+  routes: routeCollection,
 });
 
 router.beforeEach((to, from, next) => {
   // Home redirects.
-  if (to.path !== enrolmentRoutes.HOME_PAGE.path
-    && !pageStateService.isPageVisited(to.path)) {
+  if (
+    to.path !== enrolmentRoutes.HOME_PAGE.path &&
+    !pageStateService.isPageVisited(to.path)
+  ) {
     return next({ name: enrolmentRoutes.HOME_PAGE.name });
   }
   // This goes through the matched routes from last to first, finding the closest route with a title
@@ -412,31 +383,31 @@ router.beforeEach((to, from, next) => {
   const nearestWithTitle = to.matched
     .slice()
     .reverse()
-    .find(r => r.meta && r.meta.title);
+    .find((r) => r.meta && r.meta.title);
 
   // Find the nearest route element with meta tags
   const nearestWithMeta = to.matched
     .slice()
     .reverse()
-    .find(r => r.meta && r.meta.metaTags);
+    .find((r) => r.meta && r.meta.metaTags);
 
   // If a route with a title was found, set the document (page) title to that value
   if (nearestWithTitle) document.title = nearestWithTitle.meta.title;
 
   // Remove any stale meta tags from the document using the key attribute we set below
-  Array.from(
-    document.querySelectorAll("[data-vue-router-controlled]")
-  ).map(el => el.parentNode.removeChild(el));
+  Array.from(document.querySelectorAll("[data-vue-router-controlled]")).map(
+    (el) => el.parentNode.removeChild(el),
+  );
 
   // Skip rendering meta tags if there are none
   if (!nearestWithMeta) return next();
 
   // Turn the meta tag definitions into actual elements in the head
   nearestWithMeta.meta.metaTags
-    .map(tagDef => {
+    .map((tagDef) => {
       const tag = document.createElement("meta");
 
-      Object.keys(tagDef).forEach(key => {
+      Object.keys(tagDef).forEach((key) => {
         tag.setAttribute(key, tagDef[key]);
       });
 
@@ -446,8 +417,8 @@ router.beforeEach((to, from, next) => {
       return tag;
     })
     // Add the meta tags to the document head
-    .forEach(tag => document.head.appendChild(tag));
-  
+    .forEach((tag) => document.head.appendChild(tag));
+
   // Catch-all (navigation).
   next();
 });

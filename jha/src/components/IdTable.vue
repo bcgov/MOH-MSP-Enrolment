@@ -29,7 +29,10 @@
         <td class="col-sm-4 border-l">
           <ul>
             <li>Study permit&nbsp;</li>
-            <li>Work permit (Working Holiday permit must include a letter of employment)&nbsp;</li>
+            <li>
+              Work permit (Working Holiday permit must include a letter of
+              employment)&nbsp;
+            </li>
             <li>Visitor permit (accompanying spouse or child)&nbsp;</li>
           </ul>
         </td>
