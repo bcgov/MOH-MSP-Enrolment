@@ -31,7 +31,8 @@ app.post("/mock-logger", (req, res) => {
     second: "numeric",
   });
   console.log("[MOCKLOGGER] ", date, "-- Responded with ", responseCode, "(POST)");
-  res.status(responseCode).end();
+  res.status(responseCode);
+  res.send("success").end();
 });
 
 app.head("/", (req, res) => {
