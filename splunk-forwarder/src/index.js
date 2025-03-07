@@ -203,7 +203,7 @@ const sendLog = async (payload) => {
       const response = await fetch(SPLUNK_URL, {
         method: "POST",
         headers,
-        body,
+        body: JSON.stringify(body),
         agent,
       });
       const parsedResponse = await response.text()
