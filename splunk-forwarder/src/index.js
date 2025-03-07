@@ -9,9 +9,10 @@ const express = require('express')
 const app = express();
 const fs = require('fs');
 const serveIndex = require('serve-index');
+const { Agent, fetch } = require('undici')
 
 // SplunkLogger
-const SplunkLogger = require("./splunklogger");
+// const SplunkLogger = require("./splunklogger");
 const utils = require("./utils");
 const basicAuth = require('express-basic-auth')
 
@@ -79,23 +80,23 @@ var winstonLogger = new winston.createLogger({
     ]
 });
 
-winstonLogger.error = function (err, context) {
-    winstonLogger.error(`SplunkLogger error:` + err + `  context:` + context);
-};
+// winstonLogger.error = function (err, context) {
+//     winstonLogger.error(`SplunkLogger error:` + err + `  context:` + context);
+// };
 
 // remove console if not in debug mode
 if (FILE_LOG_LEVEL != 'debug') {
     winston.remove(winston.transports.Console);
 }
 
-var splunkLogger = new SplunkLogger({
-    token: SPLUNK_AUTH_TOKEN,
-    cacert: CA_CERT,
-    level: 'info',
-    url: SPLUNK_URL,
-    maxRetries: RETRY_COUNT,
-});
-splunkLogger.requestOptions.strictSSL = false;
+// var splunkLogger = new SplunkLogger({
+//     token: SPLUNK_AUTH_TOKEN,
+//     cacert: CA_CERT,
+//     level: 'info',
+//     url: SPLUNK_URL,
+//     maxRetries: RETRY_COUNT,
+// });
+// splunkLogger.requestOptions.strictSSL = false;
 
 /*=============================================
 =              Main Application               =
@@ -160,9 +161,74 @@ app.use(function (err, req, res, next) {
 });
 winstonLogger.info('Splunk Forwarder started on host: ' +  SERVICE_IP + '  port: ' + SERVICE_PORT);
 
+const generateTimeout = (attemptNumber) => {
+  //uses the loop number to generate an exponential timeout-- 1, 2, 4, 8, 16 seconds, etc
+  //measured in milliseconds, so 1000ms = 1 second of wait time
+  //For the first loop, 2 to the power of 0 equals 1, and 1 * 1000 ms = 1 second to start
+  //ceiling is 60 seconds between tries
+  let result = 1000 * (2 ** attemptNumber);
+  if (result > 60000) {
+    result = 60000
+  }
+  return result;
+}
+
+const sendLog = async (payload) => {
+    //format payload  
+    const body = {
+      event: {
+        message: payload.message,
+        severity: payload.severity || "info",
+      },
+      time: payload.time || Date.now().toString(),
+    };    
+  
+    const headers = {};
+  
+    headers["Content-Type"] = "application/json";
+    headers["Authorization"] = "Api-Token " + SPLUNK_AUTH_TOKEN;
+  
+    const agent = new Agent({
+      connect: {
+        ca: CA_CERT,
+      },
+    });
+
+    let latestResponse = "";
+
+    //try sending the logs multiple times with a for loop
+    for (let i = 0; i < RETRY_COUNT; i++) {
+      const response = await fetch(SPLUNK_URL, {
+        method: "POST",
+        headers,
+        body,
+        agent,
+      });
+      const parsedResponse = await response.text()
+
+      latestResponse = await response.status;
+
+      if (!!response.ok) {
+        //if the response is OK, eg. 200-level, log that the response was successful and exit
+        winstonLogger.debug(`successfully reached ${SPLUNK_URL}! Response ${response.status}`);
+        //return exits both the for loop and the entire sendLog() function here
+        return;
+      } else {
+        //if the response is not ok, log that and wait for the timeout before trying again
+        winstonLogger.debug(`failed to reach ${SPLUNK_URL}. Response status: ${response.status} Response: ${JSON.stringify(parsedResponse)}`);
+        //the generated timeout uses the loop index to determine the wait time
+        //eg the first try should happen quickly, and subsequent tries should be more spread out
+        const timeout = generateTimeout(i)
+        winstonLogger.debug(`waiting ${timeout} milliseconds to try again`);
+        await new Promise((resolve) => setTimeout(resolve, timeout));
+      }
+    }
+    // if the for loop never exits due to a successful response, default to an error
+    throw Error(`Couldn't reach log forwarder (tried ${RETRY_COUNT} times and gave up). Last response received: ${latestResponse}`);         
+  };
 
 // get a log
-var getLog = function (req) {
+const getLog = (req) => {
     return new Promise(function (resolve, reject) {
         var authorized = false;
 
@@ -230,14 +296,13 @@ var getLog = function (req) {
                     severity: "info"
                 };
                 winstonLogger.debug('sending payload');
-                splunkLogger.send(payload, function (err, resp, body) {
-                    //On a successful call, Splunk sends back 200 and Dynatrace sends back 204
-                    //Any other response code should constitute a failure and trigger a backup log
-                    if (ONLY_LOG_WHEN_SPLUNK_FAILS && resp && resp.statusCode != 200 && resp.statusCode != 204){
+                sendLog(payload).catch((error) => {
+                    winstonLogger.error("unable to send logs: ", error)
+                    if (ONLY_LOG_WHEN_SPLUNK_FAILS) {
                         winstonLogger.info(logString);
                     }
-                    winstonLogger.debug('ONLY_LOG_WHEN_SPLUNK_FAILS=' + ONLY_LOG_WHEN_SPLUNK_FAILS + ' resp=' + JSON.stringify(resp) + ' body=' + JSON.stringify(body) + ' Response from Splunk Server' + body);
-                });
+                })
+                
                 winstonLogger.debug('sent payload');
                 resolve('success');
             }
@@ -248,7 +313,7 @@ var getLog = function (req) {
             reject('unauthorized');
         }
     }, function(err) {
-        winstonLogger.info('error: ' + err);
+        winstonLogger.error('error: ' + err);
         // reject('unauthorized');
         reject('something went wrong');
     });
