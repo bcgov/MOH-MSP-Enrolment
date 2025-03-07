@@ -13,7 +13,7 @@ const { Agent, fetch } = require('undici')
 
 // SplunkLogger
 // const SplunkLogger = require("./splunklogger");
-const utils = require("./utils");
+// const utils = require("./utils");
 const basicAuth = require('express-basic-auth')
 
 
@@ -110,8 +110,8 @@ if (process.env.NODE_ENV != 'production' ||
         next();
     });
 }
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.json());
+// app.use(bodyParser.urlencoded({ extended: true }));
 var args = process.argv;
 
 if (args.length == 3 && args[2] == 'server') {
