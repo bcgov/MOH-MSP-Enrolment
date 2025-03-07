@@ -196,6 +196,8 @@ const sendLog = async (payload) => {
 
     let latestResponse = "";
 
+    winstonLogger.debug(`'Request body: ${JSON.stringify(body)}`);
+
     //try sending the logs multiple times with a for loop
     for (let i = 0; i < RETRY_COUNT; i++) {
       const response = await fetch(SPLUNK_URL, {
