@@ -3,6 +3,9 @@ import * as crypto from "crypto";
 import { tryServer, doesPathExist } from "../test-helpers.js";
 const { exec } = require("node:child_process");
 
+//used to generate log commands and file names in tests
+const fileLogLevel = "debug"; //or info, error, etc
+
 const generatePortNumber = () => {
   //IANA officially recommends 49152-65535 for ephemeral ports.
   const min = Math.ceil(49152);
@@ -23,6 +26,7 @@ const generateLogCommand = (override) => {
     USE_SPLUNK: true,
     ONLY_LOG_WHEN_SPLUNK_FAILS: false,
     LOG_DIR_NAME: "./logs",
+    FILE_LOG_LEVEL: fileLogLevel,
     APPEND_POD_NAME_TO_FILE: false,
     SPLUNK_URL: "http://localhost:3000/mock-logger",
     RETRY_COUNT: 2,
@@ -33,7 +37,7 @@ const generateLogCommand = (override) => {
 
   Object.assign(options, override);
 
-  return `LOG_LEVEL=${options.LOG_LEVEL} PORT=${options.PORT} NODE_ENV=development SERVICE_PORT=${options.SERVICE_PORT} USE_SPLUNK=${options.USE_SPLUNK} ONLY_LOG_WHEN_SPLUNK_FAILS=${options.ONLY_LOG_WHEN_SPLUNK_FAILS} SERVICE_USE_AUTH=false SERVICE_AUTH_TOKEN=aaa SPLUNK_AUTH_TOKEN=aaa CA_CERT=aaa LOG_DIR_NAME=${options.LOG_DIR_NAME} FILE_LOG_LEVEL=info APPEND_POD_NAME_TO_FILE=${options.APPEND_POD_NAME_TO_FILE} SPLUNK_URL=${options.SPLUNK_URL} RETRY_COUNT=${options.RETRY_COUNT} MAX_FILES=${options.MAX_FILES} MAX_BYTE_SIZE_PER_FILE=${options.MAX_BYTE_SIZE_PER_FILE} timeout ${options.timeout} node src/index.js server`;
+  return `LOG_LEVEL=${options.LOG_LEVEL} PORT=${options.PORT} NODE_ENV=development SERVICE_PORT=${options.SERVICE_PORT} USE_SPLUNK=${options.USE_SPLUNK} ONLY_LOG_WHEN_SPLUNK_FAILS=${options.ONLY_LOG_WHEN_SPLUNK_FAILS} SERVICE_USE_AUTH=false SERVICE_AUTH_TOKEN=aaa SPLUNK_AUTH_TOKEN=aaa CA_CERT=aaa LOG_DIR_NAME=${options.LOG_DIR_NAME} FILE_LOG_LEVEL=${options.FILE_LOG_LEVEL} APPEND_POD_NAME_TO_FILE=${options.APPEND_POD_NAME_TO_FILE} SPLUNK_URL=${options.SPLUNK_URL} RETRY_COUNT=${options.RETRY_COUNT} MAX_FILES=${options.MAX_FILES} MAX_BYTE_SIZE_PER_FILE=${options.MAX_BYTE_SIZE_PER_FILE} timeout ${options.timeout} node src/index.js server`;
 };
 
 const startLocalForwarderWith = async (command) => {
@@ -92,7 +96,7 @@ const generateFakeAuditFile = (tempFolder) => {
       days: false,
       amount: 5,
     },
-    auditLog: `./${tempFolder}/info-audit.json`,
+    auditLog: `./${tempFolder}/${fileLogLevel}-audit.json`,
     files: [
       {
         date: 1733783410178,
@@ -176,7 +180,7 @@ describe("winston file basics", () => {
     });
     // console.log("command: ", command)
     await startLocalForwarderWith(command);
-    const testPath = `${tempFolder}/info-audit.json`;
+    const testPath = `${tempFolder}/${fileLogLevel}-audit.json`;
     await tryFilePath(testPath);
     const result = await doesPathExist(testPath);
     expect(result).toEqual(true);
@@ -248,7 +252,7 @@ describe("winston logrotate", () => {
     );
 
     await fs.promises.writeFile(
-      `${tempFolder}/info-audit.json`,
+      `${tempFolder}/${fileLogLevel}-audit.json`,
       JSON.stringify(fakeWinstonAuditFile),
       (err) => {
         if (err) console.log(err);
@@ -265,7 +269,7 @@ describe("winston logrotate", () => {
     await doesPathExist(`${tempFolder}/2024-12-03-sf.log`).then((response) => {
       expect(response).toEqual(true);
     });
-    await doesPathExist(`${tempFolder}/info-audit.json`).then((response) => {
+    await doesPathExist(`${tempFolder}/${fileLogLevel}-audit.json`).then((response) => {
       expect(response).toEqual(true);
     });
 
@@ -287,7 +291,7 @@ describe("winston logrotate", () => {
     await doesPathExist(`${tempFolder}/2024-12-03-sf.log`).then((response) => {
       expect(response).toEqual(false);
     });
-    await doesPathExist(`${tempFolder}/info-audit.json`).then((response) => {
+    await doesPathExist(`${tempFolder}/${fileLogLevel}-audit.json`).then((response) => {
       expect(response).toEqual(true);
     })
   }, 30000);
@@ -328,7 +332,7 @@ describe("winston logrotate", () => {
     );
 
     await fs.promises.writeFile(
-      `${tempFolder}/info-audit.json`,
+      `${tempFolder}/${fileLogLevel}-audit.json`,
       JSON.stringify(fakeWinstonAuditFile),
       (err) => {
         if (err) console.log(err);
@@ -345,7 +349,7 @@ describe("winston logrotate", () => {
     await doesPathExist(`${tempFolder}/2024-12-03-sf.log`).then((response) => {
       expect(response).toEqual(true);
     });
-    await doesPathExist(`${tempFolder}/info-audit.json`).then((response) => {
+    await doesPathExist(`${tempFolder}/${fileLogLevel}-audit.json`).then((response) => {
       expect(response).toEqual(true);
     });
 
@@ -367,7 +371,7 @@ describe("winston logrotate", () => {
     await doesPathExist(`${tempFolder}/2024-12-03-sf.log`).then((response) => {
       expect(response).toEqual(true);
     });
-    await doesPathExist(`${tempFolder}/info-audit.json`).then((response) => {
+    await doesPathExist(`${tempFolder}/${fileLogLevel}-audit.json`).then((response) => {
       expect(response).toEqual(true);
     })
   }, 30000);
