@@ -110,8 +110,8 @@ if (process.env.NODE_ENV != 'production' ||
         next();
     });
 }
-// app.use(bodyParser.json());
-// app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 var args = process.argv;
 
 if (args.length == 3 && args[2] == 'server') {
