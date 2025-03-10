@@ -10,8 +10,7 @@
   "homepage": "",
   "main": "index.js",
   "scripts": {
-    "build": "NODE_ENV=production gulp",
-    "start": "node $NODE_DEBUG_OPTION build/index.js server",
+    "start": "node $NODE_DEBUG_OPTION src/index.js server",
     "start-local-service": "bin/start-local-service.sh",
     "start-mock-logger": "nodemon bin/mock-logger.js",
     "send-test-log": "bin/send-test-log.sh",
