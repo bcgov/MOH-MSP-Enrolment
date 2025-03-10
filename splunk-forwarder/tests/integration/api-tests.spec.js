@@ -8,10 +8,10 @@ const monitorPassword = "monitorpassword";
 const mockLoggerUrl = "http://localhost:3000";
 const localForwarderUrl = "http://localhost:8080";
 
-const startMockLogger = async () => {
+const startMockLogger = () => {
   //create child process to run the mock-logger for the duration of the tests
   //vitest doesn't always close child processes out when it finishes, so there's a timeout here to make extra sure they close
-  await exec(
+  exec(
     "timeout 45s node bin/mock-logger.js",
     () => {
       //err, stdout, stderr
@@ -19,8 +19,8 @@ const startMockLogger = async () => {
   );
 };
 
-const startLocalForwarder = async () => {
-  await exec(
+const startLocalForwarder = () => {
+  exec(
     "timeout 45s bin/start-local-service.sh --test",
     () => {
       //err, stdout, stderr
@@ -30,8 +30,8 @@ const startLocalForwarder = async () => {
 
 describe("Start local servers, test APIs", async () => {
   beforeAll(async () => {
-    await startMockLogger();
-    await startLocalForwarder();
+    startMockLogger();
+    startLocalForwarder();
     await tryServer(mockLoggerUrl, "HEAD");
     await tryServer(localForwarderUrl, "GET");
   }, 30000);

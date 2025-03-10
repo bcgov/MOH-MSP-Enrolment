@@ -39,7 +39,7 @@ const generateLogCommand = (override) => {
 };
 
 const startLocalForwarderWith = async (command) => {
-  await exec(command, () => {
+  exec(command, () => {
     ///err, stdout, stderr
   });
 };
