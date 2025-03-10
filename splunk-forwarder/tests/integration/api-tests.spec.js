@@ -1,4 +1,4 @@
-import { tryServer } from '../test-helpers.js'
+import { tryServer } from "../test-helpers.js";
 
 const { exec } = require("node:child_process");
 
@@ -23,7 +23,6 @@ const startLocalForwarder = async () => {
     (err, stdout, stderr) => {}
   );
 };
-
 
 describe("Start local servers, test APIs", async () => {
   beforeAll(async () => {
@@ -72,10 +71,7 @@ describe("Start local servers, test APIs", async () => {
     let headers = new Headers();
     headers.set(
       "Authorization",
-      "Basic " +
-        Buffer.from(monitorUsername + ":" + monitorPassword, "utf-8").toString(
-          "base64"
-        )
+      "Basic " + Buffer.from(monitorUsername + ":" + monitorPassword, "utf-8").toString("base64")
     );
     const response = await fetch(`${localForwarderUrl}/monitor`, {
       method: "GET",

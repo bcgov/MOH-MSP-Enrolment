@@ -19,19 +19,17 @@ export const tryServer = async (website, HTTPMethod) => {
     }
   }
   return new Promise((resolve, reject) => {
-    reject(
-      `Couldn't reach ${website} (tried ${retryAttempts} times and gave up)`
-    );
+    reject(`Couldn't reach ${website} (tried ${retryAttempts} times and gave up)`);
   });
 };
 
 export const doesPathExist = async (path) => {
-    try {
-      fs.accessSync(path);
-      // console.log(`${path} exists`);
-      return true;
-    } catch (err) {
-      // console.log(`${path} does not exist (could not reach)`)
-      return false;
-    }
-  };
+  try {
+    fs.accessSync(path);
+    // console.log(`${path} exists`);
+    return true;
+  } catch (err) {
+    // console.log(`${path} does not exist (could not reach)`)
+    return false;
+  }
+};

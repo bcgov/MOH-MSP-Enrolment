@@ -65,12 +65,12 @@
                     "protocol": "TCP"
                   }
                 ],
-		"volumeMounts": [
-		  {
-		    "mountPath": "/var/logs",
-		    "name": "splunk-local-log"
-		  }
-		],
+                "volumeMounts": [
+                  {
+                    "mountPath": "/var/logs",
+                    "name": "splunk-local-log"
+                  }
+                ],
                 "env": [
                   {
                     "name": "SERVICE_IP",
@@ -153,19 +153,18 @@
                 }
               }
             ],
-	    "volumes": [
-	      {
-	        "name": "splunk-local-log",
-	        "persistentVolumeClaim": {
-		  "claimName": "splunk-local-log"
-	        }
+            "volumes": [
+              {
+                "name": "splunk-local-log",
+                "persistentVolumeClaim": {
+                  "claimName": "splunk-local-log"
+                }
               }
-	    ],
+            ],
             "dnsPolicy": "ClusterFirst",
             "restartPolicy": "Always",
-            "securityContext": {
-            },
-            "terminationGracePeriodSeconds": 30,
+            "securityContext": {},
+            "terminationGracePeriodSeconds": 30
           }
         },
         "test": false,
@@ -177,9 +176,7 @@
             "type": "ImageChange",
             "imageChangeParams": {
               "automatic": true,
-              "containerNames": [
-                "${NAME}"
-              ],
+              "containerNames": ["${NAME}"],
               "from": {
                 "kind": "ImageStreamTag",
                 "namespace": "${IMAGE_NAMESPACE}",
@@ -313,7 +310,7 @@
       "required": true,
       "value": "/var/logs"
     },
-   {
+    {
       "description": "Append Pod name to log files",
       "displayName": "APPEND_POD_NAME_TO_FILE",
       "name": "APPEND_POD_NAME_TO_FILE",

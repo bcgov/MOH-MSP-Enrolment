@@ -15,9 +15,7 @@ const generatePortNumber = () => {
 
 const generateLogCommand = (override) => {
   if ((override && typeof override !== "object") || Array.isArray(override)) {
-    throw new Error(
-      "The generateLogCommand() function needs to be passed an object!"
-    );
+    throw new Error("The generateLogCommand() function needs to be passed an object!");
   }
   const options = {
     LOG_LEVEL: "debug",
@@ -84,9 +82,7 @@ const tryFilePath = async (filePath) => {
     }
   }
   return new Promise((resolve, reject) => {
-    reject(
-      `Couldn't reach ${filePath} (tried ${retryAttempts} times and gave up)`
-    );
+    reject(`Couldn't reach ${filePath} (tried ${retryAttempts} times and gave up)`);
   });
 };
 
@@ -103,9 +99,7 @@ const generateFakeAuditFile = (tempFolder) => {
         name: `${tempFolder}/2024-12-01-sf.log`,
         hash: `${crypto
           .createHash("sha256")
-          .update(
-            tempFolder + "/2024-12-01-sf.log" + "LOG_FILE" + "1733783410178"
-          )
+          .update(tempFolder + "/2024-12-01-sf.log" + "LOG_FILE" + "1733783410178")
           .digest("hex")}`,
       },
       {
@@ -113,9 +107,7 @@ const generateFakeAuditFile = (tempFolder) => {
         name: `${tempFolder}/2024-12-02-sf.log`,
         hash: `${crypto
           .createHash("sha256")
-          .update(
-            tempFolder + "/2024-12-02-sf.log" + "LOG_FILE" + "1733783410178"
-          )
+          .update(tempFolder + "/2024-12-02-sf.log" + "LOG_FILE" + "1733783410178")
           .digest("hex")}`,
       },
       {
@@ -123,9 +115,7 @@ const generateFakeAuditFile = (tempFolder) => {
         name: `${tempFolder}/2024-12-03-sf.log`,
         hash: `${crypto
           .createHash("sha256")
-          .update(
-            tempFolder + "/2024-12-03-sf.log" + "LOG_FILE" + "1733783410178"
-          )
+          .update(tempFolder + "/2024-12-03-sf.log" + "LOG_FILE" + "1733783410178")
           .digest("hex")}`,
       },
     ],
@@ -229,27 +219,15 @@ describe("winston logrotate", () => {
 
     const fakeWinstonAuditFile = generateFakeAuditFile(tempFolder);
 
-    await fs.promises.writeFile(
-      `${tempFolder}/2024-12-01-sf.log`,
-      fakeWinstonLogFile,
-      (err) => {
-        if (err) console.log(err);
-      }
-    );
-    await fs.promises.writeFile(
-      `${tempFolder}/2024-12-02-sf.log`,
-      fakeWinstonLogFile,
-      (err) => {
-        if (err) console.log(err);
-      }
-    );
-    await fs.promises.writeFile(
-      `${tempFolder}/2024-12-03-sf.log`,
-      fakeWinstonLogFile,
-      (err) => {
-        if (err) console.log(err);
-      }
-    );
+    await fs.promises.writeFile(`${tempFolder}/2024-12-01-sf.log`, fakeWinstonLogFile, (err) => {
+      if (err) console.log(err);
+    });
+    await fs.promises.writeFile(`${tempFolder}/2024-12-02-sf.log`, fakeWinstonLogFile, (err) => {
+      if (err) console.log(err);
+    });
+    await fs.promises.writeFile(`${tempFolder}/2024-12-03-sf.log`, fakeWinstonLogFile, (err) => {
+      if (err) console.log(err);
+    });
 
     await fs.promises.writeFile(
       `${tempFolder}/${fileLogLevel}-audit.json`,
@@ -293,7 +271,7 @@ describe("winston logrotate", () => {
     });
     await doesPathExist(`${tempFolder}/${fileLogLevel}-audit.json`).then((response) => {
       expect(response).toEqual(true);
-    })
+    });
   }, 30000);
 
   it("does not logrotate when logs are below maximum files", async () => {
@@ -309,27 +287,15 @@ describe("winston logrotate", () => {
 
     const fakeWinstonAuditFile = generateFakeAuditFile(tempFolder);
 
-    await fs.promises.writeFile(
-      `${tempFolder}/2024-12-01-sf.log`,
-      fakeWinstonLogFile,
-      (err) => {
-        if (err) console.log(err);
-      }
-    );
-    await fs.promises.writeFile(
-      `${tempFolder}/2024-12-02-sf.log`,
-      fakeWinstonLogFile,
-      (err) => {
-        if (err) console.log(err);
-      }
-    );
-    await fs.promises.writeFile(
-      `${tempFolder}/2024-12-03-sf.log`,
-      fakeWinstonLogFile,
-      (err) => {
-        if (err) console.log(err);
-      }
-    );
+    await fs.promises.writeFile(`${tempFolder}/2024-12-01-sf.log`, fakeWinstonLogFile, (err) => {
+      if (err) console.log(err);
+    });
+    await fs.promises.writeFile(`${tempFolder}/2024-12-02-sf.log`, fakeWinstonLogFile, (err) => {
+      if (err) console.log(err);
+    });
+    await fs.promises.writeFile(`${tempFolder}/2024-12-03-sf.log`, fakeWinstonLogFile, (err) => {
+      if (err) console.log(err);
+    });
 
     await fs.promises.writeFile(
       `${tempFolder}/${fileLogLevel}-audit.json`,
@@ -373,6 +339,6 @@ describe("winston logrotate", () => {
     });
     await doesPathExist(`${tempFolder}/${fileLogLevel}-audit.json`).then((response) => {
       expect(response).toEqual(true);
-    })
+    });
   }, 30000);
 });

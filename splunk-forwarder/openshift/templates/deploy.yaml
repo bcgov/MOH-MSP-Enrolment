@@ -30,7 +30,7 @@ objects:
       name: splunk-local-log
     spec:
       accessModes:
-      - ReadWriteMany
+        - ReadWriteMany
       resources:
         requests:
           storage: 1Gi
@@ -182,7 +182,7 @@ parameters:
     description: Log level for pod
     displayName: LOG_LEVEL
     required: false
-    value: info 
+    value: info
   - name: SOURCE_IMAGE_NAME
     description: The name of the source image.
     displayName: Source Image Name
@@ -267,7 +267,7 @@ parameters:
     required: false
   - name: ONLY_LOG_WHEN_SPLUNK_FAILS
     description: Only log to local volume when connection to remote splunk fails
-    displayName: ONLY_LOG_WHEN_SPLUNK_FAILS 
+    displayName: ONLY_LOG_WHEN_SPLUNK_FAILS
     required: false
     value: "true"
   - name: CA_CERT
