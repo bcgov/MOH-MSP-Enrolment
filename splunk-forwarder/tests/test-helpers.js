@@ -10,7 +10,7 @@ export const tryServer = async (website, HTTPMethod) => {
         method: HTTPMethod,
       });
       // console.log(`successfully reached ${website}!`);
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve();
       });
     } catch (error) {
@@ -18,7 +18,7 @@ export const tryServer = async (website, HTTPMethod) => {
       await new Promise((resolve) => setTimeout(resolve, 200));
     }
   }
-  return new Promise((resolve, reject) => {
+  return new Promise((reject) => {
     reject(`Couldn't reach ${website} (tried ${retryAttempts} times and gave up)`);
   });
 };
@@ -28,7 +28,7 @@ export const doesPathExist = async (path) => {
     fs.accessSync(path);
     // console.log(`${path} exists`);
     return true;
-  } catch (err) {
+  } catch (error) {
     // console.log(`${path} does not exist (could not reach)`)
     return false;
   }
