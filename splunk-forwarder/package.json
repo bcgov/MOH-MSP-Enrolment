@@ -32,10 +32,6 @@
   },
   "devDependencies": {
     "@vitest/coverage-v8": "^3.0.7",
-    "gulp": "^5.0.0",
-    "gulp-clean": "^0.4.0",
-    "gulp-sourcemaps": "^2.6.5",
-    "gulp-typescript": "^6.0.0-alpha.1",
     "nodemon": "^3.1.4",
     "vitest": "^3.0.7"
   },
