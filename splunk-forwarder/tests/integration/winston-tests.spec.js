@@ -39,7 +39,9 @@ const generateLogCommand = (override) => {
 };
 
 const startLocalForwarderWith = async (command) => {
-  await exec(command, (err, stdout, stderr) => {});
+  await exec(command, () => {
+    ///err, stdout, stderr
+  });
 };
 
 const createFilePath = async () => {
@@ -73,7 +75,7 @@ const tryFilePath = async (filePath) => {
     const result = await doesPathExist(filePath);
     if (result === true) {
       // console.log(`successfully reached ${filePath}!`);
-      return new Promise((resolve, reject) => {
+      return new Promise((resolve) => {
         resolve();
       });
     } else {
@@ -144,7 +146,8 @@ describe("winston file basics", () => {
         // console.log("beforeAll() successfully created folder: ", data);
         tempFolder = data;
       },
-      (err) => {
+      () => {
+        // error
         // console.log("beforeAll() failed to create folder because: ", err);
       }
     );
@@ -194,7 +197,8 @@ describe("winston logrotate", () => {
         // console.log("beforeAll() successfully created folder: ", data);
         tempFolder = data;
       },
-      (err) => {
+      () => {
+        // error
         // console.log("beforeAll() failed to create folder because: ", err);
       }
     );
