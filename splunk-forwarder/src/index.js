@@ -4,7 +4,7 @@
 const winston = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
 const bodyParser = require('body-parser');
-const stringify = require('json-stringify-safe');
+const safeStringify = require('json-stringify-safe');
 const express = require('express')
 const app = express();
 const fs = require('fs');
@@ -239,7 +239,7 @@ const getLog = (req) => {
         };
         if (authorized || !USE_AUTH) {
             // extract stuff
-            const mess = stringify(req.body);
+            const mess = safeStringify(req.body);
             const host = req.get('host') || '?'
             const logsource = req.get('logsource') || '?'
             const fhost = req.get('http_x_forwarded_host') || '?'
