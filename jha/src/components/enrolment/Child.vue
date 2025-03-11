@@ -407,7 +407,7 @@
           "
         >
           <p>
-            If submitting a <span class="b">Working Holiday Permit</span>, you
+            If submitting a <span class="b">Working Holiday Permit (Case Type 58)</span>, you
             must also provide a letter of employment (issued by the employer)
             with the following details:
           </p>
