@@ -19,94 +19,96 @@
     <hr style="border: 1px solid black" />
 
     <table class="table table-borderless">
-      <tr>
-        <th>
-          <h3>Deductions</h3>
-        </th>
-      </tr>
-      <tr v-if="inputData.ah65Deduction > 0">
-        <td>Age over 65</td>
-        <td>
-          {{ currencyString(inputData.ah65Deduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.spouseDeduction > 0">
-        <td>Spouse</td>
-        <td>
-          {{ currencyString(inputData.spouseDeduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.spouse65Deduction > 0">
-        <td>Spouse age over 65</td>
-        <td>
-          {{ currencyString(inputData.spouse65Deduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.childDeduction > 0">
-        <td>Children</td>
-        <td>
-          {{ currencyString(inputData.childDeduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.claimedChildCareExpensesReduction < 0">
-        <td>50% of child care expenses</td>
-        <td>
-          {{ currencyString(inputData.claimedChildCareExpensesReduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.ahDisabilityCreditDeduction > 0">
-        <td>Applicant disability credit</td>
-        <td>
-          {{ currencyString(inputData.ahDisabilityCreditDeduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.spouseDisabilityCreditDeduction > 0">
-        <td>Spouse disability credit</td>
-        <td>
-          {{ currencyString(inputData.spouseDisabilityCreditDeduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.childDisabilityCreditDeduction > 0">
-        <td>Child disability credit</td>
-        <td>
-          {{ currencyString(inputData.childDisabilityCreditDeduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.rdspDeduction > 0">
-        <td>Disability savings plan</td>
-        <td>
-          {{ currencyString(inputData.rdspDeduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.ahAttendantNursingDeduction > 0">
-        <td>Applicant attendant care expense</td>
-        <td>
-          {{ currencyString(inputData.ahAttendantNursingDeduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.spouseAttendantNursingDeduction > 0">
-        <td>Spouse attendant care expense</td>
-        <td>
-          {{ currencyString(inputData.spouseAttendantNursingDeduction) }}
-        </td>
-      </tr>
-      <tr v-if="inputData.childAttendantNursingDeduction > 0">
-        <td>Child attendant care expense</td>
-        <td>
-          {{ currencyString(inputData.childAttendantNursingDeduction) }}
-        </td>
-      </tr>
-      <tr>
-        <td class="deduction-table-cell-margin">
-          <h4>Total deductions</h4>
-        </td>
-        <td>
-          <span v-if="inputData.totalDeductions > 0">
-            {{ currencyString(inputData.totalDeductions) }}
-          </span>
-          <span v-else> - - </span>
-        </td>
-      </tr>
+      <tbody>
+        <tr>
+          <th>
+            <h3>Deductions</h3>
+          </th>
+        </tr>
+        <tr v-if="inputData.ah65Deduction > 0">
+          <td>Age over 65</td>
+          <td>
+            {{ currencyString(inputData.ah65Deduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.spouseDeduction > 0">
+          <td>Spouse</td>
+          <td>
+            {{ currencyString(inputData.spouseDeduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.spouse65Deduction > 0">
+          <td>Spouse age over 65</td>
+          <td>
+            {{ currencyString(inputData.spouse65Deduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.childDeduction > 0">
+          <td>Children</td>
+          <td>
+            {{ currencyString(inputData.childDeduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.claimedChildCareExpensesReduction < 0">
+          <td>50% of child care expenses</td>
+          <td>
+            {{ currencyString(inputData.claimedChildCareExpensesReduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.ahDisabilityCreditDeduction > 0">
+          <td>Applicant disability credit</td>
+          <td>
+            {{ currencyString(inputData.ahDisabilityCreditDeduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.spouseDisabilityCreditDeduction > 0">
+          <td>Spouse disability credit</td>
+          <td>
+            {{ currencyString(inputData.spouseDisabilityCreditDeduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.childDisabilityCreditDeduction > 0">
+          <td>Child disability credit</td>
+          <td>
+            {{ currencyString(inputData.childDisabilityCreditDeduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.rdspDeduction > 0">
+          <td>Disability savings plan</td>
+          <td>
+            {{ currencyString(inputData.rdspDeduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.ahAttendantNursingDeduction > 0">
+          <td>Applicant attendant care expense</td>
+          <td>
+            {{ currencyString(inputData.ahAttendantNursingDeduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.spouseAttendantNursingDeduction > 0">
+          <td>Spouse attendant care expense</td>
+          <td>
+            {{ currencyString(inputData.spouseAttendantNursingDeduction) }}
+          </td>
+        </tr>
+        <tr v-if="inputData.childAttendantNursingDeduction > 0">
+          <td>Child attendant care expense</td>
+          <td>
+            {{ currencyString(inputData.childAttendantNursingDeduction) }}
+          </td>
+        </tr>
+        <tr>
+          <td class="deduction-table-cell-margin">
+            <h4>Total deductions</h4>
+          </td>
+          <td>
+            <span v-if="inputData.totalDeductions > 0">
+              {{ currencyString(inputData.totalDeductions) }}
+            </span>
+            <span v-else> - - </span>
+          </td>
+        </tr>  
+      </tbody>
     </table>
     <hr style="border: 1px solid black" />
 

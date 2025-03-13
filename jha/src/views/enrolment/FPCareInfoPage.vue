@@ -51,7 +51,7 @@
                 "
                 aria-live="assertive"
               >
-                Your net income from {{ noaYear }} is must be a positive number.
+                Your net income from {{ noaYear }} must be a positive number.
               </div>
             </div>
             <div v-if="hasSpouse">
