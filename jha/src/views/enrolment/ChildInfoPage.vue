@@ -114,7 +114,6 @@ import {
 } from "@/store/modules/enrolment-module";
 import Child from "@/components/enrolment/Child.vue";
 import pageStepperMixin from "@/mixins/page-stepper-mixin";
-// import { toHandlers } from "vue";
 
 export default {
   name: "ChildInfoPage",

@@ -619,7 +619,6 @@ const completePostalCodeValidator = (value) => {
     // Don't show error if field is blank.
     return true;
   }
-  console.log(value.length === 7);
   return value.length === 7;
 };
 
