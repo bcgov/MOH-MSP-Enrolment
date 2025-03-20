@@ -78,17 +78,17 @@
               information:
             </p>
             <div class="ml-4">
-              <p class="mb-0 ml-4">
+              <p class="mb-0 ml-4 ms-5">
                 a. Social Insurance Number (SIN) for you and (if applicable)
                 your spouse;
               </p>
-              <p class="mb-0 ml-4">
+              <p class="mb-0 ml-4 ms-5">
                 b. Net Income (Line 23600) from your and (if applicable) your
                 spouse's CRA Notice of Assessment (NOA), Notice of Reassessment
                 (NORA) or federal income tax return for the tax year two years
                 before the current year; and
               </p>
-              <p class="ml-4">
+              <p class="ml-4 ms-5">
                 c. Registered Disability Savings Plan (RDSP) income (Line 12500)
                 if applicable.
               </p>
