@@ -34,16 +34,16 @@
         <div v-if="eqSBIsApplying === 'Y'">
           <p class="mb-0">2. To apply for Supplementary Benefits, you must:</p>
           <div class="ml-4">
-            <p class="mb-0 ml-4">
+            <p class="mb-0 ml-4 ms-5">
               a. be a resident of B.C. as defined by the
               <em>Medicare Protection Act</em>;
             </p>
-            <p class="mb-0 ml-4">
+            <p class="mb-0 ml-4 ms-5">
               b. have resided in Canada as a Canadian citizen or holder of
               permanent resident status (landed immigrant) for at least the last
               12 months immediately preceding this application;
             </p>
-            <p class="ml-4">
+            <p class="ml-4 ms-5">
               c. not be exempt from liability to pay income tax by reason of any
               other Act.
             </p>
@@ -83,16 +83,16 @@
               following with your application:
             </p>
             <div class="ml-4">
-              <p class="mb-0 ml-4">
+              <p class="mb-0 ml-4 ms-5">
                 a. Social Insurance Number (SIN) for you and (if applicable)
                 your spouse;
               </p>
-              <p class="mb-0 ml-4">
+              <p class="mb-0 ml-4 ms-5">
                 b. a digital copy (pdf, jpg, png) of your and if applicable,
                 your spouse's CRA Notice of Assessment (NOA) or Notice of
                 Reassessment (NORA) for the most recent tax year; and
               </p>
-              <p class="ml-4">
+              <p class="ml-4 ms-5">
                 c. Net Income (Line 23600) and Registered Disability Savings
                 Plan (RDSP) income (Line 12500) if applicable, from the above
                 CRA NOA or NORA.

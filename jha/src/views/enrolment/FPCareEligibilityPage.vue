@@ -24,11 +24,11 @@
         <div v-if="eqFPCIsApplying === 'Y'">
           <p class="mb-0">2. To apply for Fair PharmaCare, you must:</p>
           <div class="ml-4 mb-3">
-            <p class="mb-0 ml-4">
+            <p class="mb-0 ml-4 ms-5">
               a. be enrolled in MSP or be using this application form to also
               apply for MSP; and
             </p>
-            <p class="mb-0 ml-4">
+            <p class="mb-0 ml-4 ms-5">
               b. have filed an income tax return with the Canada Revenue Agency
               (CRA) for the relevant taxation year (two years before the current
               year).

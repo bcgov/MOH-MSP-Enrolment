@@ -21,9 +21,9 @@
     <table class="table table-borderless">
       <tbody>
         <tr>
-          <th>
+          <td>
             <h3>Deductions</h3>
-          </th>
+          </td>
         </tr>
         <tr v-if="inputData.ah65Deduction > 0">
           <td>Age over 65</td>
@@ -183,7 +183,7 @@ export default {
 </script>
 
 <style scoped>
-.widget-container {
+.widget-container, td {
   background: #f2f2f2;
 }
 .result-message-success {

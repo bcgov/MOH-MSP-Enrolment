@@ -47,6 +47,8 @@
   border-left: 1px solid black;
   border-bottom: none;
   border-right: none;
+  background-color: var(--bs-primary);
+  color: var(--text-light);
 }
 
 .border-l {
@@ -62,4 +64,5 @@
   border-top: none;
   border-left: none;
 }
+
 </style>

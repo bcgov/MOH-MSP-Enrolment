@@ -239,6 +239,7 @@
                 v-model="selectedDisabilityRecipients"
                 :items="selectOptionsFamilyMembers"
                 icon="cross"
+                class="ms-5"
                 @blur="handleBlurField(v$.selectedDisabilityRecipients)"
               />
               <div
@@ -389,6 +390,7 @@
                 v-model="selectedAttendantNursingRecipients"
                 :items="selectOptionsFamilyMembers"
                 icon="cross"
+                class="ms-5"
                 @blur="handleBlurField(v$.selectedAttendantNursingRecipients)"
               />
               <div
