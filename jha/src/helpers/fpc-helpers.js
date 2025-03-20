@@ -70,7 +70,7 @@ export const getDistributionBarItems = (tier) => {
     return [
       {
         color: GREEN,
-        barLabel: "&infin;",
+        barLabel: "∞",
         label: "PharmaCare pays 100% of eligible drug costs",
       },
     ];
@@ -83,7 +83,7 @@ export const getDistributionBarItems = (tier) => {
       },
       {
         color: GREEN,
-        barLabel: "&infin;",
+        barLabel: "∞",
         label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${formatCurrencyNumber(tier.maximum)})`,
       },
     ];
@@ -96,7 +96,7 @@ export const getDistributionBarItems = (tier) => {
       },
       {
         color: GREEN,
-        barLabel: "&infin;",
+        barLabel: "∞",
         label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${formatCurrencyNumber(tier.maximum)})`,
       },
     ];
@@ -114,7 +114,7 @@ export const getDistributionBarItems = (tier) => {
       },
       {
         color: GREEN,
-        barLabel: "&infin;",
+        barLabel: "∞",
         label: `PharmaCare pays 100% of eligible drug costs after you reach the family maximum (${formatCurrencyNumber(tier.maximum)})`,
       },
     ];

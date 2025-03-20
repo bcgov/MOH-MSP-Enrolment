@@ -2017,8 +2017,7 @@ export default {
       }
     },
     spouseMadePermanentMove(newValue) {
-      if (this.pageLoaded) {
-        if (newValue === null || newValue === "N") {
+      if (this.pageLoaded && newValue === null) {
           this.spouseMoveFromOrigin = null;
           this.spouseRecentBCMoveDate = null;
           this.spouseCanadaArrivalDate = null;
@@ -2033,7 +2032,6 @@ export default {
           this.v$.spouseOutsideBCLast12Months.$reset();
           this.v$.spouseHasPreviousBCHealthNumber.$reset();
           this.v$.spouseBeenReleasedFromInstitution.$reset();
-        }
       }
     },
     spouseOutsideBCLast12Months() {
