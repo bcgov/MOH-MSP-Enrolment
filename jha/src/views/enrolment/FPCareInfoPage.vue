@@ -20,6 +20,7 @@
                 v-model="ahIncome"
                 id="ah-income"
                 :required="true"
+                maxlength="9"
                 @blur="handleBlurField(v$.ahIncome)"
               >
                 <template v-slot:description>
@@ -51,7 +52,7 @@
                 "
                 aria-live="assertive"
               >
-                Your net income from {{ noaYear }} is must be a positive number.
+                Your net income from {{ noaYear }} must be a positive number.
               </div>
             </div>
             <div v-if="hasSpouse">
@@ -60,6 +61,7 @@
                 id="spouse-income"
                 class="mt-3"
                 :required="true"
+                maxlength="9"
                 @blur="handleBlurField(v$.spouseIncome)"
               >
                 <template v-slot:description>
@@ -108,6 +110,7 @@
                 v-model="ahRDSP"
                 id="ah-disability-savings"
                 class="mt-3"
+                maxlength="9"
                 @blur="handleBlurField(v$.ahRDSP)"
               />
               <div

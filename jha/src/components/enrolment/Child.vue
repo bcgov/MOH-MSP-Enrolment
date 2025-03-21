@@ -313,7 +313,7 @@
         />
         <div
           class="text-danger"
-          v-if="v$.statusReason.$dirty && !v$.statusReason.required"
+          v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
           aria-live="assertive"
         >
           This field is required.

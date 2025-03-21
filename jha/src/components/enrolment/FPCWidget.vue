@@ -28,7 +28,7 @@
     <div class="row">
       <div class="col-sm-7">Adjusted income</div>
       <div class="col-sm-5">
-        <b>{{ adjustedIncome }}</b>
+        <b>{{ formatAdjustedIncome }}</b>
       </div>
     </div>
 
@@ -80,7 +80,7 @@ export default {
     LoaderComponent,
   },
   props: {
-    value: {
+    modelValue: {
       type: Object,
       default: () => {
         return {};
@@ -136,29 +136,32 @@ export default {
   },
   computed: {
     totalIncome() {
-      const ahIncome = parseFloat(this.value.ahIncome) || 0;
-      const spouseIncome = parseFloat(this.value.spouseIncome) || 0;
+      const ahIncome = parseFloat(this.modelValue.ahIncome) || 0;
+      const spouseIncome = parseFloat(this.modelValue.spouseIncome) || 0;
       const totalIncome = ahIncome + spouseIncome;
       return formatCurrencyNumber(totalIncome);
     },
     RDSP() {
-      const ahRDSP = parseFloat(this.value.ahRDSP) || 0;
-      const spouseRDSP = parseFloat(this.value.spouseRDSP) || 0;
+      const ahRDSP = parseFloat(this.modelValue.ahRDSP) || 0;
+      const spouseRDSP = parseFloat(this.modelValue.spouseRDSP) || 0;
       const totalRDSP = ahRDSP + spouseRDSP;
       return formatCurrencyNumber(totalRDSP);
     },
     adjustedIncome() {
-      const ahIncome = parseFloat(this.value.ahIncome) || 0;
-      const spouseIncome = parseFloat(this.value.spouseIncome) || 0;
-      const ahRDSP = parseFloat(this.value.ahRDSP) || 0;
-      const spouseRDSP = parseFloat(this.value.spouseRDSP) || 0;
-      const adjustedIncome = ahIncome + spouseIncome - ahRDSP - spouseRDSP;
-      return formatCurrencyNumber(adjustedIncome);
+      const ahIncome = parseFloat(this.modelValue.ahIncome) || 0;
+      const spouseIncome = parseFloat(this.modelValue.spouseIncome) || 0;
+      const ahRDSP = parseFloat(this.modelValue.ahRDSP) || 0;
+      const spouseRDSP = parseFloat(this.modelValue.spouseRDSP) || 0;
+      const totalAdjustedIncome = ahIncome + spouseIncome - ahRDSP - spouseRDSP;
+      return totalAdjustedIncome;
+    },
+    formatAdjustedIncome() {
+      return formatCurrencyNumber(this.adjustedIncome);
     },
     distributionBarItems() {
       const tier = getCoverageTier({
-        ahBirthdate: this.value.ahBirthdate,
-        spouseBirthdate: this.value.spouseBirthdate,
+        ahBirthdate: this.modelValue.ahBirthdate,
+        spouseBirthdate: this.modelValue.spouseBirthdate,
         adjustedIncome: this.adjustedIncome,
         pre1939DeductibleTiers: this.pre1939DeductibleTiers,
         deductibleTiers: this.deductibleTiers,

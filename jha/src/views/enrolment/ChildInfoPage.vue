@@ -219,6 +219,9 @@ export default {
     },
     removeChild(index) {
       this.children.splice(index, 1);
+      if (this.children.length === 0) {
+        this.hasChildren = 'N';
+      }
     },
     getChildTitle(index) {
       return "Child " + (index + 1) + " information";

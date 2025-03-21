@@ -854,12 +854,12 @@
                         class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
-                          v$.spouseRecentBCMoveDate.required.$invalid &&
-                          v$.spouseRecentBCMoveDate.dateDataValidator
+                          !v$.spouseRecentBCMoveDate.required.$invalid &&
+                          !v$.spouseRecentBCMoveDate.dateDataValidator
                             .$invalid &&
-                          v$.spouseRecentBCMoveDate.pastDateValidator
+                          !v$.spouseRecentBCMoveDate.pastDateValidator
                             .$invalid &&
-                          v$.spouseRecentBCMoveDate.beforeBirthdateValidator
+                          !v$.spouseRecentBCMoveDate.beforeBirthdateValidator
                             .$invalid &&
                           v$.spouseRecentBCMoveDate.dateOrderValidator.$invalid
                         "
@@ -2017,8 +2017,7 @@ export default {
       }
     },
     spouseMadePermanentMove(newValue) {
-      if (this.pageLoaded) {
-        if (newValue === null || newValue === "N") {
+      if (this.pageLoaded && newValue === null) {
           this.spouseMoveFromOrigin = null;
           this.spouseRecentBCMoveDate = null;
           this.spouseCanadaArrivalDate = null;
@@ -2033,7 +2032,6 @@ export default {
           this.v$.spouseOutsideBCLast12Months.$reset();
           this.v$.spouseHasPreviousBCHealthNumber.$reset();
           this.v$.spouseBeenReleasedFromInstitution.$reset();
-        }
       }
     },
     spouseOutsideBCLast12Months() {

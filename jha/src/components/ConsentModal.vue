@@ -47,7 +47,7 @@
                 class="d-inline"
                 v-model="isTermsAccepted"
               />
-              <label for="is-terms-accepted" class="mt-3 ml-2 d-inline">
+              <label for="is-terms-accepted" class="mt-3 ml-3 ms-2 d-inline">
                 <b>I have read and understand this information</b>
               </label>
             </div>

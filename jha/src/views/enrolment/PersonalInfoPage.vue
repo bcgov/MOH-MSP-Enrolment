@@ -1760,7 +1760,7 @@ export default {
         scrollToError();
         return;
       }
-
+      
       this.saveData();
       this.navigateToNextPage();
     },
@@ -2209,8 +2209,7 @@ export default {
       }
     },
     isMovedToBCPermanently(newValue) {
-      if (this.isPageLoaded) {
-        if (newValue === null || newValue === "N") {
+      if (this.isPageLoaded && newValue === null) {
           this.moveFromOrigin = null;
           this.arrivalDateInBC = null;
           this.arrivalDateInCanada = null;
@@ -2227,7 +2226,6 @@ export default {
           this.v$.hasPreviousPHN.$reset();
           this.v$.isReleasedFromArmedForces.$reset();
           this.v$.isStudent.$reset();
-        }
       }
     },
     isOutsideBCInLast12Months() {

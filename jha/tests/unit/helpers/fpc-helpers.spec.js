@@ -790,7 +790,7 @@ describe("getDistributionBarItems()", () => {
       },
       {
         color: '#486446',
-        barLabel: '&infin;',
+        barLabel: '∞',
         label: 'PharmaCare pays 100% of eligible drug costs after you reach the family maximum ($10,000)'
       }
     ] 

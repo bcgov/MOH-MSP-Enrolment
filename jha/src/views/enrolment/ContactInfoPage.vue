@@ -606,6 +606,7 @@ const provinceContentValidator = (value) => {
   const criteriaAllowedCharecters = /^[0-9a-zA-Z-.' ]*$/;
   const criteriaMustHaveLetter = /.*[a-z].*/i;
   const criteriaMustHaveNumber = /.*[0-9].*/;
+
   return (
     criteriaAllowedCharecters.test(value) &&
     criteriaMustHaveLetter.test(value) &&
@@ -753,12 +754,12 @@ export default {
           required,
           specialCharacterValidator:
             this.mailCountry === "Canada"
-              ? () => true
+              ? true
               : specialCharacterValidator,
           completePostalCodeValidator:
             this.mailCountry === "Canada"
               ? completePostalCodeValidator
-              : () => true,
+              : true,
         },
       };
       validations = { ...validations, ...mailValidations };
