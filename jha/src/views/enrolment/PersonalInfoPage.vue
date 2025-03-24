@@ -338,6 +338,7 @@
           <SelectComponent
             label="Document type"
             id="citizen-support-document-type"
+            class="mb-3"
             defaultOptionLabel="Please select"
             :disablePlaceholder="true"
             v-model="citizenshipSupportDocumentType"

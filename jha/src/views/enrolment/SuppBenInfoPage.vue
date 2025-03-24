@@ -320,7 +320,7 @@
               Savings Plan.
             </div>
 
-            <div class="ml-5" v-if="hasRDSP === 'Y'">
+            <div class="ml-5 ms-5" v-if="hasRDSP === 'Y'">
               <p class="mt-4 mb-1 font-weight-bolder">
                 How much did you report for a Registered Disability Savings Plan
                 in {{ selectedNOAYear }}?
@@ -342,7 +342,7 @@
                 aria-live="assertive"
               >
                 You must enter how much you reported for a Registered Disability
-                Savings Plan
+                Savings Plan.
               </div>
               <div
                 class="text-danger"
@@ -1190,4 +1190,11 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.font-weight-normal{
+  font-weight: normal;
+}
+.font-weight-bolder{
+  font-weight: bolder;
+}
+</style>

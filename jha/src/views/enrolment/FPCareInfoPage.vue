@@ -130,6 +130,7 @@
                 v-model="spouseRDSP"
                 id="spouse-disability-savings"
                 class="mt-3"
+                maxlength="9"
                 @blur="handleBlurField(v$.spouseRDSP)"
               />
               <div
