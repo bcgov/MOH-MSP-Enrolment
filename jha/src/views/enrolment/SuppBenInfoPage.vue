@@ -231,7 +231,7 @@
               credit in {{ selectedNOAYear }}.
             </div>
 
-            <div class="ml-5" v-if="hasDisabilityCredit === 'Y'">
+            <div class="ml-5 ms-5" v-if="hasDisabilityCredit === 'Y'">
               <CheckboxGroup
                 id="selected-disability-credit-recipients"
                 name="selected-disability-credit-recipients"
@@ -239,7 +239,6 @@
                 v-model="selectedDisabilityRecipients"
                 :items="selectOptionsFamilyMembers"
                 icon="cross"
-                class="ms-5"
                 @blur="handleBlurField(v$.selectedDisabilityRecipients)"
               />
               <div
@@ -382,7 +381,7 @@
               nursing home expenses in place of a disability in
               {{ selectedNOAYear }}.
             </div>
-            <div class="ml-5" v-if="hasAttendantNursingExpenses === 'Y'">
+            <div class="ml-5 ms-5" v-if="hasAttendantNursingExpenses === 'Y'">
               <CheckboxGroup
                 id="selected-attendant-nursing-recipients"
                 name="selected-attendant-nursing-recipients"
@@ -390,7 +389,6 @@
                 v-model="selectedAttendantNursingRecipients"
                 :items="selectOptionsFamilyMembers"
                 icon="cross"
-                class="ms-5"
                 @blur="handleBlurField(v$.selectedAttendantNursingRecipients)"
               />
               <div
@@ -458,7 +456,7 @@
           </div>
         </div>
 
-        <div v-if="hasAttendantNursingExpenses === 'Y'">
+        <div class="ms-5" v-if="hasAttendantNursingExpenses === 'Y'">
           <p class="font-weight-bolder ml-5">
             Please upload your attendant care or nursing receipts.
           </p>

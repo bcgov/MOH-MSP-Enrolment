@@ -269,11 +269,11 @@
     <div v-if="requestImmigrationStatus">
       <h2 class="mt-3">Child's status in Canada</h2>
       <p>
-        Please provide your child's immigration status. You will be required to
-        upload documents to support your child's status in Canada. For arrivals
-        through the Canada-Ukraine authorization for emergency travel program
-        (CUAET), please select "Temporary Permit Holder or Diplomat" from the
-        drop down below.
+        Please provide your child's immigration status. You will be required to 
+        upload documents to support your child's status in Canada. For arrivals 
+        through the Canada-Ukraine authorization for emergency travel (CUAET) 
+        program, please select "Temporary Permit Holder or Diplomat" from the 
+        menu below.
       </p>
       <hr />
       <SelectComponent
@@ -371,10 +371,10 @@
       >
         <h2>Documents</h2>
         <p>
-          Provide one of the required documents to support your child’s status
-          in Canada. If your child's name has changed since their document was
-          issued, you are also required to upload document to support the name
-          change.
+          Provide a copy of an accepted document that shows your child’s status 
+          in Canada. If their name is different from the name on the document, 
+          you must also upload a copy of a name change certificate that shows 
+          their full legal name.
         </p>
         <hr />
         <SelectComponent
