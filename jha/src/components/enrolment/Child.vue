@@ -886,7 +886,6 @@
                 <div
                   class="text-danger"
                   v-if="
-                    canadaArrivalDateLabel === 'Arrival date in Canada' &&
                     v$.canadaArrivalDate.$dirty &&
                     v$.canadaArrivalDate.required.$invalid
                   "
@@ -1691,7 +1690,7 @@
 import useVuelidate from "@vuelidate/core";
 import {
   dateDataRequiredValidator,
-  dateDataOptionalValidator,
+  canadaArrivalDateRequiredChildValidator,
   dateDataValidator,
   nameValidator,
   nonBCValidator,
@@ -2203,13 +2202,11 @@ export default {
         validations.recentBCMoveDate.pastDateValidator =
           optionalValidator(pastDateValidator);
 
-        (validations.canadaArrivalDate.required =
-          this.canadaArrivalDateLabel === "Arrival date in Canada"
-            ? dateDataRequiredValidator(this.canadaArrivalDateData)
-            : dateDataOptionalValidator()),
-          (validations.canadaArrivalDate.dateDataValidator = dateDataValidator(
-            this.canadaArrivalDateData,
-          ));
+        validations.canadaArrivalDate.required = canadaArrivalDateRequiredChildValidator(this.canadaArrivalDateData, this.canadaArrivalDateIsRequired)
+        
+        validations.canadaArrivalDate.dateDataValidator = dateDataValidator(
+          this.canadaArrivalDateData,
+        );
         validations.canadaArrivalDate.dateOrderValidator =
           optionalValidator(dateOrderValidator);
         validations.canadaArrivalDate.beforeBirthdateValidator =
@@ -2716,27 +2713,33 @@ export default {
 
       return options;
     },
-    canadaArrivalDateLabel() {
+    canadaArrivalDateIsRequired() {
       if (
         this.statusReason === this.canadianStatusReasons.MovingFromProvince &&
         this.status !== this.statusOptions.TemporaryResident
       ) {
-        return "Arrival date in Canada (Optional)";
+        return false;
       }
       if (
         this.status === this.statusOptions.Citizen &&
         this.livedInBCSinceBirth === "N"
       ) {
-        return "Arrival date in Canada (Optional)";
+        return false;
       }
       if (
         this.status === this.statusOptions.PermanentResident &&
         this.statusReason === this.canadianStatusReasons.LivingInBCWithoutMSP
       ) {
+        return false;
+      }
+      return true;
+    },
+    canadaArrivalDateLabel() {
+      if (this.canadaArrivalDateIsRequired === true) {
+        return "Arrival date in Canada";
+      } else {
         return "Arrival date in Canada (Optional)";
       }
-
-      return "Arrival date in Canada";
     },
     bcMoveDateLabel() {
       if (
