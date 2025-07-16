@@ -886,7 +886,6 @@
                 <div
                   class="text-danger"
                   v-if="
-                    canadaArrivalDateLabel === 'Arrival date in Canada' &&
                     v$.canadaArrivalDate.$dirty &&
                     v$.canadaArrivalDate.required.$invalid
                   "
