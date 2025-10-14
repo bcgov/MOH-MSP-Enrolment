@@ -13,6 +13,7 @@ import { ChildMovingInformationComponent } from '../../components/moving-informa
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { ProcessService } from '../../../../services/process.service';
 import { MspDataService } from '../../../../services/msp-data.service';
+import { By } from '@angular/platform-browser';
 
 describe('ChildInfoComponent', () => {
   let component: ChildInfoComponent;
@@ -54,7 +55,11 @@ describe('ChildInfoComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
+  it('should display the Modal title and body', () => {
+    const titleEl = fixture.debugElement.query(By.css('.modal-title'));
+    expect(titleEl).toBeTruthy();
+
+    const bodyEl = fixture.debugElement.query(By.css('.modal-body'));
+    expect(bodyEl).toBeTruthy();
   });
 });
