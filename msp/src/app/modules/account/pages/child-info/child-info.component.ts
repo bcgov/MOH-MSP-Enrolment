@@ -517,7 +517,7 @@ export class ChildInfoComponent
 
   // Call this method to focus the keyboard events only inside the modal
   setFocus(event: KeyboardEvent) {
-    if (event.key !=='Tab') return;
+    if (event.key !== 'Tab') return;
     const focusableEls = this.getFocusableEls();
     const first = focusableEls[0] as HTMLElement;
     const last = focusableEls[focusableEls.length - 1] as HTMLElement;
@@ -536,7 +536,6 @@ export class ChildInfoComponent
       }
     }
   }
-  
   // Call this method to get all focusable HTML elements
   getFocusableEls(): HTMLElement[] {
     return Array.from(this.modalContents.nativeElement.querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]'));
