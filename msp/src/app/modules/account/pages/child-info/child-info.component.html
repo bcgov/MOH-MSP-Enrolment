@@ -1,3 +1,37 @@
+<div bsModal #missingInfoReqModalLabel="bs-modal"
+  class="modal fade"
+  tabindex="-1"
+  role="dialog"
+  aria-labelledby="missingInfoReqModalLabel"
+  aria-hidden="true"
+  (keydown)="setFocus($event)"
+  [config]="{backdrop: 'static', ignoreBackdropClick: true}">
+  <div class="modal-dialog" style="margin-top: 90px;">
+    <div #modalContents class="modal-content">
+      <div class="modal-header modal-header-primary">
+        <h2 id="missingInfoReqModalLabel">Your form is missing required information</h2>
+      </div>
+      <div class="modal-body">
+        <p>To submit this form, you must change information for the Account Holder, spouse, or child.</p>
+        <p>To make changes to your account, return to the Personal Information section of the form and follow the instructions.</p>
+        <p>To update your address or report a move outside B.C. (external links), select one of those options below.</p>
+        <button type="button" class="btn btn-primary btn-md btn-block" routerLink="/deam/personal-info">
+          <span>Return to the Personal Information section</span>
+        </button>
+        <br>
+        <button type="button" class="btn btn-primary btn-md btn-block" (click)="onClickAddressChange()">
+          <span>Update your address</span>
+        </button>
+        <br>
+        <button type="button" class="btn btn-primary btn-md btn-block" (click)="onClickMove()">
+          <span>Report a move outside B.C.</span>
+        </button>
+        <br>
+      </div>
+    </div>
+  </div>
+</div>
+
 <common-page-framework layout="blank">
   <div class="deam-container">
     <form #formRef="ngForm" novalidate>
