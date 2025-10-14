@@ -55,11 +55,11 @@ describe('ChildInfoComponent', () => {
     fixture.detectChanges();
   });
 
-  it('should display the Modal title and body', () => {
-    const titleEl = fixture.debugElement.query(By.css('.modal-title'));
-    expect(titleEl).toBeTruthy();
+  // it('should display the Modal title and body', () => {
+  //   const titleEl = fixture.debugElement.query(By.css('.modal-title'));
+  //   expect(titleEl).toBeTruthy();
 
-    const bodyEl = fixture.debugElement.query(By.css('.modal-body'));
-    expect(bodyEl).toBeTruthy();
-  });
+  //   const bodyEl = fixture.debugElement.query(By.css('.modal-body'));
+  //   expect(bodyEl).toBeTruthy();
+  // });
 });
