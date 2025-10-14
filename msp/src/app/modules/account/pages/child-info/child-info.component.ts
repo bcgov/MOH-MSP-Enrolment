@@ -3,6 +3,7 @@ import {
   ViewChild,
   OnInit,
   AfterViewInit,
+  ElementRef,
   OnDestroy,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
@@ -21,6 +22,8 @@ import { SupportDocumentTypes } from 'app/modules/msp-core/models/support-docume
 import { BaseForm } from '../../models/base-form';
 import { CancellationReasons } from '../../../../models/status-activities-documents';
 import { ProcessService } from '../../../../services/process.service';
+import { ModalDirective } from 'ngx-bootstrap/modal';
+import { MspAccountApp } from '../../models/account.model';
 
 const DOM_REFRESH_TIMEOUT = 50;
 
@@ -32,7 +35,6 @@ const DOM_REFRESH_TIMEOUT = 50;
 export class ChildInfoComponent
   extends BaseForm
   implements OnInit, AfterViewInit, OnDestroy {
-  // children: MspPerson[];
   static ProcessStepNum = 2;
 
   constructor(
@@ -43,13 +45,19 @@ export class ChildInfoComponent
     public _processService: ProcessService
   ) {
     super(router, containerService, pageStateService, _processService);
+    this.mspAccountApp = dataService.getMspAccountApp();
   }
   subscriptions: Subscription[];
   @ViewChild('formRef') form: NgForm;
 
+  // Modal variables
+  @ViewChild('missingInfoReqModalLabel') public missingInfoReqModalLabel: ModalDirective;
+  @ViewChild('modalContents') public modalContents: ElementRef;
+
   showChild: boolean = false;
   operation: OperationActionType;
 
+  mspAccountApp: MspAccountApp;
   child: MspPerson;
   showRemoveChild: boolean = false;
   showUpdateChild: boolean = false;
@@ -86,6 +94,13 @@ export class ChildInfoComponent
   }
 
   ngAfterViewInit() {
+    // Create an array of focusable elements from the contents of the modal
+    const focusableEls = this.getFocusableEls();
+    if (focusableEls.length) {
+      (focusableEls[0] as HTMLElement).focus();
+    }
+    this.missingInfoReqModalLabel.config.backdrop = true;
+
     if (this.form) {
       this.subscriptions = [
         this.form.valueChanges.pipe(debounceTime(100)).subscribe(() => {
@@ -465,12 +480,79 @@ export class ChildInfoComponent
   }
 
   continue(): void {
-    if (!this.canContinue()) {
-      console.log('Please fill in all required fields on the form.');
-      this.markAllInputsTouched();
-      return;
+    // If the applicant didn't make any changes in the Personal Info, Spouse Info and Child Info Page, display missing info required modal
+    if (!this.isFormMissingRequiredInfo()){
+      if (!this.canContinue()) {
+        console.log('Please fill in all required fields on the form.');
+        this.markAllInputsTouched();
+        return;
+      }
+      this._processService.setStep(ChildInfoComponent.ProcessStepNum, true);
+      this.navigate('/deam/contact-info');
     }
-    this._processService.setStep(ChildInfoComponent.ProcessStepNum, true);
-    this.navigate('/deam/contact-info');
+    else {
+      this.showFullSizeView();
+    }
+  }
+
+  // Check if the applicant didn't make any changes in the Personal Info, Spouse Info and Child Info Page
+  isFormMissingRequiredInfo(): boolean {
+    return !this.hasUpdatedPersonalInfo && !this.hasSpouse && !this.hasChild;
+  }
+
+  // Check if the applicant requests to update their personal information (if they select Yes/No in the Personal Info Page)
+  get hasUpdatedPersonalInfo(): boolean {
+    return this.mspAccountApp.applicant.updatingPersonalInfo;
+  }
+
+  // Check if the applicant added, removed or updated a spouse
+  get hasSpouse(): boolean {
+    if (this.mspAccountApp.hasSpouseAdded || this.mspAccountApp.hasSpouseRemoved || this.mspAccountApp.hasSpouseUpdated){
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
+
+  // Call this method to focus the keyboard events only inside the modal
+  setFocus(event: KeyboardEvent) {
+    if (event.key !== 'Tab') return;
+    const focusableEls = this.getFocusableEls();
+    const first = focusableEls[0] as HTMLElement;
+    const last = focusableEls[focusableEls.length - 1] as HTMLElement;
+    const active = document.activeElement as HTMLElement;
+
+    if (event.shiftKey) {
+      if (active === first) {
+        event.preventDefault();
+        last.focus();
+      }
+    }
+    else {
+      if (active === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    }
+  }
+  // Call this method to get all focusable HTML elements
+  getFocusableEls(): HTMLElement[] {
+    return Array.from(this.modalContents.nativeElement.querySelectorAll('a[href], area[href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), button:not([disabled]), [tabindex="0"]'));
+  }
+
+  // Call this method to display the modal.
+  showFullSizeView() {
+      this.missingInfoReqModalLabel.config.keyboard = false;
+      this.missingInfoReqModalLabel.show();
+  }
+
+  // Call these methods to redirect to another web page in the same tab
+  onClickAddressChange() {
+    window.location.href = 'http://www.addresschange.gov.bc.ca/';
+  }
+
+  onClickMove() {
+    window.location.href = 'http://www.health.gov.bc.ca/exforms/msp/7063.html';
   }
 }
