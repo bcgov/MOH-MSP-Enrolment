@@ -549,10 +549,10 @@ export class ChildInfoComponent
 
   // Call these methods to redirect to another web page in the same tab
   onClickAddressChange() {
-    window.location.href = 'http://www.addresschange.gov.bc.ca/';
+    window.open('http://www.addresschange.gov.bc.ca/', '_blank');
   }
 
   onClickMove() {
-    window.location.href = 'http://www.health.gov.bc.ca/exforms/msp/7063.html';
+    window.open('http://www.health.gov.bc.ca/exforms/msp/7063.html', '_blank');
   }
 }
