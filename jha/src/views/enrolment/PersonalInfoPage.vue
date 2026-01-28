@@ -251,11 +251,11 @@
         <div v-if="requestImmigrationStatus">
           <h2 class="mt-4">Your status in Canada</h2>
           <p>
-            Please provide your immigration status information. You will be required to
-            upload documents to support your status in Canada. For arrivals through
-            the Canada-Ukraine authorization for emergency travel program (CUAET),
-            please select 'Temporary Permit Holder or Diplomat' from the drop down
-            below.
+            Please provide your immigration status information. You will be
+            required to upload documents to support your status in Canada. For
+            arrivals through the Canada-Ukraine authorization for emergency
+            travel program (CUAET), please select 'Temporary Permit Holder or
+            Diplomat' from the drop down below.
           </p>
           <hr />
           <SelectComponent
@@ -330,8 +330,8 @@
           <h2 class="mt-4">Documents</h2>
           <p>
             Provide one of the required documents to support your status in
-            Canada. If your name has changed since your document was issued,
-            you are also required to upload a document to support the name change.
+            Canada. If your name has changed since your document was issued, you
+            are also required to upload a document to support the name change.
           </p>
           <hr />
           <SelectComponent
@@ -363,7 +363,8 @@
             "
           >
             <p>
-              If submitting a <span class="b">Working Holiday Permit (Case Type 58)</span>, you
+              If submitting a
+              <span class="b">Working Holiday Permit (Case Type 58)</span>, you
               must also provide a letter of employment (issued by the employer)
               with the following details:
             </p>
@@ -379,9 +380,9 @@
               <li>The start and expected end dates of employment.</li>
             </ul>
             <p>
-              If submitting a new or updated Working Holiday (case type 58) permit,
-              the issue date on your letter of employment must fall within the period of the
-              new or updated permit.
+              If submitting a new or updated Working Holiday (case type 58)
+              permit, the issue date on your letter of employment must fall
+              within the period of the new or updated permit.
             </p>
           </div>
           <RadioComponent
@@ -859,9 +860,8 @@
                   >
                     <template v-slot:description>
                       <span class="field-description">
-                        If you have been living in B.C. for less than 12
-                        months, please indicate any absences since
-                        arrival.
+                        If you have been living in B.C. for less than 12 months,
+                        please indicate any absences since arrival.
                       </span>
                     </template>
                   </RadioComponent>
@@ -1764,7 +1764,7 @@ export default {
         scrollToError();
         return;
       }
-      
+
       this.saveData();
       this.navigateToNextPage();
     },
@@ -2214,22 +2214,22 @@ export default {
     },
     isMovedToBCPermanently(newValue) {
       if (this.isPageLoaded && newValue === null) {
-          this.moveFromOrigin = null;
-          this.arrivalDateInBC = null;
-          this.arrivalDateInCanada = null;
-          this.previousHealthNumber = null;
-          this.isOutsideBCInLast12Months = null;
-          this.hasPreviousPHN = null;
-          this.isReleasedFromArmedForces = null;
-          this.isStudent = null;
-          this.v$.moveFromOrigin.$reset();
-          this.v$.arrivalDateInBC.$reset();
-          this.v$.arrivalDateInCanada.$reset();
-          this.v$.previousHealthNumber.$reset();
-          this.v$.isOutsideBCInLast12Months.$reset();
-          this.v$.hasPreviousPHN.$reset();
-          this.v$.isReleasedFromArmedForces.$reset();
-          this.v$.isStudent.$reset();
+        this.moveFromOrigin = null;
+        this.arrivalDateInBC = null;
+        this.arrivalDateInCanada = null;
+        this.previousHealthNumber = null;
+        this.isOutsideBCInLast12Months = null;
+        this.hasPreviousPHN = null;
+        this.isReleasedFromArmedForces = null;
+        this.isStudent = null;
+        this.v$.moveFromOrigin.$reset();
+        this.v$.arrivalDateInBC.$reset();
+        this.v$.arrivalDateInCanada.$reset();
+        this.v$.previousHealthNumber.$reset();
+        this.v$.isOutsideBCInLast12Months.$reset();
+        this.v$.hasPreviousPHN.$reset();
+        this.v$.isReleasedFromArmedForces.$reset();
+        this.v$.isStudent.$reset();
       }
     },
     isOutsideBCInLast12Months() {

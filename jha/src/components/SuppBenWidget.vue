@@ -107,7 +107,7 @@
             </span>
             <span v-else> - - </span>
           </td>
-        </tr>  
+        </tr>
       </tbody>
     </table>
     <hr style="border: 1px solid black" />
@@ -183,7 +183,8 @@ export default {
 </script>
 
 <style scoped>
-.widget-container, td {
+.widget-container,
+td {
   background: #f2f2f2;
 }
 .result-message-success {

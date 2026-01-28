@@ -258,9 +258,9 @@
             <a
               href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information"
               target="_blank"
-              >
-            Change Your Personal Information
-            </a>.
+            >
+              Change Your Personal Information </a
+            >.
           </p>
         </TipBox>
       </div>
@@ -269,11 +269,11 @@
     <div v-if="requestImmigrationStatus">
       <h2 class="mt-3">Child's status in Canada</h2>
       <p>
-        Please provide your child's immigration status information. You will be 
-        required to upload documents to support your child's status in Canada. 
-        For arrivals through the Canada-Ukraine authorization for emergency travel  
-        program (CUAET), please select "Temporary Permit Holder or Diplomat" from the 
-        drop down below.
+        Please provide your child's immigration status information. You will be
+        required to upload documents to support your child's status in Canada.
+        For arrivals through the Canada-Ukraine authorization for emergency
+        travel program (CUAET), please select "Temporary Permit Holder or
+        Diplomat" from the drop down below.
       </p>
       <hr />
       <SelectComponent
@@ -296,16 +296,11 @@
       >
         Please select your child's immigration status.
       </div>
-      <div
-        v-if="
-          status &&
-          status == statusOptions.TemporaryResident
-          "
-      >
+      <div v-if="status && status == statusOptions.TemporaryResident">
         <p>
           If this child arrived recently in Canada and does not have a temporary
-          permit, select "Visitor Permit" below and copies of the child's 
-          passport ID page and entry stamp or copies of other proof of entry 
+          permit, select "Visitor Permit" below and copies of the child's
+          passport ID page and entry stamp or copies of other proof of entry
           (for example, flight itineraries or airline tickets).
         </p>
       </div>
@@ -384,9 +379,10 @@
       >
         <h2>Documents</h2>
         <p>
-          Provide one of the required documents to support your status in Canada. 
-          If your child's name has changed since their document was issued, you 
-          are also required to upload a document to support the name change.
+          Provide one of the required documents to support your status in
+          Canada. If your child's name has changed since their document was
+          issued, you are also required to upload a document to support the name
+          change.
         </p>
         <hr />
         <SelectComponent
@@ -419,7 +415,8 @@
           "
         >
           <p>
-            If submitting a <span class="b">Working Holiday Permit (Case Type 58)</span>, you
+            If submitting a
+            <span class="b">Working Holiday Permit (Case Type 58)</span>, you
             must also provide a letter of employment (issued by the employer)
             with the following details:
           </p>
@@ -435,10 +432,10 @@
             <li>The start and expected end dates of employment.</li>
           </ul>
           <p>
-            If submitting a new or updated Working Holiday (case type 58) permit,
-            the issue date on your letter of employment must fall within the period of the
-            new or updated permit.
-          </p> 
+            If submitting a new or updated Working Holiday (case type 58)
+            permit, the issue date on your letter of employment must fall within
+            the period of the new or updated permit.
+          </p>
         </div>
         <RadioComponent
           label="Does your child's document that supports their status in Canada include their selected gender designation?"
@@ -1329,9 +1326,9 @@
                 "
                 aria-live="assertive"
               >
-                School name must contain letters and may include numbers and special
-                characters such as a hyphen, period, apostrophe, number sign,
-                ampersand, forward slash, and blank characters.
+                School name must contain letters and may include numbers and
+                special characters such as a hyphen, period, apostrophe, number
+                sign, ampersand, forward slash, and blank characters.
               </div>
               <AddressDoctorInput
                 v-if="isAddressValidatorEnabled && schoolCountry === 'Canada'"
@@ -1373,10 +1370,10 @@
                 "
                 aria-live="assertive"
               >
-                Full street address, rural route, PO box or general delivery must
-                contain letters or numbers, and may include special characters such
-                as a hyphen, period, apostrophe, number sign, ampersand, forward
-                slash, and blank characters.
+                Full street address, rural route, PO box or general delivery
+                must contain letters or numbers, and may include special
+                characters such as a hyphen, period, apostrophe, number sign,
+                ampersand, forward slash, and blank characters.
               </div>
               <InputComponent
                 label="Address Line 2 (optional)"
@@ -1395,10 +1392,10 @@
                 "
                 aria-live="assertive"
               >
-                Full street address, rural route, PO box or general delivery must
-                contain letters or numbers, and may include special characters such
-                as a hyphen, period, apostrophe, number sign, ampersand, forward
-                slash, and blank characters.
+                Full street address, rural route, PO box or general delivery
+                must contain letters or numbers, and may include special
+                characters such as a hyphen, period, apostrophe, number sign,
+                ampersand, forward slash, and blank characters.
               </div>
               <InputComponent
                 label="Address Line 3 (optional)"
@@ -1417,10 +1414,10 @@
                 "
                 aria-live="assertive"
               >
-                Full street address, rural route, PO box or general delivery must
-                contain letters or numbers, and may include special characters such
-                as a hyphen, period, apostrophe, number sign, ampersand, forward
-                slash, and blank characters.
+                Full street address, rural route, PO box or general delivery
+                must contain letters or numbers, and may include special
+                characters such as a hyphen, period, apostrophe, number sign,
+                ampersand, forward slash, and blank characters.
               </div>
               <InputComponent
                 label="City"
@@ -1479,9 +1476,9 @@
                   "
                   aria-live="assertive"
                 >
-                  Province/state must contain letters and may include numbers and
-                  special characters such as hyphens, periods, apostrophes and blank
-                  characters.
+                  Province/state must contain letters and may include numbers
+                  and special characters such as hyphens, periods, apostrophes
+                  and blank characters.
                 </div>
               </div>
               <div v-else>
@@ -1520,7 +1517,9 @@
               />
               <div
                 class="text-danger"
-                v-if="v$.schoolCountry.$dirty && v$.schoolCountry.required.$invalid"
+                v-if="
+                  v$.schoolCountry.$dirty && v$.schoolCountry.required.$invalid
+                "
                 aria-live="assertive"
               >
                 Jurisdiction is required.
@@ -1584,8 +1583,8 @@
                   "
                   aria-live="assertive"
                 >
-                  Postal/Zip Code cannot include special characters except hyphen,
-                  period, apostrophe, number sign and blank space.
+                  Postal/Zip Code cannot include special characters except
+                  hyphen, period, apostrophe, number sign and blank space.
                 </div>
               </div>
               <DateInput
@@ -1692,22 +1691,23 @@
                 "
                 aria-live="assertive"
               >
-                To qualify for provincial health care benefits a person must be a
-                resident of B.C. As your child intends to leave B.C. when their
-                studies are completed, they are not eligible for MSP coverage.
-                Please contact the health care plan in your home province for
-                information about medical coverage while studying in B.C.
+                To qualify for provincial health care benefits a person must be
+                a resident of B.C. As your child intends to leave B.C. when
+                their studies are completed, they are not eligible for MSP
+                coverage. Please contact the health care plan in your home
+                province for information about medical coverage while studying
+                in B.C.
               </div>
             </div>
             <div class="col-md-4 mt-3 ms-auto">
               <TipBox>
                 <p><b>Tip</b></p>
                 <p>
-                  When entering your address: If your address includes a unit number,
-                  place the unit number before the building number with a hyphen in
-                  between (For example: "105-927 Avenue"). This should allow for
-                  accurate recognition of your address. If your address is not found,
-                  enter it manually.
+                  When entering your address: If your address includes a unit
+                  number, place the unit number before the building number with
+                  a hyphen in between (For example: "105-927 Avenue"). This
+                  should allow for accurate recognition of your address. If your
+                  address is not found, enter it manually.
                 </p>
               </TipBox>
             </div>
@@ -1981,9 +1981,12 @@ export default {
       childAgeTypes: ChildAgeTypes,
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
-      nameChangeSupportDocumentOptions: selectOptionsChildNameChangeSupportDocuments,
-      temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
-      overageChildTemporaryResidentStatusReasonOptions: radioOptionsOverageChildTemporaryResidentStatusReasons,
+      nameChangeSupportDocumentOptions:
+        selectOptionsChildNameChangeSupportDocuments,
+      temporaryResidentStatusReasonOptions:
+        radioOptionsTemporaryResidentStatusReasons,
+      overageChildTemporaryResidentStatusReasonOptions:
+        radioOptionsOverageChildTemporaryResidentStatusReasons,
       supportDocumentTypes: SupportDocumentTypes,
       mediumStyles: mediumStyles,
       smallStyles: smallStyles,
@@ -2234,8 +2237,12 @@ export default {
         validations.recentBCMoveDate.pastDateValidator =
           optionalValidator(pastDateValidator);
 
-        validations.canadaArrivalDate.required = canadaArrivalDateRequiredChildValidator(this.canadaArrivalDateData, this.canadaArrivalDateIsRequired)
-        
+        validations.canadaArrivalDate.required =
+          canadaArrivalDateRequiredChildValidator(
+            this.canadaArrivalDateData,
+            this.canadaArrivalDateIsRequired,
+          );
+
         validations.canadaArrivalDate.dateDataValidator = dateDataValidator(
           this.canadaArrivalDateData,
         );

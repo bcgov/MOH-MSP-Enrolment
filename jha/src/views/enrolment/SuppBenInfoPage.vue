@@ -1189,10 +1189,10 @@ export default {
 </script>
 
 <style scoped>
-.font-weight-normal{
+.font-weight-normal {
   font-weight: normal;
 }
-.font-weight-bolder{
+.font-weight-bolder {
   font-weight: bolder;
 }
 </style>

@@ -7,7 +7,7 @@
           href="javascript:void(0)"
           :title="`${documentType} sample`"
           @click="openModal()"
-          >
+        >
           {{ documentType }}
         </a>
       </p>
@@ -17,8 +17,8 @@
             href="javascript:void(0)"
             :title="`${sample} samples`"
             @click="openModal(index)"
-            >
-          {{ sample }}
+          >
+            {{ sample }}
           </a>
         </p>
       </div>

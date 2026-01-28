@@ -337,11 +337,12 @@
             <h2 class="mt-4">Spouse or common-law partner status in Canada</h2>
             <div class="heading mt-3">
               <p>
-                Please provide your spouse's immigration status information.
-                You will be required to upload documents to support your spouse's 
-                status in Canada. For arrivals through the Canada-Ukraine 
-                authorization for emergency travel program (CUAET), please select 
-                "Temporary Permit Holder or Diplomat" from the drop down below.
+                Please provide your spouse's immigration status information. You
+                will be required to upload documents to support your spouse's
+                status in Canada. For arrivals through the Canada-Ukraine
+                authorization for emergency travel program (CUAET), please
+                select "Temporary Permit Holder or Diplomat" from the drop down
+                below.
               </p>
             </div>
             <hr class="mt-0" />
@@ -393,10 +394,11 @@
             </div>
             <div v-if="spouseStatus === statusOptions.TemporaryResident">
               <p>
-                If the spouse arrived recently in Canada and does not have a temporary permit,
-                select "Visitor Permit" below and copies of the spouse's passport ID page and
-                entry stamp or copies of other proof of entry (for example, flight itineraries
-                or airline tickets).
+                If the spouse arrived recently in Canada and does not have a
+                temporary permit, select "Visitor Permit" below and copies of
+                the spouse's passport ID page and entry stamp or copies of other
+                proof of entry (for example, flight itineraries or airline
+                tickets).
               </p>
               <RadioComponent
                 id="spouse-status-reason"
@@ -428,8 +430,8 @@
               <p>
                 Provide one of the required documents to support your status in
                 Canada. If your spouse's name has changed since their document
-                was issued, you are also required to upload a document to support
-                the name change.
+                was issued, you are also required to upload a document to
+                support the name change.
               </p>
               <hr />
               <SelectComponent
@@ -458,29 +460,31 @@
               <div
                 v-if="
                   spouseCitizenshipSupportDocumentType &&
-                  spouseCitizenshipSupportDocumentType == supportDocumentTypes.WorkPermit
+                  spouseCitizenshipSupportDocumentType ==
+                    supportDocumentTypes.WorkPermit
                 "
               >
                 <p>
-                  If submitting a <span class="b">Working Holiday Permit (Case Type 58)</span>, you
-                  must also provide a letter of employment (issued by the employer)
-                  with the following details:
+                  If submitting a
+                  <span class="b">Working Holiday Permit (Case Type 58)</span>,
+                  you must also provide a letter of employment (issued by the
+                  employer) with the following details:
                 </p>
                 <ul>
                   <li>
-                    Confirmation of employment for at least six consecutive months
-                    during the valid period of the permit.
+                    Confirmation of employment for at least six consecutive
+                    months during the valid period of the permit.
                   </li>
                   <li>
-                    The number of hours worked per week (a minimum of 18 hours per
-                    week is required).
+                    The number of hours worked per week (a minimum of 18 hours
+                    per week is required).
                   </li>
                   <li>The start and expected end dates of employment.</li>
                 </ul>
                 <p>
-                  If submitting a new or updated Working Holiday (case type 58) permit,
-                  the issue date on your letter of employment must fall within the period of the
-                  new or updated permit.
+                  If submitting a new or updated Working Holiday (case type 58)
+                  permit, the issue date on your letter of employment must fall
+                  within the period of the new or updated permit.
                 </p>
               </div>
               <RadioComponent
@@ -1053,8 +1057,7 @@
                     <template v-slot:description>
                       <span class="field-description">
                         If your spouse has been living in B.C. for less than 12
-                        months, please indicate any absences since
-                        arrival.
+                        months, please indicate any absences since arrival.
                       </span>
                     </template>
                   </RadioComponent>
@@ -1631,7 +1634,8 @@ export default {
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
       nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
-      temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
+      temporaryResidentStatusReasonOptions:
+        radioOptionsTemporaryResidentStatusReasons,
       supportDocumentTypes: SupportDocumentTypes,
       mediumStyles: mediumStyles,
       smallStyles: smallStyles,
@@ -2027,20 +2031,20 @@ export default {
     },
     spouseMadePermanentMove(newValue) {
       if (this.pageLoaded && newValue === null) {
-          this.spouseMoveFromOrigin = null;
-          this.spouseRecentBCMoveDate = null;
-          this.spouseCanadaArrivalDate = null;
-          this.recentBCMoveDateData = null;
-          this.canadaArrivalDateData = null;
-          this.spouseOutsideBCLast12Months = null;
-          this.spouseHasPreviousBCHealthNumber = null;
-          this.spouseBeenReleasedFromInstitution = null;
-          this.v$.spouseMoveFromOrigin.$reset();
-          this.v$.spouseRecentBCMoveDate.$reset();
-          this.v$.spouseCanadaArrivalDate.$reset();
-          this.v$.spouseOutsideBCLast12Months.$reset();
-          this.v$.spouseHasPreviousBCHealthNumber.$reset();
-          this.v$.spouseBeenReleasedFromInstitution.$reset();
+        this.spouseMoveFromOrigin = null;
+        this.spouseRecentBCMoveDate = null;
+        this.spouseCanadaArrivalDate = null;
+        this.recentBCMoveDateData = null;
+        this.canadaArrivalDateData = null;
+        this.spouseOutsideBCLast12Months = null;
+        this.spouseHasPreviousBCHealthNumber = null;
+        this.spouseBeenReleasedFromInstitution = null;
+        this.v$.spouseMoveFromOrigin.$reset();
+        this.v$.spouseRecentBCMoveDate.$reset();
+        this.v$.spouseCanadaArrivalDate.$reset();
+        this.v$.spouseOutsideBCLast12Months.$reset();
+        this.v$.spouseHasPreviousBCHealthNumber.$reset();
+        this.v$.spouseBeenReleasedFromInstitution.$reset();
       }
     },
     spouseOutsideBCLast12Months() {

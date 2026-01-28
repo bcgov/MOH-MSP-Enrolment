@@ -760,13 +760,9 @@ export default {
         mailPostalCode: {
           required,
           specialCharacterValidator:
-            this.mailCountry === "Canada"
-              ? true
-              : specialCharacterValidator,
+            this.mailCountry === "Canada" ? true : specialCharacterValidator,
           completePostalCodeValidator:
-            this.mailCountry === "Canada"
-              ? completePostalCodeValidator
-              : true,
+            this.mailCountry === "Canada" ? completePostalCodeValidator : true,
         },
       };
       validations = { ...validations, ...mailValidations };

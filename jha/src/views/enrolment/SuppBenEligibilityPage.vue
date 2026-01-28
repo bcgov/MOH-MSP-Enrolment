@@ -13,10 +13,10 @@
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Supplementary Benefits Eligibility</h1>
         <p>
-          Supplementary Benefits provide partial payment for certain medical services, such
-          as acupuncture and massage therapy, and may provide access to other income-based
-          programs. Individuals or families must have an adjusted net income of $42,000 a year
-          or less to be eligible.
+          Supplementary Benefits provide partial payment for certain medical
+          services, such as acupuncture and massage therapy, and may provide
+          access to other income-based programs. Individuals or families must
+          have an adjusted net income of $42,000 a year or less to be eligible.
         </p>
         <hr />
         <RadioComponent
@@ -77,7 +77,7 @@
               <a
                 target="_blank"
                 href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits"
-                >
+              >
                 Applying for Supplementary Benefits.
               </a>
             </p>
