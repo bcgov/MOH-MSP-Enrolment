@@ -34,10 +34,12 @@
                   successfulSubmissionPrograms.length > 1 ? "s" : ""
                 }}
                 {{ successfulSubmissionPrograms.length > 1 ? "have" : "has" }}
-                been submitted.</b>
+                been submitted.</b
+              >
             </p>
             <p v-if="mspApplicationResult.referenceNumber">
-              <b>Reference number is:
+              <b
+                >Reference number is:
                 {{ mspApplicationResult.referenceNumber }}
               </b>
             </p>
@@ -46,7 +48,8 @@
             <p>
               <b>
                 There was an issue with your Medical Services Plan submission.
-                Your form was not submitted.</b>
+                Your form was not submitted.</b
+              >
             </p>
             <p v-if="mspApplicationResult.message">
               <b>{{ mspApplicationResult.message }}</b>
@@ -137,10 +140,12 @@
           <h3 class="mt-4">Next steps</h3>
           <hr />
           <p>
-            <a 
-              href="javascript:void(0)" @click="printPage()" class="print-link"
+            <a
+              href="javascript:void(0)"
+              @click="printPage()"
+              class="print-link"
             >
-            Print or save
+              Print or save
             </a>
             this page for your records.
           </p>
@@ -177,8 +182,8 @@
                 <a
                   href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/how-to-enrol/coverage-wait-period"
                   target="_blank"
-                  >
-                wait period
+                >
+                  wait period
                 </a>
                 .&nbsp;
               </li>
@@ -188,8 +193,8 @@
                 <a
                   href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/are-you-eligible"
                   target="_blank"
-                  >
-                Learn more about MSP eligibility
+                >
+                  Learn more about MSP eligibility
                 </a>
                 .&nbsp;
               </li>
@@ -239,8 +244,8 @@
                 <a
                   href="https://my.gov.bc.ca/fpcare/registration-status/request-status"
                   target="_blank"
-                  >
-                https://my.gov.bc.ca/fpcare/registration-status/request-status
+                >
+                  https://my.gov.bc.ca/fpcare/registration-status/request-status
                 </a>
                 .&nbsp;
               </li>
@@ -274,8 +279,8 @@
             <a
               href="https://www2.gov.bc.ca/gov/content/health/about-bc-s-health-care-system/partners/health-insurance-bc"
               target="_blank"
-              >
-            contact HIBC
+            >
+              contact HIBC
             </a>
             .
           </p>

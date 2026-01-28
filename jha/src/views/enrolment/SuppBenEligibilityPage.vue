@@ -11,7 +11,14 @@
     </div>
     <PageContent :deltaHeight="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
-        <h1>Supplementary Benefits eligibility</h1>
+        <h1>Supplementary Benefits Eligibility</h1>
+        <p>
+          Supplementary Benefits provide partial payment for certain medical
+          services, such as acupuncture and massage therapy, and may provide
+          access to other income-based programs. Individuals or families must
+          have an adjusted net income of $42,000 a year or less to be eligible.
+        </p>
+        <hr />
         <RadioComponent
           id="apply-sb"
           name="apply-sb"
@@ -64,18 +71,16 @@
           <div class="text-danger ml-4" v-if="eqSBMeetsCriteria === 'N'">
             <p>
               You are not eligible to apply for Supplementary Benefits at this
-              time. If you have not lived in Canada for at least the last 12
-              months, apply after you have met the residency requirements. For
-              more information about eligibility, see
+              time. Please submit an application when you meet the residency
+              requirements. For assistance, please contact Health Insurance BC.
+              For more information on eligibility requirements, see
               <a
                 target="_blank"
                 href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits"
-                >
+              >
                 Applying for Supplementary Benefits.
               </a>
-              For assistance, contact Health Insurance BC at:
             </p>
-            <ContactInformation />
           </div>
           <div v-if="eqSBMeetsCriteria === 'Y'">
             <p class="mb-0">

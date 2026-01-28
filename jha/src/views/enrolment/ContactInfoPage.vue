@@ -12,6 +12,13 @@
     <PageContent :deltaHeight="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Contact information</h1>
+        <p>
+          When entering your address: If your address includes a unit number,
+          place the unit number before the building number with a hyphen in
+          between (For example: "105-927 Avenue"). This should allow for
+          accurate recognition of your address. If your address is not found,
+          enter it manually.
+        </p>
         <hr class="mt-0" />
         <div class="row">
           <div class="col-md-6" v-if="applyingForMSP">
@@ -753,13 +760,9 @@ export default {
         mailPostalCode: {
           required,
           specialCharacterValidator:
-            this.mailCountry === "Canada"
-              ? true
-              : specialCharacterValidator,
+            this.mailCountry === "Canada" ? true : specialCharacterValidator,
           completePostalCodeValidator:
-            this.mailCountry === "Canada"
-              ? completePostalCodeValidator
-              : true,
+            this.mailCountry === "Canada" ? completePostalCodeValidator : true,
         },
       };
       validations = { ...validations, ...mailValidations };

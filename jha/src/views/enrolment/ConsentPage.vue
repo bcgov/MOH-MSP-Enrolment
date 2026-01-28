@@ -249,8 +249,10 @@
             Supplementary Benefits: Declaration and consent - must be signed
           </h2>
           <p>
-            <b>Please read and sign. If you are married or living in a
-              marriage-like relationship, your spouse must also sign.</b>
+            <b
+              >Please read and sign. If you are married or living in a
+              marriage-like relationship, your spouse must also sign.</b
+            >
           </p>
           <ul>
             <li>

@@ -53,20 +53,20 @@ export const canadaArrivalDateRequiredChildValidator = (dateData, isRequired) =>
     },
     () => {
       //The isRequired logic has been combined into this validator to prevent dynamic validator/nested component reactivity issues
-      //In short, the application wasn't properly assigning/unassigning the isRequired validator to the Child component because it uses nested validations 
+      //In short, the application wasn't properly assigning/unassigning the isRequired validator to the Child component because it uses nested validations
       //so now the logic is all in one place where it will always run
       if (!isRequired) {
-        console.log("not required")
+        console.log("not required");
         return true;
       }
       if (
         !dateData ||
         (!dateData.year && typeof dateData.month !== "number" && !dateData.day)
       ) {
-        console.log("required, data missing")
+        console.log("required, data missing");
         return false;
       }
-      console.log("required, data present")
+      console.log("required, data present");
       return true;
     },
   );

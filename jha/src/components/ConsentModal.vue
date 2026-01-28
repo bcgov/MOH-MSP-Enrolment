@@ -18,7 +18,10 @@
             <p>
               Your personal information is collected by the Ministry of Health
               under the authority of sections 26(a) and (c) of the
-              <em>Freedom of Information and Protection of Privacy Act (FIPPA).</em>
+              <em
+                >Freedom of Information and Protection of Privacy Act
+                (FIPPA).</em
+              >
               It is collected for the purpose of administering Medical Services
               Plan and Supplementary Benefits under the
               <em>Medicare Protection Act,</em> and to determine, verify and
