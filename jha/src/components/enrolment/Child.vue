@@ -269,11 +269,11 @@
     <div v-if="requestImmigrationStatus">
       <h2 class="mt-3">Child's status in Canada</h2>
       <p>
-        Please provide your child's immigration status. You will be required to 
-        upload documents to support your child's status in Canada. For arrivals 
-        through the Canada-Ukraine authorization for emergency travel (CUAET) 
-        program, please select "Temporary Permit Holder or Diplomat" from the 
-        menu below.
+        Please provide your child's immigration status information. You will be 
+        required to upload documents to support your child's status in Canada. 
+        For arrivals through the Canada-Ukraine authorization for emergency travel  
+        program (CUAET), please select "Temporary Permit Holder or Diplomat" from the 
+        drop down below.
       </p>
       <hr />
       <SelectComponent
@@ -295,6 +295,19 @@
         aria-live="assertive"
       >
         Please select your child's immigration status.
+      </div>
+      <div
+        v-if="
+          status &&
+          status == statusOptions.TemporaryResident
+          "
+      >
+        <p>
+          If this child arrived recently in Canada and does not have a temporary
+          permit, select "Visitor Permit" below and copies of the child's 
+          passport ID page and entry stamp or copies of other proof of entry 
+          (for example, flight itineraries or airline tickets).
+        </p>
       </div>
       <div
         v-if="
@@ -371,10 +384,9 @@
       >
         <h2>Documents</h2>
         <p>
-          Provide a copy of an accepted document that shows your child’s status 
-          in Canada. If their name is different from the name on the document, 
-          you must also upload a copy of a name change certificate that shows 
-          their full legal name.
+          Provide one of the required documents to support your status in Canada. 
+          If your child's name has changed since their document was issued, you 
+          are also required to upload a document to support the name change.
         </p>
         <hr />
         <SelectComponent
@@ -420,12 +432,16 @@
               The number of hours worked per week (a minimum of 18 hours per
               week is required).
             </li>
-            <li>The start date of employment.</li>
-            <li>The expected end date of employment.</li>
+            <li>The start and expected end dates of employment.</li>
           </ul>
+          <p>
+            If submitting a new or updated Working Holiday (case type 58) permit,
+            the issue date on your letter of employment must fall within the period of the
+            new or updated permit.
+          </p> 
         </div>
         <RadioComponent
-          label="Does the document that shows your child's status in Canada match their selected gender designation?"
+          label="Does your child's document that supports their status in Canada include their selected gender designation?"
           :name="'gender-matches-' + index"
           :id="'gender-matches-' + index"
           class="mt-3"
@@ -1287,398 +1303,414 @@
             must be in full-time attendance.)
           </p>
           <hr />
-          <InputComponent
-            label="School name"
-            :id="'school-name-' + index"
-            className="mt-3"
-            maxlength="50"
-            v-model="schoolName"
-            @blur="handleBlurField(v$.schoolName)"
-            :inputStyle="mediumStyles"
-          />
-          <div
-            class="text-danger"
-            v-if="v$.schoolName.$dirty && v$.schoolName.required.$invalid"
-            aria-live="assertive"
-          >
-            School name is required.
-          </div>
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolName.$dirty &&
-              v$.schoolName.schoolNameContentValidator.$invalid
-            "
-            aria-live="assertive"
-          >
-            School name must contain letters and may include numbers and special
-            characters such as a hyphen, period, apostrophe, number sign,
-            ampersand, forward slash, and blank characters.
-          </div>
-          <AddressDoctorInput
-            v-if="isAddressValidatorEnabled && schoolCountry === 'Canada'"
-            label="Full street address, rural route, PO box or general delivery"
-            v-model="schoolAddressLine1"
-            :id="`school-address-line1-${index}`"
-            class="mt-3"
-            maxlength="25"
-            serviceUrl="/ahdc/api/address"
-            :inputStyle="mediumStyles"
-            @addressSelected="handleSchoolAddressSelected($event)"
-            @blur="handleBlurField(v$.schoolAddressLine1)"
-          />
-          <InputComponent
-            v-else
-            label="Full street address, rural route, PO box or general delivery"
-            :id="'school-address-line1-' + index"
-            className="mt-3"
-            v-model="schoolAddressLine1"
-            maxlength="25"
-            @blur="handleBlurField(v$.schoolAddressLine1)"
-            :inputStyle="mediumStyles"
-          />
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolAddressLine1.$dirty &&
-              v$.schoolAddressLine1.required.$invalid
-            "
-            aria-live="assertive"
-          >
-            Street address is required.
-          </div>
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolAddressLine1.$dirty &&
-              v$.schoolAddressLine1.addressLineContentValidator.$invalid
-            "
-            aria-live="assertive"
-          >
-            Full street address, rural route, PO box or general delivery must
-            contain letters or numbers, and may include special characters such
-            as a hyphen, period, apostrophe, number sign, ampersand, forward
-            slash, and blank characters.
-          </div>
-          <InputComponent
-            label="Address Line 2 (optional)"
-            :id="'school-address-line2-' + index"
-            className="mt-3"
-            v-model="schoolAddressLine2"
-            maxlength="25"
-            @blur="handleBlurField(v$.schoolAddressLine2)"
-            :inputStyle="mediumStyles"
-          />
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolAddressLine2.$dirty &&
-              v$.schoolAddressLine2.addressLineContentValidator.$invalid
-            "
-            aria-live="assertive"
-          >
-            Full street address, rural route, PO box or general delivery must
-            contain letters or numbers, and may include special characters such
-            as a hyphen, period, apostrophe, number sign, ampersand, forward
-            slash, and blank characters.
-          </div>
-          <InputComponent
-            label="Address Line 3 (optional)"
-            :id="'school-address-line3-' + index"
-            className="mt-3"
-            v-model="schoolAddressLine3"
-            maxlength="25"
-            @blur="handleBlurField(v$.schoolAddressLine3)"
-            :inputStyle="mediumStyles"
-          />
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolAddressLine3.$dirty &&
-              v$.schoolAddressLine3.addressLineContentValidator.$invalid
-            "
-            aria-live="assertive"
-          >
-            Full street address, rural route, PO box or general delivery must
-            contain letters or numbers, and may include special characters such
-            as a hyphen, period, apostrophe, number sign, ampersand, forward
-            slash, and blank characters.
-          </div>
-          <InputComponent
-            label="City"
-            :id="'school-city-' + index"
-            className="mt-3"
-            v-model="schoolCity"
-            maxlength="25"
-            @blur="handleBlurField(v$.schoolCity)"
-            :inputStyle="mediumStyles"
-          />
-          <div
-            class="text-danger"
-            v-if="v$.schoolCity.$dirty && v$.schoolCity.required.$invalid"
-            aria-live="assertive"
-          >
-            City is required.
-          </div>
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolCity.$dirty &&
-              v$.schoolCity.cityStateProvinceContentValidator.$invalid
-            "
-            aria-live="assertive"
-          >
-            City must contain letters and may include numbers and special
-            characters such as hyphens, periods, apostrophes and blank
-            characters.
-          </div>
-          <div v-if="schoolCountry !== 'Canada'">
-            <InputComponent
-              label="Province or state"
-              :id="'school-province-' + index"
-              className="mt-3"
-              maxlength="25"
-              v-model="schoolProvinceOrState"
-              @blur="handleBlurField(v$.schoolProvinceOrState)"
-              :inputStyle="mediumStyles"
-            />
-            <div
-              class="text-danger"
-              v-if="
-                v$.schoolProvinceOrState.$dirty &&
-                v$.schoolProvinceOrState.required.$invalid
-              "
-              aria-live="assertive"
-            >
-              Province/state is required.
+          <div class="row">
+            <div class="col">
+              <InputComponent
+                label="School name"
+                :id="'school-name-' + index"
+                className="mt-3"
+                maxlength="50"
+                v-model="schoolName"
+                @blur="handleBlurField(v$.schoolName)"
+                :inputStyle="mediumStyles"
+              />
+              <div
+                class="text-danger"
+                v-if="v$.schoolName.$dirty && v$.schoolName.required.$invalid"
+                aria-live="assertive"
+              >
+                School name is required.
+              </div>
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolName.$dirty &&
+                  v$.schoolName.schoolNameContentValidator.$invalid
+                "
+                aria-live="assertive"
+              >
+                School name must contain letters and may include numbers and special
+                characters such as a hyphen, period, apostrophe, number sign,
+                ampersand, forward slash, and blank characters.
+              </div>
+              <AddressDoctorInput
+                v-if="isAddressValidatorEnabled && schoolCountry === 'Canada'"
+                label="Full street address, rural route, PO box or general delivery"
+                v-model="schoolAddressLine1"
+                :id="`school-address-line1-${index}`"
+                class="mt-3"
+                maxlength="25"
+                serviceUrl="/ahdc/api/address"
+                :inputStyle="mediumStyles"
+                @addressSelected="handleSchoolAddressSelected($event)"
+                @blur="handleBlurField(v$.schoolAddressLine1)"
+              />
+              <InputComponent
+                v-else
+                label="Full street address, rural route, PO box or general delivery"
+                :id="'school-address-line1-' + index"
+                className="mt-3"
+                v-model="schoolAddressLine1"
+                maxlength="25"
+                @blur="handleBlurField(v$.schoolAddressLine1)"
+                :inputStyle="mediumStyles"
+              />
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolAddressLine1.$dirty &&
+                  v$.schoolAddressLine1.required.$invalid
+                "
+                aria-live="assertive"
+              >
+                Street address is required.
+              </div>
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolAddressLine1.$dirty &&
+                  v$.schoolAddressLine1.addressLineContentValidator.$invalid
+                "
+                aria-live="assertive"
+              >
+                Full street address, rural route, PO box or general delivery must
+                contain letters or numbers, and may include special characters such
+                as a hyphen, period, apostrophe, number sign, ampersand, forward
+                slash, and blank characters.
+              </div>
+              <InputComponent
+                label="Address Line 2 (optional)"
+                :id="'school-address-line2-' + index"
+                className="mt-3"
+                v-model="schoolAddressLine2"
+                maxlength="25"
+                @blur="handleBlurField(v$.schoolAddressLine2)"
+                :inputStyle="mediumStyles"
+              />
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolAddressLine2.$dirty &&
+                  v$.schoolAddressLine2.addressLineContentValidator.$invalid
+                "
+                aria-live="assertive"
+              >
+                Full street address, rural route, PO box or general delivery must
+                contain letters or numbers, and may include special characters such
+                as a hyphen, period, apostrophe, number sign, ampersand, forward
+                slash, and blank characters.
+              </div>
+              <InputComponent
+                label="Address Line 3 (optional)"
+                :id="'school-address-line3-' + index"
+                className="mt-3"
+                v-model="schoolAddressLine3"
+                maxlength="25"
+                @blur="handleBlurField(v$.schoolAddressLine3)"
+                :inputStyle="mediumStyles"
+              />
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolAddressLine3.$dirty &&
+                  v$.schoolAddressLine3.addressLineContentValidator.$invalid
+                "
+                aria-live="assertive"
+              >
+                Full street address, rural route, PO box or general delivery must
+                contain letters or numbers, and may include special characters such
+                as a hyphen, period, apostrophe, number sign, ampersand, forward
+                slash, and blank characters.
+              </div>
+              <InputComponent
+                label="City"
+                :id="'school-city-' + index"
+                className="mt-3"
+                v-model="schoolCity"
+                maxlength="25"
+                @blur="handleBlurField(v$.schoolCity)"
+                :inputStyle="mediumStyles"
+              />
+              <div
+                class="text-danger"
+                v-if="v$.schoolCity.$dirty && v$.schoolCity.required.$invalid"
+                aria-live="assertive"
+              >
+                City is required.
+              </div>
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolCity.$dirty &&
+                  v$.schoolCity.cityStateProvinceContentValidator.$invalid
+                "
+                aria-live="assertive"
+              >
+                City must contain letters and may include numbers and special
+                characters such as hyphens, periods, apostrophes and blank
+                characters.
+              </div>
+              <div v-if="schoolCountry !== 'Canada'">
+                <InputComponent
+                  label="Province or state"
+                  :id="'school-province-' + index"
+                  className="mt-3"
+                  maxlength="25"
+                  v-model="schoolProvinceOrState"
+                  @blur="handleBlurField(v$.schoolProvinceOrState)"
+                  :inputStyle="mediumStyles"
+                />
+                <div
+                  class="text-danger"
+                  v-if="
+                    v$.schoolProvinceOrState.$dirty &&
+                    v$.schoolProvinceOrState.required.$invalid
+                  "
+                  aria-live="assertive"
+                >
+                  Province/state is required.
+                </div>
+                <div
+                  class="text-danger"
+                  v-if="
+                    v$.schoolProvinceOrState.$dirty &&
+                    v$.schoolProvinceOrState.cityStateProvinceContentValidator
+                      .$invalid
+                  "
+                  aria-live="assertive"
+                >
+                  Province/state must contain letters and may include numbers and
+                  special characters such as hyphens, periods, apostrophes and blank
+                  characters.
+                </div>
+              </div>
+              <div v-else>
+                <RegionSelect
+                  className="mt-3"
+                  :id="'school-province-select-' + index"
+                  :name="'school-province-select-' + index"
+                  label="Province"
+                  v-model="schoolProvinceOrState"
+                  :disablePlaceholder="true"
+                  defaultOptionLabel="Please select a province"
+                  @blur="handleBlurField(v$.schoolProvinceOrState)"
+                  :inputStyle="mediumStyles"
+                />
+                <div
+                  class="text-danger"
+                  v-if="
+                    v$.schoolProvinceOrState.$dirty &&
+                    v$.schoolProvinceOrState.required.$invalid
+                  "
+                  aria-live="assertive"
+                >
+                  Province is required.
+                </div>
+              </div>
+              <CountrySelect
+                className="mt-3"
+                :id="'school-country-select-' + index"
+                :name="'school-country-select-' + index"
+                label="Jurisdiction"
+                v-model="schoolCountry"
+                :disablePlaceholder="true"
+                defaultOptionLabel="Please select a jurisdiction"
+                @blur="handleBlurField(v$.schoolCountry)"
+                :inputStyle="mediumStyles"
+              />
+              <div
+                class="text-danger"
+                v-if="v$.schoolCountry.$dirty && v$.schoolCountry.required.$invalid"
+                aria-live="assertive"
+              >
+                Jurisdiction is required.
+              </div>
+              <div v-if="schoolCountry === 'Canada'">
+                <PostalCodeInput
+                  label="Postal Code"
+                  :id="'school-postal-code-' + index"
+                  className="mt-3"
+                  v-model="schoolPostalCode"
+                  @blur="handleBlurField(v$.schoolPostalCode)"
+                  :inputStyle="smallStyles"
+                />
+                <div
+                  class="text-danger"
+                  v-if="
+                    v$.schoolPostalCode.$dirty &&
+                    v$.schoolPostalCode.required.$invalid
+                  "
+                  aria-live="assertive"
+                >
+                  Postal Code is required.
+                </div>
+                <div
+                  class="text-danger"
+                  v-if="
+                    v$.schoolPostalCode.$dirty &&
+                    !v$.schoolPostalCode.required.$invalid &&
+                    v$.schoolPostalCode.completePostalCodeValidator.$invalid
+                  "
+                  aria-live="assertive"
+                >
+                  Must be in the format A1A 1A1.
+                </div>
+              </div>
+              <div v-else>
+                <InputComponent
+                  label="Postal Code or Zip Code"
+                  :id="'school-zip-code-' + index"
+                  className="mt-3"
+                  maxlength="20"
+                  v-model="schoolPostalCode"
+                  @blur="handleBlurField(v$.schoolPostalCode)"
+                  :inputStyle="mediumStyles"
+                />
+                <div
+                  class="text-danger"
+                  v-if="
+                    v$.schoolPostalCode.$dirty &&
+                    v$.schoolPostalCode.required.$invalid
+                  "
+                  aria-live="assertive"
+                >
+                  Postal/Zip Code is required.
+                </div>
+                <div
+                  class="text-danger"
+                  v-if="
+                    v$.schoolPostalCode.$dirty &&
+                    v$.schoolPostalCode.specialCharacterValidator.$invalid
+                  "
+                  aria-live="assertive"
+                >
+                  Postal/Zip Code cannot include special characters except hyphen,
+                  period, apostrophe, number sign and blank space.
+                </div>
+              </div>
+              <DateInput
+                label="Original departure date from B.C. (if school is outside B.C.)"
+                :id="'school-departure-date-' + index"
+                class="mt-3"
+                v-model="schoolDepartureDate"
+                @blur="handleBlurField(v$.schoolDepartureDate)"
+                @processDate="handleProcessDateSchoolDeparture($event)"
+              />
+              <div
+                class="text-danger"
+                v-if="
+                  schoolProvinceOrState !== 'British Columbia' &&
+                  v$.schoolDepartureDate.$dirty &&
+                  v$.schoolDepartureDate.required.$invalid
+                "
+                aria-live="assertive"
+              >
+                School departure date is required.
+              </div>
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolDepartureDate.$dirty &&
+                  v$.schoolDepartureDate.dateDataValidator.$invalid
+                "
+                aria-live="assertive"
+              >
+                Invalid school departure date.
+              </div>
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolDepartureDate.$dirty &&
+                  v$.schoolDepartureDate.pastDateValidator.$invalid
+                "
+                aria-live="assertive"
+              >
+                School departure date cannot be in the future.
+              </div>
+              <DateInput
+                label="Expected school completion date"
+                :id="'school-completion-date-' + index"
+                class="mt-3"
+                v-model="schoolCompletionDate"
+                @blur="handleBlurField(v$.schoolCompletionDate)"
+                @processDate="handleProcessDateSchoolCompletion($event)"
+              />
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolCompletionDate.$dirty &&
+                  v$.schoolCompletionDate.required.$invalid
+                "
+                aria-live="assertive"
+              >
+                Expected school completion date is required.
+              </div>
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolCompletionDate.$dirty &&
+                  v$.schoolCompletionDate.dateDataValidator.$invalid
+                "
+                aria-live="assertive"
+              >
+                Invalid estimated school completion date.
+              </div>
+              <div
+                class="text-danger"
+                v-if="
+                  v$.schoolCompletionDate.$dirty &&
+                  v$.schoolCompletionDate.futureDateValidator.$invalid
+                "
+                aria-live="assertive"
+              >
+                Estimated school completion date cannot be in the past.
+              </div>
+              <RadioComponent
+                label="Will your child reside in B.C. after completing their studies?"
+                class="mt-3"
+                :id="'will-reside-in-bc-after-studies-' + index"
+                :name="'will-reside-in-bc-after-studies-' + index"
+                v-model="willResideInBCAfterStudies"
+                :items="radioOptionsNoYes"
+                @blur="handleBlurField(v$.willResideInBCAfterStudies)"
+              />
+              <div
+                class="text-danger"
+                v-if="
+                  v$.willResideInBCAfterStudies.$dirty &&
+                  v$.willResideInBCAfterStudies.required.$invalid
+                "
+                aria-live="assertive"
+              >
+                This field is required.
+              </div>
+              <div
+                class="text-danger"
+                v-if="
+                  v$.willResideInBCAfterStudies.$dirty &&
+                  v$.willResideInBCAfterStudies.permanentMoveValidator.$invalid
+                "
+                aria-live="assertive"
+              >
+                To qualify for provincial health care benefits a person must be a
+                resident of B.C. As your child intends to leave B.C. when their
+                studies are completed, they are not eligible for MSP coverage.
+                Please contact the health care plan in your home province for
+                information about medical coverage while studying in B.C.
+              </div>
             </div>
-            <div
-              class="text-danger"
-              v-if="
-                v$.schoolProvinceOrState.$dirty &&
-                v$.schoolProvinceOrState.cityStateProvinceContentValidator
-                  .$invalid
-              "
-              aria-live="assertive"
-            >
-              Province/state must contain letters and may include numbers and
-              special characters such as hyphens, periods, apostrophes and blank
-              characters.
+            <div class="col-md-4 mt-3 ms-auto">
+              <TipBox>
+                <p><b>Tip</b></p>
+                <p>
+                  When entering your address: If your address includes a unit number,
+                  place the unit number before the building number with a hyphen in
+                  between (For example: "105-927 Avenue"). This should allow for
+                  accurate recognition of your address. If your address is not found,
+                  enter it manually.
+                </p>
+              </TipBox>
             </div>
-          </div>
-          <div v-else>
-            <RegionSelect
-              className="mt-3"
-              :id="'school-province-select-' + index"
-              :name="'school-province-select-' + index"
-              label="Province"
-              v-model="schoolProvinceOrState"
-              :disablePlaceholder="true"
-              defaultOptionLabel="Please select a province"
-              @blur="handleBlurField(v$.schoolProvinceOrState)"
-              :inputStyle="mediumStyles"
-            />
-            <div
-              class="text-danger"
-              v-if="
-                v$.schoolProvinceOrState.$dirty &&
-                v$.schoolProvinceOrState.required.$invalid
-              "
-              aria-live="assertive"
-            >
-              Province is required.
-            </div>
-          </div>
-          <CountrySelect
-            className="mt-3"
-            :id="'school-country-select-' + index"
-            :name="'school-country-select-' + index"
-            label="Jurisdiction"
-            v-model="schoolCountry"
-            :disablePlaceholder="true"
-            defaultOptionLabel="Please select a jurisdiction"
-            @blur="handleBlurField(v$.schoolCountry)"
-            :inputStyle="mediumStyles"
-          />
-          <div
-            class="text-danger"
-            v-if="v$.schoolCountry.$dirty && v$.schoolCountry.required.$invalid"
-            aria-live="assertive"
-          >
-            Jurisdiction is required.
-          </div>
-          <div v-if="schoolCountry === 'Canada'">
-            <PostalCodeInput
-              label="Postal Code"
-              :id="'school-postal-code-' + index"
-              className="mt-3"
-              v-model="schoolPostalCode"
-              @blur="handleBlurField(v$.schoolPostalCode)"
-              :inputStyle="smallStyles"
-            />
-            <div
-              class="text-danger"
-              v-if="
-                v$.schoolPostalCode.$dirty &&
-                v$.schoolPostalCode.required.$invalid
-              "
-              aria-live="assertive"
-            >
-              Postal Code is required.
-            </div>
-            <div
-              class="text-danger"
-              v-if="
-                v$.schoolPostalCode.$dirty &&
-                !v$.schoolPostalCode.required.$invalid &&
-                v$.schoolPostalCode.completePostalCodeValidator.$invalid
-              "
-              aria-live="assertive"
-            >
-              Must be in the format A1A 1A1.
-            </div>
-          </div>
-          <div v-else>
-            <InputComponent
-              label="Postal Code or Zip Code"
-              :id="'school-zip-code-' + index"
-              className="mt-3"
-              maxlength="20"
-              v-model="schoolPostalCode"
-              @blur="handleBlurField(v$.schoolPostalCode)"
-              :inputStyle="mediumStyles"
-            />
-            <div
-              class="text-danger"
-              v-if="
-                v$.schoolPostalCode.$dirty &&
-                v$.schoolPostalCode.required.$invalid
-              "
-              aria-live="assertive"
-            >
-              Postal/Zip Code is required.
-            </div>
-            <div
-              class="text-danger"
-              v-if="
-                v$.schoolPostalCode.$dirty &&
-                v$.schoolPostalCode.specialCharacterValidator.$invalid
-              "
-              aria-live="assertive"
-            >
-              Postal/Zip Code cannot include special characters except hyphen,
-              period, apostrophe, number sign and blank space.
-            </div>
-          </div>
-          <DateInput
-            label="Original departure date from B.C. (if school is outside B.C.)"
-            :id="'school-departure-date-' + index"
-            class="mt-3"
-            v-model="schoolDepartureDate"
-            @blur="handleBlurField(v$.schoolDepartureDate)"
-            @processDate="handleProcessDateSchoolDeparture($event)"
-          />
-          <div
-            class="text-danger"
-            v-if="
-              schoolProvinceOrState !== 'British Columbia' &&
-              v$.schoolDepartureDate.$dirty &&
-              v$.schoolDepartureDate.required.$invalid
-            "
-            aria-live="assertive"
-          >
-            School departure date is required.
-          </div>
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolDepartureDate.$dirty &&
-              v$.schoolDepartureDate.dateDataValidator.$invalid
-            "
-            aria-live="assertive"
-          >
-            Invalid school departure date.
-          </div>
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolDepartureDate.$dirty &&
-              v$.schoolDepartureDate.pastDateValidator.$invalid
-            "
-            aria-live="assertive"
-          >
-            School departure date cannot be in the future.
-          </div>
-          <DateInput
-            label="Expected school completion date"
-            :id="'school-completion-date-' + index"
-            class="mt-3"
-            v-model="schoolCompletionDate"
-            @blur="handleBlurField(v$.schoolCompletionDate)"
-            @processDate="handleProcessDateSchoolCompletion($event)"
-          />
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolCompletionDate.$dirty &&
-              v$.schoolCompletionDate.required.$invalid
-            "
-            aria-live="assertive"
-          >
-            Expected school completion date is required.
-          </div>
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolCompletionDate.$dirty &&
-              v$.schoolCompletionDate.dateDataValidator.$invalid
-            "
-            aria-live="assertive"
-          >
-            Invalid estimated school completion date.
-          </div>
-          <div
-            class="text-danger"
-            v-if="
-              v$.schoolCompletionDate.$dirty &&
-              v$.schoolCompletionDate.futureDateValidator.$invalid
-            "
-            aria-live="assertive"
-          >
-            Estimated school completion date cannot be in the past.
-          </div>
-          <RadioComponent
-            label="Will your child reside in B.C. after completing their studies?"
-            class="mt-3"
-            :id="'will-reside-in-bc-after-studies-' + index"
-            :name="'will-reside-in-bc-after-studies-' + index"
-            v-model="willResideInBCAfterStudies"
-            :items="radioOptionsNoYes"
-            @blur="handleBlurField(v$.willResideInBCAfterStudies)"
-          />
-          <div
-            class="text-danger"
-            v-if="
-              v$.willResideInBCAfterStudies.$dirty &&
-              v$.willResideInBCAfterStudies.required.$invalid
-            "
-            aria-live="assertive"
-          >
-            This field is required.
-          </div>
-          <div
-            class="text-danger"
-            v-if="
-              v$.willResideInBCAfterStudies.$dirty &&
-              v$.willResideInBCAfterStudies.permanentMoveValidator.$invalid
-            "
-            aria-live="assertive"
-          >
-            To qualify for provincial health care benefits a person must be a
-            resident of B.C. As your child intends to leave B.C. when their
-            studies are completed, they are not eligible for MSP coverage.
-            Please contact the health care plan in your home province for
-            information about medical coverage while studying in B.C.
           </div>
         </div>
       </div>

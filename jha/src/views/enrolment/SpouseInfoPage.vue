@@ -334,14 +334,14 @@
 
           <!-- Spouse citizenship information  -->
           <div v-if="requestImmigrationStatus">
-            <h2 class="mt-4">Spouse's status in Canada</h2>
+            <h2 class="mt-4">Spouse or common-law partner status in Canada</h2>
             <div class="heading mt-3">
               <p>
-                Provide your spouse's immigration status. You will be need to
-                upload documents that show your spouse's status in Canada. For
-                arrivals through the Canada-Ukraine authorization for emergency
-                travel (CUAET) program, please select "Temporary Permit Holder
-                or Diplomat" from the menu below.
+                Please provide your spouse's immigration status information.
+                You will be required to upload documents to support your spouse's 
+                status in Canada. For arrivals through the Canada-Ukraine 
+                authorization for emergency travel program (CUAET), please select 
+                "Temporary Permit Holder or Diplomat" from the drop down below.
               </p>
             </div>
             <hr class="mt-0" />
@@ -392,6 +392,12 @@
               </div>
             </div>
             <div v-if="spouseStatus === statusOptions.TemporaryResident">
+              <p>
+                If the spouse arrived recently in Canada and does not have a temporary permit,
+                select "Visitor Permit" below and copies of the spouse's passport ID page and
+                entry stamp or copies of other proof of entry (for example, flight itineraries
+                or airline tickets).
+              </p>
               <RadioComponent
                 id="spouse-status-reason"
                 name="spouse-status-reason"
@@ -420,11 +426,10 @@
             >
               <h2>Documents</h2>
               <p>
-                Provide a copy of an accepted document that shows your spouse’s
-                status in Canada. If their name is different from the name on
-                the document, you must also upload a copy of a marriage
-                certificate, divorce decree, or name change certificate that
-                shows their full legal name.
+                Provide one of the required documents to support your status in
+                Canada. If your spouse's name has changed since their document
+                was issued, you are also required to upload a document to support
+                the name change.
               </p>
               <hr />
               <SelectComponent
@@ -470,12 +475,16 @@
                     The number of hours worked per week (a minimum of 18 hours per
                     week is required).
                   </li>
-                  <li>The start date of employment.</li>
-                  <li>The expected end date of employment.</li>
+                  <li>The start and expected end dates of employment.</li>
                 </ul>
+                <p>
+                  If submitting a new or updated Working Holiday (case type 58) permit,
+                  the issue date on your letter of employment must fall within the period of the
+                  new or updated permit.
+                </p>
               </div>
               <RadioComponent
-                label="Does the document that shows your spouse's status in Canada match their selected gender designation?"
+                label="Does your Spouse's document that supports their status in Canada include their selected gender designation?"
                 name="spouse-gender-matches"
                 id="spouse-gender-matches"
                 class="mt-3"
