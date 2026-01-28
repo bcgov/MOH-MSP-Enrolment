@@ -19,6 +19,7 @@ import { SupportDocumentTypes } from 'app/modules/msp-core/models/support-docume
 import { Base } from 'moh-common-lib';
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
 import { isAfter } from 'date-fns';
+import { CanadianStatusReason } from 'app/modules/msp-core/models/canadian-status.enum';
 
 @Component({
   selector: 'msp-add-spouse',
@@ -133,6 +134,10 @@ export class AddSpouseComponent extends Base implements OnInit {
       this.spouse.nameChangeDocs.documentType = null;
       this.spouse.nameChangeDocs.images = [];
     }
+  }
+
+  isWorkPermit() {
+    return this.spouse.currentActivity === CanadianStatusReason.WorkingInBC;
   }
 
   isPhnUniqueInPI() {

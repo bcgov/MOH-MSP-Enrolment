@@ -23,6 +23,11 @@
       <msp-canadian-status
         [person]="child"
         label="Child's status in Canada">
+        <p> 
+          For arrivals through the Canada-Ukraine authorization for emergency travel
+          program (CUAET), select "Temporary document holder or diplomat" below.
+        </p>
+        <hr />
       </msp-canadian-status>
 
       <!-- Documents to support the child status in Canada -->
@@ -32,10 +37,33 @@
         [statusReason]="child.currentActivity"
         [(supportDoc)]="statusDocuments">
         <div sectionTitleInfo>
-          <h3 class="h2-style">Documents to support the child status in Canada</h3>
-          <p class="horizontal-line">
-            Provide <b>one</b> of the required documents to support the child's immigration status in Canada.
+          <h3 class="h2-style">Documents to support the your child's status in Canada</h3>
+          <p>
+            Provide <b>one</b> of the required documents to support your child's immigration status in Canada.
           </p>
+          <div *ngIf="isWorkPermit()">
+            <p>
+              If submitting a <b>Working Holiday Permit (Case Type 58)</b>, you
+              must also provide a letter of employment (issued by the employer)
+              with the following details:
+            </p>
+            <ul>
+              <li>
+                Confirmation of employment for at least six consecutive months
+                during the valid period of the permit.
+              </li>
+              <li>
+                The number of hours worked per week (a minimum of 18 hours per
+                week is required).
+              </li>
+              <li>The start and expected end dates of employment.</li>
+            </ul>
+            <p>
+              If submitting a new or updated Working Holiday (case type 58) permit,
+              the issue date on your letter of employment must fall within the period of the
+              new or updated permit.
+            </p>
+          </div>
         </div>
       </msp-support-documents>
     </div>

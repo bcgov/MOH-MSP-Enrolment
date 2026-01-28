@@ -121,6 +121,14 @@ export class CanadianStatusComponent<T extends ICanadianStatus> extends Base {
   /**
    * Gets status available to the current person
    */
+  isTemporaryPermitHolder() {
+    return this.person.status === StatusInCanada.TemporaryResident;
+  }
+
+  isNotApplicant() {
+    return this.person.relationship !== Relationship.Applicant;
+  }
+
   get statusInCanada(): string {
     return this.person.status !== undefined ? this.statusOpts[this.person.status] : '';
   }
