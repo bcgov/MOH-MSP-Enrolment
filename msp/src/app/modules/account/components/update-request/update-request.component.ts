@@ -21,7 +21,7 @@ import { SupportDocuments } from '../../../msp-core/models/support-documents.mod
 import { SupportDocumentTypes } from 'app/modules/msp-core/models/support-documents.enum';
 import { Base } from 'moh-common-lib';
 import { ControlContainer, NgForm } from '@angular/forms';
-import { StatusInCanada } from 'app/modules/msp-core/models/canadian-status.enum';
+import { CanadianStatusReason, StatusInCanada } from 'app/modules/msp-core/models/canadian-status.enum';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import { Relationship } from '../../../../models/relationship.enum';
 import { SupportDocumentList } from '../../../msp-core/models/support-documents.enum';
@@ -140,6 +140,10 @@ export class UpdateRequestComponent extends Base {
       this.person.status === StatusInCanada.PermanentResident ||
       this.person.currentActivity !== undefined
     );
+  }
+
+  isWorkPermit() {
+    return this.person.currentActivity === CanadianStatusReason.WorkingInBC;
   }
 
   get isChild() {

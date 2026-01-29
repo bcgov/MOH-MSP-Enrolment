@@ -11,7 +11,7 @@ import { NgForm, ControlContainer } from '@angular/forms';
 import { MspAccountMaintenanceDataService } from '../../../services/msp-account-data.service';
 import { Base } from 'moh-common-lib';
 import { Relationship } from 'app/models/relationship.enum';
-import { StatusInCanada } from 'app/modules/msp-core/models/canadian-status.enum';
+import { StatusInCanada, CanadianStatusReason } from 'app/modules/msp-core/models/canadian-status.enum';
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
 import { SupportDocumentTypes } from '../../../../msp-core/models/support-documents.enum';
 import { SupportDocuments } from '../../../../msp-core/models/support-documents.model';
@@ -131,5 +131,13 @@ export class AddChildComponent extends Base implements OnInit {
 
   isPhnUniqueInChild() {
     return this.dataService.accountApp.isUniquePhnsinDependents;
+  }
+
+  isTemporaryPermitHolder() {
+    return this.child.status === StatusInCanada.TemporaryResident;
+  }
+
+  isWorkPermit() {
+    return this.child.currentActivity === CanadianStatusReason.WorkingInBC;
   }
 }

@@ -31,11 +31,34 @@
     [supportDocList]="getDocList()"
     [statusReason]="person.currentActivity"
     [(supportDoc)]="person.updateStatusInCanadaDocType">
-    <div sectionTitleInfo>
-      <h3><strong>Documents to support status in Canada</strong></h3>
-      <p class="horizontal-line">
+    <div sectionTitleInfo class="horizontal-line">
+      <h3><strong>Documents to support new status in Canada</strong></h3>
+      <p>
         Provide <b>one</b> of the required documents to support {{possessiveRelationshipNoun}} immigration status in Canada.
       </p>
+      <div *ngIf="isWorkPermit()">
+        <p>
+          If submitting a <b>Working Holiday Permit (Case Type 58)</b>, you
+          must also provide a letter of employment (issued by the employer)
+          with the following details:
+        </p>
+        <ul>
+          <li>
+            Confirmation of employment for at least six consecutive months
+            during the valid period of the permit.
+          </li>
+          <li>
+            The number of hours worked per week (a minimum of 18 hours per
+            week is required).
+          </li>
+          <li>The start and expected end dates of employment.</li>
+        </ul>
+        <p>
+          If submitting a new or updated Working Holiday (case type 58) permit,
+          the issue date on your letter of employment must fall within the period of the
+          new or updated permit.
+        </p>
+      </div>
     </div>
   </msp-support-documents>
 </div>
