@@ -21,13 +21,15 @@
     <!-- Child's status in Canada-->
     <div class="form-group col-sm-6 add-document">
       <msp-canadian-status
-        [person]="child"
-        label="Child's status in Canada">
-        <p> 
-          For arrivals through the Canada-Ukraine authorization for emergency travel
-          program (CUAET), select "Temporary document holder or diplomat" below.
-        </p>
-        <hr />
+        [person]="child">
+        <div sectionTitleInfo>
+          <h3 class="h2-style">Child's Status in Canada</h3>
+          <p> 
+            For arrivals through the Canada-Ukraine authorization for emergency travel
+            program (CUAET), select "Temporary document holder or diplomat" below.
+          </p>
+          <hr />
+        </div>
       </msp-canadian-status>
 
       <!-- Documents to support the child status in Canada -->

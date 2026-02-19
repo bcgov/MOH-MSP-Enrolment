@@ -26,8 +26,8 @@
   <div *ngIf="displayStatusReasons" class="form-group">
     <div *ngIf="isTemporaryPermitHolder() && isNotApplicant()">
       <p>
-        If the spouse arrived recently in Canada and does not have a temporary
-        permit, select "Visitor Permit" below and copies of the spouse's passport
+        If {{relationshipNoun}} arrived recently in Canada and does not have a temporary
+        permit, select "Visitor Permit" below and copies of {{possessiveRelationshipNoun}} passport
         ID page and entry stamp or copies of other proof of entry (for example,
         flight itineraries or airline tickets).
       </p>
