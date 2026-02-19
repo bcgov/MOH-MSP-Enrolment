@@ -182,24 +182,24 @@ export class CanadianStatusComponent<T extends ICanadianStatus> extends Base {
   get relationshipNoun() {
     switch (this.person.relationship) {
       case Relationship.Spouse:
-        return "the spouse";
+        return 'the spouse';
       case Relationship.ChildUnder19:
       case Relationship.Child19To24:
-        return "the child";
+        return 'the child';
       default:
-        return "you";
+        return 'you';
     }
   }
 
   get possessiveRelationshipNoun() {
     switch (this.person.relationship) {
       case Relationship.Spouse:
-        return "the spouse's";
+        return 'the spouse\'s';
       case Relationship.ChildUnder19:
       case Relationship.Child19To24:
-        return "the child's";
+        return 'the child\'s';
       default:
-        return "your";
+        return 'your';
     }
   }
 
