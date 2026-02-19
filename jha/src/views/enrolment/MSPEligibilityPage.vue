@@ -18,11 +18,11 @@
           B.C. residents can apply for one, two or three programs using this
           form:
         </p>
-          <ul>
-            <li>Medical Services Plan&nbsp;</li>
-            <li>Fair PharmaCare&nbsp;</li>
-            <li>Supplementary Benefits&nbsp;</li>
-          </ul>
+        <ul>
+          <li>Medical Services Plan&nbsp;</li>
+          <li>Fair PharmaCare&nbsp;</li>
+          <li>Supplementary Benefits&nbsp;</li>
+        </ul>
         <p>
           Answer the following questions to see which programs you are eligible
           for and make sure you have what you need to apply.

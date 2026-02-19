@@ -70,9 +70,9 @@
           >
             <template v-slot:description>
               <span class="field-description">
-                <b>Note:</b> If you (the account holder) are a holder of a Canadian 
-                temporary permit, you are not eligible for Supplementary Benefits. 
-                Select "No" below.
+                <b>Note:</b> If you (the account holder) are a holder of a
+                Canadian temporary permit, you are not eligible for
+                Supplementary Benefits. Select "No" below.
               </span>
             </template>
           </RadioComponent>
