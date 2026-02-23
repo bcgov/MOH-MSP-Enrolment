@@ -67,7 +67,15 @@
             v-model="eqSBMeetsCriteria"
             :required="true"
             :items="radioOptionsYesNo"
-          />
+          >
+            <template v-slot:description>
+              <span class="field-description">
+                <b>Note:</b> If you (the account holder) are a holder of a
+                Canadian temporary permit, you are not eligible for
+                Supplementary Benefits. Select "No" below.
+              </span>
+            </template>
+          </RadioComponent>
           <div class="text-danger ml-4" v-if="eqSBMeetsCriteria === 'N'">
             <p>
               You are not eligible to apply for Supplementary Benefits at this

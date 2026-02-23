@@ -12,6 +12,18 @@
     <PageContent :deltaHeight="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
         <p>
+          <b>British Columbia Application for Health and Drug Coverage</b>
+        </p>
+        <p>
+          B.C. residents can apply for one, two or three programs using this
+          form:
+        </p>
+        <ul>
+          <li>Medical Services Plan&nbsp;</li>
+          <li>Fair PharmaCare&nbsp;</li>
+          <li>Supplementary Benefits&nbsp;</li>
+        </ul>
+        <p>
           Answer the following questions to see which programs you are eligible
           for and make sure you have what you need to apply.
         </p>
@@ -34,6 +46,7 @@
           Note: Submit <b>only one application</b> for an Account Holder and, if
           needed, spouse and/or children. Do not submit multiple applications.
         </p>
+        <hr />
         <RadioComponent
           id="apply-msp"
           name="apply-msp"

@@ -3,7 +3,7 @@ import { MspAccountMaintenanceDataService } from '../../../services/msp-account-
 import { MspAccountApp, AccountChangeOptions, UpdateList } from '../../../models/account.model';
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
 import { Relationship } from '../../../../../models/relationship.enum';
-import { StatusInCanada } from '../../../../msp-core/models/canadian-status.enum';
+import { StatusInCanada, CanadianStatusReason } from '../../../../msp-core/models/canadian-status.enum';
 import { SupportDocumentTypes } from 'app/modules/msp-core/models/support-documents.enum';
 import {
   nameChangeSupportDocs,
@@ -99,5 +99,9 @@ export class UpdateChildComponent implements OnInit {
     const cp = [...this.phns];
     cp.splice(cp.indexOf(this.child.phn), 1);
     return cp;
+  }
+
+  isWorkPermit() {
+    return this.child.currentActivity === CanadianStatusReason.WorkingInBC;
   }
 }
