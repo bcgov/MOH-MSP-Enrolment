@@ -82,9 +82,19 @@ export const radioOptionsOverageChildTemporaryResidentStatusReasons = [
     value: CanadianStatusReasons.StudyingInBC,
   },
   {
+    id: "religious-worker",
+    label: CanadianStatusReasons.ReligiousWorker,
+    value: CanadianStatusReasons.ReligiousWorker,
+  },
+  {
     id: "diplomatic-foil",
     label: CanadianStatusReasons.Diplomat,
     value: CanadianStatusReasons.Diplomat,
+  },
+  {
+    id: "visitor-permit",
+    label: CanadianStatusReasons.Visiting,
+    value: CanadianStatusReasons.Visiting,
   },
 ];
 

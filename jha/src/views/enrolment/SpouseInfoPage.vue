@@ -428,10 +428,11 @@
             >
               <h2>Documents</h2>
               <p>
-                Provide one of the required documents to support your status in
-                Canada. If your spouse's name has changed since their document
-                was issued, you are also required to upload a document to
-                support the name change.
+                Provide a copy of an accepted document that shows your status in
+                Canada. If your name is different from the name on the document,
+                you must also upload a copy of a marriage certificate, divorce
+                decree, or name change certificate that shows your full legal
+                name.
               </p>
               <hr />
               <SelectComponent
