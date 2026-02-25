@@ -12,13 +12,6 @@
     <PageContent :deltaHeight="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Supplementary Benefits Eligibility</h1>
-        <p>
-          Supplementary Benefits provide partial payment for certain medical
-          services, such as acupuncture and massage therapy, and may provide
-          access to other income-based programs. Individuals or families must
-          have an adjusted net income of $42,000 a year or less to be eligible.
-        </p>
-        <hr />
         <RadioComponent
           id="apply-sb"
           name="apply-sb"

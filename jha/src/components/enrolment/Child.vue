@@ -273,7 +273,7 @@
         required to upload documents to support your child's status in Canada.
         For arrivals through the Canada-Ukraine authorization for emergency
         travel program (CUAET), please select "Temporary Permit Holder or
-        Diplomat" from the drop down below.
+        Diplomat" from the menu below.
       </p>
       <hr />
       <SelectComponent
@@ -379,10 +379,10 @@
       >
         <h2>Documents</h2>
         <p>
-          Provide one of the required documents to support your status in
-          Canada. If your child's name has changed since their document was
-          issued, you are also required to upload a document to support the name
-          change.
+          Provide a copy of an accepted document that shows your status in
+          Canada. If your name is different from the name on the document, you
+          must also upload a copy of a marriage certificate, divorce decree, or
+          name change certificate that shows your full legal name.
         </p>
         <hr />
         <SelectComponent
