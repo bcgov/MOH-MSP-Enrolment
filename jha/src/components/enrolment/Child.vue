@@ -269,11 +269,11 @@
     <div v-if="requestImmigrationStatus">
       <h2 class="mt-3">Child's status in Canada</h2>
       <p>
-        Please provide your child's immigration status information. You will be
-        required to upload documents to support your child's status in Canada.
-        For arrivals through the Canada-Ukraine authorization for emergency
-        travel program (CUAET), please select "Temporary Permit Holder or
-        Diplomat" from the menu below.
+        Please provide your child's immigration status. You will be required to
+        upload documents to support your child's status in Canada. For arrivals
+        through the Canada-Ukraine authorization for emergency travel (CUAET)
+        program, please select "Temporary Permit Holder or Diplomat" from the
+        menu below.
       </p>
       <hr />
       <SelectComponent
@@ -379,10 +379,10 @@
       >
         <h2>Documents</h2>
         <p>
-          Provide a copy of an accepted document that shows your status in
-          Canada. If your name is different from the name on the document, you
-          must also upload a copy of a marriage certificate, divorce decree, or
-          name change certificate that shows your full legal name.
+          Provide a copy of an accepted document that shows your child’s status
+          in Canada. If their name is different from the name on the document,
+          you must also upload a copy of a name change certificate that shows
+          their full legal name.
         </p>
         <hr />
         <SelectComponent
@@ -438,7 +438,7 @@
           </p>
         </div>
         <RadioComponent
-          label="Does your child's document that supports their status in Canada include their selected gender designation?"
+          label="Does the document that shows your child's status in Canada match their selected gender designation?"
           :name="'gender-matches-' + index"
           :id="'gender-matches-' + index"
           class="mt-3"

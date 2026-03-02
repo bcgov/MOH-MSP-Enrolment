@@ -300,7 +300,11 @@ class ApiService {
                       ).substring(0, 25)
                     : null,
                 },
-                citizenshipType: dependent.status || null,
+                citizenshipType:
+                  getCitizenshipType(
+                    dependent.status,
+                    dependent.statusReason,
+                  ) || null,
                 attachmentUuids: [
                   ...dependent.nameChangeSupportDocuments.map(
                     (image) => image.uuid,
