@@ -27,21 +27,7 @@
           Answer the following questions to see which programs you are eligible
           for and make sure you have what you need to apply.
         </p>
-        <h1>Medical Services Plan (MSP) Enrolment Eligibility</h1>
-        <p>
-          MSP pays for medically required services of physicians and surgeons,
-          and dental or oral surgery performed in a hospital. If you are a B.C.
-          resident, you must by law enrol in MSP, and enrol your spouse and
-          child(ren) who are B.C. residents. You must physically be in B.C. to
-          enrol in MSP. If you are already enrolled in MSP, you can update your
-          account at
-          <a
-            href="https://www2.gov.bc.ca/managingyourmspaccount"
-            target="_blank"
-          >
-            gov.bc.ca/managingyourmspaccount.
-          </a>
-        </p>
+        <h1>Medical Services Plan (MSP) eligibility</h1>
         <p>
           Note: Submit <b>only one application</b> for an Account Holder and, if
           needed, spouse and/or children. Do not submit multiple applications.

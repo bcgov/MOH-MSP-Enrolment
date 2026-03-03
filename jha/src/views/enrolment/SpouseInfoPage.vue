@@ -334,15 +334,14 @@
 
           <!-- Spouse citizenship information  -->
           <div v-if="requestImmigrationStatus">
-            <h2 class="mt-4">Spouse or common-law partner status in Canada</h2>
+            <h2 class="mt-4">Spouse's status in Canada</h2>
             <div class="heading mt-3">
               <p>
-                Please provide your spouse's immigration status information. You
-                will be required to upload documents to support your spouse's
-                status in Canada. For arrivals through the Canada-Ukraine
-                authorization for emergency travel program (CUAET), please
-                select "Temporary Permit Holder or Diplomat" from the drop down
-                below.
+                Provide your spouse's immigration status. You will be need to
+                upload documents that show your spouse's status in Canada. For
+                arrivals through the Canada-Ukraine authorization for emergency
+                travel (CUAET) program, please select "Temporary Permit Holder
+                or Diplomat" from the menu below.
               </p>
             </div>
             <hr class="mt-0" />
@@ -428,11 +427,11 @@
             >
               <h2>Documents</h2>
               <p>
-                Provide a copy of an accepted document that shows your status in
-                Canada. If your name is different from the name on the document,
-                you must also upload a copy of a marriage certificate, divorce
-                decree, or name change certificate that shows your full legal
-                name.
+                Provide a copy of an accepted document that shows your spouse’s
+                status in Canada. If their name is different from the name on
+                the document, you must also upload a copy of a marriage
+                certificate, divorce decree, or name change certificate that
+                shows their full legal name.
               </p>
               <hr />
               <SelectComponent
@@ -489,7 +488,7 @@
                 </p>
               </div>
               <RadioComponent
-                label="Does your Spouse's document that supports their status in Canada include their selected gender designation?"
+                label="Does the document that shows your spouse's status in Canada match their selected gender designation?"
                 name="spouse-gender-matches"
                 id="spouse-gender-matches"
                 class="mt-3"

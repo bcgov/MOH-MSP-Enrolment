@@ -11,7 +11,7 @@
     </div>
     <PageContent :deltaHeight="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
-        <h1>Supplementary Benefits Eligibility</h1>
+        <h1>Supplementary Benefits eligibility</h1>
         <RadioComponent
           id="apply-sb"
           name="apply-sb"
@@ -72,16 +72,21 @@
           <div class="text-danger ml-4" v-if="eqSBMeetsCriteria === 'N'">
             <p>
               You are not eligible to apply for Supplementary Benefits at this
-              time. Please submit an application when you meet the residency
-              requirements. For assistance, please contact Health Insurance BC.
-              For more information on eligibility requirements, see
+              time. If you have not lived in Canada for at least the last 12
+              months, apply after you have met the residency requirements. For
+              more information about eligibility, see
               <a
                 target="_blank"
                 href="https://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/benefits/services-covered-by-msp/supplementary-benefits#apply-for-benefits"
               >
                 Applying for Supplementary Benefits.
               </a>
+              For assistance, contact Health Insurance BC at:
             </p>
+            <ul>
+              <li>604 683-7151 (Lower Mainland)</li>
+              <li>1 800 663-7100 (Elsewhere in B.C.)</li>
+            </ul>
           </div>
           <div v-if="eqSBMeetsCriteria === 'Y'">
             <p class="mb-0">
