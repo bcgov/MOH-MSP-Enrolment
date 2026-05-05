@@ -36,12 +36,11 @@
     "node": ">=18.0.0"
   },
   "devDependencies": {
-    "@vitejs/plugin-vue": "^5.2.1",
+    "@vitejs/plugin-vue": "^6.0.6",
     "@vitest/coverage-v8": "^4.1.5",
     "@vitest/eslint-plugin": "^1.6.16",
     "@vue/test-utils": "^2.4.6",
     "cypress": "^15.14.2",
-    "cypress-vite": "^1.8.1",
     "eslint": "^9.39.4",
     "eslint-plugin-compat": "^7.0.2",
     "eslint-plugin-cypress": "^5.1.1",
@@ -50,7 +49,7 @@
     "lodash": "^4.18.1",
     "prettier": "^3.5.2",
     "start-server-and-test": "^2.0.10",
-    "vite": "^6.1.0",
+    "vite": "^8.0.10",
     "vitest": "^4.1.5"
   },
   "browserslist": [
