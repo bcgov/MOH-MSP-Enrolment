@@ -2,18 +2,21 @@
   <div>
     <div class="container stepper">
       <PageStepper
-        :currentPath="$router.currentRoute.value.path"
+        :current-path="$router.currentRoute.value.path"
         :routes="stepRoutes"
-        @toggleShowMobileDetails="handleToggleShowMobileStepperDetails($event)"
-        :isMobileStepperOpen="isMobileStepperOpen"
-        @onClickLink="handleClickStepperLink($event)"
+        :is-mobile-stepper-open="isMobileStepperOpen"
+        @toggle-show-mobile-details="handleToggleShowMobileStepperDetails($event)"
+        @on-click-link="handleClickStepperLink($event)"
       />
     </div>
-    <PageContent :deltaHeight="pageContentDeltaHeight">
+    <PageContent :delta-height="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Review</h1>
         <hr />
-        <ReviewTableList :showEditButtons="true" tableBackgroundColor="#EEE" />
+        <ReviewTableList
+          :show-edit-buttons="true"
+          table-background-color="#EEE"
+        />
       </main>
     </PageContent>
     <ContinueBar @continue="continueHandler()" />
@@ -33,34 +36,12 @@ import pageStepperMixin from "@/mixins/page-stepper-mixin";
 
 export default {
   name: "ReviewPage",
-  mixins: [pageContentMixin, pageStepperMixin],
   components: {
     PageContent,
     ContinueBar,
     ReviewTableList,
   },
-  created() {
-    logService.logNavigation(
-      this.$store.state.enrolmentModule.applicationUuid,
-      enrolmentRoutes.REVIEW_PAGE.path,
-      enrolmentRoutes.REVIEW_PAGE.title,
-    );
-  },
-  methods: {
-    continueHandler() {
-      this.navigateToConsentPage();
-    },
-    navigateToConsentPage() {
-      const toPath = getConvertedPath(
-        this.$router.currentRoute.value.path,
-        enrolmentRoutes.CONSENT_PAGE.path,
-      );
-      pageStateService.setPageComplete(toPath);
-      pageStateService.visitPage(toPath);
-      this.$router.push(toPath);
-      scrollTo();
-    },
-  },
+  mixins: [pageContentMixin, pageStepperMixin],
   // Required in order to block back navigation.
   beforeRouteLeave(to, from, next) {
     pageStateService.setPageIncomplete(from.path);
@@ -74,7 +55,7 @@ export default {
       const topScrollPosition = getTopScrollPosition();
       const toPath = getConvertedPath(
         this.$router.currentRoute.value.path,
-        enrolmentRoutes.REVIEW_PAGE.path,
+        enrolmentRoutes.REVIEW_PAGE.path
       );
       next({
         path: toPath,
@@ -84,6 +65,28 @@ export default {
         scrollTo(topScrollPosition);
       }, 0);
     }
+  },
+  created() {
+    logService.logNavigation(
+      this.$store.state.enrolmentModule.applicationUuid,
+      enrolmentRoutes.REVIEW_PAGE.path,
+      enrolmentRoutes.REVIEW_PAGE.title
+    );
+  },
+  methods: {
+    continueHandler() {
+      this.navigateToConsentPage();
+    },
+    navigateToConsentPage() {
+      const toPath = getConvertedPath(
+        this.$router.currentRoute.value.path,
+        enrolmentRoutes.CONSENT_PAGE.path
+      );
+      pageStateService.setPageComplete(toPath);
+      pageStateService.visitPage(toPath);
+      this.$router.push(toPath);
+      scrollTo();
+    },
   },
 };
 </script>

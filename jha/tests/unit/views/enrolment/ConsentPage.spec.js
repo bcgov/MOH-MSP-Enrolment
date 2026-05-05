@@ -7,7 +7,7 @@ import enrolmentModule from "@/store/modules/enrolment-module.js";
 import appModule from "@/store/modules/app-module.js";
 import dummyData from "@/store/states/enrolment-module-dummy-data.js";
 import { completedConsentPageState /*, mockFile */ } from "../../fixtures.js";
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
+import { it, describe, expect, beforeEach, vi } from "vitest";
 
 const store = createStore({
   modules: {

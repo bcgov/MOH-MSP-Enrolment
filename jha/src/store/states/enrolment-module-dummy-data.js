@@ -1,8 +1,5 @@
 import { SupportDocumentTypes } from "../../constants/document-types";
-import {
-  CanadianStatusReasons,
-  StatusInCanada,
-} from "../../constants/immigration-status-types";
+import { CanadianStatusReasons, StatusInCanada } from "../../constants/immigration-status-types";
 import { ChildAgeTypes } from "../../constants/child-age-types";
 import { parseISO } from "date-fns";
 
@@ -46,8 +43,7 @@ export default {
   ahGenderMatches: "N",
   ahCitizenshipStatus: StatusInCanada.Citizen,
   ahCitizenshipStatusReason: CanadianStatusReasons.LivingInBCWithoutMSP,
-  ahCitizenshipSupportDocumentType:
-    SupportDocumentTypes.CanadianBirthCertificate,
+  ahCitizenshipSupportDocumentType: SupportDocumentTypes.CanadianBirthCertificate,
   ahCitizenshipSupportDocuments: placeholderAttachment,
   ahIsNameChanged: "Y",
   ahNameChangeSupportDocumentType: "Marriage Certificate",
@@ -76,8 +72,7 @@ export default {
   hasSpouse: "Y",
   spouseStatus: StatusInCanada.Citizen,
   spouseStatusReason: CanadianStatusReasons.LivingInBCWithoutMSP,
-  spouseCitizenshipSupportDocumentType:
-    SupportDocumentTypes.CanadianBirthCertificate,
+  spouseCitizenshipSupportDocumentType: SupportDocumentTypes.CanadianBirthCertificate,
   spouseGenderMatches: "N",
   spouseCitizenshipSupportDocuments: placeholderAttachment,
   spouseIsNameChanged: "Y",
@@ -117,8 +112,7 @@ export default {
       ageRange: ChildAgeTypes.Child0To18,
       status: StatusInCanada.Citizen,
       statusReason: CanadianStatusReasons.LivingInBCWithoutMSP,
-      citizenshipSupportDocumentType:
-        SupportDocumentTypes.CanadianBirthCertificate,
+      citizenshipSupportDocumentType: SupportDocumentTypes.CanadianBirthCertificate,
       genderMatches: "N",
       citizenshipSupportDocuments: placeholderAttachment,
       isNameChanged: "N",

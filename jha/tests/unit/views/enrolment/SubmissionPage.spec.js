@@ -4,7 +4,7 @@ import router from '@/router';
 import SubmissionPage from '@/views/enrolment/SubmissionPage.vue';
 import appModule from "@/store/modules/app-module.js";
 import { fpcAddressUpdateMiddlewareHTML } from "../../fixtures.js";
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
+import { it, describe, expect, vi } from "vitest";
 
 const enrolmentModuleState = {
   applicationUuid: null,

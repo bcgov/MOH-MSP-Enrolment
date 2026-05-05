@@ -12,7 +12,10 @@
         </a>
       </p>
       <div v-if="hasMultipleSamples">
-        <p v-for="(sample, index) in documentType" :key="index">
+        <p
+          v-for="(sample, index) in documentType"
+          :key="index"
+        >
           <a
             href="javascript:void(0)"
             :title="`${sample} samples`"
@@ -31,17 +34,24 @@
         <li>A JPG, PNG, GIF, BMP or PDF file&nbsp;</li>
       </ul>
     </TipBox>
-    <Teleport v-if="isModalOpen" to="#modal-target">
-      <ContentModal :title="modalTitle" size="lg" @close="closeModal()">
+    <Teleport
+      v-if="isModalOpen"
+      to="#modal-target"
+    >
+      <ContentModal
+        :title="modalTitle"
+        size="lg"
+        @close="closeModal()"
+      >
         <div class="sample-image-container text-center">
           <img :src="`/ahdc/images/samples/${sampleImageFileName}`" />
         </div>
         <div class="modal-footer">
           <ButtonComponent
             label="Close"
-            @click="closeModal()"
             color="gold"
             class="full-width"
+            @click="closeModal()"
           />
         </div>
       </ContentModal>
@@ -73,21 +83,9 @@ export default {
       sampleIndex: 0,
     };
   },
-  methods: {
-    openModal(sampleIndex) {
-      this.sampleIndex = sampleIndex;
-      this.isModalOpen = true;
-    },
-    closeModal() {
-      this.isModalOpen = false;
-    },
-  },
   computed: {
     hasSingleSample() {
-      return (
-        typeof this.documentType === "string" &&
-        SupportDocumentSamples[this.documentType]
-      );
+      return typeof this.documentType === "string" && SupportDocumentSamples[this.documentType];
     },
     hasMultipleSamples() {
       return Array.isArray(this.documentType);
@@ -105,6 +103,15 @@ export default {
       } else {
         return `${this.documentType} samples`;
       }
+    },
+  },
+  methods: {
+    openModal(sampleIndex) {
+      this.sampleIndex = sampleIndex;
+      this.isModalOpen = true;
+    },
+    closeModal() {
+      this.isModalOpen = false;
     },
   },
 };

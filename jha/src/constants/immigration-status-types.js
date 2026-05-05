@@ -35,9 +35,7 @@ export const getCitizenshipType = (statusInCanada, canadianStatusReason) => {
     case StatusInCanada.TemporaryResident:
       if (canadianStatusReason === CanadianStatusReasons.Diplomat) {
         return CitizenshipType.Diplomat;
-      } else if (
-        canadianStatusReason === CanadianStatusReasons.ReligiousWorker
-      ) {
+      } else if (canadianStatusReason === CanadianStatusReasons.ReligiousWorker) {
         return CitizenshipType.ReligiousWorker;
       } else if (canadianStatusReason === CanadianStatusReasons.StudyingInBC) {
         return CitizenshipType.StudyPermit;

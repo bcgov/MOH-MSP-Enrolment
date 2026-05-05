@@ -26,7 +26,6 @@ import { ChildAgeTypes } from "../../../../src/constants/child-age-types";
 import { parseISO } from "date-fns";
 import { StatusInCanada } from "@/constants/immigration-status-types";
 import dummyData from "@/store/states/enrolment-module-dummy-data";
-import { not } from "@vuelidate/validators";
 import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
 
 const router = createRouter({

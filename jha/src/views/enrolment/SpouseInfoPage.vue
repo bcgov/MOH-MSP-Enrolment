@@ -2,21 +2,19 @@
   <div>
     <div class="container stepper">
       <PageStepper
-        :currentPath="$router.currentRoute.value.path"
+        :current-path="$router.currentRoute.value.path"
         :routes="stepRoutes"
-        @toggleShowMobileDetails="handleToggleShowMobileStepperDetails($event)"
-        :isMobileStepperOpen="isMobileStepperOpen"
-        @onClickLink="handleClickStepperLink($event)"
+        :is-mobile-stepper-open="isMobileStepperOpen"
+        @toggle-show-mobile-details="handleToggleShowMobileStepperDetails($event)"
+        @on-click-link="handleClickStepperLink($event)"
       />
     </div>
-    <PageContent :deltaHeight="pageContentDeltaHeight">
+    <PageContent :delta-height="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Spouse information</h1>
         <div class="heading mt-3">
           <div>
-            <p>
-              To be eligible for coverage, a spouse must be a B.C. resident.
-            </p>
+            <p>To be eligible for coverage, a spouse must be a B.C. resident.</p>
           </div>
           <div
             v-if="hasSpouse === 'Y'"
@@ -34,159 +32,141 @@
         <RadioComponent
           v-if="hasSpouse !== 'Y'"
           id="has-spouse"
+          v-model="hasSpouse"
           name="has-spouse"
           label="Do you have a spouse or common-law partner?"
-          v-model="hasSpouse"
           :required="true"
-          @blur="handleBlurField(v$.hasSpouse)"
           :items="radioOptionsNoYes"
+          @blur="handleBlurField(v$.hasSpouse)"
         />
         <div
-          class="text-danger"
           v-if="v$.hasSpouse.$dirty && v$.hasSpouse.required.$invalid"
+          class="text-danger"
           aria-live="assertive"
         >
           Please indicate whether or not you have a spouse who needs to enrol.
         </div>
 
-        <div v-if="hasSpouse === 'Y'" class="mt-3">
+        <div
+          v-if="hasSpouse === 'Y'"
+          class="mt-3"
+        >
           <!-- Spouse personal information -->
           <!-- Bootstrap row and column classes for gender tipbox placement -->
           <div class="row">
             <div class="col-md-7">
               <InputComponent
-                label="First name"
                 id="first-name"
-                className="mt-3"
-                :maxlength="firstNameMaxLength"
                 v-model="spouseFirstName"
-                @blur="handleBlurField(v$.spouseFirstName)"
+                label="First name"
+                class-name="mt-3"
+                :maxlength="firstNameMaxLength"
                 :required="true"
-                :inputStyle="mediumStyles"
+                :input-style="mediumStyles"
+                @blur="handleBlurField(v$.spouseFirstName)"
               />
               <div
+                v-if="v$.spouseFirstName.$dirty && v$.spouseFirstName.required.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseFirstName.$dirty &&
-                  v$.spouseFirstName.required.$invalid
-                "
                 aria-live="assertive"
               >
                 First name is required.
               </div>
               <div
-                class="text-danger"
                 v-if="
                   v$.spouseFirstName.$dirty &&
                   !v$.spouseFirstName.required.$invalid &&
                   v$.spouseFirstName.nameValidator.$invalid
                 "
+                class="text-danger"
                 aria-live="assertive"
               >
-                First name must begin with a letter and cannot include special
-                characters except hyphens, periods, apostrophes and blank
-                characters.
+                First name must begin with a letter and cannot include special characters except
+                hyphens, periods, apostrophes and blank characters.
               </div>
               <InputComponent
-                label="Middle name (optional)"
                 id="middle-name"
-                className="mt-3"
-                :maxlength="middleNameMaxLength"
                 v-model="spouseMiddleName"
+                label="Middle name (optional)"
+                class-name="mt-3"
+                :maxlength="middleNameMaxLength"
+                :input-style="mediumStyles"
                 @blur="handleBlurField(v$.spouseMiddleName)"
-                :inputStyle="mediumStyles"
               />
               <div
+                v-if="v$.spouseMiddleName.$dirty && v$.spouseMiddleName.nameValidator.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseMiddleName.$dirty &&
-                  v$.spouseMiddleName.nameValidator.$invalid
-                "
                 aria-live="assertive"
               >
-                Middle name must begin with a letter and cannot include special
-                characters except hyphens, periods, apostrophes and blank
-                characters.
+                Middle name must begin with a letter and cannot include special characters except
+                hyphens, periods, apostrophes and blank characters.
               </div>
               <InputComponent
-                label="Last name"
                 id="last-name"
-                className="mt-3"
-                :maxlength="lastNameMaxLength"
                 v-model="spouseLastName"
-                @blur="handleBlurField(v$.spouseLastName)"
+                label="Last name"
+                class-name="mt-3"
+                :maxlength="lastNameMaxLength"
                 :required="true"
-                :inputStyle="mediumStyles"
+                :input-style="mediumStyles"
+                @blur="handleBlurField(v$.spouseLastName)"
               />
               <div
+                v-if="v$.spouseLastName.$dirty && v$.spouseLastName.required.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseLastName.$dirty &&
-                  v$.spouseLastName.required.$invalid
-                "
                 aria-live="assertive"
               >
                 Last name is required.
               </div>
               <div
-                class="text-danger"
                 v-if="
                   v$.spouseLastName.$dirty &&
                   !v$.spouseLastName.required.$invalid &&
                   v$.spouseLastName.nameValidator.$invalid
                 "
+                class="text-danger"
                 aria-live="assertive"
               >
-                Last name must begin with a letter and cannot include special
-                characters except hyphens, periods, apostrophes and blank
-                characters.
+                Last name must begin with a letter and cannot include special characters except
+                hyphens, periods, apostrophes and blank characters.
               </div>
               <DateInput
-                label="Birthdate"
                 id="birth-date"
-                className="mt-3"
                 v-model="spouseBirthDate"
-                @blur="handleBlurField(v$.spouseBirthDate)"
+                label="Birthdate"
+                class-name="mt-3"
                 :required="true"
-                @processDate="handleProcessBirthdate($event)"
+                @blur="handleBlurField(v$.spouseBirthDate)"
+                @process-date="handleProcessBirthdate($event)"
               />
               <div
+                v-if="v$.spouseBirthDate.$dirty && v$.spouseBirthDate.required.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseBirthDate.$dirty &&
-                  v$.spouseBirthDate.required.$invalid
-                "
                 aria-live="assertive"
               >
                 Birthdate is required.
               </div>
               <div
+                v-if="v$.spouseBirthDate.$dirty && v$.spouseBirthDate.dateDataValidator.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseBirthDate.$dirty &&
-                  v$.spouseBirthDate.dateDataValidator.$invalid
-                "
                 aria-live="assertive"
               >
                 Invalid birthdate.
               </div>
               <div
+                v-if="v$.spouseBirthDate.$dirty && v$.spouseBirthDate.distantPastValidator.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseBirthDate.$dirty &&
-                  v$.spouseBirthDate.distantPastValidator.$invalid
-                "
                 aria-live="assertive"
               >
                 Invalid birthdate.
               </div>
               <div
-                class="text-danger"
                 v-if="
                   v$.spouseBirthDate.$dirty &&
                   !v$.spouseBirthDate.required.$invalid &&
                   v$.spouseBirthDate.birthDatePastValidator.$invalid
                 "
+                class="text-danger"
                 aria-live="assertive"
               >
                 Birthdate cannot be in the future.
@@ -194,118 +174,111 @@
 
               <div v-if="requestPersonalHealthNumber">
                 <PhnInput
-                  label="Personal Health Number (PHN)"
                   id="personal-health-number"
+                  v-model="spousePersonalHealthNumber"
+                  label="Personal Health Number (PHN)"
                   class="mt-3"
                   placeholder="1111 111 111"
-                  :inputStyle="smallStyles"
-                  v-model="spousePersonalHealthNumber"
+                  :input-style="smallStyles"
                   :required="true"
                   @blur="handleBlurField(v$.spousePersonalHealthNumber)"
                 />
-                <span class="field-description">
-                  This number appears on the BC Services Card
-                </span>
+                <span class="field-description"> This number appears on the BC Services Card </span>
                 <div
-                  class="text-danger"
                   v-if="
                     v$.spousePersonalHealthNumber.$dirty &&
                     v$.spousePersonalHealthNumber.required.$invalid
                   "
+                  class="text-danger"
                   aria-live="assertive"
                 >
                   Personal Health Number is required.
                 </div>
                 <div
-                  class="text-danger"
                   v-if="
                     v$.spousePersonalHealthNumber.$dirty &&
                     (v$.spousePersonalHealthNumber.phnValidator.$invalid ||
-                      v$.spousePersonalHealthNumber.phnFirstDigitValidator
-                        .$invalid)
+                      v$.spousePersonalHealthNumber.phnFirstDigitValidator.$invalid)
                   "
+                  class="text-danger"
                   aria-live="assertive"
                 >
                   Personal Health Number is not valid.
                 </div>
                 <div
-                  class="text-danger"
                   v-if="
                     v$.spousePersonalHealthNumber.$dirty &&
                     v$.spousePersonalHealthNumber.uniquePHNValidator.$invalid
                   "
+                  class="text-danger"
                   aria-live="assertive"
                 >
-                  This Personal Health Number (PHN) was already used for another
-                  family member. Please provide the PHN that is listed on the
-                  family member's PHN card/letter.
+                  This Personal Health Number (PHN) was already used for another family member.
+                  Please provide the PHN that is listed on the family member's PHN card/letter.
                 </div>
               </div>
               <div v-if="requestSocialInsuranceNumber">
                 <SINInput
-                  label="Social Insurance Number (SIN)"
                   id="social-insurance-number"
+                  v-model="spouseSocialInsuranceNumber"
+                  label="Social Insurance Number (SIN)"
                   class="mt-3"
                   placeholder="111 111 111"
-                  :inputStyle="smallStyles"
-                  v-model="spouseSocialInsuranceNumber"
+                  :input-style="smallStyles"
                   :required="true"
                   @blur="handleBlurField(v$.spouseSocialInsuranceNumber)"
                 />
                 <span class="field-description">
-                  Your spouse’s SIN will be used to verify your income for Fair
-                  Pharmacare and Supplementary Benefits (as applicable)
+                  Your spouse’s SIN will be used to verify your income for Fair Pharmacare and
+                  Supplementary Benefits (as applicable)
                 </span>
                 <div
-                  class="text-danger"
                   v-if="
                     v$.spouseSocialInsuranceNumber.$dirty &&
                     v$.spouseSocialInsuranceNumber.required.$invalid
                   "
+                  class="text-danger"
                   aria-live="assertive"
                 >
                   SIN is required.
                 </div>
                 <div
-                  class="text-danger"
                   v-if="
                     v$.spouseSocialInsuranceNumber.$dirty &&
                     v$.spouseSocialInsuranceNumber.sinValidator.$invalid
                   "
+                  class="text-danger"
                   aria-live="assertive"
                 >
                   SIN is invalid.
                 </div>
                 <div
-                  class="text-danger"
                   v-if="
                     v$.spouseSocialInsuranceNumber.$dirty &&
                     v$.spouseSocialInsuranceNumber.uniqueSINValidator.$invalid
                   "
+                  class="text-danger"
                   aria-live="assertive"
                 >
-                  This SIN was already used for another family member. Please
-                  provide the SIN that is listed on the family member's SIN
-                  card/letter.
+                  This SIN was already used for another family member. Please provide the SIN that
+                  is listed on the family member's SIN card/letter.
                 </div>
               </div>
 
               <div v-if="requestGender">
                 <RadioComponent
-                  label="Gender"
                   id="spouse-gender"
-                  name="spouse-gender"
                   v-model="spouseGender"
+                  label="Gender"
+                  name="spouse-gender"
                   :required="true"
-                  className="mt-3"
-                  @blur="handleBlurField(v$.spouseGender)"
+                  class-name="mt-3"
                   :items="radioGenderOptions"
+                  @blur="handleBlurField(v$.spouseGender)"
                 />
                 <div
+                  v-if="v$.spouseGender.$dirty && v$.spouseGender.required.$invalid"
                   class="text-danger"
-                  v-if="
-                    v$.spouseGender.$dirty && v$.spouseGender.required.$invalid
-                  "
                   aria-live="assertive"
                 >
                   Please indicate your spouse's gender.
@@ -316,10 +289,9 @@
               <TipBox v-if="requestGender">
                 <p>Tip</p>
                 <p>
-                  If the gender you select does not match the gender on your
-                  spouse's supporting document(s), they must submit an
-                  application for change of gender designation. For more
-                  information see
+                  If the gender you select does not match the gender on your spouse's supporting
+                  document(s), they must submit an application for change of gender designation. For
+                  more information see
                   <a
                     href="https://www2.gov.bc.ca/gov/content/governments/government-id/bc-services-card/your-card/change-personal-information"
                     target="_blank"
@@ -337,30 +309,29 @@
             <h2 class="mt-4">Spouse's status in Canada</h2>
             <div class="heading mt-3">
               <p>
-                Provide your spouse's immigration status. You will be need to
-                upload documents that show your spouse's status in Canada. For
-                arrivals through the Canada-Ukraine authorization for emergency
-                travel (CUAET) program, please select "Temporary Permit Holder
-                or Diplomat" from the menu below.
+                Provide your spouse's immigration status. You will be need to upload documents that
+                show your spouse's status in Canada. For arrivals through the Canada-Ukraine
+                authorization for emergency travel (CUAET) program, please select "Temporary Permit
+                Holder or Diplomat" from the menu below.
               </p>
             </div>
             <hr class="mt-0" />
             <SelectComponent
               id="spouse-status"
+              v-model="spouseStatus"
               name="spouse-status"
-              defaultOptionLabel="Please select"
-              :disablePlaceholder="true"
+              default-option-label="Please select"
+              :disable-placeholder="true"
               label="Immigration status in Canada"
               class="mt-3"
-              v-model="spouseStatus"
               :required="true"
               :options="citizenshipStatusOptions"
+              :input-style="mediumStyles"
               @blur="handleBlurField(v$.spouseStatus)"
-              :inputStyle="mediumStyles"
             />
             <div
-              class="text-danger"
               v-if="v$.spouseStatus.$dirty && v$.spouseStatus.required.$invalid"
+              class="text-danger"
               aria-live="assertive"
             >
               Please select your spouse's immigration status.
@@ -373,19 +344,16 @@
             >
               <RadioComponent
                 id="spouse-status-reason"
+                v-model="spouseStatusReason"
                 name="spouse-status-reason"
                 label=""
-                v-model="spouseStatusReason"
-                @blur="handleBlurField(v$.spouseStatusReason)"
                 :required="true"
                 :items="citizenshipStatusReasonOptions"
+                @blur="handleBlurField(v$.spouseStatusReason)"
               />
               <div
+                v-if="v$.spouseStatusReason.$dirty && v$.spouseStatusReason.required.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseStatusReason.$dirty &&
-                  v$.spouseStatusReason.required.$invalid
-                "
                 aria-live="assertive"
               >
                 This field is required.
@@ -393,66 +361,59 @@
             </div>
             <div v-if="spouseStatus === statusOptions.TemporaryResident">
               <p>
-                If the spouse arrived recently in Canada and does not have a
-                temporary permit, select "Visitor Permit" below and copies of
-                the spouse's passport ID page and entry stamp or copies of other
-                proof of entry (for example, flight itineraries or airline
+                If the spouse arrived recently in Canada and does not have a temporary permit,
+                select "Visitor Permit" below and copies of the spouse's passport ID page and entry
+                stamp or copies of other proof of entry (for example, flight itineraries or airline
                 tickets).
               </p>
               <RadioComponent
                 id="spouse-status-reason"
+                v-model="spouseStatusReason"
                 name="spouse-status-reason"
                 label=""
-                v-model="spouseStatusReason"
-                @blur="handleBlurField(v$.spouseStatusReason)"
                 :required="true"
                 :items="temporaryResidentStatusReasonOptions"
+                @blur="handleBlurField(v$.spouseStatusReason)"
               />
               <div
+                v-if="v$.spouseStatusReason.$dirty && v$.spouseStatusReason.required.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseStatusReason.$dirty &&
-                  v$.spouseStatusReason.required.$invalid
-                "
                 aria-live="assertive"
               >
                 This field is required.
               </div>
             </div>
             <div
-              v-if="
-                spouseStatusReason !== null && spouseStatusReason !== undefined
-              "
+              v-if="spouseStatusReason !== null && spouseStatusReason !== undefined"
               class="mt-3"
             >
               <h2>Documents</h2>
               <p>
-                Provide a copy of an accepted document that shows your spouse’s
-                status in Canada. If their name is different from the name on
-                the document, you must also upload a copy of a marriage
-                certificate, divorce decree, or name change certificate that
-                shows their full legal name.
+                Provide a copy of an accepted document that shows your spouse’s status in Canada. If
+                their name is different from the name on the document, you must also upload a copy
+                of a marriage certificate, divorce decree, or name change certificate that shows
+                their full legal name.
               </p>
               <hr />
               <SelectComponent
+                id="citizen-support-document-type"
+                v-model="spouseCitizenshipSupportDocumentType"
                 label="Document type"
                 name="citizen-support-document-type"
-                id="citizen-support-document-type"
-                defaultOptionLabel="Please select"
-                :disablePlaceholder="true"
+                default-option-label="Please select"
+                :disable-placeholder="true"
                 class="mb-3"
-                v-model="spouseCitizenshipSupportDocumentType"
                 :required="true"
                 :options="citizenshipSupportDocumentOptions"
+                :input-style="mediumStyles"
                 @blur="handleBlurField(v$.spouseCitizenshipSupportDocumentType)"
-                :inputStyle="mediumStyles"
               />
               <div
-                class="text-danger"
                 v-if="
                   v$.spouseCitizenshipSupportDocumentType.$dirty &&
                   v$.spouseCitizenshipSupportDocumentType.required.$invalid
                 "
+                class="text-danger"
                 aria-live="assertive"
               >
                 Document type is required.
@@ -460,149 +421,130 @@
               <div
                 v-if="
                   spouseCitizenshipSupportDocumentType &&
-                  spouseCitizenshipSupportDocumentType ==
-                    supportDocumentTypes.WorkPermit
+                  spouseCitizenshipSupportDocumentType == supportDocumentTypes.WorkPermit
                 "
               >
                 <p>
                   If submitting a
-                  <span class="b">Working Holiday Permit (Case Type 58)</span>,
-                  you must also provide a letter of employment (issued by the
-                  employer) with the following details:
+                  <span class="b">Working Holiday Permit (Case Type 58)</span>, you must also
+                  provide a letter of employment (issued by the employer) with the following
+                  details:
                 </p>
                 <ul>
                   <li>
-                    Confirmation of employment for at least six consecutive
-                    months during the valid period of the permit.
+                    Confirmation of employment for at least six consecutive months during the valid
+                    period of the permit.
                   </li>
                   <li>
-                    The number of hours worked per week (a minimum of 18 hours
-                    per week is required).
+                    The number of hours worked per week (a minimum of 18 hours per week is
+                    required).
                   </li>
                   <li>The start and expected end dates of employment.</li>
                 </ul>
                 <p>
-                  If submitting a new or updated Working Holiday (case type 58)
-                  permit, the issue date on your letter of employment must fall
-                  within the period of the new or updated permit.
+                  If submitting a new or updated Working Holiday (case type 58) permit, the issue
+                  date on your letter of employment must fall within the period of the new or
+                  updated permit.
                 </p>
               </div>
               <RadioComponent
+                id="spouse-gender-matches"
+                v-model="spouseGenderMatches"
                 label="Does the document that shows your spouse's status in Canada match their selected gender designation?"
                 name="spouse-gender-matches"
-                id="spouse-gender-matches"
                 class="mt-3"
-                v-model="spouseGenderMatches"
                 :required="true"
                 :items="radioOptionsNoYes"
                 @blur="handleBlurField(v$.spouseGenderMatches)"
               />
               <div
+                v-if="v$.spouseGenderMatches.$dirty && v$.spouseGenderMatches.required.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseGenderMatches.$dirty &&
-                  v$.spouseGenderMatches.required.$invalid
-                "
                 aria-live="assertive"
               >
                 This field is required.
               </div>
-              <div
-                v-if="
-                  spouseCitizenshipSupportDocumentType && spouseGenderMatches
-                "
-              >
+              <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
                 <h2>
                   {{ spouseCitizenshipSupportDocumentType }}
-                  {{
-                    spouseGenderMatches === "N"
-                      ? "and change of gender designation"
-                      : ""
-                  }}
+                  {{ spouseGenderMatches === "N" ? "and change of gender designation" : "" }}
                 </h2>
                 <hr />
                 <div class="row">
                   <div class="col-md-7">
                     <FileUploader
-                      v-model="spouseCitizenshipSupportDocuments"
                       id="spouse-citizenship-support-documents"
-                      :isZoomPortalEnabled="true"
-                      modalElementTarget="#modal-target"
-                      documentType="Spouse citizenship support documents"
+                      v-model="spouseCitizenshipSupportDocuments"
+                      :is-zoom-portal-enabled="true"
+                      modal-element-target="#modal-target"
+                      document-type="Spouse citizenship support documents"
                       :description="spouseCitizenshipSupportDocumentType"
                     />
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseCitizenshipSupportDocuments.$dirty &&
                         v$.spouseCitizenshipSupportDocuments.required.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       You must include documentation for your application.
                     </div>
                   </div>
                   <div class="col-md-5">
-                    <SampleImageTipBox :documentType="citizenshipSamples" />
+                    <SampleImageTipBox :document-type="citizenshipSamples" />
                   </div>
                 </div>
               </div>
 
-              <div
-                v-if="
-                  spouseCitizenshipSupportDocumentType && spouseGenderMatches
-                "
-              >
+              <div v-if="spouseCitizenshipSupportDocumentType && spouseGenderMatches">
                 <RadioComponent
-                  label="Is your spouse's name different from the name on their document?"
                   id="name-change"
+                  v-model="spouseIsNameChanged"
+                  label="Is your spouse's name different from the name on their document?"
                   name="name-change"
                   class="mt-3 mb-3"
-                  v-model="spouseIsNameChanged"
-                  @blur="handleBlurField(v$.spouseIsNameChanged)"
                   :required="true"
                   :items="radioOptionsNoYes"
+                  @blur="handleBlurField(v$.spouseIsNameChanged)"
                 />
                 <div
+                  v-if="v$.spouseIsNameChanged.$dirty && v$.spouseIsNameChanged.required.$invalid"
                   class="text-danger"
-                  v-if="
-                    v$.spouseIsNameChanged.$dirty &&
-                    v$.spouseIsNameChanged.required.$invalid
-                  "
                   aria-live="assertive"
                 >
                   Please indicate if your spouse's name changed.
                 </div>
               </div>
-              <div v-if="spouseIsNameChanged === 'Y'" class="tabbed-section">
+              <div
+                v-if="spouseIsNameChanged === 'Y'"
+                class="tabbed-section"
+              >
                 <h2>Additional Documents</h2>
                 <p>
-                  Provide a copy of a marriage certificate, divorce decree, or
-                  name change certificate that shows your spouse's full legal
-                  name.
+                  Provide a copy of a marriage certificate, divorce decree, or name change
+                  certificate that shows your spouse's full legal name.
                 </p>
                 <hr />
                 <SelectComponent
+                  id="name-change-doc-type"
+                  v-model="spouseNameChangeSupportDocumentType"
                   label="Document type"
                   name="name-change-doc-type"
-                  id="name-change-doc-type"
-                  defaultOptionLabel="Please select"
-                  :disablePlaceholder="true"
+                  default-option-label="Please select"
+                  :disable-placeholder="true"
                   class="mb-3"
-                  v-model="spouseNameChangeSupportDocumentType"
                   :required="true"
                   :options="nameChangeSupportDocumentOptions"
-                  @blur="
-                    handleBlurField(v$.spouseNameChangeSupportDocumentType)
-                  "
-                  :inputStyle="mediumStyles"
+                  :input-style="mediumStyles"
+                  @blur="handleBlurField(v$.spouseNameChangeSupportDocumentType)"
                 />
                 <div
-                  class="text-danger"
                   v-if="
                     v$.spouseNameChangeSupportDocumentType.$dirty &&
                     v$.spouseNameChangeSupportDocumentType.required.$invalid
                   "
+                  class="text-danger"
                   aria-live="assertive"
                 >
                   Document type is required.
@@ -613,36 +555,37 @@
                   <div class="row">
                     <div class="col-md-7">
                       <FileUploader
-                        class="mb-3"
                         id="spouse-name-change-support-documents"
                         v-model="spouseNameChangeSupportDocuments"
-                        :isZoomPortalEnabled="true"
-                        modalElementTarget="#modal-target"
-                        documentType="Spouse name change support documents"
+                        class="mb-3"
+                        :is-zoom-portal-enabled="true"
+                        modal-element-target="#modal-target"
+                        document-type="Spouse name change support documents"
                         :description="spouseNameChangeSupportDocumentType"
                       />
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseNameChangeSupportDocuments.$dirty &&
                           v$.spouseNameChangeSupportDocuments.required.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
                         You must include documentation for your application.
                       </div>
                     </div>
                     <div class="col-md-5">
-                      <SampleImageTipBox
-                        :documentType="spouseNameChangeSupportDocumentType"
-                      />
+                      <SampleImageTipBox :document-type="spouseNameChangeSupportDocumentType" />
                     </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <div v-if="requestMovingInfo" class="mt-3">
+          <div
+            v-if="requestMovingInfo"
+            class="mt-3"
+          >
             <!-- Spouse moving information -->
             <h2 class="mt-3">Moving information</h2>
             <hr />
@@ -650,43 +593,41 @@
               <div class="col-md-7">
                 <div v-if="showLivedInBCSinceBirth">
                   <RadioComponent
-                    label="Has your spouse lived in B.C. since birth?"
                     id="lived-in-bc"
-                    name="lived-in-bc"
                     v-model="spouseLivedInBCSinceBirth"
+                    label="Has your spouse lived in B.C. since birth?"
+                    name="lived-in-bc"
                     :required="true"
-                    className="mt-3"
-                    @blur="handleBlurField(v$.spouseLivedInBCSinceBirth)"
+                    class-name="mt-3"
                     :items="radioOptionsNoYes"
+                    @blur="handleBlurField(v$.spouseLivedInBCSinceBirth)"
                   />
                   <div
-                    class="text-danger"
                     v-if="
                       v$.spouseLivedInBCSinceBirth.$dirty &&
                       v$.spouseLivedInBCSinceBirth.required.$invalid
                     "
+                    class="text-danger"
                     aria-live="assertive"
                   >
-                    Please indicate whether your spouse has lived in B.C. since
-                    birth.
+                    Please indicate whether your spouse has lived in B.C. since birth.
                   </div>
                 </div>
                 <div v-if="showOriginTextField">
                   <InputComponent
-                    className="mt-3"
+                    v-model="spouseMoveFromOrigin"
+                    class-name="mt-3"
                     label="Which province or jurisdiction did your spouse live in before moving to British Columbia?"
                     maxlength="25"
-                    v-model="spouseMoveFromOrigin"
-                    @blur="handleBlurField(v$.spouseMoveFromOrigin)"
                     :required="true"
-                    :inputStyle="mediumStyles"
+                    :input-style="mediumStyles"
+                    @blur="handleBlurField(v$.spouseMoveFromOrigin)"
                   />
                   <div
-                    class="text-danger"
                     v-if="
-                      v$.spouseMoveFromOrigin.$dirty &&
-                      v$.spouseMoveFromOrigin.required.$invalid
+                      v$.spouseMoveFromOrigin.$dirty && v$.spouseMoveFromOrigin.required.$invalid
                     "
+                    class="text-danger"
                     aria-live="assertive"
                   >
                     Province or jurisdiction of origin is required.
@@ -694,38 +635,36 @@
                 </div>
                 <div v-if="showMovedPermanentlyQuestion">
                   <RadioComponent
-                    label="Has your spouse moved to B.C. permanently?"
                     id="permanent-move"
-                    name="permanent-move"
                     v-model="spouseMadePermanentMove"
+                    label="Has your spouse moved to B.C. permanently?"
+                    name="permanent-move"
                     :required="true"
-                    className="mt-3"
-                    @blur="handleBlurField(v$.spouseMadePermanentMove)"
+                    class-name="mt-3"
                     :items="radioOptionsNoYes"
+                    @blur="handleBlurField(v$.spouseMadePermanentMove)"
                   />
                   <div
-                    class="text-danger"
                     v-if="
                       v$.spouseMadePermanentMove.$dirty &&
                       v$.spouseMadePermanentMove.required.$invalid
                     "
+                    class="text-danger"
                     aria-live="assertive"
                   >
-                    Please indicate whether your spouse has made a permanent
-                    move to B.C.
+                    Please indicate whether your spouse has made a permanent move to B.C.
                   </div>
                   <div
-                    class="text-danger"
                     v-if="
                       spouseMadePermanentMove === 'N' &&
                       spouseStatus !== statusOptions.TemporaryResident
                     "
+                    class="text-danger"
                     aria-live="assertive"
                   >
-                    You have indicated that a recent move to B.C. is not
-                    permanent. As a result, your spouse is not eligible for
-                    enrolment in MSP. For more information, contact Health
-                    Insurance BC at:
+                    You have indicated that a recent move to B.C. is not permanent. As a result,
+                    your spouse is not eligible for enrolment in MSP. For more information, contact
+                    Health Insurance BC at:
                     <ContactInformation />
                   </div>
                 </div>
@@ -738,31 +677,30 @@
                   <div v-if="showProvinceSelector">
                     <RegionSelect
                       id="spouse-province-of-origin"
-                      className="mt-3"
-                      label="Which province is your spouse moving from?"
                       v-model="spouseMoveFromOrigin"
+                      class-name="mt-3"
+                      label="Which province is your spouse moving from?"
                       :required="true"
-                      :disablePlaceholder="true"
-                      defaultOptionLabel="Please select a province"
+                      :disable-placeholder="true"
+                      default-option-label="Please select a province"
+                      :input-style="mediumStyles"
                       @blur="handleBlurField(v$.spouseMoveFromOrigin)"
-                      :inputStyle="mediumStyles"
                     />
                     <div
-                      class="text-danger"
                       v-if="
-                        v$.spouseMoveFromOrigin.$dirty &&
-                        v$.spouseMoveFromOrigin.required.$invalid
+                        v$.spouseMoveFromOrigin.$dirty && v$.spouseMoveFromOrigin.required.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Province of origin is required.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseMoveFromOrigin.$dirty &&
                         v$.spouseMoveFromOrigin.nonBCValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Province of origin cannot be B.C.
@@ -771,31 +709,30 @@
                   <div v-if="showCountrySelector">
                     <CountrySelect
                       id="spouse-country-of-origin"
-                      className="mt-3"
-                      label="Which jurisdiction is your spouse moving from?"
                       v-model="spouseMoveFromOrigin"
+                      class-name="mt-3"
+                      label="Which jurisdiction is your spouse moving from?"
                       :required="true"
-                      :disablePlaceholder="true"
-                      defaultOptionLabel="Please select a jurisdiction"
+                      :disable-placeholder="true"
+                      default-option-label="Please select a jurisdiction"
+                      :input-style="mediumStyles"
                       @blur="handleBlurField(v$.spouseMoveFromOrigin)"
-                      :inputStyle="mediumStyles"
                     />
                     <div
-                      class="text-danger"
                       v-if="
-                        v$.spouseMoveFromOrigin.$dirty &&
-                        v$.spouseMoveFromOrigin.required.$invalid
+                        v$.spouseMoveFromOrigin.$dirty && v$.spouseMoveFromOrigin.required.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Jurisdiction of origin is required.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseMoveFromOrigin.$dirty &&
                         v$.spouseMoveFromOrigin.nonCanadaValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Jurisdiction of origin cannot be Canada.
@@ -803,274 +740,248 @@
                   </div>
                   <div v-if="showMoveDateInputs">
                     <DateInput
-                      :label="bcMoveDateLabel"
                       id="move-date"
-                      className="mt-3"
                       v-model="spouseRecentBCMoveDate"
-                      @blur="handleBlurField(v$.spouseRecentBCMoveDate)"
+                      :label="bcMoveDateLabel"
+                      class-name="mt-3"
                       :required="true"
-                      @processDate="handleProcessDateBCMove($event)"
+                      @blur="handleBlurField(v$.spouseRecentBCMoveDate)"
+                      @process-date="handleProcessDateBCMove($event)"
                     />
                     <div v-if="bcMoveDateLabel === 'Most recent move to B.C.'">
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
                           v$.spouseRecentBCMoveDate.required.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
                         Most recent move to B.C. is required.
                       </div>
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
                           !v$.spouseRecentBCMoveDate.required.$invalid &&
                           v$.spouseRecentBCMoveDate.dateDataValidator.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
                         Invalid most recent move to B.C. date.
                       </div>
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
                           !v$.spouseRecentBCMoveDate.required.$invalid &&
-                          !v$.spouseRecentBCMoveDate.dateDataValidator
-                            .$invalid &&
+                          !v$.spouseRecentBCMoveDate.dateDataValidator.$invalid &&
                           v$.spouseRecentBCMoveDate.pastDateValidator.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
                         Most recent move to B.C. date cannot be in the future.
                       </div>
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
                           !v$.spouseRecentBCMoveDate.required.$invalid &&
-                          !v$.spouseRecentBCMoveDate.dateDataValidator
-                            .$invalid &&
-                          !v$.spouseRecentBCMoveDate.pastDateValidator
-                            .$invalid &&
-                          v$.spouseRecentBCMoveDate.beforeBirthdateValidator
-                            .$invalid
+                          !v$.spouseRecentBCMoveDate.dateDataValidator.$invalid &&
+                          !v$.spouseRecentBCMoveDate.pastDateValidator.$invalid &&
+                          v$.spouseRecentBCMoveDate.beforeBirthdateValidator.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
-                        The spouse's most recent move to B.C. cannot be before
-                        the spouse's date of birth.
+                        The spouse's most recent move to B.C. cannot be before the spouse's date of
+                        birth.
                       </div>
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
                           !v$.spouseRecentBCMoveDate.required.$invalid &&
-                          !v$.spouseRecentBCMoveDate.dateDataValidator
-                            .$invalid &&
-                          !v$.spouseRecentBCMoveDate.pastDateValidator
-                            .$invalid &&
-                          !v$.spouseRecentBCMoveDate.beforeBirthdateValidator
-                            .$invalid &&
+                          !v$.spouseRecentBCMoveDate.dateDataValidator.$invalid &&
+                          !v$.spouseRecentBCMoveDate.pastDateValidator.$invalid &&
+                          !v$.spouseRecentBCMoveDate.beforeBirthdateValidator.$invalid &&
                           v$.spouseRecentBCMoveDate.dateOrderValidator.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
-                        The spouse's most recent move to B.C. cannot be before
-                        the move to Canada date.
+                        The spouse's most recent move to B.C. cannot be before the move to Canada
+                        date.
                       </div>
                     </div>
                     <div v-else>
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
                           v$.spouseRecentBCMoveDate.required.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
                         Arrival date in B.C. is required.
                       </div>
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
                           !v$.spouseRecentBCMoveDate.required.$invalid &&
                           v$.spouseRecentBCMoveDate.dateDataValidator.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
                         Invalid arrival date in B.C.
                       </div>
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
                           !v$.spouseRecentBCMoveDate.required.$invalid &&
-                          !v$.spouseRecentBCMoveDate.dateDataValidator
-                            .$invalid &&
+                          !v$.spouseRecentBCMoveDate.dateDataValidator.$invalid &&
                           v$.spouseRecentBCMoveDate.pastDateValidator.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
                         Arrival date in B.C. cannot be in the future.
                       </div>
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
                           !v$.spouseRecentBCMoveDate.required.$invalid &&
-                          !v$.spouseRecentBCMoveDate.dateDataValidator
-                            .$invalid &&
-                          !v$.spouseRecentBCMoveDate.pastDateValidator
-                            .$invalid &&
-                          v$.spouseRecentBCMoveDate.beforeBirthdateValidator
-                            .$invalid
+                          !v$.spouseRecentBCMoveDate.dateDataValidator.$invalid &&
+                          !v$.spouseRecentBCMoveDate.pastDateValidator.$invalid &&
+                          v$.spouseRecentBCMoveDate.beforeBirthdateValidator.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
-                        The spouse's arrival date in B.C. cannot be before the
-                        spouse's date of birth.
+                        The spouse's arrival date in B.C. cannot be before the spouse's date of
+                        birth.
                       </div>
                       <div
-                        class="text-danger"
                         v-if="
                           v$.spouseRecentBCMoveDate.$dirty &&
                           !v$.spouseRecentBCMoveDate.required.$invalid &&
-                          !v$.spouseRecentBCMoveDate.dateDataValidator
-                            .$invalid &&
-                          !v$.spouseRecentBCMoveDate.pastDateValidator
-                            .$invalid &&
-                          !v$.spouseRecentBCMoveDate.beforeBirthdateValidator
-                            .$invalid &&
+                          !v$.spouseRecentBCMoveDate.dateDataValidator.$invalid &&
+                          !v$.spouseRecentBCMoveDate.pastDateValidator.$invalid &&
+                          !v$.spouseRecentBCMoveDate.beforeBirthdateValidator.$invalid &&
                           v$.spouseRecentBCMoveDate.dateOrderValidator.$invalid
                         "
+                        class="text-danger"
                         aria-live="assertive"
                       >
-                        The spouse's arrival date in B.C. cannot be before the
-                        move to Canada date.
+                        The spouse's arrival date in B.C. cannot be before the move to Canada date.
                       </div>
                     </div>
                     <DateInput
-                      :label="canadaArrivalDateLabel"
                       id="canada-arrival-date"
-                      className="mt-3"
                       v-model="spouseCanadaArrivalDate"
+                      :label="canadaArrivalDateLabel"
+                      class-name="mt-3"
+                      :required="canadaArrivalDateLabel === 'Arrival date in Canada'"
                       @blur="handleBlurField(v$.spouseCanadaArrivalDate)"
-                      :required="
-                        canadaArrivalDateLabel === 'Arrival date in Canada'
-                      "
-                      @processDate="handleProcessDateCanadaArrival($event)"
+                      @process-date="handleProcessDateCanadaArrival($event)"
                     />
                     <div
-                      class="text-danger"
                       v-if="
                         canadaArrivalDateLabel === 'Arrival date in Canada' &&
                         v$.spouseCanadaArrivalDate.$dirty &&
                         v$.spouseCanadaArrivalDate.required.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Arrival date in Canada is required.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseCanadaArrivalDate.$dirty &&
                         v$.spouseCanadaArrivalDate.dateDataValidator.$invalid &&
                         !v$.spouseCanadaArrivalDate.required.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Invalid arrival date in Canada.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseCanadaArrivalDate.$dirty &&
                         !v$.spouseCanadaArrivalDate.required.$invalid &&
-                        !v$.spouseCanadaArrivalDate.dateDataValidator
-                          .$invalid &&
+                        !v$.spouseCanadaArrivalDate.dateDataValidator.$invalid &&
                         v$.spouseCanadaArrivalDate.pastDateValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Arrival date in Canada cannot be in the future.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseCanadaArrivalDate.$dirty &&
                         !v$.spouseCanadaArrivalDate.required.$invalid &&
-                        !v$.spouseCanadaArrivalDate.dateDataValidator
-                          .$invalid &&
-                        !v$.spouseCanadaArrivalDate.pastDateValidator
-                          .$invalid &&
-                        v$.spouseCanadaArrivalDate.beforeBirthdateValidator
-                          .$invalid
+                        !v$.spouseCanadaArrivalDate.dateDataValidator.$invalid &&
+                        !v$.spouseCanadaArrivalDate.pastDateValidator.$invalid &&
+                        v$.spouseCanadaArrivalDate.beforeBirthdateValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
-                      The spouse's arrival date in Canada cannot be before the
-                      spouse's date of birth.
+                      The spouse's arrival date in Canada cannot be before the spouse's date of
+                      birth.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseCanadaArrivalDate.$dirty &&
                         !v$.spouseCanadaArrivalDate.required.$invalid &&
-                        !v$.spouseCanadaArrivalDate.dateDataValidator
-                          .$invalid &&
-                        !v$.spouseCanadaArrivalDate.pastDateValidator
-                          .$invalid &&
-                        !v$.spouseCanadaArrivalDate.beforeBirthdateValidator
-                          .$invalid &&
+                        !v$.spouseCanadaArrivalDate.dateDataValidator.$invalid &&
+                        !v$.spouseCanadaArrivalDate.pastDateValidator.$invalid &&
+                        !v$.spouseCanadaArrivalDate.beforeBirthdateValidator.$invalid &&
                         v$.spouseCanadaArrivalDate.dateOrderValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
-                      The spouse's arrival date in Canada cannot be after the
-                      move to B.C. date.
+                      The spouse's arrival date in Canada cannot be after the move to B.C. date.
                     </div>
                   </div>
                   <div v-if="showPreviousHealthNumber">
                     <InputComponent
-                      className="mt-3"
+                      v-model="spousePreviousHealthNumber"
+                      class-name="mt-3"
                       label="Health Number from that province (optional)"
                       maxlength="50"
-                      v-model="spousePreviousHealthNumber"
-                      :inputStyle="mediumStyles"
+                      :input-style="mediumStyles"
                     />
                   </div>
                   <RadioComponent
-                    label="Since your spouse arrived in B.C., have they left the province for more than 30 days in total in the past 12 months?"
                     id="outside-bc-past-12"
-                    name="outside-bc-past-12"
                     v-model="spouseOutsideBCLast12Months"
+                    label="Since your spouse arrived in B.C., have they left the province for more than 30 days in total in the past 12 months?"
+                    name="outside-bc-past-12"
                     :required="true"
-                    className="mt-3"
-                    @blur="handleBlurField(v$.spouseOutsideBCLast12Months)"
+                    class-name="mt-3"
                     :items="radioOptionsNoYes"
+                    @blur="handleBlurField(v$.spouseOutsideBCLast12Months)"
                   >
-                    <template v-slot:description>
+                    <template #description>
                       <span class="field-description">
-                        If your spouse has been living in B.C. for less than 12
-                        months, please indicate any absences since arrival.
+                        If your spouse has been living in B.C. for less than 12 months, please
+                        indicate any absences since arrival.
                       </span>
                     </template>
                   </RadioComponent>
                   <div
-                    class="text-danger"
                     v-if="
                       v$.spouseOutsideBCLast12Months.$dirty &&
                       v$.spouseOutsideBCLast12Months.required.$invalid
                     "
+                    class="text-danger"
                     aria-live="assertive"
                   >
-                    Please indicate whether your spouse has been outside B.C. in
-                    the past 12 months.
+                    Please indicate whether your spouse has been outside B.C. in the past 12 months.
                   </div>
                   <div
                     v-if="spouseOutsideBCLast12Months === 'Y'"
@@ -1078,194 +989,168 @@
                   >
                     <InputComponent
                       id="departure-reason"
-                      className="mt-3"
+                      v-model="spouseOutsideBCLast12MonthsReason"
+                      class-name="mt-3"
                       label="Reason for departure"
                       maxlength="20"
-                      v-model="spouseOutsideBCLast12MonthsReason"
-                      @blur="
-                        handleBlurField(v$.spouseOutsideBCLast12MonthsReason)
-                      "
                       :required="true"
-                      :inputStyle="mediumStyles"
+                      :input-style="mediumStyles"
+                      @blur="handleBlurField(v$.spouseOutsideBCLast12MonthsReason)"
                     />
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseOutsideBCLast12MonthsReason.$dirty &&
                         v$.spouseOutsideBCLast12MonthsReason.required.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Reason for departure is required.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseOutsideBCLast12MonthsReason.$dirty &&
-                        v$.spouseOutsideBCLast12MonthsReason
-                          .reasonDestinationContentValidator.$invalid
+                        v$.spouseOutsideBCLast12MonthsReason.reasonDestinationContentValidator
+                          .$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
-                      Reason must contain letters and may include numbers and
-                      special characters such as a hyphen, period, apostrophe,
-                      number sign, ampersand, forward slash, and blank
-                      characters.
+                      Reason must contain letters and may include numbers and special characters
+                      such as a hyphen, period, apostrophe, number sign, ampersand, forward slash,
+                      and blank characters.
                     </div>
                     <InputComponent
                       id="departure-location"
-                      className="mt-3"
+                      v-model="spouseOutsideBCLast12MonthsDestination"
+                      class-name="mt-3"
                       label="Location"
                       maxlength="20"
-                      v-model="spouseOutsideBCLast12MonthsDestination"
-                      @blur="
-                        handleBlurField(
-                          v$.spouseOutsideBCLast12MonthsDestination,
-                        )
-                      "
                       :required="true"
-                      :inputStyle="mediumStyles"
+                      :input-style="mediumStyles"
+                      @blur="handleBlurField(v$.spouseOutsideBCLast12MonthsDestination)"
                     />
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseOutsideBCLast12MonthsDestination.$dirty &&
-                        v$.spouseOutsideBCLast12MonthsDestination.required
-                          .$invalid
+                        v$.spouseOutsideBCLast12MonthsDestination.required.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Location is required.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseOutsideBCLast12MonthsDestination.$dirty &&
-                        v$.spouseOutsideBCLast12MonthsDestination
-                          .reasonDestinationContentValidator.$invalid
-                      "
-                      aria-live="assertive"
-                    >
-                      Location must contain letters and may include numbers and
-                      special characters such as a hyphen, period, apostrophe,
-                      number sign, ampersand, forward slash, and blank
-                      characters.
-                    </div>
-                    <DateInput
-                      label="Departure date"
-                      id="departure-date"
-                      className="mt-3"
-                      @blur="
-                        handleBlurField(
-                          v$.spouseOutsideBCLast12MonthsDepartureDate,
-                        )
-                      "
-                      @processDate="handleProcessDate12MonthsDeparture($event)"
-                      v-model="spouseOutsideBCLast12MonthsDepartureDate"
-                      :required="true"
-                    />
-                    <div
-                      class="text-danger"
-                      v-if="
-                        v$.spouseOutsideBCLast12MonthsDepartureDate.$dirty &&
-                        v$.spouseOutsideBCLast12MonthsDepartureDate.required
+                        v$.spouseOutsideBCLast12MonthsDestination.reasonDestinationContentValidator
                           .$invalid
                       "
+                      class="text-danger"
+                      aria-live="assertive"
+                    >
+                      Location must contain letters and may include numbers and special characters
+                      such as a hyphen, period, apostrophe, number sign, ampersand, forward slash,
+                      and blank characters.
+                    </div>
+                    <DateInput
+                      id="departure-date"
+                      v-model="spouseOutsideBCLast12MonthsDepartureDate"
+                      label="Departure date"
+                      class-name="mt-3"
+                      :required="true"
+                      @blur="handleBlurField(v$.spouseOutsideBCLast12MonthsDepartureDate)"
+                      @process-date="handleProcessDate12MonthsDeparture($event)"
+                    />
+                    <div
+                      v-if="
+                        v$.spouseOutsideBCLast12MonthsDepartureDate.$dirty &&
+                        v$.spouseOutsideBCLast12MonthsDepartureDate.required.$invalid
+                      "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Departure date is required.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseOutsideBCLast12MonthsDepartureDate.$dirty &&
-                        v$.spouseOutsideBCLast12MonthsDepartureDate
-                          .dateDataValidator.$invalid
+                        v$.spouseOutsideBCLast12MonthsDepartureDate.dateDataValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Invalid departure date.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseOutsideBCLast12MonthsDepartureDate.$dirty &&
-                        v$.spouseOutsideBCLast12MonthsDepartureDate
-                          .departureDateValidator.$invalid
+                        v$.spouseOutsideBCLast12MonthsDepartureDate.departureDateValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
-                      Departure date must be within the last 12 months and prior
-                      to return date.
+                      Departure date must be within the last 12 months and prior to return date.
                     </div>
                     <DateInput
-                      label="Return date"
                       id="return-date"
-                      className="mt-3"
-                      @blur="
-                        handleBlurField(
-                          v$.spouseOutsideBCLast12MonthsReturnDate,
-                        )
-                      "
-                      @processDate="handleProcessDate12MonthsReturn($event)"
                       v-model="spouseOutsideBCLast12MonthsReturnDate"
+                      label="Return date"
+                      class-name="mt-3"
                       :required="true"
+                      @blur="handleBlurField(v$.spouseOutsideBCLast12MonthsReturnDate)"
+                      @process-date="handleProcessDate12MonthsReturn($event)"
                     />
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseOutsideBCLast12MonthsReturnDate.$dirty &&
-                        v$.spouseOutsideBCLast12MonthsReturnDate.required
-                          .$invalid
+                        v$.spouseOutsideBCLast12MonthsReturnDate.required.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Return date is required.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseOutsideBCLast12MonthsReturnDate.$dirty &&
-                        v$.spouseOutsideBCLast12MonthsReturnDate
-                          .dateDataValidator.$invalid
+                        v$.spouseOutsideBCLast12MonthsReturnDate.dateDataValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Invalid return date.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseOutsideBCLast12MonthsReturnDate.$dirty &&
-                        v$.spouseOutsideBCLast12MonthsReturnDate
-                          .returnDateValidator.$invalid
+                        v$.spouseOutsideBCLast12MonthsReturnDate.returnDateValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
-                      Return date must be within the last 12 months and after
-                      departure date.
+                      Return date must be within the last 12 months and after departure date.
                     </div>
                   </div>
                   <RadioComponent
-                    label="Does your spouse have a previous B.C. Personal Health Number?"
                     id="has-previous-bc-health-number"
-                    name="has-previous-bc-health-number"
                     v-model="spouseHasPreviousBCHealthNumber"
+                    label="Does your spouse have a previous B.C. Personal Health Number?"
+                    name="has-previous-bc-health-number"
                     :required="true"
-                    className="mt-3"
-                    @blur="handleBlurField(v$.spouseHasPreviousBCHealthNumber)"
+                    class-name="mt-3"
                     :items="radioOptionsNoYes"
+                    @blur="handleBlurField(v$.spouseHasPreviousBCHealthNumber)"
                   />
                   <div
-                    class="text-danger"
                     v-if="
                       v$.spouseHasPreviousBCHealthNumber.$dirty &&
                       v$.spouseHasPreviousBCHealthNumber.required.$invalid
                     "
+                    class="text-danger"
                     aria-live="assertive"
                   >
-                    Please indicate whether your spouse has a previous B.C.
-                    Personal Health Number.
+                    Please indicate whether your spouse has a previous B.C. Personal Health Number.
                   </div>
                   <div
                     v-if="spouseHasPreviousBCHealthNumber === 'Y'"
@@ -1273,25 +1158,23 @@
                   >
                     <PhnInput
                       id="previous-bc-phn"
-                      className="mt-3"
-                      label="Your spouse's previous B.C. Personal Health Number (optional)"
                       v-model="spousePreviousBCHealthNumber"
+                      class-name="mt-3"
+                      label="Your spouse's previous B.C. Personal Health Number (optional)"
                       placeholder="1111 111 111"
+                      :input-style="mediumStyles"
                       @blur="handleBlurField(v$.spousePreviousBCHealthNumber)"
-                      :inputStyle="mediumStyles"
                     />
                     <span class="field-description">
                       This number appears on the BC Services Card
                     </span>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spousePreviousBCHealthNumber.$dirty &&
-                        (v$.spousePreviousBCHealthNumber.phnValidator
-                          .$invalid ||
-                          v$.spousePreviousBCHealthNumber.phnFirstDigitValidator
-                            .$invalid)
+                        (v$.spousePreviousBCHealthNumber.phnValidator.$invalid ||
+                          v$.spousePreviousBCHealthNumber.phnFirstDigitValidator.$invalid)
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Personal Health Number is not valid.
@@ -1299,82 +1182,74 @@
                   </div>
                   <div v-if="showDischargeInputs">
                     <RadioComponent
-                      label="Has your spouse been released from the Canadian Armed Forces or an institution?"
                       id="been-released-from-institution"
-                      name="been-released-from-institution"
                       v-model="spouseBeenReleasedFromInstitution"
+                      label="Has your spouse been released from the Canadian Armed Forces or an institution?"
+                      name="been-released-from-institution"
                       :required="true"
-                      className="mt-3"
-                      @blur="
-                        handleBlurField(v$.spouseBeenReleasedFromInstitution)
-                      "
+                      class-name="mt-3"
                       :items="radioOptionsNoYes"
+                      @blur="handleBlurField(v$.spouseBeenReleasedFromInstitution)"
                     />
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseBeenReleasedFromInstitution.$dirty &&
                         v$.spouseBeenReleasedFromInstitution.required.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
-                      Please indicate whether your spouse has been released from
-                      an institution.
+                      Please indicate whether your spouse has been released from an institution.
                     </div>
                   </div>
                   <div
-                    v-if="
-                      showDischargeInputs &&
-                      spouseBeenReleasedFromInstitution === 'Y'
-                    "
+                    v-if="showDischargeInputs && spouseBeenReleasedFromInstitution === 'Y'"
                     class="tabbed-section"
                   >
                     <DateInput
-                      label="Discharge date"
                       id="discharge-date"
-                      className="mt-3"
-                      @blur="handleBlurField(v$.spouseDischargeDate)"
-                      @processDate="handleProcessDateDischarge($event)"
                       v-model="spouseDischargeDate"
+                      label="Discharge date"
+                      class-name="mt-3"
                       :required="true"
+                      @blur="handleBlurField(v$.spouseDischargeDate)"
+                      @process-date="handleProcessDateDischarge($event)"
                     />
                     <div
-                      class="text-danger"
                       v-if="
-                        v$.spouseDischargeDate.$dirty &&
-                        v$.spouseDischargeDate.required.$invalid
+                        v$.spouseDischargeDate.$dirty && v$.spouseDischargeDate.required.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Discharge date is required.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseDischargeDate.$dirty &&
                         v$.spouseDischargeDate.dateDataValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Invalid discharge date.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseDischargeDate.$dirty &&
                         v$.spouseDischargeDate.dischargeDateValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
-                      Discharge date cannot be before the spouse's date of
-                      birth.
+                      Discharge date cannot be before the spouse's date of birth.
                     </div>
                     <div
-                      class="text-danger"
                       v-if="
                         v$.spouseDischargeDate.$dirty &&
                         v$.spouseDischargeDate.pastDateValidator.$invalid
                       "
+                      class="text-danger"
                       aria-live="assertive"
                     >
                       Discharge date cannot be in the future.
@@ -1385,10 +1260,9 @@
               <div class="col-md-5 mt-3">
                 <TipBox>
                   <p>
-                    A permanent move means that you intend to make B.C. your
-                    primary residence for 6 months or longer. If you leave B.C.
-                    within 6 months of enrolling for MSP, you may have to repay
-                    your medical expenses.
+                    A permanent move means that you intend to make B.C. your primary residence for 6
+                    months or longer. If you leave B.C. within 6 months of enrolling for MSP, you
+                    may have to repay your medical expenses.
                   </p>
                 </TipBox>
               </div>
@@ -1405,11 +1279,7 @@
 import useVuelidate from "@vuelidate/core";
 import pageStateService from "@/services/page-state-service";
 import { enrolmentRoutes, isEQPath, isPastPath } from "@/router/routes";
-import {
-  scrollTo,
-  scrollToError,
-  getTopScrollPosition,
-} from "@/helpers/scroll";
+import { scrollTo, scrollToError, getTopScrollPosition } from "@/helpers/scroll";
 import { getConvertedPath } from "@/helpers/url";
 import {
   dateDataRequiredValidator,
@@ -1441,15 +1311,7 @@ import {
   sinValidator,
 } from "common-lib-vue";
 import { required } from "@vuelidate/validators";
-import {
-  isSameDay,
-  startOfToday,
-  isAfter,
-  isBefore,
-  addDays,
-  subDays,
-  subYears,
-} from "date-fns";
+import { isSameDay, startOfToday, isAfter, isBefore, addDays, subDays, subYears } from "date-fns";
 import pageContentMixin from "@/mixins/page-content-mixin";
 import {
   selectOptionsImmigrationStatus,
@@ -1468,10 +1330,7 @@ import {
   radioOptionsTemporaryResidentStatusReasons,
   radioOptionsGender,
 } from "@/constants/radio-options";
-import {
-  StatusInCanada,
-  CanadianStatusReasons,
-} from "@/constants/immigration-status-types";
+import { StatusInCanada, CanadianStatusReasons } from "@/constants/immigration-status-types";
 import { smallStyles, mediumStyles } from "@/constants/input-styles";
 import { SupportDocumentTypes } from "@/constants/document-types";
 import {
@@ -1573,10 +1432,7 @@ const dateOrderValidator = (value, vm) => {
   }
 
   if (vm.spouseRecentBCMoveDate && vm.spouseCanadaArrivalDate) {
-    return (
-      vm.spouseRecentBCMoveDate.getTime() >=
-      vm.spouseCanadaArrivalDate.getTime()
-    );
+    return vm.spouseRecentBCMoveDate.getTime() >= vm.spouseCanadaArrivalDate.getTime();
   }
 
   return true;
@@ -1600,7 +1456,6 @@ const uniqueSINValidator = (value, vm) => {
 
 export default {
   name: "SpouseInfoPage",
-  mixins: [pageContentMixin, pageStepperMixin],
   components: {
     ContinueBar,
     CountrySelect,
@@ -1616,6 +1471,31 @@ export default {
     TipBox,
     SampleImageTipBox,
     ContactInformation,
+  },
+  mixins: [pageContentMixin, pageStepperMixin],
+  // Required in order to block back navigation.
+  beforeRouteLeave(to, from, next) {
+    pageStateService.setPageIncomplete(from.path);
+    if (
+      pageStateService.isPageComplete(to.path) ||
+      (isPastPath(to.path, from.path) && !isEQPath(to.path))
+    ) {
+      next();
+    } else {
+      // Navigate to self.
+      const topScrollPosition = getTopScrollPosition();
+      const toPath = getConvertedPath(
+        this.$router.currentRoute.value.path,
+        enrolmentRoutes.SPOUSE_INFO_PAGE.path
+      );
+      next({
+        path: toPath,
+        replace: true,
+      });
+      setTimeout(() => {
+        scrollTo(topScrollPosition);
+      }, 0);
+    }
   },
   setup() {
     return { v$: useVuelidate() };
@@ -1634,8 +1514,7 @@ export default {
       citizenshipStatusOptions: selectOptionsImmigrationStatus,
       citizenshipStatusReasonOptions: radioOptionsCitizenStatusReasons,
       nameChangeSupportDocumentOptions: selectOptionsNameChangeSupportDocuments,
-      temporaryResidentStatusReasonOptions:
-        radioOptionsTemporaryResidentStatusReasons,
+      temporaryResidentStatusReasonOptions: radioOptionsTemporaryResidentStatusReasons,
       supportDocumentTypes: SupportDocumentTypes,
       mediumStyles: mediumStyles,
       smallStyles: smallStyles,
@@ -1685,271 +1564,150 @@ export default {
       ahSIN: null,
     };
   },
-  created() {
-    this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse;
-    this.spouseStatus = this.$store.state.enrolmentModule.spouseStatus;
-    this.spouseStatusReason =
-      this.$store.state.enrolmentModule.spouseStatusReason;
-    this.spouseCitizenshipSupportDocumentType =
-      this.$store.state.enrolmentModule.spouseCitizenshipSupportDocumentType;
-    this.spouseGenderMatches =
-      this.$store.state.enrolmentModule.spouseGenderMatches;
-    this.spouseCitizenshipSupportDocuments =
-      this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments;
-    this.spouseIsNameChanged =
-      this.$store.state.enrolmentModule.spouseIsNameChanged;
-    this.spouseNameChangeSupportDocumentType =
-      this.$store.state.enrolmentModule.spouseNameChangeSupportDocumentType;
-    this.spouseNameChangeSupportDocuments =
-      this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments;
-    this.spouseFirstName = this.$store.state.enrolmentModule.spouseFirstName;
-    this.spouseMiddleName = this.$store.state.enrolmentModule.spouseMiddleName;
-    this.spouseLastName = this.$store.state.enrolmentModule.spouseLastName;
-    this.spouseBirthDate = this.$store.state.enrolmentModule.spouseBirthDate;
-    this.spousePersonalHealthNumber =
-      this.$store.state.enrolmentModule.spousePHN;
-    this.spouseSocialInsuranceNumber =
-      this.$store.state.enrolmentModule.spouseSIN;
-    this.spouseGender = this.$store.state.enrolmentModule.spouseGender;
-    this.spouseLivedInBCSinceBirth =
-      this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth;
-    this.spouseMadePermanentMove =
-      this.$store.state.enrolmentModule.spouseMadePermanentMove;
-    this.spouseMoveFromOrigin =
-      this.$store.state.enrolmentModule.spouseMoveFromOrigin;
-    this.spouseRecentBCMoveDate =
-      this.$store.state.enrolmentModule.spouseRecentBCMoveDate;
-    this.spouseCanadaArrivalDate =
-      this.$store.state.enrolmentModule.spouseCanadaArrivalDate;
-    this.spouseOutsideBCLast12Months =
-      this.$store.state.enrolmentModule.spouseOutsideBCLast12Months;
-    this.spouseOutsideBCLast12MonthsReason =
-      this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsReason;
-    this.spouseOutsideBCLast12MonthsDestination =
-      this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsDestination;
-    this.spouseOutsideBCLast12MonthsDepartureDate =
-      this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsDepartureDate;
-    this.spouseOutsideBCLast12MonthsReturnDate =
-      this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsReturnDate;
-    this.spousePreviousHealthNumber =
-      this.$store.state.enrolmentModule.spousePreviousHealthNumber;
-    this.spouseHasPreviousBCHealthNumber =
-      this.$store.state.enrolmentModule.spouseHasPreviousBCHealthNumber;
-    this.spousePreviousBCHealthNumber =
-      this.$store.state.enrolmentModule.spousePreviousBCHealthNumber;
-    this.spouseBeenReleasedFromInstitution =
-      this.$store.state.enrolmentModule.spouseBeenReleasedFromInstitution;
-    this.spouseDischargeDate =
-      this.$store.state.enrolmentModule.spouseDischargeDate;
-    this.spouseIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
-    this.spouseRDSP = this.$store.state.enrolmentModule.spouseFPCRDSP;
-    this.spouseCRADocuments =
-      this.$store.state.enrolmentModule.spouseCRADocuments;
-    this.ahPHN = this.$store.state.enrolmentModule.ahPHN;
-    this.ahSIN = this.$store.state.enrolmentModule.ahSIN;
+  computed: {
+    requestGender() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP;
+    },
+    requestPersonalHealthNumber() {
+      return !this.$store.state.enrolmentModule.isApplyingForMSP;
+    },
+    requestSocialInsuranceNumber() {
+      return (
+        this.$store.state.enrolmentModule.isApplyingForFPCare ||
+        this.$store.state.enrolmentModule.isApplyingForSuppBen
+      );
+    },
+    requestImmigrationStatus() {
+      return this.$store.state.enrolmentModule.isApplyingForMSP;
+    },
+    requestMovingInfo() {
+      return (
+        this.$store.state.enrolmentModule.isApplyingForMSP &&
+        this.spouseCitizenshipSupportDocuments.length > 0 &&
+        (this.spouseIsNameChanged === "N" || this.spouseNameChangeSupportDocuments.length > 0)
+      );
+    },
+    citizenshipSupportDocumentOptions() {
+      let options;
 
-    setTimeout(() => {
-      this.pageLoaded = true;
-    }, 0);
-
-    logService.logNavigation(
-      this.$store.state.enrolmentModule.applicationUuid,
-      enrolmentRoutes.SPOUSE_INFO_PAGE.path,
-      enrolmentRoutes.SPOUSE_INFO_PAGE.title,
-    );
-  },
-  validations() {
-    const validations = {
-      hasSpouse: {
-        required,
-      },
-      spouseFirstName: {
-        required,
-        nameValidator,
-      },
-      spouseMiddleName: {
-        nameValidator: optionalValidator(nameValidator),
-      },
-      spouseLastName: {
-        required,
-        nameValidator,
-      },
-      spouseBirthDate: {
-        required: dateDataRequiredValidator(this.birthdateData),
-        dateDataValidator: dateDataValidator(this.birthdateData),
-        distantPastValidator: optionalValidator(distantPastValidator),
-        birthDatePastValidator: optionalValidator(birthDatePastValidator),
-      },
-      spousePersonalHealthNumber: {},
-      spouseSocialInsuranceNumber: {},
-      spouseGender: {},
-      spouseStatus: {},
-      spouseStatusReason: {},
-      spouseCitizenshipSupportDocumentType: {},
-      spouseGenderMatches: {},
-      spouseCitizenshipSupportDocuments: {},
-      spouseIsNameChanged: {},
-      spouseNameChangeSupportDocumentType: {},
-      spouseNameChangeSupportDocuments: {},
-      spouseMadePermanentMove: {},
-      spouseMoveFromOrigin: {},
-      spouseLivedInBCSinceBirth: {},
-      spouseRecentBCMoveDate: {},
-      spouseCanadaArrivalDate: {},
-      spouseOutsideBCLast12Months: {},
-      spouseOutsideBCLast12MonthsReason: {},
-      spouseOutsideBCLast12MonthsDestination: {},
-      spouseOutsideBCLast12MonthsDepartureDate: {},
-      spouseOutsideBCLast12MonthsReturnDate: {},
-      spouseHasPreviousBCHealthNumber: {},
-      spousePreviousBCHealthNumber: {},
-      spouseBeenReleasedFromInstitution: {},
-      spouseDischargeDate: {},
-    };
-
-    if (this.requestPersonalHealthNumber) {
-      validations.spousePersonalHealthNumber.required = required;
-      validations.spousePersonalHealthNumber.phnValidator =
-        optionalValidator(phnValidator);
-      validations.spousePersonalHealthNumber.phnFirstDigitValidator =
-        optionalValidator(phnFirstDigitValidator);
-      validations.spousePersonalHealthNumber.uniquePHNValidator =
-        optionalValidator(uniquePHNValidator);
-    }
-
-    if (this.requestSocialInsuranceNumber) {
-      validations.spouseSocialInsuranceNumber.required = required;
-      validations.spouseSocialInsuranceNumber.sinValidator =
-        optionalValidator(sinValidator);
-      validations.spouseSocialInsuranceNumber.uniqueSINValidator =
-        optionalValidator(uniqueSINValidator);
-    }
-
-    if (this.requestGender) {
-      validations.spouseGender.required = required;
-    }
-
-    if (this.requestImmigrationStatus) {
-      validations.spouseStatus.required = required;
-      validations.spouseStatusReason.required = required;
-      validations.spouseCitizenshipSupportDocumentType.required = required;
-      validations.spouseGenderMatches.required = required;
-      validations.spouseCitizenshipSupportDocuments.required = required;
-      validations.spouseIsNameChanged.required = required;
-
-      if (this.spouseIsNameChanged === "Y") {
-        validations.spouseNameChangeSupportDocumentType.required = required;
-        validations.spouseNameChangeSupportDocuments.required = required;
-      }
-    }
-
-    if (this.requestMovingInfo) {
-      validations.spouseMadePermanentMove.required = required;
-      validations.spouseMadePermanentMove.permanentMoveValidator =
-        this.spouseStatus !== StatusInCanada.TemporaryResident
-          ? optionalValidator(permanentMoveValidator)
-          : () => true;
-      validations.spouseOutsideBCLast12Months.required = required;
-      validations.spouseHasPreviousBCHealthNumber.required = required;
-
-      if (this.showLivedInBCSinceBirth) {
-        validations.spouseLivedInBCSinceBirth.required = required;
-      }
-
-      if (this.showProvinceSelector) {
-        validations.spouseMoveFromOrigin.required = required;
-        validations.spouseMoveFromOrigin.nonBCValidator = nonBCValidator;
-      }
-
-      if (this.showCountrySelector) {
-        validations.spouseMoveFromOrigin.required = required;
-        validations.spouseMoveFromOrigin.nonCanadaValidator =
-          nonCanadaValidator;
-      }
-
-      if (this.showOriginTextField) {
-        validations.spouseMoveFromOrigin.required = required;
-      }
-
-      if (this.showMoveDateInputs) {
-        validations.spouseRecentBCMoveDate.required = dateDataRequiredValidator(
-          this.recentBCMoveDateData,
-        );
-        validations.spouseRecentBCMoveDate.dateDataValidator =
-          dateDataValidator(this.recentBCMoveDateData);
-        validations.spouseRecentBCMoveDate.dateOrderValidator =
-          dateOrderValidator;
-        validations.spouseRecentBCMoveDate.beforeBirthdateValidator =
-          beforeBirthdateValidator;
-        validations.spouseRecentBCMoveDate.pastDateValidator =
-          optionalValidator(pastDateValidator);
-
-        (validations.spouseCanadaArrivalDate.required =
-          this.canadaArrivalDateLabel === "Arrival date in Canada"
-            ? dateDataRequiredValidator(this.canadaArrivalDateData)
-            : dateDataOptionalValidator()),
-          (validations.spouseCanadaArrivalDate.dateDataValidator =
-            dateDataValidator(this.canadaArrivalDateData));
-        validations.spouseCanadaArrivalDate.dateOrderValidator =
-          optionalValidator(dateOrderValidator);
-        validations.spouseCanadaArrivalDate.beforeBirthdateValidator =
-          optionalValidator(beforeBirthdateValidator);
-        validations.spouseCanadaArrivalDate.pastDateValidator =
-          optionalValidator(pastDateValidator);
-      }
-
-      if (this.spouseOutsideBCLast12Months === "Y") {
-        validations.spouseOutsideBCLast12MonthsReason.required = required;
-        validations.spouseOutsideBCLast12MonthsReason.reasonDestinationContentValidator =
-          reasonDestinationContentValidator;
-        validations.spouseOutsideBCLast12MonthsDestination.required = required;
-        validations.spouseOutsideBCLast12MonthsDestination.reasonDestinationContentValidator =
-          reasonDestinationContentValidator;
-        validations.spouseOutsideBCLast12MonthsDepartureDate.required =
-          dateDataRequiredValidator(
-            this.spouseOutsideBCLast12MonthsDepartureDateData,
-          );
-        validations.spouseOutsideBCLast12MonthsDepartureDate.dateDataValidator =
-          dateDataValidator(this.spouseOutsideBCLast12MonthsDepartureDateData);
-        validations.spouseOutsideBCLast12MonthsDepartureDate.departureDateValidator =
-          optionalValidator(departureDateValidator);
-
-        validations.spouseOutsideBCLast12MonthsReturnDate.required =
-          dateDataRequiredValidator(
-            this.spouseOutsideBCLast12MonthsReturnDateData,
-          );
-        validations.spouseOutsideBCLast12MonthsReturnDate.dateDataValidator =
-          dateDataValidator(this.spouseOutsideBCLast12MonthsReturnDateData);
-        validations.spouseOutsideBCLast12MonthsReturnDate.returnDateValidator =
-          optionalValidator(returnDateValidator);
-      }
-
-      if (this.spouseHasPreviousBCHealthNumber === "Y") {
-        validations.spousePreviousBCHealthNumber.phnValidator =
-          optionalValidator(phnValidator);
-        validations.spousePreviousBCHealthNumber.phnFirstDigitValidator =
-          optionalValidator(phnFirstDigitValidator);
-      }
-
-      if (this.showDischargeInputs) {
-        validations.spouseBeenReleasedFromInstitution.required = required;
-
-        if (this.spouseBeenReleasedFromInstitution === "Y") {
-          validations.spouseDischargeDate.required = dateDataRequiredValidator(
-            this.spouseDischargeDateData,
-          );
-          validations.spouseDischargeDate.dateDataValidator = dateDataValidator(
-            this.spouseDischargeDateData,
-          );
-          validations.spouseDischargeDate.dischargeDateValidator =
-            optionalValidator(dischargeDateValidator);
-          validations.spouseDischargeDate.pastDateValidator =
-            optionalValidator(pastDateValidator);
+      if (this.spouseStatus === StatusInCanada.PermanentResident) {
+        options = selectOptionsPermanentResidentSupportDocuments;
+      } else if (this.spouseStatus === StatusInCanada.TemporaryResident) {
+        if (this.spouseStatusReason === this.canadianStatusReasons.WorkingInBC) {
+          options = selectOptionWorkPermitSupportDocument;
+        } else if (this.spouseStatusReason === this.canadianStatusReasons.StudyingInBC) {
+          options = selectOptionStudyPermitSupportDocument;
+        } else if (this.spouseStatusReason === this.canadianStatusReasons.ReligiousWorker) {
+          options = selectOptionReligiousWorkSupportDocument;
+        } else if (this.spouseStatusReason === this.canadianStatusReasons.Diplomat) {
+          options = selectOptionDiplomaticFoilSupportDocument;
+        } else if (this.spouseStatusReason === this.canadianStatusReasons.Visiting) {
+          options = selectOptionVisitorVisaSupportDocument;
         }
+      } else {
+        options = selectOptionsCitizenshipSupportDocuments;
       }
-    }
 
-    return validations;
+      return options;
+    },
+    canadaArrivalDateLabel() {
+      if (
+        this.spouseStatusReason === this.canadianStatusReasons.MovingFromProvince &&
+        this.spouseStatus !== this.statusOptions.TemporaryResident
+      ) {
+        return "Arrival date in Canada (Optional)";
+      }
+      if (
+        this.spouseStatus === this.statusOptions.Citizen &&
+        this.spouseLivedInBCSinceBirth === "N"
+      ) {
+        return "Arrival date in Canada (Optional)";
+      }
+      if (
+        this.spouseStatus === this.statusOptions.TemporaryResident &&
+        this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP
+      ) {
+        return "Arrival date in Canada (Optional)";
+      }
+      if (
+        this.spouseStatus === this.statusOptions.PermanentResident &&
+        this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP
+      ) {
+        return "Arrival date in Canada (Optional)";
+      }
+      return "Arrival date in Canada";
+    },
+    bcMoveDateLabel() {
+      if (this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP) {
+        return "Most recent move to B.C.";
+      } else {
+        return "Arrival date in B.C.";
+      }
+    },
+    showPreviousHealthNumber() {
+      return this.spouseStatusReason === this.canadianStatusReasons.MovingFromProvince;
+    },
+    showLivedInBCSinceBirth() {
+      return (
+        this.spouseStatus === this.statusOptions.Citizen &&
+        this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP
+      );
+    },
+    showMoveDateInputs() {
+      return (
+        (this.spouseStatus === this.statusOptions.PermanentResident &&
+          this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP) ||
+        (this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP &&
+          this.spouseLivedInBCSinceBirth === "N") ||
+        this.spouseStatusReason !== this.canadianStatusReasons.LivingInBCWithoutMSP
+      );
+    },
+    showOriginTextField() {
+      return (
+        this.spouseStatus === this.statusOptions.TemporaryResident ||
+        (this.spouseStatus === this.statusOptions.PermanentResident &&
+          this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP)
+      );
+    },
+    showMovedPermanentlyQuestion() {
+      return (
+        this.spouseStatusReason !== this.canadianStatusReasons.LivingInBCWithoutMSP ||
+        (this.spouseStatus === this.statusOptions.PermanentResident &&
+          this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP) ||
+        this.spouseLivedInBCSinceBirth === "Y" ||
+        this.spouseLivedInBCSinceBirth === "N"
+      );
+    },
+    showProvinceSelector() {
+      if (this.spouseStatus === this.statusOptions.Citizen) {
+        return (
+          this.spouseStatusReason === this.canadianStatusReasons.MovingFromProvince ||
+          (this.spouseStatusReason === this.canadianStatusReasons.LivingInBCWithoutMSP &&
+            this.spouseLivedInBCSinceBirth === "N")
+        );
+      } else if (this.spouseStatus === this.statusOptions.PermanentResident) {
+        return this.spouseStatusReason === this.canadianStatusReasons.MovingFromProvince;
+      }
+      return false;
+    },
+    showCountrySelector() {
+      if (this.spouseStatus === this.statusOptions.Citizen) {
+        return this.spouseStatusReason === this.canadianStatusReasons.MovingFromCountry;
+      } else if (this.spouseStatus === this.statusOptions.PermanentResident) {
+        return this.spouseStatusReason === this.canadianStatusReasons.MovingFromCountry;
+      }
+      return false;
+    },
+    showDischargeInputs() {
+      return this.spouseStatus === this.statusOptions.Citizen;
+    },
+    citizenshipSamples() {
+      if (this.spouseGenderMatches === "N") {
+        return [this.spouseCitizenshipSupportDocumentType, SupportDocumentTypes.ChangeGenderDocs];
+      } else {
+        return this.spouseCitizenshipSupportDocumentType;
+      }
+    },
   },
   watch: {
     // When the status is changed, clear the reason
@@ -2081,6 +1839,253 @@ export default {
       }
     },
   },
+  created() {
+    this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse;
+    this.spouseStatus = this.$store.state.enrolmentModule.spouseStatus;
+    this.spouseStatusReason = this.$store.state.enrolmentModule.spouseStatusReason;
+    this.spouseCitizenshipSupportDocumentType =
+      this.$store.state.enrolmentModule.spouseCitizenshipSupportDocumentType;
+    this.spouseGenderMatches = this.$store.state.enrolmentModule.spouseGenderMatches;
+    this.spouseCitizenshipSupportDocuments =
+      this.$store.state.enrolmentModule.spouseCitizenshipSupportDocuments;
+    this.spouseIsNameChanged = this.$store.state.enrolmentModule.spouseIsNameChanged;
+    this.spouseNameChangeSupportDocumentType =
+      this.$store.state.enrolmentModule.spouseNameChangeSupportDocumentType;
+    this.spouseNameChangeSupportDocuments =
+      this.$store.state.enrolmentModule.spouseNameChangeSupportDocuments;
+    this.spouseFirstName = this.$store.state.enrolmentModule.spouseFirstName;
+    this.spouseMiddleName = this.$store.state.enrolmentModule.spouseMiddleName;
+    this.spouseLastName = this.$store.state.enrolmentModule.spouseLastName;
+    this.spouseBirthDate = this.$store.state.enrolmentModule.spouseBirthDate;
+    this.spousePersonalHealthNumber = this.$store.state.enrolmentModule.spousePHN;
+    this.spouseSocialInsuranceNumber = this.$store.state.enrolmentModule.spouseSIN;
+    this.spouseGender = this.$store.state.enrolmentModule.spouseGender;
+    this.spouseLivedInBCSinceBirth = this.$store.state.enrolmentModule.spouseLivedInBCSinceBirth;
+    this.spouseMadePermanentMove = this.$store.state.enrolmentModule.spouseMadePermanentMove;
+    this.spouseMoveFromOrigin = this.$store.state.enrolmentModule.spouseMoveFromOrigin;
+    this.spouseRecentBCMoveDate = this.$store.state.enrolmentModule.spouseRecentBCMoveDate;
+    this.spouseCanadaArrivalDate = this.$store.state.enrolmentModule.spouseCanadaArrivalDate;
+    this.spouseOutsideBCLast12Months =
+      this.$store.state.enrolmentModule.spouseOutsideBCLast12Months;
+    this.spouseOutsideBCLast12MonthsReason =
+      this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsReason;
+    this.spouseOutsideBCLast12MonthsDestination =
+      this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsDestination;
+    this.spouseOutsideBCLast12MonthsDepartureDate =
+      this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsDepartureDate;
+    this.spouseOutsideBCLast12MonthsReturnDate =
+      this.$store.state.enrolmentModule.spouseOutsideBCLast12MonthsReturnDate;
+    this.spousePreviousHealthNumber = this.$store.state.enrolmentModule.spousePreviousHealthNumber;
+    this.spouseHasPreviousBCHealthNumber =
+      this.$store.state.enrolmentModule.spouseHasPreviousBCHealthNumber;
+    this.spousePreviousBCHealthNumber =
+      this.$store.state.enrolmentModule.spousePreviousBCHealthNumber;
+    this.spouseBeenReleasedFromInstitution =
+      this.$store.state.enrolmentModule.spouseBeenReleasedFromInstitution;
+    this.spouseDischargeDate = this.$store.state.enrolmentModule.spouseDischargeDate;
+    this.spouseIncome = this.$store.state.enrolmentModule.spouseFPCIncome;
+    this.spouseRDSP = this.$store.state.enrolmentModule.spouseFPCRDSP;
+    this.spouseCRADocuments = this.$store.state.enrolmentModule.spouseCRADocuments;
+    this.ahPHN = this.$store.state.enrolmentModule.ahPHN;
+    this.ahSIN = this.$store.state.enrolmentModule.ahSIN;
+
+    setTimeout(() => {
+      this.pageLoaded = true;
+    }, 0);
+
+    logService.logNavigation(
+      this.$store.state.enrolmentModule.applicationUuid,
+      enrolmentRoutes.SPOUSE_INFO_PAGE.path,
+      enrolmentRoutes.SPOUSE_INFO_PAGE.title
+    );
+  },
+  validations() {
+    const validations = {
+      hasSpouse: {
+        required,
+      },
+      spouseFirstName: {
+        required,
+        nameValidator,
+      },
+      spouseMiddleName: {
+        nameValidator: optionalValidator(nameValidator),
+      },
+      spouseLastName: {
+        required,
+        nameValidator,
+      },
+      spouseBirthDate: {
+        required: dateDataRequiredValidator(this.birthdateData),
+        dateDataValidator: dateDataValidator(this.birthdateData),
+        distantPastValidator: optionalValidator(distantPastValidator),
+        birthDatePastValidator: optionalValidator(birthDatePastValidator),
+      },
+      spousePersonalHealthNumber: {},
+      spouseSocialInsuranceNumber: {},
+      spouseGender: {},
+      spouseStatus: {},
+      spouseStatusReason: {},
+      spouseCitizenshipSupportDocumentType: {},
+      spouseGenderMatches: {},
+      spouseCitizenshipSupportDocuments: {},
+      spouseIsNameChanged: {},
+      spouseNameChangeSupportDocumentType: {},
+      spouseNameChangeSupportDocuments: {},
+      spouseMadePermanentMove: {},
+      spouseMoveFromOrigin: {},
+      spouseLivedInBCSinceBirth: {},
+      spouseRecentBCMoveDate: {},
+      spouseCanadaArrivalDate: {},
+      spouseOutsideBCLast12Months: {},
+      spouseOutsideBCLast12MonthsReason: {},
+      spouseOutsideBCLast12MonthsDestination: {},
+      spouseOutsideBCLast12MonthsDepartureDate: {},
+      spouseOutsideBCLast12MonthsReturnDate: {},
+      spouseHasPreviousBCHealthNumber: {},
+      spousePreviousBCHealthNumber: {},
+      spouseBeenReleasedFromInstitution: {},
+      spouseDischargeDate: {},
+    };
+
+    if (this.requestPersonalHealthNumber) {
+      validations.spousePersonalHealthNumber.required = required;
+      validations.spousePersonalHealthNumber.phnValidator = optionalValidator(phnValidator);
+      validations.spousePersonalHealthNumber.phnFirstDigitValidator =
+        optionalValidator(phnFirstDigitValidator);
+      validations.spousePersonalHealthNumber.uniquePHNValidator =
+        optionalValidator(uniquePHNValidator);
+    }
+
+    if (this.requestSocialInsuranceNumber) {
+      validations.spouseSocialInsuranceNumber.required = required;
+      validations.spouseSocialInsuranceNumber.sinValidator = optionalValidator(sinValidator);
+      validations.spouseSocialInsuranceNumber.uniqueSINValidator =
+        optionalValidator(uniqueSINValidator);
+    }
+
+    if (this.requestGender) {
+      validations.spouseGender.required = required;
+    }
+
+    if (this.requestImmigrationStatus) {
+      validations.spouseStatus.required = required;
+      validations.spouseStatusReason.required = required;
+      validations.spouseCitizenshipSupportDocumentType.required = required;
+      validations.spouseGenderMatches.required = required;
+      validations.spouseCitizenshipSupportDocuments.required = required;
+      validations.spouseIsNameChanged.required = required;
+
+      if (this.spouseIsNameChanged === "Y") {
+        validations.spouseNameChangeSupportDocumentType.required = required;
+        validations.spouseNameChangeSupportDocuments.required = required;
+      }
+    }
+
+    if (this.requestMovingInfo) {
+      validations.spouseMadePermanentMove.required = required;
+      validations.spouseMadePermanentMove.permanentMoveValidator =
+        this.spouseStatus !== StatusInCanada.TemporaryResident
+          ? optionalValidator(permanentMoveValidator)
+          : () => true;
+      validations.spouseOutsideBCLast12Months.required = required;
+      validations.spouseHasPreviousBCHealthNumber.required = required;
+
+      if (this.showLivedInBCSinceBirth) {
+        validations.spouseLivedInBCSinceBirth.required = required;
+      }
+
+      if (this.showProvinceSelector) {
+        validations.spouseMoveFromOrigin.required = required;
+        validations.spouseMoveFromOrigin.nonBCValidator = nonBCValidator;
+      }
+
+      if (this.showCountrySelector) {
+        validations.spouseMoveFromOrigin.required = required;
+        validations.spouseMoveFromOrigin.nonCanadaValidator = nonCanadaValidator;
+      }
+
+      if (this.showOriginTextField) {
+        validations.spouseMoveFromOrigin.required = required;
+      }
+
+      if (this.showMoveDateInputs) {
+        validations.spouseRecentBCMoveDate.required = dateDataRequiredValidator(
+          this.recentBCMoveDateData
+        );
+        validations.spouseRecentBCMoveDate.dateDataValidator = dateDataValidator(
+          this.recentBCMoveDateData
+        );
+        validations.spouseRecentBCMoveDate.dateOrderValidator = dateOrderValidator;
+        validations.spouseRecentBCMoveDate.beforeBirthdateValidator = beforeBirthdateValidator;
+        validations.spouseRecentBCMoveDate.pastDateValidator = optionalValidator(pastDateValidator);
+
+        (validations.spouseCanadaArrivalDate.required =
+          this.canadaArrivalDateLabel === "Arrival date in Canada"
+            ? dateDataRequiredValidator(this.canadaArrivalDateData)
+            : dateDataOptionalValidator()),
+          (validations.spouseCanadaArrivalDate.dateDataValidator = dateDataValidator(
+            this.canadaArrivalDateData
+          ));
+        validations.spouseCanadaArrivalDate.dateOrderValidator =
+          optionalValidator(dateOrderValidator);
+        validations.spouseCanadaArrivalDate.beforeBirthdateValidator =
+          optionalValidator(beforeBirthdateValidator);
+        validations.spouseCanadaArrivalDate.pastDateValidator =
+          optionalValidator(pastDateValidator);
+      }
+
+      if (this.spouseOutsideBCLast12Months === "Y") {
+        validations.spouseOutsideBCLast12MonthsReason.required = required;
+        validations.spouseOutsideBCLast12MonthsReason.reasonDestinationContentValidator =
+          reasonDestinationContentValidator;
+        validations.spouseOutsideBCLast12MonthsDestination.required = required;
+        validations.spouseOutsideBCLast12MonthsDestination.reasonDestinationContentValidator =
+          reasonDestinationContentValidator;
+        validations.spouseOutsideBCLast12MonthsDepartureDate.required = dateDataRequiredValidator(
+          this.spouseOutsideBCLast12MonthsDepartureDateData
+        );
+        validations.spouseOutsideBCLast12MonthsDepartureDate.dateDataValidator = dateDataValidator(
+          this.spouseOutsideBCLast12MonthsDepartureDateData
+        );
+        validations.spouseOutsideBCLast12MonthsDepartureDate.departureDateValidator =
+          optionalValidator(departureDateValidator);
+
+        validations.spouseOutsideBCLast12MonthsReturnDate.required = dateDataRequiredValidator(
+          this.spouseOutsideBCLast12MonthsReturnDateData
+        );
+        validations.spouseOutsideBCLast12MonthsReturnDate.dateDataValidator = dateDataValidator(
+          this.spouseOutsideBCLast12MonthsReturnDateData
+        );
+        validations.spouseOutsideBCLast12MonthsReturnDate.returnDateValidator =
+          optionalValidator(returnDateValidator);
+      }
+
+      if (this.spouseHasPreviousBCHealthNumber === "Y") {
+        validations.spousePreviousBCHealthNumber.phnValidator = optionalValidator(phnValidator);
+        validations.spousePreviousBCHealthNumber.phnFirstDigitValidator =
+          optionalValidator(phnFirstDigitValidator);
+      }
+
+      if (this.showDischargeInputs) {
+        validations.spouseBeenReleasedFromInstitution.required = required;
+
+        if (this.spouseBeenReleasedFromInstitution === "Y") {
+          validations.spouseDischargeDate.required = dateDataRequiredValidator(
+            this.spouseDischargeDateData
+          );
+          validations.spouseDischargeDate.dateDataValidator = dateDataValidator(
+            this.spouseDischargeDateData
+          );
+          validations.spouseDischargeDate.dischargeDateValidator =
+            optionalValidator(dischargeDateValidator);
+          validations.spouseDischargeDate.pastDateValidator = optionalValidator(pastDateValidator);
+        }
+      }
+    }
+
+    return validations;
+  },
   methods: {
     removeSpouse() {
       this.hasSpouse = "N";
@@ -2103,147 +2108,111 @@ export default {
     },
     saveData() {
       this.setEmptyFields();
-      this.$store.dispatch(
-        enrolmentModule + "/" + SET_HAS_SPOUSE,
-        this.hasSpouse,
-      );
-      this.$store.dispatch(
-        enrolmentModule + "/" + SET_SPOUSE_STATUS,
-        this.spouseStatus,
-      );
+      this.$store.dispatch(enrolmentModule + "/" + SET_HAS_SPOUSE, this.hasSpouse);
+      this.$store.dispatch(enrolmentModule + "/" + SET_SPOUSE_STATUS, this.spouseStatus);
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_STATUS_REASON,
-        this.spouseStatusReason,
+        this.spouseStatusReason
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENT_TYPE,
-        this.spouseCitizenshipSupportDocumentType,
+        this.spouseCitizenshipSupportDocumentType
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_GENDER_MATCHES,
-        this.spouseGenderMatches,
+        this.spouseGenderMatches
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_CITIZENSHIP_SUPPORT_DOCUMENTS,
-        this.spouseCitizenshipSupportDocuments,
+        this.spouseCitizenshipSupportDocuments
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_IS_NAME_CHANGED,
-        this.spouseIsNameChanged,
+        this.spouseIsNameChanged
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENT_TYPE,
-        this.spouseNameChangeSupportDocumentType,
+        this.spouseNameChangeSupportDocumentType
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_NAME_CHANGE_SUPPORT_DOCUMENTS,
-        this.spouseNameChangeSupportDocuments,
+        this.spouseNameChangeSupportDocuments
       );
-      this.$store.dispatch(
-        enrolmentModule + "/" + SET_SPOUSE_FIRST_NAME,
-        this.spouseFirstName,
-      );
-      this.$store.dispatch(
-        enrolmentModule + "/" + SET_SPOUSE_MIDDLE_NAME,
-        this.spouseMiddleName,
-      );
-      this.$store.dispatch(
-        enrolmentModule + "/" + SET_SPOUSE_LAST_NAME,
-        this.spouseLastName,
-      );
-      this.$store.dispatch(
-        enrolmentModule + "/" + SET_SPOUSE_BIRTH_DATE,
-        this.spouseBirthDate,
-      );
-      this.$store.dispatch(
-        enrolmentModule + "/" + SET_SPOUSE_PHN,
-        this.spousePersonalHealthNumber,
-      );
+      this.$store.dispatch(enrolmentModule + "/" + SET_SPOUSE_FIRST_NAME, this.spouseFirstName);
+      this.$store.dispatch(enrolmentModule + "/" + SET_SPOUSE_MIDDLE_NAME, this.spouseMiddleName);
+      this.$store.dispatch(enrolmentModule + "/" + SET_SPOUSE_LAST_NAME, this.spouseLastName);
+      this.$store.dispatch(enrolmentModule + "/" + SET_SPOUSE_BIRTH_DATE, this.spouseBirthDate);
+      this.$store.dispatch(enrolmentModule + "/" + SET_SPOUSE_PHN, this.spousePersonalHealthNumber);
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_SIN,
-        this.spouseSocialInsuranceNumber,
+        this.spouseSocialInsuranceNumber
       );
-      this.$store.dispatch(
-        enrolmentModule + "/" + SET_SPOUSE_GENDER,
-        this.spouseGender,
-      );
+      this.$store.dispatch(enrolmentModule + "/" + SET_SPOUSE_GENDER, this.spouseGender);
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_LIVED_IN_BC_SINCE_BIRTH,
-        this.spouseLivedInBCSinceBirth,
+        this.spouseLivedInBCSinceBirth
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_MADE_PERMANENT_MOVE,
-        this.spouseMadePermanentMove,
+        this.spouseMadePermanentMove
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_MOVE_FROM_ORIGIN,
-        this.spouseMoveFromOrigin,
+        this.spouseMoveFromOrigin
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_RECENT_BC_MOVE_DATE,
-        this.spouseRecentBCMoveDate,
+        this.spouseRecentBCMoveDate
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_CANADA_ARRIVAL_DATE,
-        this.spouseCanadaArrivalDate,
+        this.spouseCanadaArrivalDate
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_PREVIOUS_HEALTH_NUMBER,
-        this.spousePreviousHealthNumber,
+        this.spousePreviousHealthNumber
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS,
-        this.spouseOutsideBCLast12Months,
+        this.spouseOutsideBCLast12Months
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_REASON,
-        this.spouseOutsideBCLast12MonthsReason,
+        this.spouseOutsideBCLast12MonthsReason
       );
       this.$store.dispatch(
-        enrolmentModule +
-          "/" +
-          SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION,
-        this.spouseOutsideBCLast12MonthsDestination,
+        enrolmentModule + "/" + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DESTINATION,
+        this.spouseOutsideBCLast12MonthsDestination
       );
       this.$store.dispatch(
-        enrolmentModule +
-          "/" +
-          SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DEPARTURE_DATE,
-        this.spouseOutsideBCLast12MonthsDepartureDate,
+        enrolmentModule + "/" + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_DEPARTURE_DATE,
+        this.spouseOutsideBCLast12MonthsDepartureDate
       );
       this.$store.dispatch(
-        enrolmentModule +
-          "/" +
-          SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_RETURN_DATE,
-        this.spouseOutsideBCLast12MonthsReturnDate,
+        enrolmentModule + "/" + SET_SPOUSE_OUTSIDE_BC_LAST_12_MONTHS_RETURN_DATE,
+        this.spouseOutsideBCLast12MonthsReturnDate
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_HAS_PREVIOUS_BC_HEALTH_NUMBER,
-        this.spouseHasPreviousBCHealthNumber,
+        this.spouseHasPreviousBCHealthNumber
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_PREVIOUS_BC_HEALTH_NUMBER,
-        this.spousePreviousBCHealthNumber,
+        this.spousePreviousBCHealthNumber
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_BEEN_RELEASED_FROM_INSTITUTION,
-        this.spouseBeenReleasedFromInstitution,
+        this.spouseBeenReleasedFromInstitution
       );
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_DISCHARGE_DATE,
-        this.spouseDischargeDate,
+        this.spouseDischargeDate
       );
-      this.$store.dispatch(
-        enrolmentModule + "/" + SET_SPOUSE_FPC_INCOME,
-        this.spouseIncome,
-      );
-      this.$store.dispatch(
-        enrolmentModule + "/" + SET_SPOUSE_FPC_RDSP,
-        this.spouseRDSP,
-      );
+      this.$store.dispatch(enrolmentModule + "/" + SET_SPOUSE_FPC_INCOME, this.spouseIncome);
+      this.$store.dispatch(enrolmentModule + "/" + SET_SPOUSE_FPC_RDSP, this.spouseRDSP);
       this.$store.dispatch(
         enrolmentModule + "/" + SET_SPOUSE_CRA_DOCUMENTS,
-        this.spouseCRADocuments,
+        this.spouseCRADocuments
       );
     },
     navigateToNextPage() {
@@ -2259,10 +2228,7 @@ export default {
       }
 
       // Navigate to next path.
-      const toPath = getConvertedPath(
-        this.$router.currentRoute.value.path,
-        routePath,
-      );
+      const toPath = getConvertedPath(this.$router.currentRoute.value.path, routePath);
 
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -2362,216 +2328,6 @@ export default {
         this.spouseDischargeDate = null;
       }
     },
-  },
-  computed: {
-    requestGender() {
-      return this.$store.state.enrolmentModule.isApplyingForMSP;
-    },
-    requestPersonalHealthNumber() {
-      return !this.$store.state.enrolmentModule.isApplyingForMSP;
-    },
-    requestSocialInsuranceNumber() {
-      return (
-        this.$store.state.enrolmentModule.isApplyingForFPCare ||
-        this.$store.state.enrolmentModule.isApplyingForSuppBen
-      );
-    },
-    requestImmigrationStatus() {
-      return this.$store.state.enrolmentModule.isApplyingForMSP;
-    },
-    requestMovingInfo() {
-      return (
-        this.$store.state.enrolmentModule.isApplyingForMSP &&
-        this.spouseCitizenshipSupportDocuments.length > 0 &&
-        (this.spouseIsNameChanged === "N" ||
-          this.spouseNameChangeSupportDocuments.length > 0)
-      );
-    },
-    citizenshipSupportDocumentOptions() {
-      let options;
-
-      if (this.spouseStatus === StatusInCanada.PermanentResident) {
-        options = selectOptionsPermanentResidentSupportDocuments;
-      } else if (this.spouseStatus === StatusInCanada.TemporaryResident) {
-        if (
-          this.spouseStatusReason === this.canadianStatusReasons.WorkingInBC
-        ) {
-          options = selectOptionWorkPermitSupportDocument;
-        } else if (
-          this.spouseStatusReason === this.canadianStatusReasons.StudyingInBC
-        ) {
-          options = selectOptionStudyPermitSupportDocument;
-        } else if (
-          this.spouseStatusReason === this.canadianStatusReasons.ReligiousWorker
-        ) {
-          options = selectOptionReligiousWorkSupportDocument;
-        } else if (
-          this.spouseStatusReason === this.canadianStatusReasons.Diplomat
-        ) {
-          options = selectOptionDiplomaticFoilSupportDocument;
-        } else if (
-          this.spouseStatusReason === this.canadianStatusReasons.Visiting
-        ) {
-          options = selectOptionVisitorVisaSupportDocument;
-        }
-      } else {
-        options = selectOptionsCitizenshipSupportDocuments;
-      }
-
-      return options;
-    },
-    canadaArrivalDateLabel() {
-      if (
-        this.spouseStatusReason ===
-          this.canadianStatusReasons.MovingFromProvince &&
-        this.spouseStatus !== this.statusOptions.TemporaryResident
-      ) {
-        return "Arrival date in Canada (Optional)";
-      }
-      if (
-        this.spouseStatus === this.statusOptions.Citizen &&
-        this.spouseLivedInBCSinceBirth === "N"
-      ) {
-        return "Arrival date in Canada (Optional)";
-      }
-      if (
-        this.spouseStatus === this.statusOptions.TemporaryResident &&
-        this.spouseStatusReason ===
-          this.canadianStatusReasons.LivingInBCWithoutMSP
-      ) {
-        return "Arrival date in Canada (Optional)";
-      }
-      if (
-        this.spouseStatus === this.statusOptions.PermanentResident &&
-        this.spouseStatusReason ===
-          this.canadianStatusReasons.LivingInBCWithoutMSP
-      ) {
-        return "Arrival date in Canada (Optional)";
-      }
-      return "Arrival date in Canada";
-    },
-    bcMoveDateLabel() {
-      if (
-        this.spouseStatusReason ===
-        this.canadianStatusReasons.LivingInBCWithoutMSP
-      ) {
-        return "Most recent move to B.C.";
-      } else {
-        return "Arrival date in B.C.";
-      }
-    },
-    showPreviousHealthNumber() {
-      return (
-        this.spouseStatusReason ===
-        this.canadianStatusReasons.MovingFromProvince
-      );
-    },
-    showLivedInBCSinceBirth() {
-      return (
-        this.spouseStatus === this.statusOptions.Citizen &&
-        this.spouseStatusReason ===
-          this.canadianStatusReasons.LivingInBCWithoutMSP
-      );
-    },
-    showMoveDateInputs() {
-      return (
-        (this.spouseStatus === this.statusOptions.PermanentResident &&
-          this.spouseStatusReason ===
-            this.canadianStatusReasons.LivingInBCWithoutMSP) ||
-        (this.spouseStatusReason ===
-          this.canadianStatusReasons.LivingInBCWithoutMSP &&
-          this.spouseLivedInBCSinceBirth === "N") ||
-        this.spouseStatusReason !==
-          this.canadianStatusReasons.LivingInBCWithoutMSP
-      );
-    },
-    showOriginTextField() {
-      return (
-        this.spouseStatus === this.statusOptions.TemporaryResident ||
-        (this.spouseStatus === this.statusOptions.PermanentResident &&
-          this.spouseStatusReason ===
-            this.canadianStatusReasons.LivingInBCWithoutMSP)
-      );
-    },
-    showMovedPermanentlyQuestion() {
-      return (
-        this.spouseStatusReason !==
-          this.canadianStatusReasons.LivingInBCWithoutMSP ||
-        (this.spouseStatus === this.statusOptions.PermanentResident &&
-          this.spouseStatusReason ===
-            this.canadianStatusReasons.LivingInBCWithoutMSP) ||
-        this.spouseLivedInBCSinceBirth === "Y" ||
-        this.spouseLivedInBCSinceBirth === "N"
-      );
-    },
-    showProvinceSelector() {
-      if (this.spouseStatus === this.statusOptions.Citizen) {
-        return (
-          this.spouseStatusReason ===
-            this.canadianStatusReasons.MovingFromProvince ||
-          (this.spouseStatusReason ===
-            this.canadianStatusReasons.LivingInBCWithoutMSP &&
-            this.spouseLivedInBCSinceBirth === "N")
-        );
-      } else if (this.spouseStatus === this.statusOptions.PermanentResident) {
-        return (
-          this.spouseStatusReason ===
-          this.canadianStatusReasons.MovingFromProvince
-        );
-      }
-      return false;
-    },
-    showCountrySelector() {
-      if (this.spouseStatus === this.statusOptions.Citizen) {
-        return (
-          this.spouseStatusReason ===
-          this.canadianStatusReasons.MovingFromCountry
-        );
-      } else if (this.spouseStatus === this.statusOptions.PermanentResident) {
-        return (
-          this.spouseStatusReason ===
-          this.canadianStatusReasons.MovingFromCountry
-        );
-      }
-      return false;
-    },
-    showDischargeInputs() {
-      return this.spouseStatus === this.statusOptions.Citizen;
-    },
-    citizenshipSamples() {
-      if (this.spouseGenderMatches === "N") {
-        return [
-          this.spouseCitizenshipSupportDocumentType,
-          SupportDocumentTypes.ChangeGenderDocs,
-        ];
-      } else {
-        return this.spouseCitizenshipSupportDocumentType;
-      }
-    },
-  },
-  // Required in order to block back navigation.
-  beforeRouteLeave(to, from, next) {
-    pageStateService.setPageIncomplete(from.path);
-    if (
-      pageStateService.isPageComplete(to.path) ||
-      (isPastPath(to.path, from.path) && !isEQPath(to.path))
-    ) {
-      next();
-    } else {
-      // Navigate to self.
-      const topScrollPosition = getTopScrollPosition();
-      const toPath = getConvertedPath(
-        this.$router.currentRoute.value.path,
-        enrolmentRoutes.SPOUSE_INFO_PAGE.path,
-      );
-      next({
-        path: toPath,
-        replace: true,
-      });
-      setTimeout(() => {
-        scrollTo(topScrollPosition);
-      }, 0);
-    }
   },
 };
 </script>

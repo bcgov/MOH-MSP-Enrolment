@@ -1,5 +1,5 @@
 import { isPastPath, isEQPath, enrolmentRouteStepOrder, eqRoutes } from "@/router/routes";
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
+import { it, describe, expect } from "vitest";
 
 describe("isPastPath()", () => {
   it("returns false when passed no input", async () => {

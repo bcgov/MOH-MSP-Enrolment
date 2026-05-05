@@ -1,20 +1,15 @@
 import * as scroll from "@/helpers/scroll.js";
 import { nextTick } from "vue";
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
+import { it, describe, expect, afterEach, vi } from "vitest";
 
 const spyOnWindowScrollTo = vi
   .spyOn(window, "scrollTo")
-  // .mockImplementation(vi.fn);
+  .mockImplementation(vi.fn);
 
 const spyOnScrollToElement = vi.spyOn(scroll, "scrollToElement");
 const spyOnScrollTo = vi.spyOn(scroll, "scrollTo");
 
 describe("Helper scroll.js scrollTo()", () => {
-  beforeEach(() => {
-    // JSDom does not implement this and an error was being thrown from vitest because of it.
-    window.scrollTo = () => {};
-  });
-
   afterEach(() => {
     vi.resetModules();
     vi.clearAllMocks();

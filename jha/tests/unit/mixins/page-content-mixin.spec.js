@@ -1,5 +1,5 @@
 import mixin from "@/mixins/page-content-mixin";
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
+import { it, describe, expect, vi } from "vitest";
 
 describe("mixin methods", () => {
   it("returns 0 when the offsets all add up to 0", async () => {
