@@ -33,7 +33,7 @@
     "vuex": "^4.0.2"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=22.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.6",
