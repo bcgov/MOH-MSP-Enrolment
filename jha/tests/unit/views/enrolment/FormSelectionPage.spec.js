@@ -4,7 +4,7 @@ import { shallowMount } from '@vue/test-utils';
 import router from '@/router';
 import store from '@/store';
 import FormSelectionPage from '@/views/enrolment/FormSelectionPage.vue';
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
+import { it, describe, expect, vi } from "vitest";
 
 vi.mock("@/services/log-service.js", () => {
   return {

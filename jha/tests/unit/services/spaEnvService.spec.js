@@ -1,6 +1,6 @@
 import spaEnvService from "@/services/spa-env-service";
 import axios from "axios";
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
+import { it, describe, expect, afterEach, vi } from "vitest";
 
 vi.mock("axios");
 

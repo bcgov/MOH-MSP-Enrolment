@@ -1,5 +1,5 @@
 import { isCSR, convertURLToCSR, getConvertedPath } from "@/helpers/url.js";
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
+import { it, describe, expect, afterEach, vi } from "vitest";
 
 describe("url.js isCSR()", () => {
   afterEach(() => {

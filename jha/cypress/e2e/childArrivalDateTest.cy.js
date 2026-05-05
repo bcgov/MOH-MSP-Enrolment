@@ -1,9 +1,6 @@
-import { generateRequestObject } from "../fixtures/fullApplication.js";
-import { removeUniqueFields } from "../support/helpers.js";
 import envData from "../fixtures/env-data.js";
 import { StatusInCanada } from "../../src/constants/immigration-status-types.js";
 import { SupportDocumentTypes } from "../../src/constants/document-types.js";
-import { padInteger } from "../support/helpers.js";
 const samplePDF = "cypress/fixtures/sample.pdf";
 const currentDate = new Date();
 const lastMonthDate = new Date();

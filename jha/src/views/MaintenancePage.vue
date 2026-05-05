@@ -1,6 +1,6 @@
 <template>
   <div>
-    <PageContent :deltaHeight="pageContentDeltaHeight">
+    <PageContent :delta-height="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-5">
         <h1>Maintenance mode</h1>
         <hr />
@@ -16,10 +16,10 @@ import pageContentMixin from "@/mixins/page-content-mixin";
 
 export default {
   name: "MaintenancePage",
-  mixins: [pageContentMixin],
   components: {
     PageContent,
   },
+  mixins: [pageContentMixin],
   data: () => {
     return {
       maintenanceMessage:

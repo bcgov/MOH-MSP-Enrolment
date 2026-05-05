@@ -23,10 +23,7 @@ export default {
   },
   methods: {
     handleToggleShowMobileStepperDetails(isDetailsShown) {
-      this.$store.dispatch(
-        appModule + "/" + SET_SHOW_MOBILE_STEPPER_DETAILS,
-        isDetailsShown,
-      );
+      this.$store.dispatch(appModule + "/" + SET_SHOW_MOBILE_STEPPER_DETAILS, isDetailsShown);
     },
     handleClickStepperLink(path) {
       pageStateService.setPageIncomplete(this.$router.currentRoute.value.path);
@@ -51,9 +48,7 @@ export default {
         case enrolmentRoutes.SUPP_BEN_ELIGIBILITY_PAGE.path:
           return this.eligibilityStepRoutes;
         case enrolmentRoutes.FORM_SELECTION_PAGE.path:
-          return hasCompletedEQ
-            ? this.mainFormStepRoutes
-            : this.eligibilityStepRoutes;
+          return hasCompletedEQ ? this.mainFormStepRoutes : this.eligibilityStepRoutes;
         default:
           return this.mainFormStepRoutes;
       }

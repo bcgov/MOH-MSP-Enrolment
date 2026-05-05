@@ -1,6 +1,6 @@
 import mixin from "@/mixins/page-stepper-mixin";
 import pageStateService from "@/services/page-state-service";
-import { it, describe, expect, beforeEach, afterEach, vi } from "vitest";
+import { it, describe, expect, vi } from "vitest";
 
 const spyOnSetPageIncomplete = vi
   .spyOn(pageStateService, "setPageIncomplete")
