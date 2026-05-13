@@ -34,14 +34,19 @@
 
     <hr />
     <p>
-      Based on the information you entered, you may be eligible for the level of
-      coverage below. Coverage is temporary until we verify your income with the
-      CRA.
+      Based on the information you entered, you may be eligible for the level of coverage below.
+      Coverage is temporary until we verify your income with the CRA.
     </p>
 
     <h3>Level of coverage</h3>
-    <div v-if="isLoading" class="text-center">
-      <LoaderComponent color="#000" size="24px" />
+    <div
+      v-if="isLoading"
+      class="text-center"
+    >
+      <LoaderComponent
+        color="#000"
+        size="24px"
+      />
     </div>
     <div
       v-if="isSystemUnavailable"
@@ -52,7 +57,7 @@
     </div>
     <DistributionBar
       v-if="!isLoading && !isSystemUnavailable"
-      startingLabel="$0"
+      starting-label="$0"
       :items="distributionBarItems"
     />
   </div>
@@ -62,10 +67,7 @@
 import { DistributionBar, LoaderComponent } from "common-lib-vue";
 import apiService from "@/services/api-service";
 import logService from "@/services/log-service";
-import {
-  MODULE_NAME as appModule,
-  SET_DEDUCTIBLES_API_DATA,
-} from "@/store/modules/app-module";
+import { MODULE_NAME as appModule, SET_DEDUCTIBLES_API_DATA } from "@/store/modules/app-module";
 import {
   formatCurrencyNumber,
   formatServerData,
@@ -94,45 +96,6 @@ export default {
       deductibleTiers: [],
       pre1939DeductibleTiers: [],
     };
-  },
-  async created() {
-    let apiData = this.$store.state.appModule.deductiblesAPIData;
-
-    this.isLoading = true;
-    this.isSystemUnavailable = false;
-
-    try {
-      if (!apiData) {
-        const response = await apiService.getDeductibles(
-          this.$store.state.enrolmentModule.captchaToken,
-          this.$store.state.enrolmentModule.fpcUuid,
-        );
-        apiData = response.data;
-        if (
-          !apiData ||
-          !apiData.assistanceLevels ||
-          !apiData.pre1939AssistanceLevels
-        ) {
-          throw new Error("response data does not include assistance levels.");
-        }
-        this.$store.dispatch(
-          `${appModule}/${SET_DEDUCTIBLES_API_DATA}`,
-          apiData,
-        );
-      }
-      this.deductibleTiers = formatServerData(apiData.assistanceLevels) || [];
-      this.pre1939DeductibleTiers =
-        formatServerData(apiData.pre1939AssistanceLevels) || [];
-      this.isLoading = false;
-    } catch (error) {
-      this.isLoading = false;
-      this.isSystemUnavailable = true;
-
-      logService.logError(this.$store.state.enrolmentModule.applicationUuid, {
-        event: "error getting values from getDeductibles endpoint",
-        error,
-      });
-    }
   },
   computed: {
     totalIncome() {
@@ -168,6 +131,37 @@ export default {
       });
       return getDistributionBarItems(tier);
     },
+  },
+  async created() {
+    let apiData = this.$store.state.appModule.deductiblesAPIData;
+
+    this.isLoading = true;
+    this.isSystemUnavailable = false;
+
+    try {
+      if (!apiData) {
+        const response = await apiService.getDeductibles(
+          this.$store.state.enrolmentModule.captchaToken,
+          this.$store.state.enrolmentModule.fpcUuid
+        );
+        apiData = response.data;
+        if (!apiData || !apiData.assistanceLevels || !apiData.pre1939AssistanceLevels) {
+          throw new Error("response data does not include assistance levels.");
+        }
+        this.$store.dispatch(`${appModule}/${SET_DEDUCTIBLES_API_DATA}`, apiData);
+      }
+      this.deductibleTiers = formatServerData(apiData.assistanceLevels) || [];
+      this.pre1939DeductibleTiers = formatServerData(apiData.pre1939AssistanceLevels) || [];
+      this.isLoading = false;
+    } catch (error) {
+      this.isLoading = false;
+      this.isSystemUnavailable = true;
+
+      logService.logError(this.$store.state.enrolmentModule.applicationUuid, {
+        event: "error getting values from getDeductibles endpoint",
+        error,
+      });
+    }
   },
 };
 </script>

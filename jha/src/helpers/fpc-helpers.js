@@ -17,18 +17,11 @@ export const formatCurrencyNumber = (value) => {
 };
 
 export const getCoverageTier = (options) => {
-  const {
-    ahBirthdate,
-    spouseBirthdate,
-    adjustedIncome,
-    pre1939DeductibleTiers,
-    deductibleTiers,
-  } = options;
+  const { ahBirthdate, spouseBirthdate, adjustedIncome, pre1939DeductibleTiers, deductibleTiers } =
+    options;
   if (
-    ((isDateValid(ahBirthdate) &&
-      isBefore(ahBirthdate, parseISO("1940-01-01"))) ||
-      (isDateValid(spouseBirthdate) &&
-        isBefore(spouseBirthdate, parseISO("1940-01-01")))) &&
+    ((isDateValid(ahBirthdate) && isBefore(ahBirthdate, parseISO("1940-01-01"))) ||
+      (isDateValid(spouseBirthdate) && isBefore(spouseBirthdate, parseISO("1940-01-01")))) &&
     Array.isArray(pre1939DeductibleTiers) &&
     pre1939DeductibleTiers.length > 0
   ) {
@@ -39,9 +32,7 @@ export const getCoverageTier = (options) => {
       }
     });
     const coverageTier = pre1939DeductibleTiers.find((item) => {
-      return (
-        adjustedIncome >= item.startRange && adjustedIncome <= item.endRange
-      );
+      return adjustedIncome >= item.startRange && adjustedIncome <= item.endRange;
     });
     return coverageTier ? coverageTier : maxCoverageTier;
   } else if (Array.isArray(deductibleTiers) && deductibleTiers.length > 0) {
@@ -52,9 +43,7 @@ export const getCoverageTier = (options) => {
       }
     });
     const coverageTier = deductibleTiers.find((item) => {
-      return (
-        adjustedIncome >= item.startRange && adjustedIncome <= item.endRange
-      );
+      return adjustedIncome >= item.startRange && adjustedIncome <= item.endRange;
     });
     return coverageTier ? coverageTier : maxCoverageTier;
   } else {

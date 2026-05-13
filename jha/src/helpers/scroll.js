@@ -2,8 +2,7 @@ export const scrollTo = (top, smoothScroll) => {
   if (!top) {
     top = 0;
   }
-  const supportsNativeSmoothScroll =
-    "scrollBehavior" in document.documentElement.style;
+  const supportsNativeSmoothScroll = "scrollBehavior" in document.documentElement.style;
 
   if (supportsNativeSmoothScroll) {
     if (smoothScroll) {
@@ -35,8 +34,7 @@ export const scrollToElement = (element, smoothScroll, yOffset) => {
     yOffset = -75;
   }
   setTimeout(() => {
-    const top =
-      element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+    const top = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
     scrollTo(top, smoothScroll);
   }, 0);
 };

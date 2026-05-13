@@ -2,207 +2,198 @@
   <div>
     <div class="container stepper">
       <PageStepper
-        :currentPath="$router.currentRoute.value.path"
+        :current-path="$router.currentRoute.value.path"
         :routes="stepRoutes"
-        @toggleShowMobileDetails="handleToggleShowMobileStepperDetails($event)"
-        :isMobileStepperOpen="isMobileStepperOpen"
-        @onClickLink="handleClickStepperLink($event)"
+        :is-mobile-stepper-open="isMobileStepperOpen"
+        @toggle-show-mobile-details="handleToggleShowMobileStepperDetails($event)"
+        @on-click-link="handleClickStepperLink($event)"
       />
     </div>
-    <PageContent :deltaHeight="pageContentDeltaHeight">
+    <PageContent :delta-height="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Contact information</h1>
         <p>
-          When entering your address: If your address includes a unit number,
-          place the unit number before the building number with a hyphen in
-          between (For example: "105-927 Avenue"). This should allow for
-          accurate recognition of your address. If your address is not found,
-          enter it manually.
+          When entering your address: If your address includes a unit number, place the unit number
+          before the building number with a hyphen in between (For example: "105-927 Avenue"). This
+          should allow for accurate recognition of your address. If your address is not found, enter
+          it manually.
         </p>
         <hr class="mt-0" />
         <div class="row">
-          <div class="col-md-6" v-if="applyingForMSP">
+          <div
+            v-if="applyingForMSP"
+            class="col-md-6"
+          >
             <div>
               <h2>Residential address</h2>
               <p class="address-description">
-                Your residential address is the address where you currently live
-                in B.C.
+                Your residential address is the address where you currently live in B.C.
               </p>
             </div>
             <hr class="mt-0" />
             <AddressDoctorInput
               v-if="isAddressValidatorEnabled"
-              label="Full street address"
-              v-model="resAddressLine1"
               id="res-address-line1"
+              v-model="resAddressLine1"
+              label="Full street address"
               class="mt-3"
               maxlength="25"
-              serviceUrl="/ahdc/api/address"
-              :inputStyle="mediumStyles"
+              service-url="/ahdc/api/address"
+              :input-style="mediumStyles"
               :required="true"
-              @addressSelected="handleResAddressSelected($event)"
+              @address-selected="handleResAddressSelected($event)"
               @blur="handleBlurField(v$.resAddressLine1)"
             />
             <InputComponent
               v-else
-              class="mt-3"
-              label="Full street address"
               id="res-address-line1"
               v-model="resAddressLine1"
+              class="mt-3"
+              label="Full street address"
               :required="true"
               maxlength="25"
-              :inputStyle="mediumStyles"
+              :input-style="mediumStyles"
               @blur="handleBlurField(v$.resAddressLine1)"
             />
             <div
+              v-if="v$.resAddressLine1.$dirty && v$.resAddressLine1.required.$invalid"
               class="text-danger"
-              v-if="
-                v$.resAddressLine1.$dirty &&
-                v$.resAddressLine1.required.$invalid
-              "
               aria-live="assertive"
             >
               Full street address is required.
             </div>
             <div
-              class="text-danger"
               v-if="
                 v$.resAddressLine1.$dirty &&
                 !v$.resAddressLine1.required.$invalid &&
                 v$.resAddressLine1.addressLineContentValidator.$invalid
               "
+              class="text-danger"
               aria-live="assertive"
             >
-              Full street address must contain letters, numbers, and may include
-              special characters such as a hyphen, period, apostrophe, number
-              sign, ampersand, forward slash, and blank characters.
+              Full street address must contain letters, numbers, and may include special characters
+              such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank
+              characters.
             </div>
             <InputComponent
-              class="mt-3"
-              label="Address Line 2 (optional)"
               id="res-address-line2"
               v-model="resAddressLine2"
+              class="mt-3"
+              label="Address Line 2 (optional)"
               maxlength="25"
-              :inputStyle="mediumStyles"
+              :input-style="mediumStyles"
               @blur="handleBlurField(v$.resAddressLine2)"
             />
             <div
-              class="text-danger"
               v-if="
-                v$.resAddressLine2.$dirty &&
-                v$.resAddressLine2.addressLineContentValidator.$invalid
+                v$.resAddressLine2.$dirty && v$.resAddressLine2.addressLineContentValidator.$invalid
               "
+              class="text-danger"
               aria-live="assertive"
             >
-              Full street address must contain letters, numbers, and may include
-              special characters such as a hyphen, period, apostrophe, number
-              sign, ampersand, forward slash, and blank characters.
+              Full street address must contain letters, numbers, and may include special characters
+              such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank
+              characters.
             </div>
             <InputComponent
-              class="mt-3"
-              label="Address Line 3 (optional)"
               id="res-address-line3"
               v-model="resAddressLine3"
+              class="mt-3"
+              label="Address Line 3 (optional)"
               maxlength="25"
-              :inputStyle="mediumStyles"
+              :input-style="mediumStyles"
               @blur="handleBlurField(v$.resAddressLine3)"
             />
             <div
-              class="text-danger"
               v-if="
-                v$.resAddressLine3.$dirty &&
-                v$.resAddressLine3.addressLineContentValidator.$invalid
+                v$.resAddressLine3.$dirty && v$.resAddressLine3.addressLineContentValidator.$invalid
               "
+              class="text-danger"
               aria-live="assertive"
             >
-              Full street address must contain letters, numbers, and may include
-              special characters such as a hyphen, period, apostrophe, number
-              sign, ampersand, forward slash, and blank characters.
+              Full street address must contain letters, numbers, and may include special characters
+              such as a hyphen, period, apostrophe, number sign, ampersand, forward slash, and blank
+              characters.
             </div>
             <InputComponent
-              class="mt-3"
-              label="City"
               id="res-city"
               v-model="resCity"
+              class="mt-3"
+              label="City"
               maxlength="25"
-              :inputStyle="mediumStyles"
+              :input-style="mediumStyles"
               @blur="handleBlurField(v$.resCity)"
             />
             <div
-              class="text-danger"
               v-if="v$.resCity.$dirty && v$.resCity.required.$invalid"
+              class="text-danger"
               aria-live="assertive"
             >
               City is required.
             </div>
             <div
+              v-if="v$.resCity.$dirty && v$.resCity.cityContentValidator.$invalid"
               class="text-danger"
-              v-if="
-                v$.resCity.$dirty && v$.resCity.cityContentValidator.$invalid
-              "
               aria-live="assertive"
             >
-              City must contain letters and may include numbers and special
-              characters such as hyphens, periods, apostrophes, and blank
-              characters.
+              City must contain letters and may include numbers and special characters such as
+              hyphens, periods, apostrophes, and blank characters.
             </div>
             <RegionSelect
-              class="mt-3"
-              label="Province"
               id="res-province"
               v-model="resProvince"
-              :inputStyle="mediumStyles"
-              @blur="handleBlurField(v$.resProvince)"
+              class="mt-3"
+              label="Province"
+              :input-style="mediumStyles"
               :required="true"
               :disabled="true"
+              @blur="handleBlurField(v$.resProvince)"
             />
             <CountrySelect
-              class="mt-3"
-              label="Jurisdiction"
               id="res-country"
               v-model="resCountry"
-              :inputStyle="mediumStyles"
-              @blur="handleBlurField(v$.resCountry)"
+              class="mt-3"
+              label="Jurisdiction"
+              :input-style="mediumStyles"
               :required="true"
               :disabled="true"
+              @blur="handleBlurField(v$.resCountry)"
             />
             <PostalCodeInput
-              class="mt-3"
-              label="Postal Code"
               id="res-postal-code"
               v-model="resPostalCode"
-              :inputStyle="smallStyles"
+              class="mt-3"
+              label="Postal Code"
+              :input-style="smallStyles"
               :required="true"
               @blur="handleBlurField(v$.resPostalCode)"
             />
             <div
+              v-if="v$.resPostalCode.$dirty && v$.resPostalCode.required.$invalid"
               class="text-danger"
-              v-if="
-                v$.resPostalCode.$dirty && v$.resPostalCode.required.$invalid
-              "
               aria-live="assertive"
             >
               Postal code is required.
             </div>
             <div
-              class="text-danger"
               v-if="
                 v$.resPostalCode.$dirty &&
                 !v$.resPostalCode.required.$invalid &&
                 v$.resPostalCode.completePostalCodeValidator.$invalid
               "
+              class="text-danger"
               aria-live="assertive"
             >
               Must be in the format A1A 1A1.
             </div>
             <div
-              class="text-danger"
               v-if="
                 v$.resPostalCode.$dirty &&
                 !v$.resPostalCode.required.$invalid &&
                 !v$.resPostalCode.completePostalCodeValidator.$invalid &&
                 v$.resPostalCode.bcPostalCodeValidator.$invalid
               "
+              class="text-danger"
               aria-live="assertive"
             >
               Invalid postal code for British Columbia.
@@ -211,9 +202,11 @@
           <div class="col-md-6">
             <div>
               <h2>Mailing address</h2>
-              <p v-if="applyingForMSP" class="address-description">
-                Enter your mailing address if it is different from your
-                residential address.
+              <p
+                v-if="applyingForMSP"
+                class="address-description"
+              >
+                Enter your mailing address if it is different from your residential address.
               </p>
               <p v-else>Enter your mailing address</p>
             </div>
@@ -221,189 +214,172 @@
             <div v-if="isMailSame">
               <ButtonComponent
                 label="My Mailing Address is Different"
-                @click="handleClickDifferentAddress()"
                 color="gold"
                 class="different-address"
+                @click="handleClickDifferentAddress()"
               />
             </div>
             <div v-else>
               <AddressDoctorInput
                 v-if="isAddressValidatorEnabled && mailCountry === 'Canada'"
-                label="Full street address, rural route, PO box, or general delivery"
-                v-model="mailAddressLine1"
                 id="mail-address-line1"
+                v-model="mailAddressLine1"
+                label="Full street address, rural route, PO box, or general delivery"
                 class="mt-3"
                 maxlength="25"
-                serviceUrl="/ahdc/api/address"
-                :inputStyle="mediumStyles"
+                service-url="/ahdc/api/address"
+                :input-style="mediumStyles"
                 :required="true"
-                @addressSelected="handleMailAddressSelected($event)"
+                @address-selected="handleMailAddressSelected($event)"
                 @blur="handleBlurField(v$.mailAddressLine1)"
               />
               <InputComponent
                 v-else
-                class="mt-3"
-                label="Full street address, rural route, PO box, or general delivery"
                 id="mail-address-line1"
                 v-model="mailAddressLine1"
+                class="mt-3"
+                label="Full street address, rural route, PO box, or general delivery"
                 maxlength="25"
-                :inputStyle="mediumStyles"
+                :input-style="mediumStyles"
                 :required="true"
                 @blur="handleBlurField(v$.mailAddressLine1)"
               />
               <div
+                v-if="v$.mailAddressLine1.$dirty && v$.mailAddressLine1.required.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.mailAddressLine1.$dirty &&
-                  v$.mailAddressLine1.required.$invalid
-                "
                 aria-live="assertive"
               >
-                Full street address, rural route, PO box, or general delivery is
-                required.
+                Full street address, rural route, PO box, or general delivery is required.
               </div>
               <div
-                class="text-danger"
                 v-if="
                   v$.mailAddressLine1.$dirty &&
                   !v$.mailAddressLine1.required.$invalid &&
                   v$.mailAddressLine1.addressLineContentValidator.$invalid
                 "
+                class="text-danger"
                 aria-live="assertive"
               >
-                Full street address, rural route, PO box, or general delivery
-                must contain letters, numbers, and may include special
-                characters such as a hyphen, period, apostrophe, number sign,
-                ampersand, forward slash, and blank characters.
+                Full street address, rural route, PO box, or general delivery must contain letters,
+                numbers, and may include special characters such as a hyphen, period, apostrophe,
+                number sign, ampersand, forward slash, and blank characters.
               </div>
               <InputComponent
-                class="mt-3"
-                label="Address Line 2 (optional)"
                 id="mail-address-line2"
                 v-model="mailAddressLine2"
+                class="mt-3"
+                label="Address Line 2 (optional)"
                 maxlength="25"
-                :inputStyle="mediumStyles"
+                :input-style="mediumStyles"
                 @blur="handleBlurField(v$.mailAddressLine2)"
               />
               <div
-                class="text-danger"
                 v-if="
                   v$.mailAddressLine2.$dirty &&
                   v$.mailAddressLine2.addressLineContentValidator.$invalid
                 "
+                class="text-danger"
                 aria-live="assertive"
               >
-                Full street address, rural route, PO box, or general delivery
-                must contain letters, numbers, and may include special
-                characters such as a hyphen, period, apostrophe, number sign,
-                ampersand, forward slash, and blank characters.
+                Full street address, rural route, PO box, or general delivery must contain letters,
+                numbers, and may include special characters such as a hyphen, period, apostrophe,
+                number sign, ampersand, forward slash, and blank characters.
               </div>
               <InputComponent
-                class="mt-3"
-                label="Address Line 3 (optional)"
                 id="mail-address-line3"
                 v-model="mailAddressLine3"
+                class="mt-3"
+                label="Address Line 3 (optional)"
                 maxlength="25"
-                :inputStyle="mediumStyles"
+                :input-style="mediumStyles"
                 @blur="handleBlurField(v$.mailAddressLine3)"
               />
               <div
-                class="text-danger"
                 v-if="
                   v$.mailAddressLine3.$dirty &&
                   v$.mailAddressLine3.addressLineContentValidator.$invalid
                 "
+                class="text-danger"
                 aria-live="assertive"
               >
-                Full street address, rural route, PO box, or general delivery
-                must contain letters, numbers, and may include special
-                characters such as a hyphen, period, apostrophe, number sign,
-                ampersand, forward slash, and blank characters.
+                Full street address, rural route, PO box, or general delivery must contain letters,
+                numbers, and may include special characters such as a hyphen, period, apostrophe,
+                number sign, ampersand, forward slash, and blank characters.
               </div>
               <InputComponent
-                class="mt-3"
-                label="City"
                 id="mail-city"
                 v-model="mailCity"
+                class="mt-3"
+                label="City"
                 maxlength="25"
-                :inputStyle="mediumStyles"
+                :input-style="mediumStyles"
                 @blur="handleBlurField(v$.mailCity)"
               />
               <div
-                class="text-danger"
                 v-if="v$.mailCity.$dirty && v$.mailCity.required.$invalid"
+                class="text-danger"
                 aria-live="assertive"
               >
                 City is required.
               </div>
               <div
+                v-if="v$.mailCity.$dirty && v$.mailCity.cityContentValidator.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.mailCity.$dirty &&
-                  v$.mailCity.cityContentValidator.$invalid
-                "
                 aria-live="assertive"
               >
-                City must contain letters and may include numbers and special
-                characters such as hyphens, periods, apostrophes, and blank
-                characters.
+                City must contain letters and may include numbers and special characters such as
+                hyphens, periods, apostrophes, and blank characters.
               </div>
               <RegionSelect
                 v-if="mailCountry === 'Canada'"
-                class="mt-3"
-                label="Province"
                 id="mail-province"
                 v-model="mailProvince"
-                :inputStyle="mediumStyles"
+                class="mt-3"
+                label="Province"
+                :input-style="mediumStyles"
                 :required="true"
-                :disablePlaceholder="true"
+                :disable-placeholder="true"
                 @blur="handleBlurField(v$.mailProvince)"
               />
               <InputComponent
                 v-else
-                class="mt-3"
-                label="Province or State"
                 id="mail-province"
                 v-model="mailProvince"
+                class="mt-3"
+                label="Province or State"
                 maxlength="25"
-                :inputStyle="mediumStyles"
+                :input-style="mediumStyles"
                 :required="true"
                 @blur="handleBlurField(v$.mailProvince)"
               />
               <div
+                v-if="v$.mailProvince.$dirty && v$.mailProvince.required.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.mailProvince.$dirty && v$.mailProvince.required.$invalid
-                "
                 aria-live="assertive"
               >
                 Province or state is required.
               </div>
               <div
+                v-if="v$.mailProvince.$dirty && v$.mailProvince.provinceContentValidator.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.mailProvince.$dirty &&
-                  v$.mailProvince.provinceContentValidator.$invalid
-                "
                 aria-live="assertive"
               >
-                Province or State must contain letters and may include special
-                characters such as hyphens, periods, apostrophes, and blank
-                characters.
+                Province or State must contain letters and may include special characters such as
+                hyphens, periods, apostrophes, and blank characters.
               </div>
               <CountrySelect
-                class="mt-3"
-                label="Jurisdiction"
                 id="mail-country"
                 v-model="mailCountry"
-                :inputStyle="mediumStyles"
+                class="mt-3"
+                label="Jurisdiction"
+                :input-style="mediumStyles"
                 :required="true"
-                :disablePlaceholder="true"
+                :disable-placeholder="true"
                 @blur="handleBlurField(v$.mailCountry)"
               />
               <div
-                class="text-danger"
                 v-if="v$.mailCountry.$dirty && v$.mailCountry.required.$invalid"
+                class="text-danger"
                 aria-live="assertive"
               >
                 Jurisdiction is required.
@@ -411,32 +387,29 @@
 
               <div v-if="mailCountry === 'Canada'">
                 <PostalCodeInput
-                  class="mt-3"
-                  label="Postal Code"
                   id="mail-postal-code"
                   v-model="mailPostalCode"
+                  class="mt-3"
+                  label="Postal Code"
                   maxlength="25"
-                  :inputStyle="smallStyles"
+                  :input-style="smallStyles"
                   :required="true"
                   @blur="handleBlurField(v$.mailPostalCode)"
                 />
                 <div
-                  class="text-danger"
                   v-if="
                     v$.mailPostalCode.$dirty &&
                     !v$.mailPostalCode.required.$invalid &&
                     v$.mailPostalCode.completePostalCodeValidator.$invalid
                   "
+                  class="text-danger"
                   aria-live="assertive"
                 >
                   Must be in the format A1A 1A1.
                 </div>
                 <div
+                  v-if="v$.mailPostalCode.$dirty && v$.mailPostalCode.required.$invalid"
                   class="text-danger"
-                  v-if="
-                    v$.mailPostalCode.$dirty &&
-                    v$.mailPostalCode.required.$invalid
-                  "
                   aria-live="assertive"
                 >
                   Postal Code is required.
@@ -444,34 +417,30 @@
               </div>
               <div v-else>
                 <InputComponent
-                  class="mt-3"
-                  label="Postal Code or Zip Code"
                   id="mail-postal-code"
                   v-model="mailPostalCode"
+                  class="mt-3"
+                  label="Postal Code or Zip Code"
                   maxlength="25"
-                  :inputStyle="smallStyles"
+                  :input-style="smallStyles"
                   :required="true"
                   @blur="handleBlurField(v$.mailPostalCode)"
                 />
                 <div
-                  class="text-danger"
                   v-if="
                     v$.mailPostalCode.$dirty &&
                     !v$.mailPostalCode.required.$invalid &&
                     v$.mailPostalCode.specialCharacterValidator.$invalid
                   "
+                  class="text-danger"
                   aria-live="assertive"
                 >
-                  Postal Code or Zip Code cannot include special characters
-                  except hyphen, period, apostrophe, number sign and blank
-                  space.
+                  Postal Code or Zip Code cannot include special characters except hyphen, period,
+                  apostrophe, number sign and blank space.
                 </div>
                 <div
+                  v-if="v$.mailPostalCode.$dirty && v$.mailPostalCode.required.$invalid"
                   class="text-danger"
-                  v-if="
-                    v$.mailPostalCode.$dirty &&
-                    v$.mailPostalCode.required.$invalid
-                  "
                   aria-live="assertive"
                 >
                   Postal Code or Zip Code is required.
@@ -482,9 +451,9 @@
         </div>
         <div v-if="applyingForMSP">
           <CheckboxComponent
-            class="mt-3"
             id="same-address-check"
             v-model="isMailSame"
+            class="mt-3"
             label="This is my mailing address."
           />
         </div>
@@ -495,15 +464,15 @@
           <div class="col-md-8">
             <PhoneNumberInput
               id="phone-input"
-              label="Phone number (optional)"
               v-model="phone"
-              className="mt-3"
+              label="Phone number (optional)"
+              class-name="mt-3"
               class="phone-number"
-              :inputStyle="smallStyles"
+              :input-style="smallStyles"
             />
             <div
-              class="text-danger"
               v-if="v$.phone.phoneValidator.$invalid"
+              class="text-danger"
               aria-live="assertive"
             >
               Phone number does not appear to be valid.
@@ -513,8 +482,8 @@
           <div class="col-md-4">
             <TipBox title="Tip">
               <p>
-                Please provide a phone number so we can contact you if there are
-                any issues with your application.
+                Please provide a phone number so we can contact you if there are any issues with
+                your application.
               </p>
             </TipBox>
           </div>
@@ -529,11 +498,7 @@
 import useVuelidate from "@vuelidate/core";
 import pageStateService from "@/services/page-state-service";
 import { enrolmentRoutes, isEQPath, isPastPath } from "@/router/routes";
-import {
-  scrollTo,
-  scrollToError,
-  getTopScrollPosition,
-} from "@/helpers/scroll";
+import { scrollTo, scrollToError, getTopScrollPosition } from "@/helpers/scroll";
 import { getConvertedPath } from "@/helpers/url";
 import { smallStyles, mediumStyles } from "@/constants/input-styles";
 import {
@@ -587,10 +552,7 @@ const addressLineContentValidator = (value) => {
   }
   const criteriaAllowedCharecters = /^[0-9a-zA-Z-.'#& /]*$/;
   const criteriaMustHaveLetterOrNumber = /.*[a-z0-9].*/i;
-  return (
-    criteriaAllowedCharecters.test(value) &&
-    criteriaMustHaveLetterOrNumber.test(value)
-  );
+  return criteriaAllowedCharecters.test(value) && criteriaMustHaveLetterOrNumber.test(value);
 };
 
 const cityContentValidator = (value) => {
@@ -600,9 +562,7 @@ const cityContentValidator = (value) => {
   }
   const criteriaAllowedCharecters = /^[0-9a-zA-Z-.' ]*$/;
   const criteriaMustHaveLetter = /.*[a-z].*/i;
-  return (
-    criteriaAllowedCharecters.test(value) && criteriaMustHaveLetter.test(value)
-  );
+  return criteriaAllowedCharecters.test(value) && criteriaMustHaveLetter.test(value);
 };
 
 const provinceContentValidator = (value) => {
@@ -631,7 +591,6 @@ const completePostalCodeValidator = (value) => {
 
 export default {
   name: "ContactInfoPage",
-  mixins: [pageContentMixin, pageStepperMixin],
   components: {
     AddressDoctorInput,
     ButtonComponent,
@@ -644,6 +603,31 @@ export default {
     PostalCodeInput,
     RegionSelect,
     TipBox,
+  },
+  mixins: [pageContentMixin, pageStepperMixin],
+  // Required in order to block back navigation.
+  beforeRouteLeave(to, from, next) {
+    pageStateService.setPageIncomplete(from.path);
+    if (
+      pageStateService.isPageComplete(to.path) ||
+      (isPastPath(to.path, from.path) && !isEQPath(to.path))
+    ) {
+      next();
+    } else {
+      // Navigate to self.
+      const topScrollPosition = getTopScrollPosition();
+      const toPath = getConvertedPath(
+        this.$router.currentRoute.value.path,
+        enrolmentRoutes.CONTACT_INFO_PAGE.path
+      );
+      next({
+        path: toPath,
+        replace: true,
+      });
+      setTimeout(() => {
+        scrollTo(topScrollPosition);
+      }, 0);
+    }
   },
   setup() {
     return { v$: useVuelidate() };
@@ -672,11 +656,32 @@ export default {
       mediumStyles: mediumStyles,
     };
   },
+  computed: {
+    isAddressValidatorEnabled() {
+      return spaEnvService.values.SPA_ENV_JHA_ENABLE_ADDRESS_VALIDATOR === "true";
+    },
+  },
+  watch: {
+    mailCountry: function (value, oldValue) {
+      // don't clear province if the change is from loading from store
+      if (this.isPageLoaded) {
+        if (oldValue === "Canada" && value !== "Canada") {
+          // don't keep a Canadian province if not in canada
+          this.mailProvince = "";
+          this.mailPostalCode = "";
+        } else if (oldValue !== "Canada" && value === "Canada") {
+          // if changing to canada, a canadian province must be selected by default.
+          this.mailProvince = "British Columbia";
+          this.mailPostalCode = "";
+        }
+      }
+    },
+  },
   created() {
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.CONTACT_INFO_PAGE.path,
-      enrolmentRoutes.CONTACT_INFO_PAGE.title,
+      enrolmentRoutes.CONTACT_INFO_PAGE.title
     );
 
     this.applyingForMSP = this.$store.state.enrolmentModule.isApplyingForMSP;
@@ -782,70 +787,28 @@ export default {
       this.navigateToNextPage();
     },
     saveData() {
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_RES_ADDRESS_LINE_1}`,
-        this.resAddressLine1,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_RES_ADDRESS_LINE_2}`,
-        this.resAddressLine2,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_RES_ADDRESS_LINE_3}`,
-        this.resAddressLine3,
-      );
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_ADDRESS_LINE_1}`, this.resAddressLine1);
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_ADDRESS_LINE_2}`, this.resAddressLine2);
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_ADDRESS_LINE_3}`, this.resAddressLine3);
       this.$store.dispatch(`${enrolmentModule}/${SET_RES_CITY}`, this.resCity);
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_RES_PROVINCE}`,
-        this.resProvince,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_RES_COUNTRY}`,
-        this.resCountry,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_RES_POSTAL_CODE}`,
-        this.resPostalCode,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_MAIL_ADDRESS_LINE_1}`,
-        this.mailAddressLine1,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_MAIL_ADDRESS_LINE_2}`,
-        this.mailAddressLine2,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_MAIL_ADDRESS_LINE_3}`,
-        this.mailAddressLine3,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_MAIL_CITY}`,
-        this.mailCity,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_MAIL_PROVINCE}`,
-        this.mailProvince,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_MAIL_COUNTRY}`,
-        this.mailCountry,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_MAIL_POSTAL_CODE}`,
-        this.mailPostalCode,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_IS_MAIL_SAME}`,
-        this.isMailSame,
-      );
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_PROVINCE}`, this.resProvince);
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_COUNTRY}`, this.resCountry);
+      this.$store.dispatch(`${enrolmentModule}/${SET_RES_POSTAL_CODE}`, this.resPostalCode);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_ADDRESS_LINE_1}`, this.mailAddressLine1);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_ADDRESS_LINE_2}`, this.mailAddressLine2);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_ADDRESS_LINE_3}`, this.mailAddressLine3);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_CITY}`, this.mailCity);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_PROVINCE}`, this.mailProvince);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_COUNTRY}`, this.mailCountry);
+      this.$store.dispatch(`${enrolmentModule}/${SET_MAIL_POSTAL_CODE}`, this.mailPostalCode);
+      this.$store.dispatch(`${enrolmentModule}/${SET_IS_MAIL_SAME}`, this.isMailSame);
       this.$store.dispatch(`${enrolmentModule}/${SET_PHONE}`, this.phone);
     },
     navigateToNextPage() {
       // Navigate to next path.
       const toPath = getConvertedPath(
         this.$router.currentRoute.value.path,
-        enrolmentRoutes.REVIEW_PAGE.path,
+        enrolmentRoutes.REVIEW_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
@@ -872,9 +835,7 @@ export default {
       if (address.addressLines) {
         for (let i = 0; i < address.addressLines.length; i++) {
           // replace special characters PRIOR to truncating address lines
-          address.addressLines[i] = replaceSpecialCharacters(
-            address.addressLines[i],
-          );
+          address.addressLines[i] = replaceSpecialCharacters(address.addressLines[i]);
         }
       }
 
@@ -885,11 +846,7 @@ export default {
         this[`resAddressLine${i + 1}`] = null;
       }
       // Add new address lines.
-      for (
-        let i = 0;
-        i < (addressLines.length <= 3 ? addressLines.length : 3);
-        i++
-      ) {
+      for (let i = 0; i < (addressLines.length <= 3 ? addressLines.length : 3); i++) {
         this[`resAddressLine${i + 1}`] = addressLines[i];
       }
       this.resCity =
@@ -903,9 +860,7 @@ export default {
       if (address.addressLines) {
         for (let i = 0; i < address.addressLines.length; i++) {
           // replace special characters PRIOR to truncating address lines
-          address.addressLines[i] = replaceSpecialCharacters(
-            address.addressLines[i],
-          );
+          address.addressLines[i] = replaceSpecialCharacters(address.addressLines[i]);
         }
       }
 
@@ -916,11 +871,7 @@ export default {
         this[`mailAddressLine${i + 1}`] = null;
       }
       // Add new address lines.
-      for (
-        let i = 0;
-        i < (addressLines.length <= 3 ? addressLines.length : 3);
-        i++
-      ) {
+      for (let i = 0; i < (addressLines.length <= 3 ? addressLines.length : 3); i++) {
         this[`mailAddressLine${i + 1}`] = addressLines[i];
       }
       this.mailCountry = replaceSpecialCharacters(address.country);
@@ -931,53 +882,6 @@ export default {
           : null;
       this.mailPostalCode = replaceSpecialCharacters(address.postalCode);
     },
-  },
-  watch: {
-    mailCountry: function (value, oldValue) {
-      // don't clear province if the change is from loading from store
-      if (this.isPageLoaded) {
-        if (oldValue === "Canada" && value !== "Canada") {
-          // don't keep a Canadian province if not in canada
-          this.mailProvince = "";
-          this.mailPostalCode = "";
-        } else if (oldValue !== "Canada" && value === "Canada") {
-          // if changing to canada, a canadian province must be selected by default.
-          this.mailProvince = "British Columbia";
-          this.mailPostalCode = "";
-        }
-      }
-    },
-  },
-  computed: {
-    isAddressValidatorEnabled() {
-      return (
-        spaEnvService.values.SPA_ENV_JHA_ENABLE_ADDRESS_VALIDATOR === "true"
-      );
-    },
-  },
-  // Required in order to block back navigation.
-  beforeRouteLeave(to, from, next) {
-    pageStateService.setPageIncomplete(from.path);
-    if (
-      pageStateService.isPageComplete(to.path) ||
-      (isPastPath(to.path, from.path) && !isEQPath(to.path))
-    ) {
-      next();
-    } else {
-      // Navigate to self.
-      const topScrollPosition = getTopScrollPosition();
-      const toPath = getConvertedPath(
-        this.$router.currentRoute.value.path,
-        enrolmentRoutes.CONTACT_INFO_PAGE.path,
-      );
-      next({
-        path: toPath,
-        replace: true,
-      });
-      setTimeout(() => {
-        scrollTo(topScrollPosition);
-      }, 0);
-    }
   },
 };
 </script>

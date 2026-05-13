@@ -163,6 +163,7 @@ export default {
   props: {
     inputData: {
       type: SuppBenData,
+      default: null,
     },
     className: {
       type: String,

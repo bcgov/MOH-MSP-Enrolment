@@ -248,14 +248,10 @@ export default class SuppBenData {
 
   // Helpers
   stringToInt(stringNumber) {
-    return stringNumber && !isNaN(stringNumber)
-      ? parseInt(this.removeCommas(stringNumber))
-      : 0;
+    return stringNumber && !isNaN(stringNumber) ? parseInt(this.removeCommas(stringNumber)) : 0;
   }
   stringToFloat(stringNumber) {
-    return stringNumber && !isNaN(stringNumber)
-      ? parseFloat(this.removeCommas(stringNumber))
-      : 0;
+    return stringNumber && !isNaN(stringNumber) ? parseFloat(this.removeCommas(stringNumber)) : 0;
   }
   removeCommas(stringNumber) {
     if (typeof stringNumber === "string" || stringNumber instanceof String) {

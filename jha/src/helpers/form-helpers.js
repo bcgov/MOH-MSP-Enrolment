@@ -1,8 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 
-export const isCorrespondenceAttachedAbleToSubmit = (
-  correspondenceAttached,
-) => {
+export const isCorrespondenceAttachedAbleToSubmit = (correspondenceAttached) => {
   switch (correspondenceAttached) {
     case "C":
       return false;
@@ -15,8 +13,7 @@ export const isCorrespondenceAttachedAbleToSubmit = (
 };
 
 export const copyPowerOfAttorneyDocuments = (formState, baseDocuments) => {
-  const { isApplyingForMSP, isApplyingForFPCare, isApplyingForSuppBen } =
-    formState;
+  const { isApplyingForMSP, isApplyingForFPCare, isApplyingForSuppBen } = formState;
   const documents = {
     mspPowerOfAttorneyDocuments: [],
     fpcPowerOfAttorneyDocuments: [],

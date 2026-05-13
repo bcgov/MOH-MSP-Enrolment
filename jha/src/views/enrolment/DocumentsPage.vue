@@ -2,14 +2,14 @@
   <div>
     <div class="container stepper">
       <PageStepper
-        :currentPath="$router.currentRoute.value.path"
+        :current-path="$router.currentRoute.value.path"
         :routes="stepRoutes"
-        @toggleShowMobileDetails="handleToggleShowMobileStepperDetails($event)"
-        :isMobileStepperOpen="isMobileStepperOpen"
-        @onClickLink="handleClickStepperLink($event)"
+        :is-mobile-stepper-open="isMobileStepperOpen"
+        @toggle-show-mobile-details="handleToggleShowMobileStepperDetails($event)"
+        @on-click-link="handleClickStepperLink($event)"
       />
     </div>
-    <PageContent :deltaHeight="pageContentDeltaHeight">
+    <PageContent :delta-height="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Upload supporting documents</h1>
         <hr class="mt-0" />
@@ -22,19 +22,16 @@
               </p>
               <hr />
               <FileUploader
-                v-model="ahCRADocuments"
                 id="ah-cra-documents"
-                :isZoomPortalEnabled="true"
-                modalElementTarget="#modal-target"
-                documentType="Account holder NOA/NOR support documents"
+                v-model="ahCRADocuments"
+                :is-zoom-portal-enabled="true"
+                modal-element-target="#modal-target"
+                document-type="Account holder NOA/NOR support documents"
                 description="Account holder NOA/NOR"
               />
               <div
+                v-if="v$.ahCRADocuments.$dirty && v$.ahCRADocuments.required.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.ahCRADocuments.$dirty &&
-                  v$.ahCRADocuments.required.$invalid
-                "
                 aria-live="assertive"
               >
                 File upload required.
@@ -43,24 +40,21 @@
           </div>
           <div class="col-md-4">
             <TipBox title="Tip">
-              <p>
-                When uploading a copy of your NOA or NORA, make sure the image
-                contains:
-              </p>
+              <p>When uploading a copy of your NOA or NORA, make sure the image contains:</p>
               <ul>
                 <li>Your name&nbsp;</li>
                 <li>The tax year&nbsp;</li>
                 <li>Your net income (Line 23600)&nbsp;</li>
-                <li>
-                  Registered Disability Savings Plan income (Line 12500) if
-                  applicable&nbsp;
-                </li>
+                <li>Registered Disability Savings Plan income (Line 12500) if applicable&nbsp;</li>
               </ul>
               <p>The file must be a JPG, PNG, BMP or PDF.</p>
             </TipBox>
           </div>
         </div>
-        <div v-if="hasSpouse" class="row mt-5">
+        <div
+          v-if="hasSpouse"
+          class="row mt-5"
+        >
           <div class="col-md-8">
             <p class="font-weight-bold">
               Upload your spouse's Canada Revenue Agency NOA or NORA for
@@ -68,19 +62,16 @@
             </p>
             <hr />
             <FileUploader
-              v-model="spouseCRADocuments"
               id="spouse-cra-documents"
-              :isZoomPortalEnabled="true"
-              modalElementTarget="#modal-target"
-              documentType="Spouse NOA/NOR support documents"
+              v-model="spouseCRADocuments"
+              :is-zoom-portal-enabled="true"
+              modal-element-target="#modal-target"
+              document-type="Spouse NOA/NOR support documents"
               description="Spouse NOA/NOR"
             />
             <div
+              v-if="v$.spouseCRADocuments.$dirty && v$.spouseCRADocuments.required.$invalid"
               class="text-danger"
-              v-if="
-                v$.spouseCRADocuments.$dirty &&
-                v$.spouseCRADocuments.required.$invalid
-              "
               aria-live="assertive"
             >
               File upload required.
@@ -88,18 +79,12 @@
           </div>
           <div class="col-md-4">
             <TipBox title="Tip">
-              <p>
-                When uploading a copy of your NOA or NORA, make sure the image
-                contains:
-              </p>
+              <p>When uploading a copy of your NOA or NORA, make sure the image contains:</p>
               <ul>
                 <li>Your name&nbsp;</li>
                 <li>The tax year&nbsp;</li>
                 <li>Your net income (line 23600)&nbsp;</li>
-                <li>
-                  Regisered Disability Savings Plan income (line 12500) if
-                  applicable&nbsp;
-                </li>
+                <li>Regisered Disability Savings Plan income (line 12500) if applicable&nbsp;</li>
               </ul>
               <p>The file must be a JPG, PNG, BMP or PDF.</p>
             </TipBox>
@@ -115,11 +100,7 @@
 import useVuelidate from "@vuelidate/core";
 import pageStateService from "@/services/page-state-service";
 import { enrolmentRoutes, isEQPath, isPastPath } from "@/router/routes";
-import {
-  scrollTo,
-  scrollToError,
-  getTopScrollPosition,
-} from "@/helpers/scroll";
+import { scrollTo, scrollToError, getTopScrollPosition } from "@/helpers/scroll";
 import { getConvertedPath } from "@/helpers/url";
 import {
   MODULE_NAME as enrolmentModule,
@@ -135,12 +116,39 @@ import TipBox from "@/components/TipBox";
 
 export default {
   name: "DocumentsPage",
-  mixins: [pageContentMixin, pageStepperMixin],
   components: {
     ContinueBar,
     PageContent,
     FileUploader,
     TipBox,
+  },
+  mixins: [pageContentMixin, pageStepperMixin],
+  // Required in order to block back navigation.
+  beforeRouteLeave(to, from, next) {
+    pageStateService.setPageIncomplete(from.path);
+    if (
+      pageStateService.isPageComplete(to.path) ||
+      (isPastPath(to.path, from.path) && !isEQPath(to.path))
+    ) {
+      next();
+    } else {
+      // Navigate to self.
+      const topScrollPosition = getTopScrollPosition();
+      const toPath = getConvertedPath(
+        this.$router.currentRoute.value.path,
+        enrolmentRoutes.DOCUMENTS_PAGE.path
+      );
+      next({
+        path: toPath,
+        replace: true,
+      });
+      setTimeout(() => {
+        scrollTo(topScrollPosition);
+      }, 0);
+    }
+  },
+  setup() {
+    return { v$: useVuelidate() };
   },
   data: () => {
     return {
@@ -150,18 +158,15 @@ export default {
       selectedNOAYear: null,
     };
   },
-  setup() {
-    return { v$: useVuelidate() };
-  },
+  computed: {},
   created() {
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.DOCUMENTS_PAGE.path,
-      enrolmentRoutes.DOCUMENTS_PAGE.title,
+      enrolmentRoutes.DOCUMENTS_PAGE.title
     );
     this.ahCRADocuments = this.$store.state.enrolmentModule.ahCRADocuments;
-    this.spouseCRADocuments =
-      this.$store.state.enrolmentModule.spouseCRADocuments;
+    this.spouseCRADocuments = this.$store.state.enrolmentModule.spouseCRADocuments;
     this.hasSpouse = this.$store.state.enrolmentModule.hasSpouse !== "N";
     this.selectedNOAYear = this.$store.state.enrolmentModule.selectedNOAYear;
   },
@@ -185,14 +190,11 @@ export default {
         scrollToError();
         return;
       }
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_AH_CRA_DOCUMENTS}`,
-        this.ahCRADocuments,
-      );
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_CRA_DOCUMENTS}`, this.ahCRADocuments);
       if (this.hasSpouse) {
         this.$store.dispatch(
           `${enrolmentModule}/${SET_SPOUSE_CRA_DOCUMENTS}`,
-          this.spouseCRADocuments,
+          this.spouseCRADocuments
         );
       }
       this.navigateToNextPage();
@@ -201,38 +203,13 @@ export default {
       // Navigate to next path.
       const toPath = getConvertedPath(
         this.$router.currentRoute.value.path,
-        enrolmentRoutes.CONTACT_INFO_PAGE.path,
+        enrolmentRoutes.CONTACT_INFO_PAGE.path
       );
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
       this.$router.push(toPath);
       scrollTo(0);
     },
-  },
-  computed: {},
-  // Required in order to block back navigation.
-  beforeRouteLeave(to, from, next) {
-    pageStateService.setPageIncomplete(from.path);
-    if (
-      pageStateService.isPageComplete(to.path) ||
-      (isPastPath(to.path, from.path) && !isEQPath(to.path))
-    ) {
-      next();
-    } else {
-      // Navigate to self.
-      const topScrollPosition = getTopScrollPosition();
-      const toPath = getConvertedPath(
-        this.$router.currentRoute.value.path,
-        enrolmentRoutes.DOCUMENTS_PAGE.path,
-      );
-      next({
-        path: toPath,
-        replace: true,
-      });
-      setTimeout(() => {
-        scrollTo(topScrollPosition);
-      }, 0);
-    }
   },
 };
 </script>

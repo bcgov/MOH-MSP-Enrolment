@@ -2,14 +2,14 @@
   <div>
     <div class="container stepper">
       <PageStepper
-        :currentPath="$router.currentRoute.value.path"
+        :current-path="$router.currentRoute.value.path"
         :routes="stepRoutes"
-        @toggleShowMobileDetails="handleToggleShowMobileStepperDetails($event)"
-        :isMobileStepperOpen="isMobileStepperOpen"
-        @onClickLink="handleClickStepperLink($event)"
+        :is-mobile-stepper-open="isMobileStepperOpen"
+        @toggle-show-mobile-details="handleToggleShowMobileStepperDetails($event)"
+        @on-click-link="handleClickStepperLink($event)"
       />
     </div>
-    <PageContent :deltaHeight="pageContentDeltaHeight">
+    <PageContent :delta-height="pageContentDeltaHeight">
       <main class="container pt-3 pt-sm-5 mb-3">
         <h1>Fair PharmaCare financial information</h1>
         <hr class="mt-0" />
@@ -17,13 +17,13 @@
           <div class="col-md-7">
             <div>
               <CurrencyInput
-                v-model="ahIncome"
                 id="ah-income"
+                v-model="ahIncome"
                 :required="true"
                 maxlength="9"
                 @blur="handleBlurField(v$.ahIncome)"
               >
-                <template v-slot:description>
+                <template #description>
                   <label for="ah-income">
                     Enter the net income (Line 23600) from your
                     {{ noaYear }} CRA Notice of Assessment (NOA,
@@ -38,18 +38,15 @@
                 </template>
               </CurrencyInput>
               <div
-                class="text-danger"
                 v-if="v$.ahIncome.$dirty && v$.ahIncome.required.$invalid"
+                class="text-danger"
                 aria-live="assertive"
               >
                 Your net income from {{ noaYear }} is required.
               </div>
               <div
+                v-if="v$.ahIncome.$dirty && v$.ahIncome.positiveNumberValidator.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.ahIncome.$dirty &&
-                  v$.ahIncome.positiveNumberValidator.$invalid
-                "
                 aria-live="assertive"
               >
                 Your net income from {{ noaYear }} must be a positive number.
@@ -57,14 +54,14 @@
             </div>
             <div v-if="hasSpouse">
               <CurrencyInput
-                v-model="spouseIncome"
                 id="spouse-income"
+                v-model="spouseIncome"
                 class="mt-3"
                 :required="true"
                 maxlength="9"
                 @blur="handleBlurField(v$.spouseIncome)"
               >
-                <template v-slot:description>
+                <template #description>
                   <label for="spouse-income">
                     Enter the net income (Line 23600) from your spouse's
                     {{ noaYear }} CRA Notice of Assessment (NOA,
@@ -78,24 +75,20 @@
                 </template>
               </CurrencyInput>
               <div
+                v-if="v$.spouseIncome.$dirty && hasSpouse && v$.spouseIncome.required.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseIncome.$dirty &&
-                  hasSpouse &&
-                  v$.spouseIncome.required.$invalid
-                "
                 aria-live="assertive"
               >
                 Your spouse/common-law partner's net income from
                 {{ noaYear }} is required.
               </div>
               <div
-                class="text-danger"
                 v-if="
                   v$.spouseIncome.$dirty &&
                   hasSpouse &&
                   v$.spouseIncome.positiveNumberValidator.$invalid
                 "
+                class="text-danger"
                 aria-live="assertive"
               >
                 Your spouse/common-law partner's net income from
@@ -106,18 +99,16 @@
             <hr />
             <div>
               <CurrencyInput
-                :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your ${noaYear} tax return if applicable.`"
-                v-model="ahRDSP"
                 id="ah-disability-savings"
+                v-model="ahRDSP"
+                :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your ${noaYear} tax return if applicable.`"
                 class="mt-3"
                 maxlength="9"
                 @blur="handleBlurField(v$.ahRDSP)"
               />
               <div
+                v-if="v$.ahRDSP.$dirty && v$.ahRDSP.positiveNumberValidator.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.ahRDSP.$dirty && v$.ahRDSP.positiveNumberValidator.$invalid
-                "
                 aria-live="assertive"
               >
                 Your Registered Disability Savings Plan amount from
@@ -126,23 +117,20 @@
             </div>
             <div v-if="hasSpouse">
               <CurrencyInput
-                :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your spouse's ${noaYear} tax return if applicable.`"
-                v-model="spouseRDSP"
                 id="spouse-disability-savings"
+                v-model="spouseRDSP"
+                :label="`Enter the Registered Disability Savings Plan income (Line 12500) from your spouse's ${noaYear} tax return if applicable.`"
                 class="mt-3"
                 maxlength="9"
                 @blur="handleBlurField(v$.spouseRDSP)"
               />
               <div
+                v-if="v$.spouseRDSP.$dirty && v$.spouseRDSP.positiveNumberValidator.$invalid"
                 class="text-danger"
-                v-if="
-                  v$.spouseRDSP.$dirty &&
-                  v$.spouseRDSP.positiveNumberValidator.$invalid
-                "
                 aria-live="assertive"
               >
-                Your spouse/common-law partner's Registered Disability Savings
-                Plan amount from {{ noaYear }} must be a positive number.
+                Your spouse/common-law partner's Registered Disability Savings Plan amount from
+                {{ noaYear }} must be a positive number.
               </div>
             </div>
           </div>
@@ -167,8 +155,14 @@
         ></div>
       </main>
     </PageContent>
-    <Teleport v-if="isSampleModalOpen" to="#modal-target">
-      <ContentModal @close="handleCloseSampleModal()" title="Tax Documents">
+    <Teleport
+      v-if="isSampleModalOpen"
+      to="#modal-target"
+    >
+      <ContentModal
+        title="Tax Documents"
+        @close="handleCloseSampleModal()"
+      >
         <p>Income Tax T1 General Sample</p>
         <div class="sample-image-container text-center">
           <img
@@ -179,9 +173,9 @@
       </ContentModal>
     </Teleport>
     <ContinueBar
-      @continue="validateFields()"
-      :hasLoader="isLoading"
+      :has-loader="isLoading"
       class="continue-bar"
+      @continue="validateFields()"
     />
   </div>
 </template>
@@ -189,11 +183,7 @@
 <script>
 import pageStateService from "@/services/page-state-service";
 import { enrolmentRoutes, isEQPath, isPastPath } from "@/router/routes";
-import {
-  scrollTo,
-  scrollToError,
-  getTopScrollPosition,
-} from "@/helpers/scroll";
+import { scrollTo, scrollToError, getTopScrollPosition } from "@/helpers/scroll";
 import { getConvertedPath } from "@/helpers/url";
 import {
   MODULE_NAME as enrolmentModule,
@@ -221,7 +211,6 @@ import useVuelidate from "@vuelidate/core";
 
 export default {
   name: "FPCareInfoPage",
-  mixins: [pageContentMixin, pageStepperMixin],
   components: {
     ContentModal,
     ContinueBar,
@@ -229,6 +218,34 @@ export default {
     FPCWidget,
     PageContent,
     TipBox,
+  },
+  mixins: [pageContentMixin, pageStepperMixin],
+  // Required in order to block back navigation.
+  beforeRouteLeave(to, from, next) {
+    pageStateService.setPageIncomplete(from.path);
+    if (
+      pageStateService.isPageComplete(to.path) ||
+      (isPastPath(to.path, from.path) && !isEQPath(to.path))
+    ) {
+      next();
+    } else {
+      // Navigate to self.
+      const topScrollPosition = getTopScrollPosition();
+      const toPath = getConvertedPath(
+        this.$router.currentRoute.value.path,
+        enrolmentRoutes.FPCARE_INFO_PAGE.path
+      );
+      next({
+        path: toPath,
+        replace: true,
+      });
+      setTimeout(() => {
+        scrollTo(topScrollPosition);
+      }, 0);
+    }
+  },
+  setup() {
+    return { v$: useVuelidate() };
   },
   data: () => {
     return {
@@ -243,8 +260,26 @@ export default {
       checkEligibilityErrorMessage: null,
     };
   },
-  setup() {
-    return { v$: useVuelidate() };
+  computed: {
+    hasSpouse() {
+      return this.$store.state.enrolmentModule.hasSpouse === "Y";
+    },
+    widgetData() {
+      return {
+        ahBirthdate: this.$store.state.enrolmentModule.ahBirthdate,
+        spouseBirthdate: this.$store.state.enrolmentModule.spouseBirthDate,
+        ahIncome: this.ahIncome,
+        ahRDSP: this.ahRDSP,
+        spouseIncome: this.spouseIncome,
+        spouseRDSP: this.spouseRDSP,
+      };
+    },
+    shouldCheckEligibility() {
+      return (
+        this.$store.state.enrolmentModule.isApplyingForFPCare &&
+        !this.$store.state.enrolmentModule.isApplyingForMSP
+      );
+    },
   },
   created() {
     this.noaYear = new Date().getFullYear() - 2;
@@ -257,7 +292,7 @@ export default {
     logService.logNavigation(
       this.$store.state.enrolmentModule.applicationUuid,
       enrolmentRoutes.FPCARE_INFO_PAGE.path,
-      enrolmentRoutes.FPCARE_INFO_PAGE.title,
+      enrolmentRoutes.FPCARE_INFO_PAGE.title
     );
   },
   validations() {
@@ -321,32 +356,17 @@ export default {
       }
     },
     saveData() {
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_AH_FPC_INCOME}`,
-        this.ahIncome,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_AH_FPC_RDSP}`,
-        this.ahRDSP,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_SPOUSE_FPC_INCOME}`,
-        this.spouseIncome,
-      );
-      this.$store.dispatch(
-        `${enrolmentModule}/${SET_SPOUSE_FPC_RDSP}`,
-        this.spouseRDSP,
-      );
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_FPC_INCOME}`, this.ahIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_AH_FPC_RDSP}`, this.ahRDSP);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_FPC_INCOME}`, this.spouseIncome);
+      this.$store.dispatch(`${enrolmentModule}/${SET_SPOUSE_FPC_RDSP}`, this.spouseRDSP);
     },
     navigateToNextPage() {
       // Navigate to next path.
       const nextPath = this.$store.state.enrolmentModule.isApplyingForSuppBen
         ? enrolmentRoutes.SUPP_BEN_INFO_PAGE.path
         : enrolmentRoutes.CONTACT_INFO_PAGE.path;
-      const toPath = getConvertedPath(
-        this.$router.currentRoute.value.path,
-        nextPath,
-      );
+      const toPath = getConvertedPath(this.$router.currentRoute.value.path, nextPath);
       pageStateService.setPageComplete(toPath);
       pageStateService.visitPage(toPath);
       this.$router.push(toPath);
@@ -363,51 +383,6 @@ export default {
     handleCloseSampleModal() {
       this.isSampleModalOpen = false;
     },
-  },
-  computed: {
-    hasSpouse() {
-      return this.$store.state.enrolmentModule.hasSpouse === "Y";
-    },
-    widgetData() {
-      return {
-        ahBirthdate: this.$store.state.enrolmentModule.ahBirthdate,
-        spouseBirthdate: this.$store.state.enrolmentModule.spouseBirthDate,
-        ahIncome: this.ahIncome,
-        ahRDSP: this.ahRDSP,
-        spouseIncome: this.spouseIncome,
-        spouseRDSP: this.spouseRDSP,
-      };
-    },
-    shouldCheckEligibility() {
-      return (
-        this.$store.state.enrolmentModule.isApplyingForFPCare &&
-        !this.$store.state.enrolmentModule.isApplyingForMSP
-      );
-    },
-  },
-  // Required in order to block back navigation.
-  beforeRouteLeave(to, from, next) {
-    pageStateService.setPageIncomplete(from.path);
-    if (
-      pageStateService.isPageComplete(to.path) ||
-      (isPastPath(to.path, from.path) && !isEQPath(to.path))
-    ) {
-      next();
-    } else {
-      // Navigate to self.
-      const topScrollPosition = getTopScrollPosition();
-      const toPath = getConvertedPath(
-        this.$router.currentRoute.value.path,
-        enrolmentRoutes.FPCARE_INFO_PAGE.path,
-      );
-      next({
-        path: toPath,
-        replace: true,
-      });
-      setTimeout(() => {
-        scrollTo(topScrollPosition);
-      }, 0);
-    }
   },
 };
 </script>

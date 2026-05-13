@@ -34,14 +34,11 @@ export const dateDataRequiredValidator = (dateData) =>
       value: dateData,
     },
     () => {
-      if (
-        !dateData ||
-        (!dateData.year && typeof dateData.month !== "number" && !dateData.day)
-      ) {
+      if (!dateData || (!dateData.year && typeof dateData.month !== "number" && !dateData.day)) {
         return false;
       }
       return true;
-    },
+    }
   );
 
 export const canadaArrivalDateRequiredChildValidator = (dateData, isRequired) =>
@@ -59,16 +56,13 @@ export const canadaArrivalDateRequiredChildValidator = (dateData, isRequired) =>
         console.log("not required");
         return true;
       }
-      if (
-        !dateData ||
-        (!dateData.year && typeof dateData.month !== "number" && !dateData.day)
-      ) {
+      if (!dateData || (!dateData.year && typeof dateData.month !== "number" && !dateData.day)) {
         console.log("required, data missing");
         return false;
       }
       console.log("required, data present");
       return true;
-    },
+    }
   );
 
 export const dateDataValidator = (dateData) =>
@@ -78,10 +72,7 @@ export const dateDataValidator = (dateData) =>
       value: dateData,
     },
     () => {
-      if (
-        !dateData ||
-        (!dateData.year && typeof dateData.month !== "number" && !dateData.day)
-      ) {
+      if (!dateData || (!dateData.year && typeof dateData.month !== "number" && !dateData.day)) {
         return true;
       }
       const year = dateData.year;
@@ -95,7 +86,7 @@ export const dateDataValidator = (dateData) =>
       }
       const isoDateString = getISODateString(year, month + 1, day);
       return isValidISODateString(isoDateString);
-    },
+    }
   );
 
 /* A validator that is initially setup using the withParams helper 
@@ -127,9 +118,7 @@ export const reasonDestinationContentValidator = (value) => {
   }
   const criteriaAllowedCharecters = /^[0-9a-zA-Z-.'#& /]*$/;
   const criteriaMustHaveLetter = /.*[a-z].*/i;
-  return (
-    criteriaAllowedCharecters.test(value) && criteriaMustHaveLetter.test(value)
-  );
+  return criteriaAllowedCharecters.test(value) && criteriaMustHaveLetter.test(value);
 };
 
 export const phnFirstDigitValidator = (value) => {

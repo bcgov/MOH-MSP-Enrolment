@@ -111,13 +111,11 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "FPCare Eligibility, Application for Health and Drug Coverage",
+          content: "FPCare Eligibility, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "FPCare Eligibility, Application for Health and Drug Coverage",
+          content: "FPCare Eligibility, Application for Health and Drug Coverage",
         },
       ],
     },
@@ -131,13 +129,11 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Supplementary Benefits Eligibility, Application for Health and Drug Coverage",
+          content: "Supplementary Benefits Eligibility, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Supplementary Benefits Eligibility, Application for Health and Drug Coverage",
+          content: "Supplementary Benefits Eligibility, Application for Health and Drug Coverage",
         },
       ],
     },
@@ -241,13 +237,11 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Fair PharmaCare info, Application for Health and Drug Coverage",
+          content: "Fair PharmaCare info, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Fair PharmaCare info, Application for Health and Drug Coverage",
+          content: "Fair PharmaCare info, Application for Health and Drug Coverage",
         },
       ],
     },
@@ -261,13 +255,11 @@ export const routeCollection = [
       metaTags: [
         {
           name: "description",
-          content:
-            "Supplementary Benefits info, Application for Health and Drug Coverage",
+          content: "Supplementary Benefits info, Application for Health and Drug Coverage",
         },
         {
           property: "og:description",
-          content:
-            "Supplementary Benefits info, Application for Health and Drug Coverage",
+          content: "Supplementary Benefits info, Application for Health and Drug Coverage",
         },
       ],
     },
@@ -371,10 +363,7 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   // Home redirects.
-  if (
-    to.path !== enrolmentRoutes.HOME_PAGE.path &&
-    !pageStateService.isPageVisited(to.path)
-  ) {
+  if (to.path !== enrolmentRoutes.HOME_PAGE.path && !pageStateService.isPageVisited(to.path)) {
     return next({ name: enrolmentRoutes.HOME_PAGE.name });
   }
   // This goes through the matched routes from last to first, finding the closest route with a title
@@ -395,8 +384,8 @@ router.beforeEach((to, from, next) => {
   if (nearestWithTitle) document.title = nearestWithTitle.meta.title;
 
   // Remove any stale meta tags from the document using the key attribute we set below
-  Array.from(document.querySelectorAll("[data-vue-router-controlled]")).map(
-    (el) => el.parentNode.removeChild(el),
+  Array.from(document.querySelectorAll("[data-vue-router-controlled]")).map((el) =>
+    el.parentNode.removeChild(el)
   );
 
   // Skip rendering meta tags if there are none
