@@ -663,7 +663,7 @@ export class MspApiAccountService extends AbstractHttpService {
       );
       to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
       to.willBeAway.isFullTimeStudent =
-        from.relationship === Relationship.Child19To24 ? 'Y' : 'N';
+        from.relationship === Relationship.Child18To24 ? 'Y' : 'N';
     }
 
     return to;
@@ -807,8 +807,8 @@ export class MspApiAccountService extends AbstractHttpService {
       to.outsideBCinFuture.beenOutsideBCMoreThan = 'N';
     }
 
-    // Child 19-24
-    if (from.relationship === Relationship.Child19To24) {
+    // Child 18-24
+    if (from.relationship === Relationship.Child18To24) {
       if (from.schoolName) {
         to.schoolName = from.schoolName;
       }
@@ -867,7 +867,7 @@ export class MspApiAccountService extends AbstractHttpService {
       );
       to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
       to.willBeAway.isFullTimeStudent =
-        from.relationship === Relationship.Child19To24 ? 'Y' : 'N';
+        from.relationship === Relationship.Child18To24 ? 'Y' : 'N';
     }
 
     if (from.inBCafterStudies !== undefined && from.inBCafterStudies !== null) {

@@ -94,10 +94,10 @@ export class MspPerson implements ICanadianStatus {
     public updateGenderDocType3:  SupportDocuments = new SupportDocuments();
     public updateGenderDocType4:  SupportDocuments = new SupportDocuments();
     public updateGenderDoc: CommonImage[] = [];
-
     public updateGenderDesignation: boolean;
     public updateGenderDesignationDocType:  SupportDocuments = new SupportDocuments();
     public updateGenderDesignationDoc: CommonImage[] = [];
+    public updateChildStatus: boolean;
     cancellationReason: CancellationReasons;
     public removedSpouseDueToDivorceDoc: SupportDocuments = new SupportDocuments();
 
@@ -382,7 +382,7 @@ export class MspPerson implements ICanadianStatus {
     inBCafterStudies: boolean;
 
     /**
-     * For children 19-24, we need the school name and address
+     * For children 18-24, we need the school name and address
      */
     schoolName: string;
     schoolAddress: Address = new Address();
@@ -574,7 +574,7 @@ export class MspPerson implements ICanadianStatus {
         }
 
         let studentComplete: boolean = true;
-        if (this.relationship === Relationship.Applicant || this.relationship === Relationship.Child19To24) {
+        if (this.relationship === Relationship.Applicant || this.relationship === Relationship.Child18To24) {
             studentComplete = _.isBoolean(this.fullTimeStudent);
             if (studentComplete && this.fullTimeStudent) {
                 studentComplete = _.isBoolean(this.inBCafterStudies);
@@ -596,8 +596,8 @@ export class MspPerson implements ICanadianStatus {
         }
 
         let ageOver19ChildComplete = true;
-        if (this.relationship === Relationship.Child19To24) {
-            const tooYoung = isAfter(this.dateOfBirth, subYears( startOfToday(), 19));
+        if (this.relationship === Relationship.Child18To24) {
+            const tooYoung = isAfter(this.dateOfBirth, subYears( startOfToday(), 18));
             const tooOld = isBefore(this.dateOfBirth, subYears( startOfToday(), 24) );
             ageOver19ChildComplete = !tooOld && !tooYoung;
 

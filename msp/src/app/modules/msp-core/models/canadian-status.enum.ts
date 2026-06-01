@@ -63,7 +63,7 @@ export class CanadianStatusRules {
     switch (status) {
       case StatusInCanada.CitizenAdult:
       case StatusInCanada.PermanentResident:
-        if (relationship === Relationship.Child19To24 ||
+        if (relationship === Relationship.Child18To24 ||
             relationship === Relationship.ChildUnder19 || relationship === Relationship.ChildUnder24) {
           return [CanadianStatusReason.MovingFromProvince, CanadianStatusReason.MovingFromCountry, CanadianStatusReason.LivingInBCWithoutMSP];
         } else {

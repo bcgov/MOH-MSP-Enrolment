@@ -12,6 +12,10 @@ import {
   nameChangeDueToErrorDocuments,
   genderBirthDateChangeDocuments
 } from '../../../../msp-core/components/support-documents/support-documents.component';
+import { SpaEnvService } from '../../../../../services/spa-env.service';
+import { BRITISH_COLUMBIA, ErrorMessage } from 'moh-common-lib';
+import { Enrollee } from '../../../../enrolment/models/enrollee';
+import { startOfToday } from 'date-fns';
 
 @Component({
   selector: 'msp-update-child',
@@ -20,7 +24,9 @@ import {
 })
 export class UpdateChildComponent implements OnInit {
 
-  constructor( public dataService: MspAccountMaintenanceDataService) { }
+  constructor( public dataService: MspAccountMaintenanceDataService,
+              private spaEnvService: SpaEnvService
+  ) { }
 
   @Input() accountChangeOptions: AccountChangeOptions;
   @Input() child: MspPerson ;
@@ -46,6 +52,27 @@ export class UpdateChildComponent implements OnInit {
   genderChangeDocs = genderDesignationChangeDocuments();
   nameChangeDuetoErrorDocs = nameChangeDueToErrorDocuments();
   genderBirthdateChangeDocs = genderBirthDateChangeDocuments();
+
+  private _today = startOfToday();
+  // Replace default messages in the date component for school completion and departure dates
+  schoolCompletionErrMsg: ErrorMessage = {
+    noPastDatesAllowed: 'Expected school completion cannot be in the past.',
+    invalidValue: 'This does not appear to be a valid date.',
+    dayOutOfRange: 'This does not appear to be a valid date.',
+    noFutureDatesAllowed: 'This does not appear to be a valid date.',
+    yearDistantFuture: 'This does not appear to be a valid date.',
+    yearDistantPast: 'This does not appear to be a valid date.',
+    invalidRange: 'This does not appear to be a valid date, Expected school completion cannot be in the past'
+  };
+
+  schoolDepartureErrMsg: ErrorMessage = {
+    noFutureDatesAllowed: 'Departure date can not be in the future.',
+    invalidValue: 'This does not appear to be a valid date.',
+    dayOutOfRange: 'This does not appear to be a valid date.',
+    noPastDatesAllowed: 'This does not appear to be a valid date.',
+    yearDistantFuture: 'This does not appear to be a valid date.',
+    yearDistantPast: 'This does not appear to be a valid date.'
+  };
 
   ngOnInit() {
     this.child.relationship = Relationship.Child;
@@ -91,6 +118,10 @@ export class UpdateChildComponent implements OnInit {
       {
         'label': 'Change gender designation',
         'value': this.child.updateGenderDesignation
+      },
+      {
+        'label': 'Update child status to dependent post-secondary student',
+        'value': this.child.updateChildStatus
       }
     ];
   }
@@ -103,5 +134,27 @@ export class UpdateChildComponent implements OnInit {
 
   isWorkPermit() {
     return this.child.currentActivity === CanadianStatusReason.WorkingInBC;
+  }
+
+  get isAddressValidatorEnabled(): boolean {
+    const envs = this.spaEnvService.getValues();
+    return envs && envs.SPA_ENV_ENABLE_ADDRESS_VALIDATOR === 'true';
+  }
+
+  isAdult(child: Enrollee) {
+    const childDob = new Date(child.dateOfBirth);
+    const hadDobThisYear = this._today.getMonth() > childDob.getMonth()
+      || (this._today.getMonth() === childDob.getMonth()
+      && this._today.getDate() >= childDob.getDate());
+    let childAge = this._today.getFullYear() - childDob.getFullYear();
+
+    if (!hadDobThisYear) {
+      childAge--;
+    }
+    return childAge >= 18;
+  }
+
+  completionDateRange( child: Enrollee ){
+    return child.departureDateForSchool ? child.departureDateForSchool : this._today;
   }
 }

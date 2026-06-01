@@ -55,7 +55,7 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
       return x;
     }
   }).filter((x) => x);
-  readonly Child19To24: Relationship = Relationship.Child19To24;
+  readonly Child18To24: Relationship = Relationship.Child18To24;
 
   relationship: string = 'you';
 
@@ -91,12 +91,12 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
   get isChild() {
     return (
       this.person.relationship === Relationship.ChildUnder19 ||
-      this.person.relationship === Relationship.Child19To24
+      this.person.relationship === Relationship.Child18To24
     );
   }
 
   get isOveragedChild() {
-    return this.person.relationship === Relationship.Child19To24;
+    return this.person.relationship === Relationship.Child18To24;
   }
 
   // Has a reason been selected

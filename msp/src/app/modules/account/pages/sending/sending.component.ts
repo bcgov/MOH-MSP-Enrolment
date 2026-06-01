@@ -145,7 +145,7 @@ export class AccountSendingComponent
               .getAllChildren()
               .filter(
                 (child) =>
-                  child.relationship === Relationship.Child19To24 &&
+                  child.relationship === Relationship.Child18To24 &&
                   !child.isExistingBeneficiary
               ).length > 0
           ) {

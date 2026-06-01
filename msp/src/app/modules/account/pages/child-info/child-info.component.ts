@@ -309,7 +309,7 @@ export class ChildInfoComponent
         this.isSet(addedChild.gender);
 
       // Ticked "19 - 24" under "How old is the child?"
-      if (addedChild.relationship === Relationship.Child19To24) {
+      if (addedChild.relationship === Relationship.Child18To24) {
         // Filled out school name
         valid =
           valid &&

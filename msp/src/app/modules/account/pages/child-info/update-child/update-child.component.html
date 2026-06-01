@@ -216,3 +216,110 @@
     </div>
   </msp-support-documents>
 </div>
+
+<!-- <div *ngIf="isAdult(child)" role="dialog" class="form-check mb-2" >
+  <common-checkbox
+    [label]="'Update child status to dependent post-secondary student'"
+    (dataChange)="child.updateChildStatus = $event;"
+    [data]="child.updateChildStatus">
+  </common-checkbox>
+</div>
+
+<div *ngIf="child.updateChildStatus">
+  <h2 class="horizontal-line">School Information</h2>
+  <common-page-section layout="noTips">
+    <div class="form-group col-sm-6 pl-0">
+      <label for="schoolName_{{index}}" class="control-label">
+        School name
+      </label>
+      <input name="schoolName_{{index}}"
+             id="schoolName_{{index}}"
+             type="text"
+             class="form-control"
+             [(ngModel)]=child.schoolName
+             maxlength="50"
+             required
+             #schoolNameRef="ngModel">
+      <common-error-container
+        [displayError]="(schoolNameRef.touched || schoolNameRef.dirty) && schoolNameRef.errors?.required">
+        Name of school is required.
+      </common-error-container>
+    </div>
+
+    <common-radio name="inBCafterStudies_{{index}}"
+                    [(ngModel)]="child."
+                    label="Will the child reside in B.C. after completing study in this school?"
+                    required>
+    </common-radio>
+
+    <h2 class="horizontal-line">School Information</h2>
+    <div class="form-group col-md-12 pl-0">
+      <div class="row"
+           *ngIf='!isAddressValidatorEnabled'>
+        <div class="col-md-6">
+          <common-address [(address)]="child.schoolAddress"
+                          [isRequired]="true"
+                          [allowExtralines]='true'
+                          [disableGeocoder]='true'>
+          </common-address>
+        </div>
+      </div>
+      <div class="row"
+           *ngIf='isAddressValidatorEnabled'>
+        <div class="col-md-6">
+          <common-address [(address)]="child.schoolAddress"
+                          [isRequired]="true"
+                          [allowExtralines]="true"
+                          [addressServiceUrl]="addressServiceUrl">
+          </common-address>
+        </div>
+        <div class="col-md-1"></div>
+        <div class="col-md-5 aside-col">
+          <aside>
+            <h3>Tip</h3>
+            <p>
+              As you type the street address, this form will suggest valid postal addresses.
+              Click an address to automatically enter it.
+              If the address has a suite or apartment number, please type it with digits, no spaces, and a dash (-) before the street address.
+              For example, 111-215 Sample Road. If the address does not appear in the list of suggested postal addresses, please type it manually.
+            </p>
+          </aside>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group col-sm-6 pl-0">
+      <common-date name="schoolDepartureDate_{{index}}"
+                   label="Original departure date from B.C. (if school is outside B.C.)"
+                   [(ngModel)]="child.departureDateForSchool"
+                   [restrictDate]="'past'"
+                   [errorMessage]="schoolDepartureErrMsg"
+                   required>
+      </common-date>
+    </div>
+
+    <div class="form-group col-sm-6 pl-0">
+      <common-date name="completionDate_{{index}}"
+                   label="Expected school completion date"
+                   [(ngModel)]="child.schoolCompletionDate"
+                   [dateRangeStart]="completionDateRange(child)"
+                   [errorMessage]="schoolCompletionErrMsg"
+                   required>
+      </common-date>
+    </div>
+
+    <div class="form-group col-sm-8 pl-0">
+      <common-radio name="inBCafterStudies_{{index}}"
+                    [(ngModel)]="child.inBCafterStudies"
+                    label="Will the child reside in B.C. after completing study in this school?"
+                    required>
+      </common-radio>
+      <common-error-container [displayError]="child.inBCafterStudies == false && !isTemporaryResident(child)">
+        To qualify for provincial health care benefits a person must be a resident of
+        B.C.  As you intend to leave B.C. when your studies are completed, you are not
+        eligible for Medical Services Plan coverage.  Please contact the health care plan
+        in your home province for information about medical coverage while studying in B.C.
+      </common-error-container>
+    </div>
+  </common-page-section>
+</div> -->

@@ -45,8 +45,8 @@ export class EnrolApplication extends BaseApplication {
   addChild( relationship: Relationship ): Enrollee {
 
     const c = new Enrollee( relationship );
-    if ( relationship === Relationship.Child19To24 ) {
-      // child between 19-24 must be a full time student to qualify for enrollment
+    if ( relationship === Relationship.Child18To24 ) {
+      // child between 18-24 must be a full time student to qualify for enrollment
       c.fullTimeStudent = true;
     }
 

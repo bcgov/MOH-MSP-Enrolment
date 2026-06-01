@@ -5,14 +5,14 @@ describe('Person Model', () => {
     let applicant: MspPerson;
     let spouse: MspPerson;
     let childUnder19: MspPerson;
-    let child19To24: MspPerson;
+    let child18To24: MspPerson;
     let childUnder24: MspPerson;
 
     beforeEach(() => {
         applicant = new MspPerson(Relationship.Applicant);
         spouse = new MspPerson(Relationship.Spouse);
         childUnder19 = new MspPerson(Relationship.ChildUnder19);
-        child19To24 = new MspPerson(Relationship.Child19To24);
+        child18To24 = new MspPerson(Relationship.Child18To24);
         childUnder24 = new MspPerson(Relationship.ChildUnder24);
     });
 

@@ -54,7 +54,7 @@ export class Enrollee extends BasePerson implements ICanadianStatus {
   fullTimeStudent: boolean;
   inBCafterStudies: boolean;
 
-   // For children 19-24, we need the school name and address
+   // For children 18-24, we need the school name and address
   schoolName: string;
   schoolAddress: Address = new Address();
   schoolCompletionDate: Date;
@@ -76,7 +76,7 @@ export class Enrollee extends BasePerson implements ICanadianStatus {
   }
 
   get isOveragedChild() {
-    return this.relationship === Relationship.Child19To24;
+    return this.relationship === Relationship.Child18To24;
   }
 
   get isProvinceMove() {
@@ -155,7 +155,7 @@ export class EnrolleeDto extends BasePersonDto {
   fullTimeStudent: boolean;
   inBCafterStudies: boolean;
 
-  // For children 19-24, we need the school name and address
+  // For children 18-24, we need the school name and address
   schoolName: string;
   schoolAddress: AddressDto;
   schoolCompletionDate: number;

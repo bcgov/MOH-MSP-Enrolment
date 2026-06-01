@@ -159,7 +159,7 @@ export class PersonalInformationComponent<T extends IPersonalInformation> extend
     if (this.person.relationship === Relationship.Applicant) {
       this.dobErrorMsg = {invalidRange: 'An applicant must be 16 years or older.'};
       this.dobEndRange = subYears( this._today, 16 );
-    } else if (this.person.relationship === Relationship.Child19To24) {
+    } else if (this.person.relationship === Relationship.Child18To24) {
       this.dobErrorMsg = {invalidRange: 'A post-secondary student must be between 19 and 24 years.'};
       this.dobStartRange = subYears( this._today, 24 );
       this.dobEndRange = subYears( this._today, 19 );

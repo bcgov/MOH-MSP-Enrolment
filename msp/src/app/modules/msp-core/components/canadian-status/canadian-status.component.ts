@@ -29,7 +29,7 @@ export function statusReasonRules(relationship: Relationship,
   switch (status) {
     case StatusInCanada.CitizenAdult:
     case StatusInCanada.PermanentResident:
-      if (relationship === Relationship.Child19To24 ||
+      if (relationship === Relationship.Child18To24 ||
           relationship === Relationship.ChildUnder19 ||
           relationship === Relationship.ChildUnder24) {
         return [
@@ -184,7 +184,7 @@ export class CanadianStatusComponent<T extends ICanadianStatus> extends Base {
       case Relationship.Spouse:
         return 'the spouse';
       case Relationship.ChildUnder19:
-      case Relationship.Child19To24:
+      case Relationship.Child18To24:
         return 'the child';
       default:
         return 'you';
@@ -196,7 +196,7 @@ export class CanadianStatusComponent<T extends ICanadianStatus> extends Base {
       case Relationship.Spouse:
         return 'the spouse\'s';
       case Relationship.ChildUnder19:
-      case Relationship.Child19To24:
+      case Relationship.Child18To24:
         return 'the child\'s';
       default:
         return 'your';
