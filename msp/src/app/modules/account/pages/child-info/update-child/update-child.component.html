@@ -217,7 +217,7 @@
   </msp-support-documents>
 </div>
 
-<!-- <div *ngIf="isAdult(child)" role="dialog" class="form-check mb-2" >
+<div *ngIf="isAdult(child)" role="dialog" class="form-check mb-2" >
   <common-checkbox
     [label]="'Update child status to dependent post-secondary student'"
     (dataChange)="child.updateChildStatus = $event;"
@@ -246,13 +246,24 @@
       </common-error-container>
     </div>
 
-    <common-radio name="inBCafterStudies_{{index}}"
-                    [(ngModel)]="child."
-                    label="Will the child reside in B.C. after completing study in this school?"
+    <!-- Is this school located outside BC -->
+    <common-radio name="sSchoolOutsideBC_{{index}}"
+                    [(ngModel)]="child.isSchoolOutsideBC"
+                    label="Is this school located outside British Columbia?"
                     required>
     </common-radio>
 
-    <h2 class="horizontal-line">School Information</h2>
+    <div *ngIf="child.isSchoolOutsideBC" role="dialog" class="form-group col-sm-6 pl-0" >
+      <common-date name="schoolDepartureDate_{{index}}"
+                   label="Departure date from B.C."
+                   [(ngModel)]="child.departureDateForSchool"
+                   [restrictDate]="'past'"
+                   [errorMessage]="schoolDepartureErrMsg"
+                   required>
+      </common-date>
+    </div>
+
+    <h2 class="horizontal-line">School Address</h2>
     <div class="form-group col-md-12 pl-0">
       <div class="row"
            *ngIf='!isAddressValidatorEnabled'>
@@ -278,48 +289,44 @@
           <aside>
             <h3>Tip</h3>
             <p>
-              As you type the street address, this form will suggest valid postal addresses.
-              Click an address to automatically enter it.
-              If the address has a suite or apartment number, please type it with digits, no spaces, and a dash (-) before the street address.
-              For example, 111-215 Sample Road. If the address does not appear in the list of suggested postal addresses, please type it manually.
+              <strong>Note: </strong> When entering you address: If your address includes
+              a unit number, place the unit number before the building number with a
+              hyphen in between (for example: "105-927 Avenue"). This should allow for 
+              accurate recognition of your address. If your address is not found, enter 
+              it manually.
             </p>
           </aside>
         </div>
       </div>
-    </div>
-
-    <div class="form-group col-sm-6 pl-0">
-      <common-date name="schoolDepartureDate_{{index}}"
-                   label="Original departure date from B.C. (if school is outside B.C.)"
+      <div class="row">
+        <div class="col-sm-6">
+          <common-date name="schoolDepartureDate_{{index}}"
+                   label="Date studies will begin"
                    [(ngModel)]="child.departureDateForSchool"
                    [restrictDate]="'past'"
                    [errorMessage]="schoolDepartureErrMsg"
                    required>
-      </common-date>
-    </div>
-
-    <div class="form-group col-sm-6 pl-0">
-      <common-date name="completionDate_{{index}}"
-                   label="Expected school completion date"
+          </common-date>
+          <common-date name="completionDate_{{index}}"
+                   label="Date studies will finish"
                    [(ngModel)]="child.schoolCompletionDate"
                    [dateRangeStart]="completionDateRange(child)"
                    [errorMessage]="schoolCompletionErrMsg"
                    required>
-      </common-date>
-    </div>
-
-    <div class="form-group col-sm-8 pl-0">
-      <common-radio name="inBCafterStudies_{{index}}"
+          </common-date>
+          <common-radio name="inBCafterStudies_{{index}}"
                     [(ngModel)]="child.inBCafterStudies"
                     label="Will the child reside in B.C. after completing study in this school?"
                     required>
-      </common-radio>
-      <common-error-container [displayError]="child.inBCafterStudies == false && !isTemporaryResident(child)">
-        To qualify for provincial health care benefits a person must be a resident of
-        B.C.  As you intend to leave B.C. when your studies are completed, you are not
-        eligible for Medical Services Plan coverage.  Please contact the health care plan
-        in your home province for information about medical coverage while studying in B.C.
-      </common-error-container>
+          </common-radio>
+          <common-error-container [displayError]="child.inBCafterStudies == false && !isTemporaryResident(child)">
+            To qualify for provincial health care benefits a person must be a resident of
+            B.C. As you intend to leave B.C. when your studies are completed, you are not
+            eligible for Medical Services Plan coverage. Please contact the health care plan
+            in your home province for information about medical coverage while studying in B.C.
+          </common-error-container>
+        </div>
+      </div>
     </div>
   </common-page-section>
-</div> -->
+</div>

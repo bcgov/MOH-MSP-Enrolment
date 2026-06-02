@@ -380,6 +380,7 @@ export class MspPerson implements ICanadianStatus {
 
     fullTimeStudent: boolean;
     inBCafterStudies: boolean;
+    isSchoolOutsideBC: boolean;
 
     /**
      * For children 18-24, we need the school name and address

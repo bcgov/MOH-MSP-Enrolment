@@ -35,7 +35,7 @@ export class AddChildComponent extends Base implements OnInit {
   childAgeCategory = [
     { label: '0-18 years', value: Relationship.ChildUnder19 },
     {
-      label: '18-24 years (must be a full-time student)',
+      label: '18-24 years (must meet the definition of a DPSS above)',
       value: Relationship.Child18To24,
     },
   ];
