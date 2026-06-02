@@ -152,7 +152,7 @@ export const radioOptionsChildAge = [
   },
   {
     id: "19-24",
-    label: "19-24 years (must be a full-time student)",
+    label: "18-24 years (must be a full-time student)",
     value: ChildAgeTypes.Child19To24,
   },
 ];
