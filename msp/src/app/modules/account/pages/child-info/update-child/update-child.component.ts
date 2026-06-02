@@ -141,7 +141,7 @@ export class UpdateChildComponent implements OnInit {
     return envs && envs.SPA_ENV_ENABLE_ADDRESS_VALIDATOR === 'true';
   }
 
-  isAdult(child: Enrollee) {
+  isAdult( child: MspPerson ) {
     const childDob = new Date(child.dateOfBirth);
     const hadDobThisYear = this._today.getMonth() > childDob.getMonth()
       || (this._today.getMonth() === childDob.getMonth()
