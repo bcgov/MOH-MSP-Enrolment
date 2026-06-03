@@ -280,19 +280,38 @@ export class ChildInfoComponent
           child.updateGenderDesignationDocType.images.length > 0;
       }
 
+      if (child.updateChildStatus === true) {
+        valid =
+          valid &&
+          this.isSet(child.schoolName) &&
+          typeof child.schoolName === 'string' &&
+          child.schoolName.length > 0 &&
+          this.isSet(child.schoolOutsideOfBC) &&
+          this.isSet(child.schoolAddress) &&
+          this.isSet(child.studiesBeginDate) &&
+          this.isSet(child.studiesFinishedDate) &&
+          this.isSet(child.inBCafterStudies);
+        if (child.status !== StatusInCanada.TemporaryResident) {
+          valid = valid && child.inBCafterStudies === true;
+        }
+        if (child.schoolOutsideOfBC === true) {
+          valid = valid && !!child.studiesDepartureDate;
+        }
+      }
+
       if (
         !child.updateGenderDesignation &&
         !child.updateBirthdate &&
         !child.updateNameDueToError &&
         !child.updateGender &&
         !child.updateNameDueToNameChange &&
-        !child.updateStatusInCanada
+        !child.updateStatusInCanada &&
+        !child.updateChildStatus
       ) {
         // at least one update must be requested
         valid = false;
       }
     });
-
     return valid;
   }
 
@@ -483,7 +502,6 @@ export class ChildInfoComponent
     // If the applicant didn't make any changes in the Personal Info, Spouse Info and Child Info Page, display missing info required modal
     if (!this.isFormMissingRequiredInfo()){
       if (!this.canContinue()) {
-        console.log('Please fill in all required fields on the form.');
         this.markAllInputsTouched();
         return;
       }

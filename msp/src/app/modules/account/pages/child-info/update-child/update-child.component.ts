@@ -13,9 +13,8 @@ import {
   genderBirthDateChangeDocuments
 } from '../../../../msp-core/components/support-documents/support-documents.component';
 import { SpaEnvService } from '../../../../../services/spa-env.service';
-import { BRITISH_COLUMBIA, ErrorMessage } from 'moh-common-lib';
-import { Enrollee } from '../../../../enrolment/models/enrollee';
-import { startOfToday } from 'date-fns';
+import { ErrorMessage } from 'moh-common-lib';
+import { startOfToday, subDays, isBefore } from 'date-fns';
 
 @Component({
   selector: 'msp-update-child',
@@ -92,6 +91,97 @@ export class UpdateChildComponent implements OnInit {
     }
   }
 
+  get studiesDepartureDateStartRange() {
+    if (this.child.arrivalToBCDate) {
+      return this.child.arrivalToBCDate;
+    }
+    return this.child.dob;
+  }
+
+  get studiesDepartureDateEndRange() {
+    if (this.child.studiesBeginDate) {
+      return this.child.studiesBeginDate < subDays(this._today, 1)
+        ? this.child.studiesBeginDate
+        : subDays(this._today, 1);
+    }
+    return subDays(this._today, 1);
+  }
+
+  get studiesDepartureDateErrorMessage(): ErrorMessage {
+    // If they leave to school before they arrived in BC
+    if (this.child.studiesDepartureDate < this.child.arrivalToBCDate) {
+      return { invalidRange: 'Date must be after arrival in BC.' };
+      // If they leave to school in the future
+    } else if (this.child.studiesDepartureDate > this._today) {
+      return { invalidRange: 'Date cannot be in the future.' };
+      // If they leave to school before they were born
+    } else if (this.child.studiesDepartureDate < this.child.dob) {
+      return { invalidRange: 'Date must be after birthdate.' };
+      // If studies begin before they depart
+    } else if (this.child.studiesBeginDate < this.child.studiesDepartureDate) {
+      return { invalidRange: 'Date must be prior to school beginning.' };
+      // Catchall
+    } else {
+      return { invalidRange: 'Invalid date range.' };
+    }
+  }
+
+  get studiesBeginDateStartRange() {
+    if (
+      this.child.studiesDepartureDate &&
+      isBefore(this.child.dob, this.child.studiesDepartureDate)
+    ) {
+      return this.child.studiesDepartureDate;
+    }
+    return this.child.dob;
+  }
+
+  get studiesBeginDateEndRange() {
+    return this.child.studiesFinishedDate ? this.child.studiesFinishedDate : null;
+  }
+
+  get studiesBeginDateErrorMessage(): ErrorMessage {
+    // If studies begin before they depart
+    if (this.child.studiesBeginDate < this.child.studiesDepartureDate) {
+      return { invalidRange: 'Date must be after departure to school.' };
+      // If studies begin after they finish
+    } else if (this.child.studiesBeginDate > this.child.studiesFinishedDate) {
+      return { invalidRange: 'Date must be prior to finish date.' };
+      // If studies begin before birthdate
+    } else if (this.child.studiesBeginDate < this.child.dob) {
+      return { invalidRange: 'Date must be after birthdate.' };
+      // Catchall
+    } else {
+      return { invalidRange: 'Invalid date range.' };
+    }
+  }
+
+  get studiesFinishedDateStartRange() {
+    return this.child.studiesBeginDate > this._today
+      ? this.child.studiesBeginDate
+      : this._today;
+  }
+
+  get studiesFinishedDateEndRange() {
+    return null;
+  }
+
+  get studiesFinishedDateErrorMessage(): ErrorMessage {
+    // If the finish date is before the start date
+    if (this.child.studiesFinishedDate < this.child.studiesBeginDate) {
+      return { invalidRange: 'Date must be after date studies begin.' };
+      // If the finish date is before today
+    } else if (this.child.studiesFinishedDate < this._today) {
+      return { invalidRange: 'Date cannot be in the past.' };
+      // If the arrival is before birthdate
+    } else if (this.child.studiesFinishedDate < this.child.dob) {
+      return { invalidRange: 'Date must be after birthdate.' };
+      // Catchall
+    } else {
+      return { invalidRange: 'Invalid date range.' };
+    }
+  }
+
   get accountUpdateList(): UpdateList[] {
     return [
       {
@@ -141,8 +231,8 @@ export class UpdateChildComponent implements OnInit {
     return envs && envs.SPA_ENV_ENABLE_ADDRESS_VALIDATOR === 'true';
   }
 
-  isAdult( child: MspPerson ) {
-    const childDob = new Date(child.dateOfBirth);
+  isAdult() {
+    const childDob = new Date(this.child.dob);
     const hadDobThisYear = this._today.getMonth() > childDob.getMonth()
       || (this._today.getMonth() === childDob.getMonth()
       && this._today.getDate() >= childDob.getDate());
@@ -152,9 +242,5 @@ export class UpdateChildComponent implements OnInit {
       childAge--;
     }
     return childAge >= 18;
-  }
-
-  completionDateRange( child: Enrollee ){
-    return child.departureDateForSchool ? child.departureDateForSchool : this._today;
   }
 }

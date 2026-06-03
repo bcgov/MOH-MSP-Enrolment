@@ -99,7 +99,6 @@ export class PersonDto extends BaseDto {
     knownMailingAddress: boolean;
     fullTimeStudent: boolean;
     inBCafterStudies: boolean;
-    isSchoolOutsideBC: boolean;
     mailingAddress: AddressDto = new AddressDto();
     residentialAddress: AddressDto = new AddressDto();
 

@@ -48,6 +48,7 @@ export interface IPersonReviewCard {
 
     // For children 18-24, we need the school name and address
   schoolName?: string;
+  schoolStartDate?: Date;
   schoolCompletionDate?: Date;
   schoolAddress?: Address;
 
