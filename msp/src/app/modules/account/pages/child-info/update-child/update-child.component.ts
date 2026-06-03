@@ -14,7 +14,7 @@ import {
 } from '../../../../msp-core/components/support-documents/support-documents.component';
 import { SpaEnvService } from '../../../../../services/spa-env.service';
 import { ErrorMessage } from 'moh-common-lib';
-import { startOfToday, subDays, isBefore } from 'date-fns';
+import { startOfToday, subDays, isBefore, differenceInYears } from 'date-fns';
 
 @Component({
   selector: 'msp-update-child',
@@ -232,15 +232,6 @@ export class UpdateChildComponent implements OnInit {
   }
 
   isAdult() {
-    const childDob = new Date(this.child.dob);
-    const hadDobThisYear = this._today.getMonth() > childDob.getMonth()
-      || (this._today.getMonth() === childDob.getMonth()
-      && this._today.getDate() >= childDob.getDate());
-    let childAge = this._today.getFullYear() - childDob.getFullYear();
-
-    if (!hadDobThisYear) {
-      childAge--;
-    }
-    return childAge >= 18;
+    return differenceInYears(this._today, new Date(this.child.dob)) >= 18;
   }
 }
