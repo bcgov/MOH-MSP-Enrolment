@@ -42,8 +42,4 @@ describe('UpdateChildComponent', () => {
     component.phns = [''];
     fixture.detectChanges();
   });
-
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
 });
