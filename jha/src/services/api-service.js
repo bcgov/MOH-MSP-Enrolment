@@ -28,7 +28,7 @@ class ApiService {
       (child) => child.ageRange === ChildAgeTypes.Child0To18
     );
     const dependents = formState.children.filter(
-      (child) => child.ageRange === ChildAgeTypes.Child19To24
+      (child) => child.ageRange === ChildAgeTypes.Child18To24
     );
     const applyingForMSP = formState.isApplyingForMSP;
 
@@ -462,7 +462,7 @@ class ApiService {
       (child) => child.ageRange === ChildAgeTypes.Child0To18
     );
     const dependents = formState.children.filter(
-      (child) => child.ageRange === ChildAgeTypes.Child19To24
+      (child) => child.ageRange === ChildAgeTypes.Child18To24
     );
 
     let mspImages = [

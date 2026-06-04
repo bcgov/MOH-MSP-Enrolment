@@ -315,7 +315,7 @@
         </div>
       </div>
       <div
-        v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child19To24"
+        v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child18To24"
       >
         <RadioComponent
           :id="'child-status-reason' + index"
@@ -335,7 +335,7 @@
         </div>
       </div>
       <div
-        v-if="status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child19To24"
+        v-if="status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child18To24"
       >
         <RadioComponent
           :id="'child-status-reason' + index"
@@ -1675,7 +1675,7 @@ export const birthDateYouthValidator = (value, vm) => {
 };
 
 export const birthDateStudentValidator = (value, vm) => {
-  if (vm.ageRange === ChildAgeTypes.Child19To24) {
+  if (vm.ageRange === ChildAgeTypes.Child18To24) {
     return (
       isAfter(value, addYears(startOfToday(), -25)) &&
       isBefore(value, addDays(addYears(startOfToday(), -18), 1))
@@ -1924,7 +1924,7 @@ export default {
     requestSchoolInfo() {
       return (
         this.$store.state.enrolmentModule.isApplyingForMSP &&
-        this.ageRange === this.childAgeTypes.Child19To24
+        this.ageRange === this.childAgeTypes.Child18To24
       );
     },
     citizenshipSupportDocumentOptions() {

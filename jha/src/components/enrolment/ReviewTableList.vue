@@ -767,7 +767,7 @@ export default {
               });
             }
           }
-          const isFullTimeStudent = child.ageRange === ChildAgeTypes.Child19To24;
+          const isFullTimeStudent = child.ageRange === ChildAgeTypes.Child18To24;
           if (isFullTimeStudent) {
             childData.push({
               label: "Full-time student",

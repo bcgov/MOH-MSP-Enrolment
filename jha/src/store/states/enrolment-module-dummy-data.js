@@ -150,7 +150,7 @@ export default {
       willResideInBCAfterStudies: null,
     },
     {
-      ageRange: "child19To24",
+      ageRange: "child18To24",
       firstName: "Jane",
       middleName: "D",
       lastName: "Doe",

@@ -167,7 +167,7 @@ describe("birthDateStudentValidator()", () => {
   const testDate = new Date();
   const testYear = new Date().getFullYear() - 20;
   testDate.setFullYear(testYear);
-  const testObject = { ageRange: ChildAgeTypes.Child19To24 };
+  const testObject = { ageRange: ChildAgeTypes.Child18To24 };
 
   it("returns true when passed object with a nonsense ageRange", async () => {
     expect(
