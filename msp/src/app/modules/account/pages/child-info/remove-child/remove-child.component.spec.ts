@@ -41,7 +41,7 @@ describe('RemoveChildComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(RemoveChildComponent);
     component = fixture.componentInstance;
-    component.child = new MspPerson(Relationship.Child19To24);
+    component.child = new MspPerson(Relationship.Child18To24);
     component.phns = [''];
     fixture.detectChanges();
   });

@@ -767,8 +767,8 @@ export class MspApiService {
     if (from.isExistingBeneficiary === false) {
       this.populateNewBeneficiaryDetailsForChild(from, to);
     }
-    // Child 19-24
-    if (from.relationship === Relationship.Child19To24) {
+    // Child 18-24
+    if (from.relationship === Relationship.Child18To24) {
       if (from.schoolName) {
         to.schoolName = from.schoolName;
       }

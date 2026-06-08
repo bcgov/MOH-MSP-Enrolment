@@ -224,7 +224,7 @@ export class MspApiEnrolmentService extends BaseMspApiService {
           return child.relationship === Relationship.ChildUnder19;
       });
       const dependants = from.children.filter((child: Enrollee) => {
-          return child.relationship === Relationship.Child19To24;
+          return child.relationship === Relationship.Child18To24;
       });
 
       // Children

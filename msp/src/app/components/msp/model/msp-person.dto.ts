@@ -161,6 +161,8 @@ export class PersonDto extends BaseDto {
     updateStatusInCanadaDoc: CommonImage[];
     updateStatusInCanadaDocType: SupportDocuments = new SupportDocuments();
 
+    updateChildStatus: boolean;
+
     nameChangeDocs: SupportDocuments = new SupportDocuments();
 
 }

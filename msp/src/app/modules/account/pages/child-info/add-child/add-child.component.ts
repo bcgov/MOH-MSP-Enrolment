@@ -35,8 +35,8 @@ export class AddChildComponent extends Base implements OnInit {
   childAgeCategory = [
     { label: '0-18 years', value: Relationship.ChildUnder19 },
     {
-      label: '19-24 years (must be a full-time student)',
-      value: Relationship.Child19To24,
+      label: '18-24 years (must meet the definition of a DPSS above)',
+      value: Relationship.Child18To24,
     },
   ];
 
@@ -72,7 +72,7 @@ export class AddChildComponent extends Base implements OnInit {
 
   get childRelationship() {
     this.child.fullTimeStudent =
-      this.child.relationship === Relationship.Child19To24 ? true : false;
+      this.child.relationship === Relationship.Child18To24 ? true : false;
     this.personChange.emit(this.child);
     return this.child.relationship;
   }

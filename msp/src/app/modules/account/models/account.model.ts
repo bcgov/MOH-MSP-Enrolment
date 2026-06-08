@@ -408,9 +408,9 @@ class MspAccountApp implements ApplicationBase {
   addChild(relationship: Relationship): MspPerson {
     const c = new MspPerson(relationship, OperationActionType.Add);
 
-    //child between 19-24 must be a full time student to qualify for enrollment
+    //child between 18-24 must be a full time student to qualify for enrollment
     c.fullTimeStudent =
-      relationship === Relationship.Child19To24 ? true : false;
+      relationship === Relationship.Child18To24 ? true : false;
     c.operationActionType = OperationActionType.Add;
 
     if (this._addedChildren.length < 30) {
@@ -425,9 +425,9 @@ class MspAccountApp implements ApplicationBase {
   addRemovedChild(relationship: Relationship): MspPerson {
     const c = new MspPerson(relationship, OperationActionType.Remove);
 
-    //child between 19-24 must be a full time student to qualify for enrollment
+    //child between 18-24 must be a full time student to qualify for enrollment
     c.fullTimeStudent =
-      relationship === Relationship.Child19To24 ? true : false;
+      relationship === Relationship.Child18To24 ? true : false;
     c.operationActionType = OperationActionType.Remove;
 
     if (this._removedChildren.length < 30) {
@@ -448,9 +448,9 @@ class MspAccountApp implements ApplicationBase {
   addUpdatedChild(relationship: Relationship): MspPerson {
     const c = new MspPerson(relationship, OperationActionType.Update);
 
-    //child between 19-24 must be a full time student to qualify for enrollment
+    //child between 18-24 must be a full time student to qualify for enrollment
     c.fullTimeStudent =
-      relationship === Relationship.Child19To24 ? true : false;
+      relationship === Relationship.Child18To24 ? true : false;
     c.operationActionType = OperationActionType.Update;
 
     if (this._updatedChildren.length < 30) {

@@ -46,8 +46,9 @@ export interface IPersonReviewCard {
   fullTimeStudent?: boolean;
   inBCafterStudies?: boolean;
 
-    // For children 19-24, we need the school name and address
+    // For children 18-24, we need the school name and address
   schoolName?: string;
+  schoolStartDate?: Date;
   schoolCompletionDate?: Date;
   schoolAddress?: Address;
 
@@ -179,7 +180,7 @@ export class PersonReviewCardComponent<T extends IPersonReviewCard> {
     return this._convertBooleanToString( this.person.inBCafterStudies );
   }
   get displaySchoolInfo() {
-    return this.person.relationship === Relationship.Child19To24;
+    return this.person.relationship === Relationship.Child18To24;
   }
   get schoolCompletionDate() {
     return this._convertDateToString( this.person.schoolCompletionDate );

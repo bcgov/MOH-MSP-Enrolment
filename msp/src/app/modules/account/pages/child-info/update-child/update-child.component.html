@@ -216,3 +216,119 @@
     </div>
   </msp-support-documents>
 </div>
+
+<div *ngIf="isAdult()" role="dialog" class="form-check mb-2" >
+  <common-checkbox
+    [label]="'Update child status to dependent post-secondary student'"
+    (dataChange)="child.updateChildStatus = $event;"
+    [data]="child.updateChildStatus">
+  </common-checkbox>
+  <div *ngIf="child.updateChildStatus">
+    <h2 class="horizontal-line">School Information</h2>
+    <common-page-section layout="noTips">
+      <div class="form-group col-sm-6 pl-0">
+        <label for="schoolName_{{index}}" class="control-label">
+          School name
+        </label>
+        <input name="schoolName_{{index}}"
+              id="schoolName_{{index}}"
+              type="text"
+              class="form-control"
+              [(ngModel)]=child.schoolName
+              maxlength="50"
+              required
+              #schoolNameRef="ngModel">
+        <common-error-container
+          [displayError]="(schoolNameRef.touched || schoolNameRef.dirty) && schoolNameRef.errors?.required">
+          Name of school is required.
+        </common-error-container>
+      </div>
+      <common-radio
+          name="schoolOutsideOfBC_{{index}}"
+          [(ngModel)]="child.schoolOutsideOfBC"
+          label="Is this school located outside British Columbia?"
+          [required]="true">
+      </common-radio>
+      <div *ngIf="child.schoolOutsideOfBC" role="dialog" class="form-group col-sm-6 pl-0" >
+        <common-date
+            name="studiesDepartureDate_{{index}}"
+            label="Departure date from B.C."
+            [dateRangeStart]="studiesDepartureDateStartRange"
+            [dateRangeEnd]="studiesDepartureDateEndRange"
+            [errorMessage]="studiesDepartureDateErrorMessage"
+            [required]="true"
+            [(ngModel)]="child.studiesDepartureDate">
+        </common-date>
+      </div>
+      <h2 class="horizontal-line">School Address</h2>
+      <div class="form-group col-md-12 pl-0">
+        <div class="row"
+            *ngIf='!isAddressValidatorEnabled'>
+          <div class="col-md-6">
+            <common-address [(address)]="child.schoolAddress"
+                            [isRequired]="true"
+                            [allowExtralines]='true'
+                            [disableGeocoder]='true'>
+            </common-address>
+          </div>
+        </div>
+        <div class="row"
+            *ngIf='isAddressValidatorEnabled'>
+          <div class="col-md-6">
+            <common-address [(address)]="child.schoolAddress"
+                            [isRequired]="true"
+                            [allowExtralines]="true"
+                            [addressServiceUrl]="addressServiceUrl">
+            </common-address>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-5 aside-col">
+            <aside>
+              <h3>Tip</h3>
+              <p>
+                <strong>Note: </strong> When entering your address: If your address includes
+                a unit number, place the unit number before the building number with a
+                hyphen in between (for example: "105-927 Avenue"). This should allow for 
+                accurate recognition of your address. If your address is not found, enter 
+                it manually.
+              </p>
+            </aside>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6">
+            <common-date
+              name="studiesBeginDate_{{index}}"
+              label="Date studies will begin"
+              [(ngModel)]="child.studiesBeginDate"
+              [dateRangeStart]="studiesBeginDateStartRange"
+              [dateRangeEnd]="studiesBeginDateEndRange"
+              [errorMessage]="studiesBeginDateErrorMessage"
+              [required]="true">
+            </common-date>
+            <common-date
+              name="studiesFinishedDate_{{index}}"
+              label="Date studies will finish"
+              [(ngModel)]="child.studiesFinishedDate"
+              [dateRangeStart]="studiesFinishedDateStartRange"
+              [dateRangeEnd]="studiesFinishedDateEndRange"
+              [errorMessage]="studiesFinishedDateErrorMessage"
+              [required]="true">
+            </common-date>
+            <common-radio name="inBCafterStudies_{{index}}"
+                      [(ngModel)]="child.inBCafterStudies"
+                      label="Will the child reside in B.C. after completing study in this school?"
+                      [required]="true">
+            </common-radio>
+            <common-error-container [displayError]="child.inBCafterStudies == false && !isTemporaryResident">
+              To qualify for provincial health care benefits a person must be a resident of
+              B.C. As you intend to leave B.C. when your studies are completed, you are not
+              eligible for Medical Services Plan coverage. Please contact the health care plan
+              in your home province for information about medical coverage while studying in B.C.
+            </common-error-container>
+          </div>
+        </div>
+      </div>
+    </common-page-section>
+  </div>
+</div>

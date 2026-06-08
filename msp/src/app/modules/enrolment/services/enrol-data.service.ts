@@ -136,7 +136,7 @@ export class EnrolDataService extends BaseMspDataService {
     output.fullTimeStudent = dto.fullTimeStudent;
     output.inBCafterStudies = dto.inBCafterStudies;
 
-    // For children 19-24, we need the school name and address
+    // For children 18-24, we need the school name and address
     output.schoolName = dto.schoolName;
     output.schoolAddress = this.fromAddressTransferObject( dto.schoolAddress );
     output.schoolCompletionDate = this.convertNumberToDate( dto.schoolCompletionDate );
@@ -188,7 +188,7 @@ export class EnrolDataService extends BaseMspDataService {
     dto.fullTimeStudent = input.fullTimeStudent;
     dto.inBCafterStudies = input.inBCafterStudies;
 
-    // For children 19-24, we need the school name and address
+    // For children 18-24, we need the school name and address
     dto.schoolName = input.schoolName;
     dto.schoolAddress = this.toAddressTransferObject( input.schoolAddress );
     dto.schoolCompletionDate = this.convertDateToNumber( input.schoolCompletionDate );

@@ -40,7 +40,7 @@ describe('AddChildComponent', () => {
   beforeEach(() => {
     fixture = TestBed.createComponent(AddChildComponent);
     component = fixture.componentInstance;
-    component.child = new MspPerson(Relationship.Child19To24);
+    component.child = new MspPerson(Relationship.Child18To24);
     fixture.detectChanges();
   });
 

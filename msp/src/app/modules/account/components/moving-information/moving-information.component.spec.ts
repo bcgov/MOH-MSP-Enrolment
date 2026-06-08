@@ -69,21 +69,21 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.isChild).toBe(true);
     });
 
-    it('should return true when relationship is Child19To24', () => {
-      component.person.relationship = Relationship.Child19To24;
+    it('should return true when relationship is Child18To24', () => {
+      component.person.relationship = Relationship.Child18To24;
       expect(component.isChild).toBe(true);
     });
 
     // tslint:disable-next-line
-    it("should return false when relationship isn't ChildUnder19 or Child19To24", () => {
+    it("should return false when relationship isn't ChildUnder19 or Child18To24", () => {
       component.person.relationship = Relationship.Applicant;
       expect(component.isChild).toBe(false);
     });
   });
 
   describe('isOveragedChild', () => {
-    it('should return true when relationship is Child19To24', () => {
-      component.person.relationship = Relationship.Child19To24;
+    it('should return true when relationship is Child18To24', () => {
+      component.person.relationship = Relationship.Child18To24;
       expect(component.isOveragedChild).toBe(true);
     });
 

@@ -23,7 +23,7 @@ export class ChildInfoComponent extends EnrolForm {
   statusLabel: string = 'Child\'s immigration status in Canada';
   childAgeCategory = [
     {label: '0-18 years', value: Relationship.ChildUnder19},
-    {label: '19-24 years (must be a full-time student)', value: Relationship.Child19To24},
+    {label: '18-24 years (must meet the definition of a DPSS above)', value: Relationship.Child18To24},
   ];
 
   // Replace default messages in the date component for school completion and departure dates
@@ -100,7 +100,7 @@ export class ChildInfoComponent extends EnrolForm {
 
   relationship( $event, child: Enrollee ) {
     child.relationship = $event;
-    child.fullTimeStudent = ( child.relationship === Relationship.Child19To24 ) ? true : false;
+    child.fullTimeStudent = ( child.relationship === Relationship.Child18To24 ) ? true : false;
   }
 
   isRequired(child: Enrollee ) {
@@ -133,7 +133,7 @@ export class ChildInfoComponent extends EnrolForm {
                   }
 
                   // If they are a temporary resident, allow them to leave BC after studies. Otherwise, they must return
-                  if ( x.relationship === Relationship.Child19To24 && x.status !== StatusInCanada.TemporaryResident) {
+                  if ( x.relationship === Relationship.Child18To24 && x.status !== StatusInCanada.TemporaryResident) {
                     childValid = childValid && x.inBCafterStudies;
                   }
 
