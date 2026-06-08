@@ -167,7 +167,7 @@ describe("birthDateStudentValidator()", () => {
   const testDate = new Date();
   const testYear = new Date().getFullYear() - 20;
   testDate.setFullYear(testYear);
-  const testObject = { ageRange: ChildAgeTypes.Child19To24 };
+  const testObject = { ageRange: ChildAgeTypes.Child18To24 };
 
   it("returns true when passed object with a nonsense ageRange", async () => {
     expect(
@@ -186,9 +186,9 @@ describe("birthDateStudentValidator()", () => {
     expect(birthDateStudentValidator(testDate, testObject)).toBe(false);
   });
 
-  it("returns false when passed a date less than 19 years in the past", async () => {
+  it("returns false when passed a date less than 18 years in the past", async () => {
     const testDate = new Date();
-    const testYear = new Date().getFullYear() - 18;
+    const testYear = new Date().getFullYear() - 17;
     testDate.setFullYear(testYear);
     expect(birthDateStudentValidator(testDate, testObject)).toBe(false);
   });

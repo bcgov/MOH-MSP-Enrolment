@@ -161,7 +161,7 @@
           class="text-danger"
           aria-live="assertive"
         >
-          A post-secondary student must be between 19 and 24 years.
+          A post-secondary student must be between 18 and 24 years.
         </div>
         <div v-if="requestPersonalHealthNumber">
           <PhnInput
@@ -231,7 +231,7 @@
         >
           <p>Tip</p>
           <p>
-            You can include your 19- to 24-year-old child on your MSP account if they are enrolled
+            You can include your 18- to 24-year-old child on your MSP account if they are enrolled
             in full-time studies.
           </p>
           <p>
@@ -315,7 +315,7 @@
         </div>
       </div>
       <div
-        v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child19To24"
+        v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child18To24"
       >
         <RadioComponent
           :id="'child-status-reason' + index"
@@ -335,7 +335,7 @@
         </div>
       </div>
       <div
-        v-if="status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child19To24"
+        v-if="status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child18To24"
       >
         <RadioComponent
           :id="'child-status-reason' + index"
@@ -1675,10 +1675,10 @@ export const birthDateYouthValidator = (value, vm) => {
 };
 
 export const birthDateStudentValidator = (value, vm) => {
-  if (vm.ageRange === ChildAgeTypes.Child19To24) {
+  if (vm.ageRange === ChildAgeTypes.Child18To24) {
     return (
       isAfter(value, addYears(startOfToday(), -25)) &&
-      isBefore(value, addDays(addYears(startOfToday(), -19), 1))
+      isBefore(value, addDays(addYears(startOfToday(), -18), 1))
     );
   }
 
@@ -1924,7 +1924,7 @@ export default {
     requestSchoolInfo() {
       return (
         this.$store.state.enrolmentModule.isApplyingForMSP &&
-        this.ageRange === this.childAgeTypes.Child19To24
+        this.ageRange === this.childAgeTypes.Child18To24
       );
     },
     citizenshipSupportDocumentOptions() {

@@ -14,7 +14,7 @@
         <h1>Child information</h1>
         <p>A child is under 19 years old, and the applicant is their parent or legal guardian.</p>
         <p>
-          A dependent post-secondary student is a 19- to 24-year-old who is supported by parent(s)
+          A dependent post-secondary student is a 18- to 24-year-old who is supported by parent(s)
           or guardian(s), has no spouse, and is enrolled full-time in a recognized post-secondary
           institution.
         </p>
