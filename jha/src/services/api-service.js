@@ -222,7 +222,7 @@ class ApiService {
           });
         }
 
-        // Dependents 19 to 24.
+        // Dependents 18 to 24.
         if (dependents.length > 0) {
           jsonPayload.medicalServicesPlan.dependents = dependents.map((dependent) => {
             return {
