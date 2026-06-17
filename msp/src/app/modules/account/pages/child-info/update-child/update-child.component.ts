@@ -15,6 +15,7 @@ import {
 import { SpaEnvService } from '../../../../../services/spa-env.service';
 import { ErrorMessage } from 'moh-common-lib';
 import { startOfToday, subDays, isBefore, differenceInYears } from 'date-fns';
+import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'msp-update-child',
@@ -233,5 +234,37 @@ export class UpdateChildComponent implements OnInit {
 
   isAdult() {
     return differenceInYears(this._today, new Date(this.child.dob)) >= 18;
+  }
+
+  updateChildStatusInCanada(event: boolean) {
+    this.child.updateStatusInCanada = event;
+    if(!this.child.updateStatusInCanada){
+      this.child.status = null;
+      this.child.currentActivity = null;
+      this.child.updateStatusInCanadaDocType.documentType = null;
+      this.child.updateStatusInCanadaDocType.images = [];
+    }
+  }
+
+  updateChildNameDueToNameChange(event: boolean) {
+    this.child.updateNameDueToNameChange = event;
+    if(!this.child.updateNameDueToNameChange){
+      this.child.updateNameDueToNameChangeDocType.documentType = null;
+      this.child.updateNameDueToNameChangeDocType.images = [];
+    }
+  }
+
+  updateChildGender(event: boolean) {
+    this.child.updateGender = event;
+    if(!this.child.updateGender){
+      this.child.updateGenderDocType.documentType = null;
+      this.child.updateGenderDocType.images = [];
+      this.child.updateGenderAdditionalDocs = null;
+      this.child.updateGenderDocType2.documentType = null;
+      this.child.updateGenderDocType2.images = [];
+      this.child.updateGenderAdditionalDocs2 = null;
+      this.child.updateGenderDocType3.documentType = null;
+      this.child.updateGenderDocType3.images = [];
+    }
   }
 }
