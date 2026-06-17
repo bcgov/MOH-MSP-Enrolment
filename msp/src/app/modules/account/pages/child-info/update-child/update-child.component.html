@@ -71,7 +71,7 @@
 <div role="dialog" class="form-check mb-2" >
   <common-checkbox
     [label]="'Update name - due to name change'"
-    (dataChange)="child.updateNameDueToNameChange = $event;"
+    (dataChange)="updateChildNameDueToNameChange($event)"
     [data]="child.updateNameDueToNameChange">
   </common-checkbox>
 </div>
@@ -93,7 +93,7 @@
 <div role="dialog" class="form-check mb-2" >
     <common-checkbox
       [label]="'Update gender designation - due to change'"
-      (dataChange)="child.updateGender = $event;"
+      (dataChange)="updateChildGender($event)"
       [data]="child.updateGender">
     </common-checkbox>
 </div>
@@ -155,7 +155,7 @@
 <div role="dialog" class="form-check mb-2" >
   <common-checkbox
     [label]="'Correct name - due to error'"
-    (dataChange)="child.updateNameDueToError = $event;"
+    (dataChange)="updateChildNameDueToError($event)"
     [data]="child.updateNameDueToError">
   </common-checkbox>
 </div>
@@ -177,7 +177,7 @@
 <div role="dialog" class="form-check mb-2" >
   <common-checkbox
     [label]="'Correct birthdate - due to error'"
-    (dataChange)="child.updateBirthdate = $event;"
+    (dataChange)="updateChildBirthdate($event)"
     [data]="child.updateBirthdate">
   </common-checkbox>
 </div>
@@ -199,7 +199,7 @@
 <div role="dialog" class="form-check mb-2" >
   <common-checkbox
     [label]="'Correct gender designation - due to error'"
-    (dataChange)="child.updateGenderDesignation = $event;"
+    (dataChange)="updateChildGenderDesignation($event)"
     [data]="child.updateGenderDesignation">
   </common-checkbox>
 </div>
@@ -217,12 +217,13 @@
   </msp-support-documents>
 </div>
 
+<!-- Update child status to dependent post-secondary student -->
 <div role="dialog" class="form-check mb-2" >
   <common-checkbox
     [label]="'Update child status to dependent post-secondary student'"
-    (dataChange)="child.updateChildStatus = $event;"
-    [disabled]="!isAdult()"
-    [data]="child.updateChildStatus">
+    (dataChange)="updateChildStatusToDPSS($event)"
+    [(ngModel)]="child.updateChildStatus"
+    [disabled]="!isAdult()">
   </common-checkbox>
   <div *ngIf="child.updateChildStatus">
     <h2 class="horizontal-line">School Information</h2>
