@@ -47,15 +47,9 @@ export class GeneralAppComponent {
       } else if (!url.includes('/confirmation')) {
         this.hardRedirect('/msp/deam/home');
       }
-      // Refresh on retro assistance
+      // Redirect to MSP Home app
     } else if (url.includes('/assistance')) {
-      // if on the home page, don't redirect but remove any stored application data
-      if (url.includes('/home')) {
-        this.clearStorage();
-        // if anywhere else besides confirmation, redirect them to the home page
-      } else if (!url.includes('/confirmation')) {
-        this.hardRedirect('/msp/assistance/home');
-      }
+      this.hardRedirect('/msp/');
       // SuppBen and MSP Enrolment have been moved to JHA (AHDC)
     } else if (url.includes('/benefit') || url.includes('/enrolment')) {
       location.assign('https://my.gov.bc.ca/ahdc');
