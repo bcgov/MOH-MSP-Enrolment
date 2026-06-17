@@ -236,7 +236,7 @@ export class UpdateChildComponent implements OnInit {
   isAdult() {
     const childAge = differenceInYears(this._today, new Date(this.child.dob));
     const is18To24 = childAge >= 18 && childAge <= 24;
-    if(!is18To24) {
+    if (!is18To24) {
       this.child.updateChildStatus = false;
       this.resetDPSSFields();
     }
@@ -246,7 +246,7 @@ export class UpdateChildComponent implements OnInit {
   // Update/renew status in Canada
   updateChildStatusInCanada(event: boolean) {
     this.child.updateStatusInCanada = event;
-    if(!this.child.updateStatusInCanada){
+    if (!this.child.updateStatusInCanada) {
       this.child.status = null;
       this.child.currentActivity = null;
       this.child.updateStatusInCanadaDocType.documentType = null;
@@ -257,7 +257,7 @@ export class UpdateChildComponent implements OnInit {
   // Update name - due to name change
   updateChildNameDueToNameChange(event: boolean) {
     this.child.updateNameDueToNameChange = event;
-    if(!this.child.updateNameDueToNameChange){
+    if (!this.child.updateNameDueToNameChange) {
       this.child.updateNameDueToNameChangeDocType.documentType = null;
       this.child.updateNameDueToNameChangeDocType.images = [];
     }
@@ -266,7 +266,7 @@ export class UpdateChildComponent implements OnInit {
   // Update gender designation - due to change
   updateChildGender(event: boolean) {
     this.child.updateGender = event;
-    if(!this.child.updateGender){
+    if (!this.child.updateGender) {
       this.child.updateGenderDocType.documentType = null;
       this.child.updateGenderDocType.images = [];
       this.child.updateGenderAdditionalDocs = null;
@@ -280,9 +280,9 @@ export class UpdateChildComponent implements OnInit {
 
   // Correct name - due to error
   updateChildNameDueToError(event: boolean) {
-    this.child.updateNameDueToError= event;
-    if(!this.child.updateNameDueToError){
-      this.child.updateNameDueToErrorDocType.documentType= null;
+    this.child.updateNameDueToError = event;
+    if (!this.child.updateNameDueToError) {
+      this.child.updateNameDueToErrorDocType.documentType = null;
       this.child.updateNameDueToErrorDocType.images = [];
     }
   }
@@ -290,8 +290,8 @@ export class UpdateChildComponent implements OnInit {
   // Correct birthdate - due to error
   updateChildBirthdate(event: boolean) {
     this.child.updateBirthdate = event;
-    if(!this.child.updateBirthdate){
-      this.child.updateBirthdateDocType.documentType= null;
+    if (!this.child.updateBirthdate) {
+      this.child.updateBirthdateDocType.documentType = null;
       this.child.updateBirthdateDocType.images = [];
     }
   }
@@ -299,8 +299,8 @@ export class UpdateChildComponent implements OnInit {
   // Correct gender designation - due to error
   updateChildGenderDesignation(event: boolean) {
     this.child.updateGenderDesignation = event;
-    if(!this.child.updateGenderDesignation){
-      this.child.updateGenderDesignationDocType.documentType= null;
+    if (!this.child.updateGenderDesignation) {
+      this.child.updateGenderDesignationDocType.documentType = null;
       this.child.updateGenderDesignationDocType.images = [];
     }
   }
@@ -308,14 +308,14 @@ export class UpdateChildComponent implements OnInit {
   // Update child status to dependent post-secondary student
   updateChildStatusToDPSS(event: boolean) {
     this.child.updateChildStatus = event;
-    if(!this.child.updateChildStatus){
+    if (!this.child.updateChildStatus) {
       this.resetDPSSFields();
     }
   }
 
-  // Reset fields for updating child status to DPSS 
+  // Reset fields for updating child status to DPSS
   resetDPSSFields(){
-    this.child.schoolName= null;
+    this.child.schoolName = null;
     this.child.schoolOutsideOfBC = null;
     this.child.studiesDepartureDate = null;
     this.child.schoolAddress.addressLine1 = null;
