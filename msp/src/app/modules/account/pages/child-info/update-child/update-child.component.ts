@@ -15,7 +15,6 @@ import {
 import { SpaEnvService } from '../../../../../services/spa-env.service';
 import { ErrorMessage } from 'moh-common-lib';
 import { startOfToday, subDays, isBefore, differenceInYears } from 'date-fns';
-import { threadId } from 'worker_threads';
 
 @Component({
   selector: 'msp-update-child',
