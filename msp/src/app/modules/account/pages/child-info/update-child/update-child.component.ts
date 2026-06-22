@@ -234,7 +234,7 @@ export class UpdateChildComponent implements OnInit {
   // Checks if child is Adult (or DPSS: age 18-24 years old)
   isAdult() {
     const childAge = differenceInYears(this._today, new Date(this.child.dob));
-    const is18To24 = childAge >= 18 && childAge <= 24;
+    const is18To24 = childAge >= 18 && childAge < 25;
     if (!is18To24) {
       this.child.updateChildStatus = false;
       this.resetDPSSFields();
