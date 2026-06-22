@@ -235,7 +235,7 @@
             in full-time studies.
           </p>
           <p>
-            If your child is 18 to 24 and not in full-time studies, they must apply separately for
+            If your child is 19 to 24 and not in full-time studies, they must apply separately for
             their own MSP coverage.
           </p>
           <p>
