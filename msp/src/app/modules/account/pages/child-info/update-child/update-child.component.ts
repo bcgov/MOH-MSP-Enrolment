@@ -231,7 +231,101 @@ export class UpdateChildComponent implements OnInit {
     return envs && envs.SPA_ENV_ENABLE_ADDRESS_VALIDATOR === 'true';
   }
 
+  // Checks if child is Adult (or DPSS: age 18-24 years old)
   isAdult() {
-    return differenceInYears(this._today, new Date(this.child.dob)) >= 18;
+    const childAge = differenceInYears(this._today, new Date(this.child.dob));
+    const is18To24 = childAge >= 18 && childAge < 25;
+    if (!is18To24) {
+      this.child.updateChildStatus = false;
+      this.resetDPSSFields();
+    }
+    return is18To24;
+  }
+
+  // Update/renew status in Canada
+  updateChildStatusInCanada(event: boolean) {
+    this.child.updateStatusInCanada = event;
+    if (!this.child.updateStatusInCanada) {
+      this.child.status = null;
+      this.child.currentActivity = null;
+      this.child.updateStatusInCanadaDocType.documentType = null;
+      this.child.updateStatusInCanadaDocType.images = [];
+    }
+  }
+
+  // Update name - due to name change
+  updateChildNameDueToNameChange(event: boolean) {
+    this.child.updateNameDueToNameChange = event;
+    if (!this.child.updateNameDueToNameChange) {
+      this.child.updateNameDueToNameChangeDocType.documentType = null;
+      this.child.updateNameDueToNameChangeDocType.images = [];
+    }
+  }
+
+  // Update gender designation - due to change
+  updateChildGender(event: boolean) {
+    this.child.updateGender = event;
+    if (!this.child.updateGender) {
+      this.child.updateGenderDocType.documentType = null;
+      this.child.updateGenderDocType.images = [];
+      this.child.updateGenderAdditionalDocs = null;
+      this.child.updateGenderDocType2.documentType = null;
+      this.child.updateGenderDocType2.images = [];
+      this.child.updateGenderAdditionalDocs2 = null;
+      this.child.updateGenderDocType3.documentType = null;
+      this.child.updateGenderDocType3.images = [];
+    }
+  }
+
+  // Correct name - due to error
+  updateChildNameDueToError(event: boolean) {
+    this.child.updateNameDueToError = event;
+    if (!this.child.updateNameDueToError) {
+      this.child.updateNameDueToErrorDocType.documentType = null;
+      this.child.updateNameDueToErrorDocType.images = [];
+    }
+  }
+
+  // Correct birthdate - due to error
+  updateChildBirthdate(event: boolean) {
+    this.child.updateBirthdate = event;
+    if (!this.child.updateBirthdate) {
+      this.child.updateBirthdateDocType.documentType = null;
+      this.child.updateBirthdateDocType.images = [];
+    }
+  }
+
+  // Correct gender designation - due to error
+  updateChildGenderDesignation(event: boolean) {
+    this.child.updateGenderDesignation = event;
+    if (!this.child.updateGenderDesignation) {
+      this.child.updateGenderDesignationDocType.documentType = null;
+      this.child.updateGenderDesignationDocType.images = [];
+    }
+  }
+
+  // Update child status to dependent post-secondary student
+  updateChildStatusToDPSS(event: boolean) {
+    this.child.updateChildStatus = event;
+    if (!this.child.updateChildStatus) {
+      this.resetDPSSFields();
+    }
+  }
+
+  // Reset fields for updating child status to DPSS
+  resetDPSSFields(){
+    this.child.schoolName = null;
+    this.child.schoolOutsideOfBC = null;
+    this.child.studiesDepartureDate = null;
+    this.child.schoolAddress.addressLine1 = null;
+    this.child.schoolAddress.addressLine2 = null;
+    this.child.schoolAddress.addressLine3 = null;
+    this.child.schoolAddress.city = null;
+    this.child.schoolAddress.province = null;
+    this.child.schoolAddress.country = null;
+    this.child.schoolAddress.postal = null;
+    this.child.studiesBeginDate = null;
+    this.child.studiesFinishedDate = null;
+    this.child.inBCafterStudies = null;
   }
 }
