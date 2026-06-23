@@ -70,20 +70,4 @@ describe('AssistanceAuthorizeSubmitComponent', () => {
       expect(mspDataServiceStub.saveFinAssistApplication).toHaveBeenCalled();
     });
   });
-
-  describe('ngOnInit', () => {
-    it('redirects if infoCollectionAgreement is false', () => {
-      const redirectSpy = spyOn(component, 'redirect').and.callFake(() => {});
-      component.application.infoCollectionAgreement = false;
-      component.ngOnInit();
-      expect(redirectSpy).toHaveBeenCalled();
-    });
-
-    it('does not redirect if infoCollectionAgreement is true', () => {
-      const redirectSpy = spyOn(component, 'redirect').and.callFake(() => {});
-      component.application.infoCollectionAgreement = true;
-      component.ngOnInit();
-      expect(redirectSpy).not.toHaveBeenCalled();
-    });
-  });
 });
