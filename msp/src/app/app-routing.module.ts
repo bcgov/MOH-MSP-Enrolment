@@ -2,12 +2,17 @@ import { Routes, RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { LandingComponent } from './pages/landing/landing.component';
 import { APP_ROUTES } from './models/route-constants';
+import { PageNotFoundComponent } from './pages/pagenotfound/pagenotfound.component';
 
 const routes: Routes = [
   {
     path: '',
     component: LandingComponent,
     data: { title: 'MSP Applications', breadcrumb: 'Home' }
+  },
+  {
+    path: APP_ROUTES.PAGE_NOT_FOUND,
+    component: PageNotFoundComponent,
   },
   // {
   //   path: APP_ROUTES.ENROLMENT,
@@ -16,10 +21,11 @@ const routes: Routes = [
   // {
   //   path: APP_ROUTES.BENEFIT,
   //   loadChildren: 'app/modules/benefit/benefit.module#BenefitModule'
-  // },
+  // // },
   {
     path: APP_ROUTES.ASSISTANCE,
-    loadChildren: 'app/modules/assistance/assistance.module#AssistanceModule'
+    redirectTo: APP_ROUTES.PAGE_NOT_FOUND,
+    pathMatch: 'full'
   },
   {
     path: APP_ROUTES.ACCOUNT,

@@ -16,6 +16,7 @@ import { AclDataService } from './modules/request-acl/services/acl-data.service'
 import { EnrolDataService } from './modules/enrolment/services/enrol-data.service';
 import { environment } from '../environments/environment';
 import { fakeBackendProvider } from './_developmentHelpers/fake-backend';
+import { PageNotFoundComponent } from './pages/pagenotfound/pagenotfound.component';
 
 const providerList: any = [
   MspDataService,
@@ -54,6 +55,7 @@ if ( environment.useMockBackend ) {
   ],
   declarations: [
     LandingComponent,
+    PageNotFoundComponent,
     GeneralAppComponent
   ],
   providers: [
