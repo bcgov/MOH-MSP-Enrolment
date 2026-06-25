@@ -15,13 +15,6 @@
           {{newAccountApp}}
         </button>
       </div>
-      <!-- <div class="col-sm-12 col-md-6">
-        <hr class="hr-separator">
-        <br class="br-separator">
-        <button class="btn btn-primary btn-lg btn-block" (click)="clearSavedFinAssisApp()">
-          {{newPaApp}}
-        </button>
-      </div> -->
     </div>
     <div class="row">
       <!-- Link to SuppBen as part of AHDC/JHA application -->
@@ -36,6 +29,15 @@
         <br>
         <button class="btn btn-primary btn-lg btn-block" (click)="clearSavedAclApplication()">
           {{newAccountLetter}}
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <!-- Link to RetroPA (should be redirected to PageNotFound) -->
+      <div class="col-sm-12 col-md-6">
+        <br>
+        <button class="btn btn-primary btn-lg btn-block" (click)="redirectToPageNotFound()">
+          {{newPaApp}}
         </button>
       </div>
     </div>

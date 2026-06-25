@@ -23,8 +23,8 @@ export class LandingComponent {
   newEnrollApp = 'New MSP Application for Enrolment';
   continueEnrollApp = 'Continue MSP Application for Enrolment';
 
-  // newPaApp = 'New MSP Application for Retroactive Premium Assistance';
-  // continuePaApp = 'Continue MSP Application for Retroactive Premium Assistance';
+  newPaApp = 'New MSP Application for Retroactive Premium Assistance';
+  continuePaApp = 'Continue MSP Application for Retroactive Premium Assistance';
 
   newAccountApp = 'New MSP Account Change Request';
   continueAccountApp = 'Continue MSP Account Change Request';
@@ -47,10 +47,9 @@ export class LandingComponent {
     private router: Router
   ) {}
 
-  // clearSavedFinAssisApp() {
-  //   this.mspDataService.removeFinAssistApplication();
-  //   this.router.navigate(['/assistance/home']);
-  // }
+  redirectToPageNotFound() {
+    this.router.navigate(['/page-not-found']);
+  }
 
   // clearSavedMspApp() {
   //   this.enrolDataService.removeApplication();

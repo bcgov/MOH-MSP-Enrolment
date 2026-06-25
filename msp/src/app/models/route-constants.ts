@@ -3,5 +3,6 @@ export const APP_ROUTES = {
   BENEFIT: 'benefit',
   ASSISTANCE: 'assistance',
   ACCOUNT: 'deam',
-  ACCOUNT_LETTER: 'account-letter'
+  ACCOUNT_LETTER: 'account-letter',
+  PAGE_NOT_FOUND: 'page-not-found',
 };
