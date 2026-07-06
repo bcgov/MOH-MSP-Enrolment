@@ -48,8 +48,8 @@ export class GeneralAppComponent {
         this.hardRedirect('/msp/deam/home');
       }
       // Redirect to MSP Home app
-    } else if (url.includes('/assistance')) {
-      this.hardRedirect('/page-not-found');
+    } else if (url.includes('/msp/assistance')) {
+      this.hardRedirect('/msp/page-not-found');
       // SuppBen and MSP Enrolment have been moved to JHA (AHDC)
     } else if (url.includes('/benefit') || url.includes('/enrolment')) {
       location.assign('https://my.gov.bc.ca/ahdc');
