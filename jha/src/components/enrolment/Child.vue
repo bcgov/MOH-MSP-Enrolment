@@ -156,7 +156,8 @@
             v$.birthDate.$dirty &&
             !v$.birthDate.required.$invalid &&
             !v$.birthDate.birthDatePastValidator.$invalid &&
-            v$.birthDate.birthDateStudentValidator.$invalid
+            v$.birthDate.birthDateStudentValidator.$invalid &&
+            !v$.birthDate.distantPastValidator.$invalid
           "
           class="text-danger"
           aria-live="assertive"
