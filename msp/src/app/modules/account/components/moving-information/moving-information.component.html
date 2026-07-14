@@ -1,6 +1,6 @@
 <ng-content select="[sectionTitleInfo]"></ng-content>
 <!-- Only show the residency info if they are not on MSP already -->
-<common-page-section *ngIf="person.hasActiveMedicalServicePlan === false || person.immigrationStatusChange === false" layout="tips">
+<common-page-section *ngIf="(person.hasActiveMedicalServicePlan === false || person.immigrationStatusChange === false) && showResidencyInfo" layout="tips">
   <div *ngIf="isStatus == undefined || isCanadianNotBC || isResidentNotBC" class="form-group">
     <common-radio
       name="livedInBCSinceBirth_{{objectId}}"
@@ -306,7 +306,7 @@
   </div>
 </common-page-section>
 
-<common-page-section *ngIf="person.relationship === Child18To24" layout="noTips">
+<common-page-section *ngIf="person.relationship === Child18To24 && showSchoolInfo" layout="noTips">
   <div>
     <h2><strong>School Information</strong></h2>
     <p class="horizontal-line">

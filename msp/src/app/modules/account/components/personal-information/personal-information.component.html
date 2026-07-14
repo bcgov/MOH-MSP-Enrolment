@@ -53,6 +53,7 @@
 
   <div class="form-group col-sm-6 pl-0">
     <common-date
+      *ngIf="showDob"
       name="dob_{{objectId}}"
       label="Birthdate"
       [dateRangeStart]="dobStartRange"
