@@ -330,6 +330,11 @@ export class UpdateChildComponent implements OnInit {
   }
 
   hasSchoolAddress() {
-    return this.child?.schoolAddress ?? [];
+    if (this.child && this.child.schoolAddress) {
+      return this.child.schoolAddress;
+    }
+    else {
+      return [];
+    }
   }
 }
