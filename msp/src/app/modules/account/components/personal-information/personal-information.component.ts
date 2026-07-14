@@ -180,7 +180,7 @@ export class AccountPersonalInformationComponent<T extends IPersonalInformation>
     if (this.person.relationship === Relationship.Applicant) {
       this.dobErrorMsg = {invalidRange: 'An applicant must be 16 years or older.'};
       this.dobEndRange = subYears( this._today, 16 );
-    } 
+    }
     // Child is between 0 to 18 years old
     else if (this.person.relationship === Relationship.ChildUnder19) {
       this.dobErrorMsg = {invalidRange: 'A child must be less than 19 years old.'};
@@ -189,7 +189,7 @@ export class AccountPersonalInformationComponent<T extends IPersonalInformation>
     }
     // Child is between 18 to 24 years old (or dependent post-secondary student)
     else if (this.person.relationship === Relationship.Child18To24) {
-      if(this.person.dateOfBirth > this._today){
+      if (this.person.dateOfBirth > this._today) {
         this.dobErrorMsg = {invalidRange: 'Invalid birthdate'};
       }
       else {
@@ -198,12 +198,12 @@ export class AccountPersonalInformationComponent<T extends IPersonalInformation>
         this.dobEndRange = subYears( this._today, 18 );
       }
     }
-    // Child is above 25 years old  
+    // Child is above 25 years old
     else if (this.person.relationship === Relationship.Child) {
       this.dobErrorMsg = {invalidRange: 'A child must be less than 25 years old.'};
       this.dobStartRange = addDays(subYears( this._today, 25), 1);
       this.dobEndRange = this._today;
-    } 
+    }
     else {
       this.dobEndRange = this._today;
     }
