@@ -267,7 +267,7 @@
         <div class="row"
             *ngIf='!isAddressValidatorEnabled'>
           <div class="col-md-6">
-            <common-address [(address)]="hasSchoolAddress"
+            <common-address [(address)]="child.schoolAddress"
                             [isRequired]="true"
                             [allowExtralines]='true'
                             [disableGeocoder]='true'>
@@ -277,7 +277,7 @@
         <div class="row"
             *ngIf='isAddressValidatorEnabled'>
           <div class="col-md-6">
-            <common-address [(address)]="hasSchoolAddress"
+            <common-address [(address)]="child.schoolAddress"
                             [isRequired]="true"
                             [allowExtralines]="true"
                             [addressServiceUrl]="addressServiceUrl">

@@ -328,13 +328,4 @@ export class UpdateChildComponent implements OnInit {
     this.child.studiesFinishedDate = null;
     this.child.inBCafterStudies = null;
   }
-
-  hasSchoolAddress() {
-    if (this.child && this.child.schoolAddress) {
-      return this.child.schoolAddress;
-    }
-    else {
-      return [];
-    }
-  }
 }

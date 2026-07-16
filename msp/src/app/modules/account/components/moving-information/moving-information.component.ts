@@ -667,13 +667,4 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
       this.showSchoolInfo = true;
     });
   }
-
-  hasSchoolAddress() {
-    if (this.person && this.person.schoolAddress) {
-      return this.person.schoolAddress;
-    }
-    else {
-      return [];
-    }
-  }
 }
