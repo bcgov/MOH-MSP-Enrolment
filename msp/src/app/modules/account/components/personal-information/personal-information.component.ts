@@ -3,7 +3,7 @@ import { Base, ErrorMessage } from 'moh-common-lib';
 import { ControlContainer, NgForm } from '@angular/forms';
 import { Gender } from '../../../../models/gender.enum';
 import { Relationship } from '../../../../models/relationship.enum';
-import { subYears, startOfToday } from 'date-fns';
+import { subYears, startOfToday, addDays } from 'date-fns';
 
 export interface IPersonalInformation {
   firstName: string;
@@ -165,24 +165,46 @@ export class AccountPersonalInformationComponent<T extends IPersonalInformation>
     this.personChange.emit(this.person);
   }
 
+  showDob = true;
+
+  clearDateOfBirth(): void {
+    this.showDob = false;
+    this.person.dateOfBirth = null;
+    setTimeout(() => {
+      this.showDob = true;
+    });
+  }
+
   private _setErrorData() {
-    // Set up parmeters for dob ranges
+    // Applicant should be 16 years or older
     if (this.person.relationship === Relationship.Applicant) {
       this.dobErrorMsg = {invalidRange: 'An applicant must be 16 years or older.'};
       this.dobEndRange = subYears( this._today, 16 );
-    } else if (this.person.relationship === Relationship.Child18To24) {
-      this.dobErrorMsg = {invalidRange: 'A post-secondary student must be between 18 and 24 years.'};
-      this.dobStartRange = subYears( this._today, 24 );
-      this.dobEndRange = subYears( this._today, 18 );
-    } else if (this.person.relationship === Relationship.ChildUnder19) {
+    }
+    // Child is between 0 to 18 years old
+    else if (this.person.relationship === Relationship.ChildUnder19) {
       this.dobErrorMsg = {invalidRange: 'A child must be less than 19 years old.'};
-      this.dobStartRange = subYears( this._today, 18 );
+      this.dobStartRange = addDays(subYears( this._today, 19), 1);
       this.dobEndRange = this._today;
-    } else if (this.person.relationship === Relationship.Child) {
-      this.dobErrorMsg = {invalidRange: 'A post-secondary student must be between 18 and 24 years.'};
-      this.dobStartRange = subYears( this._today, 24 );
+    }
+    // Child is between 18 to 24 years old (or dependent post-secondary student)
+    else if (this.person.relationship === Relationship.Child18To24) {
+      if (this.person.dateOfBirth > this._today) {
+        this.dobErrorMsg = {invalidRange: 'Invalid birthdate'};
+      }
+      else {
+        this.dobErrorMsg = {invalidRange: 'A post-secondary student must be between 18 and 24 years.'};
+        this.dobStartRange = addDays(subYears( this._today, 25), 1);
+        this.dobEndRange = subYears( this._today, 18 );
+      }
+    }
+    // Child is above 25 years old
+    else if (this.person.relationship === Relationship.Child) {
+      this.dobErrorMsg = {invalidRange: 'A child must be less than 25 years old.'};
+      this.dobStartRange = addDays(subYears( this._today, 25), 1);
       this.dobEndRange = this._today;
-    } else {
+    }
+    else {
       this.dobEndRange = this._today;
     }
   }

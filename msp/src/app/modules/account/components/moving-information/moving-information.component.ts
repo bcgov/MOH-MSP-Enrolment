@@ -21,7 +21,6 @@ import {
 import { environment } from '../../../../../environments/environment';
 import { Relationship } from 'app/models/relationship.enum';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
-import { formatDateField } from '../../helpers/date';
 import { isBefore, subDays, addDays, addMonths } from 'date-fns';
 import { SpaEnvService } from '../../../../services/spa-env.service';
 
@@ -617,5 +616,55 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
     } else {
       return { invalidRange: 'Invalid date range.' };
     }
+  }
+
+  showSchoolInfo = true;
+  showResidencyInfo = true;
+
+  clearResidencyInfo(): void {
+    this.showResidencyInfo = false;
+    this.person.livedInBCSinceBirth = null;
+    this.person.arrivalToBCDate = null;
+    this.person.movedFromProvinceOrCountry = null;
+    this.person.healthNumberFromOtherProvince = null;
+    this.person.newlyAdopted = null;
+    this.person.adoptedDate = null;
+    this.person.madePermanentMoveToBC = null;
+    this.person.declarationForOutsideOver30Days = null;
+    this.person.departureReason12Months = null;
+    this.person.departureDestination12Months = null;
+    this.person.departureDateDuring12MonthsDate = null;
+    this.person.returnDateDuring12MonthsDate = null;
+    this.person.declarationForOutsideOver60Days = null;
+    this.person.departureReason = null;
+    this.person.departureDestination = null;
+    this.person.departureDateDuring6MonthsDate = null;
+    this.person.returnDateDuring6MonthsDate = null;
+    this.person.hasBeenReleasedFromArmedForces = null;
+    this.person.dischargeDate = null;
+    this.person.nameOfInstitute = null;
+    setTimeout(() => {
+      this.showResidencyInfo = true;
+    });
+  }
+
+  clearSchoolInfo(): void {
+    this.showSchoolInfo = false;
+    this.person.schoolName = null;
+    this.person.schoolOutsideOfBC = null;
+    this.person.studiesDepartureDate = null;
+    this.person.schoolAddress.addressLine1 = null;
+    this.person.schoolAddress.addressLine2 = null;
+    this.person.schoolAddress.addressLine3 = null;
+    this.person.schoolAddress.city = null;
+    this.person.schoolAddress.province = null;
+    this.person.schoolAddress.country = null;
+    this.person.schoolAddress.postal = null;
+    this.person.studiesBeginDate = null;
+    this.person.studiesFinishedDate = null;
+    this.person.inBCafterStudies = null;
+    setTimeout(() => {
+      this.showSchoolInfo = true;
+    });
   }
 }

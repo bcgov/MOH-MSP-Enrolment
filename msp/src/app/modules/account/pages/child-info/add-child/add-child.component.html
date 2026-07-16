@@ -3,6 +3,7 @@
     name="ageCategory_{{objectId}}"
     id="AgeCategory_{{index}}"
     [(ngModel)]="childRelationship"
+    (ngModelChange)="onAgeCategoryChanged()"
     label="How old is the child?"
     [radioLabels]="childAgeCategory"
     [required]="true">
@@ -97,6 +98,7 @@
 
   <!-- Child's Personal Info -->
   <account-personal-information
+    #personalInfo
     [person]="child"
     [phnList]="phnList">
     <div sectionTitleInfo>
@@ -123,6 +125,7 @@
 
   <!-- Child's Residency Information -->
   <msp-child-moving-information
+    #movingInfo
     [person]="child">
     <!-- Don't show the residency header if they have MSP already -->
     <div *ngIf="hasActiveMedicalCoverage === false" sectionTitleInfo>

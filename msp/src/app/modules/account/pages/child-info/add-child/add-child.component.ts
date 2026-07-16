@@ -5,6 +5,7 @@ import {
   Input,
   Output,
   EventEmitter,
+  ViewChild,
 } from '@angular/core';
 import { nameChangeSupportDocs } from '../../../../msp-core/components/support-documents/support-documents.component';
 import { NgForm, ControlContainer } from '@angular/forms';
@@ -15,6 +16,8 @@ import { StatusInCanada, CanadianStatusReason } from 'app/modules/msp-core/model
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
 import { SupportDocumentTypes } from '../../../../msp-core/models/support-documents.enum';
 import { SupportDocuments } from '../../../../msp-core/models/support-documents.model';
+import { AccountPersonalInformationComponent } from '../../../components/personal-information/personal-information.component';
+import { ChildMovingInformationComponent } from '../../../components/moving-information/moving-information.component';
 
 @Component({
   selector: 'msp-add-child',
@@ -61,6 +64,8 @@ export class AddChildComponent extends Base implements OnInit {
   @Input() phns: string[];
   @Output() personChange: EventEmitter<MspPerson> =
     new EventEmitter<MspPerson>();
+  @ViewChild('personalInfo') personalInfo!: AccountPersonalInformationComponent<MspPerson>;
+  @ViewChild('movingInfo') movingInfo!: ChildMovingInformationComponent;
 
   constructor(public dataService: MspAccountMaintenanceDataService) {
     super();
@@ -75,6 +80,25 @@ export class AddChildComponent extends Base implements OnInit {
       this.child.relationship === Relationship.Child18To24 ? true : false;
     this.personChange.emit(this.child);
     return this.child.relationship;
+  }
+
+  onAgeCategoryChanged(): void {
+    if (this.personalInfo) {
+      this.personalInfo.clearDateOfBirth();
+    }
+    if (this.movingInfo) {
+      this.movingInfo.clearResidencyInfo();
+      this.movingInfo.clearSchoolInfo();
+    }
+    //Reset questions and documents for child to null
+    this.child.hasActiveMedicalServicePlan = null;
+    this.child.status = null;
+    this.child.currentActivity = null;
+    this.child.updateStatusInCanadaDocType.documentType = null;
+    this.child.updateStatusInCanadaDocType.images = [];
+    this.child.hasNameChange = null;
+    this.child.nameChangeDocs.documentType = null;
+    this.child.nameChangeDocs.images = [];
   }
 
   set childRelationship(val: Relationship) {
