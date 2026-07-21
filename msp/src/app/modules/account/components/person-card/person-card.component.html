@@ -252,8 +252,8 @@
   </div>
 
   <!-- Address of their school -->
-  <msp-address-card-part [address]="person.schoolAddress" [label]="lang('./en/index.js').schoolAddressLabel">
-  </msp-address-card-part>
+  <msp-address-review-part [address]="person.schoolAddress" [label]="lang('./en/index.js').schoolAddressLabel">
+  </msp-address-review-part>
 
   <!-- When did they leave to study outside BC? -->
   <div class="row" *ngIf="person.hasStudiesDeparture">

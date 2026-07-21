@@ -457,19 +457,20 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
   }
 
   get mostRecentMoveToBCErrorMessage() {
-    // If the departure date is before the arrival
-    if (this.departureDateDuring12MonthsDate < this.arrivalToBCDate) {
-      return {
-        invalidRange: 'Date must be before any date of departure from BC.',
-      };
-      // If the arrival is after today's date
-    } else if (this.arrivalToBCDate > this.dateToday) {
+    // If the arrival to BC is after today's date
+    if (this.arrivalToBCDate > this.dateToday) {
       return { invalidRange: 'Date cannot be in the future.' };
-      // If the arrival is before birthdate
-    } else if (this.arrivalToBCDate < this.dob) {
+    }
+    // If the arrival to BC is before person's birthdate
+    else if (this.arrivalToBCDate < this.dob) {
       return { invalidRange: 'Date must be after birthdate.' };
-      // Catch all
-    } else {
+    }
+    // If the departure date is before the arrival date
+    else if (this.departureDateDuring12MonthsDate < this.arrivalToBCDate) {
+      return { invalidRange: 'Date must be before any date of departure from BC.' };
+    }
+    // Catch all
+    else {
       return { invalidRange: 'Invalid date range.' };
     }
   }

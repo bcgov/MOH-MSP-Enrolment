@@ -15,6 +15,7 @@ import {
 import { SpaEnvService } from '../../../../../services/spa-env.service';
 import { ErrorMessage } from 'moh-common-lib';
 import { startOfToday, subDays, isBefore, differenceInYears } from 'date-fns';
+import { environment } from 'environments/environment';
 
 @Component({
   selector: 'msp-update-child',
@@ -53,6 +54,8 @@ export class UpdateChildComponent implements OnInit {
   genderBirthdateChangeDocs = genderBirthDateChangeDocuments();
 
   private _today = startOfToday();
+  public readonly addressServiceUrl: string =
+    environment.appConstants.addressApiBaseUrl;
   // Replace default messages in the date component for school completion and departure dates
   schoolCompletionErrMsg: ErrorMessage = {
     noPastDatesAllowed: 'Expected school completion cannot be in the past.',
