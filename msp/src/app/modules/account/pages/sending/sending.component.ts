@@ -118,6 +118,7 @@ export class AccountSendingComponent
         let hasPrevMSPForChild = true;
         const hasChildAdded = this.mspAccountApp.addedChildren.length > 0;
         const hasChildRemoved = this.mspAccountApp.removedChildren.length > 0;
+        const hasChildUpdated = this.mspAccountApp.updatedChildren.length > 0;
 
         //check if there is status in canada selected
         if (
@@ -178,6 +179,7 @@ export class AccountSendingComponent
               this.mspAccountApp.addedSpouse.immigrationStatusChange,
             hasChildAdded: hasChildAdded,
             hasChildRemoved: hasChildRemoved,
+            hasChildUpdated: hasChildUpdated,
             hasPrevMSPForChild: hasPrevMSPForChild,
           },
         });

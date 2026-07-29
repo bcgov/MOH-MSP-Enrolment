@@ -51,6 +51,36 @@
     </div>
   </div>
 
+  <!-- Number of documents they have -->
+  <div class="row" *ngIf="hasDocumentAttached">
+    <div class="col-sm-4">
+      Documents
+    </div>
+    <div class="col-sm-8">
+      <strong>{{documentCount}} {{fileLabel}}</strong>
+    </div>
+  </div>
+
+  <!-- Has name changed since their ID was issued? -->
+  <div class="row" *ngIf="person.hasNameChange != null">
+    <div class="col-sm-4">
+      Has name changed since their ID was issued
+    </div>
+    <div class="col-sm-8">
+      <strong>{{person.hasNameChange ? "Yes": "No"}}</strong>
+    </div>
+  </div>
+
+  <!-- Has name changed since their ID was issued? -->
+  <div class="row" *ngIf="person.nameChangeDocs && person.nameChangeDocs.images.length > 0">
+    <div class="col-sm-4">
+      Documents
+    </div>
+    <div class="col-sm-8">
+      <strong>{{person.nameChangeDocs.images.length}} {{fileLabel}}</strong>
+    </div>
+  </div>
+
   <!-- SIN -->
   <div class="row" *ngIf="person.sin">
     <div class="col-sm-4">
@@ -151,13 +181,63 @@
     </div>
   </div>
 
+  <!-- Is this a permanent move to B.C.? -->
+  <div class="row" *ngIf="person.madePermanentMoveToBC != null">
+    <div class="col-sm-4">
+      Is this a permanent move to B.C.
+    </div>
+    <div class="col-sm-8">
+      <strong>{{person.madePermanentMoveToBC ? "Yes": "No"}}</strong>
+    </div>
+  </div>
+
   <!-- Have they been outside BC for more than 30 days in the last 12 months? -->
-  <div class="row" *ngIf="person.declarationForOutsideOver30Days">
+  <div class="row" *ngIf="person.declarationForOutsideOver30Days != null">
     <div class="col-sm-4">
       {{lang('./en/index.js').outsideBCLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.declarationForOutsideOver30Days ? "Yes": "No"}}</strong>
+    </div>
+  </div>
+
+  <!-- Reason for Departure for more than 30 days -->
+  <div class="row" *ngIf="person.departureReason12Months">
+    <div class="col-sm-4">
+      Reason for departure
+    </div>
+    <div class="col-sm-8">
+      <strong>{{person.departureReason12Months}}</strong>
+    </div>
+  </div>
+
+  <!-- Location for more than 30 days-->
+  <div class="row" *ngIf="person.departureDestination12Months">
+    <div class="col-sm-4">
+      Location
+    </div>
+    <div class="col-sm-8">
+      <strong>{{person.departureDestination12Months}}</strong>
+    </div>
+  </div>
+
+  <!-- Departure date for more than 30 days -->
+  <div class="row" *ngIf="person.departureDateDuring12MonthsDate">
+    <div class="col-sm-4">
+      Departure date
+    </div>
+    <div class="col-sm-8">
+      <strong>{{formatDateField(person.departureDateDuring12MonthsDate)}}</strong>
+    </div>
+  </div>
+
+  <!-- Return date for more than 30 days-->
+  <div class="row" *ngIf="person.returnDateDuring12MonthsDate">
+    <div class="col-sm-4">
+      Return date
+    </div>
+    <div class="col-sm-8">
+      <strong>{{formatDateField(person.returnDateDuring12MonthsDate)}}</strong>
     </div>
   </div>
 
@@ -168,6 +248,46 @@
     </div>
     <div class="col-sm-8">
       <strong>{{person.declarationForOutsideOver60Days ? "Yes" : "No"}}</strong>
+    </div>
+  </div>
+
+  <!-- Reason for Departure for over 60 days -->
+  <div class="row" *ngIf="person.departureReason">
+    <div class="col-sm-4">
+      Reason for departure
+    </div>
+    <div class="col-sm-8">
+      <strong>{{person.departureReason}}</strong>
+    </div>
+  </div>
+
+  <!-- Location for over 60 days -->
+  <div class="row" *ngIf="person.departureDestination">
+    <div class="col-sm-4">
+      Location
+    </div>
+    <div class="col-sm-8">
+      <strong>{{person.departureDestination}}</strong>
+    </div>
+  </div>
+
+  <!-- Departure date for over 60 days -->
+  <div class="row" *ngIf="person.departureDateDuring6MonthsDate">
+    <div class="col-sm-4">
+      Departure date
+    </div>
+    <div class="col-sm-8">
+      <strong>{{formatDateField(person.departureDateDuring6MonthsDate)}}</strong>
+    </div>
+  </div>
+
+  <!-- Return date for over 60 days -->
+  <div class="row" *ngIf="person.returnDateDuring6MonthsDate">
+    <div class="col-sm-4">
+      Return date
+    </div>
+    <div class="col-sm-8">
+      <strong>{{formatDateField(person.returnDateDuring6MonthsDate)}}</strong>
     </div>
   </div>
 
@@ -355,16 +475,6 @@
     </div>
     <div class="col-sm-8">
       <strong>{{lang('./en/index.js').requestedLabel}}</strong>
-    </div>
-  </div>
-
-  <!-- Number of documents they have -->
-  <div class="row" *ngIf="hasDocumentAttached">
-    <div class="col-sm-4">
-      {{lang('./en/index.js').documentsLabel}}
-    </div>
-    <div class="col-sm-8">
-      <strong>{{documentCount}} {{fileLabel}}</strong>
     </div>
   </div>
 
