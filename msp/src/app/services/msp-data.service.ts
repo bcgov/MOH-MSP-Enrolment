@@ -480,12 +480,13 @@ export class MspDataService {
     input.removedChildren.forEach(c => {
       const c2: PersonDto = this.toPersonDtoForAccount(c);
       c2.outOfBCRecord = this.toOutofBCRecordDto(c.outOfBCRecord);
-
       this.convertSchoolAddress(c, c2);
       dto.applicant.removedChildren = [...dto.applicant.removedChildren, c2];
     });
     input.updatedChildren.forEach(c => {
       const c2: PersonDto = this.toPersonDtoForAccount(c);
+      c2.outOfBCRecord = this.toOutofBCRecordDto(c.outOfBCRecord);
+      this.convertSchoolAddress(c, c2);
       dto.applicant.updatedChildren = [...dto.applicant.updatedChildren, c2];
     });
 
@@ -600,6 +601,8 @@ export class MspDataService {
 
     dto.applicant.updatedChildren.forEach(c => {
       const child: MspPerson = this.fromPersonDtoForAccount(c);
+      child.outOfBCRecord = this.toOutofBCRecord(c.outOfBCRecord);
+      this.convertSchoolAddress(c, child);
       child.operationActionType = OperationActionType.Update;
       output.updatedChildren = [...output.updatedChildren, child];
     });
