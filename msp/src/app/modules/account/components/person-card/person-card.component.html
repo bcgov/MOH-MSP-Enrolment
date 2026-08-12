@@ -371,19 +371,29 @@
     </div>
   </div>
 
+  <!-- Is this school located outside B.C. -->
+  <div class="row" *ngIf="person.schoolOutsideOfBC != null">
+    <div class="col-sm-4">
+      Is this school located outside B.C.
+    </div>
+    <div class="col-sm-8">
+      <strong>{{person.schoolOutsideOfBC ? "Yes": "No"}}</strong>
+    </div>
+  </div>
+
+    <!-- Departure date from B.C. -->
+    <div class="row" *ngIf="person.hasStudiesDeparture">
+      <div class="col-sm-4">
+        Departure date from B.C.
+      </div>
+      <div class="col-sm-8">
+        <strong>{{formatDateField(person.studiesDepartureDate)}}</strong>
+      </div>
+    </div>
+
   <!-- Address of their school -->
   <msp-address-review-part [address]="person.schoolAddress" [label]="lang('./en/index.js').schoolAddressLabel">
   </msp-address-review-part>
-
-  <!-- When did they leave to study outside BC? -->
-  <div class="row" *ngIf="person.hasStudiesDeparture">
-    <div class="col-sm-4">
-      {{lang('./en/index.js').studiesDepartureLabel}}
-    </div>
-    <div class="col-sm-8">
-      <strong>{{formatDateField(person.studiesDepartureDate)}}</strong>
-    </div>
-  </div>
 
   <!--  When did their studies begin? -->
   <div class="row" *ngIf="person.hasStudiesBegin">
