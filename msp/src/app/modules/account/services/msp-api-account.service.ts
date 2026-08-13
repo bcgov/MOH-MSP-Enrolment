@@ -811,6 +811,10 @@ export class MspApiAccountService extends AbstractHttpService {
       to.schoolName = from.schoolName;
     }
 
+    if (from.schoolOutsideOfBC) {
+      to.schoolOutsideOfBC = from.schoolOutsideOfBC ? 'Y' : 'N'; 
+    }
+
     if (from.hasStudiesDeparture) {
       to.departDateSchoolOutside = format(
         from.studiesDepartureDate,
