@@ -38,7 +38,7 @@
             </div>
 
       <ng-container *ngIf="mspAccountApp.addedChildren.length > 0">
-        <ng-container *ngFor="let child of mspAccountApp.addedChildren; let i = index;">
+        <ng-container *ngFor="let child of mspAccountApp.addedChildren.slice().reverse(); let i = index;">
           <div class="clearfix" *ngIf="i % 2 == 0"></div>
           <div class="col-lg-6">
             <account-person-card [person]="child" [accountCard]=true
@@ -51,7 +51,7 @@
 
 
       <ng-container *ngIf="mspAccountApp.removedChildren.length > 0">
-        <ng-container *ngFor="let child of mspAccountApp.removedChildren; let i = index;">
+        <ng-container *ngFor="let child of mspAccountApp.removedChildren.slice().reverse(); let i = index;">
             <div class="clearfix" *ngIf="i % 2 == 0"></div>
             <div class="col-lg-6">
               <account-person-card [person]="child" [accountCard]=true
@@ -63,7 +63,7 @@
 
 
       <ng-container *ngIf="mspAccountApp.updatedChildren.length > 0">
-        <ng-container *ngFor="let child of mspAccountApp.updatedChildren; let i = index;">
+        <ng-container *ngFor="let child of mspAccountApp.updatedChildren.slice().reverse(); let i = index;">
             <div class="clearfix" *ngIf="i % 2 == 0"></div>
             <div class="col-lg-6">
               <account-person-card [person]="child" [accountCard]=true

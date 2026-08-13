@@ -807,33 +807,32 @@ export class MspApiAccountService extends AbstractHttpService {
       to.outsideBCinFuture.beenOutsideBCMoreThan = 'N';
     }
 
-    // Child 18-24
-    if (from.relationship === Relationship.Child18To24) {
-      if (from.schoolName) {
-        to.schoolName = from.schoolName;
-      }
+    if (from.schoolName) {
+      to.schoolName = from.schoolName;
+    }
 
-      if (from.hasStudiesDeparture) {
-        to.departDateSchoolOutside = format(
-          from.studiesDepartureDate,
-          this.ISO8601DateFormat
-        );
-      }
+    if (from.hasStudiesDeparture) {
+      to.departDateSchoolOutside = format(
+        from.studiesDepartureDate,
+        this.ISO8601DateFormat
+      );
+    }
 
-      if (from.hasStudiesFinished) {
-        to.dateStudiesFinish = format(
-          from.studiesFinishedDate,
-          this.ISO8601DateFormat
-        );
-      }
+    if (from.hasStudiesFinished) {
+      to.dateStudiesFinish = format(
+        from.studiesFinishedDate,
+        this.ISO8601DateFormat
+      );
+    }
 
-      if (from.hasStudiesBegin) {
-        to.dateStudiesBegin = format(
-          from.studiesBeginDate,
-          this.ISO8601DateFormat
-        );
-      }
+    if (from.hasStudiesBegin) {
+      to.dateStudiesBegin = format(
+        from.studiesBeginDate,
+        this.ISO8601DateFormat
+      );
+    }
 
+    if (from.schoolAddress) {
       to.schoolAddress = this.convertAddress(from.schoolAddress);
     }
 
