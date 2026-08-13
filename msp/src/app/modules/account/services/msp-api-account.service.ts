@@ -812,7 +812,7 @@ export class MspApiAccountService extends AbstractHttpService {
     }
 
     if (from.schoolOutsideOfBC) {
-      to.schoolOutsideOfBC = from.schoolOutsideOfBC ? 'Y' : 'N'; 
+      to.schoolOutsideOfBC = from.schoolOutsideOfBC ? 'Y' : 'N';
     }
 
     if (from.hasStudiesDeparture) {
