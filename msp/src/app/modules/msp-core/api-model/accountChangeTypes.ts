@@ -201,11 +201,12 @@ interface _AccountChangeChildType extends ct._BasicInfoType {
   cancellationReason?: CancellationReasonType;
   cancellationDate?: string;
   adoptionDate?: string;
+  schoolOutsideOfBC?: ct.YesOrNoType;
+  departDateSchoolOutside?: string;
   schoolName?: ct.SchoolNameType;
   schoolAddress?: ct.AddressType;
   dateStudiesBegin?: string;
   dateStudiesFinish?: string;
-  departDateSchoolOutside?: string;
 }
 export interface AccountChangeChildType extends _AccountChangeChildType {
   constructor: { new (): AccountChangeChildType };
@@ -234,11 +235,12 @@ export class AccountChangeChildTypeFactory {
       'cancellationReason',
       'cancellationDate',
       'adoptionDate',
+      'schoolOutsideOfBC',
+      'departDateSchoolOutside',
       'schoolName',
       'schoolAddress',
       'dateStudiesBegin',
-      'dateStudiesFinish',
-      'departDateSchoolOutside',
+      'dateStudiesFinish'
     ];
     return instance;
   }
