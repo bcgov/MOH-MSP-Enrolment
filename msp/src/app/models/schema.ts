@@ -698,7 +698,7 @@ export const defaultSchema = {
         },
         schoolOutsideOfBC: {
           $ref: '#/definitions/YesOrNoType'
-        },
+        }
       },
       required: [
         'name',
