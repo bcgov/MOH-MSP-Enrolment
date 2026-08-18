@@ -773,6 +773,10 @@ export class MspApiService {
         to.schoolName = from.schoolName;
       }
 
+      if (from.schoolOutsideOfBC) {
+        to.schoolOutsideOfBC = from.schoolOutsideOfBC === true ? 'Y' : 'N';
+      }
+
       if (from.hasStudiesDeparture) {
         to.departDateSchoolOutside = format(
           from.studiesDepartureDate,
@@ -913,15 +917,15 @@ export class MspApiService {
       }
     }
 
+    to.willBeAway = WillBeAwayTypeFactory.make();
+    to.willBeAway.isFullTimeStudent = from.relationship === Relationship.Child18To24 ? 'Y' : 'N';
     // Have they been released from the Canadian Armed Forces or an Institution?
     if (from.hasDischarge) {
-      to.willBeAway = WillBeAwayTypeFactory.make();
       to.willBeAway.armedDischargeDate = format(
         from.dischargeDate,
         this.ISO8601DateFormat
       );
       to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
-      to.willBeAway.isFullTimeStudent = 'N';
     }
   }
 
@@ -1008,15 +1012,15 @@ export class MspApiService {
       }
     }
 
+    to.willBeAway = WillBeAwayTypeFactory.make();
+    to.willBeAway.isFullTimeStudent = from.relationship === Relationship.Child18To24 ? 'Y' : 'N';
     // Have they been released from the Canadian Armed Forces or an Institution?
     if (from.hasDischarge) {
-      to.willBeAway = WillBeAwayTypeFactory.make();
       to.willBeAway.armedDischargeDate = format(
         from.dischargeDate,
         this.ISO8601DateFormat
       );
       to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
-      to.willBeAway.isFullTimeStudent = 'N';
     }
   }
 

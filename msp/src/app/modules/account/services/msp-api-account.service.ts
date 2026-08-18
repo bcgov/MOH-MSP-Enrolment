@@ -655,15 +655,15 @@ export class MspApiAccountService extends AbstractHttpService {
       to.mailingAddress = this.convertAddress(from.mailingAddress);
     }
 
+    to.willBeAway = WillBeAwayTypeFactory.make();
+    to.willBeAway.isFullTimeStudent = from.relationship === Relationship.Child18To24 ? 'Y' : 'N';
+
     if (from.hasDischarge) {
-      to.willBeAway = WillBeAwayTypeFactory.make();
       to.willBeAway.armedDischargeDate = format(
         from.dischargeDate,
         this.ISO8601DateFormat
       );
       to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
-      to.willBeAway.isFullTimeStudent =
-        from.relationship === Relationship.Child18To24 ? 'Y' : 'N';
     }
 
     return to;
@@ -812,7 +812,7 @@ export class MspApiAccountService extends AbstractHttpService {
     }
 
     if (from.schoolOutsideOfBC) {
-      to.schoolOutsideOfBC = from.schoolOutsideOfBC ? 'Y' : 'N';
+      to.schoolOutsideOfBC = from.schoolOutsideOfBC === true ? 'Y' : 'N';
     }
 
     if (from.hasStudiesDeparture) {
@@ -862,6 +862,7 @@ export class MspApiAccountService extends AbstractHttpService {
     }
 
     to.willBeAway = WillBeAwayTypeFactory.make();
+    to.willBeAway.isFullTimeStudent = from.relationship === Relationship.Child18To24 ? 'Y' : 'N';
 
     if (from.hasDischarge) {
       to.willBeAway.armedDischargeDate = format(
@@ -869,8 +870,6 @@ export class MspApiAccountService extends AbstractHttpService {
         this.ISO8601DateFormat
       );
       to.willBeAway.armedForceInstitutionName = from.nameOfInstitute;
-      to.willBeAway.isFullTimeStudent =
-        from.relationship === Relationship.Child18To24 ? 'Y' : 'N';
     }
 
     if (from.inBCafterStudies !== undefined && from.inBCafterStudies !== null) {
