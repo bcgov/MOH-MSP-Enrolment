@@ -239,8 +239,12 @@ export class UpdateChildComponent implements OnInit {
     const childAge = differenceInYears(this._today, new Date(this.child.dob));
     const is18To24 = childAge >= 18 && childAge < 25;
     if (!is18To24) {
+      this.child.relationship = Relationship.ChildUnder19;
       this.child.updateChildStatus = false;
       this.resetDPSSFields();
+    }
+    else {
+      this.child.relationship = Relationship.Child18To24;
     }
     return is18To24;
   }
@@ -310,6 +314,7 @@ export class UpdateChildComponent implements OnInit {
   // Update child status to dependent post-secondary student
   updateChildStatusToDPSS(event: boolean) {
     this.child.updateChildStatus = event;
+    this.child.fullTimeStudent = event;
     if (!this.child.updateChildStatus) {
       this.resetDPSSFields();
     }

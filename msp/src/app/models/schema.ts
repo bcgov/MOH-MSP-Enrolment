@@ -695,6 +695,9 @@ export const defaultSchema = {
         },
         departDateSchoolOutside: {
           $ref: '#/definitions/MMDDYYDateType'
+        },
+        schoolOutsideOfBC: {
+          $ref: '#/definitions/YesOrNoType'
         }
       },
       required: [

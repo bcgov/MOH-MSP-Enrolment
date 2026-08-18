@@ -225,12 +225,16 @@
     [(ngModel)]="child.updateChildStatus"
     [disabled]="!isAdult()">
   </common-checkbox>
-  <div *ngIf="child.updateChildStatus">
-    <h2>School Information</h2>
-    <p class="horizontal-line">
-      Enter information of the school that this child is attending (must be in full-time attendance)
-    </p>
-    <common-page-section layout="noTips">
+</div>
+
+<div *ngIf="child.updateChildStatus">
+  <common-page-section layout="noTips">
+    <div>
+      <h2><strong>School Information</strong></h2>
+      <p class="horizontal-line">
+        Enter information of the school that this child is attending (must be in full-time attendance)
+      </p>
+    
       <div class="form-group col-sm-6 pl-0">
         <label for="schoolName_{{index}}" class="control-label">
           School name
@@ -248,12 +252,16 @@
           Name of school is required.
         </common-error-container>
       </div>
-      <common-radio
+
+      <div class="form-group col-md-4 p-sm-2">
+        <common-radio
           name="schoolOutsideOfBC_{{index}}"
           [(ngModel)]="child.schoolOutsideOfBC"
           label="Is this school located outside British Columbia?"
           [required]="true">
-      </common-radio>
+        </common-radio>
+      </div>
+
       <div *ngIf="child.schoolOutsideOfBC" role="dialog" class="form-group col-sm-6 pl-0" >
         <common-date
             name="studiesDepartureDate_{{index}}"
@@ -265,7 +273,10 @@
             [(ngModel)]="child.studiesDepartureDate">
         </common-date>
       </div>
-      <h2 class="horizontal-line">School Address</h2>
+
+      <h2><strong>School Address</strong></h2>
+      <p class="horizontal-line"></p>
+
       <div class="form-group col-md-12 pl-0">
         <div class="row"
             *ngIf='!isAddressValidatorEnabled'>
@@ -334,6 +345,6 @@
           </div>
         </div>
       </div>
-    </common-page-section>
-  </div>
+    </div>
+  </common-page-section>
 </div>
