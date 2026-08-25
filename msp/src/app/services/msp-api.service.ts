@@ -918,7 +918,7 @@ export class MspApiService {
     }
 
     to.willBeAway = WillBeAwayTypeFactory.make();
-    to.willBeAway.isFullTimeStudent = from.fullTimeStudent == true ? 'Y' : 'N';
+    to.willBeAway.isFullTimeStudent = from.fullTimeStudent === true ? 'Y' : 'N';
 
     // Have they been released from the Canadian Armed Forces or an Institution?
     if (from.hasDischarge) {
@@ -1014,7 +1014,7 @@ export class MspApiService {
     }
 
     to.willBeAway = WillBeAwayTypeFactory.make();
-    to.willBeAway.isFullTimeStudent = from.fullTimeStudent == true ? 'Y' : 'N';
+    to.willBeAway.isFullTimeStudent = from.fullTimeStudent === true ? 'Y' : 'N';
 
     // Have they been released from the Canadian Armed Forces or an Institution?
     if (from.hasDischarge) {
