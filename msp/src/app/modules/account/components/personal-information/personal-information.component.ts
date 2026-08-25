@@ -190,7 +190,7 @@ export class AccountPersonalInformationComponent<T extends IPersonalInformation>
     // Child is between 18 to 24 years old (or dependent post-secondary student)
     else if (this.person.relationship === Relationship.Child18To24) {
       if (this.person.dateOfBirth > this._today) {
-        this.dobErrorMsg = {invalidRange: 'Invalid birthdate'};
+        this.dobErrorMsg = {invalidRange: 'Invalid Birthdate.'};
       }
       else {
         this.dobErrorMsg = {invalidRange: 'A post-secondary student must be between 18 and 24 years.'};
