@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Address, getCountryDescription, getProvinceDescription } from 'moh-common-lib';
+import { Address, getCountryDescription, getProvinceDescription } from 'moh-common-lib-angular';
 import { ColumnClass } from '../../../msp-core/components/review-part/review-part.component';
 import { Gender, GenderStrings } from '../../../../models/gender.enum';
 import { format } from 'date-fns';
@@ -66,6 +66,7 @@ enum YES_NO {
 
 // Used getters so that in the future if we have to refactor the HMTL is not impacted
 @Component({
+  standalone: false,
   selector: 'msp-person-review-card',
   templateUrl: './person-review-card.component.html',
   styleUrls: ['./person-review-card.component.scss']
@@ -82,8 +83,6 @@ export class PersonReviewCardComponent<T extends IPersonReviewCard> {
   private _dateFormat = 'MMMM d, yyyy';
   private _statusStrings = getStatusStrings();
   private _statusReasonStrings = getStatusReasonStrings();
-
-  constructor() {}
 
   get movedFromLabel(): string {
      return  'Moved from ' + ( this._isCountryMove() ? 'jurisdiction' : 'province' );

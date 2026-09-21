@@ -1,9 +1,10 @@
-import { ContainerService, AbstractForm, PageStateService } from 'moh-common-lib';
+import { ContainerService, AbstractForm, PageStateService } from 'moh-common-lib-angular';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
-import { OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Directive, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import {ProcessService} from '../../../services/process.service';
 
+@Directive()
 export class BaseForm extends AbstractForm implements OnInit, AfterViewInit, OnDestroy {
 
   private _subscription: Subscription;
@@ -27,7 +28,7 @@ export class BaseForm extends AbstractForm implements OnInit, AfterViewInit, OnD
 
   ngAfterViewInit() {
     this._subscription = this.containerService.$continueBtn.subscribe(
-      (obs) => {
+      () => {
         this.continue();
     });
   }

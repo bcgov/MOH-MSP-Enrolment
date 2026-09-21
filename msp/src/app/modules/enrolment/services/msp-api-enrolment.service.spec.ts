@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MspApiEnrolmentService } from './msp-api-enrolment.service';
 import { MspLogService } from '../../../services/log.service';
@@ -10,10 +9,6 @@ describe('MspApiEnrolmentService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
       HttpClientTestingModule,
-      LocalStorageModule.withConfig({
-        prefix: 'ca.bc.gov.msp',
-        storageType: 'sessionStorage'
-      }),
       RouterTestingModule
     ],
     providers: [
@@ -23,7 +18,7 @@ describe('MspApiEnrolmentService', () => {
   }));
 
   it('should be created', () => {
-    const service: MspApiEnrolmentService = TestBed.get(MspApiEnrolmentService);
+    const service: MspApiEnrolmentService = TestBed.inject(MspApiEnrolmentService);
     expect(service).toBeTruthy();
   });
 });

@@ -9,8 +9,6 @@ import { ApiResponse } from '../models/api-response.interface';
 })
 export class FakeBackendService {
 
-  constructor() {}
-
   getAclResponse( request: HttpRequest<any> ): AclApiPayLoad | any {
 
    return {

@@ -9,11 +9,11 @@ import { MspApiBenefitService } from './msp-api-benefit.service';
 describe('MspApiBenefitService', () => {
   let service: MspApiBenefitService;
   beforeEach(() => {
-    const mspLogServiceStub = () => ({ log: (object, string) => ({}) });
+    const mspLogServiceStub = () => ({ log: () => ({}) });
     const schemaServiceStub = () => ({
-      validate: suppBenefitRequest => ({ then: () => ({}) })
+      validate: () => ({ then: () => ({}) })
     });
-    const routerStub = () => ({ navigate: array => ({}) });
+    const routerStub = () => ({ navigate: () => ({}) });
     const mspBenefitDataServiceStub = () => ({
       getMspProcess: () => ({ processSteps: { route: {} } })
     });
@@ -30,7 +30,7 @@ describe('MspApiBenefitService', () => {
         }
       ]
     });
-    service = TestBed.get(MspApiBenefitService);
+    service = TestBed.inject(MspApiBenefitService);
   });
 
   it('should create', () => {

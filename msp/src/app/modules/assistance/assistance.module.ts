@@ -14,7 +14,13 @@ import { AssistContactComponent } from './pages/contact/assist-contact.component
 import { AssistanceHomeComponent } from './pages/home/home.component';
 import { AssistCraDocumentsComponent } from './components/assist-cra-documents/assist-cra-documents.component';
 import { SpouseComponent } from './pages/spouse/spouse.component';
-import { RouteGuardService , AbstractPgCheckService } from 'moh-common-lib';
+import {
+  RouteGuardService, AbstractPgCheckService,
+  AddressComponent, CheckboxComponent, CoreBreadcrumbComponent, ErrorContainerComponent,
+  FileUploaderComponent, FormActionBarComponent, PageFrameworkComponent, PageSectionComponent,
+  PhoneNumberComponent, WizardProgressBarComponent, XiconButtonComponent
+} from 'moh-common-lib-angular';
+import { CaptchaModule } from 'moh-common-lib-angular/captcha';
 import { AssistGuard } from './guards/assist.guard';
 import { AssistRatesModalComponent } from './components/assist-rates-modal/assist-rates-modal.component';
 
@@ -24,7 +30,19 @@ import { AssistRatesModalComponent } from './components/assist-rates-modal/assis
     AssistanceRoutingModule,
     FormsModule,
     MspCoreModule,
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    CaptchaModule,
+    AddressComponent,
+    CheckboxComponent,
+    CoreBreadcrumbComponent,
+    ErrorContainerComponent,
+    FileUploaderComponent,
+    FormActionBarComponent,
+    PageFrameworkComponent,
+    PageSectionComponent,
+    PhoneNumberComponent,
+    WizardProgressBarComponent,
+    XiconButtonComponent
   ],
   declarations: [
     AssistContainerComponent,

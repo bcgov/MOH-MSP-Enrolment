@@ -9,7 +9,7 @@ describe('BenefitContainerComponent', () => {
   let fixture: ComponentFixture<BenefitContainerComponent>;
   beforeEach(() => {
     const routerStub = () => ({});
-    const headerServiceStub = () => ({ setTitle: string => ({}) });
+    const headerServiceStub = () => ({ setTitle: () => ({}) });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [BenefitContainerComponent],

@@ -1,25 +1,25 @@
-import {Component, ViewChild, OnInit} from '@angular/core';
-import {NgForm} from '@angular/forms';
+import {Component, OnInit} from '@angular/core';
 import { Router} from '@angular/router';
 import {ProcessUrls} from '../../../../services/process.service';
 import {environment} from '../../../../../environments/environment';
 import { MspAccountApp } from '../../models/account.model';
-import { ContainerService, PageStateService } from 'moh-common-lib';
+import { ContainerService, PageStateService } from 'moh-common-lib-angular';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import { BaseForm } from '../../models/base-form';
 import {ProcessService} from '../../../../services/process.service';
+import enLang from './i18n/data/en/index';
 
 @Component({
+  standalone: false,
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.scss']
 })
 export class AccountReviewComponent extends BaseForm implements OnInit {
-  lang = require('./i18n');
+  lang = enLang;
   static ProcessStepNum = 4;
   mspAccountApp: MspAccountApp;
   captchaApiBaseUrl: string;
-  @ViewChild(NgForm) form: NgForm;
 
   constructor(public dataService: MspAccountMaintenanceDataService,
           protected router: Router,
@@ -66,17 +66,11 @@ export class AccountReviewComponent extends BaseForm implements OnInit {
     return ProcessUrls.ACCOUNT_CONTACT_INFO_URL;
   }
 
-  get addChildTitle() {
-    return 'Add Child Information #';
-  }
+  readonly addChildTitle = 'Add Child Information #';
 
-  get removeChildTitle() {
-    return 'Remove Child Information #';
-  }
+  readonly removeChildTitle = 'Remove Child Information #';
 
-  get updateChildTitle() {
-    return 'Update Child Information #';
-  }
+  readonly updateChildTitle = 'Update Child Information #';
 
   get spouseForAuthorization(): MspPerson {
     if (this.mspAccountApp.accountChangeOptions.dependentChange && this.mspAccountApp.addedSpouse) {
@@ -89,7 +83,7 @@ export class AccountReviewComponent extends BaseForm implements OnInit {
   }
 
   get questionApplicant() {
-    return this.lang('./en/index.js').doYouAgreeLabel.replace('{name}', this.applicantName);
+    return this.lang.doYouAgreeLabel.replace('{name}', this.applicantName);
   }
 
   get applicantName() {
@@ -110,7 +104,7 @@ export class AccountReviewComponent extends BaseForm implements OnInit {
   }
 
   questionSpouse() {
-    return this.lang('./en/index.js').doYouAgreeLabel.replace('{name}', this.spouseName());
+    return this.lang.doYouAgreeLabel.replace('{name}', this.spouseName());
   }
 
   spouseName() {

@@ -11,7 +11,7 @@ describe('PersonalInfoComponent', () => {
   let fixture: ComponentFixture<PersonalInfoComponent>;
   beforeEach(() => {
     const routerStub = () => ({});
-    const pageStateServiceStub = () => ({setPageIncomplete: () => {}});
+    const pageStateServiceStub = () => ({setPageIncomplete: () => undefined});
     const enrolDataServiceStub = () => ({application: { applicant: { documents: [] } }});
     TestBed.configureTestingModule({
       imports: [FormsModule],

@@ -51,10 +51,8 @@ export class PremiumRatesYear {
   };
 
   constructor() {
-    // tslint:disable-next-line
-    for (let opt in this.options) {
-      // tslint:disable-next-line
-      const num = parseInt(opt);
+       for (const opt in this.options) {
+           const num = parseInt(opt);
       if (num === 2018) {
         this.brackets.push(
           this.genBracketsToo(this.netIncomeOptions2018, this.baseRates2018)
@@ -68,8 +66,7 @@ export class PremiumRatesYear {
         continue;
       } else {
         const brackets = [];
-        // tslint:disable-next-line
-        for (let opt of this.netIncomeOptionsStd) {
+               for (const opt of this.netIncomeOptionsStd) {
           const i = this.netIncomeOptionsStd.indexOf(opt);
           brackets.push(this.genBrackets(this.netIncomeOptionsStd[i], i));
         }
@@ -80,8 +77,7 @@ export class PremiumRatesYear {
 
   genBracketsToo(incomeOpts: string[], baseRatesOpts: number[]) {
     const brackets = [];
-    // tslint:disable-next-line
-    for (let income of incomeOpts) {
+       for (const income of incomeOpts) {
       const i = incomeOpts.indexOf(income);
 
       const baseRate = baseRatesOpts[i];

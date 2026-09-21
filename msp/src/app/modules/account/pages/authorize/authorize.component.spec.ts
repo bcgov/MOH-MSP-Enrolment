@@ -2,8 +2,8 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProcessService } from '../../../../services/process.service';
-import { ContainerService } from 'moh-common-lib';
-import { PageStateService } from 'moh-common-lib';
+import { ContainerService } from 'moh-common-lib-angular';
+import { PageStateService } from 'moh-common-lib-angular';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { MspLogService } from '../../../../services/log.service';
 import { AuthorizeComponent } from './authorize.component';
@@ -16,7 +16,7 @@ describe('Account AuthorizeComponent', () => {
   beforeEach(() => {
     const routerStub = () => ({});
     const processServiceStub = () => ({
-      setStep: (processStepNum, arg) => ({})
+      setStep: () => ({})
     });
     const containerServiceStub = () => ({});
     const pageStateServiceStub = () => ({});

@@ -97,7 +97,6 @@
                 name="phone_number"
                 [label]="'Phone Number (optional)'"
                 [(ngModel)]="mspAccountApp.phoneNumber"
-                (onChange)="handlePhoneNumberChange($event)"
               >
               </common-phone-number>
             </div>
@@ -117,7 +116,6 @@
     [defaultColor]="false"
     [canContinue]="canContinue()"
     (btnClick)="continue()"
-    widthOption="extra-width-mobile-only"
     submitLabel="Continue"
   >
   </common-form-action-bar>

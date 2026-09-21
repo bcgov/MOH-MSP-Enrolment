@@ -1,8 +1,8 @@
-import { ProcessService, Process } from './process.service';
+import { ProcessService } from './process.service';
 import { MspDataService } from './msp-data.service';
 import { RouterTestingModule } from '@angular/router/testing';
-import { async, TestBed, getTestBed } from '@angular/core/testing';
-import { LocalStorageModule, LocalStorageService } from 'angular-2-local-storage';
+import { waitForAsync, TestBed, getTestBed } from '@angular/core/testing';
+import { LocalStorageService } from './local-storage.service';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { MspLogService } from './log.service';
 import { HttpClientModule} from '@angular/common/http';
@@ -10,7 +10,7 @@ import { HttpClientModule} from '@angular/common/http';
 describe('ProcessService', () => {
     let processService: ProcessService;
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
         TestBed.configureTestingModule({
             providers: [
                 ProcessService,
@@ -21,19 +21,15 @@ describe('ProcessService', () => {
             imports: [
                 HttpClientModule,
                 RouterTestingModule,
-                LocalStorageModule.withConfig({
-                    prefix: 'ca.bc.gov.msp',
-                    storageType: 'sessionStorage'
-                })
-            ],
+],
           /*  declarations: [
                 AccountComponent
             ],*/
             schemas: [NO_ERRORS_SCHEMA]
         });
 
-        getTestBed().get(LocalStorageService).clearAll();
-        processService = getTestBed().get(ProcessService);
+        getTestBed().inject(LocalStorageService).clearAll();
+        processService = getTestBed().inject(ProcessService);
     }));
 
     it('should run this test', () => {

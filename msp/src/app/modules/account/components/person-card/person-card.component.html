@@ -4,7 +4,7 @@
   <!-- Full Name -->
   <div class="row" *ngIf="person.hasFullName">
     <div class="col-sm-4">
-      <label for="">{{lang('./en/index.js').nameLabel}}</label>
+      <label for="">{{lang.nameLabel}}</label>
     </div>
     <div class="col-sm-8">
       <span id="{{person.uuid}}-{{person.relationship}}-fullname"><strong>{{person.fullName}}</strong></span>
@@ -14,17 +14,17 @@
   <!-- Gender -->
   <div class="row" *ngIf="person.gender">
     <div class="col-sm-4">
-      {{lang('./en/index.js').genderLabel}}
+      {{lang.genderLabel}}
     </div>
     <div class="col-sm-8">
-      <strong>{{lang('./en/index.js').genderValues[person.gender]}}</strong>
+      <strong>{{lang.genderValues[person.gender]}}</strong>
     </div>
   </div>
 
   <!-- Birthdate -->
   <div class="row" *ngIf="person.hasDob">
     <div class="col-sm-4">
-      {{lang('./en/index.js').dobLabel}}
+      {{lang.dobLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{formatDateField(person.dob)}}</strong>
@@ -34,7 +34,7 @@
   <!-- PHN -->
   <div class="row" *ngIf="person.previous_phn">
     <div class="col-sm-4">
-      {{lang('./en/index.js').personalHealthNumberLabel}}
+      {{lang.personalHealthNumberLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.previous_phn}}</strong>
@@ -44,7 +44,7 @@
   <!-- Status In Canada -->
   <div class="row" *ngIf="person.status >= 0">
     <div class="col-sm-4">
-      {{lang('./en/index.js').statusInCanadaLabel}}
+      {{lang.statusInCanadaLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{statusInCanadaLabel}} {{currentActivityLabel}}</strong>
@@ -84,7 +84,7 @@
   <!-- SIN -->
   <div class="row" *ngIf="person.sin">
     <div class="col-sm-4">
-      {{lang('./en/index.js').sinNumberLabel}}
+      {{lang.sinNumberLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.sin}}</strong>
@@ -92,9 +92,9 @@
   </div>
 
   <!-- Only for spouse-->
-  <div class="row" *ngIf="person.prevLastName && person.relationship==1">
+  <div class="row" *ngIf="person.prevLastName && person.relationship===1">
     <div class="col-sm-4">
-      {{lang('./en/index.js').prevLastNameLabel}}
+      {{lang.prevLastNameLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.prevLastName}}</strong>
@@ -104,7 +104,7 @@
   <!-- Marriage date -->
   <div class="row" *ngIf="hasMarriageDate">
     <div class="col-sm-4">
-      {{lang('./en/index.js').marriageDateLabel}}
+      {{lang.marriageDateLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{formatDateField(person.marriageDate)}}</strong>
@@ -114,7 +114,7 @@
   <!-- Phone Number -->
   <div class="row" *ngIf="person.phoneNumber && accountCard">
     <div class="col-sm-4">
-      {{lang('./en/index.js').phoneLabel}}
+      {{lang.phoneLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.phoneNumber}}</strong>
@@ -122,9 +122,9 @@
   </div>
 
   <!-- Only for removals -->
-  <div class="row" *ngIf="person.reasonForCancellation && person.operationActionType == 1 ">
+  <div class="row" *ngIf="person.reasonForCancellation && person.operationActionType === 1 ">
     <div class="col-sm-4">
-      {{lang('./en/index.js').reasonForCancellationLabel}}
+      {{lang.reasonForCancellationLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.reasonForCancellation}}</strong>
@@ -132,9 +132,9 @@
   </div>
 
   <!-- Date they are to be cancelled on -->
-  <div class="row" *ngIf="person.cancellationDate && person.operationActionType == 1">
+  <div class="row" *ngIf="person.cancellationDate && person.operationActionType === 1">
     <div class="col-sm-4">
-      {{lang('./en/index.js').cancellationDateLabel}}
+      {{lang.cancellationDateLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{formatDateField(person.cancellationDate)}}</strong>
@@ -144,7 +144,7 @@
   <!-- Are they adopted -->
   <div class="row" *ngIf="person.newlyAdopted">
     <div class="col-sm-4">
-      {{lang('./en/index.js').newlyAdoptedLabel}}
+      {{lang.newlyAdoptedLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.newlyAdopted ? "Yes": "No"}}</strong>
@@ -154,7 +154,7 @@
   <!-- When were they adopted -->
   <div class="row" *ngIf="person.newlyAdopted">
     <div class="col-sm-4">
-      {{lang('./en/index.js').dateAdoptedLabel}}
+      {{lang.dateAdoptedLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{formatDateField(person.adoptedDate)}}</strong>
@@ -164,7 +164,7 @@
   <!-- When did they arrive in BC -->
   <div class="row" *ngIf="person.hasArrivalToBC">
     <div class="col-sm-4">
-      {{lang('./en/index.js').arrivedToBCLabel}}
+      {{lang.arrivedToBCLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{formatDateField(person.arrivalToBCDate)}}</strong>
@@ -174,7 +174,7 @@
   <!-- When did they arrive in Canada -->
   <div class="row" *ngIf="person.hasArrivalToCanada">
     <div class="col-sm-4">
-      {{lang('./en/index.js').arrivedToCanadaLabel}}
+      {{lang.arrivedToCanadaLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{formatDateField(person.arrivalToCanadaDate)}}</strong>
@@ -194,7 +194,7 @@
   <!-- Have they been outside BC for more than 30 days in the last 12 months? -->
   <div class="row" *ngIf="person.declarationForOutsideOver30Days != null">
     <div class="col-sm-4">
-      {{lang('./en/index.js').outsideBCLabel}}
+      {{lang.outsideBCLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.declarationForOutsideOver30Days ? "Yes": "No"}}</strong>
@@ -244,7 +244,7 @@
   <!-- Will they be leaving for more than 30 days in the next 6 months? -->
   <div class="row" *ngIf="person.declarationForOutsideOver60Days">
     <div class="col-sm-4">
-      {{lang('./en/index.js').outsideBCFutureLabel}}
+      {{lang.outsideBCFutureLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.declarationForOutsideOver60Days ? "Yes" : "No"}}</strong>
@@ -304,7 +304,7 @@
   <!-- Health number from other province -->
   <div class="row" *ngIf="person.healthNumberFromOtherProvince">
     <div class="col-sm-4">
-      {{lang('./en/index.js').previousHealthNumberLabel}}
+      {{lang.previousHealthNumberLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.healthNumberFromOtherProvince}}</strong>
@@ -314,7 +314,7 @@
   <!-- If they were discharged -->
   <div class="row" *ngIf="person.hasBeenReleasedFromArmedForces">
     <div class="col-sm-4">
-      {{lang('./en/index.js').institutionWorkHistoryLabel}}
+      {{lang.institutionWorkHistoryLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.hasBeenReleasedFromArmedForces ? "Yes": "No"}}</strong>
@@ -324,17 +324,17 @@
   <!-- NOTE: Not currently used in DEAM -->
   <div class="row" *ngIf="person.institutionWorkHistory">
     <div class="col-sm-4">
-      {{lang('./en/index.js').institutionWorkHistoryLabel}}
+      {{lang.institutionWorkHistoryLabel}}
     </div>
     <div class="col-sm-8">
-      <strong>{{lang('./en/index.js').institutionWorkHistoryValues[person.institutionWorkHistory]}}</strong>
+      <strong>{{lang.institutionWorkHistoryValues[person.institutionWorkHistory]}}</strong>
     </div>
   </div>
 
   <!-- Name of the institution they were discharged from -->
   <div class="row" *ngIf="person.nameOfInstitute">
     <div class="col-sm-4">
-      {{lang('./en/index.js').nameOfInstituteLabel}}
+      {{lang.nameOfInstituteLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.nameOfInstitute}}</strong>
@@ -344,7 +344,7 @@
   <!-- Date they were discharged -->
   <div class="row" *ngIf="person.hasDischarge">
     <div class="col-sm-4">
-      {{lang('./en/index.js').dischargeDateLabel}}
+      {{lang.dischargeDateLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{formatDateField(person.dischargeDate)}}</strong>
@@ -354,7 +354,7 @@
   <!-- Are they a fulltime student -->
   <div class="row" *ngIf="person.fullTimeStudent">
     <div class="col-sm-4">
-      {{lang('./en/index.js').fullTimeStudentLabel}}
+      {{lang.fullTimeStudentLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.fullTimeStudent ? "Yes": "No"}}</strong>
@@ -364,7 +364,7 @@
   <!-- School they are attending -->
   <div class="row" *ngIf="person.schoolName">
     <div class="col-sm-4">
-      {{lang('./en/index.js').schoolNameLabel}}
+      {{lang.schoolNameLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.schoolName}}</strong>
@@ -392,13 +392,13 @@
     </div>
 
   <!-- Address of their school -->
-  <msp-address-review-part [address]="person.schoolAddress" [label]="lang('./en/index.js').schoolAddressLabel">
+  <msp-address-review-part [address]="person.schoolAddress" [label]="lang.schoolAddressLabel">
   </msp-address-review-part>
 
   <!--  When did their studies begin? -->
   <div class="row" *ngIf="person.hasStudiesBegin">
     <div class="col-sm-4">
-      {{lang('./en/index.js').dateStudiesBeginLabel}}
+      {{lang.dateStudiesBeginLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{formatDateField(person.studiesBeginDate)}}</strong>
@@ -408,7 +408,7 @@
   <!-- When did their studies finish? -->
   <div class="row" *ngIf="person.hasStudiesFinished">
     <div class="col-sm-4">
-      {{lang('./en/index.js').studiesFinishedLabel}}
+      {{lang.studiesFinishedLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{formatDateField(person.studiesFinishedDate)}}</strong>
@@ -418,7 +418,7 @@
   <!-- Will they be in BC after their studies are complete -->
   <div class="row" *ngIf="person.inBCafterStudies">
     <div class="col-sm-4">
-      {{lang('./en/index.js').inBCafterStudiesLabel}}
+      {{lang.inBCafterStudiesLabel}}
     </div>
     <div class="col-sm-8">
       <strong>{{person.inBCafterStudies ? "Yes": "No"}}</strong>
@@ -427,69 +427,69 @@
 
   <div class="row" *ngIf="person.updateStatusInCanada === true">
     <div class="col-sm-4">
-      {{lang('./en/index.js').updateStatusInCanadaLabel}}
+      {{lang.updateStatusInCanadaLabel}}
     </div>
     <div class="col-sm-8">
-      <strong>{{lang('./en/index.js').requestedLabel}}</strong>
+      <strong>{{lang.requestedLabel}}</strong>
     </div>
   </div>
 
   <div class="row" *ngIf="person.updateNameDueToMarriage === true">
     <div class="col-sm-4">
-      {{lang('./en/index.js').updateNameDueToMarriageLabel}}
+      {{lang.updateNameDueToMarriageLabel}}
     </div>
     <div class="col-sm-8">
-      <strong>{{lang('./en/index.js').requestedLabel}}</strong>
+      <strong>{{lang.requestedLabel}}</strong>
     </div>
   </div>
 
   <div class="row" *ngIf="person.updateNameDueToNameChange === true">
     <div class="col-sm-4">
-      {{lang('./en/index.js').updateNameDueToNameChangeLabel}}
+      {{lang.updateNameDueToNameChangeLabel}}
     </div>
     <div class="col-sm-8">
-      <strong>{{lang('./en/index.js').requestedLabel}}</strong>
+      <strong>{{lang.requestedLabel}}</strong>
     </div>
   </div>
 
   <div class="row" *ngIf="person.updateGender === true">
     <div class="col-sm-4">
-      {{lang('./en/index.js').updateGenderDesignationDueToChangeLabel}}
+      {{lang.updateGenderDesignationDueToChangeLabel}}
     </div>
     <div class="col-sm-8">
-      <strong>{{lang('./en/index.js').requestedLabel}}</strong>
+      <strong>{{lang.requestedLabel}}</strong>
     </div>
   </div>
 
   <div class="row" *ngIf="person.updateNameDueToError === true">
     <div class="col-sm-4">
-      {{lang('./en/index.js').correctNameDueToErrorLabel}}
+      {{lang.correctNameDueToErrorLabel}}
     </div>
     <div class="col-sm-8">
-      <strong>{{lang('./en/index.js').requestedLabel}}</strong>
+      <strong>{{lang.requestedLabel}}</strong>
     </div>
   </div>
 
   <div class="row" *ngIf="person.updateBirthdate === true">
     <div class="col-sm-4">
-      {{lang('./en/index.js').correctBirthdateDueToErrorLabel}}
+      {{lang.correctBirthdateDueToErrorLabel}}
     </div>
     <div class="col-sm-8">
-      <strong>{{lang('./en/index.js').requestedLabel}}</strong>
+      <strong>{{lang.requestedLabel}}</strong>
     </div>
   </div>
 
   <div class="row" *ngIf="person.updateGenderDesignation === true">
     <div class="col-sm-4">
-      {{lang('./en/index.js').correctGenderDesignationDueToErrorLabel}}
+      {{lang.correctGenderDesignationDueToErrorLabel}}
     </div>
     <div class="col-sm-8">
-      <strong>{{lang('./en/index.js').requestedLabel}}</strong>
+      <strong>{{lang.requestedLabel}}</strong>
     </div>
   </div>
 
   <!-- Mailing address -->
- <msp-address-review-part [address]="person.mailingAddress" *ngIf="accountCard"[label]="lang('./en/index.js').mailingAddressLabel">
+ <msp-address-review-part [address]="person.mailingAddress" *ngIf="accountCard"[label]="lang.mailingAddressLabel">
 </msp-address-review-part>
 
   <div class="person-card-preview-zone">

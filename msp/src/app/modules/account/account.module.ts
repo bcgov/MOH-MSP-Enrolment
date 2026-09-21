@@ -6,7 +6,6 @@ import { AccountContainerComponent } from './components/account-container/accoun
 import { FormsModule } from '@angular/forms';
 import { MspCoreModule } from '../msp-core/msp-core.module';
 import { ModalModule } from 'ngx-bootstrap/modal';
-import { AccordionModule } from 'ngx-bootstrap/accordion';
 
 import { AccountPersonalInfoComponent } from './pages/personal-info/personal-info.component';
 
@@ -20,7 +19,34 @@ import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { ContactInfoComponent } from './pages/contact-info/contact-info.component';
 import { MspAccountMaintenanceDataService } from './services/msp-account-data.service';
 import { MspApiAccountService } from './services/msp-api-account.service';
-import { Container, CheckCompleteBaseService, RouteGuardService, AbstractPgCheckService, BYPASS_GUARDS, DefaultPageGuardService, AbstractPageGuardService, LoadPageGuardService, START_PAGE_URL } from 'moh-common-lib';
+import {
+  BYPASS_GUARDS,
+  DefaultPageGuardService,
+  AbstractPageGuardService,
+  LoadPageGuardService,
+  START_PAGE_URL,
+  AddressComponent,
+  ButtonComponent,
+  CheckboxComponent,
+  ConfirmTemplateComponent,
+  ConsentModalComponent,
+  CoreBreadcrumbComponent,
+  DateComponent,
+  ErrorContainerComponent,
+  FormActionBarComponent,
+  NameComponent,
+  PageFrameworkComponent,
+  PageSectionComponent,
+  PhnComponent,
+  PhoneNumberComponent,
+  RadioComponent,
+  ThumbnailComponent,
+  WizardProgressBarComponent,
+  XiconButtonComponent,
+  ValidateNameDirective,
+  DuplicateCheckDirective,
+} from 'moh-common-lib-angular';
+import { CaptchaModule } from 'moh-common-lib-angular/captcha';
 import { UpdateRequestComponent } from '../account/components/update-request/update-request.component';
 import { AddSpouseComponent } from './pages/spouse-info/add-spouse/add-spouse.component';
 import { UpdateSpouseComponent } from './pages/spouse-info/update-spouse/update-spouse.component';
@@ -39,7 +65,28 @@ import { ProcessService , ProcessStep} from '../../services/process.service';
     AccountRoutingModule,
     FormsModule,
     MspCoreModule,
-    ModalModule
+    ModalModule,
+    CaptchaModule,
+    AddressComponent,
+    ButtonComponent,
+    CheckboxComponent,
+    ConfirmTemplateComponent,
+    ConsentModalComponent,
+    CoreBreadcrumbComponent,
+    DateComponent,
+    ErrorContainerComponent,
+    FormActionBarComponent,
+    NameComponent,
+    PageFrameworkComponent,
+    PageSectionComponent,
+    PhnComponent,
+    PhoneNumberComponent,
+    RadioComponent,
+    ThumbnailComponent,
+    WizardProgressBarComponent,
+    XiconButtonComponent,
+    ValidateNameDirective,
+    DuplicateCheckDirective
   ],
 
   declarations: [

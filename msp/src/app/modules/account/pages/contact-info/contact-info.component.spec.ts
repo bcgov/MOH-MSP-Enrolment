@@ -1,7 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedCoreModule } from 'moh-common-lib';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AddressComponent, CheckboxComponent, FormActionBarComponent, PageFrameworkComponent, PageSectionComponent, PhoneNumberComponent } from 'moh-common-lib-angular';
 import { FormsModule } from '@angular/forms';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { RouterTestingModule } from '@angular/router/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { ContactInfoComponent } from './contact-info.component';
@@ -14,20 +13,14 @@ describe('ContactInfoComponent', () => {
   let component: ContactInfoComponent;
   let fixture: ComponentFixture<ContactInfoComponent>;
 
-  beforeEach(async(() => {
-    const mspLogServiceStub = () => ({ log: () => {} });
+  beforeEach(waitForAsync(() => {
+    const mspLogServiceStub = () => ({ log: () => undefined });
     TestBed.configureTestingModule({
       declarations: [ ContactInfoComponent ],
       imports: [
-        SharedCoreModule,
         FormsModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
         RouterTestingModule,
-        HttpClientTestingModule
-      ],
+        HttpClientTestingModule, AddressComponent, CheckboxComponent, FormActionBarComponent, PageFrameworkComponent, PageSectionComponent, PhoneNumberComponent],
       providers: [
         MspAccountMaintenanceDataService,
         ProcessService,

@@ -1,7 +1,7 @@
 export class AssistanceYear {
   year: number;
   apply: boolean;
-  docsRequired: boolean = true;
+  docsRequired = true;
   currentYear: number;
   isCutoffDate?: boolean;
   cutoffYear?: number;
@@ -9,5 +9,5 @@ export class AssistanceYear {
   hasSpouse?: boolean;
   files?: any[];
   spouseFiles?: any[];
-  fileError: string = '';
+  fileError = '';
 }

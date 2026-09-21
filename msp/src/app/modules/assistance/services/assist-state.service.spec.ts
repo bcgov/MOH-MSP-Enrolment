@@ -1,6 +1,5 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AssistStateService } from './assist-state.service';
 import { MspDataService } from '../../../services/msp-data.service';
@@ -10,10 +9,6 @@ describe('AssistStateService', () => {
   beforeEach(() => TestBed.configureTestingModule({
     imports: [
       RouterTestingModule,
-      LocalStorageModule.withConfig({
-        prefix: 'ca.bc.gov.msp',
-        storageType: 'sessionStorage'
-      }),
       HttpClientTestingModule
     ],
     providers: [
@@ -23,7 +18,7 @@ describe('AssistStateService', () => {
   }));
 
   it('should be created', () => {
-    const service: AssistStateService = TestBed.get(AssistStateService);
+    const service: AssistStateService = TestBed.inject(AssistStateService);
     expect(service).toBeTruthy();
   });
 });

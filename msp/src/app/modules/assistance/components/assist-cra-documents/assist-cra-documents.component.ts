@@ -1,18 +1,16 @@
 import { Component, Input } from '@angular/core';
-import { CommonImage, CommonImageError } from 'moh-common-lib';
-import { FileUploaderMsg } from 'moh-common-lib/lib/components/file-uploader/file-uploader.component';
+import { CommonImage, CommonImageError, FileUploaderMsg } from 'moh-common-lib-angular';
 import { AssistanceYear } from '../../models/assistance-year.model';
 
 @Component({
+  standalone: false,
   selector: 'assist-cra-documents',
   templateUrl: './assist-cra-documents.component.html',
   styleUrls: ['./assist-cra-documents.component.scss'],
 })
 export class AssistCraDocumentsComponent {
   @Input() selectedYears: AssistanceYear[];
-  @Input() isSpouse: boolean = false;
-
-  constructor() {}
+  @Input() isSpouse = false;
 
   tip = `If you are uploading a copy of a Notice of Assessment or Reassessment from the Canada Revenue Agency website, make sure the image contains:`;
   tipList = ['your name', 'the tax year', 'your net income (line 23600)'];
@@ -41,9 +39,13 @@ export class AssistCraDocumentsComponent {
   }
 
   // Check the collective size, triggered whenever an image is added or removed
-  handleImagesChange(imgs: Array<CommonImage>, year: AssistanceYear) {
+  handleImagesChange(imgs: CommonImage[], year: AssistanceYear) {
     // Set newly uploaded files
-    this.isSpouse ? (year.spouseFiles = imgs) : (year.files = imgs);
+    if (this.isSpouse) {
+      year.spouseFiles = imgs;
+    } else {
+      year.files = imgs;
+    }
     let sum = 0;
     let tooSmall = false;
 
@@ -53,7 +55,11 @@ export class AssistCraDocumentsComponent {
       }
 
       if (img.size < 20000) {
-        this.isSpouse ? year.spouseFiles.pop() : year.files.pop();
+        if (this.isSpouse) {
+          year.spouseFiles.pop();
+        } else {
+          year.files.pop();
+        }
         tooSmall = true;
       }
     });
@@ -61,7 +67,11 @@ export class AssistCraDocumentsComponent {
     // Same limit as moh-common-lib
     if (sum > 1048576) {
       // Reset the attachments for this upload
-      this.isSpouse ? (year.spouseFiles = []) : (year.files = []);
+      if (this.isSpouse) {
+        year.spouseFiles = [];
+      } else {
+        year.files = [];
+      }
       year.fileError =
         'The addition of the previous document exceeded the maximum upload size of this supporting document section.';
     } else if (tooSmall) {

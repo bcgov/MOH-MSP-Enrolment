@@ -2,16 +2,18 @@ import { Component, Input } from '@angular/core';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import { Router } from '@angular/router';
 import { StatusInCanada, CanadianStatusReason, statusInCanadaStrings, CanadianStatusReasonStrings } from '../../../msp-core/models/canadian-status.enum';
-import { getCountryDescription, getProvinceDescription } from 'moh-common-lib';
+import { getCountryDescription, getProvinceDescription } from 'moh-common-lib-angular';
 import { getStatusStrings, getStatusReasonStrings } from '../../../msp-core/components/canadian-status/canadian-status.component';
 import { Relationship } from '../../../../models/relationship.enum';
 import { format } from 'date-fns';
+import enLang from './i18n/data/en/index';
 
 /* TO BE REPLACED when remaining apps are refactored to have own application  model definitions
  * built off the base classes ( base-person.model, base-application.model, base-msp-data.service,
  * base-msp-api.service)
  */
 @Component({
+  standalone: false,
   selector: 'account-person-card',
   templateUrl: './person-card.component.html',
   styleUrls: ['./person-card.component.scss']
@@ -20,8 +22,7 @@ export class AccountPersonCardComponent {
 
   public dateFormat = 'MMMM d, yyyy';
 
-  lang = require('./i18n');
-
+  lang = enLang;
   status: string[] = getStatusStrings();
 
   statusReason: string[] = getStatusReasonStrings();
@@ -30,12 +31,9 @@ export class AccountPersonCardComponent {
   @Input() editRouterLink: string;
   @Input() customTitle: string;
   @Input() customLinkTitle: string;
-  @Input() accountCard: boolean = false;
+  @Input() accountCard = false;
 
   constructor(private _router: Router) {
-  }
-
-  ngOnInit() {
   }
 
   editPersonalInfo() {
@@ -154,6 +152,6 @@ export class AccountPersonCardComponent {
 
   get title() {
     return this.customTitle ? this.customTitle :
-      this.lang('./en/index.js').relationshipLabel[this.person.relationship] + ' ' + this.lang('./en/index.js').cardSuffix;
+      this.lang.relationshipLabel[this.person.relationship] + ' ' + this.lang.cardSuffix;
   }
 }

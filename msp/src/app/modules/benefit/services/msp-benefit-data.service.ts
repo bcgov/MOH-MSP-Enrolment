@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MspDataService } from '../../../services/msp-data.service';
-import { LocalStorageService } from 'angular-2-local-storage';
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { BenefitApplication } from '../models/benefit-application.model';
 import { BenefitApplicationDto } from '../models/benefit-application.dto';
-import { AddressDto } from '../../../models/address.dto';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,7 @@ import { AddressDto } from '../../../models/address.dto';
 export class MspBenefitDataService extends MspDataService{
 
   private _benefitApp: BenefitApplication;
-  private benefitAppStorageKey: string = 'supp-benefit';
+  private benefitAppStorageKey = 'supp-benefit';
 
   constructor(localStorageService: LocalStorageService) {
     super(localStorageService);

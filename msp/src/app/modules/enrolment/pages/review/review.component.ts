@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ROUTES_ENROL } from '../../models/enrol-route-constants';
 import { PageStateService } from '../../../../services/page-state.service';
 import { EnrolForm } from '../../models/enrol-form';
 import { EnrolDataService } from '../../services/enrol-data.service';
-import { Address } from 'moh-common-lib';
+import { Address } from 'moh-common-lib-angular';
 
 @Component({
+  standalone: false,
   templateUrl: './review.component.html'
 })
-export class ReviewComponent extends EnrolForm {
+export class ReviewComponent extends EnrolForm implements OnInit {
 
   // routes
   personal_info = ROUTES_ENROL.PERSONAL_INFO.fullpath;

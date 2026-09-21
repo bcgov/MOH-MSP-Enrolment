@@ -10,7 +10,7 @@ import {
 import { nameChangeSupportDocs } from '../../../../msp-core/components/support-documents/support-documents.component';
 import { NgForm, ControlContainer } from '@angular/forms';
 import { MspAccountMaintenanceDataService } from '../../../services/msp-account-data.service';
-import { Base } from 'moh-common-lib';
+import { Base } from 'moh-common-lib-angular';
 import { Relationship } from 'app/models/relationship.enum';
 import { StatusInCanada, CanadianStatusReason } from 'app/modules/msp-core/models/canadian-status.enum';
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
@@ -20,6 +20,7 @@ import { AccountPersonalInformationComponent } from '../../../components/persona
 import { ChildMovingInformationComponent } from '../../../components/moving-information/moving-information.component';
 
 @Component({
+  standalone: false,
   selector: 'msp-add-child',
   templateUrl: './add-child.component.html',
   styleUrls: ['./add-child.component.scss'],
@@ -31,8 +32,7 @@ import { ChildMovingInformationComponent } from '../../../components/moving-info
   ],
 })
 export class AddChildComponent extends Base implements OnInit {
-  // tslint:disable-next-line
-  statusLabel: string = "Child's immigration status in Canada";
+   statusLabel = "Child's immigration status in Canada";
   relationShip: Relationship;
 
   childAgeCategory = [
@@ -82,6 +82,11 @@ export class AddChildComponent extends Base implements OnInit {
     return this.child.relationship;
   }
 
+  set childRelationship(val: Relationship) {
+    this.child.relationship = val;
+    this.personChange.emit(this.child);
+  }
+
   onAgeCategoryChanged(): void {
     if (this.personalInfo) {
       this.personalInfo.clearDateOfBirth();
@@ -99,11 +104,6 @@ export class AddChildComponent extends Base implements OnInit {
     this.child.hasNameChange = null;
     this.child.nameChangeDocs.documentType = null;
     this.child.nameChangeDocs.images = [];
-  }
-
-  set childRelationship(val: Relationship) {
-    this.child.relationship = val;
-    this.personChange.emit(this.child);
   }
 
   set gender(evt: any) {

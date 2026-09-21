@@ -13,11 +13,12 @@ import {
   genderBirthDateChangeDocuments
 } from '../../../../msp-core/components/support-documents/support-documents.component';
 import { SpaEnvService } from '../../../../../services/spa-env.service';
-import { ErrorMessage } from 'moh-common-lib';
+import { ErrorMessage } from 'moh-common-lib-angular';
 import { startOfToday, subDays, isBefore, differenceInYears } from 'date-fns';
 import { environment } from 'environments/environment';
 
 @Component({
+  standalone: false,
   selector: 'msp-update-child',
   templateUrl: './update-child.component.html',
   styleUrls: ['./update-child.component.scss']
@@ -57,7 +58,7 @@ export class UpdateChildComponent implements OnInit {
   public readonly addressServiceUrl: string =
     environment.appConstants.addressApiBaseUrl;
   // Replace default messages in the date component for school completion and departure dates
-  schoolCompletionErrMsg: ErrorMessage = {
+  schoolCompletionErrMsg: ErrorMessage = { required: '{label} is required.',
     noPastDatesAllowed: 'Expected school completion cannot be in the past.',
     invalidValue: 'This does not appear to be a valid date.',
     dayOutOfRange: 'This does not appear to be a valid date.',
@@ -67,7 +68,7 @@ export class UpdateChildComponent implements OnInit {
     invalidRange: 'This does not appear to be a valid date, Expected school completion cannot be in the past'
   };
 
-  schoolDepartureErrMsg: ErrorMessage = {
+  schoolDepartureErrMsg: ErrorMessage = { required: '{label} is required.',
     noFutureDatesAllowed: 'Departure date can not be in the future.',
     invalidValue: 'This does not appear to be a valid date.',
     dayOutOfRange: 'This does not appear to be a valid date.',
@@ -78,6 +79,24 @@ export class UpdateChildComponent implements OnInit {
 
   ngOnInit() {
     this.child.relationship = Relationship.Child;
+    this.enforceDPSSEligibility();
+  }
+
+  // Enforces the DPSS age-eligibility rule (18-24 years old): outside that
+  // band the checkbox cannot stay checked, so clear it, mirror fullTimeStudent
+  // to match, and drop the school fields it gated. Runs once from ngOnInit
+  // and again from (personChange) below whenever the editable birthdate on
+  // this page moves the child out of the band.
+  //
+  // isAdult() itself stays a pure read for [disabled], since Angular calls it
+  // on every change-detection pass and a mutating result there flips between
+  // passes (undefined -> false), tripping ExpressionChangedAfterItHasBeenCheckedError.
+  enforceDPSSEligibility() {
+    if (!this.isAdult()) {
+      this.child.updateChildStatus = false;
+      this.resetDPSSFields();
+    }
+    this.child.fullTimeStudent = this.child.updateChildStatus;
   }
 
   checkStatus() {
@@ -113,19 +132,19 @@ export class UpdateChildComponent implements OnInit {
   get studiesDepartureDateErrorMessage(): ErrorMessage {
     // If they leave to school before they arrived in BC
     if (this.child.studiesDepartureDate < this.child.arrivalToBCDate) {
-      return { invalidRange: 'Date must be after arrival in BC.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after arrival in BC.' };
       // If they leave to school in the future
     } else if (this.child.studiesDepartureDate > this._today) {
-      return { invalidRange: 'Date cannot be in the future.' };
+      return { required: '{label} is required.', invalidRange: 'Date cannot be in the future.' };
       // If they leave to school before they were born
     } else if (this.child.studiesDepartureDate < this.child.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
       // If studies begin before they depart
     } else if (this.child.studiesBeginDate < this.child.studiesDepartureDate) {
-      return { invalidRange: 'Date must be prior to school beginning.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be prior to school beginning.' };
       // Catchall
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
@@ -146,16 +165,16 @@ export class UpdateChildComponent implements OnInit {
   get studiesBeginDateErrorMessage(): ErrorMessage {
     // If studies begin before they depart
     if (this.child.studiesBeginDate < this.child.studiesDepartureDate) {
-      return { invalidRange: 'Date must be after departure to school.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after departure to school.' };
       // If studies begin after they finish
     } else if (this.child.studiesBeginDate > this.child.studiesFinishedDate) {
-      return { invalidRange: 'Date must be prior to finish date.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be prior to finish date.' };
       // If studies begin before birthdate
     } else if (this.child.studiesBeginDate < this.child.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
       // Catchall
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
@@ -165,30 +184,27 @@ export class UpdateChildComponent implements OnInit {
       : this._today;
   }
 
-  get studiesFinishedDateEndRange() {
-    return null;
-  }
+  readonly studiesFinishedDateEndRange = null;
 
   get studiesFinishedDateErrorMessage(): ErrorMessage {
     // If the finish date is before the start date
     if (this.child.studiesFinishedDate < this.child.studiesBeginDate) {
-      return { invalidRange: 'Date must be after date studies begin.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after date studies begin.' };
       // If the finish date is before today
     } else if (this.child.studiesFinishedDate < this._today) {
-      return { invalidRange: 'Date cannot be in the past.' };
+      return { required: '{label} is required.', invalidRange: 'Date cannot be in the past.' };
       // If the arrival is before birthdate
     } else if (this.child.studiesFinishedDate < this.child.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
       // Catchall
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
   get accountUpdateList(): UpdateList[] {
     return [
       {
-        // tslint:disable-next-line: quotemark
         "label": "Update status in Canada",
         'value': this.child.updateStatusInCanada
       },
@@ -234,16 +250,12 @@ export class UpdateChildComponent implements OnInit {
     return envs && envs.SPA_ENV_ENABLE_ADDRESS_VALIDATOR === 'true';
   }
 
-  // Enables checkbox if child is Adult (or DPSS: age 18-24 years old)
+  // Whether the child is eligible for DPSS (age 18-24 years old). Used to
+  // decide if the checkbox is enabled - kept a pure read, no side effects,
+  // since Angular re-evaluates it on every change-detection pass.
   isAdult() {
     const childAge = differenceInYears(this._today, new Date(this.child.dob));
-    const is18To24 = childAge >= 18 && childAge < 25;
-    if (!is18To24) {
-      this.child.updateChildStatus = false;
-      this.resetDPSSFields();
-    }
-    this.child.fullTimeStudent = this.child.updateChildStatus;
-    return is18To24;
+    return childAge >= 18 && childAge < 25;
   }
 
   // Update/renew status in Canada
@@ -311,6 +323,7 @@ export class UpdateChildComponent implements OnInit {
   // Update child status to dependent post-secondary student
   updateChildStatusToDPSS(event: boolean) {
     this.child.updateChildStatus = event;
+    this.child.fullTimeStudent = event;
     if (!this.child.updateChildStatus) {
       this.resetDPSSFields();
     }

@@ -5,7 +5,7 @@ describe('PageStateService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: PageStateService = TestBed.get(PageStateService);
+    const service: PageStateService = TestBed.inject(PageStateService);
     expect(service).toBeTruthy();
   });
 });

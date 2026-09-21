@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, QueryList, ViewChild, ViewChildren} from '@angular/core';
+import {ChangeDetectorRef, Component, QueryList, ViewChild, ViewChildren, AfterViewInit, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 import {ProcessService} from '../../../../services/process.service';
@@ -7,23 +7,24 @@ import {PersonalDetailsRetroSuppbenComponent} from '../../components/personal-de
 import {BaseComponent} from '../../../../models/base.component';
 import {BenefitApplication} from '../../models/benefit-application.model';
 import {MspBenefitDataService} from '../../services/msp-benefit-data.service';
-import { CANADA } from 'moh-common-lib';
+import { CANADA } from 'moh-common-lib-angular';
+import enLang from './i18n/data/en/index';
 
 @Component({
+  standalone: false,
    templateUrl: './personal-info.component.html',
     styleUrls: ['./personal-info.component.scss']
 })
-export class BenefitPersonalInfoComponent extends BaseComponent {
+export class BenefitPersonalInfoComponent extends BaseComponent implements AfterViewInit, OnInit {
 
     static ProcessStepNum = 1;
 
-    lang = require('./i18n');
-
-    @ViewChild('formRef') personalInfoForm: NgForm;
+    lang = enLang;
+    @ViewChild('formRef', { static: true }) personalInfoForm: NgForm;
     //@ViewChildren(BenefitPersonalDetailComponent) personalDetailsComponent: QueryList<BenefitPersonalDetailComponent>;
     @ViewChildren(PersonalDetailsRetroSuppbenComponent) personalDetailsComponent: QueryList<PersonalDetailsRetroSuppbenComponent>;
-    //@ViewChild('address') address: MspAddressComponent;
-    //@ViewChild('phone') phone: MspPhoneComponent;
+    //@ViewChild('address', { static: false }) address: MspAddressComponent;
+    //@ViewChild('phone', { static: false }) phone: MspPhoneComponent;
     benefitApplication: BenefitApplication;
 
     constructor(private dataService: MspBenefitDataService,

@@ -6,7 +6,7 @@
  *
  */
 export class Eligibility {
-  taxYear: Number;
+  taxYear: number;
   premiumAssistanceYear: number;
 
   /**

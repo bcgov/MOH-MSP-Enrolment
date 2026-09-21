@@ -3,7 +3,8 @@ import {
   OnInit,
   ChangeDetectorRef,
   ViewChild,
-  SimpleChanges,
+  AfterViewInit,
+  OnDestroy,
 } from '@angular/core';
 import { FinancialAssistApplication } from '../../models/financial-assist-application.model';
 import { MspDataService } from 'app/services/msp-data.service';
@@ -13,6 +14,7 @@ import { SupportDocuments } from 'app/modules/msp-core/models/support-documents.
 import { AssistStateService } from '../../services/assist-state.service';
 import { ActivatedRoute } from '@angular/router';
 import { NgForm } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 
 export interface SpouseYears {
@@ -21,19 +23,19 @@ export interface SpouseYears {
 }
 
 @Component({
+  standalone: false,
   selector: 'msp-spouse',
   templateUrl: './spouse.component.html',
   styleUrls: ['./spouse.component.scss'],
 })
-export class SpouseComponent extends BaseComponent implements OnInit {
-  @ViewChild('formRef') spouseInfoForm: NgForm;
+export class SpouseComponent extends BaseComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('formRef', { static: true }) spouseInfoForm: NgForm;
 
-  touched$ = this.stateSvc.touched.asObservable();
+  touched$: Observable<boolean>;
   title = 'Add spouse information and upload documents';
   description =
     'Did you have a spouse or common-law partner during any of the years you are requesting Retroactive Premium Assistance? ' +
-    // tslint:disable-next-line
-    "If so, you are required to upload your spouse's Notice of Assessment or Reassessment.";
+       "If so, you are required to upload your spouse's Notice of Assessment or Reassessment.";
   yearTitle = 'Your spouse or common-law partner';
   yearDescription = 'Select the tax year when you had a spouse';
   documentsTitle = 'Documents';
@@ -63,6 +65,7 @@ export class SpouseComponent extends BaseComponent implements OnInit {
   ) {
     super(cd);
     this.finAssistApp = this.dataSvc.finAssistApp;
+    this.touched$ = this.stateSvc.touched.asObservable();
   }
 
   ngOnInit() {
@@ -87,7 +90,7 @@ export class SpouseComponent extends BaseComponent implements OnInit {
     const years = this.finAssistApp.assistYears;
     const hasSpouse = years.some((itm) => itm.hasSpouse);
     if (hasSpouse) {
-      this.parseSpouse(years);
+      this.parseSpouse();
     }
 
     if (this.finAssistApp.assistYears.some((itm) => itm.hasSpouse))
@@ -149,7 +152,7 @@ export class SpouseComponent extends BaseComponent implements OnInit {
     this.stateSvc.setPageValid(this.route.snapshot.routeConfig.path, valid);
   }
 
-  parseSpouse(arr: AssistanceYear[]) {
+  parseSpouse() {
     let i = 0;
     for (const assistYear of this.finAssistApp.assistYears) {
       if (assistYear.hasSpouse) {

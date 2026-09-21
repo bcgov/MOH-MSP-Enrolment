@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ROUTES_ENROL } from '../models/enrol-route-constants';
 import { PageStateService } from '../../../services/page-state.service';
 import { environment } from '../../../../environments/environment';
-import { AbstractPgCheckService } from 'moh-common-lib';
+import { AbstractPgCheckService } from 'moh-common-lib-angular';
 import { EnrolDataService } from './enrol-data.service';
 
 @Injectable({

@@ -1,4 +1,12 @@
-import {ChangeDetectorRef, Component, QueryList, EventEmitter, Input, OnInit, Output, ViewChild, ViewChildren} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  QueryList,
+  OnInit,
+  ViewChild,
+  ViewChildren,
+  AfterViewInit,
+} from '@angular/core';
 import {ProcessService} from '../../../../services/process.service';
 import {BaseComponent} from '../../../../models/base.component';
 import { Router } from '@angular/router';
@@ -8,17 +16,19 @@ import { MspBenefitDataService } from '../../services/msp-benefit-data.service';
 import {NgForm} from '@angular/forms';
 import {debounceTime, distinctUntilChanged} from 'rxjs/operators';
 //import { validatePHN } from 'app/modules/msp-core/models/validate-phn';
-import { CANADA } from 'moh-common-lib';
+import { CANADA } from 'moh-common-lib-angular';
 import { Relationship } from '../../../../models/relationship.enum';
+import enLang from './i18n/data/en/index';
 
 @Component({
+  standalone: false,
   selector: 'msp-spouse-info',
   templateUrl: './spouse-info.component.html',
   styleUrls: ['./spouse-info.component.scss']
 })
-export class BenefitSpouseInfoComponent extends BaseComponent implements OnInit {
+export class BenefitSpouseInfoComponent extends BaseComponent implements OnInit, AfterViewInit {
   static ProcessStepNum = 2;
-  lang = require('./i18n');
+  lang = enLang;
   Relationship: typeof Relationship = Relationship;
   //@ViewChildren(BenefitPersonalDetailComponent) personalDetailsComponent: QueryList<BenefitPersonalDetailComponent>;
   @ViewChildren(PersonalDetailsRetroSuppbenComponent) personalDetailsComponent: QueryList<PersonalDetailsRetroSuppbenComponent>;
@@ -27,7 +37,7 @@ export class BenefitSpouseInfoComponent extends BaseComponent implements OnInit 
 
   showSpouse: boolean;
 
-  @ViewChild('formRef') personalInfoForm: NgForm;
+  @ViewChild('formRef', { static: true }) personalInfoForm: NgForm;
 
   constructor(private dataService: MspBenefitDataService,
     private _router: Router, private _processService: ProcessService,
@@ -53,7 +63,7 @@ export class BenefitSpouseInfoComponent extends BaseComponent implements OnInit 
     this.personalInfoForm.valueChanges.pipe(
         debounceTime(250),
         distinctUntilChanged()
-    ).subscribe( values => {
+    ).subscribe( () => {
         this.dataService.saveBenefitApplication();
     });
   }
@@ -75,7 +85,7 @@ export class BenefitSpouseInfoComponent extends BaseComponent implements OnInit 
     // this.dataService.getMspApplication().addSpouse(sp);
   }
 
-  removeSpouse(event: Object): void{
+  removeSpouse(): void{
    // this.dataService.benefitApp.hasSpouse = false;
    // this.dataService.getMspApplication().removeSpouse();
     this.showSpouse = false;
@@ -83,11 +93,11 @@ export class BenefitSpouseInfoComponent extends BaseComponent implements OnInit 
     this.dataService.saveBenefitApplication();
   }
 
-  onChange(values: any) {
+  onChange() {
     this.dataService.saveBenefitApplication();
   }
 
-  onSubmit(form: NgForm){
+  onSubmit(){
       this._router.navigate(['/msp/benefit/documents']);
   }
 

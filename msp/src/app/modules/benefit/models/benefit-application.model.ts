@@ -1,7 +1,7 @@
 import { ApplicationBase } from '../../../models/application-base.model';
-import { UUID } from 'angular2-uuid';
-import * as moment from 'moment';
-import { Address, CommonImage } from 'moh-common-lib';
+import { v4 as uuid } from 'uuid';
+import moment from 'moment';
+import { Address, CommonImage } from 'moh-common-lib-angular';
 import { PhoneNumber } from '../../../components/msp/model/phone.model';
 import { MspPerson } from '../../../components/msp/model/msp-person.model';
 import { AssistanceYear } from '../../assistance/models/assistance-year.model';
@@ -13,10 +13,10 @@ import { ATTENDANT_CARE_CLAIM_AMT } from '../../../constants';
 
 export class BenefitApplication implements ApplicationBase {
 
-  private _uuid = UUID.UUID();
+  private _uuid = uuid();
 
   authorizationToken: string;
-  phnRequired: boolean = true;
+  phnRequired = true;
 
   assistYears: AssistanceYear[] = [];
   assistYearDocs: CommonImage[] = [];
@@ -28,16 +28,16 @@ export class BenefitApplication implements ApplicationBase {
 
   cutOffDate: Date;
 
-  infoCollectionAgreement: boolean = false;
+  infoCollectionAgreement = false;
   // cutoff Date fields
   cutoffYear: number;
   isCutoffDate: boolean;
   //numDisabled: number;
 
   hasClaimedAttendantCareExpenses: boolean;
-  applicantClaimForAttendantCareExpense: boolean = false;
-  spouseClaimForAttendantCareExpense: boolean = false;
-  childClaimForAttendantCareExpense: boolean = false;
+  applicantClaimForAttendantCareExpense = false;
+  spouseClaimForAttendantCareExpense = false;
+  childClaimForAttendantCareExpense = false;
   childClaimForDisabilityCredit: boolean;
   applicantEligibleForDisabilityCredit: boolean;
   hasRegisteredDisabilityPlan: boolean;
@@ -50,9 +50,9 @@ export class BenefitApplication implements ApplicationBase {
   childrenDisabilityCredit: number;
   totalDeduction: number;
 
-  _applicantAttendantCareExpense: number = 0;
-  _spouseAttendantCareExpense: number = 0;
-  _childAttendantCareExpense: number = 0;
+  _applicantAttendantCareExpense = 0;
+  _spouseAttendantCareExpense = 0;
+  _childAttendantCareExpense = 0;
 
   private _attendantCareExpenseReceipts: CommonImage[] = new Array<CommonImage>();
 
@@ -61,7 +61,7 @@ export class BenefitApplication implements ApplicationBase {
   }
 
   regenUUID() {
-    this._uuid = UUID.UUID();
+    this._uuid = uuid();
 
     /**
      * Each image will have a uuid that starts with application uuid
@@ -69,7 +69,7 @@ export class BenefitApplication implements ApplicationBase {
      */
     const all = this.getAllImages();
     all.forEach(image => {
-      image.uuid = UUID.UUID();
+      image.uuid = uuid();
     });
   }
 
@@ -147,7 +147,7 @@ export class BenefitApplication implements ApplicationBase {
    */
   private _spouseIncomeLine236: number;
 
-  private _childrenCount: number = 0;
+  private _childrenCount = 0;
   /**
    * Line 214 on NOA
    */
@@ -173,7 +173,7 @@ export class BenefitApplication implements ApplicationBase {
    *
    * Useful, for example, to make sure all PHNs are unique.
    */
-  get allPersons(): Array<MspPerson> {
+  get allPersons(): MspPerson[] {
     return [this.applicant, this.spouse].filter(x => x); //no 'undefined's
   }
 
@@ -207,8 +207,16 @@ export class BenefitApplication implements ApplicationBase {
     }
   }
 
+  get authorizedByApplicant(): boolean {
+    return this._authorizedByApplicant;
+  }
+
   set authorizedBySpouse(auth: boolean) {
     this._authorizedBySpouse = auth;
+  }
+
+  get authorizedBySpouse(): boolean {
+    return this._authorizedBySpouse;
   }
 
   set authorizedByAttorney(auth: boolean) {
@@ -217,14 +225,6 @@ export class BenefitApplication implements ApplicationBase {
     if (auth) {
       this.authorizedByApplicantDate = moment().toDate();
     }
-  }
-
-  get authorizedByApplicant(): boolean {
-    return this._authorizedByApplicant;
-  }
-
-  get authorizedBySpouse(): boolean {
-    return this._authorizedBySpouse;
   }
 
   get authorizedByAttorney(): boolean {
@@ -285,7 +285,7 @@ export class BenefitApplication implements ApplicationBase {
       return null;
     } else {
       const n =
-        !!this.childClaimForAttendantCareExpenseCount
+        this.childClaimForAttendantCareExpenseCount
           ? this.childClaimForAttendantCareExpenseCount
           : 0;
       return n;
@@ -299,7 +299,7 @@ export class BenefitApplication implements ApplicationBase {
 
  /// ***********************************************
 
-  childrenCountArray(): Array<number> {
+  childrenCountArray(): number[] {
     const arr: number[] = new Array(this.childrenCount);
     for (let i = 0; i <= this.childrenCount; i++) {
       arr[i] = i;
@@ -396,7 +396,7 @@ export class BenefitApplication implements ApplicationBase {
 
   // Address and Contact Info
   public residentialAddress: Address = new Address();
-  public mailingSameAsResidentialAddress: boolean = true;
+  public mailingSameAsResidentialAddress = true;
   public mailingAddress: Address = new Address();
   public phoneNumber: string;
 
@@ -585,6 +585,6 @@ export class BenefitApplication implements ApplicationBase {
   }
 
   constructor() {
-    this.id = UUID.UUID();
+    this.id = uuid();
   }
 }

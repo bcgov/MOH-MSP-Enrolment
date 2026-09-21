@@ -1,20 +1,17 @@
 import {
   Component,
-  OnInit,
-  ChangeDetectionStrategy,
   Input,
   EventEmitter,
   Output,
-  ViewChild,
 } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 
 @Component({
+  standalone: false,
   selector: 'msp-assist-rates-modal',
   templateUrl: './assist-rates-modal.component.html',
   styleUrls: ['./assist-rates-modal.component.scss'],
 })
-export class AssistRatesModalComponent implements OnInit {
+export class AssistRatesModalComponent {
   @Input() entries: any[];
   @Output() closeModal: EventEmitter<boolean> = new EventEmitter<boolean>();
 
@@ -39,8 +36,6 @@ export class AssistRatesModalComponent implements OnInit {
       { year: '2018', amount: '$42,000' },
     ];
   }
-
-  ngOnInit() {}
 
   close() {
     this.closeModal.emit(true);

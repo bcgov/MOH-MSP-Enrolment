@@ -17,7 +17,7 @@ describe('GeneralAppComponent', () => {
     const activatedRouteStub = () => ({});
     const routerStub = () => ({ events: new Observable() });
     const headerServiceStub = () => ({ title: new Observable() });
-    const mspLogServiceStub = () => ({ log: () => {} });
+    const mspLogServiceStub = () => ({ log: () => undefined });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],
       declarations: [GeneralAppComponent],

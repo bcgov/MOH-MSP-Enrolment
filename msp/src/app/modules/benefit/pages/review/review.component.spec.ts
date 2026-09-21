@@ -12,10 +12,10 @@ describe('BenefitReviewComponent', () => {
   let fixture: ComponentFixture<BenefitReviewComponent>;
   beforeEach(() => {
     const changeDetectorRefStub = () => ({});
-    const routerStub = () => ({ navigate: array => ({}) });
+    const routerStub = () => ({ navigate: () => ({}) });
     const mspLogServiceStub = () => ({});
     const processServiceStub = () => ({
-      setStep: (processStepNum, arg) => ({})
+      setStep: () => ({})
     });
     const mspBenefitDataServiceStub = () => ({ benefitApp: {} });
 

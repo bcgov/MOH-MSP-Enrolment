@@ -1,19 +1,24 @@
-import {Component, Input, ViewChild, NgZone, Inject} from '@angular/core';
-import * as moment from 'moment';
+import {
+  Component,
+  Input,
+  ViewChild,
+  NgZone,
+} from '@angular/core';
 import {ModalDirective} from 'ngx-bootstrap/modal';
 import { environment } from '../../../../../environments/environment';
-import { CommonImage, CommonImageError } from 'moh-common-lib';
+import { CommonImage, CommonImageError } from 'moh-common-lib-angular';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
+import enLang from './i18n/data/en/index';
 
 @Component({
+  standalone: false,
   selector: 'common-image-error-modal',
   templateUrl: './image-error-modal.component.html'
 })
 export class MspImageErrorModalComponent {
-  lang = require('./i18n');
-
+  lang = enLang;
   @Input() imageWithError: CommonImage;
-  @ViewChild('errorModal') public errorModal: ModalDirective;
+  @ViewChild('errorModal', { static: true }) public errorModal: ModalDirective;
 
   constructor(private zone: NgZone) {}
 
@@ -22,7 +27,7 @@ export class MspImageErrorModalComponent {
    * @returns {string}
    */
   getErrorMessage(): string {
-    let message: string = this.lang('./en/index.js').imageError[this.imageWithError.error];
+    let message: string = this.lang.imageError[this.imageWithError.error];
     if (this.imageWithError.error === CommonImageError.TooSmall) {
       message = message.replace('{width}', environment.appConstants.images.minWidth.toString());
       message = message.replace('{height}', environment.appConstants.images.minHeight.toString());

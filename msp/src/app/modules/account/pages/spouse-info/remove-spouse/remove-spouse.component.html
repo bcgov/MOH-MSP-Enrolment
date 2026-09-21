@@ -18,7 +18,7 @@
           <option selected value="null" disabled="true">Please select</option>
           <option *ngFor="let item of cancellationReasons"
             [ngValue]="item.value"
-            [selected]="spouse.cancellationReason == item.value">
+            [selected]="spouse.cancellationReason === item.value">
             {{item.label}}
           </option>
         </ng-container>

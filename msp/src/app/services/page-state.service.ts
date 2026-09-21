@@ -16,8 +16,6 @@ export interface PageList {
 })
 export class PageStateService {
 
-  constructor() { }
-
   setPages(arr: Route[], routeListConst: any, pageList: PageList[] ): PageList[] {
 
     if ( !pageList.length ) {

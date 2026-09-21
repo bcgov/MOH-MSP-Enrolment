@@ -7,7 +7,7 @@ import { EnrolAddressComponent } from './pages/address/address.component';
 import { ReviewComponent } from './pages/review/review.component';
 import { AuthorizeComponent } from './pages/authorize/authorize.component';
 import { ROUTES_ENROL } from './models/enrol-route-constants';
-import { RouteGuardService } from 'moh-common-lib';
+import { RouteGuardService } from 'moh-common-lib-angular';
 
 
 export const enrolPages: Routes = [

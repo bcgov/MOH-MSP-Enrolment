@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ElementRef, ViewChild, OnInit, AfterViewInit, DoCheck} from '@angular/core';
 import {BaseComponent} from '../../../../models/base.component';
 import {BenefitApplication} from '../../models/benefit-application.model';
 import {MspBenefitDataService} from '../../services/msp-benefit-data.service';
@@ -6,15 +6,16 @@ import {debounceTime, distinctUntilChanged, filter, tap} from 'rxjs/operators';
 import {MspImageErrorModalComponent} from '../../../msp-core/components/image-error-modal/image-error-modal.component';
 import {NgForm} from '@angular/forms';
 import {AssistanceYear} from '../../../assistance/models/assistance-year.model';
-import {merge} from 'rxjs/internal/observable/merge';
+import {merge} from 'rxjs';
 import * as _ from 'lodash';
-import {ConsentModalComponent, CommonImage} from 'moh-common-lib';
+import {ConsentModalComponent, CommonImage} from 'moh-common-lib-angular';
 import {CommonDeductionCalculatorComponent} from '../../../msp-core/components/common-deduction-calculator/common-deduction-calculator.component';
-import * as moment from 'moment';
+import moment from 'moment';
 import {Router} from '@angular/router';
 import { ProcessService } from 'app/services/process.service';
 import { ATTENDANT_CARE_CLAIM_AMT } from '../../../../constants';
-import { ISpaEnvResponse } from 'moh-common-lib/lib/components/consent-modal/consent-modal.component';
+import { ISpaEnvResponse } from '../../../../components/msp/model/spa-env-response.interface';
+import enLang from './i18n/data/en/index';
 
 enum ClaimCategory {
     DISABILITY = 'disability credit',
@@ -27,41 +28,48 @@ enum Claimant {
 }
 
 @Component({
+  standalone: false,
     selector: 'msp-prepare',
     templateUrl: './prepare.component.html',
     styleUrls: ['./prepare.component.scss']
 })
-export class BenefitPrepareComponent  extends BaseComponent  {
+export class BenefitPrepareComponent  extends BaseComponent implements OnInit, AfterViewInit, DoCheck  {
     //static ProcessStepNum = 1;
+    // formRef, incomeRef and mspImageErrorModal genuinely sit inside
+    // *ngIf-gated sections of the template, so they stay deferred (default timing).
     @ViewChild('formRef') prepForm: NgForm;
     @ViewChild('incomeRef') incomeRef: ElementRef;
+    // The following five queries have no matching template ref in
+    // prepare.component.html; they never resolve regardless of static
+    // timing. Left as-is, out of scope here.
     @ViewChild('ageOver65Btn') ageOver65Btn: ElementRef;
     @ViewChild('ageNotOver65Btn') ageNotOver65Btn: ElementRef;
     @ViewChild('spouseOver65Btn') spouseOver65Btn: ElementRef;
     @ViewChild('spouseOver65NegativeBtn') spouseOver65NegativeBtn: ElementRef;
     @ViewChild('hasSpouse') hasSpouse: ElementRef;
     @ViewChild('negativeHasSpouse') negativeHasSpouse: ElementRef;
-    //@ViewChild('fileUploader') fileUploader: FileUploaderComponent;
+    //@ViewChild('fileUploader', { static: false }) fileUploader: FileUploaderComponent;
     @ViewChild('mspImageErrorModal') mspImageErrorModal: MspImageErrorModalComponent;
 
+    // mspConsentModal and commonCalculator also have no matching template ref here.
     @ViewChild('mspConsentModal') mspConsentModal: ConsentModalComponent;
     @ViewChild('commonCalculator') commonCalculator: CommonDeductionCalculatorComponent;
 
     // Provide the type to the template
     Claimant = Claimant;
 
-    lang = require('./i18n');
-    _showDisabilityInfo: boolean = false;
-    chldCountExceededError: boolean = false;
-    isDisabled: boolean = false ;
+    lang = enLang;
+    _showDisabilityInfo = false;
+    chldCountExceededError = false;
+    isDisabled = false ;
     showAttendantCareInfo = true;
-    private _showChildrenInfo: boolean = false;
+    private _showChildrenInfo = false;
     today: any;
-    private _likelyQualify: boolean = false;
+    private _likelyQualify = false;
     qualifiedForAssistance = false;
     requireAttendantCareReceipts = false;
     taxYearInfoMissing = false;
-    qualificationThreshhold: number = 42000;
+    qualificationThreshhold = 42000;
     userSelectedMostRecentTaxYear: number;
     counterClaimCategory: ClaimCategory;
     claimCategory: ClaimCategory;
@@ -474,36 +482,36 @@ export class BenefitPrepareComponent  extends BaseComponent  {
     }
 
     get getFinanialInfoSectionTitle(){
-        if (!!this.benefitApp.taxYear){
-            return this.lang('./en/index.js').checkEligibilityScreenTitle.replace('{userSelectedMostRecentTaxYear}',
-                this.benefitApp.taxYear);
+        if (this.benefitApp.taxYear){
+            return this.lang.checkEligibilityScreenTitle.replace('{userSelectedMostRecentTaxYear}',
+                String(this.benefitApp.taxYear));
         } else {
-            return this.lang('./en/index.js').checkEligibilityScreenTitleDefault;
+            return this.lang.checkEligibilityScreenTitleDefault;
         }
     }
 
 
     get getSpouseFinanialInfoSectionTitle(){
-        if (!!this.benefitApp.taxYear){
+        if (this.benefitApp.taxYear){
             return this
-                .lang('./en/index.js')
+                .lang
                 .whatIsYourSpouseOrPartnerIncome
                 .replace(
                     '{userSelectedMostRecentTaxYear}',
-                    this.benefitApp.taxYear
+                    String(this.benefitApp.taxYear)
                 );
         } else {
-            return this.lang('./en/index.js').whatIsYourSpouseOrPartnerIncome;
+            return this.lang.whatIsYourSpouseOrPartnerIncome;
         }
     }
 
     get getDisablityCreditTitle() {
         return this
-            .lang('./en/index.js')
+            .lang
             .didAnyoneClaimDisabilityTaxCreditLastYear
             .replace(
                 '{userSelectedMostRecentTaxYear}',
-                this.benefitApp.taxYear
+                String(this.benefitApp.taxYear)
             );
     }
 
@@ -542,11 +550,11 @@ export class BenefitPrepareComponent  extends BaseComponent  {
 
     get didAnyoneClaimAttendantCareLastYear() {
         return this
-            .lang('./en/index.js')
+            .lang
             .didAnyoneClaimAttendantCareLastYear
             .replace(
                 '{userSelectedMostRecentTaxYear}',
-                this.benefitApp.taxYear
+                String(this.benefitApp.taxYear)
             );
     }
 

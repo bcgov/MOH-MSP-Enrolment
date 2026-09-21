@@ -1,7 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { SharedCoreModule } from 'moh-common-lib';
-import { LocalStorageModule } from 'angular-2-local-storage';
+import { AddressComponent, DateComponent, DuplicateCheckDirective, NameComponent, PageSectionComponent, PhnComponent, RadioComponent } from 'moh-common-lib-angular';
 import { RemoveSpouseComponent } from './remove-spouse.component';
 import { AccountPersonalInformationComponent } from '../../../components/personal-information/personal-information.component';
 import { MspCoreModule } from '../../../../msp-core/msp-core.module';
@@ -15,8 +14,8 @@ describe('RemoveSpouseComponent', () => {
   let component: RemoveSpouseComponent;
   let fixture: ComponentFixture<RemoveSpouseComponent>;
 
-  beforeEach(async(() => {
-    const mspLogServiceStub = () => ({ log: () => {} });
+  beforeEach(waitForAsync(() => {
+    const mspLogServiceStub = () => ({ log: () => undefined });
     TestBed.configureTestingModule({
       declarations: [
         RemoveSpouseComponent,
@@ -24,14 +23,8 @@ describe('RemoveSpouseComponent', () => {
       ],
       imports: [
         FormsModule,
-        SharedCoreModule,
         MspCoreModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
-        HttpClientTestingModule
-      ],
+        HttpClientTestingModule, AddressComponent, DateComponent, DuplicateCheckDirective, NameComponent, PageSectionComponent, PhnComponent, RadioComponent],
       providers: [
         MspAccountMaintenanceDataService,
         { provide: MspLogService, useFactory: mspLogServiceStub }

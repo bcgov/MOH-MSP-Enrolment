@@ -1,14 +1,8 @@
-require('core-js/es6');
-require('core-js/es7/reflect');
-require('zone.js/dist/zone');
-require('blueimp-canvas-to-blob');
-import { environment } from './environments/environment';
+/**
+ * This file includes polyfills needed by Angular and is loaded before the app.
+ */
+import 'zone.js';
 
-
-if (environment.runtimeEnv === 'production') {
-  // Production
-} else {
-  // Development
-  Error['stackTraceLimit'] = Infinity;
-  require('zone.js/dist/long-stack-trace-zone');
-}
+// Runtime polyfill for HTMLCanvasElement.prototype.toBlob, used by the photo
+// capture flow. Unrelated to the Angular/zone.js polyfills above; kept as-is.
+import 'blueimp-canvas-to-blob';

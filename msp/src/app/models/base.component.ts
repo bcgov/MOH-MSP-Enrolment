@@ -1,10 +1,19 @@
-import {ChangeDetectorRef, DoCheck, EventEmitter,
-  Output, QueryList, SimpleChanges, Optional, OnInit} from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  DoCheck,
+  EventEmitter,
+  Output,
+  QueryList,
+  OnInit,
+  AfterContentInit,
+  OnDestroy,
+} from '@angular/core';
 import { Subscription } from 'rxjs';
 import {NgForm} from '@angular/forms';
-import {UUID} from 'angular2-uuid';
+import { v4 as uuid } from 'uuid';
 import {ProcessService} from '../services/process.service';
-import { scrollTo } from 'moh-common-lib';
+import { scrollTo } from 'moh-common-lib-angular';
 
 export class ValidEvent {
   id: string;
@@ -23,13 +32,14 @@ export class ValidEvent {
  * If you want the form validated, you MUST declare the NgForm as a @ViewChild in the extended class
  * If you want custom validation in the extended class, implement isValid():boolean
  */
-export class BaseComponent implements DoCheck, OnInit {
+@Directive()
+export class BaseComponent implements DoCheck, OnInit, AfterContentInit, OnDestroy {
 
   /**
    * An identifier for parents to keep track of components
    * @type {string}
    */
-  objectId: string = UUID.UUID().toString();
+  objectId: string = uuid().toString();
 
   @Output() isFormValid = new EventEmitter<ValidEvent>();
   @Output() registerComponent = new EventEmitter<BaseComponent>();
@@ -38,7 +48,7 @@ export class BaseComponent implements DoCheck, OnInit {
   //private
   subscriptionList: Subscription[] = [];
   private validationMap = {};
-  private myFormValid: boolean = true;
+  private myFormValid = true;
 
   private linkedProcessStepNumber: number;
   private processService: ProcessService;
@@ -115,23 +125,21 @@ export class BaseComponent implements DoCheck, OnInit {
    * @param comp
    */
   private registerBaseComponent(comp: BaseComponent) {
-    const self: BaseComponent = this;
-
-    if (self.validationMap[comp.objectId] == null) {
-      self.validationMap[comp.objectId] = comp.isAllValid();
-      self.emitIsFormValid();
+    if (this.validationMap[comp.objectId] == null) {
+      this.validationMap[comp.objectId] = comp.isAllValid();
+      this.emitIsFormValid();
       const subscription = comp.isFormValid
         .subscribe( (event: ValidEvent) => {
-          self.validationMap[event.id] = event.isValid;
-          self.emitIsFormValid();
+          this.validationMap[event.id] = event.isValid;
+          this.emitIsFormValid();
         });
-      self.subscriptionList.push(subscription);
+      this.subscriptionList.push(subscription);
 
       // Listen for the unsubscribe and delete it from the validation map
       comp.unRegisterComponent.subscribe( (event: BaseComponent) => {
-        delete self.validationMap[event.objectId];
+        delete this.validationMap[event.objectId];
         subscription.unsubscribe();
-        self.emitIsFormValid();
+        this.emitIsFormValid();
       });
     }
   }
@@ -158,12 +166,6 @@ export class BaseComponent implements DoCheck, OnInit {
   }
 
   private _emitIsFormValid () {
-    for (const key of Object.keys(this.validationMap)) {
-      const item = this.validationMap[key];
-      if (item === false) {
-      }
-    }
-
     // Determine if all is valid
     const isAllValid = this.isAllValid();
     this.isFormValid.emit({id: this.objectId, isValid: isAllValid});
@@ -218,8 +220,5 @@ export class BaseComponent implements DoCheck, OnInit {
         sub.unsubscribe();
       }
     );
-  }
-
-  debug() {
   }
 }

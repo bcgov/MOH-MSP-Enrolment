@@ -1,5 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedCoreModule, PageStateService } from 'moh-common-lib';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { PageStateService, CoreBreadcrumbComponent, WizardProgressBarComponent } from 'moh-common-lib-angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { AccountContainerComponent } from './account-container.component';
 import { HeaderService } from '../../../../services/header.service';
@@ -14,10 +14,10 @@ describe('AccountContainerComponent', () => {
     setPages: jasmine.createSpy('setPages'),
   };
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [AccountContainerComponent],
-      imports: [RouterTestingModule, SharedCoreModule],
+      imports: [RouterTestingModule, CoreBreadcrumbComponent, WizardProgressBarComponent],
       providers: [
         { provide: HeaderService, useValue: headerServiceStub },
         { provide: PageStateService, useValue: pageStateServiceStub },

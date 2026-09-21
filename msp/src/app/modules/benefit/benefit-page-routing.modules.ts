@@ -7,7 +7,6 @@ import { BenefitAuthorizeSubmitComponent } from './pages/authorize-submit/author
 import { BenefitSendingComponent } from './pages/sending/sending.component';
 import { BenefitSpouseInfoComponent } from './pages/spouse-info/spouse-info.component';
 import { BenefitAddressComponent } from './pages/contact-info/address.component';
-import { RouteGuardService, AbstractPgCheckService } from 'moh-common-lib';
 import { environment } from 'environments/environment';
 
 export const benefitPages: Routes = [

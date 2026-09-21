@@ -3,11 +3,10 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
 import { AssistanceSendingComponent } from './sending.component';
 import { MspDataService } from '../../../../services/msp-data.service';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { MspApiService } from '../../../../services/msp-api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MspLogService } from '../../../../services/log.service';
-import { TransmissionErrorView } from '../../../../components/msp/common/transmission-error-view/transmission-error-view.component';
+import { TransmissionErrorViewComponent } from '../../../../components/msp/common/transmission-error-view/transmission-error-view.component';
 import { ProcessService } from '../../../../services/process.service';
 import { MspMaintenanceService } from '../../../../services/msp-maintenance.service';
 import { MspLog2Service } from '../../../../services/log2.service';
@@ -19,15 +18,11 @@ describe('AssistanceSendingComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [AssistanceSendingComponent, TransmissionErrorView],
+      declarations: [AssistanceSendingComponent, TransmissionErrorViewComponent],
       imports: [
         FormsModule,
         HttpClientModule,
         RouterTestingModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage',
-        }),
       ],
       providers: [
         MspDataService,

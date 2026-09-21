@@ -3,20 +3,22 @@ import { BaseComponent } from 'app/models/base.component';
 import { FinancialAssistApplication } from '../../models/financial-assist-application.model';
 import { NgForm } from '@angular/forms';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { MspDataService } from 'app/services/msp-data.service';
-import { Address } from 'moh-common-lib';
+import { Address } from 'moh-common-lib-angular';
 import { ActivatedRoute } from '@angular/router';
 import { AssistStateService } from '../../services/assist-state.service';
 import { environment } from 'environments/environment';
 import { SpaEnvService } from '../../../../services/spa-env.service';
 
 @Component({
+  standalone: false,
   selector: 'msp-assist-contact',
   templateUrl: './assist-contact.component.html',
   styleUrls: ['./assist-contact.component.scss']
 })
 export class AssistContactComponent extends BaseComponent implements OnInit {
-  @ViewChild('formRef') personalInfoForm: NgForm;
+  @ViewChild('formRef', { static: true }) personalInfoForm: NgForm;
   public readonly addressServiceUrl: string = environment.appConstants.addressApiBaseUrl;
 
   addressLine2 = false;
@@ -39,7 +41,7 @@ export class AssistContactComponent extends BaseComponent implements OnInit {
 
   financialAssistApplication: FinancialAssistApplication;
 
-  touched$ = this.stateSvc.touched.asObservable();
+  touched$: Observable<boolean>;
 
   constructor(
     cd: ChangeDetectorRef,
@@ -50,6 +52,7 @@ export class AssistContactComponent extends BaseComponent implements OnInit {
   ) {
     super(cd);
     this.financialAssistApplication = this.dataService.finAssistApp;
+    this.touched$ = this.stateSvc.touched.asObservable();
   }
 
   ngOnInit() {
@@ -70,7 +73,7 @@ export class AssistContactComponent extends BaseComponent implements OnInit {
         debounceTime(250),
         distinctUntilChanged()
       )
-      .subscribe(obs => {
+      .subscribe(() => {
         this.stateSvc.setPageValid( this.route.snapshot.routeConfig.path, this.personalInfoForm.valid );
         this.dataService.saveFinAssistApplication();
       });

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BaseMspDataService } from '../../../services/base-msp-data.service';
-import { LocalStorageService } from 'angular-2-local-storage';
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { AclApplication } from '../model/acl-application.model';
 import { AclDto } from '../model/acl.dto';
 import { EnrolmentMembership } from '../model/enrolment-membership.enum';
@@ -10,7 +10,7 @@ import { EnrolmentMembership } from '../model/enrolment-membership.enum';
 })
 export class AclDataService extends BaseMspDataService {
 
-  protected _storageKey: string = 'acl-app'; // TODO: set back to account-letter when original files removed
+  protected _storageKey = 'acl-app'; // TODO: set back to account-letter when original files removed
 
   application: AclApplication;
 

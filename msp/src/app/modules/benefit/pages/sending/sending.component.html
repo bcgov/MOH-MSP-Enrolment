@@ -1,30 +1,30 @@
 <common-page-framework layout="blank">
 <div *ngIf="transmissionInProcess" class="center-block">
-  <h1 [innerHtml]="lang('./en/index.js').pageTitle"></h1>
+  <h1 [innerHtml]="lang.pageTitle"></h1>
   <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
 
   <span class="sr-only">Submitting your application...</span>
-  <p class="intro" [innerHtml]="lang('./en/index.js').transmissionInProgressMessage">
+  <p class="intro" [innerHtml]="lang.transmissionInProgressMessage">
   </p>
 </div>
 
 <div class="h1" *ngIf="!transmissionInProcess && !hasError"
-     [innerHtml]="lang('./en/index.js').transmissionSuccess"></div>
+     [innerHtml]="lang.transmissionSuccess"></div>
 
 <div class="row" *ngIf="!transmissionInProcess && hasError">
   <div class="col-sm-12 col-lg-6">
-    <h1 [innerHtml]="lang('./en/index.js').transmissionErrorTitle"></h1>
-    <h3 [innerHtml]="lang('./en/index.js').instructionForUserOnError"></h3>
+    <h1 [innerHtml]="lang.transmissionErrorTitle"></h1>
+    <h3 [innerHtml]="lang.instructionForUserOnError"></h3>
 
-    <h3 [innerHtml]="lang('./en/index.js').pa_instructionForUserOnErrorLine1"></h3>
+    <h3 [innerHtml]="lang.pa_instructionForUserOnErrorLine1"></h3>
     <div style="font-size: 18px">
       <ul>
         <li>
-          <a href="javascript:void(0)" (click)="retrySubmission()" [innerHtml]="lang('./en/index.js').pa_tryToSumitAgain"></a>
+          <a href="javascript:void(0)" (click)="retrySubmission()" [innerHtml]="lang.pa_tryToSumitAgain"></a>
         </li>
       </ul>
     </div>
-    <h3 [innerHtml]="lang('./en/index.js').pa_instructionForUserOnErrorLine2"></h3>
+    <h3 [innerHtml]="lang.pa_instructionForUserOnErrorLine2"></h3>
 
   </div>
 </div>

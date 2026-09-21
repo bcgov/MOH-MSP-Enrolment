@@ -1,9 +1,9 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
-import { Observable } from 'rxjs/internal/Observable';
-import { Subscription} from 'rxjs/internal/Subscription';
+import moment from 'moment';
+import { Observable } from 'rxjs';
+import { Subscription} from 'rxjs';
 import { LogEntry } from '../models/log-entry.model';
 import { MspDataService } from './msp-data.service';
 import { MspBenefitDataService } from '../modules/benefit/services/msp-benefit-data.service';
@@ -41,7 +41,7 @@ export class MspLogService  {
    * @param {() => void} [errCallback]  OPTIONAL - Error callback.
    * @returns {Subscription}
    */
-  log(logItem: Object, request_method: string , callback?: () => void, errCallback?: () => void): Subscription{
+  log(logItem: object, request_method: string , callback?: () => void, errCallback?: () => void): Subscription{
     const baseUrl = this.appConstants['logBaseUrl'];
     // With Angular 5 we can't pass in undefined to the headers without runtime
     // errors, so now we default to 'n/a'.
@@ -61,7 +61,7 @@ export class MspLogService  {
         'applicationId' : this.getApplicationId(),
         'request_method' : request_method
     });
-    const options = { headers: headers, responseType: 'text' as 'text' };
+    const options = { headers: headers, responseType: 'text' as const };
 
     const body = {
       meta: this.createMetaData(),
@@ -80,7 +80,7 @@ export class MspLogService  {
    * @param logItem JSON to be logged
    * @param urlPath OPTIONAL - Additional URL path for logger.
    */
-  logIt(logItem: Object, request_method: String , urlPath?: string): Observable<any> {
+  logIt(logItem: object, request_method: string , urlPath?: string): Observable<any> {
     const baseUrl = this.appConstants['logBaseUrl'];
     // With Angular 5 we can't pass in undefined to the headers without runtime
     // errors, so now we default to 'n/a'.
@@ -99,7 +99,7 @@ export class MspLogService  {
         'referenceNumber' : refNumber,
         'applicationId' : this.getApplicationId()
     });
-    const options = { headers: headers, responseType: 'text' as 'text' };
+    const options = { headers: headers, responseType: 'text' as const };
     return this.http.post(baseUrl + (urlPath || ''), logItem, options);
   }
 

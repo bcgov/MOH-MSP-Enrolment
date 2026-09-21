@@ -1,13 +1,10 @@
-import * as Primitive from './xml-primitives';
-import * as ct from './commonTypes';
 
 interface BaseType {
   _exists: boolean;
   _namespace: string;
-  _sequence: Array<string>;
+  _sequence: string[];
 }
 
-// tslint:disable-next-line:class-name
 interface _AccountLetterType extends BaseType {
   requesterPHN: string;
   requesterBirthdate: string;
@@ -21,13 +18,13 @@ interface _AccountLetterType extends BaseType {
 }
 
 export interface AccountLetterType extends _AccountLetterType {
-  constructor: { new (): AccountLetterType };
+  constructor: new () => AccountLetterType;
 }
-export let AccountLetterType: { new (): AccountLetterType };
+export let AccountLetterType: new () => AccountLetterType;
 
 export class AccountLetterApplicantTypeFactory {
   static make(): AccountLetterType {
-    const instance = <AccountLetterType>{};
+    const instance = {} as AccountLetterType;
     return instance;
   }
 }

@@ -3,11 +3,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BrowserModule, Title } from '@angular/platform-browser';
 import { GeneralAppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { SharedCoreModule } from 'moh-common-lib';
+import { HeaderComponent } from 'moh-common-lib-angular';
 import { LandingComponent } from './pages/landing/landing.component';
 import { AppRoutingModule } from './app-routing.module';
 import { MspDataService } from './services/msp-data.service';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { ProcessService } from './services/process.service';
 import { MspLogService } from './services/log.service';
 import { CompletenessCheckService } from './services/completeness-check.service';
@@ -45,13 +44,9 @@ if ( environment.useMockBackend ) {
   imports: [
     BrowserAnimationsModule,
     BrowserModule,
-    SharedCoreModule,
+    HeaderComponent,
     HttpClientModule,
     AppRoutingModule,
-    LocalStorageModule.withConfig({
-      prefix: 'ca.bc.gov.msp',
-      storageType: 'sessionStorage'
-    }),
   ],
   declarations: [
     LandingComponent,

@@ -5,7 +5,6 @@ import { MspLogService } from './log.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CommonModule } from '@angular/common';
 import { MspDataService } from './msp-data.service';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { MspApiService } from './msp-api.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MspMaintenanceService } from './msp-maintenance.service';
@@ -24,10 +23,6 @@ describe('msp-api XML NS', () => {
         HttpClientModule,
         RouterTestingModule,
         FormsModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage',
-        }),
       ],
       providers: [
         MspApiService,
@@ -73,8 +68,7 @@ describe('msp-api XML NS', () => {
       // do the work
 
       const correctedXml1 = apiService.correctNSinXmlString(xml1);
-      // tslint:disable-next-line: no-console
-      console.info(
+           console.info(
         '\n ------- xml1 test ------ \n  -- corrected:\n' +
           correctedXml1 +
           '\n  -- expected:\n' +
@@ -84,8 +78,7 @@ describe('msp-api XML NS', () => {
       );
 
       const correctedXml2 = apiService.correctNSinXmlString(xml2);
-      // tslint:disable-next-line: no-console
-      console.info(
+           console.info(
         '\n ------- xml2 test ------ \n  -- corrected:\n' +
           correctedXml2 +
           '\n  -- expected:\n' +
@@ -95,8 +88,7 @@ describe('msp-api XML NS', () => {
       );
 
       const correctedXml3 = apiService.correctNSinXmlString(xml3);
-      // tslint:disable-next-line: no-console
-      console.info(
+           console.info(
         '\n ------- xml3 test ------ \n  -- corrected:\n' +
           correctedXml3 +
           '\n  -- expected:\n' +
@@ -106,8 +98,7 @@ describe('msp-api XML NS', () => {
       );
 
       const correctedXml4 = apiService.correctNSinXmlString(xml4);
-      // tslint:disable-next-line: no-console
-      console.info(
+           console.info(
         '\n ------- xml4 test ------ \n  -- corrected:\n' +
           correctedXml4 +
           '\n  -- expected:\n' +
@@ -117,8 +108,7 @@ describe('msp-api XML NS', () => {
       );
 
       const correctedXml5 = apiService.correctNSinXmlString(xml5);
-      // tslint:disable-next-line: no-console
-      console.info(
+           console.info(
         '\n ------- xml5 test ------ \n  -- corrected:\n' +
           correctedXml5 +
           '\n  -- expected:\n' +
@@ -128,8 +118,7 @@ describe('msp-api XML NS', () => {
       );
 
       const correctedXml6 = apiService.correctNSinXmlString(xml6);
-      // tslint:disable-next-line: no-console
-      console.info(
+           console.info(
         '\n ------- xml6 test ------ \n  -- corrected:\n' +
           correctedXml6 +
           '\n  -- expected:\n' +
@@ -139,8 +128,7 @@ describe('msp-api XML NS', () => {
       );
 
       const correctedXml7 = apiService.correctNSinXmlString(xml7);
-      // tslint:disable-next-line: no-console
-      console.info(
+           console.info(
         '\n ------- xml7 test ------ \n  -- corrected:\n' +
           correctedXml7 +
           '\n  -- expected:\n' +

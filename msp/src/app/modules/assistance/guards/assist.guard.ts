@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AssistStateService } from '../services/assist-state.service';
 import { environment } from 'environments/environment';
 import { ROUTES_ASSIST } from '../models/assist-route-constants';
-import { AbstractPgCheckService } from 'moh-common-lib';
+import { AbstractPgCheckService } from 'moh-common-lib-angular';
 
 @Injectable({
   providedIn: 'root'

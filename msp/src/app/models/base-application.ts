@@ -1,5 +1,5 @@
-import { Base, CommonImage } from 'moh-common-lib';
-import { UUID } from 'angular2-uuid';
+import { Base, CommonImage } from 'moh-common-lib-angular';
+import { v4 as uuid } from 'uuid';
 
 /**
  * All applications have these fields
@@ -27,7 +27,7 @@ export class BaseApplication extends Base {
 
   // Regenerate the UUID
   regenUUID() {
-    this.objectId = UUID.UUID();
+    this.objectId = uuid();
   }
 
   // Specific to application

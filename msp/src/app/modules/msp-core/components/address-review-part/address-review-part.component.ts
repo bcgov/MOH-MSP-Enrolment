@@ -1,9 +1,10 @@
 import { Component, Input } from '@angular/core';
 
-import { getCountryDescription, getProvinceDescription, Address } from 'moh-common-lib';
+import { getCountryDescription, getProvinceDescription, Address } from 'moh-common-lib-angular';
 import { ColumnClass } from '../review-part/review-part.component';
 
 @Component({
+  standalone: false,
   selector: 'msp-address-review-part',
   templateUrl: './address-review-part.component.html',
   styleUrls: ['./address-review-part.component.scss']
@@ -15,9 +16,6 @@ export class AddressReviewPartComponent {
 
   // Formatting for column sizes
   columnClass: ColumnClass = {label: 'col-sm-4', value: 'col-sm-8 font-weight-bold'};
-
-  constructor() {
-  }
 
   // Checks that we have an address
   get hasAddress() {

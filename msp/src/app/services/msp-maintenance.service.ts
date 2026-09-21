@@ -1,13 +1,12 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { _ApplicationTypeNameSpace } from '../modules/msp-core/api-model/applicationTypes';
 import { ISpaEnvResponse } from '../components/msp/model/spa-env-response.interface';
 import { MspLog2Service } from './log2.service';
-import * as moment from 'moment';
+import moment from 'moment';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
-import { AbstractHttpService } from 'moh-common-lib';
+import { AbstractHttpService } from 'moh-common-lib-angular';
 
 /**
  * Responsible for retrieving values from the spa-env-server on OpenShift.
@@ -29,7 +28,7 @@ export class  MspMaintenanceService extends AbstractHttpService {
         return this.post<ISpaEnvResponse>(url, null);
     }
 
-    protected handleError(error: HttpErrorResponse) {
+    protected handleError(error: HttpErrorResponse): Observable<never> {
         if (error.error instanceof ErrorEvent) {
             //Client-side / network error occurred
             console.error('MspMaintenanceService error: ', error.error.message);
@@ -45,7 +44,7 @@ export class  MspMaintenanceService extends AbstractHttpService {
         );
 
         // A user facing error message /could/ go here; we shouldn't log dev info through the throwError observable
-        return of([]);
+        return of([]) as unknown as Observable<never>;
     }
 
     protected _headers: HttpHeaders = new HttpHeaders({

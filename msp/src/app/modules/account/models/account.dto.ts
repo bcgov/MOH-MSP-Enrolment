@@ -1,6 +1,6 @@
 import { PersonDto } from '../../../components/msp/model/msp-person.dto';
 import { AddressDto } from '../../../models/address.dto';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 import { BaseDto } from 'app/models/base.dto';
 
 export class MspAccountDto extends BaseDto {

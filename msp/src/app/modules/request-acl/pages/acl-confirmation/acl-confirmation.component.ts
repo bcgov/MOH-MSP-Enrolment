@@ -1,18 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import { ApiStatusCodes } from 'moh-common-lib';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ApiStatusCodes } from 'moh-common-lib-angular';
 import { ActivatedRoute } from '@angular/router';
 import { environment } from '../../../../../environments/environment';
 import { Subscription } from 'rxjs';
-import * as moment from 'moment';
 import { format } from 'date-fns';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 
 @Component({
+  standalone: false,
   selector: 'msp-acl-confirmation',
   templateUrl: './acl-confirmation.component.html',
   styleUrls: ['./acl-confirmation.component.scss'],
 })
-export class AclConfirmationComponent implements OnInit {
+export class AclConfirmationComponent implements OnInit, OnDestroy {
   confirmationNum: string;
   status: ApiStatusCodes = ApiStatusCodes.ERROR;
   message: string;

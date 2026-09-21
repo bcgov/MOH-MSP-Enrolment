@@ -1,7 +1,7 @@
 import { AddressDto } from '../../../models/address.dto';
 import { PersonDto } from '../../../components/msp/model/msp-person.dto';
 import { AssistanceYear } from './assistance-year.model';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 
 export class FinancialAssistApplicationDto {
   infoCollectionAgreement: boolean;
@@ -32,10 +32,10 @@ export class FinancialAssistApplicationDto {
   powerOfAttorneyDocs: CommonImage[] = [];
   attendantCareExpenseReceipts: CommonImage[] = [];
 
-  applicantClaimForAttendantCareExpense: boolean = false;
-  spouseClaimForAttendantCareExpense: boolean = false;
-  childClaimForAttendantCareExpense: boolean = false;
-  childClaimForAttendantCareExpenseCount: number = 1;
+  applicantClaimForAttendantCareExpense = false;
+  spouseClaimForAttendantCareExpense = false;
+  childClaimForAttendantCareExpense = false;
+  childClaimForAttendantCareExpenseCount = 1;
 
   attendantCareExpense: number;
 

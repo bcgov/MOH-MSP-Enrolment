@@ -1,4 +1,4 @@
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 
 /**
  * Base information that all MSP applications have

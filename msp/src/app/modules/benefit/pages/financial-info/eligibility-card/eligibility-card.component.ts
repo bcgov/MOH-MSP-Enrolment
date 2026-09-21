@@ -1,18 +1,19 @@
 import { Component, Input } from '@angular/core';
 import { BenefitApplication } from '../../../models/benefit-application.model';
 import { ATTENDANT_CARE_CLAIM_AMT } from '../../../../../constants';
+import enLang from './i18n/data/en/index';
 
 @Component({
+  standalone: false,
   selector: 'msp-benefit-eligibility-card',
   templateUrl: './eligibility-card.component.html',
   styleUrls: ['./eligibility-card.component.scss']
 })
 export class BenefitEligibilityCardComponent  {
 
-    lang = require('./i18n');
+    lang = enLang;
     @Input() application: BenefitApplication;
     @Input() editRouterLink: string;
-    constructor() {}
 
     get _mainDisabilityCredit(): number {
         return this.application.applicantDisabilityCredit;
@@ -44,7 +45,7 @@ export class BenefitEligibilityCardComponent  {
     }
 
     get childClaimForAttendantCareExpenseAmt(): number {
-        if (!!this.application.childClaimForAttendantCareExpense) {
+        if (this.application.childClaimForAttendantCareExpense) {
             return this.application.childClaimForAttendantCareExpenseCount * ATTENDANT_CARE_CLAIM_AMT;
         } else {
             return 0;

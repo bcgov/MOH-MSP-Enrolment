@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { Route } from '@angular/compiler/src/core';
-import { Router, NavigationStart } from '@angular/router';
+import { Route, Router, NavigationStart } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { MspDataService } from 'app/services/msp-data.service';
+import { FinancialAssistApplication } from '../models/financial-assist-application.model';
 import { AssistTransformService } from './assist-transform.service';
 import { ApiSendService } from 'app/modules/assistance/services/api-send.service';
 import { ROUTES_ASSIST } from '../models/assist-route-constants';
@@ -16,13 +16,13 @@ import { MspLogService } from 'app/services/log.service';
 })
 export class AssistStateService {
 
-  finAssistApp = this.dataSvc.finAssistApp;
+  finAssistApp: FinancialAssistApplication;
   touched: Subject<boolean> = new Subject<boolean>();
-  index: BehaviorSubject<number> = new BehaviorSubject(null);
+  index = new BehaviorSubject<number>(null);
 
 
-  success$: BehaviorSubject<any> = new BehaviorSubject(null);
-  failure$: BehaviorSubject<any> = new BehaviorSubject(null);
+  success$ = new BehaviorSubject<any>(null);
+  failure$ = new BehaviorSubject<any>(null);
   submitted = false; // Do we need?
   response: any;
 
@@ -34,6 +34,7 @@ export class AssistStateService {
     private api: ApiSendService,
     private logService: MspLogService
   ) {
+    this.finAssistApp = this.dataSvc.finAssistApp;
     this.router.events
       .pipe(filter(event => event instanceof NavigationStart))
       .subscribe((obs: any) => {
@@ -119,9 +120,12 @@ export class AssistStateService {
       const res = await call.toPromise();
       this.response = res;
       const isSuccess =  this.response.op_return_code === 'SUCCESS';
-      isSuccess
-        ? (this.dataSvc.removeFinAssistApplication(), this.success$.next(res))
-        : this.failure$.next(res);
+      if (isSuccess) {
+        this.dataSvc.removeFinAssistApplication();
+        this.success$.next(res);
+      } else {
+        this.failure$.next(res);
+      }
       return res;
     } catch (err) {
       devOnlyConsoleLog('Error: ', err);

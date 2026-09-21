@@ -18,7 +18,8 @@
           <common-button
             [label]="'Add Spouse'"
             [disabled]="(showAddSpouse || showUpdateSpouse)"
-            [buttonType]="'btn btn-primary btn-block'"
+            [buttonType]="'primary'"
+            classNames="btn-block"
             (btnClick)='addSpouse()'>
           </common-button>
         </div>
@@ -26,7 +27,8 @@
           <common-button
             [label]="'Remove Spouse'"
             [disabled]="(showRemoveSpouse || showUpdateSpouse)"
-            [buttonType]="'btn btn-primary btn-block'"
+            [buttonType]="'primary'"
+            classNames="btn-block"
             (btnClick)='removeSpouse()'>
           </common-button>
         </div>
@@ -34,7 +36,8 @@
           <common-button
             [label]="'Update Spouse'"
             [disabled]="(showAddSpouse || showUpdateSpouse || showRemoveSpouse)"
-            [buttonType]="'btn btn-primary btn-block'"
+            [buttonType]="'primary'"
+            classNames="btn-block"
             (btnClick)='updateSpouse()'>
           </common-button>
         </div>
@@ -104,7 +107,8 @@
             <common-button
               [label]="'Add Spouse'"
               [disabled]="(showAddSpouse || showUpdateSpouse)"
-              [buttonType]="'btn btn-primary btn-block'"
+              [buttonType]="'primary'"
+              classNames="btn-block"
               (btnClick)='addSpouse()'>
             </common-button>
           </div>
@@ -112,7 +116,8 @@
             <common-button
               [label]="'Remove Spouse'"
               [disabled]="(showRemoveSpouse || showUpdateSpouse)"
-              [buttonType]="'btn btn-primary btn-block'"
+              [buttonType]="'primary'"
+              classNames="btn-block"
               (btnClick)='removeSpouse()'>
             </common-button>
           </div>
@@ -120,7 +125,8 @@
             <common-button
               [label]="'Update Spouse'"
               [disabled]="(showAddSpouse || showUpdateSpouse || showRemoveSpouse)"
-              [buttonType]="'btn btn-primary btn-block'"
+              [buttonType]="'primary'"
+              classNames="btn-block"
               (btnClick)='updateSpouse()'>
             </common-button>
           </div>

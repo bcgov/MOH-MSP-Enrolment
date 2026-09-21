@@ -1,6 +1,10 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpHeaders,
+  HttpErrorResponse,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import {
   AccountChangeAccountHolderFactory,
   AccountChangeAccountHolderType,
@@ -56,10 +60,9 @@ import {
   OperationActionType as OperationActionTypeEnum,
   MspPerson,
 } from '../components/msp/model/msp-person.model';
-import { Address, CommonImage } from 'moh-common-lib';
+import { Address, CommonImage } from 'moh-common-lib-angular';
 import { MspLogService } from './log.service';
 import { MspMaintenanceService } from './msp-maintenance.service';
-import { Response } from '@angular/http';
 import { ISpaEnvResponse } from '../components/msp/model/spa-env-response.interface';
 import { environment } from '../../environments/environment';
 import {
@@ -69,8 +72,7 @@ import {
 import { Relationship } from '../models/relationship.enum';
 import { format } from 'date-fns';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
-
-const jxon = require('jxon/jxon');
+import jxon from 'jxon/jxon';
 
 @Injectable()
 export class MspApiService {
@@ -92,7 +94,7 @@ export class MspApiService {
         return this.maintenanceService
           .checkMaintenance()
           .subscribe((response) => {
-            const spaResponse = <ISpaEnvResponse>response;
+            const spaResponse = response as ISpaEnvResponse;
             if (
               spaResponse &&
               spaResponse.SPA_ENV_MSP_MAINTENANCE_FLAG &&
@@ -137,8 +139,7 @@ export class MspApiService {
                     documentModel,
                     convertedAppXml
                   ).then(
-                    // tslint:disable-next-line:no-shadowed-variable
-                    (response: ResponseType) => {
+                                       (response: ResponseType) => {
                       // Add reference number
                       app.referenceNumber = response.referenceNumber.toString();
 
@@ -146,12 +147,12 @@ export class MspApiService {
                       return resolve(app);
                     },
 
-                    (error: Response | any) => {
+                    (error: HttpErrorResponse | any) => {
                       return reject(error);
                     }
                   );
                 })
-                .catch((error: Response | any) => {
+                .catch((error: HttpErrorResponse | any) => {
                   devOnlyConsoleLog('Error sending all attachments: ', error);
                   this.logService.log(
                     {
@@ -190,7 +191,7 @@ export class MspApiService {
       }
 
       // Make a list of promises for each attachment
-      const attachmentPromises = new Array<Promise<ResponseType>>();
+      const attachmentPromises = new Array<Promise<void>>();
       for (const attachment of attachments) {
         attachmentPromises.push(
           this.sendAttachment(token, applicationUUID, attachment)
@@ -209,7 +210,7 @@ export class MspApiService {
             );
             return resolve();
           },
-          (error: Response | any) => {
+          (error: HttpErrorResponse | any) => {
             this.logService.log(
               {
                 text: 'API - Attachments - Send All Error ',
@@ -221,7 +222,7 @@ export class MspApiService {
             return reject(error);
           }
         )
-        .catch((error: Response | any) => {
+        .catch((error: HttpErrorResponse | any) => {
           this.logService.log(
             {
               text: 'API - Attachments - Send All Error ',
@@ -239,8 +240,8 @@ export class MspApiService {
     token: string,
     applicationUUID: string,
     attachment: CommonImage
-  ): Promise<ResponseType> {
-    return new Promise<ResponseType>((resolve, reject) => {
+  ): Promise<void> {
+    return new Promise<void>((resolve, reject) => {
       /*
              Create URL
              /{applicationUUID}/attachment/{attachmentUUID}
@@ -272,10 +273,10 @@ export class MspApiService {
         'Access-Control-Allow-Origin': '*',
         'X-Authorization': 'Bearer ' + token,
       });
-      const options = { headers: headers, responseType: 'text' as 'text' };
+      const options = { headers: headers, responseType: 'text' as const };
 
       const binary = atob(attachment.fileContent.split(',')[1]);
-      const array = <any>[];
+      const array = [] as any;
       for (let i = 0; i < binary.length; i++) {
         array.push(binary.charCodeAt(i));
       }
@@ -296,7 +297,7 @@ export class MspApiService {
             );
             return resolve();
           },
-          (error: Response | any) => {
+          (error: HttpErrorResponse | any) => {
             devOnlyConsoleLog('Error sending individual attachment: ', error);
             this.logService.log(
               {
@@ -308,7 +309,7 @@ export class MspApiService {
             return reject(error);
           }
         )
-        .catch((error: Response | any) => {
+        .catch((error: HttpErrorResponse | any) => {
           devOnlyConsoleLog('Error sending individual attachment: ', error);
           this.logService.log(
             {
@@ -330,8 +331,7 @@ export class MspApiService {
    */
   private sendDocument(
     token: string,
-    // tslint:disable-next-line:no-shadowed-variable
-    document: document,
+       document: document,
     documentXmlString: string
   ): Promise<ResponseType> {
     return new Promise<ResponseType>((resolve, reject) => {
@@ -351,7 +351,7 @@ export class MspApiService {
         'Response-Type': 'application/xml',
         'X-Authorization': 'Bearer ' + token,
       });
-      const options = { headers: headers, responseType: 'text' as 'text' };
+      const options = { headers: headers, responseType: 'text' as const };
 
       // Convert doc to XML
       // let documentXmlString = this.toXmlString(document);
@@ -485,9 +485,7 @@ export class MspApiService {
       );
     }
     if (from.applicant.gender != null) {
-      to.application.assistanceApplication.applicant.gender = <GenderType>(
-        from.applicant.gender.toString()
-      );
+      to.application.assistanceApplication.applicant.gender = from.applicant.gender.toString() as GenderType;
     }
     if (from.powerOfAttorneyDocs && from.powerOfAttorneyDocs.length > 0) {
       to.application.assistanceApplication.applicant.attachmentUuids =
@@ -739,16 +737,14 @@ export class MspApiService {
   ): AccountChangeChildType {
     const to = AccountChangeChildTypeFactory.make();
 
-    to.operationAction = <OperationActionType>(
-      OperationActionTypeEnum[from.operationActionType]
-    );
+    to.operationAction = OperationActionTypeEnum[from.operationActionType] as OperationActionType;
 
     to.name = this.convertName(from);
     if (from.hasDob) {
       to.birthDate = format(from.dob, this.ISO8601DateFormat);
     }
     if (from.gender != null) {
-      to.gender = <GenderType>from.gender.toString();
+      to.gender = from.gender.toString() as GenderType;
     }
 
     if (from.previous_phn) {
@@ -1092,8 +1088,8 @@ export class MspApiService {
       );
     }
     if (from.applicant.gender != null) {
-      accountHolder.gender = <GenderType>{};
-      accountHolder.gender = <GenderType>from.applicant.gender.toString();
+      accountHolder.gender = {} as GenderType;
+      accountHolder.gender = from.applicant.gender.toString() as GenderType;
     } else {
       accountHolder.gender = 'M';
     }
@@ -1168,7 +1164,7 @@ export class MspApiService {
       to.birthDate = format(from.dob, this.ISO8601DateFormat);
     }
     if (from.gender != null) {
-      to.gender = <GenderType>from.gender.toString();
+      to.gender = from.gender.toString() as GenderType;
     }
 
     if (from.previous_phn) {

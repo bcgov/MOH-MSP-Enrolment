@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Address, AbstractHttpService, CommonImage } from 'moh-common-lib';
+import { Address, AbstractHttpService, CommonImage } from 'moh-common-lib-angular';
 import {
   AddressType,
   MSPApplicationSchema,
@@ -37,9 +37,9 @@ interface AttachmentRequestPartial {
 })
 export class BaseMspApiService extends AbstractHttpService {
   protected _headers: HttpHeaders = new HttpHeaders();
-  protected _application: string = '';
-  protected _programArea: string = 'enrolment';
-  protected _dpackage: string = '';
+  protected _application = '';
+  protected _programArea = 'enrolment';
+  protected _dpackage = '';
 
   suppBenefitResponse: ApiResponse;
 
@@ -86,7 +86,7 @@ export class BaseMspApiService extends AbstractHttpService {
     return new Promise<string[]>((resolve, reject) => {
       // Instantly resolve if no attachments
       if (!attachments || attachments.length < 1) {
-        resolve();
+        resolve([]);
       }
 
       // Make a list of promises for each attachment
@@ -226,7 +226,7 @@ export class BaseMspApiService extends AbstractHttpService {
   }
 
   // User must remember to set the application name for logging
-  protected handleError(_error: HttpErrorResponse) {
+  protected handleError(_error: HttpErrorResponse): Observable<never> {
     if (_error.error instanceof ErrorEvent) {
       //Client-side / network error occurred
       console.error(
@@ -248,7 +248,7 @@ export class BaseMspApiService extends AbstractHttpService {
     );
 
     // A user facing error message /could/ go here; we shouldn't log dev info through the throwError observable
-    return of(_error);
+    return of(_error) as unknown as Observable<never>;
   }
 
   private sendAttachment(
@@ -287,10 +287,10 @@ export class BaseMspApiService extends AbstractHttpService {
         'Access-Control-Allow-Origin': '*',
         'X-Authorization': 'Bearer ' + token,
       });
-      const options = { headers: headers, responseType: 'text' as 'text' };
+      const options = { headers: headers, responseType: 'text' as const };
 
       const binary = atob(attachment.fileContent.split(',')[1]);
-      const array = <any>[];
+      const array = [] as any;
 
       for (let i = 0; i < binary.length; i++) {
         array.push(binary.charCodeAt(i));

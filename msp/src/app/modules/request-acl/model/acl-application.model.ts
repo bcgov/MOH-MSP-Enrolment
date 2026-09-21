@@ -4,9 +4,6 @@ import { EnrolmentMembership } from './enrolment-membership.enum';
 
 export class AclApplication  extends BaseApplication {
 
-  // Agreement to collection notice
-  infoCollectionAgreement: boolean;
-
   accountHolderPhn: string;
   accountHolderDob: Date;
 

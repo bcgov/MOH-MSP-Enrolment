@@ -1,7 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedCoreModule } from 'moh-common-lib';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { AddressComponent, ButtonComponent, DateComponent, ErrorContainerComponent, FormActionBarComponent, PageFrameworkComponent, PageSectionComponent, RadioComponent, XiconButtonComponent } from 'moh-common-lib-angular';
 import { FormsModule } from '@angular/forms';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ChildInfoComponent } from './child-info.component';
 import { MspCoreModule } from '../../../msp-core/msp-core.module';
@@ -15,27 +14,21 @@ describe('ChildInfoComponent', () => {
   let component: ChildInfoComponent;
   let fixture: ComponentFixture<ChildInfoComponent>;
   const pageStateServiceStub = () => ({
-    setPageIncomplete: (str, arr) => ({})
+    setPageIncomplete: () => ({})
   });
   const enrolDataServiceStub = () => ({
     application: new EnrolApplication()
   });
 
-  beforeEach(async(() => {
-    const mspLogServiceStub = () => ({ log: () => {} });
+  beforeEach(waitForAsync(() => {
+    const mspLogServiceStub = () => ({ log: () => undefined });
     TestBed.configureTestingModule({
       declarations: [ ChildInfoComponent ],
       imports: [
-        SharedCoreModule,
         FormsModule,
         MspCoreModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
         RouterTestingModule,
-        HttpClientTestingModule
-      ],
+        HttpClientTestingModule, AddressComponent, ButtonComponent, DateComponent, ErrorContainerComponent, FormActionBarComponent, PageFrameworkComponent, PageSectionComponent, RadioComponent, XiconButtonComponent],
       providers: [
         { provide: PageStateService, useFactory: pageStateServiceStub },
         { provide: EnrolDataService, useFactory: enrolDataServiceStub },

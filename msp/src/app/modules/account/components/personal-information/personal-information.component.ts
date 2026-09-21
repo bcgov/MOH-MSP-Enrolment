@@ -1,5 +1,5 @@
 import { Component, forwardRef, Input, Output, EventEmitter, OnInit, DoCheck } from '@angular/core';
-import { Base, ErrorMessage } from 'moh-common-lib';
+import { Base, ErrorMessage } from 'moh-common-lib-angular';
 import { ControlContainer, NgForm } from '@angular/forms';
 import { Gender } from '../../../../models/gender.enum';
 import { Relationship } from '../../../../models/relationship.enum';
@@ -24,6 +24,7 @@ export interface IPersonalInformation {
 }
 
 @Component({
+  standalone: false,
   selector: 'account-personal-information',
   templateUrl: './personal-information.component.html',
   styleUrls: ['./personal-information.component.scss'],
@@ -38,7 +39,7 @@ export interface IPersonalInformation {
 export class AccountPersonalInformationComponent<T extends IPersonalInformation> extends Base
   implements OnInit , DoCheck {
 
-  @Input() disabled: boolean = false;
+  @Input() disabled = false;
 
   // Duplicate checking
   @Input() phnList: string[] = [];
@@ -47,7 +48,7 @@ export class AccountPersonalInformationComponent<T extends IPersonalInformation>
   @Input() person: T;
   @Output() personChange: EventEmitter<T> = new EventEmitter<T>();
 
-  dobError: boolean = false;
+  dobError = false;
 
   genderLabels = [
     {'label': 'Male', 'value': Gender.Male},
@@ -58,11 +59,11 @@ export class AccountPersonalInformationComponent<T extends IPersonalInformation>
   dobStartRange: Date = null;
   dobEndRange: Date = null;
 
-  sinErrorMsg: ErrorMessage = {
+  sinErrorMsg: ErrorMessage = { required: '{label} is required.',
     duplicate: 'This Social Insurance Number (SIN) was already used for another family member. Please provide the SIN that is listed on the family member\'s SIN card/letter.'
   };
 
-  phnErrorMsg: ErrorMessage = {
+  phnErrorMsg: ErrorMessage = { required: '{label} is required.',
     duplicate: 'This Personal Health Number (PHN) was already used for another family member. Please provide the PHN that is listed on the family member\'s PHN card/letter.'
   };
 
@@ -178,29 +179,29 @@ export class AccountPersonalInformationComponent<T extends IPersonalInformation>
   private _setErrorData() {
     // Applicant should be 16 years or older
     if (this.person.relationship === Relationship.Applicant) {
-      this.dobErrorMsg = {invalidRange: 'An applicant must be 16 years or older.'};
+      this.dobErrorMsg = {required: '{label} is required.', invalidRange: 'An applicant must be 16 years or older.'};
       this.dobEndRange = subYears( this._today, 16 );
     }
     // Child is between 0 to 18 years old
     else if (this.person.relationship === Relationship.ChildUnder19) {
-      this.dobErrorMsg = {invalidRange: 'A child must be less than 19 years old.'};
+      this.dobErrorMsg = {required: '{label} is required.', invalidRange: 'A child must be less than 19 years old.'};
       this.dobStartRange = addDays(subYears( this._today, 19), 1);
       this.dobEndRange = this._today;
     }
     // Child is between 18 to 24 years old (or dependent post-secondary student)
     else if (this.person.relationship === Relationship.Child18To24) {
       if (this.person.dateOfBirth > this._today) {
-        this.dobErrorMsg = {invalidRange: 'Invalid Birthdate.'};
+        this.dobErrorMsg = {required: '{label} is required.', invalidRange: 'Invalid Birthdate.'};
       }
       else {
-        this.dobErrorMsg = {invalidRange: 'A post-secondary student must be between 18 and 24 years.'};
+        this.dobErrorMsg = {required: '{label} is required.', invalidRange: 'A post-secondary student must be between 18 and 24 years.'};
         this.dobStartRange = addDays(subYears( this._today, 25), 1);
         this.dobEndRange = subYears( this._today, 18 );
       }
     }
     // Child is above 25 years old
     else if (this.person.relationship === Relationship.Child) {
-      this.dobErrorMsg = {invalidRange: 'A child must be less than 25 years old.'};
+      this.dobErrorMsg = {required: '{label} is required.', invalidRange: 'A child must be less than 25 years old.'};
       this.dobStartRange = addDays(subYears( this._today, 25), 1);
       this.dobEndRange = this._today;
     }

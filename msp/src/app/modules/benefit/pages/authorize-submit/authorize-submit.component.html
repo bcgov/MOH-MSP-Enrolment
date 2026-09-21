@@ -1,7 +1,7 @@
 <common-page-framework layout="blank">
   
 <h1> <strong>Authorize and submit your application</strong> </h1> <br> 
-<p [innerHTML]="lang('./en/index.js').declaration"></p> <br><br>
+<p [innerHTML]="lang.declaration"></p> <br><br>
 
 <form #form="ngForm">
   <div>
@@ -12,7 +12,7 @@
              [(ngModel)] = "application.authorizedByApplicant"
              (ngModelChange) = "deleteAllDocs($event)"
              id="firstPersonAuthorize" type="checkbox">
-      <label class="form-check-label" for="firstPersonAuthorize" [innerHTML]="lang('./en/index.js').agreeLabel"></label>
+      <label class="form-check-label" for="firstPersonAuthorize" [innerHTML]="lang.agreeLabel"></label>
     </div>
  
     <div *ngIf="application.hasSpouseOrCommonLaw">
@@ -23,7 +23,7 @@
                [(ngModel)] = "application.authorizedBySpouse"
                (ngModelChange) = "deleteAllDocs($event)"
                id="secondPersonAuthorize" type="checkbox">
-        <label class="form-check-label" for="secondPersonAuthorize" [innerHTML]="lang('./en/index.js').agreeLabel"></label>
+        <label class="form-check-label" for="secondPersonAuthorize" [innerHTML]="lang.agreeLabel"></label>
       </div>
     </div>
   </div>
@@ -104,13 +104,12 @@
   <button
   [disabled]="!canContinue"
   class="btn btn-primary" type="submit" (click)="continue()"
-  [innerHTML]="lang('./en/index.js').continueButton"></button>
+  [innerHTML]="lang.continueButton"></button>
   <msp-cancel></msp-cancel> -->
   
 </common-page-framework>
 
-<common-form-action-bar [submitLabel]="lang('./en/index.js').continueButton"
+<common-form-action-bar [submitLabel]="lang.continueButton"
           [canContinue]="canContinue"
-          (btnClick)="continue()"
-          widthOption='extra-width-mobile-only'>
+          (btnClick)="continue()">
 </common-form-action-bar>

@@ -3,8 +3,8 @@ import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
-import { ContainerService } from 'moh-common-lib';
-import { PageStateService } from 'moh-common-lib';
+import { ContainerService } from 'moh-common-lib-angular';
+import { PageStateService } from 'moh-common-lib-angular';
 import { ProcessService } from '../../../../services/process.service';
 import { AccountPersonalInfoComponent } from './personal-info.component';
 
@@ -30,7 +30,7 @@ describe('AccountPersonalInfoComponent', () => {
     const pageStateServiceStub = () => ({});
     const processServiceStub = () => ({
       getStepNumber: () => 3,
-      setStep: (processStepNum, arg) => ({}),
+      setStep: () => ({}),
     });
 
     TestBed.configureTestingModule({

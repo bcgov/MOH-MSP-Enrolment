@@ -4,16 +4,13 @@ import { FormsModule } from '@angular/forms';
 import { AssistancePersonalInfoComponent } from './personal-info.component';
 import { MspDataService } from '../../../../services/msp-data.service';
 import { CompletenessCheckService } from '../../../../services/completeness-check.service';
-import {
-  LocalStorageModule
-} from 'angular-2-local-storage';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { MspLogService } from '../../../../services/log.service';
 import { HttpClientModule } from '@angular/common/http';
-import { TextMaskModule } from 'angular2-text-mask';
 import { AssistCraDocumentsComponent } from '../../components/assist-cra-documents/assist-cra-documents.component';
 import { MspCoreModule } from '../../../msp-core/msp-core.module';
+import { PageSectionComponent } from 'moh-common-lib-angular';
 
 describe('AssistancePersonalInfoComponent Test', () => {
   beforeEach(() => {
@@ -23,17 +20,13 @@ describe('AssistancePersonalInfoComponent Test', () => {
         AssistCraDocumentsComponent
       ],
       imports: [
-        TextMaskModule,
         FormsModule,
         TypeaheadModule,
         ModalModule.forRoot(),
         HttpClientModule,
         RouterTestingModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
-        MspCoreModule
+        MspCoreModule,
+        PageSectionComponent
       ],
       providers: [MspDataService, CompletenessCheckService, MspLogService]
     });

@@ -8,6 +8,7 @@ import { SpaEnvService } from '../../../../services/spa-env.service';
 import { environment } from 'environments/environment';
 
 @Component({
+  standalone: false,
   templateUrl: './address.component.html'
 })
 export class EnrolAddressComponent extends EnrolForm {

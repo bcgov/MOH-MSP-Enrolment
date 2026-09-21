@@ -12,15 +12,15 @@ describe('BenefitSendingComponent', () => {
   let component: BenefitSendingComponent;
   let fixture: ComponentFixture<BenefitSendingComponent>;
   beforeEach(() => {
-    const routerStub = () => ({ url: {}, navigate: (array, object) => ({}) });
-    const mspLogServiceStub = () => ({ log: (object, arg) => ({}) });
+    const routerStub = () => ({ url: {}, navigate: () => ({}) });
+    const mspLogServiceStub = () => ({ log: () => ({}) });
     const mspBenefitDataServiceStub = () => ({
       benefitApp: { isCutoffDate: {}, cutoffYear: {}, taxYear: {} },
       removeMspBenefitApp: () => ({}),
       saveBenefitApplication: () => ({}),
     });
     const mspApiBenefitServiceStub = () => ({
-      sendRequest: (application) => ({ then: () => ({}) }),
+      sendRequest: () => ({ then: () => ({}) }),
     });
     TestBed.configureTestingModule({
       imports: [RouterTestingModule],

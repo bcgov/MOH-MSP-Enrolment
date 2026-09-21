@@ -1,6 +1,5 @@
-import {Component, Injectable, ViewChild, AfterViewInit} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild, AfterViewInit} from '@angular/core';
 import { Router } from '@angular/router';
-import * as _ from 'lodash';
 import { ROUTES_ENROL } from '../../models/enrol-route-constants';
 import { MspConsentModalComponent } from '../../../msp-core/components/consent-modal/consent-modal.component';
 import { PageStateService } from '../../../../services/page-state.service';
@@ -10,16 +9,17 @@ import { Enrollee } from '../../models/enrollee';
 import { EnrolApplication } from '../../models/enrol-application';
 
 @Component({
+  standalone: false,
   templateUrl: './prepare.component.html'
 })
-@Injectable()
 export class PrepareComponent extends EnrolForm implements AfterViewInit {
 
-  @ViewChild('mspConsentModal') mspConsentModal: MspConsentModalComponent;
+  @ViewChild('mspConsentModal', { static: true }) mspConsentModal: MspConsentModalComponent;
 
   constructor( protected enrolDataService: EnrolDataService,
                protected pageStateService: PageStateService,
-               protected router: Router ) {
+               protected router: Router,
+               private changeDetectorRef: ChangeDetectorRef ) {
     super( enrolDataService, pageStateService, router );
   }
 
@@ -28,6 +28,11 @@ export class PrepareComponent extends EnrolForm implements AfterViewInit {
 
     if (!this.mspApplication.infoCollectionAgreement) {
       this.mspConsentModal.showFullSizeView();
+      // showFullSizeView() opens the modal after its own first change-detection
+      // pass already rendered closed (display: none), so [style.display] would
+      // flip to 'block' during Angular's checkNoChanges pass. Re-run change
+      // detection now so it settles before that comparison happens.
+      this.changeDetectorRef.detectChanges();
     }
   }
 

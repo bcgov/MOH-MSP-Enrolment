@@ -6,26 +6,19 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { MspAccountApp } from '../models/account.model';
-import {
-  AttachmentType,
-  _ApplicationTypeNameSpace,
-} from '../../msp-core/api-model/applicationTypes';
+import { AttachmentType } from '../../msp-core/api-model/applicationTypes';
 import { environment } from '../../../../environments/environment';
-import * as moment from 'moment';
-import { AbstractHttpService, CommonImage } from 'moh-common-lib';
+import { AbstractHttpService, CommonImage } from 'moh-common-lib-angular';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
-import { Response } from '@angular/http';
 import { MspApiService } from '../../../services/msp-api.service';
 import { AccountMaintenanceApiResponse } from '../models/account-response.interface';
 import { SchemaService } from 'app/services/schema.service';
 import {
   AccountChangeAccountHolderFactory,
-  AccountChangeApplicationTypeFactory,
   AccountChangeAccountHolderType,
   AccountChangeChildType,
   AccountChangeChildTypeFactory,
-  AccountChangeChildrenFactory,
   AccountChangeSpouseType,
   AccountChangeSpouseTypeFactory,
   AccountChangeSpousesTypeFactory,
@@ -40,7 +33,7 @@ import {
   OperationActionType as OperationActionTypeEnum,
   MspPerson,
 } from '../../../components/msp/model/msp-person.model';
-import { Address } from 'moh-common-lib';
+import { Address } from 'moh-common-lib-angular';
 import {
   AttachmentTypeFactory,
   AttachmentsType,
@@ -64,7 +57,6 @@ import {
   StatusInCanada,
   CanadianStatusReason,
 } from '../../msp-core/models/canadian-status.enum';
-import { Relationship } from '../../../models/relationship.enum';
 import { ApiResponse } from 'app/models/api-response.interface';
 import { format } from 'date-fns';
 import { SupportDocumentList } from '../../msp-core/models/support-documents.enum';
@@ -134,7 +126,7 @@ export class MspApiAccountService extends AbstractHttpService {
           app.uuid,
           app.getAllImages()
         )
-          .then((attachmentResponse) => {
+          .then(() => {
             // TODO - Likely have to store all the responses for image uploads, so we can use those UUIDs with our application upload
             // unless we can just use our pre-uploaded ones? though that has potential for missing records.
             // once all attachments are done we can sendApplication in the data
@@ -152,7 +144,7 @@ export class MspApiAccountService extends AbstractHttpService {
               return resolve(response);
             });
           })
-          .catch((error: Response | any) => {
+          .catch((error: HttpErrorResponse | any) => {
             // TODO - Is this error correct? What if sendApplication() errors, would it be caught in this .catch()?
             this.logService.log(
               {
@@ -249,7 +241,7 @@ export class MspApiAccountService extends AbstractHttpService {
     return new Promise<string[]>((resolve, reject) => {
       // Instantly resolve if no attachments
       if (!attachments || attachments.length < 1) {
-        resolve();
+        resolve([]);
       }
 
       // Make a list of promises for each attachment
@@ -273,7 +265,7 @@ export class MspApiAccountService extends AbstractHttpService {
             );
             return resolve(responses);
           },
-          (error: Response | any) => {
+          (error: HttpErrorResponse | any) => {
             this.logService.log(
               {
                 text: 'Account - Attachments - Send All Error ',
@@ -284,7 +276,7 @@ export class MspApiAccountService extends AbstractHttpService {
             return reject();
           }
         )
-        .catch((error: Response | any) => {
+        .catch((error: HttpErrorResponse | any) => {
           this.logService.log(
             {
               text: 'Account - Attachments - Send All Error ',
@@ -336,10 +328,10 @@ export class MspApiAccountService extends AbstractHttpService {
         'Access-Control-Allow-Origin': '*',
         'X-Authorization': 'Bearer ' + token,
       });
-      const options = { headers: headers, responseType: 'text' as 'text' };
+      const options = { headers: headers, responseType: 'text' as const };
 
       const binary = atob(attachment.fileContent.split(',')[1]);
-      const array = <any>[];
+      const array = [] as any;
       for (let i = 0; i < binary.length; i++) {
         array.push(binary.charCodeAt(i));
       }
@@ -361,7 +353,7 @@ export class MspApiAccountService extends AbstractHttpService {
             );
             return resolve(response);
           },
-          (error: Response | any) => {
+          (error: HttpErrorResponse | any) => {
             this.logService.log(
               {
                 text: 'Account - Attachment - Send Individual Error ',
@@ -372,7 +364,7 @@ export class MspApiAccountService extends AbstractHttpService {
             return reject(error);
           }
         )
-        .catch((error: Response | any) => {
+        .catch((error: HttpErrorResponse | any) => {
           this.logService.log(
             {
               text: 'Account - Attachment - Send Individual Error ',
@@ -386,7 +378,7 @@ export class MspApiAccountService extends AbstractHttpService {
     });
   }
 
-  protected handleError(error: HttpErrorResponse) {
+  protected handleError(error: HttpErrorResponse): Observable<never> {
     if (error.error instanceof ErrorEvent) {
       //Client-side / network error occurred
       console.error('MSP Supp Benefit API error: ', error.error.message);
@@ -406,7 +398,7 @@ export class MspApiAccountService extends AbstractHttpService {
     );
 
     // A user facing error message /could/ go here; we shouldn't log dev info through the throwError observable
-    return of(error);
+    return of(error) as unknown as Observable<never>;
   }
 
   // This method is used to convert the response from user into a JSON object
@@ -521,7 +513,7 @@ export class MspApiAccountService extends AbstractHttpService {
 
     // Gender
     if (from.gender != null) {
-      to.gender = <GenderType>from.gender.toString();
+      to.gender = from.gender.toString() as GenderType;
     }
 
     // PHN
@@ -702,9 +694,7 @@ export class MspApiAccountService extends AbstractHttpService {
   ): AccountChangeChildType {
     const to = AccountChangeChildTypeFactory.make();
 
-    to.operationAction = <OperationActionType>(
-      OperationActionTypeEnum[from.operationActionType]
-    );
+    to.operationAction = OperationActionTypeEnum[from.operationActionType] as OperationActionType;
     to.name = this.convertName(from);
 
     if (from.hasDob) {
@@ -712,7 +702,7 @@ export class MspApiAccountService extends AbstractHttpService {
     }
 
     if (from.gender != null) {
-      to.gender = <GenderType>from.gender.toString();
+      to.gender = from.gender.toString() as GenderType;
     }
 
     if (from.previous_phn) {
@@ -1232,7 +1222,7 @@ export class MspApiAccountService extends AbstractHttpService {
 
     // Gender
     if (from.applicant.gender != null) {
-      accountHolder.gender = <GenderType>from.applicant.gender.toString();
+      accountHolder.gender = from.applicant.gender.toString() as GenderType;
     }
 
     // Status

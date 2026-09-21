@@ -47,7 +47,6 @@ export const accountPageRoutes: Routes = [
   },
   {
     path: '',
-    canActivate: [],
     redirectTo: ACCOUNT_PAGES.HOME.path,
     pathMatch: 'full',
   },

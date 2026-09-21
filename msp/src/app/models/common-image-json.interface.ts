@@ -1,4 +1,4 @@
-import { CommonAttachmentJson } from 'moh-common-lib';
+import { CommonAttachmentJson } from 'moh-common-lib-angular';
 
 export interface CommonImageJSON<T> extends CommonAttachmentJson<T> {
   uuid: string;

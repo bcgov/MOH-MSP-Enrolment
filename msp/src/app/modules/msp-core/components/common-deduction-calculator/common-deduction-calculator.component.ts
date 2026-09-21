@@ -1,4 +1,4 @@
-import {Component, DoCheck, EventEmitter, Input, Output} from '@angular/core';
+import {Component, DoCheck, EventEmitter, Input, Output, OnInit} from '@angular/core';
 import {Router} from '@angular/router';
 import * as _ from 'lodash';
 import {Eligibility} from '../../../assistance/models/eligibility.model';
@@ -6,15 +6,16 @@ import {ProcessService} from '../../../../services/process.service';
 import {MspBenefitDataService} from '../../../benefit/services/msp-benefit-data.service';
 import {BenefitApplication} from '../../../benefit/models/benefit-application.model';
 import { ATTENDANT_CARE_CLAIM_AMT } from '../../../../constants';
-import * as moment from 'moment';
+import moment from 'moment';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 
 @Component({
+  standalone: false,
   selector: 'msp-common-deduction-calculator',
   templateUrl: './common-deduction-calculator.component.html',
   styleUrls: ['./common-deduction-calculator.component.scss']
 })
-export class CommonDeductionCalculatorComponent implements DoCheck {
+export class CommonDeductionCalculatorComponent implements DoCheck, OnInit {
 
 
     static ProcessStepNum = 0;
@@ -24,10 +25,10 @@ export class CommonDeductionCalculatorComponent implements DoCheck {
     @Input() totalHouseholdIncomeLabel: string;
     @Input() continueButtonLabel: string;
     @Input() NotQualifyText: string;
-    @Input() disableContinue: boolean = false;
-    @Output() updateQualify: EventEmitter<Boolean> = new EventEmitter<Boolean>();
-    @Output() taxYearInfoMissing: EventEmitter<Boolean> = new EventEmitter<Boolean>();
-    @Output() continue: EventEmitter<Boolean> = new EventEmitter<Boolean>();
+    @Input() disableContinue = false;
+    @Output() updateQualify: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() taxYearInfoMissing: EventEmitter<boolean> = new EventEmitter<boolean>();
+    @Output() continue: EventEmitter<boolean> = new EventEmitter<boolean>();
 
     @Input() qualificationThreshhold: number;
     total: number;
@@ -48,16 +49,16 @@ export class CommonDeductionCalculatorComponent implements DoCheck {
     }
 
     get ageOver65Amt(): number {
-        return !!this.application.ageOver65 ? 3000 : 0;
+        return this.application.ageOver65 ? 3000 : 0;
     }
 
     get spouseAmt(): number {
         //return !!this.application.hasSpouseOrCommonLaw ? 3000 : 0;
-        return !!this.application.hasSpouse ? 3000 : 0;
+        return this.application.hasSpouse ? 3000 : 0;
     }
 
     get spouseAgeOver65Amt(): number {
-        return !!this.application.spouseAgeOver65 ? 3000 : 0;
+        return this.application.spouseAgeOver65 ? 3000 : 0;
     }
 
     /**
@@ -75,28 +76,28 @@ export class CommonDeductionCalculatorComponent implements DoCheck {
     }
 
     get childCareExpense(): number {
-        return !!this.application.claimedChildCareExpense_line214 ? (this.application.claimedChildCareExpense_line214 / 2) * -1 : 0;
+        return this.application.claimedChildCareExpense_line214 ? (this.application.claimedChildCareExpense_line214 / 2) * -1 : 0;
     }
 
     get uCCBenefitAmt(): number {
-        return !!this.application.reportedUCCBenefit_line117 ? this.application.reportedUCCBenefit_line117 : 0;
+        return this.application.reportedUCCBenefit_line117 ? this.application.reportedUCCBenefit_line117 : 0;
     }
 
     get disabilityCreditAmt(): number {
-        const amt = !!this.application.applicantEligibleForDisabilityCredit ? 3000 : 0;
+        const amt = this.application.applicantEligibleForDisabilityCredit ? 3000 : 0;
         this.application.applicantDisabilityCredit = amt;
         return amt;
     }
 
     get spouseDisabilityCreditAmt(): number {
-        const amt = !!this.application.spouseEligibleForDisabilityCredit ? 3000 : 0;
+        const amt = this.application.spouseEligibleForDisabilityCredit ? 3000 : 0;
         this.application.spouseDisabilityCredit = amt;
         return amt;
     }
 
     get childrenDisabilityCreditAmt(): number {
         const m = this.application.childWithDisabilityCount;
-        const amt = !!m ? 3000 * m : 0;
+        const amt = m ? 3000 * m : 0;
         this.application.childrenDisabilityCredit = amt;
         return amt;
     }
@@ -149,7 +150,9 @@ export class CommonDeductionCalculatorComponent implements DoCheck {
 
     get adjustedIncome(): number {
         let adjusted: number = parseFloat(this.totalHouseholdIncome) - this.totalDeductions;
-        adjusted < 0 ? adjusted = 0 : adjusted = adjusted;
+        if (adjusted < 0) {
+          adjusted = 0;
+        }
 
         this.application.eligibility.adjustedNetIncome = adjusted;
         this.application.eligibility.totalDeductions = this.totalDeductions;
@@ -413,7 +416,7 @@ export class CommonDeductionCalculatorComponent implements DoCheck {
             return this.application.taxYear.toString();
         } else return '';
     }
-    get nextCalendarYear(): Number {
+    get nextCalendarYear(): number {
         return moment().year() + 1;
     }
 

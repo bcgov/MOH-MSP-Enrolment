@@ -7,12 +7,7 @@ import {
 } from '@angular/router';
 import { Observable } from 'rxjs';
 import { MspDataService } from './msp-data.service';
-import {
-  Container,
-  CheckCompleteBaseService,
-  RouteGuardService,
-  AbstractPgCheckService,
-} from 'moh-common-lib';
+import { CheckCompleteBaseService } from 'moh-common-lib-angular';
 import { environment } from 'environments/environment';
 
 export class ProcessUrls {
@@ -33,7 +28,7 @@ export class Process {
 
 export class ProcessStep {
   route: string;
-  complete: boolean = false;
+  complete = false;
 
   constructor(route: string) {
     this.route = route;
@@ -65,7 +60,7 @@ export class ProcessService
     // return null;
   }
 
-  getNextStep(stepNumber: number): String {
+  getNextStep(stepNumber: number): string {
     const process = this.process;
     return process.processSteps[stepNumber + 1].route;
   }
@@ -131,7 +126,7 @@ export class ProcessService
         //Force validation to trigger by causing blur
         //We wrap this in a try/catch, because it's theoretically possible the last activeElement is not an HTML element, but an SVG.
         try {
-          (<HTMLElement>document.activeElement).blur(); //works?
+          (document.activeElement as HTMLElement).blur(); //works?
         } catch (e) {
           console.error(e);
         }

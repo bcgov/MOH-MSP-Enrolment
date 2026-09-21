@@ -17,6 +17,5 @@ export interface _number extends BaseType { content: number; }
 
 export interface _string extends BaseType { content: string; }
 
-export interface document extends BaseType {
-}
-export var document: document;
+export type document = BaseType;
+export let document: document;

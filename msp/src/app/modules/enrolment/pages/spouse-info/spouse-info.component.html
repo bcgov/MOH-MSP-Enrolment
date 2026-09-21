@@ -10,7 +10,7 @@
     <div class="row">
       <div class="col-sm-8">
         <common-button label="Add Spouse"
-                      buttonType="btn btn-primary"
+                      buttonType="primary"
                       (btnClick)="addSpouse()"
                       [disabled]="hasSpouse">
         </common-button>
@@ -86,7 +86,6 @@
   </form>
 </common-page-framework>
 <common-form-action-bar [submitLabel]="spouse? 'Continue':'No Spouse'"
-                        widthOption='extra-width-mobile-only'
                         [defaultColor]='false'
                         (btnClick)="continue()">
 </common-form-action-bar>

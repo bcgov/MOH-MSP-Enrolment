@@ -2,7 +2,7 @@ import {
   ChangeDetectorRef,
   Component,
   ViewChild,
-  Input,
+  Input, OnInit,
 } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { BaseComponent } from '../../.././../../models/base.component';
@@ -21,18 +21,19 @@ import {
   MspPerson,
   OperationActionType,
 } from '../../../../../components/msp/model/msp-person.model';
-import { ErrorMessage } from 'moh-common-lib';
+import { ErrorMessage } from 'moh-common-lib-angular';
 import { formatDateField } from '../../../../../modules/account/helpers/date';
 import { subDays } from 'date-fns';
 import { SpaEnvService } from '../../../../../services/spa-env.service';
 import { environment } from 'environments/environment';
 
 @Component({
+  standalone: false,
   selector: 'msp-remove-spouse',
   templateUrl: './remove-spouse.component.html',
   styleUrls: ['./remove-spouse.component.scss'],
 })
-export class RemoveSpouseComponent extends BaseComponent {
+export class RemoveSpouseComponent extends BaseComponent implements OnInit {
   //static ProcessStepNum = 1;
 
   docSelected: string;
@@ -41,17 +42,20 @@ export class RemoveSpouseComponent extends BaseComponent {
 
   //langStatus = legalStatus;
 
+  // No '#formRef' exists in this component's own template (it lives in the
+  // sibling msp-add-spouse/msp-update-spouse templates); this query never
+  // resolves regardless of static timing. Left as-is: out of scope here.
   @ViewChild('formRef') form: NgForm;
-  public buttonstyle: string = 'btn btn-default';
+  public buttonstyle = 'btn btn-default';
   accountApp: MspAccountApp;
   accountChangeOptions: AccountChangeOptions;
-  accountHolderTitle: string = 'Account Holder Identification';
-  accountHolderSubtitle: string =
+  accountHolderTitle = 'Account Holder Identification';
+  accountHolderSubtitle =
   'Please provide the Account Holder’s personal information for verification purposes.';
   @Input() spouse: MspPerson;
   @Input() phns: string[];
   updateList: UpdateList[];
-  dateErrorMessage: ErrorMessage = {
+  dateErrorMessage: ErrorMessage = { required: '{label} is required.',
     noFutureDatesAllowed: 'Date must be in the past.',
   };
   spouseRemoveDocs = spouseRemovedDueToDivorceDocuments();
@@ -99,7 +103,7 @@ export class RemoveSpouseComponent extends BaseComponent {
       this.spouse.operationActionType = OperationActionType.Remove;
     }
 
-  onChange($event) {
+  onChange() {
     //this.dataService.saveMspAccountApp();
   }
 

@@ -1,7 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { MovingInformationComponent, IMovingInfo } from './moving-information.component';
 import { FormsModule, NgForm } from '@angular/forms';
-import { SharedCoreModule } from 'moh-common-lib';
+import { CountryComponent, DateComponent, ErrorContainerComponent, PageSectionComponent, PhnComponent, ProvinceComponent, RadioComponent } from 'moh-common-lib-angular';
 import { Relationship } from '../../../../models/relationship.enum';
 import { StatusInCanada, CanadianStatusReason } from '../../models/canadian-status.enum';
 import { DebugElement } from '@angular/core';
@@ -25,12 +25,12 @@ class Applicant {
     this.radioBtnLabels = this._initRadioBtns();
   }
 
-  permanentMoveBC( permanent: boolean = true ): Enrollee {
+  permanentMoveBC( permanent = true ): Enrollee {
     this.person.madePermanentMoveToBC = permanent;
     return this.person;
   }
 
-  livedBCSinceBirth( livedIn: boolean = true ): Enrollee {
+  livedBCSinceBirth( livedIn = true ): Enrollee {
     this.person.livedInBCSinceBirth = livedIn;
     return this.person;
   }
@@ -60,15 +60,13 @@ describe('MovingInformationComponent', () => {
   let err: DebugElement;
   let elmts: DebugElement[];
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         MovingInformationComponent
         ],
       imports: [
-        FormsModule,
-        SharedCoreModule
-      ],
+        FormsModule, CountryComponent, DateComponent, ErrorContainerComponent, PageSectionComponent, PhnComponent, ProvinceComponent, RadioComponent],
       providers: [
         NgForm
       ]

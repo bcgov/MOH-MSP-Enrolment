@@ -6,7 +6,7 @@ import { Relationship } from '../../../../models/relationship.enum';
 import { nameChangeSupportDocuments } from '../../../msp-core/components/support-documents/support-documents.component';
 import { StatusInCanada } from '../../../msp-core/models/canadian-status.enum';
 import { EnrolForm } from '../../models/enrol-form';
-import { BRITISH_COLUMBIA, ErrorMessage } from 'moh-common-lib';
+import { BRITISH_COLUMBIA, ErrorMessage } from 'moh-common-lib-angular';
 import { EnrolDataService } from '../../services/enrol-data.service';
 import { Enrollee } from '../../models/enrollee';
 import { startOfToday } from 'date-fns';
@@ -14,20 +14,21 @@ import { SpaEnvService } from '../../../../services/spa-env.service';
 import { environment } from 'environments/environment';
 
 @Component({
+  standalone: false,
   selector: 'msp-child-info',
   templateUrl: './child-info.component.html',
   styleUrls: ['./child-info.component.scss']
 })
 export class ChildInfoComponent extends EnrolForm {
   public readonly addressServiceUrl: string = environment.appConstants.addressApiBaseUrl;
-  statusLabel: string = 'Child\'s immigration status in Canada';
+  statusLabel = 'Child\'s immigration status in Canada';
   childAgeCategory = [
     {label: '0-18 years', value: Relationship.ChildUnder19},
     {label: '18-24 years (must meet the definition of a DPSS above)', value: Relationship.Child18To24},
   ];
 
   // Replace default messages in the date component for school completion and departure dates
-  schoolCompletionErrMsg: ErrorMessage = {
+  schoolCompletionErrMsg: ErrorMessage = { required: '{label} is required.',
     noPastDatesAllowed: 'Expected school completion cannot be in the past.',
     invalidValue: 'This does not appear to be a valid date.',
     dayOutOfRange: 'This does not appear to be a valid date.',
@@ -37,7 +38,7 @@ export class ChildInfoComponent extends EnrolForm {
     invalidRange: 'This does not appear to be a valid date, Expected school completion cannot be in the past'
   };
 
-  schoolDepartureErrMsg: ErrorMessage = {
+  schoolDepartureErrMsg: ErrorMessage = { required: '{label} is required.',
     noFutureDatesAllowed: 'Departure date can not be in the future.',
     invalidValue: 'This does not appear to be a valid date.',
     dayOutOfRange: 'This does not appear to be a valid date.',

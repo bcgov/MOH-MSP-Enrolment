@@ -1,4 +1,4 @@
-import {Component, ViewChild} from '@angular/core';
+import {Component, ViewChild, AfterViewInit} from '@angular/core';
 import {Router} from '@angular/router';
 import {CompletenessCheckService} from '../../../../services/completeness-check.service';
 import {ProcessService} from '../../../../services/process.service';
@@ -7,22 +7,26 @@ import {environment} from '../../../../../environments/environment';
 import {NgForm} from '@angular/forms';
 import {BenefitApplication} from '../../models/benefit-application.model';
 import {MspBenefitDataService} from '../../services/msp-benefit-data.service';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
+import enLang from './i18n/data/en/index';
 
 @Component({
+  standalone: false,
   selector: 'msp-authorize-submit',
   templateUrl: './authorize-submit.component.html',
   styleUrls: ['./authorize-submit.component.scss']
 })
-export class BenefitAuthorizeSubmitComponent {
+export class BenefitAuthorizeSubmitComponent implements AfterViewInit {
 
     static ProcessStepNum = 5;
-    lang = require('./i18n');
+    lang = enLang;
     captchaApiBaseUrl: string;
 
     application: BenefitApplication;
 
-   // @ViewChild('fileUploader') fileUploader: FileUploaderComponent;
+   // @ViewChild('fileUploader', { static: false }) fileUploader: FileUploaderComponent;
+    // No '#mspImageErrorModal' exists in authorize-submit.component.html;
+    // this query never resolves regardless of static timing.
     @ViewChild('mspImageErrorModal') mspImageErrorModal: MspImageErrorModalComponent;
 
     constructor(private dataService: MspBenefitDataService,
@@ -34,10 +38,10 @@ export class BenefitAuthorizeSubmitComponent {
 
     }
 
-    @ViewChild('form') form: NgForm;
+    @ViewChild('form', { static: true }) form: NgForm;
 
     ngAfterViewInit(): void {
-        this.form.valueChanges.subscribe(values => {
+        this.form.valueChanges.subscribe(() => {
             // this.onChange.emit(values);
             this.dataService.saveBenefitApplication();
         });
@@ -49,7 +53,7 @@ export class BenefitAuthorizeSubmitComponent {
         this.dataService.saveBenefitApplication();
     }
 
-    uploadDocument(evt: Array<any>) {
+    uploadDocument(evt: any[]) {
         this.application.powerOfAttorneyDocs = evt;
         this.dataService.saveBenefitApplication();
         //this.docActionEvent.emit(evt);
@@ -107,17 +111,17 @@ export class BenefitAuthorizeSubmitComponent {
 
 
     get questionApplicant(){
-        return this.lang('./en/index.js').doYouAgreeLabel.replace('{name}', this.applicantName);
+        return this.lang.doYouAgreeLabel.replace('{name}', this.applicantName);
     }
     get questionSpouse(){
-        return this.lang('./en/index.js').doYouAgreeLabel.replace('{name}', this.spouseName);
+        return this.lang.doYouAgreeLabel.replace('{name}', this.spouseName);
     }
     get questionForAttorney(){
         let allName = this.applicantName;
         if (this.dataService.benefitApp.hasSpouseOrCommonLaw && this.spouseName) {
             allName += ' or ' + this.spouseName;
         }
-        return this.lang('./en/index.js').attorneyDoYouAgreeLabel.replace('{applicantName}', allName);
+        return this.lang.attorneyDoYouAgreeLabel.replace('{applicantName}', allName);
     }
     get applicantName(){
         return this.application.applicant.firstName + ' ' + this.application.applicant.lastName;

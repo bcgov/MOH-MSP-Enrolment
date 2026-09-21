@@ -6,13 +6,7 @@ import {
   Input,
   Output,
 } from '@angular/core';
-import {
-  Base,
-  PROVINCE_LIST,
-  BRITISH_COLUMBIA,
-  COUNTRY_LIST,
-  ErrorMessage,
-} from 'moh-common-lib';
+import { Base, PROVINCE_LIST, BRITISH_COLUMBIA, COUNTRY_LIST, ErrorMessage } from 'moh-common-lib-angular';
 import { ControlContainer, NgForm } from '@angular/forms';
 import {
   StatusInCanada,
@@ -26,6 +20,7 @@ import { SpaEnvService } from '../../../../services/spa-env.service';
 
 // TO BE removed - differenece need to be added to msp-core moving-info so that it will work with account
 @Component({
+  standalone: false,
   selector: 'msp-child-moving-information',
   templateUrl: './moving-information.component.html',
   styleUrls: ['./moving-information.component.scss'],
@@ -56,11 +51,21 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
   }).filter((x) => x);
   readonly Child18To24: Relationship = Relationship.Child18To24;
 
-  relationship: string = 'you';
+  relationship = 'you';
 
   dateToday: Date = new Date();
   public readonly addressServiceUrl: string =
     environment.appConstants.addressApiBaseUrl;
+
+  // dateToday is assigned once above and never nulled in production; only
+  // this component's spec sets it to null, to force specific date-range
+  // branches deterministically. date-fns v4 coerces a null argument to the
+  // epoch (1970) instead of returning Invalid Date, which previously made
+  // isBefore/isAfter comparisons safely resolve to false, so feed an Invalid
+  // Date into date-fns calls instead of null to keep that fixture working.
+  private get dateTodaySafe(): Date {
+    return this.dateToday ?? new Date(NaN);
+  }
 
   constructor(private spaEnvService: SpaEnvService) {
     super();
@@ -357,44 +362,44 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
   }
 
   get departureDateDuring12MonthsEndRange() {
-    return subDays(this.dateToday, 30);
+    return subDays(this.dateTodaySafe, 30);
   }
 
   get returnDateDuring12MonthsStartRange() {
     if (this.departureDateDuring12MonthsDate) {
-      return isBefore(this.dateToday, this.returnDateDuring12MonthsDate)
-        ? this.dateToday
+      return isBefore(this.dateTodaySafe, this.returnDateDuring12MonthsDate)
+        ? this.dateTodaySafe
         : addDays(this.departureDateDuring12MonthsDate, 30);
     }
-    return this.dateToday;
+    return this.dateTodaySafe;
   }
 
   get departureDateDuring6MonthsStartRange() {
-    return this.dateToday;
+    return this.dateTodaySafe;
   }
 
   get departureDateDuring6MonthsEndRange() {
     if (this.returnDateDuring6MonthsDate) {
       return isBefore(
         subDays(this.returnDateDuring6MonthsDate, 30),
-        this.dateToday
+        this.dateTodaySafe
       )
         ? this.dateToday
         : subDays(this.returnDateDuring6MonthsDate, 30);
     }
-    return subDays(addMonths(this.dateToday, 6), 30);
+    return subDays(addMonths(this.dateTodaySafe, 6), 30);
   }
 
   get returnDateDuring6MonthsStartRange() {
     if (this.departureDateDuring6MonthsDate) {
       return isBefore(
-        addDays(this.dateToday, 30),
+        addDays(this.dateTodaySafe, 30),
         addDays(this.departureDateDuring6MonthsDate, 30)
       )
-        ? addDays(this.dateToday, 30)
+        ? addDays(this.dateTodaySafe, 30)
         : addDays(this.departureDateDuring6MonthsDate, 30);
     }
-    return addDays(this.dateToday, 30);
+    return addDays(this.dateTodaySafe, 30);
   }
 
   get studiesDepartureDateStartRange() {
@@ -406,11 +411,11 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
 
   get studiesDepartureDateEndRange() {
     if (this.studiesBeginDate) {
-      return this.studiesBeginDate < subDays(this.dateToday, 1)
+      return this.studiesBeginDate < subDays(this.dateTodaySafe, 1)
         ? this.studiesBeginDate
-        : subDays(this.dateToday, 1);
+        : subDays(this.dateTodaySafe, 1);
     }
-    return subDays(this.dateToday, 1);
+    return subDays(this.dateTodaySafe, 1);
   }
 
   get studiesBeginDateStartRange() {
@@ -433,82 +438,79 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
       : this.dateToday;
   }
 
-  get studiesFinishedDateEndRange() {
-    return null;
-  }
+  readonly studiesFinishedDateEndRange = null;
 
   get dischargeDateStartRange() {
     return this.dob;
   }
 
-  get dischargeDateEndRange() {
-    return null;
-  }
+  readonly dischargeDateEndRange = null;
 
   // === DATE ERROR GETTERS ===
   get adoptionDateErrorMessage(): ErrorMessage {
     if (this.adoptedDate > this.dateToday) {
-      return { invalidRange: 'Date cannot be in the future.' };
+      return { required: '{label} is required.', invalidRange: 'Date cannot be in the future.' };
     } else if (this.adoptedDate < this.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
   get mostRecentMoveToBCErrorMessage() {
     // If the arrival to BC is after today's date
     if (this.arrivalToBCDate > this.dateToday) {
-      return { invalidRange: 'Date cannot be in the future.' };
+      return { required: '{label} is required.', invalidRange: 'Date cannot be in the future.' };
     }
     // If the arrival to BC is before person's birthdate
     else if (this.arrivalToBCDate < this.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
     }
     // If the departure date is before the arrival date
     else if (this.departureDateDuring12MonthsDate < this.arrivalToBCDate) {
-      return { invalidRange: 'Date must be before any date of departure from BC.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be before any date of departure from BC.' };
     }
     // Catch all
     else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
   get departureDate12MonthsErrorMessage(): ErrorMessage {
     // If the departure date is before the arrival
     if (this.departureDateDuring12MonthsDate < this.arrivalToBCDate) {
-      return { invalidRange: 'Date must be after arrival in BC.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after arrival in BC.' };
       // If the departure is after today's date
     } else if (this.departureDateDuring12MonthsDate > this.dateToday) {
-      return { invalidRange: 'Date cannot be in the future.' };
+      return { required: '{label} is required.', invalidRange: 'Date cannot be in the future.' };
       // If the arrival is before birthdate
     } else if (this.departureDateDuring12MonthsDate < this.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
       // Catch all
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
   get returnDate12MonthsErrorMessage(): ErrorMessage {
     // If they return in the future
-    if (isBefore(this.dateToday, this.returnDateDuring12MonthsDate)) {
-      return { invalidRange: 'Date cannot be in the future.' };
+    if (isBefore(this.dateTodaySafe, this.returnDateDuring12MonthsDate)) {
+      return { required: '{label} is required.', invalidRange: 'Date cannot be in the future.' };
       // If they return before they leave
     } else if (
       this.returnDateDuring12MonthsDate <
       addDays(this.departureDateDuring12MonthsDate, 30)
     ) {
       return {
+        required: '{label} is required.',
         invalidRange: 'Date must be more than 30 days after departure.',
       };
       // If they are returning before birthdate
     } else if (this.returnDateDuring12MonthsDate < this.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
       // Catchall
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
@@ -519,25 +521,26 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
       addDays(this.departureDateDuring6MonthsDate, 30)
     ) {
       return {
+        required: '{label} is required.',
         invalidRange: 'Date must be more than 30 days before return date.',
       };
       // If the departure is after today's date
     } else if (this.departureDateDuring6MonthsDate < this.dateToday) {
-      return { invalidRange: 'Date cannot be in the past.' };
+      return { required: '{label} is required.', invalidRange: 'Date cannot be in the past.' };
       // If the departure is after six months from now
     } else if (
       isBefore(
-        addMonths(this.dateToday, 6),
+        addMonths(this.dateTodaySafe, 6),
         this.departureDateDuring6MonthsDate
       )
     ) {
-      return { invalidRange: 'Date must be within the next six months.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be within the next six months.' };
       // If they are departing before birthdate
     } else if (this.departureDateDuring6MonthsDate < this.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
       // Catchall
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
@@ -548,49 +551,50 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
       addDays(this.departureDateDuring6MonthsDate, 30)
     ) {
       return {
+        required: '{label} is required.',
         invalidRange: 'Date must be more than 30 days after departure.',
       };
       // If they are returning in the past
     } else if (this.returnDateDuring6MonthsDate < this.dateToday) {
-      return { invalidRange: 'Date cannot be in the past.' };
+      return { required: '{label} is required.', invalidRange: 'Date cannot be in the past.' };
       // Catchall
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
   get studiesDepartureDateErrorMessage(): ErrorMessage {
     // If they leave to school before they arrived in BC
     if (this.studiesDepartureDate < this.arrivalToBCDate) {
-      return { invalidRange: 'Date must be after arrival in BC.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after arrival in BC.' };
       // If they leave to school in the future
     } else if (this.studiesDepartureDate > this.dateToday) {
-      return { invalidRange: 'Date cannot be in the future.' };
+      return { required: '{label} is required.', invalidRange: 'Date cannot be in the future.' };
       // If they leave to school before they were born
     } else if (this.studiesDepartureDate < this.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
       // If studies begin before they depart
     } else if (this.studiesBeginDate < this.studiesDepartureDate) {
-      return { invalidRange: 'Date must be prior to school beginning.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be prior to school beginning.' };
       // Catchall
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
   get studiesBeginDateErrorMessage(): ErrorMessage {
     // If studies begin before they depart
     if (this.studiesBeginDate < this.studiesDepartureDate) {
-      return { invalidRange: 'Date must be after departure to school.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after departure to school.' };
       // If studies begin after they finish
     } else if (this.studiesBeginDate > this.studiesFinishedDate) {
-      return { invalidRange: 'Date must be prior to finish date.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be prior to finish date.' };
       // If studies begin before birthdate
     } else if (this.studiesBeginDate < this.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
       // Catchall
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
     // invalidRange: 'Studies must begin after departure date, after birthdate, and before date of completion.'
   }
@@ -598,24 +602,24 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
   get studiesFinishedDateErrorMessage(): ErrorMessage {
     // If the finish date is before the start date
     if (this.studiesFinishedDate < this.studiesBeginDate) {
-      return { invalidRange: 'Date must be after date studies begin.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after date studies begin.' };
       // If the finish date is before today
     } else if (this.studiesFinishedDate < this.dateToday) {
-      return { invalidRange: 'Date cannot be in the past.' };
+      return { required: '{label} is required.', invalidRange: 'Date cannot be in the past.' };
       // If the arrival is before birthdate
     } else if (this.studiesFinishedDate < this.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
       // Catchall
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 
   get dischargeDateErrorMessage(): ErrorMessage {
     if (this.dischargeDate < this.dob) {
-      return { invalidRange: 'Date must be after birthdate.' };
+      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
     } else {
-      return { invalidRange: 'Invalid date range.' };
+      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
     }
   }
 

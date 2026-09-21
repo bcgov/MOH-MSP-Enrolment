@@ -3,19 +3,21 @@ import {
   OnInit,
   ChangeDetectorRef,
   ViewChild,
-  TemplateRef,
   AfterViewInit
 } from '@angular/core';
 import { BaseComponent } from 'app/models/base.component';
 import { MspDataService } from 'app/services/msp-data.service';
 import { NgForm } from '@angular/forms';
-import { PremiumRatesYear } from './home-constants';
-import { debounceTime, tap, distinctUntilChanged } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+} from 'rxjs/operators';
+import { Observable } from 'rxjs';
 import { BsModalService, BsModalRef } from 'ngx-bootstrap/modal';
 
 import { AssistanceYear } from '../../models/assistance-year.model';
 import { FinancialAssistApplication } from '../../models/financial-assist-application.model';
-import { ConsentModalComponent } from 'moh-common-lib';
+import { ConsentModalComponent } from 'moh-common-lib-angular';
 
 // TODO: remove lodash
 import { ActivatedRoute } from '@angular/router';
@@ -25,22 +27,22 @@ import { environment } from '../../../../../environments/environment.prod';
 
 
 @Component({
+  standalone: false,
   selector: 'msp-assist-home',
   templateUrl: './home.component.html'
 })
 export class AssistanceHomeComponent extends BaseComponent
   implements OnInit, AfterViewInit {
-  @ViewChild('mspConsentModal') mspConsentModal: ConsentModalComponent;
-  @ViewChild('modal') ratesModal: AssistRatesModalComponent;
-  @ViewChild('formRef') prepForm: NgForm;
+  @ViewChild('mspConsentModal', { static: true }) mspConsentModal: ConsentModalComponent;
+  @ViewChild('modal', { static: true }) ratesModal: AssistRatesModalComponent;
+  @ViewChild('formRef', { static: true }) prepForm: NgForm;
 
-  touched$ = this.stateSvc.touched.asObservable();
+  touched$: Observable<boolean>;
 
   links = environment.links;
   consentProcessName = 'PA';
 
   options: AssistanceYear[];
-  rateData: {};
   modalRef: BsModalRef;
   pastYears = [];
 
@@ -65,6 +67,7 @@ export class AssistanceHomeComponent extends BaseComponent
     private stateSvc: AssistStateService
   ) {
     super(cd);
+    this.touched$ = this.stateSvc.touched.asObservable();
   }
 
   ngOnInit() {
@@ -100,8 +103,11 @@ export class AssistanceHomeComponent extends BaseComponent
     this.dataSvc.saveFinAssistApplication();
   }
 
-  openModal(template: TemplateRef<any>) {
-    this.modalRef = this.modalSvc.show(this.ratesModal, {
+  openModal() {
+    // Pre-existing: passes an already-rendered @ViewChild instance rather than
+    // a component class or TemplateRef. Behavior preserved as-is; ngx-bootstrap's
+    // stricter typings under TS 5.7 need the cast that TS 3.2 didn't require.
+    this.modalRef = this.modalSvc.show(this.ratesModal as any, {
       class: 'modal-xl'
     });
 

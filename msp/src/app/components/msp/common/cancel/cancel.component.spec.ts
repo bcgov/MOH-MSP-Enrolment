@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 
 import { MspCancelComponent } from './cancel.component';
 import {MspDataService} from '../../../../services/msp-data.service';
-import { LocalStorageService, LocalStorageModule } from 'angular-2-local-storage';
+import { LocalStorageService } from '../../../../services/local-storage.service';
 import {RouterTestingModule} from '@angular/router/testing';
 
 import { MspLogService } from '../../../../services/log.service';
@@ -15,11 +15,7 @@ describe('MspCancelComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MspCancelComponent, MspAddressCardPartComponent],
-      imports: [FormsModule, RouterTestingModule,  HttpClientModule, LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-      }),
-          ModalModule.forRoot()],
+      imports: [FormsModule, RouterTestingModule,  HttpClientModule,          ModalModule.forRoot()],
       providers: [MspDataService, MspLogService,
         LocalStorageService
       ]

@@ -1,7 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedCoreModule } from 'moh-common-lib';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { RadioComponent } from 'moh-common-lib-angular';
 import { FormsModule } from '@angular/forms';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { AddChildComponent } from './add-child.component';
 import { AccountPersonalInformationComponent } from '../../../components/personal-information/personal-information.component';
 import { ChildMovingInformationComponent } from '../../../components/moving-information/moving-information.component';
@@ -14,7 +13,7 @@ describe('AddChildComponent', () => {
   let component: AddChildComponent;
   let fixture: ComponentFixture<AddChildComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AddChildComponent,
@@ -22,14 +21,8 @@ describe('AddChildComponent', () => {
         ChildMovingInformationComponent
       ],
       imports: [
-        SharedCoreModule,
         FormsModule,
-        MspCoreModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        })
-      ],
+        MspCoreModule, RadioComponent],
       providers: [
         MspAccountMaintenanceDataService
       ]

@@ -1,18 +1,16 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ConfirmationComponent } from './confirmation.component';
-import { SharedCoreModule } from 'moh-common-lib';
+import { ConfirmTemplateComponent, PageFrameworkComponent, PageSectionComponent } from 'moh-common-lib-angular';
 
 describe('ConfirmationComponent', () => {
   let component: ConfirmationComponent;
   let fixture: ComponentFixture<ConfirmationComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ ConfirmationComponent ],
-      imports: [
-        SharedCoreModule
-      ]
+      imports: [ ConfirmTemplateComponent, PageFrameworkComponent, PageSectionComponent]
     })
     .compileComponents();
   }));

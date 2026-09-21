@@ -1,5 +1,5 @@
-import { Person } from 'moh-common-lib';
-import { UUID } from 'angular2-uuid';
+import { Person } from 'moh-common-lib-angular';
+import { v4 as uuid } from 'uuid';
 import { Gender } from './gender.enum';
 import { SupportDocumentsDto, SupportDocuments } from '../modules/msp-core/models/support-documents.model';
 import { IPersonalInformation } from '../modules/msp-core/components/personal-information/personal-information.component';
@@ -10,7 +10,7 @@ export class BasePerson extends Person implements IPersonalInformation {
 
   // Person has name, dob, and dob format
 
-  readonly uuid = UUID.UUID();
+  readonly uuid = uuid();
   gender: Gender;
   relationship: Relationship;
   documents: SupportDocuments = new SupportDocuments();

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from 'angular-2-local-storage';
+import { LocalStorageService } from './local-storage.service';
 import { FinancialAssistApplication } from '../modules/assistance/models/financial-assist-application.model';
 import {
   MspAccountApp,
@@ -11,11 +11,10 @@ import {
   OperationActionType,
   MspPerson
 } from '../components/msp/model/msp-person.model';
-import { Address, CANADA, BRITISH_COLUMBIA } from 'moh-common-lib';
+import { Address, CANADA, BRITISH_COLUMBIA } from 'moh-common-lib-angular';
 import { PersonDto } from '../components/msp/model/msp-person.dto';
 import { OutofBCRecordDto, OutofBCRecord } from '../models/outof-bc-record.model';
 import { AddressDto } from '../models/address.dto';
-import { Gender } from '../models/gender.enum';
 
 @Injectable()
 export class MspDataService {
@@ -23,12 +22,12 @@ export class MspDataService {
   private _finAssistApp: FinancialAssistApplication;
 
   private _mspAccountApp: MspAccountApp;
-  private finAssistAppStorageKey: string = 'financial-assist';
+  private finAssistAppStorageKey = 'financial-assist';
   // private finAssistMailingAddressStorageKey:string = 'financial-assist-mailing-address';
-  private mspAppStorageKey: string = 'msp-application';
-  private mspProcessKey: string = 'msp-process';
+  private mspAppStorageKey = 'msp-application';
+  private mspProcessKey = 'msp-process';
 
-  private mspAccountStorageKey: string = 'msp-account';
+  private mspAccountStorageKey = 'msp-account';
 
   constructor(public localStorageService: LocalStorageService) {
     this._finAssistApp = this.fetchFinAssistApplication();

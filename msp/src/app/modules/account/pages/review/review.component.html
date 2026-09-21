@@ -11,35 +11,35 @@
       <div class="col-lg-6">
         <account-person-card [accountCard]=true
                 [person]="mspAccountApp.applicant"
-                [customTitle]="lang('./en/index.js').applicantTitle"
-                [customLinkTitle]="lang('./en/index.js').applicantLinkTitle"
+                [customTitle]="lang.applicantTitle"
+                [customLinkTitle]="lang.applicantLinkTitle"
                 [editRouterLink]="accountPIUrl"></account-person-card>
       </div>
 
             <div class="col-lg-6" *ngIf="mspAccountApp.hasSpouseAdded">
                 <account-person-card [accountCard]=true 
-                                [customTitle]="lang('./en/index.js').addSpouseTitle"
+                                [customTitle]="lang.addSpouseTitle"
                                 [person]="mspAccountApp.addedSpouse"
                                 [editRouterLink]="accountSpouseUrl"></account-person-card>
             </div>
 
             <div class="col-lg-6" *ngIf="mspAccountApp.hasSpouseRemoved">
                 <account-person-card [accountCard]=true 
-                                [customTitle]="lang('./en/index.js').removeSpouseTitle"
+                                [customTitle]="lang.removeSpouseTitle"
                                 [person]="mspAccountApp.removedSpouse"
                                 [editRouterLink]="accountSpouseUrl"></account-person-card>
             </div>
 
             <div class="col-lg-6" *ngIf="mspAccountApp.hasSpouseUpdated">
                 <account-person-card [accountCard]=true 
-                                [customTitle]="lang('./en/index.js').updateSpouseTitle"
+                                [customTitle]="lang.updateSpouseTitle"
                                 [person]="mspAccountApp.updatedSpouse"
                                 [editRouterLink]="accountSpouseUrl"></account-person-card>
             </div>
 
       <ng-container *ngIf="mspAccountApp.addedChildren.length > 0">
         <ng-container *ngFor="let child of mspAccountApp.addedChildren.slice().reverse(); let i = index;">
-          <div class="clearfix" *ngIf="i % 2 == 0"></div>
+          <div class="clearfix" *ngIf="i % 2 === 0"></div>
           <div class="col-lg-6">
             <account-person-card [person]="child" [accountCard]=true
                     [customTitle]="addChildTitle + (i+1)"
@@ -52,7 +52,7 @@
 
       <ng-container *ngIf="mspAccountApp.removedChildren.length > 0">
         <ng-container *ngFor="let child of mspAccountApp.removedChildren.slice().reverse(); let i = index;">
-            <div class="clearfix" *ngIf="i % 2 == 0"></div>
+            <div class="clearfix" *ngIf="i % 2 === 0"></div>
             <div class="col-lg-6">
               <account-person-card [person]="child" [accountCard]=true
                       [customTitle]="removeChildTitle + (i+1)"
@@ -64,7 +64,7 @@
 
       <ng-container *ngIf="mspAccountApp.updatedChildren.length > 0">
         <ng-container *ngFor="let child of mspAccountApp.updatedChildren.slice().reverse(); let i = index;">
-            <div class="clearfix" *ngIf="i % 2 == 0"></div>
+            <div class="clearfix" *ngIf="i % 2 === 0"></div>
             <div class="col-lg-6">
               <account-person-card [person]="child" [accountCard]=true
                       [customTitle]="updateChildTitle + (i+1)"
@@ -83,8 +83,8 @@
 
     <div class="row" *ngIf="mspAccountApp.documents && mspAccountApp.documents.length >0">
       <div class="col-lg-12">
-        <h2 [innerHtml]="lang('./en/index.js').docTitle"></h2>
-        <h3 [innerHtml]="lang('./en/index.js').docConfirmTitle"></h3>
+        <h2 [innerHtml]="lang.docTitle"></h2>
+        <h3 [innerHtml]="lang.docConfirmTitle"></h3>
       </div>
 
     </div>

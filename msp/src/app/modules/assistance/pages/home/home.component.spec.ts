@@ -1,60 +1,53 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedCoreModule } from 'moh-common-lib';
-import { FormsModule } from '@angular/forms';
-import { LocalStorageModule } from 'angular-2-local-storage';
-import { AssistanceHomeComponent } from './home.component';
-import { MspCoreModule } from '../../../msp-core/msp-core.module';
-import { AssistRatesModalComponent } from '../../components/assist-rates-modal/assist-rates-modal.component';
-import { MspDataService } from '../../../../services/msp-data.service';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ActivatedRoute } from '@angular/router';
 
-describe('HomeComponent', () => {
-  let component: AssistanceHomeComponent;
-  let fixture: ComponentFixture<AssistanceHomeComponent>;
-  const activatedRouteStub = () => ({
-    route: {
-      snapshot: {
-        routeConfig: {
-          path: ''
-        }
-      }
-    }
-  });
-
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      declarations: [
-        AssistanceHomeComponent,
-        AssistRatesModalComponent
-      ],
-      imports: [
-        MspCoreModule,
-        SharedCoreModule,
-        FormsModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
-        RouterTestingModule
-      ],
-      providers: [
-        MspDataService,
-        { provide: ActivatedRoute, useFactory: activatedRouteStub }
-      ]
-    })
-    .compileComponents();
-  }));
-
-  beforeEach(() => {
-    fixture = TestBed.createComponent(AssistanceHomeComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
-  });
-
-  /*
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-  */
-});
+// NOTE (msp Angular 19 migration): this describe's only test was already
+// commented out pre-migration and Jasmine tolerated the resulting empty
+// describe silently. Jasmine 5's runner hard-fails on an empty describe, so
+// rather than leave it silently broken, it stays fully commented here.
+// Restoring the test surfaces "NullInjectorError: No provider for
+// RendererFactory2" from ngx-bootstrap's BsModalService (injected directly
+// by AssistanceHomeComponent) inside this isolated TestBed - adding
+// BrowserModule/BrowserAnimationsModule did not resolve it. Pre-existing
+// TestBed wiring gap unrelated to the library swap; flagged for Amber.
+//
+// describe('HomeComponent', () => {
+//   let component: AssistanceHomeComponent;
+//   let fixture: ComponentFixture<AssistanceHomeComponent>;
+//   const activatedRouteStub = () => ({
+//     route: {
+//       snapshot: {
+//         routeConfig: {
+//           path: ''
+//         }
+//       }
+//     }
+//   });
+//
+//   beforeEach(waitForAsync(() => {
+//     TestBed.configureTestingModule({
+//       declarations: [
+//         AssistanceHomeComponent,
+//         AssistRatesModalComponent
+//       ],
+//       imports: [
+//         MspCoreModule,
+//         FormsModule,
+//         RouterTestingModule
+//       ],
+//       providers: [
+//         MspDataService,
+//         { provide: ActivatedRoute, useFactory: activatedRouteStub }
+//       ]
+//     })
+//     .compileComponents();
+//   }));
+//
+//   beforeEach(() => {
+//     fixture = TestBed.createComponent(AssistanceHomeComponent);
+//     component = fixture.componentInstance;
+//     fixture.detectChanges();
+//   });
+//
+//   it('should create', () => {
+//     expect(component).toBeTruthy();
+//   });
+// });

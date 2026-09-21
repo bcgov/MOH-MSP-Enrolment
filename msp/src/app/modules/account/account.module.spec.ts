@@ -6,7 +6,7 @@ describe('AccountModule', () => {
   let accountModule: AccountModule;
 
   beforeEach(() => {
-    const processServiceStub = () => ({ init: array => ({}) });
+    const processServiceStub = () => ({ init: () => ({}) });
 
     TestBed.configureTestingModule({
       providers: [
@@ -15,7 +15,7 @@ describe('AccountModule', () => {
       ]
     });
 
-    accountModule = TestBed.get(AccountModule);
+    accountModule = TestBed.inject(AccountModule);
   });
 
   it('should create an instance', () => {

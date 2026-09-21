@@ -1,4 +1,3 @@
-import { StatusInCanada } from '../models/canadian-status.enum';
 export type YesNoType = 'Y' | 'N';
 // TODO: proper submissions require captcha token at the header level
 export interface MSPApplicationSchema {

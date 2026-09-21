@@ -6,7 +6,7 @@ import { AssistContactComponent } from './pages/contact/assist-contact.component
 import { AssistanceHomeComponent } from './pages/home/home.component';
 import { SpouseComponent } from './pages/spouse/spouse.component';
 import { ROUTES_ASSIST } from './models/assist-route-constants';
-import { RouteGuardService } from 'moh-common-lib';
+import { RouteGuardService } from 'moh-common-lib-angular';
 
 export const assistPages: Routes = [
   {
@@ -51,7 +51,7 @@ export const assistPages: Routes = [
   }
 ];
 
-export let routes = assistPages;
+export const routes = assistPages;
 /* if (environment.bypassGuards) {
     console.log('DEVELOPMENT ONLY - BYPASSING ROUTE GUARDS');
      routes = routes.map(x => {

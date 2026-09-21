@@ -1,13 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedCoreModule } from 'moh-common-lib';
-import { CaptchaModule } from 'moh-common-lib/captcha';
+import {
+  ButtonComponent, ConsentModalComponent, CountryComponent, DateComponent, ErrorContainerComponent,
+  FileUploaderComponent, NameComponent, PageSectionComponent, PhnComponent, ProvinceComponent,
+  RadioComponent, SampleModalComponent, SinComponent, ThumbnailComponent, XiconButtonComponent,
+  ValidateNameDirective, DuplicateCheckDirective
+} from 'moh-common-lib-angular';
+import { CaptchaModule } from 'moh-common-lib-angular/captcha';
 import { FormsModule } from '@angular/forms';
-import { TextMaskModule } from 'angular2-text-mask';
 import { MspImageErrorModalComponent } from './components/image-error-modal/image-error-modal.component';
 
 // TOBE REVIEWED
-import { TransmissionErrorView } from '../../components/msp/common/transmission-error-view/transmission-error-view.component';
+import { TransmissionErrorViewComponent } from '../../components/msp/common/transmission-error-view/transmission-error-view.component';
 import { MspConsentModalComponent } from './components/consent-modal/consent-modal.component';
 import { MspCancelComponent } from '../../components/msp/common/cancel/cancel.component';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -62,22 +66,37 @@ const componentList = [
 // support functionality
 const templistCore = [
   // General
-  TransmissionErrorView,
+  TransmissionErrorViewComponent,
   MspCancelComponent
 ];
 @NgModule({
   imports: [
     CommonModule,
-    SharedCoreModule,
     FormsModule,
     NgSelectModule,
-    TextMaskModule,
     ModalModule,
     AccordionModule,
     RouterModule,
     TypeaheadModule.forRoot(),
     CaptchaModule,
-    HttpClientModule
+    HttpClientModule,
+    ButtonComponent,
+    ConsentModalComponent,
+    CountryComponent,
+    DateComponent,
+    ErrorContainerComponent,
+    FileUploaderComponent,
+    NameComponent,
+    PageSectionComponent,
+    PhnComponent,
+    ProvinceComponent,
+    RadioComponent,
+    SampleModalComponent,
+    SinComponent,
+    ThumbnailComponent,
+    XiconButtonComponent,
+    ValidateNameDirective,
+    DuplicateCheckDirective
   ],
 
   declarations: [
@@ -86,7 +105,6 @@ const templistCore = [
   ],
   exports: [
     componentList,
-    SharedCoreModule,
     CaptchaModule,
 
     // TODO: Be reviewed

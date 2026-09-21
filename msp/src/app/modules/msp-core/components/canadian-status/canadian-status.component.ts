@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/cor
 import { ControlContainer, NgForm } from '@angular/forms';
 import { StatusInCanada, CanadianStatusStrings, CanadianStatusReasonStrings, CanadianStatusReason } from '../../models/canadian-status.enum';
 import { Relationship } from '../../../../models/relationship.enum';
-import { Base } from 'moh-common-lib';
+import { Base } from 'moh-common-lib-angular';
 
 /**
  * TODO: May be able to remove once re-factor done
@@ -82,6 +82,7 @@ export interface ICanadianStatus {
 }
 
 @Component({
+  standalone: false,
   selector: 'msp-canadian-status',
   templateUrl: './canadian-status.component.html',
   styleUrls: ['./canadian-status.component.scss'],
@@ -101,9 +102,9 @@ export class CanadianStatusComponent<T extends ICanadianStatus> extends Base {
 
   // List of statuses to be displayed, if not provided, the default uses statusReasonRules().
   @Input() statusReasonList: CanadianStatusReason[];
-  @Input() label: String = 'Immigration status in Canada';
+  @Input() label = 'Immigration status in Canada';
 
-  @Input() displayStatusInCanada: boolean = true;
+  @Input() displayStatusInCanada = true;
   // List of statuses where the status reasons show not be shown
   @Input() hideStatusReasons: StatusInCanada[] = [];
 
@@ -179,6 +180,16 @@ export class CanadianStatusComponent<T extends ICanadianStatus> extends Base {
     return this.person.currentActivity;
   }
 
+  set statusReason(reason: CanadianStatusReason) {
+    this.person.currentActivity = reason;
+
+    if (this.person.clearData) {
+      // Clear data
+      this.person.clearData(this.person);
+    }
+    this.personChange.emit(this.person);
+  }
+
   get relationshipNoun() {
     switch (this.person.relationship) {
       case Relationship.Spouse:
@@ -203,13 +214,4 @@ export class CanadianStatusComponent<T extends ICanadianStatus> extends Base {
     }
   }
 
-  set statusReason(reason: CanadianStatusReason) {
-    this.person.currentActivity = reason;
-
-    if (this.person.clearData) {
-      // Clear data
-      this.person.clearData(this.person);
-    }
-    this.personChange.emit(this.person);
-  }
 }

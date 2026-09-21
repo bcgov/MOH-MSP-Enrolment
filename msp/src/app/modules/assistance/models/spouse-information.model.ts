@@ -20,8 +20,7 @@ export class SpouseInformation implements ISpouseInformation {
     const { ...app } = { ...mspApp };
     const spouseDocuments = [];
 
-    // tslint:disable-next-line
-    for (let year of app.assistYears) {
+       for (const year of app.assistYears) {
       this.years = this.makeYears(app.assistYears);
 
       const i = this.years.indexOf(year.year);

@@ -1,16 +1,15 @@
 import { Injectable } from '@angular/core';
 import { BaseMspDataService } from '../../../services/base-msp-data.service';
-import { LocalStorageService } from 'angular-2-local-storage';
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { EnrolApplicationDto, EnrolApplication } from '../models/enrol-application';
 import { EnrolleeDto, Enrollee } from '../models/enrollee';
-import { PageStateService } from '../../../services/page-state.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnrolDataService extends BaseMspDataService {
 
-  protected _storageKey: string = 'msp-application';
+  protected _storageKey = 'msp-application';
 
   application: EnrolApplication;
   pageStatus: any[] = [];

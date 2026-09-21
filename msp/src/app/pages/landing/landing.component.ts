@@ -1,11 +1,9 @@
 import { Component } from '@angular/core';
 import { MspDataService } from '../../services/msp-data.service';
 import { Router } from '@angular/router';
-import { MspBenefitDataService } from '../../modules/benefit/services/msp-benefit-data.service';
 // import { ROUTES_ENROL } from '../../modules/enrolment/models/enrol-route-constants';
 import { ROUTES_ACL } from '../../modules/request-acl/request-acl-route-constants';
 import { AclDataService } from '../../modules/request-acl/services/acl-data.service';
-import { EnrolDataService } from '../../modules/enrolment/services/enrol-data.service';
 
 /**
  * Application for MSP
@@ -14,6 +12,7 @@ import { EnrolDataService } from '../../modules/enrolment/services/enrol-data.se
  * https://apps.gcpe.gov.bc.ca/jira/browse/PSPDN-255?filter=16000
  */
 @Component({
+  standalone: false,
   templateUrl: './landing.component.html',
   styleUrls: ['./landing.component.scss']
 })

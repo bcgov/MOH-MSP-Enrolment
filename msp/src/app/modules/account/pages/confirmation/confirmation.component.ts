@@ -1,19 +1,19 @@
-import { Component, OnDestroy } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subscription } from 'rxjs';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { MspAccountApp } from '../../models/account.model';
-import * as moment from 'moment';
-import { ApiStatusCodes } from 'moh-common-lib';
+import { ApiStatusCodes } from 'moh-common-lib-angular';
 import { environment } from 'environments/environment';
 import { format } from 'date-fns';
 
 @Component({
+  standalone: false,
   selector: 'msp-confirmation',
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.scss'],
 })
-export class AccountConfirmationComponent implements OnDestroy {
+export class AccountConfirmationComponent implements OnDestroy, OnInit {
   confirmationNum: string;
   subscription: Subscription;
   noticeOfAssessment: string;
@@ -51,10 +51,6 @@ export class AccountConfirmationComponent implements OnDestroy {
       this.hasChildRemoved = params['hasChildRemoved'];
       this.hasPrevMSPForChild = params['hasPrevMSPForChild'];
     });
-  }
-
-  ngAfterViewChecked() {
-    //this.dataService.removeMspBenefitApp();
   }
 
   get isSuccess() {

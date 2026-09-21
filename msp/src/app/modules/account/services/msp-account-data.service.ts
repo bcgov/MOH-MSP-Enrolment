@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from 'angular-2-local-storage';
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { MspAccountApp } from '../../../modules/account/models/account.model';
 import { Process } from '../../../services/process.service';
 import { MspAccountDto } from '../../../modules/account/models/account.dto';
@@ -7,19 +7,21 @@ import {
   OperationActionType,
   MspPerson,
 } from '../../../components/msp/model/msp-person.model';
-import { Address, CANADA, BRITISH_COLUMBIA } from 'moh-common-lib';
+import {
+  CANADA,
+  BRITISH_COLUMBIA,
+} from 'moh-common-lib-angular';
 import { PersonDto } from '../../../components/msp/model/msp-person.dto';
 import {
   OutofBCRecordDto,
   OutofBCRecord,
 } from '../../../models/outof-bc-record.model';
 import { AddressDto } from '../../../models/address.dto';
-import { Gender } from '../../../models/gender.enum';
 
 @Injectable()
 export class MspAccountMaintenanceDataService {
   private _mspAccountApp: MspAccountApp;
-  private mspAccountStorageKey: string = 'msp-account';
+  private mspAccountStorageKey = 'msp-account';
 
   constructor(public localStorageService: LocalStorageService) {
     this._mspAccountApp = this.fetchMspAccountApplication();

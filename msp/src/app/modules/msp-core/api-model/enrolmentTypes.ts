@@ -1,6 +1,4 @@
-import * as Primitive from './xml-primitives';
 import * as ct from './commonTypes';
-import { BasicInfoTypeFactory } from './commonTypes';
 
 // Source files:
 // https://raw.githubusercontent.com/bcgov/MyGovBC-MSP/master/src/app/components/msp/api-model/xsd-flat/EnrolmentTypes.xsd
@@ -8,14 +6,12 @@ import { BasicInfoTypeFactory } from './commonTypes';
 interface BaseType {
   _exists: boolean;
   _namespace: string;
-  _sequence: Array<string>;
+  _sequence: string[];
 }
 
-// tslint:disable-next-line:class-name
 interface _PersonType extends ct._BasicInfoType {
   residency: ResidencyType;
 }
-// tslint:disable-next-line:class-name
 interface _DependentType extends _PersonType {
   dateStudiesFinish: string;
   departDateSchoolOutside?: string;
@@ -24,13 +20,13 @@ interface _DependentType extends _PersonType {
 }
 
 export interface DependentType extends _DependentType {
-  constructor: { new (): DependentType };
+  constructor: new () => DependentType;
 }
-export let DependentType: { new (): DependentType };
+export let DependentType: new () => DependentType;
 
 export class DependentTypeFactory {
   static make(): DependentType {
-    const instance = <DependentType>{};
+    const instance = {} as DependentType;
     instance._sequence = [
       'name',
       'gender',
@@ -45,7 +41,6 @@ export class DependentTypeFactory {
     return instance;
   }
 }
-// tslint:disable-next-line:class-name
 export interface _EnrolmentApplicantType extends ct._BasicInfoType {
   authorizedByApplicant: ct.YesOrNoType;
   authorizedByApplicantDate: string;
@@ -56,13 +51,13 @@ export interface _EnrolmentApplicantType extends ct._BasicInfoType {
   telephone: number;
 }
 export interface EnrolmentApplicantType extends _EnrolmentApplicantType {
-  constructor: { new (): EnrolmentApplicantType };
+  constructor: new () => EnrolmentApplicantType;
 }
-export let EnrolmentApplicantType: { new (): EnrolmentApplicantType };
+export let EnrolmentApplicantType: new () => EnrolmentApplicantType;
 
 export class EnrolmentApplicantTypeFactory {
   static make(): EnrolmentApplicantType {
-    const instance = <EnrolmentApplicantType>{};
+    const instance = {} as EnrolmentApplicantType;
     instance._sequence = [
       'name',
       'gender',
@@ -79,7 +74,6 @@ export class EnrolmentApplicantTypeFactory {
     return instance;
   }
 }
-// tslint:disable-next-line:class-name
 interface _EnrolmentApplicationType extends BaseType {
   applicant: EnrolmentApplicantType;
   children?: EnrolmentChildrenType;
@@ -87,50 +81,47 @@ interface _EnrolmentApplicationType extends BaseType {
   spouse?: PersonType;
 }
 export interface EnrolmentApplicationType extends _EnrolmentApplicationType {
-  constructor: { new (): EnrolmentApplicationType };
+  constructor: new () => EnrolmentApplicationType;
 }
-export let EnrolmentApplicationType: { new (): EnrolmentApplicationType };
+export let EnrolmentApplicationType: new () => EnrolmentApplicationType;
 
 export class EnrolmentApplicationTypeFactory {
   static make(): EnrolmentApplicationType {
-    const instance = <EnrolmentApplicationType>{};
+    const instance = {} as EnrolmentApplicationType;
     instance._sequence = ['applicant', 'spouse', 'children', 'dependents'];
     return instance;
   }
 }
-// tslint:disable-next-line:class-name
 interface _EnrolmentChildrenType extends BaseType {
   child: PersonType[];
 }
 export interface EnrolmentChildrenType extends _EnrolmentChildrenType {
-  constructor: { new (): EnrolmentChildrenType };
+  constructor: new () => EnrolmentChildrenType;
 }
-export let EnrolmentChildrenType: { new (): EnrolmentChildrenType };
+export let EnrolmentChildrenType: new () => EnrolmentChildrenType;
 
 export class EnrolmentChildrenTypeFactory {
   static make(): EnrolmentChildrenType {
-    const instance = <EnrolmentChildrenType>{};
+    const instance = {} as EnrolmentChildrenType;
     instance._sequence = ['child'];
     return instance;
   }
 }
-// tslint:disable-next-line:class-name
 interface _EnrolmentDependentsType extends BaseType {
   dependent: DependentType[];
 }
 export interface EnrolmentDependentsType extends _EnrolmentDependentsType {
-  constructor: { new (): EnrolmentDependentsType };
+  constructor: new () => EnrolmentDependentsType;
 }
-export let EnrolmentDependentsType: { new (): EnrolmentDependentsType };
+export let EnrolmentDependentsType: new () => EnrolmentDependentsType;
 
 export class EnrolmentDependentsTypeFactory {
   static make(): EnrolmentDependentsType {
-    const instance = <EnrolmentDependentsType>{};
+    const instance = {} as EnrolmentDependentsType;
     instance._sequence = ['dependent'];
     return instance;
   }
 }
-// tslint:disable-next-line:class-name
 interface _LivedInBCType extends BaseType {
   hasLivedInBC: ct.YesOrNoType;
   isPermanentMove?: ct.YesOrNoType;
@@ -140,13 +131,13 @@ interface _LivedInBCType extends BaseType {
   recentCanadaMoveDate?: string;
 }
 export interface LivedInBCType extends _LivedInBCType {
-  constructor: { new (): LivedInBCType };
+  constructor: new () => LivedInBCType;
 }
-export let LivedInBCType: { new (): LivedInBCType };
+export let LivedInBCType: new () => LivedInBCType;
 
 export class LivedInBCTypeFactory {
   static make(): LivedInBCType {
-    const instance = <LivedInBCType>{};
+    const instance = {} as LivedInBCType;
     instance._sequence = [
       'hasLivedInBC',
       'recentBCMoveDate',
@@ -158,7 +149,6 @@ export class LivedInBCTypeFactory {
     return instance;
   }
 }
-// tslint:disable-next-line:class-name
 interface _OutsideBCType extends BaseType {
   beenOutsideBCMoreThan: ct.YesOrNoType;
   departureDate?: string;
@@ -167,13 +157,13 @@ interface _OutsideBCType extends BaseType {
   destination?: string;
 }
 export interface OutsideBCType extends _OutsideBCType {
-  constructor: { new (): OutsideBCType };
+  constructor: new () => OutsideBCType;
 }
-export let OutsideBCType: { new (): OutsideBCType };
+export let OutsideBCType: new () => OutsideBCType;
 
 export class OutsideBCTypeFactory {
   static make(): OutsideBCType {
-    const instance = <OutsideBCType>{};
+    const instance = {} as OutsideBCType;
     instance._sequence = [
       'beenOutsideBCMoreThan',
       'departureDate',
@@ -186,13 +176,13 @@ export class OutsideBCTypeFactory {
 }
 
 export interface PersonType extends _PersonType {
-  constructor: { new (): PersonType };
+  constructor: new () => PersonType;
 }
-export let PersonType: { new (): PersonType };
+export let PersonType: new () => PersonType;
 
 export class PersonTypeFactory {
   static make(): PersonType {
-    const instance = <PersonType>{};
+    const instance = {} as PersonType;
     instance._sequence = [
       'name',
       'gender',
@@ -203,24 +193,22 @@ export class PersonTypeFactory {
     return instance;
   }
 }
-// tslint:disable-next-line:class-name
 interface _PreviousCoverageType extends BaseType {
   hasPreviousCoverage: ct.YesOrNoType;
   prevPHN?: number;
 }
 export interface PreviousCoverageType extends _PreviousCoverageType {
-  constructor: { new (): PreviousCoverageType };
+  constructor: new () => PreviousCoverageType;
 }
-export let PreviousCoverageType: { new (): PreviousCoverageType };
+export let PreviousCoverageType: new () => PreviousCoverageType;
 
 export class PreviousCoverageTypeFactory {
   static make(): PreviousCoverageType {
-    const instance = <PreviousCoverageType>{};
+    const instance = {} as PreviousCoverageType;
     instance._sequence = ['hasPreviousCoverage', 'prevPHN'];
     return instance;
   }
 }
-// tslint:disable-next-line:class-name
 interface _ResidencyType extends BaseType {
   citizenshipStatus: ct.BasicCitizenshipType;
   livedInBC: LivedInBCType;
@@ -229,13 +217,13 @@ interface _ResidencyType extends BaseType {
   willBeAway: WillBeAwayType;
 }
 export interface ResidencyType extends _ResidencyType {
-  constructor: { new (): ResidencyType };
+  constructor: new () => ResidencyType;
 }
-export let ResidencyType: { new (): ResidencyType };
+export let ResidencyType: new () => ResidencyType;
 
 export class ResidencyTypeFactory {
   static make(): ResidencyType {
-    const instance = <ResidencyType>{};
+    const instance = {} as ResidencyType;
     instance._sequence = [
       'citizenshipStatus',
       'previousCoverage',
@@ -246,7 +234,6 @@ export class ResidencyTypeFactory {
     return instance;
   }
 }
-// tslint:disable-next-line:class-name
 interface _WillBeAwayType extends BaseType {
   armedDischargeDate?: string;
   armedForceInstitutionName?: string;
@@ -254,13 +241,13 @@ interface _WillBeAwayType extends BaseType {
   isInBCafterStudies?: ct.YesOrNoType;
 }
 export interface WillBeAwayType extends _WillBeAwayType {
-  constructor: { new (): WillBeAwayType };
+  constructor: new () => WillBeAwayType;
 }
-export let WillBeAwayType: { new (): WillBeAwayType };
+export let WillBeAwayType: new () => WillBeAwayType;
 
 export class WillBeAwayTypeFactory {
   static make(): WillBeAwayType {
-    const instance = <WillBeAwayType>{};
+    const instance = {} as WillBeAwayType;
     instance._sequence = [
       'isFullTimeStudent',
       'isInBCafterStudies',
@@ -271,7 +258,6 @@ export class WillBeAwayTypeFactory {
   }
 }
 
-// tslint:disable-next-line:class-name
 export interface document extends BaseType {
   enrolmentApplication: EnrolmentApplicationType;
 }
@@ -279,7 +265,7 @@ export let document: document;
 
 export class DocumentTypeFactory {
   static make(): document {
-    const instance = <document>{};
+    const instance = {} as document;
     instance._sequence = ['enrolmentApplication'];
     return instance;
   }

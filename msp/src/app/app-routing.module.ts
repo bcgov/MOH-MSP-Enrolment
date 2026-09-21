@@ -29,11 +29,13 @@ const routes: Routes = [
   },
   {
     path: APP_ROUTES.ACCOUNT,
-    loadChildren: 'app/modules/account/account.module#AccountModule'
+    loadChildren: () =>
+      import('./modules/account/account.module').then(m => m.AccountModule)
   },
   {
     path: APP_ROUTES.ACCOUNT_LETTER,
-    loadChildren: 'app/modules/request-acl/request-acl.module#RequestAclModule'
+    loadChildren: () =>
+      import('./modules/request-acl/request-acl.module').then(m => m.RequestAclModule)
   },
   {
     path: '**',
