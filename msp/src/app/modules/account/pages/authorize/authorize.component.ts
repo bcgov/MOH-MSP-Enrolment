@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProcessService, ProcessUrls } from '../../../../services/process.service';
 import { environment } from '../../../../../environments/environment';
@@ -8,6 +8,7 @@ import { MspAccountMaintenanceDataService } from '../../services/msp-account-dat
 import { MspPerson } from '../../../../../app/components/msp/model/msp-person.model';
 import { BaseForm } from '../../models/base-form';
 import { MspLogService } from '../../../../services/log.service';
+import { NgForm } from '@angular/forms';
 import enLang from './i18n/data/en/index';
 
 @Component({
@@ -17,6 +18,11 @@ import enLang from './i18n/data/en/index';
   styleUrls: ['./authorize.component.scss']
 })
 export class AuthorizeComponent extends BaseForm implements OnInit {
+  // The template reads form.submitted unguarded, so the query has to resolve
+  // before the first render. AbstractForm's own formRef query is not static,
+  // which leaves form undefined on that pass.
+  @ViewChild('formRef', { static: true }) declare form: NgForm;
+
   lang = enLang;
   static ProcessStepNum = 5;
   mspAccountApp: MspAccountApp;

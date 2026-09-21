@@ -68,9 +68,6 @@
   <common-form-action-bar
     [submitLabel]="lang.submitButton"
     (btnClick)="continue()"
-    [canContinue]="mspAccountApp.authorizedByApplicant
-                   || ((mspAccountApp.updatedSpouse
-                   || mspAccountApp.addedSpouse)
-                   && !mspAccountApp.authorizedBySpouse)">
+    [canContinue]="mspAccountApp.authorizedByApplicant">
   </common-form-action-bar>
 </div>
