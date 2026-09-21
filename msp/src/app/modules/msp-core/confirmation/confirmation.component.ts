@@ -12,11 +12,6 @@ export class ConfirmationComponent implements OnInit {
   @Input() success: boolean;
   @Input() message: string;
 
-  resultStyle() {
-    return 'failure';
-    // return bool ? 'success' : 'failure';
-  }
-
   generalInstructions = [
     'Important: Keep your reference number - write it down, or print this page for your records',
     `Health Insurance BC will notify you whether you have qualified for Retroactive Premium Assistance.`

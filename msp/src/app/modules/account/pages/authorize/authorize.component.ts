@@ -99,12 +99,6 @@ export class AuthorizeComponent extends BaseForm implements OnInit {
     return this.spouseForAuthorization.firstName + ' ' + this.spouseForAuthorization.lastName;
   }
 
-  handleFormSubmission() {
-    // Intentional no-op; form submission is handled by continue() on the
-    // same button.
-    return;
-  }
-
   continue(): void {
     if (!this.canContinue() || !this.mspAccountApp.authorizedByApplicant) {
       console.log('Please fill in all required fields on the form.');
