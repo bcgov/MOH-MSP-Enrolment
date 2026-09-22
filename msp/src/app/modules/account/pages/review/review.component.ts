@@ -1,4 +1,5 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router} from '@angular/router';
 import {ProcessUrls} from '../../../../services/process.service';
 import {environment} from '../../../../../environments/environment';
@@ -16,6 +17,12 @@ import enLang from './i18n/data/en/index';
   styleUrls: ['./review.component.scss']
 })
 export class AccountReviewComponent extends BaseForm implements OnInit {
+  // canContinue() reads this.form.valid through AbstractForm.canContinue().
+  // AbstractForm's own formRef query is not static, which leaves form
+  // undefined on the first change-detection pass and throws NG0100 once it
+  // resolves. Matches contact-info, spouse-info and authorize.
+  @ViewChild('formRef', { static: true }) declare form: NgForm;
+
   lang = enLang;
   static ProcessStepNum = 4;
   mspAccountApp: MspAccountApp;

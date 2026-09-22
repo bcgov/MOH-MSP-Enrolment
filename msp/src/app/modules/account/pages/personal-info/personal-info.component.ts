@@ -1,4 +1,5 @@
-import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { MspAccountApp, AccountChangeOptions, UpdateList } from '../../models/account.model';
@@ -22,6 +23,17 @@ import {ProcessService} from '../../../../services/process.service';
   styleUrls: ['./personal-info.component.scss']
 })
 export class AccountPersonalInfoComponent extends BaseForm implements OnInit, AfterViewInit, OnDestroy {
+  // canContinue() reads this.form.valid through AbstractForm.canContinue().
+  // AbstractForm's own formRef query is not static, which leaves form
+  // undefined on the first change-detection pass. On a fresh application
+  // updatingPersonalInfo is undefined too, so canContinue() short-circuits
+  // to false on both CD passes and NG0100 does not fire - but a return
+  // visit (e.g. the Review page's Edit link) re-renders with
+  // updatingPersonalInfo already set, and the same false-then-true flip
+  // that broke child-info and review reproduces here. Matches contact-info,
+  // spouse-info and authorize.
+  @ViewChild('formRef', { static: true }) declare form: NgForm;
+
   static ProcessStepNum = 0;
   lang = enLang;
   docSelected: string ;

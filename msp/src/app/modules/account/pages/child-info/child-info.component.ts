@@ -6,6 +6,7 @@ import {
   ElementRef,
   OnDestroy,
 } from '@angular/core';
+import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import {
@@ -48,6 +49,12 @@ export class ChildInfoComponent
     this.mspAccountApp = dataService.getMspAccountApp();
   }
   subscriptions: Subscription[];
+
+  // canContinue() reads this.form.valid through AbstractForm.canContinue().
+  // AbstractForm's own formRef query is not static, which leaves form
+  // undefined on the first change-detection pass and throws NG0100 once it
+  // resolves. Matches contact-info, spouse-info and authorize.
+  @ViewChild('formRef', { static: true }) declare form: NgForm;
 
   // Modal variables
   @ViewChild('missingInfoReqModalLabel', { static: true }) public missingInfoReqModalLabel: ModalDirective;
