@@ -1,0 +1,8 @@
+{
+  "_source": "phn ported from the second PHN used in the deleted Protractor ACL page object (git show 908831e^:msp/e2e/acl/src/mspacl.po.ts, typePHNForSpecificMember('9982826354')). firstName/lastName/birthDate/cancellationDate are fixture-authored: the old suite had no removed-spouse scenario to port them from.",
+  "firstName": "Jordan",
+  "lastName": "Casey",
+  "phn": "9982826354",
+  "birthDate": { "month": 4, "day": 15, "year": 1988 },
+  "cancellationDate": { "month": 5, "day": 15, "year": 2022 }
+}

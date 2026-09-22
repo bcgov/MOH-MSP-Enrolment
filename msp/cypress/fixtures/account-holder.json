@@ -1,0 +1,7 @@
+{
+  "_source": "PHN and birthDate ported from PersonalInfoPageTest in the deleted Protractor suite (git show 908831e^:msp/e2e/account/src/mspac-account.data.ts). firstName/lastName are fixed stand-ins for that file's faker.name.firstName()/lastName() calls, which cannot be ported as literal values.",
+  "firstName": "Morgan",
+  "lastName": "Ellis",
+  "phn": "9999999998",
+  "birthDate": { "month": 2, "day": 25, "year": 1990 }
+}
