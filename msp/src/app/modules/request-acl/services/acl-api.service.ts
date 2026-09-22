@@ -57,7 +57,7 @@ export class AclApiService extends AbstractHttpService {
   }
 
   /** Handles all failed requests that throw either a server error (400/500) or a client error (e.g. lost internet). */
-  protected handleError( error: HttpErrorResponse ): Observable<never> {
+  protected handleError( error: HttpErrorResponse ): Observable<unknown> {
 
     if ( error.error instanceof ErrorEvent ) {
       // Client-side / network error occured
@@ -68,6 +68,6 @@ export class AclApiService extends AbstractHttpService {
     }
 
     // A user facing erorr message /could/ go here; we shouldn't log dev info through the throwError observable
-    return of(error) as unknown as Observable<never>;
+    return of(error);
   }
 }

@@ -289,7 +289,7 @@ export class MspApiBenefitService extends AbstractHttpService {
     });
   }
 
-  protected handleError(error: HttpErrorResponse): Observable<never> {
+  protected handleError(error: HttpErrorResponse): Observable<unknown> {
     if (error.error instanceof ErrorEvent) {
       //Client-side / network error occurred
       console.error('MSP Supp Benefit API error: ', error.error.message);
@@ -309,7 +309,7 @@ export class MspApiBenefitService extends AbstractHttpService {
     );
 
     // A user facing error message /could/ go here; we shouldn't log dev info through the throwError observable
-    return of(error) as unknown as Observable<never>;
+    return of(error);
     // return of([]);
   }
 

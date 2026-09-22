@@ -76,7 +76,7 @@
     "jquery": "^3.5.1",
     "jxon": "git+https://github.com/bcgov/jxon.git",
     "lodash": "^4.17.21",
-    "moh-common-lib-angular": "^2.3.0",
+    "moh-common-lib-angular": "^2.4.0",
     "moment": "^2.29.4",
     "ngx-bootstrap": "^19.0.2",
     "ngx-mask": "^19.0.7",

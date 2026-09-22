@@ -226,7 +226,7 @@ export class BaseMspApiService extends AbstractHttpService {
   }
 
   // User must remember to set the application name for logging
-  protected handleError(_error: HttpErrorResponse): Observable<never> {
+  protected handleError(_error: HttpErrorResponse): Observable<unknown> {
     if (_error.error instanceof ErrorEvent) {
       //Client-side / network error occurred
       console.error(
@@ -248,7 +248,7 @@ export class BaseMspApiService extends AbstractHttpService {
     );
 
     // A user facing error message /could/ go here; we shouldn't log dev info through the throwError observable
-    return of(_error) as unknown as Observable<never>;
+    return of(_error);
   }
 
   private sendAttachment(

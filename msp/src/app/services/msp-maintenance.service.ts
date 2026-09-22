@@ -28,7 +28,7 @@ export class  MspMaintenanceService extends AbstractHttpService {
         return this.post<ISpaEnvResponse>(url, null);
     }
 
-    protected handleError(error: HttpErrorResponse): Observable<never> {
+    protected handleError(error: HttpErrorResponse): Observable<unknown> {
         if (error.error instanceof ErrorEvent) {
             //Client-side / network error occurred
             console.error('MspMaintenanceService error: ', error.error.message);
@@ -43,8 +43,12 @@ export class  MspMaintenanceService extends AbstractHttpService {
             }
         );
 
-        // A user facing error message /could/ go here; we shouldn't log dev info through the throwError observable
-        return of([]) as unknown as Observable<never>;
+        // Fail open: callers read maintenance flags off this object, and an
+        // absent flag means "not under maintenance". Returning an empty
+        // response keeps that read safe without pretending the call succeeded
+        // with data. Previously this returned an empty array, which callers
+        // then read properties off.
+        return of({} as ISpaEnvResponse);
     }
 
     protected _headers: HttpHeaders = new HttpHeaders({
