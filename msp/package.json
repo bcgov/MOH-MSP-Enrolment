@@ -17,8 +17,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "test:coverage": "echo \"Error: no test specified\" && exit 0",
-    "test:e2e": "start-server-and-test 'ng serve --port 4300' 4300 'cypress open --e2e --browser electron'",
-    "test:e2e:headless": "start-server-and-test 'ng serve --port 4300' 4300 'cypress run'"
+    "test:e2e": "start-server-and-test 'ng serve --host 127.0.0.1 --port 4300' http://127.0.0.1:4300/msp/ 'cypress open --e2e --browser electron'",
+    "test:e2e:headless": "start-server-and-test 'ng serve --host 127.0.0.1 --port 4300' http://127.0.0.1:4300/msp/ 'cypress run'"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^19.2.27",
