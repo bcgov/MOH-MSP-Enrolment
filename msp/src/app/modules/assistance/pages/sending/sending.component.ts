@@ -1,19 +1,19 @@
-import {Component, Injectable, AfterContentInit} from '@angular/core';
+import {Component, AfterContentInit} from '@angular/core';
 import { MspDataService } from '../../../../services/msp-data.service';
 import {MspApiService} from '../../../../services/msp-api.service';
 import {Router} from '@angular/router';
 import {ResponseType} from '../../../msp-core/api-model/responseTypes';
 import {FinancialAssistApplication} from '../../models/financial-assist-application.model';
 import {MspLogService} from '../../../../services/log.service';
+import enLang from './i18n/data/en/index';
 
 
 @Component({
+  standalone: false,
   templateUrl: 'sending.component.html'
 })
-@Injectable()
 export class AssistanceSendingComponent implements AfterContentInit   {
-  lang = require('./i18n');
-
+  lang = enLang;
   application: FinancialAssistApplication;
   rawUrl: string;
   rawError: string;
@@ -75,7 +75,6 @@ export class AssistanceSendingComponent implements AfterContentInit   {
         );
         this.transmissionInProcess = false;
         // this.router.navigate(["/msp/assistance/confirmation"]);
-          const oldUUID = this.application.uuid;
           this.application.regenUUID();
         this.application.authorizationToken = null;
           this.dataService.saveFinAssistApplication();

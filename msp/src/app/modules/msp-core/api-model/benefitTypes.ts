@@ -1,18 +1,14 @@
-import * as Primitive from './xml-primitives';
 import * as ct from './commonTypes';
-import * as at from './applicationTypes';
 
 // Source files:
 // https://raw.githubusercontent.com/bcgov/MyGovBC-MSP/master/src/app/components/msp/api-model/xsd-flat/BenefitTypes.xsd
-// tslint:disable:indent
 
 interface BaseType {
   _exists: boolean;
   _namespace: string;
-  _sequence: Array<string>;
+  _sequence: string[];
 }
 
-// tslint:disable-next-line:class-name
 interface _BenefitApplicantType extends ct.BasicInfoType {
   uuid: string;
   financials: FinancialsType;
@@ -24,13 +20,13 @@ interface _BenefitApplicantType extends ct.BasicInfoType {
   telephone: number;
 }
 export interface BenefitApplicantType extends _BenefitApplicantType {
-  constructor: { new (): BenefitApplicantType };
+  constructor: new () => BenefitApplicantType;
 }
-export let BenefitApplicantType: { new (): BenefitApplicantType };
+export let BenefitApplicantType: new () => BenefitApplicantType;
 
 export class BenefitApplicantTypeFactory {
   static make(): BenefitApplicantType {
-    const instance = <BenefitApplicantType>{};
+    const instance = {} as BenefitApplicantType;
     /*instance._sequence = ['benefitApplication','applicant', 'spouse', 'authorizedByApplicant', 'authorizedByApplicantDate',
 			'authorizedBySpouse'];*/
     return instance;
@@ -76,7 +72,6 @@ interface BenefitApplicationBody {
   // just be that example. authorizedBySpouse?: ct.YesOrNoType
 }
 
-// tslint:disable-next-line:class-name
 interface _BenefitApplicationType {
   supplementaryBenefitsApplication: BenefitApplicationBody;
   uuid: string;
@@ -85,18 +80,17 @@ interface _BenefitApplicationType {
 }
 // export interface BenefitApplicationType extends _BenefitApplicationType { constructor: { new(): BenefitApplicationType }; }
 // TODO _ try removing the constructor requrirement by enabling below line
-export interface BenefitApplicationType extends _BenefitApplicationType {}
+export type BenefitApplicationType = _BenefitApplicationType;
 
-export let BenefitApplicationType: { new (): BenefitApplicationType };
+export let BenefitApplicationType: new () => BenefitApplicationType;
 
 export class BenefitApplicationTypeFactory {
   static make(): BenefitApplicationType {
-    const instance = <BenefitApplicationType>{};
+    const instance = {} as BenefitApplicationType;
     return instance;
   }
 }
 
-// tslint:disable-next-line:class-name
 interface _BenefitSpouseType extends BaseType {
   name: ct.NameType;
   birthDate?: string;
@@ -106,13 +100,13 @@ interface _BenefitSpouseType extends BaseType {
   spouseSixtyFiveDeduction?: number;
 }
 export interface BenefitSpouseType extends _BenefitSpouseType {
-  constructor: { new (): BenefitSpouseType };
+  constructor: new () => BenefitSpouseType;
 }
-export let BenefitSpouseType: { new (): BenefitSpouseType };
+export let BenefitSpouseType: new () => BenefitSpouseType;
 
 export class BenefitSpouseTypeFactory {
   static make(): BenefitSpouseType {
-    const instance = <BenefitSpouseType>{};
+    const instance = {} as BenefitSpouseType;
     /*instance._sequence = ['name', 'birthDate', 'phn', 'SIN', 'spouseDeduction',
 			'spouseSixtyFiveDeduction'];*/
     return instance;
@@ -121,12 +115,6 @@ export class BenefitSpouseTypeFactory {
 
 export type BenefitYearType = 'CurrentPA' | 'PreviousTwo' | 'MultiYear';
 
-// tslint:disable-next-line:class-name
-interface _BenefitYearType extends Primitive._string {
-  content: BenefitYearType;
-}
-
-// tslint:disable-next-line:class-name
 interface _FinancialsType extends BaseType {
   adjustedNetIncome?: number;
   //BenefitYear: BenefitYearType;
@@ -147,13 +135,13 @@ interface _FinancialsType extends BaseType {
   uccb?: number;
 }
 export interface FinancialsType extends _FinancialsType {
-  constructor: { new (): FinancialsType };
+  constructor: new () => FinancialsType;
 }
-export let FinancialsType: { new (): FinancialsType };
+export let FinancialsType: new () => FinancialsType;
 
 export class FinancialsTypeFactory {
   static make(): FinancialsType {
-    const instance = <FinancialsType>{};
+    const instance = {} as FinancialsType;
     /*instance._sequence = ['taxYear', 'numberOfTaxYears', 'netIncome', 'spouseNetIncome',
 			'totalNetIncome', 'sixtyFiveDeduction', 'numChildren', 'childDeduction', 'childCareExpense', 'deductions',
 			'uccb', 'numDisabled', 'disabilityDeduction', 'disabilitySavingsPlan', 'totalDeductions', 'adjustedNetIncome'];*/
@@ -161,7 +149,6 @@ export class FinancialsTypeFactory {
   }
 }
 
-// tslint:disable-next-line:class-name
 export interface document extends BaseType {
   BenefitApplication: BenefitApplicationType;
 }
@@ -169,7 +156,7 @@ export let document: document;
 
 export class DocumentFactory {
   static make(): document {
-    const instance = <document>{};
+    const instance = {} as document;
     //instance._sequence = ['BenefitApplication'];
     return instance;
   }

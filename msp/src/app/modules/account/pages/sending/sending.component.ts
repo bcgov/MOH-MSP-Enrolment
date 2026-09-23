@@ -1,4 +1,4 @@
-import { Component, Injectable, AfterContentInit, OnInit } from '@angular/core';
+import { Component, AfterContentInit, OnInit } from '@angular/core';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { MspApiAccountService } from '../../services/msp-api-account.service';
 import { Router } from '@angular/router';
@@ -9,23 +9,24 @@ import { MspAccountApp } from '../../models/account.model';
 import { Relationship } from '../../../../models/relationship.enum';
 import { ApiResponse } from 'app/models/api-response.interface';
 import { HttpErrorResponse } from '@angular/common/http';
+import enLang from './i18n/data/en/index';
 import {
   ApiStatusCodes,
   ContainerService,
   PageStateService,
-} from 'moh-common-lib';
+} from 'moh-common-lib-angular';
 import { BaseForm } from '../../models/base-form';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 
 @Component({
+  standalone: false,
   templateUrl: 'sending.component.html',
   styleUrls: ['./sending.component.scss'],
 })
-@Injectable()
 export class AccountSendingComponent
   extends BaseForm
   implements AfterContentInit, OnInit {
-  lang = require('./i18n');
+  lang = enLang;
   static ProcessStepNum = 6;
   mspAccountApp: MspAccountApp;
   rawUrl: string;
@@ -200,7 +201,6 @@ export class AccountSendingComponent
         );
         this.transmissionInProcess = false;
 
-        const oldUUID = this.mspAccountApp.uuid;
         this.mspAccountApp.regenUUID();
 
         this.mspAccountApp.authorizationToken = null;
@@ -211,7 +211,6 @@ export class AccountSendingComponent
   processErrorResponse(transmissionInProcess: boolean) {
     this.hasError = true;
     this.transmissionInProcess = transmissionInProcess;
-    const oldUUID = this.mspAccountApp.uuid;
     this.mspAccountApp.regenUUID();
     this.mspAccountApp.authorizationToken = null;
     this.dataService.saveMspAccountApp();

@@ -1,7 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { SimpleChanges } from '@angular/core';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 import { MspLogService } from '../../../../services/log.service';
 import { FormsModule, NgForm } from '@angular/forms';
 import { SupportDocumentsComponent } from './support-documents.component';

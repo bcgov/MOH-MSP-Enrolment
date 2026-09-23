@@ -1,5 +1,11 @@
-import { Component, ViewChild, AfterViewInit, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
-import { AbstractForm, ApiStatusCodes, ErrorMessage } from 'moh-common-lib';
+import {
+  Component,
+  ViewChild,
+  AfterViewInit,
+  OnDestroy,
+  ChangeDetectorRef,
+} from '@angular/core';
+import { AbstractForm, ApiStatusCodes, ErrorMessage } from 'moh-common-lib-angular';
 import { Router } from '@angular/router';
 import { HeaderService } from '../../../../services/header.service';
 import { MspConsentModalComponent } from '../../../msp-core/components/consent-modal/consent-modal.component';
@@ -16,20 +22,21 @@ import { ROUTES_ACL } from '../../request-acl-route-constants';
 import { subYears, startOfToday } from 'date-fns';
 
 @Component({
+  standalone: false,
   selector: 'msp-request-letter',
   templateUrl: './request-letter.component.html',
   styleUrls: ['./request-letter.component.scss']
 })
 export class RequestLetterComponent extends AbstractForm implements AfterViewInit, OnDestroy {
 
-  @ViewChild('mspConsentModal') mspConsentModal: MspConsentModalComponent;
+  @ViewChild('mspConsentModal', { static: true }) mspConsentModal: MspConsentModalComponent;
 
   // Used to indicate that the system is processing the request
-  loading: boolean = false;
+  loading = false;
   captchaApiBaseUrl: string = environment.appConstants.captchaApiBaseUrl;
-  showCaptcha: boolean = false;
-  accountHolderInput: string = 'AccountHolderPhn';
-  specificMemberInput: string = 'SpecificMember';
+  showCaptcha = false;
+  accountHolderInput = 'AccountHolderPhn';
+  specificMemberInput = 'SpecificMember';
 
   // Radio button labels
   radioBtnLabels = [
@@ -38,11 +45,11 @@ export class RequestLetterComponent extends AbstractForm implements AfterViewIni
     { label: 'One specific member on my Medical Services Plan Account', value: EnrolmentMembership.SpecificMember },
   ];
 
-  errorMessage: ErrorMessage = {
+  errorMessage: ErrorMessage = { required: '{label} is required.',
     duplicate: 'This PHN was already used for another family member. Please provide the PHN that is listed on the family member\'s BC Services Card.'
   };
 
-  dobErrorMsg: ErrorMessage = {
+  dobErrorMsg: ErrorMessage = { required: '{label} is required.',
     invalidRange: 'An applicant must be 16 years or older.'
   };
   dobEndRange = subYears( startOfToday(), 16 );
@@ -169,11 +176,11 @@ export class RequestLetterComponent extends AbstractForm implements AfterViewIni
     subscription.subscribe( response => {
 
       // business errors.. Might be either a RAPID validation failure or DB error
-      const payload: AclApiPayLoad = <AclApiPayLoad> response;
+      const payload: AclApiPayLoad = response as AclApiPayLoad;
 
       // Required field in payload. - work around
       // If not there we do not have the correct structure for response
-      if ( !payload.hasOwnProperty('referenceNumber')  ) {
+      if ( !Object.hasOwn(payload, 'referenceNumber')  ) {
 
         this.application.regenUUID(); // Generates a new uuid
         this.application.authorizationToken = null;

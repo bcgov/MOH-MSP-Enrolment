@@ -1,8 +1,8 @@
 <main class="container-fluid" id="content">
-  <common-consent-modal #mspConsentModal class="consentModal" [isUnderMaintenance]="true"
-    [title]="'Information collection notice'"  [processName]="'ACL'"
-    [agreeLabel]="'I have read and understand this information'" (accept)="onAccept($event)"
-    (onClose)="manageAccount.focus()">
+  <common-consent-modal #mspConsentModal class="consentModal" [isUnderMaintenance]="isUnderMaintenance"
+    [maintenanceMessage]="maintenanceMessage"
+    [title]="'Information collection notice'"
+    [agreeLabel]="'I have read and understand this information'" (accept)="onAccept($event)">
     <p>
       <strong>Keep your personal information secure – especially when using a shared device like a computer at a library,
       school or café.</strong> To delete any information that was entered, either complete the request and submit it or,

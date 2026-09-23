@@ -1,9 +1,9 @@
 import { Component, OnInit, forwardRef, EventEmitter, Input, Output } from '@angular/core';
-import { Base, PROVINCE_LIST, BRITISH_COLUMBIA, COUNTRY_LIST, ErrorMessage, LabelReplacementTag } from 'moh-common-lib';
+import { Base, PROVINCE_LIST, BRITISH_COLUMBIA, COUNTRY_LIST, ErrorMessage, LabelReplacementTag } from 'moh-common-lib-angular';
 import { ControlContainer, NgForm } from '@angular/forms';
 import { environment } from '../../../../../environments/environment';
 import { startOfToday, subMonths, isAfter, subDays } from 'date-fns';
-import { isBefore } from 'date-fns/esm';
+import { isBefore } from 'date-fns';
 
 
 export interface IMovingInfo {
@@ -42,6 +42,7 @@ export interface IMovingInfo {
 // TODO: Setup as generic so that account application can use it, add variables as optional
 // do questions are display when variables are present
 @Component({
+  standalone: false,
   selector: 'msp-moving-information',
   templateUrl: './moving-information.component.html',
   styleUrls: ['./moving-information.component.scss'],
@@ -68,8 +69,8 @@ export class MovingInformationComponent<T extends IMovingInfo> extends Base impl
     }
   }).filter( x => x );
 
-  relationship: string = 'you';
-  relationType: string = 'applicant\'s';
+  relationship = 'you';
+  relationType = 'applicant\'s';
 
   departureDateLabel = 'Departure date';
   returnDateLabel = 'Return date';
@@ -77,27 +78,27 @@ export class MovingInformationComponent<T extends IMovingInfo> extends Base impl
   yesterday = subDays( this.today, 1);
   twelveMonthsAgo: Date = subMonths( this.yesterday, 12 );
 
-  oopDepartureErrorMsg: ErrorMessage = {
+  oopDepartureErrorMsg: ErrorMessage = { required: '{label} is required.',
     invalidRange: LabelReplacementTag + ' must be within the last 12 months and prior to return date.'
   };
 
-  oopReturnErrorMsg: ErrorMessage = {
+  oopReturnErrorMsg: ErrorMessage = { required: '{label} is required.',
     invalidRange: LabelReplacementTag + ' must be within the last 12 months and after departure date.'
   };
 
   private _relationshipLabel = '{RelationshipLabel}';
-  recentMoveBCErrorMsg: ErrorMessage = {
+  recentMoveBCErrorMsg: ErrorMessage = { required: '{label} is required.',
     invalidRange: 'The ' + this._relationshipLabel + ' most recent move to BC cannot be before the ' +
       this._relationshipLabel + ' date of birth.',
     noFutureDatesAllowed: 'Most recent move to BC date cannot be in the future.'
   };
-  recentMoveCanadaErrorMsg: ErrorMessage = {
+  recentMoveCanadaErrorMsg: ErrorMessage = { required: '{label} is required.',
     invalidRange: 'The ' + this._relationshipLabel + ' most recent move to Canada cannot be before the ' +
       this._relationshipLabel + ' date of birth and cannot be after the move to B.C. date.',
     noFutureDatesAllowed: 'Most recent move to Canada date cannot be in the future.'
   };
 
-  dischargeDateErrorMsg: ErrorMessage = {
+  dischargeDateErrorMsg: ErrorMessage = { required: '{label} is required.',
     invalidRange:  LabelReplacementTag + ' cannot be before the ' + this._relationshipLabel + ' date of birth.',
     noFutureDatesAllowed: LabelReplacementTag + ' cannot be in the future.'
   };
@@ -250,9 +251,7 @@ export class MovingInformationComponent<T extends IMovingInfo> extends Base impl
     return (this.isApplicant ? 'Have ' : 'Has ') + msg;
   }
 
-  get permanentMoveTip() {
-    return 'A permanent move means that you intend to make B.C. your primary residence for 6 months or longer. If you leave B.C. within 6 months of enrolling for MSP, you may have to repay your medical expenses.';
-  }
+  readonly permanentMoveTip = 'A permanent move means that you intend to make B.C. your primary residence for 6 months or longer. If you leave B.C. within 6 months of enrolling for MSP, you may have to repay your medical expenses.';
 
   get armedForceLabel() {
     const msg = this.relationship  + ' been released from the Canadian Armed Forces or an institution?';

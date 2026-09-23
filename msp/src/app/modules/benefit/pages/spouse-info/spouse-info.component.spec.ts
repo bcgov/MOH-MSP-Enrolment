@@ -5,7 +5,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { ProcessService } from '../../../../services/process.service';
 import { Router } from '@angular/router';
 import { MspBenefitDataService } from '../../services/msp-benefit-data.service';
-import { FormsModule, NgForm } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { Relationship } from '../../../../models/relationship.enum';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
@@ -17,9 +17,9 @@ describe('BenefitSpouseInfoComponent', () => {
   beforeEach(() => {
     const changeDetectorRefStub = () => ({});
     const processServiceStub = () => ({
-      setStep: (processStepNum, arg) => ({})
+      setStep: () => ({})
     });
-    const routerStub = () => ({ navigate: array => ({}) });
+    const routerStub = () => ({ navigate: () => ({}) });
     const mspBenefitDataServiceStub = () => ({
       benefitApp: { setSpouse: {}, isUniquePhns: {}, isUniqueSin: {}, mailingAddress: {} },
       saveBenefitApplication: () => ({})
@@ -60,9 +60,8 @@ describe('BenefitSpouseInfoComponent', () => {
   describe('onSubmit', () => {
     it('makes expected calls', () => {
       const routerStub: Router = fixture.debugElement.injector.get(Router);
-      const ngFormStub: NgForm = <any>{};
       spyOn(routerStub, 'navigate').and.callThrough();
-      component.onSubmit(ngFormStub);
+      component.onSubmit();
       expect(routerStub.navigate).toHaveBeenCalled();
     });
   });

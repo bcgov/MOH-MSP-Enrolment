@@ -13,7 +13,7 @@ import { MspAccountMaintenanceDataService } from '../../services/msp-account-dat
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { NgForm } from '@angular/forms';
-import { ContainerService, PageStateService, scrollTo } from 'moh-common-lib';
+import { ContainerService, PageStateService, scrollTo } from 'moh-common-lib-angular';
 import { Router } from '@angular/router';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import { Relationship } from 'app/models/relationship.enum';
@@ -24,6 +24,7 @@ import { ProcessService } from '../../../../services/process.service';
 const DOM_REFRESH_TIMEOUT = 50;
 
 @Component({
+  standalone: false,
   selector: 'msp-spouse-info',
   templateUrl: './spouse-info.component.html',
   styleUrls: ['./spouse-info.component.scss'],
@@ -58,7 +59,7 @@ export class SpouseInfoComponent
     }
   }
 
-  @ViewChild('formRef') form: NgForm;
+  @ViewChild('formRef', { static: true }) declare form: NgForm;
 
   ngOnInit() {
     this.accountApp = this.dataService.accountApp;
@@ -130,7 +131,7 @@ export class SpouseInfoComponent
   }
 
   scrollToSpouse(section: string) {
-    const el = <HTMLElement>document.querySelector(section);
+    const el = document.querySelector(section) as HTMLElement;
     if (el) {
       const top: number =
         el.getBoundingClientRect().top + window.pageYOffset - 75;

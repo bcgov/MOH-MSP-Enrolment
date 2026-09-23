@@ -1,10 +1,9 @@
 <common-consent-modal #mspConsentModal
-        [title]="'Information collection notice'" 
+        [title]="'Information collection notice'"
         agreeLabel="I have read and understand this information"
-        [processName]="consentProcessName" 
         (accept)="onAccept($event)"
-        (close)="onClose()"
-        [isUnderMaintenance]="isMaintenanceMode">
+        [isUnderMaintenance]="isUnderMaintenance"
+        [maintenanceMessage]="maintenanceMessage">
   <p>
     Keep your personal information secure – especially when using a shared device like a computer 
     at a library, school or café. To delete any information that was entered, either complete 

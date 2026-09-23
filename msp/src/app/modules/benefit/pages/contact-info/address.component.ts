@@ -1,4 +1,11 @@
-import { ChangeDetectorRef, Input, Component, ViewChild, ElementRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ViewChild,
+  ElementRef,
+  OnInit,
+  AfterViewInit,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MspBenefitDataService } from '../../services/msp-benefit-data.service';
 import { BenefitApplication } from '../../models/benefit-application.model';
@@ -6,16 +13,16 @@ import { BaseComponent } from '../../../../models/base.component';
 import { ProcessService } from '../../../../services/process.service';
 import { Router } from '@angular/router';
 
-import {  ProvinceList, PROVINCE_LIST, CountryList, CANADA, BRITISH_COLUMBIA, Address, COUNTRY_LIST, CheckCompleteBaseService } from 'moh-common-lib';
 import { SpaEnvService } from '../../../../services/spa-env.service';
 import { environment } from 'environments/environment';
 //import { CountryList,ProvinceList,countryData, provinceData } from '../../../../models/msp-constants';
 
 @Component({
+  standalone: false,
   templateUrl: './address.component.html'
 })
 
-export class BenefitAddressComponent extends BaseComponent {
+export class BenefitAddressComponent extends BaseComponent implements OnInit, AfterViewInit {
   // Constants TODO: Figure out whether used in html
   outsideBCFor30DaysLabel = 'Have you or any family member been outside BC for more than 30 days in total during the past 12 months?';
   addAnotherOutsideBCPersonButton = 'Add Another Person';
@@ -25,7 +32,10 @@ export class BenefitAddressComponent extends BaseComponent {
 
   static ProcessStepNum = 3;
 
-  @ViewChild('formRef') form: NgForm;
+  @ViewChild('formRef', { static: true }) form: NgForm;
+  // None of the following three have a matching template ref in
+  // address.component.html; these queries never resolve regardless of
+  // static timing. Left as-is, out of scope here.
   @ViewChild('address') address: ElementRef;
   @ViewChild('mailingAddress') mailingAddress: ElementRef;
   @ViewChild('phone') phone: ElementRef;
@@ -55,7 +65,7 @@ export class BenefitAddressComponent extends BaseComponent {
       this.dataService.benefitApp.mailingAddress.province = '';
     }
 
-    this.form.valueChanges.subscribe(values => {
+    this.form.valueChanges.subscribe(() => {
       this.dataService.saveBenefitApplication();
     });
   }
@@ -65,13 +75,11 @@ export class BenefitAddressComponent extends BaseComponent {
     this.dataService.saveBenefitApplication();
   }
 
-  handleAddressUpdate(evt: any){
+  handleAddressUpdate(){
     this.dataService.saveBenefitApplication();
   }
 
   canContinue() {
-    const phonepattern =  '^[2-9]([0-9]{9})$';
-    const regEx = new RegExp(phonepattern);
     return this.isAllValid();
   }
 

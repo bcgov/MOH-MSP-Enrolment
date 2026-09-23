@@ -1,5 +1,5 @@
 <a [class.btn-block]="btnBlock" class="btn btn-default float-right" href="javascript:void(0)"
-        [innerHtml]="accountButton?lang('./en/index.js').accountcancelButton : lang('./en/index.js').cancelButton"
+        [innerHtml]="accountButton?lang.accountcancelButton : lang.cancelButton"
         (click)="showFullSizeView()" role="button"></a>
 
 <div bsModal #fullSizeViewModal="bs-modal" class="modal fade" tabindex="-1" role="dialog"
@@ -7,14 +7,14 @@
   <div class="modal-dialog" style="margin-top: 70px;">
     <div class="modal-content">
       <div class="modal-body">
-        <h2 [innerHtml]="accountButton?lang('./en/index.js').accountbody : lang('./en/index.js').body"></h2>
+        <h2 [innerHtml]="accountButton?lang.accountbody : lang.body"></h2>
       </div>
       <div class="modal-footer justify-content-between">
         <a class="btn btn-danger float-left" role="button" href="javascript:void(0)"
-                [innerHtml]="lang('./en/index.js').yesButton"
+                [innerHtml]="lang.yesButton"
                 (click)="yesButtonClick()"></a>
         <a class="btn btn-primary float-right" role="button" href="javascript:void(0)"
-                [innerHtml]="accountButton? lang('./en/index.js').accountnoButton : lang('./en/index.js').noButton"
+                [innerHtml]="accountButton? lang.accountnoButton : lang.noButton"
                 (click)="noButtonClick()"></a>
 
       </div>

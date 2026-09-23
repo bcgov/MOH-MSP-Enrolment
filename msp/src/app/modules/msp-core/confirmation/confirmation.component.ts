@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 //TODO: remove after convert files that use msp-confirmation to common-confirm-template
 @Component({
+  standalone: false,
   selector: 'msp-confirmation',
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.scss']
@@ -11,11 +12,6 @@ export class ConfirmationComponent implements OnInit {
   @Input() success: boolean;
   @Input() message: string;
 
-  resultStyle(bool: boolean) {
-    return 'failure';
-    // return bool ? 'success' : 'failure';
-  }
-
   generalInstructions = [
     'Important: Keep your reference number - write it down, or print this page for your records',
     `Health Insurance BC will notify you whether you have qualified for Retroactive Premium Assistance.`
@@ -24,8 +20,6 @@ export class ConfirmationComponent implements OnInit {
   month;
   day;
   year;
-
-  constructor() {}
 
   ngOnInit() {
     const monthChart = {

@@ -1,7 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedCoreModule } from 'moh-common-lib';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CoreBreadcrumbComponent, FormActionBarComponent, PageFrameworkComponent, WizardProgressBarComponent } from 'moh-common-lib-angular';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AssistContainerComponent } from './assist-container.component';
 import { MspDataService } from '../../../../services/msp-data.service';
@@ -11,18 +10,12 @@ describe('AssistContainerComponent', () => {
   let component: AssistContainerComponent;
   let fixture: ComponentFixture<AssistContainerComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ AssistContainerComponent ],
       imports: [
-        SharedCoreModule,
         RouterTestingModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
-        HttpClientTestingModule
-      ],
+        HttpClientTestingModule, CoreBreadcrumbComponent, FormActionBarComponent, PageFrameworkComponent, WizardProgressBarComponent],
       providers: [
         MspDataService,
         MspLogService

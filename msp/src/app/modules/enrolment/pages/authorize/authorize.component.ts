@@ -6,13 +6,14 @@ import { PageStateService } from '../../../../services/page-state.service';
 import { EnrolForm } from '../../models/enrol-form';
 import { MspLogService } from '../../../../services/log.service';
 import { MspApiEnrolmentService } from '../../services/msp-api-enrolment.service';
-import { ApiStatusCodes } from 'moh-common-lib';
+import { ApiStatusCodes } from 'moh-common-lib-angular';
 import { ApiResponse } from '../../../../models/api-response.interface';
 import { HttpErrorResponse } from '@angular/common/http';
 import { EnrolDataService } from '../../services/enrol-data.service';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 
 @Component({
+  standalone: false,
   selector: 'msp-authorize',
   templateUrl: './authorize.component.html',
   styleUrls: ['./authorize.component.scss']
@@ -20,7 +21,7 @@ import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 export class AuthorizeComponent extends EnrolForm implements OnInit {
 
   captchaApiBaseUrl: string = environment.appConstants.captchaApiBaseUrl;
-  private _hasNextSteps: boolean = true;
+  private _hasNextSteps = true;
 
   constructor( protected enrolDataService: EnrolDataService,
                protected pageStateService: PageStateService,
@@ -52,9 +53,7 @@ export class AuthorizeComponent extends EnrolForm implements OnInit {
     return this.mspApplication.hasSpouse();
   }
 
-  get label() {
-    return 'Yes, I agree';
-  }
+  readonly label = 'Yes, I agree';
 
   get questionApplicant() {
     return this.mspApplication.applicant.firstName + ' ' + this.mspApplication.applicant.lastName + ', do you agree?';

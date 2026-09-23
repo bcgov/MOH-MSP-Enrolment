@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { Router } from '@angular/router';
@@ -13,19 +13,19 @@ describe('RequestLetterComponent', () => {
   let component: RequestLetterComponent;
   let fixture: ComponentFixture<RequestLetterComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     const changeDetectorRefStub = () => ({ detectChanges: () => ({}) });
     const routerStub = () => ({ url: {} });
-    const headerServiceStub = () => ({ setTitle: string => ({}) });
+    const headerServiceStub = () => ({ setTitle: () => ({}) });
     const aclDataServiceStub = () => ({
       application: { infoCollectionAgreement: {} },
       saveApplication: () => ({}),
       removeApplication: () => ({})
     });
-    const mspLogServiceStub = () => ({ log: (object, string) => ({}) });
+    const mspLogServiceStub = () => ({ log: () => ({}) });
     const aclApiServiceStub = () => ({
-      sendAclRequest: application => ({ subscribe: f => f({}) }),
-      sendSpaEnvServer: arg => ({ subscribe: f => f({}) })
+      sendAclRequest: () => ({ subscribe: f => f({}) }),
+      sendSpaEnvServer: () => ({ subscribe: f => f({}) })
     });
     TestBed.configureTestingModule({
       imports: [FormsModule],

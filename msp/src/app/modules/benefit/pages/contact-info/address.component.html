@@ -7,7 +7,7 @@
             <p class="border-bottom">Enter your <b>current</b> mailing address</p>
             <common-address *ngIf='!isAddressValidatorEnabled'
                             [address]="mspApplication?.mailingAddress"
-                            (addressChange)="handleAddressUpdate($event)"
+                            (addressChange)="handleAddressUpdate()"
                             [labels]="{postalCode: 'Postal Code or ZIP'}"
                             [isRequired]="true"
                             [allowExtralines]='true'
@@ -15,7 +15,7 @@
             </common-address>
             <common-address *ngIf='isAddressValidatorEnabled'
                             [address]="mspApplication?.mailingAddress"
-                            (addressChange)="handleAddressUpdate($event)"
+                            (addressChange)="handleAddressUpdate()"
                             [labels]="{postalCode: 'Postal Code or ZIP'}"
                             [isRequired]="true"
                             [allowExtralines]="true"

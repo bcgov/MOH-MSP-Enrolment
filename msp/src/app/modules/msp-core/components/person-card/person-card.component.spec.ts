@@ -4,10 +4,8 @@ import { MspPersonCardComponent } from './person-card.component';
 import { ReviewCardComponent } from '../review-card/review-card.component';
 import { MspAddressCardPartComponent } from '../address-card-part/address-card-part.component';
 import { MspDataService } from '../../../../services/msp-data.service';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import {ModalModule} from 'ngx-bootstrap/modal';
 import {RouterTestingModule} from '@angular/router/testing';
-import { SharedCoreModule } from 'moh-common-lib';
 
 describe('MspPersonCardComponent', () => {
   beforeEach(() => {
@@ -16,12 +14,7 @@ describe('MspPersonCardComponent', () => {
       imports: [
         FormsModule,
         ModalModule.forRoot(),
-        RouterTestingModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
-        SharedCoreModule
+        RouterTestingModule
       ],
       providers: [MspDataService]
     });

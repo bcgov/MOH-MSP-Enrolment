@@ -1,5 +1,5 @@
-import { AbstractForm } from 'moh-common-lib';
-import { OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { AbstractForm } from 'moh-common-lib-angular';
+import { Directive, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
 import { environment } from '../../../../environments/environment';
 import { Subscription } from 'rxjs';
 import { PageStateService } from '../../../services/page-state.service';
@@ -8,6 +8,7 @@ import { debounceTime } from 'rxjs/operators';
 import { EnrolDataService } from '../services/enrol-data.service';
 import { EnrolApplication } from './enrol-application';
 
+@Directive()
 export class EnrolForm extends AbstractForm implements OnInit, AfterViewInit, OnDestroy {
 
     // Web links
@@ -48,7 +49,9 @@ export class EnrolForm extends AbstractForm implements OnInit, AfterViewInit, On
   }
 
   ngOnDestroy() {
-    this.subscriptions.forEach( itm => itm.unsubscribe() );
+    if (this.subscriptions) {
+      this.subscriptions.forEach( itm => itm.unsubscribe() );
+    }
   }
 
    // abstract function must be defined

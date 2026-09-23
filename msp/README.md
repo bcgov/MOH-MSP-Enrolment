@@ -85,8 +85,33 @@ After a make a few more edits, I double check my work at the test site.
 
 ## Development Prerequisites
 
-- node@>=12.x
-- npm@>=6.x
+- node@>=22.23.0 <23
+- npm@>=10.x
+
+### Running the tests
+
+`npm install` pulls everything the test suites need from npm, including the
+Cypress binary. Two things it cannot install for you:
+
+- A Chrome build for the unit tests. `karma.conf.js` runs `ChromeHeadless`,
+  which needs Chrome on the PATH or a `CHROME_BIN` environment variable
+  pointing at a browser binary. Without one, `npm test` exits with
+  `No binary for ChromeHeadless browser on your platform`.
+- The shared libraries Cypress and headless Chrome link against. On
+  Ubuntu and WSL, install them with:
+
+  ```bash
+  sudo apt-get install -y libnspr4 libnss3 libasound2t64
+  ```
+
+  Without these, `npx cypress verify` fails with
+  `libnspr4.so: cannot open shared object file`.
+
+```bash
+npm test               # unit tests, Karma and Jasmine
+npm run test:e2e       # Cypress, interactive
+npm run test:e2e:headless
+```
 
 ## Development
 

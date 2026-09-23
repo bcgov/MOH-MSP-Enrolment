@@ -1,6 +1,7 @@
 <account-personal-information
   [person]="child"
-  [phnList]="phnList">
+  [phnList]="phnList"
+  (personChange)="enforceDPSSEligibility()">
   <p class="horizontal-line"></p>
 </account-personal-information>
 
@@ -336,7 +337,7 @@
                       label="Will the child reside in B.C. after completing study in this school?"
                       [required]="true">
             </common-radio>
-            <common-error-container [displayError]="child.inBCafterStudies == false && !isTemporaryResident">
+            <common-error-container [displayError]="child.inBCafterStudies === false && !isTemporaryResident">
               To qualify for provincial health care benefits a person must be a resident of
               B.C. As you intend to leave B.C. when your studies are completed, you are not
               eligible for Medical Services Plan coverage. Please contact the health care plan

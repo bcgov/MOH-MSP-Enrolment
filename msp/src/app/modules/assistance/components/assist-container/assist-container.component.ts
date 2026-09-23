@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { assistPages } from '../../assist-page-routing.module';
-import { Container } from 'moh-common-lib';
+import { Container } from 'moh-common-lib-angular';
 import { AssistStateService } from '../../services/assist-state.service';
 import { MspDataService } from 'app/services/msp-data.service';
 import { FinancialAssistApplication } from '../../models/financial-assist-application.model';
@@ -14,12 +14,13 @@ import { MspLogService } from 'app/services/log.service';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 
 @Component({
+  standalone: false,
   selector: 'msp-assist-container',
   templateUrl: './assist-container.component.html',
   styleUrls: ['./assist-container.component.scss']
 })
 export class AssistContainerComponent extends Container implements OnInit {
-  app: FinancialAssistApplication = this.dataSvc.finAssistApp;
+  app: FinancialAssistApplication;
 
   isLoading = false;
 
@@ -39,6 +40,7 @@ export class AssistContainerComponent extends Container implements OnInit {
     private logService: MspLogService
   ) {
     super();
+    this.app = this.dataSvc.finAssistApp;
     this.setProgressSteps(assistPages);
     this.stateSvc.setAssistPages( assistPages );
     this.header.setTitle('Retroactive Premium Assistance');

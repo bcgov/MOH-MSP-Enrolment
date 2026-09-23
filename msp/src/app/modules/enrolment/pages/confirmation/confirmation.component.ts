@@ -1,14 +1,15 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, OnDestroy} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Subscription} from 'rxjs';
 import { environment } from '../../../../../environments/environment';
-import { ApiStatusCodes } from 'moh-common-lib';
+import { ApiStatusCodes } from 'moh-common-lib-angular';
 import { format } from 'date-fns';
 @Component({
+  standalone: false,
   templateUrl: './confirmation.component.html',
   styleUrls: ['./confirmation.component.scss']
 })
-export class ConfirmationComponent implements OnInit {
+export class ConfirmationComponent implements OnInit, OnDestroy {
 
   confirmationNum: string;
   status: ApiStatusCodes = ApiStatusCodes.ERROR;
@@ -38,7 +39,9 @@ export class ConfirmationComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
   }
 
   get isSucess() {

@@ -8,8 +8,8 @@ describe('ApiSendService', () => {
   let service: ApiSendService;
 
   beforeEach(() => {
-    const schemaServiceStub = () => ({ validate: app => ({}) });
-    const mspLogServiceStub = () => ({ log: (object, arg) => ({}) });
+    const schemaServiceStub = () => ({ validate: () => ({}) });
+    const mspLogServiceStub = () => ({ log: () => ({}) });
     TestBed.configureTestingModule({
       imports: [HttpClientTestingModule],
       providers: [
@@ -18,7 +18,7 @@ describe('ApiSendService', () => {
         { provide: MspLogService, useFactory: mspLogServiceStub }
       ]
     });
-    service = TestBed.get(ApiSendService);
+    service = TestBed.inject(ApiSendService);
   });
 
   it('should create', () => {

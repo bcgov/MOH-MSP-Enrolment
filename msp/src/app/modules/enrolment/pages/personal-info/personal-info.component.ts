@@ -9,6 +9,7 @@ import { EnrolDataService } from '../../services/enrol-data.service';
 import { Enrollee } from '../../models/enrollee';
 
 @Component({
+  standalone: false,
   templateUrl: './personal-info.component.html'
 })
 @Injectable()

@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { AssistCraDocumentsComponent } from './assist-cra-documents.component';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 import { AssistanceYear } from '../../models/assistance-year.model';
 
 describe('AssistCraDocumentsComponent', () => {

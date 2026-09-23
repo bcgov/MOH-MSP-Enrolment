@@ -1,10 +1,31 @@
 import { Injectable } from '@angular/core';
-import { AbstractHttpService } from 'moh-common-lib';
+import { AbstractHttpService } from 'moh-common-lib-angular';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { MspLogService } from './log.service';
-import { throwError, BehaviorSubject, Observable } from 'rxjs';
+import { throwError, of, BehaviorSubject, Observable } from 'rxjs';
 import { environment } from 'environments/environment';
-import { retry, filter } from 'rxjs/operators';
+import { retry, filter, map, catchError } from 'rxjs/operators';
+import { ISpaEnvResponse } from '../components/msp/model/spa-env-response.interface';
+
+/**
+ * The consent modal's underlying process, used to pick which maintenance
+ * flags/messages in the spa-env response apply. Mirrors the legacy
+ * `ConsentModalComponent._applicationHeaderMap` from moh-common-lib.
+ */
+export type SpaEnvProcessName = 'ACL' | 'MSP' | 'PA' | 'SUPPBEN';
+
+export interface IMaintenanceCheck {
+  isUnderMaintenance: boolean;
+  message: string;
+  response: ISpaEnvResponse;
+}
+
+const applicationHeaderMap: Record<SpaEnvProcessName, string> = {
+  ACL: '{"SPA_ENV_ACL_MAINTENANCE_FLAG":"","SPA_ENV_ACL_MAINTENANCE_MESSAGE":""}',
+  MSP: '{"SPA_ENV_MSP_MAINTENANCE_FLAG":"","SPA_ENV_MSP_MAINTENANCE_MESSAGE":""}',
+  PA: '{"SPA_ENV_PACUTOFF_MAINTENANCE_START":"","SPA_ENV_PACUTOFF_MAINTENANCE_END":"","SPA_ENV_NOW":"","SPA_ENV_PACUTOFF_MAINTENANCE_FLAG":"","SPA_ENV_PACUTOFF_MAINTENANCE_MESSAGE":""}',
+  SUPPBEN: '{"SPA_ENV_SUPPBEN_MAINTENANCE_START":"","SPA_ENV_SUPPBEN_MAINTENANCE_END":"","SPA_ENV_NOW":"","SPA_ENV_SUPPBEN_MAINTENANCE_FLAG":"","SPA_ENV_SUPPBEN_MAINTENANCE_MESSAGE":"","SPA_ENV_PACUTOFF_MAINTENANCE_START":"","SPA_ENV_PACUTOFF_MAINTENANCE_END":""}',
+};
 
 /**
  * The list of all server envs we expect back from the spa-env-server. By adding
@@ -64,6 +85,55 @@ export class SpaEnvService extends AbstractHttpService {
     // When the SpaEnv server is being deployed it can return an HTML error
     // page, and it should resolve shortly, so we try again.
     return this.post<SpaEnvResponse>(url, null).pipe(retry(3));
+  }
+
+  /**
+   * Fetches the spa-env maintenance window for the given process and reports
+   * whether it's currently under maintenance. Replaces the SPA-env fetch that
+   * used to live inside moh-common-lib's ConsentModalComponent - the library's
+   * ConsentModalComponent is now presentational and expects the caller to
+   * supply `isUnderMaintenance` directly.
+   */
+  public checkMaintenance(processName: SpaEnvProcessName): Observable<IMaintenanceCheck> {
+    const url = environment.appConstants.envServerBaseUrl;
+
+    // Swap in the process-specific header just long enough to build the
+    // request, then restore it - _headers is a field on this root singleton,
+    // shared with loadEnvs(), and http.post() already captures the headers
+    // it needs synchronously below.
+    const savedHeaders = this._headers;
+    this._headers = new HttpHeaders({ SPA_ENV_NAME: applicationHeaderMap[processName] });
+    const request = this.post<ISpaEnvResponse>(url, null);
+    this._headers = savedHeaders;
+
+    return request.pipe(
+      map(response => {
+        let isUnderMaintenance = false;
+        let message = '';
+
+        if (response.SPA_ENV_ACL_MAINTENANCE_FLAG === 'true') {
+          isUnderMaintenance = true;
+          message = response.SPA_ENV_ACL_MAINTENANCE_MESSAGE;
+        } else if (response.SPA_ENV_MSP_MAINTENANCE_FLAG === 'true') {
+          isUnderMaintenance = true;
+          message = response.SPA_ENV_MSP_MAINTENANCE_MESSAGE;
+        } else if (response.SPA_ENV_PACUTOFF_MAINTENANCE_FLAG === 'true') {
+          isUnderMaintenance = true;
+          message = response.SPA_ENV_PACUTOFF_MAINTENANCE_MESSAGE;
+        } else if (response.SPA_ENV_SUPPBEN_MAINTENANCE_FLAG === 'true') {
+          isUnderMaintenance = true;
+          message = response.SPA_ENV_SUPPBEN_MAINTENANCE_MESSAGE;
+        }
+
+        return { isUnderMaintenance, message, response };
+      }),
+      // The spa-env server can return an HTML error page mid-deploy (see
+      // loadEnvs() above). The legacy consent modal could not error - it
+      // resolved failures as a next notification - so terminate the error
+      // here rather than letting the inherited handleError() throwError
+      // reach RxJS as an unhandled error.
+      catchError(() => of({ isUnderMaintenance: false, message: '', response: null }))
+    );
   }
 
   protected handleError(error: HttpErrorResponse) {

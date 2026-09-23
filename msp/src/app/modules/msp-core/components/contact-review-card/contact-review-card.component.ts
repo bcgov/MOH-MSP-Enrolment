@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { Address } from 'moh-common-lib';
+import { Address } from 'moh-common-lib-angular';
 import { ColumnClass } from '../review-part/review-part.component';
 
 @Component({
+  standalone: false,
   selector: 'msp-contact-review-card',
   templateUrl: './contact-review-card.component.html',
   styleUrls: ['./contact-review-card.component.scss']
@@ -16,7 +17,5 @@ export class ContactReviewCardComponent {
 
   // Formatting for column sizes
   columnClass: ColumnClass = {label: 'col-sm-4', value: 'col-sm-8 font-weight-bold'};
-
-  constructor() { }
 
 }

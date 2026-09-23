@@ -1,7 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedCoreModule } from 'moh-common-lib';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { ErrorContainerComponent, FileUploaderComponent, PageSectionComponent } from 'moh-common-lib-angular';
 import { FormsModule } from '@angular/forms';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { RouterTestingModule } from '@angular/router/testing';
 import { ActivatedRoute } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -21,22 +20,16 @@ describe('SpouseComponent', () => {
     }
   } as ActivatedRoute;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         SpouseComponent,
         AssistCraDocumentsComponent
       ],
       imports: [
-        SharedCoreModule,
         FormsModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
         RouterTestingModule,
-        HttpClientTestingModule
-      ],
+        HttpClientTestingModule, ErrorContainerComponent, FileUploaderComponent, PageSectionComponent],
       providers: [
         MspDataService,
         MspLogService,

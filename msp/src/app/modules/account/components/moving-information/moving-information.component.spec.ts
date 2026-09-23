@@ -1,15 +1,15 @@
-import { async, TestBed } from '@angular/core/testing';
+import { waitForAsync, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { ChildMovingInformationComponent } from './moving-information.component';
-import { Enrollee } from '../../../enrolment/models/enrollee';
 import { Relationship } from 'app/models/relationship.enum';
-import { SharedCoreModule } from 'moh-common-lib';
+import { AddressComponent, DateComponent, ErrorContainerComponent, PageSectionComponent, RadioComponent } from 'moh-common-lib-angular';
 import { FormsModule } from '@angular/forms';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import {
   CanadianStatusReason,
   StatusInCanada,
 } from '../../../msp-core/models/canadian-status.enum';
-import { isBefore, subDays, addDays, addMonths, parseISO } from 'date-fns';
+import { parseISO } from 'date-fns';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { MspLogService } from '../../../../services/log.service';
 
@@ -17,11 +17,11 @@ describe('ChildMovingInformationComponent', () => {
   let component: ChildMovingInformationComponent;
   let fixture: any;
 
-  beforeEach(async(() => {
-    const mspLogServiceStub = () => ({ log: () => {} });
+  beforeEach(waitForAsync(() => {
+    const mspLogServiceStub = () => ({ log: () => undefined });
     TestBed.configureTestingModule({
       declarations: [ChildMovingInformationComponent],
-      imports: [FormsModule, HttpClientTestingModule, SharedCoreModule],
+      imports: [FormsModule, HttpClientTestingModule, AddressComponent, DateComponent, ErrorContainerComponent, PageSectionComponent, RadioComponent],
       providers: [{ provide: MspLogService, useFactory: mspLogServiceStub }],
     }).compileComponents();
   }));
@@ -43,7 +43,6 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.isApplicant).toBe(true);
     });
 
-    // tslint:disable-next-line
     it("should return false when relationship isn't Applicant", () => {
       component.person.relationship = Relationship.Spouse;
       expect(component.isApplicant).toBe(false);
@@ -56,7 +55,6 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.isSpouse).toBe(true);
     });
 
-    // tslint:disable-next-line
     it("should return false when relationship isn't Spouse", () => {
       component.person.relationship = Relationship.Applicant;
       expect(component.isSpouse).toBe(false);
@@ -74,7 +72,6 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.isChild).toBe(true);
     });
 
-    // tslint:disable-next-line
     it("should return false when relationship isn't ChildUnder19 or Child18To24", () => {
       component.person.relationship = Relationship.Applicant;
       expect(component.isChild).toBe(false);
@@ -110,7 +107,6 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.isLivedInBCSinceBirth).toBe(true);
     });
 
-    // tslint:disable-next-line
     it("should return false if haven't lived in BC since birth", () => {
       component.person.currentActivity = undefined;
       expect(component.isLivedInBCSinceBirth).toBe(false);
@@ -280,7 +276,6 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.requestAdditionalMoveInfo).toBe(true);
     });
 
-    // tslint:disable-next-line
     it("should return false if don't need to request additional move info.", () => {
       expect(component.requestAdditionalMoveInfo).toBe(false);
     });
@@ -309,7 +304,6 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.showlivedInBC).toBe(true);
     });
 
-    // tslint:disable-next-line
     it("should return false if status isn't Canadian citizen.", () => {
       component.person.status = StatusInCanada.PermanentResident;
       expect(component.showlivedInBC).toBe(false);
@@ -552,7 +546,6 @@ describe('ChildMovingInformationComponent', () => {
   });
 
   describe('arrivalToBCEndRange', () => {
-    // tslint:disable-next-line
     it("should return date today when `departureDateDuring12MonthsDate` isn't defined", () => {
       const fakeDate = new Date('2020-04-01');
       component.dateToday = fakeDate;
@@ -609,7 +602,6 @@ describe('ChildMovingInformationComponent', () => {
       );
     });
 
-    // tslint:disable-next-line
     it("should return `arrivalToBCDate` when `dob` isn't defined.", () => {
       const fakeArrivalDate = new Date('2020-05-01');
       spyOnProperty(component, 'arrivalToBCDate').and.returnValue(
@@ -620,7 +612,6 @@ describe('ChildMovingInformationComponent', () => {
       );
     });
 
-    // tslint:disable-next-line
     it("should return `dob` when `arrivalToBCDate` isn't defined.", () => {
       const fakeDobDate = new Date('2020-05-01');
       spyOnProperty(component, 'dob').and.returnValue(fakeDobDate);
@@ -672,7 +663,6 @@ describe('ChildMovingInformationComponent', () => {
       );
     });
 
-    // tslint:disable-next-line
     it("should return date today when `departureDateDuring12MonthsDate` isn't defined.", () => {
       const fakeToday = parseISO('2020-06-01');
       component.dateToday = fakeToday;
@@ -711,7 +701,6 @@ describe('ChildMovingInformationComponent', () => {
       );
     });
 
-    // tslint:disable-next-line
     it("should return 5 months minus date today when return date isn't defined.", () => {
       const fakeToday = parseISO('2020-04-01');
       component.dateToday = fakeToday;
@@ -748,7 +737,6 @@ describe('ChildMovingInformationComponent', () => {
       );
     });
 
-    // tslint:disable-next-line
     it("should return today plus 30 days when departure date isn't defined", () => {
       const fakeToday = parseISO('2020-04-01');
       component.dateToday = fakeToday;
@@ -767,7 +755,6 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.studiesDepartureDateStartRange).toBe(fakeArrivalDate);
     });
 
-    // tslint:disable-next-line
     it("should return today plus 30 days when departure date isn't defined", () => {
       const fakeDob = parseISO('2020-04-01');
       spyOnProperty(component, 'dob').and.returnValue(fakeDob);
@@ -776,7 +763,6 @@ describe('ChildMovingInformationComponent', () => {
   });
 
   describe('studiesDepartureDateEndRange', () => {
-    // tslint:disable-next-line
     it("should return studies begin date when it's before date today.", () => {
       const fakeBeginDate = parseISO('2020-03-01');
       component.dateToday = parseISO('2020-04-01');
@@ -797,7 +783,6 @@ describe('ChildMovingInformationComponent', () => {
       );
     });
 
-    // tslint:disable-next-line
     it("should return date today minus 1 day when studies begin date isn't defined.", () => {
       component.dateToday = parseISO('2020-04-01');
       expect(component.studiesDepartureDateEndRange).toEqual(
@@ -817,7 +802,6 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.studiesBeginDateStartRange).toBe(fakeDepartureDate);
     });
 
-    // tslint:disable-next-line
     it("should return dob when departure date isn't defined.", () => {
       const fakeDob = parseISO('2020-05-01');
       spyOnProperty(component, 'dob').and.returnValue(fakeDob);
@@ -834,7 +818,6 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.studiesBeginDateEndRange).toBe(fakeFinishedDate);
     });
 
-    // tslint:disable-next-line
     it("should return null when `studiesFinishedDate` isn't defined.", () => {
       expect(component.studiesBeginDateEndRange).toBe(null);
     });
@@ -882,38 +865,37 @@ describe('ChildMovingInformationComponent', () => {
   });
 
   describe('adoptionDateErrorMessage', () => {
-    // tslint:disable-next-line
     it("should return 'Date cannot be in the future' when adopted date is after date today.", () => {
       const fakeToday = parseISO('2020-04-01');
       const fakeAdoptedDate = parseISO('2020-05-01');
       component.dateToday = fakeToday;
       spyOnProperty(component, 'adoptedDate').and.returnValue(fakeAdoptedDate);
       expect(component.adoptionDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date cannot be in the future.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be after birthdate' when adopted date is before `dob`.", () => {
       const fakeAdoptedDate = parseISO('2020-05-01');
       const fakeDob = parseISO('2020-06-01');
       spyOnProperty(component, 'adoptedDate').and.returnValue(fakeAdoptedDate);
       spyOnProperty(component, 'dob').and.returnValue(fakeDob);
       expect(component.adoptionDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after birthdate.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Invalid date range' for all other cases.", () => {
       expect(component.adoptionDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
     });
   });
 
   describe('mostRecentMoveToBCErrorMessage', () => {
-    // tslint:disable-next-line
     it("should return 'Date must be before any date of departure from BC' when departure date is before arrival date.", () => {
       const fakeArrivalDate = parseISO('2020-04-01');
       const fakeDepartureDate = parseISO('2020-03-01');
@@ -925,11 +907,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeArrivalDate
       );
       expect(component.mostRecentMoveToBCErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be before any date of departure from BC.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date cannot be in the future' when arrival date is after date today.", () => {
       const fakeDateToday = parseISO('2020-04-01');
       const fakeArrivalDate = parseISO('2020-05-01');
@@ -938,11 +920,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeArrivalDate
       );
       expect(component.mostRecentMoveToBCErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date cannot be in the future.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be after birthdate' when arrival date is before dob.", () => {
       const fakeArrivalDate = parseISO('2020-04-01');
       const fakeDob = parseISO('2020-05-01');
@@ -951,20 +933,49 @@ describe('ChildMovingInformationComponent', () => {
       );
       spyOnProperty(component, 'dob').and.returnValue(fakeDob);
       expect(component.mostRecentMoveToBCErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after birthdate.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Invalid date range' for all other cases.", () => {
       expect(component.mostRecentMoveToBCErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
     });
   });
 
+  describe('[errorMessage] template binding on <common-date>', () => {
+    it('propagates mostRecentMoveToBCErrorMessage into the rendered common-date, overriding the library default copy', () => {
+      // With no dates set, mostRecentMoveToBCErrorMessage falls through to its
+      // catch-all: { invalidRange: 'Invalid date range.' }. The library's own
+      // DateComponent default for invalidRange is `Invalid ${label}.` - if the
+      // [errorMessage] binding were not reaching the child, _defaultErrMsg would
+      // still hold that library default instead.
+      component.person.hasActiveMedicalServicePlan = false;
+      component.person.livedInBCSinceBirth = false;
+      fixture.detectChanges();
+
+      const arrivalDateComponent = fixture.debugElement
+        .queryAll(By.directive(DateComponent))
+        .map((de) => de.componentInstance as DateComponent)
+        .find((c) => c.label === 'Most recent move date to B.C.');
+
+      expect(arrivalDateComponent).toBeTruthy();
+      expect(arrivalDateComponent.errorMessage).toEqual(
+        component.mostRecentMoveToBCErrorMessage
+      );
+      expect(arrivalDateComponent._defaultErrMsg.invalidRange).toBe(
+        'Invalid date range.'
+      );
+      expect(arrivalDateComponent._defaultErrMsg.invalidRange).not.toContain(
+        'Most recent move date to B.C.'
+      );
+    });
+  });
+
   describe('departureDate12MonthsErrorMessage', () => {
-    // tslint:disable-next-line
     it("should return 'Date must be after arrival in BC' when departure date is before arrival date.", () => {
       const fakeArrivalDate = parseISO('2020-04-01');
       const fakeDepartureDate = parseISO('2020-03-01');
@@ -976,11 +987,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeArrivalDate
       );
       expect(component.departureDate12MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after arrival in BC.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date cannot be in the future' when departure date is after date today.", () => {
       const fakeDepartureDate = parseISO('2020-05-01');
       component.dateToday = parseISO('2020-04-01');
@@ -989,11 +1000,11 @@ describe('ChildMovingInformationComponent', () => {
         'departureDateDuring12MonthsDate'
       ).and.returnValue(fakeDepartureDate);
       expect(component.departureDate12MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date cannot be in the future.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be after birthdate' when departure date is before arrival date.", () => {
       const fakeDob = parseISO('2020-04-01');
       const fakeDepartureDate = parseISO('2020-03-01');
@@ -1003,20 +1014,20 @@ describe('ChildMovingInformationComponent', () => {
       ).and.returnValue(fakeDepartureDate);
       spyOnProperty(component, 'dob').and.returnValue(fakeDob);
       expect(component.departureDate12MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after birthdate.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Invalid date range' for all other cases.", () => {
       expect(component.departureDate12MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
     });
   });
 
   describe('returnDate12MonthsErrorMessage', () => {
-    // tslint:disable-next-line
     it("should return 'Date cannot be in the future' when return date is after date today.", () => {
       const fakeDateToday = parseISO('2020-04-01');
       const fakeReturnDate = parseISO('2020-05-01');
@@ -1025,11 +1036,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeReturnDate
       );
       expect(component.returnDate12MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date cannot be in the future.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be more than 30 days after departure' when return date is before 30 days less departure date.", () => {
       const fakeDepartureDate = parseISO('2020-04-01');
       const fakeReturnDate = parseISO('2020-03-01');
@@ -1041,11 +1052,11 @@ describe('ChildMovingInformationComponent', () => {
         'departureDateDuring12MonthsDate'
       ).and.returnValue(fakeDepartureDate);
       expect(component.returnDate12MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be more than 30 days after departure.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be after birthdate' when return date is before dob.", () => {
       const fakeDob = parseISO('2020-04-01');
       const fakeReturnDate = parseISO('2020-03-01');
@@ -1054,20 +1065,20 @@ describe('ChildMovingInformationComponent', () => {
       );
       spyOnProperty(component, 'dob').and.returnValue(fakeDob);
       expect(component.returnDate12MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after birthdate.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Invalid date range' for all other cases.", () => {
       expect(component.returnDate12MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
     });
   });
 
   describe('departureDate6MonthsErrorMessage', () => {
-    // tslint:disable-next-line
     it("should return 'Date must be more than 30 days before return date.' when return date is 30 days after departure date.", () => {
       const fakeReturnDate = parseISO('2020-05-01');
       const fakeDepartureDate = parseISO('2020-05-01');
@@ -1079,11 +1090,11 @@ describe('ChildMovingInformationComponent', () => {
         'departureDateDuring6MonthsDate'
       ).and.returnValue(fakeDepartureDate);
       expect(component.departureDate6MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be more than 30 days before return date.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date cannot be in the past.' when return date is before date today.", () => {
       const fakeDateToday = parseISO('2020-04-01');
       const fakeDepartureDate = parseISO('2020-03-01');
@@ -1093,11 +1104,11 @@ describe('ChildMovingInformationComponent', () => {
         'departureDateDuring6MonthsDate'
       ).and.returnValue(fakeDepartureDate);
       expect(component.departureDate6MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date cannot be in the past.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be within the next six months.' when departure date isn't 6 months in the future.", () => {
       const fakeDateToday = parseISO('2020-04-01');
       const fakeDepartureDate = parseISO('2020-12-01');
@@ -1107,11 +1118,11 @@ describe('ChildMovingInformationComponent', () => {
         'departureDateDuring6MonthsDate'
       ).and.returnValue(fakeDepartureDate);
       expect(component.departureDate6MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be within the next six months.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be after birthdate.' when departure date is before dob.", () => {
       const fakeDob = parseISO('2020-05-01');
       const fakeDepartureDate = parseISO('2020-04-01');
@@ -1122,20 +1133,20 @@ describe('ChildMovingInformationComponent', () => {
         'departureDateDuring6MonthsDate'
       ).and.returnValue(fakeDepartureDate);
       expect(component.departureDate6MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after birthdate.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Invalid date range.' for all other cases.", () => {
       expect(component.departureDate6MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
     });
   });
 
   describe('returnDate6MonthsErrorMessage', () => {
-    // tslint:disable-next-line
     it("should return 'Date must be more than 30 days after departure.' when return date is 30 days before departure date.", () => {
       const fakeReturnDate = parseISO('2020-05-01');
       const fakeDepartureDate = parseISO('2020-05-01');
@@ -1147,11 +1158,11 @@ describe('ChildMovingInformationComponent', () => {
         'departureDateDuring6MonthsDate'
       ).and.returnValue(fakeDepartureDate);
       expect(component.returnDate6MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be more than 30 days after departure.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date cannot be in the past.' when return date is 30 days before departure date.", () => {
       const fakeReturnDate = parseISO('2020-04-01');
       const fakeTodayDate = parseISO('2020-05-01');
@@ -1160,20 +1171,20 @@ describe('ChildMovingInformationComponent', () => {
         fakeReturnDate
       );
       expect(component.returnDate6MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date cannot be in the past.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Invalid date range.' for all other cases.", () => {
       expect(component.returnDate6MonthsErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
     });
   });
 
   describe('studiesDepartureDateErrorMessage', () => {
-    // tslint:disable-next-line
     it("should return 'Date must be after arrival in BC.' when departure date is before arrival date.", () => {
       const fakeArrivalDate = parseISO('2020-05-01');
       const fakeDepartureDate = parseISO('2020-04-01');
@@ -1184,11 +1195,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeDepartureDate
       );
       expect(component.studiesDepartureDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after arrival in BC.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date cannot be in the future.' when departure date is before date today.", () => {
       const fakeDateToday = parseISO('2020-04-01');
       const fakeDepartureDate = parseISO('2020-05-01');
@@ -1197,11 +1208,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeDepartureDate
       );
       expect(component.studiesDepartureDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date cannot be in the future.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be after birthdate.' when departure date is before dob.", () => {
       const fakeDob = parseISO('2020-05-01');
       const fakeDepartureDate = parseISO('2020-04-01');
@@ -1210,11 +1221,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeDepartureDate
       );
       expect(component.studiesDepartureDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after birthdate.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be prior to school beginning.' when studies begin date is before departure date.", () => {
       const fakeBeginDate = parseISO('2020-03-01');
       const fakeDepartureDate = parseISO('2020-04-01');
@@ -1225,20 +1236,20 @@ describe('ChildMovingInformationComponent', () => {
         fakeDepartureDate
       );
       expect(component.studiesDepartureDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be prior to school beginning.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Invalid date range.' for all other cases.", () => {
       expect(component.studiesDepartureDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
     });
   });
 
   describe('studiesBeginDateErrorMessage', () => {
-    // tslint:disable-next-line
     it("should return 'Date must be after departure to school.' when begin date is before departure date.", () => {
       const fakeBeginDate = parseISO('2020-03-01');
       const fakeDepartureDate = parseISO('2020-04-01');
@@ -1249,11 +1260,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeDepartureDate
       );
       expect(component.studiesBeginDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after departure to school.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be prior to finish date.' when begin date is after finish date.", () => {
       const fakeBeginDate = parseISO('2020-05-01');
       const fakeFinishDate = parseISO('2020-04-01');
@@ -1264,11 +1275,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeFinishDate
       );
       expect(component.studiesBeginDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be prior to finish date.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be after birthdate.' when begin date is before dob.", () => {
       const fakeBeginDate = parseISO('2020-03-01');
       const fakeDob = parseISO('2020-04-01');
@@ -1277,20 +1288,20 @@ describe('ChildMovingInformationComponent', () => {
       );
       spyOnProperty(component, 'dob').and.returnValue(fakeDob);
       expect(component.studiesBeginDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after birthdate.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Invalid date range.' for all other cases.", () => {
       expect(component.studiesBeginDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
     });
   });
 
   describe('studiesFinishedDateErrorMessage', () => {
-    // tslint:disable-next-line
     it("should return 'Date must be after date studies begin.' when finish date is before begin date.", () => {
       const fakeBeginDate = parseISO('2020-05-01');
       const fakeFinishDate = parseISO('2020-04-01');
@@ -1301,11 +1312,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeFinishDate
       );
       expect(component.studiesFinishedDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after date studies begin.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date cannot be in the past.' when finish date is before date today.", () => {
       const fakeDateToday = parseISO('2020-05-01');
       const fakeFinishDate = parseISO('2020-04-01');
@@ -1314,11 +1325,11 @@ describe('ChildMovingInformationComponent', () => {
         fakeFinishDate
       );
       expect(component.studiesFinishedDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date cannot be in the past.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Date must be after birthdate.' when finish date is before dob.", () => {
       const fakeDob = parseISO('2020-05-01');
       const fakeFinishDate = parseISO('2020-04-01');
@@ -1328,20 +1339,20 @@ describe('ChildMovingInformationComponent', () => {
       );
       spyOnProperty(component, 'dob').and.returnValue(fakeDob);
       expect(component.studiesFinishedDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after birthdate.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Invalid date range.' for all other cases.", () => {
       expect(component.studiesFinishedDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
     });
   });
 
   describe('dischargeDateErrorMessage', () => {
-    // tslint:disable-next-line
     it("should return 'Date must be after birthdate.' when discharge date is before dob.", () => {
       const fakeDischargeDate = parseISO('2020-03-01');
       const fakeDob = parseISO('2020-04-01');
@@ -1350,13 +1361,14 @@ describe('ChildMovingInformationComponent', () => {
       );
       spyOnProperty(component, 'dob').and.returnValue(fakeDob);
       expect(component.dischargeDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Date must be after birthdate.',
       });
     });
 
-    // tslint:disable-next-line
     it("should return 'Invalid date range.' for all other cases.", () => {
       expect(component.dischargeDateErrorMessage).toEqual({
+        required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
     });

@@ -1,19 +1,14 @@
-import * as Primitive from './xml-primitives';
 import * as ct from './commonTypes';
 import * as et from './enrolmentTypes';
-import { BasicInfoTypeFactory, PrevHealthNumberType } from './commonTypes';
-import { EnrolmentApplicantType } from './enrolmentTypes';
-import { DocumentType, StatusInCanadaType } from '../interfaces/i-api';
 
 // BaseType
 interface BaseType {
   _exists: boolean;
   _namespace: string;
-  _sequence: Array<string>;
+  _sequence: string[];
 }
 
 // accountChangeAccountHolderType
-// tslint:disable-next-line:class-name
 interface _AccountChangeAccountHolderType extends ct._BasicInfoType {
   name: ct.NameType;
   requestedLastName?: string;
@@ -35,16 +30,14 @@ interface _AccountChangeAccountHolderType extends ct._BasicInfoType {
 }
 export interface AccountChangeAccountHolderType
   extends _AccountChangeAccountHolderType {
-  constructor: { new (): AccountChangeAccountHolderType };
+  constructor: new () => AccountChangeAccountHolderType;
 }
 
-export let AccountChangeAccountHolderType: {
-  new (): AccountChangeAccountHolderType;
-};
+export let AccountChangeAccountHolderType: new () => AccountChangeAccountHolderType;
 
 export class AccountChangeAccountHolderFactory {
   static make(): AccountChangeAccountHolderType {
-    const instance = <AccountChangeAccountHolderType>{};
+    const instance = {} as AccountChangeAccountHolderType;
     instance._sequence = [
       'name',
       'gender',
@@ -68,7 +61,6 @@ export class AccountChangeAccountHolderFactory {
 }
 
 // AccountChangeApplication
-// tslint:disable-next-line:class-name
 interface _AccountChangeApplicationType extends BaseType {
   accountHolder: AccountChangeAccountHolderType;
   spouses?: AccountChangeSpousesType;
@@ -76,44 +68,40 @@ interface _AccountChangeApplicationType extends BaseType {
 }
 export interface AccountChangeApplicationType
   extends _AccountChangeApplicationType {
-  constructor: { new (): AccountChangeApplicationType };
+  constructor: new () => AccountChangeApplicationType;
 }
 
-export let AccountChangeApplicationType: {
-  new (): AccountChangeApplicationType;
-};
+export let AccountChangeApplicationType: new () => AccountChangeApplicationType;
 
 export class AccountChangeApplicationTypeFactory {
   static make(): AccountChangeApplicationType {
-    const instance = <AccountChangeApplicationType>{};
+    const instance = {} as AccountChangeApplicationType;
     instance._sequence = ['accountHolder', 'spouses', 'children'];
     return instance;
   }
 }
 
 // AccountChangeSpouses
-// tslint:disable-next-line:class-name
 interface _AccountChangeSpousesType extends BaseType {
   removedSpouse?: AccountChangeSpouseType;
   addedSpouse?: AccountChangeSpouseType;
   updatedSpouse?: AccountChangeSpouseType;
 }
 export interface AccountChangeSpousesType extends _AccountChangeSpousesType {
-  constructor: { new (): AccountChangeSpousesType };
+  constructor: new () => AccountChangeSpousesType;
 }
 
-export let AccountChangeSpousesType: { new (): AccountChangeSpousesType };
+export let AccountChangeSpousesType: new () => AccountChangeSpousesType;
 
 export class AccountChangeSpousesTypeFactory {
   static make(): AccountChangeSpousesType {
-    const instance = <AccountChangeSpousesType>{};
+    const instance = {} as AccountChangeSpousesType;
     instance._sequence = ['removedSpouse', 'addedSpouse', 'updatedSpouse'];
     return instance;
   }
 }
 
 // Spouse
-// tslint:disable-next-line:class-name
 interface _AccountChangeSpouseType extends ct._BasicInfoType {
   citizenship?: ct.CitizenshipType;
   isExistingBeneficiary?: ct.YesOrNoType;
@@ -131,14 +119,14 @@ interface _AccountChangeSpouseType extends ct._BasicInfoType {
   cancellationDate?: string;
 }
 export interface AccountChangeSpouseType extends _AccountChangeSpouseType {
-  constructor: { new (): AccountChangeSpouseType };
+  constructor: new () => AccountChangeSpouseType;
 }
 
-export let AccountChangeSpouseType: { new (): AccountChangeSpouseType };
+export let AccountChangeSpouseType: new () => AccountChangeSpouseType;
 
 export class AccountChangeSpouseTypeFactory {
   static make(): AccountChangeSpouseType {
-    const instance = <AccountChangeSpouseType>{};
+    const instance = {} as AccountChangeSpouseType;
     instance._sequence = [
       'name',
       'gender',
@@ -164,29 +152,26 @@ export class AccountChangeSpouseTypeFactory {
 
 // CancellationReason
 export type CancellationReasonType = string;
-type _CancellationReasonType = Primitive._string;
 
 // AccountChangeChildren
-// tslint:disable-next-line:class-name
 interface _AccountChangeChildrenType extends BaseType {
   child: AccountChangeChildType[];
 }
 export interface AccountChangeChildrenType extends _AccountChangeChildrenType {
-  constructor: { new (): AccountChangeChildrenType };
+  constructor: new () => AccountChangeChildrenType;
 }
 
-export let AccountChangeChildrenType: { new (): AccountChangeChildrenType };
+export let AccountChangeChildrenType: new () => AccountChangeChildrenType;
 
 export class AccountChangeChildrenFactory {
   static make(): AccountChangeChildrenType {
-    const instance = <AccountChangeChildrenType>{};
+    const instance = {} as AccountChangeChildrenType;
     instance._sequence = ['child'];
     return instance;
   }
 }
 
 // child
-// tslint:disable-next-line:class-name
 interface _AccountChangeChildType extends ct._BasicInfoType {
   operationAction: OperationActionType;
   citizenship?: ct.CitizenshipType;
@@ -209,14 +194,14 @@ interface _AccountChangeChildType extends ct._BasicInfoType {
   dateStudiesFinish?: string;
 }
 export interface AccountChangeChildType extends _AccountChangeChildType {
-  constructor: { new (): AccountChangeChildType };
+  constructor: new () => AccountChangeChildType;
 }
 
-export let AccountChangeChildType: { new (): AccountChangeChildType };
+export let AccountChangeChildType: new () => AccountChangeChildType;
 
 export class AccountChangeChildTypeFactory {
   static make(): AccountChangeChildType {
-    const instance = <AccountChangeChildType>{};
+    const instance = {} as AccountChangeChildType;
     instance._sequence = [
       'name',
       'gender',
@@ -248,13 +233,8 @@ export class AccountChangeChildTypeFactory {
 
 // operationType
 export type OperationActionType = 'Add' | 'Remove' | 'Update';
-// tslint:disable-next-line:class-name
-interface _OperationActionType extends Primitive._string {
-  content: OperationActionType;
-}
 
 // livedInBC
-// tslint:disable-next-line:class-name
 interface _LivedInBCType extends BaseType {
   hasLivedInBC: ct.YesOrNoType;
   isPermanentMove?: ct.YesOrNoType;
@@ -264,14 +244,14 @@ interface _LivedInBCType extends BaseType {
   recentCanadaMoveDate?: string;
 }
 export interface LivedInBCType extends _LivedInBCType {
-  constructor: { new (): LivedInBCType };
+  constructor: new () => LivedInBCType;
 }
 
-export let LivedInBCType: { new (): LivedInBCType };
+export let LivedInBCType: new () => LivedInBCType;
 
 export class LivedInBCTypeFactory {
   static make(): LivedInBCType {
-    const instance = <LivedInBCType>{};
+    const instance = {} as LivedInBCType;
     instance._sequence = [
       'hasLivedInBC',
       'recentBCMoveDate',
@@ -285,7 +265,6 @@ export class LivedInBCTypeFactory {
 }
 
 // outsideBC
-// tslint:disable-next-line:class-name
 interface _OutsideBCType extends BaseType {
   beenOutsideBCMoreThan: ct.YesOrNoType;
   departureDate?: string;
@@ -294,14 +273,14 @@ interface _OutsideBCType extends BaseType {
   destination?: string;
 }
 export interface OutsideBCType extends _OutsideBCType {
-  constructor: { new (): OutsideBCType };
+  constructor: new () => OutsideBCType;
 }
 
-export let OutsideBCType: { new (): OutsideBCType };
+export let OutsideBCType: new () => OutsideBCType;
 
 export class OutsideBCTypeFactory {
   static make(): OutsideBCType {
-    const instance = <OutsideBCType>{};
+    const instance = {} as OutsideBCType;
     instance._sequence = [
       'beenOutsideBCMoreThan',
       'departureDate',
@@ -314,27 +293,25 @@ export class OutsideBCTypeFactory {
 }
 
 // previousCoverage
-// tslint:disable-next-line:class-name
 interface _PreviousCoverageType extends BaseType {
   hasPreviousCoverage: ct.YesOrNoType;
   prevPHN?: number;
 }
 export interface PreviousCoverageType extends _PreviousCoverageType {
-  constructor: { new (): PreviousCoverageType };
+  constructor: new () => PreviousCoverageType;
 }
 
-export let PreviousCoverageType: { new (): PreviousCoverageType };
+export let PreviousCoverageType: new () => PreviousCoverageType;
 
 export class PreviousCoverageTypeFactory {
   static make(): PreviousCoverageType {
-    const instance = <PreviousCoverageType>{};
+    const instance = {} as PreviousCoverageType;
     instance._sequence = ['hasPreviousCoverage', 'prevPHN'];
     return instance;
   }
 }
 
 // willBeAway
-// tslint:disable-next-line:class-name
 interface _WillBeAwayType extends BaseType {
   armedDischargeDate?: string;
   armedForceInstitutionName?: string;
@@ -342,14 +319,14 @@ interface _WillBeAwayType extends BaseType {
   isInBCafterStudies?: ct.YesOrNoType;
 }
 export interface WillBeAwayType extends _WillBeAwayType {
-  constructor: { new (): WillBeAwayType };
+  constructor: new () => WillBeAwayType;
 }
 
-export let WillBeAwayType: { new (): WillBeAwayType };
+export let WillBeAwayType: new () => WillBeAwayType;
 
 export class WillBeAwayTypeFactory {
   static make(): WillBeAwayType {
-    const instance = <WillBeAwayType>{};
+    const instance = {} as WillBeAwayType;
     instance._sequence = [
       'isFullTimeStudent',
       'isInBCafterStudies',
@@ -361,7 +338,6 @@ export class WillBeAwayTypeFactory {
 }
 
 // this document : accountChangeApplication
-// tslint:disable-next-line:class-name
 export interface document extends BaseType {
   accountChangeApplication: AccountChangeApplicationType;
 }
@@ -369,7 +345,7 @@ export let document: document;
 
 export class DocumentTypeFactory {
   static make(): document {
-    const instance = <document>{};
+    const instance = {} as document;
     instance._sequence = ['accountChangeApplication'];
     return instance;
   }
@@ -383,8 +359,3 @@ export type CitizenshipType =
   | 'Diplomat'
   | 'ReligiousWorker'
   | 'VisitorPermit';
-
-// tslint:disable-next-line:class-name
-interface _CitizenshipType extends Primitive._string {
-  content: CitizenshipType;
-}

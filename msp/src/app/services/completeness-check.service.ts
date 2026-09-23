@@ -33,7 +33,7 @@ export class CompletenessCheckService {
       _.isBoolean(this.finApp.ageOver65) &&
       _.isBoolean(this.finApp.hasSpouseOrCommonLaw);
 
-    let spouseInfo: boolean = true;
+    let spouseInfo = true;
     if (basics) {
       if (this.finApp.spouseEligibleForDisabilityCredit) {
         spouseInfo = this.finApp.hasSpouseOrCommonLaw;

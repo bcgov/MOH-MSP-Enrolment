@@ -13,7 +13,7 @@
         <option selected value="" disabled="true">Please select</option>
         <option *ngFor="let item of availableSupportDocuments"
           [ngValue]="item"
-          [selected]="documentType == item">
+          [selected]="documentType === item">
           {{item}}
         </option>
       </ng-container>

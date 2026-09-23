@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef } from '@angular/core';
 import { NgForm, ControlContainer } from '@angular/forms';
 import {
   CancellationReasons,
@@ -10,12 +10,13 @@ import {
   AccountChangeOptions,
 } from '../../../models/account.model';
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
-import { ErrorMessage } from 'moh-common-lib';
-import { UUID } from 'angular2-uuid';
+import { ErrorMessage } from 'moh-common-lib-angular';
+import { v4 as uuid } from 'uuid';
 import { SpaEnvService } from '../../../../../services/spa-env.service';
 import { environment } from 'environments/environment';
 
 @Component({
+  standalone: false,
   selector: 'msp-remove-child',
   templateUrl: './remove-child.component.html',
   styleUrls: ['./remove-child.component.scss'],
@@ -26,7 +27,7 @@ import { environment } from 'environments/environment';
     },
   ],
 })
-export class RemoveChildComponent implements OnInit {
+export class RemoveChildComponent {
   public readonly addressServiceUrl: string =
     environment.appConstants.addressApiBaseUrl;
 
@@ -34,8 +35,6 @@ export class RemoveChildComponent implements OnInit {
     public dataService: MspAccountMaintenanceDataService,
     private spaEnvService: SpaEnvService
   ) {}
-
-  ngOnInit() {}
 
   @Input() accountChangeOptions: AccountChangeOptions;
   @Input() child: MspPerson;
@@ -65,12 +64,11 @@ export class RemoveChildComponent implements OnInit {
     },
   ];
 
-  cancellationDateErrorMessage: ErrorMessage = {
+  cancellationDateErrorMessage: ErrorMessage = { required: '{label} is required.',
     invalidRange:
-      // tslint:disable-next-line
-      "Date may not be in the future and must be after the child's birthday",
+           "Date may not be in the future and must be after the child's birthday",
   };
-  objectId: string = UUID.UUID().toString();
+  objectId: string = uuid().toString();
 
   get dateToday(): Date {
     return new Date();

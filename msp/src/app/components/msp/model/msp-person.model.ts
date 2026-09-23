@@ -1,9 +1,9 @@
 import {OutofBCRecord} from '../../../models/outof-bc-record.model';
-import {UUID} from 'angular2-uuid';
+import { v4 as uuid } from 'uuid';
 import * as _ from 'lodash';
 import {PhoneNumber} from './phone.model';
 import { PersonStatusChange } from './person-status-change';
-import { Address, BRITISH_COLUMBIA, CANADA, CommonImage } from 'moh-common-lib';
+import { Address, BRITISH_COLUMBIA, CANADA, CommonImage } from 'moh-common-lib-angular';
 import { CanadianStatusReason, StatusInCanada } from '../../../modules/msp-core/models/canadian-status.enum';
 import { Relationship } from '../../../models/relationship.enum';
 import { CancellationReasons } from 'app/models/status-activities-documents';
@@ -11,8 +11,7 @@ import { SupportDocuments } from '../../../modules/msp-core/models/support-docum
 import { Gender } from '../../../models/gender.enum';
 import { ICanadianStatus } from '../../../modules/msp-core/components/canadian-status/canadian-status.component';
 import { compareAsc, isBefore, startOfToday, isAfter, subYears } from 'date-fns';
-
-const sha1 = require('sha1');
+import sha1 from 'sha1';
 
 export enum OperationActionType {
     Add,
@@ -22,7 +21,7 @@ export enum OperationActionType {
 
 export class MspPerson implements ICanadianStatus {
 
-    readonly uuid = UUID.UUID();
+    readonly uuid = uuid();
     readonly phnRequired = true;
     readonly sinRequired = true;
 
@@ -55,7 +54,7 @@ export class MspPerson implements ICanadianStatus {
    /*
     given default value so that pleaseSelect is selected on page load
     */
-    public reasonForCancellation: string = 'pleaseSelect';
+    public reasonForCancellation = 'pleaseSelect';
     /** NEEDS XSD. User provided date for cancellation of spouse or dependent on their plan. */
     public cancellationDate: Date;
 
@@ -393,7 +392,7 @@ export class MspPerson implements ICanadianStatus {
     // for account management , spouse and child can have address
     // Address and Contact Info
     public residentialAddress: Address = new Address();
-    public mailingSameAsResidentialAddress: boolean = true;
+    public mailingSameAsResidentialAddress = true;
     public mailingAddress: Address = new Address();
     public phoneNumber: string;
 
@@ -573,7 +572,7 @@ export class MspPerson implements ICanadianStatus {
             movingFromAnotherCountryComplete = _.isString(this.movedFromProvinceOrCountry) && this.movedFromProvinceOrCountry.length > 1;
         }
 
-        let studentComplete: boolean = true;
+        let studentComplete = true;
         if (this.relationship === Relationship.Applicant || this.relationship === Relationship.Child18To24) {
             studentComplete = _.isBoolean(this.fullTimeStudent);
             if (studentComplete && this.fullTimeStudent) {
@@ -582,7 +581,7 @@ export class MspPerson implements ICanadianStatus {
         }
 
         // check spouse
-        let spouseComplete: boolean = true;
+        let spouseComplete = true;
         if (this.relationship === Relationship.Spouse) {
             // must be not in the future
             spouseComplete = isBefore( this.dateOfBirth, startOfToday() );

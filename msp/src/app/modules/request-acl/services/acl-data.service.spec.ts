@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
-import { LocalStorageService } from 'angular-2-local-storage';
+import { LocalStorageService } from '../../../services/local-storage.service';
 import { AclDataService } from './acl-data.service';
 
 describe('AclDataService', () => {
   let service: AclDataService;
   beforeEach(() => {
     const localStorageServiceStub = () => ({
-      set: (_storageKey, dto) => ({}),
-      get: _storageKey => ({})
+      set: () => ({}),
+      get: () => ({})
     });
 
     TestBed.configureTestingModule({
@@ -17,7 +17,7 @@ describe('AclDataService', () => {
       ]
     });
 
-    service = TestBed.get(AclDataService);
+    service = TestBed.inject(AclDataService);
   });
 
   it('should create', () => {
@@ -26,7 +26,7 @@ describe('AclDataService', () => {
 
   describe('saveApplication', () => {
     it('makes expected call', () => {
-      const localStorageServiceStub: LocalStorageService = TestBed.get(
+      const localStorageServiceStub: LocalStorageService = TestBed.inject(
         LocalStorageService
       );
       spyOn(localStorageServiceStub, 'set').and.callThrough();

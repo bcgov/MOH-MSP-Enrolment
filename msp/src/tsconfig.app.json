@@ -1,19 +1,14 @@
 {
-    "extends": "../tsconfig.json",
-    "compilerOptions": {
-      "outDir": "../out-tsc/app",
-      "module": "es2015",
-      "baseUrl": "",
-      "types": [
-          "node",
-          "jasmine"
-      ],
-      "typeRoots": [ "../node_modules/@types" ],
-      "skipLibCheck": true
-    },
-    "exclude": [
-      "test.ts",
-      "**/*.spec.ts"
-    ]
-  }
-  
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "outDir": "../out-tsc/app",
+    "baseUrl": "",
+    "types": ["node"]
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": [
+    "**/*.spec.ts"
+  ]
+}

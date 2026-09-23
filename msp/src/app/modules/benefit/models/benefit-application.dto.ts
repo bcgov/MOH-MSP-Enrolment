@@ -2,7 +2,7 @@ import { AddressDto } from '../../../models/address.dto';
 import { PersonDto } from '../../../components/msp/model/msp-person.dto';
 import { AssistanceYear } from '../../assistance/models/assistance-year.model';
 import { ISpaEnvResponse } from '../../../components/msp/model/spa-env-response.interface';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 
 export class BenefitApplicationDto {
 
@@ -47,10 +47,10 @@ export class BenefitApplicationDto {
   powerOfAttorneyDocs: CommonImage[] = [];
   attendantCareExpenseReceipts: CommonImage[] = [];
 
-  applicantClaimForAttendantCareExpense: boolean = false;
-  spouseClaimForAttendantCareExpense: boolean = false;
-  childClaimForAttendantCareExpense: boolean = false;
-  childClaimForAttendantCareExpenseCount: number = 1;
+  applicantClaimForAttendantCareExpense = false;
+  spouseClaimForAttendantCareExpense = false;
+  childClaimForAttendantCareExpense = false;
+  childClaimForAttendantCareExpenseCount = 1;
 
   applicantAttendantCareExpense: number;
   spouseAttendantCareExpense: number;

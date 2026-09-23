@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild, AfterViewInit, OnInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MspDataService } from '../../../../services/msp-data.service';
 import { ActivatedRoute } from '@angular/router';
@@ -9,11 +9,12 @@ import { AssistanceYear } from '../../models/assistance-year.model';
 import { AssistStateService } from '../../services/assist-state.service';
 
 @Component({
+  standalone: false,
   templateUrl: './personal-info.component.html'
 })
-export class AssistancePersonalInfoComponent extends BaseComponent {
+export class AssistancePersonalInfoComponent extends BaseComponent implements AfterViewInit, OnInit, OnDestroy {
 
-  @ViewChild('formRef') personalInfoForm: NgForm;
+  @ViewChild('formRef', { static: true }) personalInfoForm: NgForm;
   financialAssistApplication: FinancialAssistApplication;
 
   title = 'Add personal information and upload documents';

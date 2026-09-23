@@ -9,7 +9,7 @@ import {
   OnChanges,
   OnDestroy,
 } from '@angular/core';
-import { Base, CommonImage, SampleImageInterface, CommonImageError } from 'moh-common-lib';
+import { Base, CommonImage, SampleImageInterface, CommonImageError } from 'moh-common-lib-angular';
 import {
   CanadianStatusReason,
   StatusInCanada,
@@ -140,6 +140,7 @@ export function genderDesignationChangeDocuments(): SupportDocumentTypes[] {
 }
 
 @Component({
+  standalone: false,
   selector: 'msp-support-documents',
   templateUrl: './support-documents.component.html',
   styleUrls: ['./support-documents.component.scss'],
@@ -159,12 +160,12 @@ export class SupportDocumentsComponent extends Base
   // Individual's reason for status in Canada
   @Input() statusReason: CanadianStatusReason;
   // Toggles display for the 'Add' button (true => button is displayed, false => no button displayed)
-  @Input() displayButton: boolean = false;
+  @Input() displayButton = false;
   @Input() supportDoc: SupportDocuments;
   @Output() supportDocChange: EventEmitter<SupportDocuments> = new EventEmitter<SupportDocuments>();
 
   uploadInstructions = 'Click add, or drag and drop a file into this box';
-  btnEnabled: boolean = true;
+  btnEnabled = true;
   availableSupportDocuments: string[] = [];
   onChanges = new BehaviorSubject<SimpleChanges>(null);
   docSampleImages: SampleImageInterface[] = [];
@@ -179,7 +180,7 @@ export class SupportDocumentsComponent extends Base
   }
 
   _supportDocError: CommonImage = null;
-  _supportDocErrorMsg: string = '';
+  _supportDocErrorMsg = '';
 
   ngOnInit() {
     if (this.supportDoc.documentType && this.displayButton) {
@@ -216,7 +217,7 @@ export class SupportDocumentsComponent extends Base
   }
 
   // Check the collective size, triggered whenever an image is added or removed
-  handleImagesChange(imgs: Array<CommonImage>) {
+  handleImagesChange(imgs: CommonImage[]) {
     let sum = 0;
     let tooSmall = false;
 

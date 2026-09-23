@@ -95,7 +95,7 @@
                 label="Will you reside in B.C. upon completion of your studies?"
                 required>
               </common-radio>
-              <common-error-container [displayError]="applicant.inBCafterStudies == false">
+              <common-error-container [displayError]="applicant.inBCafterStudies === false">
                 To qualify for provincial health care benefits a person must be a resident of
                 B.C.  As you intend to leave B.C. when your studies are completed, you are not
                 eligible for Medical Services Plan coverage.  Please contact the health care plan
@@ -110,6 +110,5 @@
 </common-page-framework>
 <common-form-action-bar
   [defaultColor]='false'
-  widthOption='extra-width-mobile-only'
   (btnClick)="continue()">
 </common-form-action-bar>

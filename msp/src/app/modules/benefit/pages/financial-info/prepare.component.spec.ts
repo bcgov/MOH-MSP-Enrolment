@@ -7,7 +7,6 @@ import { ProcessService } from 'app/services/process.service';
 import { FormsModule } from '@angular/forms';
 import { BenefitPrepareComponent } from './prepare.component';
 import { MspImageErrorModalComponent } from '../../../msp-core/components/image-error-modal/image-error-modal.component';
-import { ConsentModalComponent } from 'moh-common-lib';
 import { ModalModule } from 'ngx-bootstrap/modal';
 
 describe('BenefitPrepareComponent', () => {
@@ -24,14 +23,14 @@ describe('BenefitPrepareComponent', () => {
         eligibility: {}
       }
     });
-    const routerStub = () => ({ navigate: array => ({}) });
+    const routerStub = () => ({ navigate: () => ({}) });
     const processServiceStub = () => ({
-      setStep: (processStepNum, arg) => ({})
+      setStep: () => ({})
     });
     TestBed.configureTestingModule({
       imports: [FormsModule, ModalModule.forRoot()],
       schemas: [NO_ERRORS_SCHEMA],
-      declarations: [BenefitPrepareComponent, ConsentModalComponent, MspImageErrorModalComponent],
+      declarations: [BenefitPrepareComponent, MspImageErrorModalComponent],
       providers: [
         { provide: ChangeDetectorRef, useFactory: changeDetectorRefStub },
         {

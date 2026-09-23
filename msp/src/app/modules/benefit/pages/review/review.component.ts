@@ -1,11 +1,16 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import {
+  Component,
+  ChangeDetectorRef,
+} from '@angular/core';
 import {Router} from '@angular/router';
 import {MspLogService} from '../../../../services/log.service';
 import {ProcessService} from '../../../../services/process.service';
 import {MspBenefitDataService} from '../../services/msp-benefit-data.service';
 import {BenefitApplication} from '../../models/benefit-application.model';
 import { BaseComponent } from '../../../../models/base.component';
+import enLang from './i18n/data/en/index';
 @Component({
+  standalone: false,
   selector: 'msp-review',
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.scss']
@@ -13,7 +18,7 @@ import { BaseComponent } from '../../../../models/base.component';
 export class BenefitReviewComponent extends BaseComponent {
     static ProcessStepNum = 4;
 
-    lang = require('./i18n');
+    lang = enLang;
     application: BenefitApplication;
 
     constructor(private dataService: MspBenefitDataService,

@@ -2,7 +2,7 @@ import { ICanadianStatus } from '../../msp-core/components/canadian-status/canad
 import { BasePersonDto, BasePerson } from '../../../models/base-person';
 import { StatusInCanada, CanadianStatusReason } from '../../msp-core/models/canadian-status.enum';
 import { Relationship } from '../../../models/relationship.enum';
-import { Address } from 'moh-common-lib';
+import { Address } from 'moh-common-lib-angular';
 import { SupportDocumentsDto, SupportDocuments } from '../../msp-core/models/support-documents.model';
 import { AddressDto } from '../../../models/address.dto';
 

@@ -1,7 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { SharedCoreModule } from 'moh-common-lib';
-import { LocalStorageModule } from 'angular-2-local-storage';
+import { DateComponent, ErrorContainerComponent, NameComponent, RadioComponent } from 'moh-common-lib-angular';
 import { AddSpouseComponent } from './add-spouse.component';
 import { MspCoreModule } from '../../../../msp-core/msp-core.module';
 import { AccountPersonalInformationComponent } from '../../../components/personal-information/personal-information.component';
@@ -14,7 +13,7 @@ describe('AddSpouseComponent', () => {
   let component: AddSpouseComponent;
   let fixture: ComponentFixture<AddSpouseComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         AddSpouseComponent,
@@ -23,13 +22,7 @@ describe('AddSpouseComponent', () => {
       ],
       imports: [
         FormsModule,
-        SharedCoreModule,
-        MspCoreModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        })
-      ],
+        MspCoreModule, DateComponent, ErrorContainerComponent, NameComponent, RadioComponent],
       providers: [
         MspAccountMaintenanceDataService
       ]

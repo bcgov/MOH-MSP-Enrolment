@@ -10,7 +10,7 @@ describe('ApiSendService', () => {
   }));
 
   it('should be created', () => {
-    const service: ApiSendService = TestBed.get(ApiSendService);
+    const service: ApiSendService = TestBed.inject(ApiSendService);
     expect(service).toBeTruthy();
   });
 });

@@ -92,10 +92,10 @@
     </common-radio>
   </div>
 
-  <div *ngIf="person.madePermanentMoveToBC == false" class="form-group p-sm-2 add-document">
+  <div *ngIf="person.madePermanentMoveToBC === false" class="form-group p-sm-2 add-document">
     <common-error-container
-      [displayError]="person.madePermanentMoveToBC == false">
-      You have indcated that a recent move to B.C. is not permanent.  As a result, this person
+      [displayError]="person.madePermanentMoveToBC === false">
+      You have indicated that a recent move to B.C. is not permanent.  As a result, this person
       is not eligible for enrolment in the Medical Services Plan.  Please contact
       <a href="{{links.MSP_RESIDENT_CONTACT}}" target="_blank">Health Insurance BC</a> for further
       information.
@@ -431,7 +431,7 @@
         [required]="true">
       </common-radio>
       <common-error-container
-        [displayError]="person.inBCafterStudies == false && !isTemporaryResident">
+        [displayError]="person.inBCafterStudies === false && !isTemporaryResident">
         To qualify for provincial health care benefits a person must be a resident of
         B.C.  As you intend to leave B.C. when your studies are completed, you are not
         eligible for Medical Services Plan coverage.  Please contact the health care plan

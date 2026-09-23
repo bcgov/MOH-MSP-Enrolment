@@ -8,7 +8,7 @@
     <div class="row">
       <div class="col-sm-8">
         <common-button [label]="'Add Child'"
-                       [buttonType]="'btn btn-primary'"
+                       [buttonType]="'primary'"
                        (btnClick)='addChild()'>
         </common-button>
       </div>
@@ -193,7 +193,7 @@
                               label="Will the child reside in B.C. after completing study in this school?"
                               required>
                 </common-radio>
-                <common-error-container [displayError]="child.inBCafterStudies == false && !isTemporaryResident(child)">
+                <common-error-container [displayError]="child.inBCafterStudies === false && !isTemporaryResident(child)">
                   To qualify for provincial health care benefits a person must be a resident of
                   B.C.  As you intend to leave B.C. when your studies are completed, you are not
                   eligible for Medical Services Plan coverage.  Please contact the health care plan
@@ -208,7 +208,6 @@
   </form>
 </common-page-framework>
 <common-form-action-bar [submitLabel]="children.length > 0? 'Continue':'No Child'"
-                        widthOption='extra-width-mobile-only'
                         [defaultColor]='false'
                         (btnClick)="continue()">
 </common-form-action-bar>

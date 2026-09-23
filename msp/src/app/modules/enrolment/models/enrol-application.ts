@@ -1,9 +1,9 @@
 import { BaseApplicationDto, BaseApplication } from '../../../models/base-application';
 import { EnrolleeDto, Enrollee } from './enrollee';
 import { Relationship } from '../../../models/relationship.enum';
-import { CommonImage, Address } from 'moh-common-lib';
+import { CommonImage, Address } from 'moh-common-lib-angular';
 import { AddressDto } from '../../../models/address.dto';
-import { UUID } from 'angular2-uuid';
+import { v4 as uuid } from 'uuid';
 
 export class EnrolApplication extends BaseApplication {
 
@@ -20,7 +20,7 @@ export class EnrolApplication extends BaseApplication {
 
   // Contact information
   residentialAddress: Address = new Address();
-  mailingSameAsResidentialAddress: boolean = true;
+  mailingSameAsResidentialAddress = true;
   mailingAddress: Address = new Address();
   phoneNumber: string;
 
@@ -100,7 +100,7 @@ export class EnrolApplication extends BaseApplication {
     const all = this.getAllImages();
 
     all.forEach( image => {
-      image.uuid = UUID.UUID();
+      image.uuid = uuid();
     });
   }
 }

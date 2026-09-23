@@ -1,7 +1,6 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { SharedCoreModule } from 'moh-common-lib';
-import { LocalStorageModule } from 'angular-2-local-storage';
+import { ButtonComponent, FormActionBarComponent, PageFrameworkComponent, XiconButtonComponent } from 'moh-common-lib-angular';
 import { RouterTestingModule } from '@angular/router/testing';
 import { SpouseInfoComponent } from './spouse-info.component';
 import { UpdateSpouseComponent } from './update-spouse/update-spouse.component';
@@ -19,7 +18,7 @@ describe('SpouseInfoComponent', () => {
   let component: SpouseInfoComponent;
   let fixture: ComponentFixture<SpouseInfoComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [
         SpouseInfoComponent,
@@ -32,14 +31,8 @@ describe('SpouseInfoComponent', () => {
       ],
       imports: [
         FormsModule,
-        SharedCoreModule,
         MspCoreModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
-        RouterTestingModule
-      ],
+        RouterTestingModule, ButtonComponent, FormActionBarComponent, PageFrameworkComponent, XiconButtonComponent],
       providers: [
         MspAccountMaintenanceDataService,
         ProcessService,

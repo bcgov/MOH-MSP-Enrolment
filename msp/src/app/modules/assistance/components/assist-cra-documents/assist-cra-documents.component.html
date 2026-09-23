@@ -1,7 +1,7 @@
 <ng-container *ngFor="let year of selectedYears; index as i">
   <common-page-section layout="tips">
     <ng-container>
-      <label>{{ year.year }}</label>
+      <span class="font-weight-bold">{{ year.year }}</span>
       <common-file-uploader
         instructionText="Click add or drag and drop documents"
         [images]="files(year)"

@@ -1,12 +1,3 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NO_ERRORS_SCHEMA } from '@angular/core';
-import { Router } from '@angular/router';
-import { PageStateService } from '../../../../services/page-state.service';
-import { EnrolDataService } from '../../services/enrol-data.service';
-import { FormsModule } from '@angular/forms';
-import { EnrolAddressComponent } from './address.component';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { MspLogService } from '../../../../services/log.service';
 
 //The following test only runs in watch mode.
 //For some reason, running it in single test mode causes it to fail.

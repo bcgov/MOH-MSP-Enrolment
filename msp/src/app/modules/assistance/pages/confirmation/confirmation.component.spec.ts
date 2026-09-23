@@ -4,10 +4,10 @@ import { RouterModule } from '@angular/router';
 import { AssistanceConfirmationComponent } from './confirmation.component';
 import {LandingComponent} from '../../../../pages/landing/landing.component';
 import { MspDataService } from '../../../../services/msp-data.service';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import {MspLogService} from '../../../../services/log.service';
 import { HttpClientModule} from '@angular/common/http';
 import { ActivatedRoute } from '@angular/router';
+import { PageFrameworkComponent } from 'moh-common-lib-angular';
 
 
 describe('AssistanceConfirmationComponent', () => {
@@ -15,11 +15,7 @@ describe('AssistanceConfirmationComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [AssistanceConfirmationComponent],
-      imports: [FormsModule, HttpClientModule,
-      LocalStorageModule.withConfig({
-        prefix: 'ca.bc.gov.msp',
-        storageType: 'sessionStorage'
-      }),
+      imports: [FormsModule, HttpClientModule, PageFrameworkComponent,
       RouterModule.forRoot(
         [
           {
@@ -33,15 +29,15 @@ describe('AssistanceConfirmationComponent', () => {
           }
         ]
       )],
-      providers: [MspDataService, MspLogService, ActivatedRoute,
-
-
+      providers: [
+        MspDataService,
+        MspLogService,
+        { provide: ActivatedRoute, useValue: { snapshot: { routeConfig: { path: '' } } } }
       ]
     });
   });
-  // it ('should work', () => {
-  //   let fixture = TestBed.createComponent(AssistanceConfirmationComponent);
-  //   expect(fixture.componentInstance instanceof AssistanceConfirmationComponent).toBe(true, 'should create AssistanceConfirmationComponent');
-
-  // });
+  it('should create', () => {
+    const fixture = TestBed.createComponent(AssistanceConfirmationComponent);
+    expect(fixture.componentInstance).toBeTruthy();
+  });
 });

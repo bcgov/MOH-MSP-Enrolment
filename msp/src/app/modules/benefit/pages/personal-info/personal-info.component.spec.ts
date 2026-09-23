@@ -12,9 +12,9 @@ describe('BenefitPersonalInfoComponent', () => {
   let fixture: ComponentFixture<BenefitPersonalInfoComponent>;
   beforeEach(() => {
     const changeDetectorRefStub = () => ({});
-    const routerStub = () => ({ navigate: array => ({}) });
+    const routerStub = () => ({ navigate: () => ({}) });
     const processServiceStub = () => ({
-      setStep: (processStepNum, arg) => ({})
+      setStep: () => ({})
     });
     const mspBenefitDataServiceStub = () => ({
       benefitApp: { isUniquePhns: {}, isUniqueSin: {}, mailingAddress: {} },

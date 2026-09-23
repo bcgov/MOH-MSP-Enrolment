@@ -1,6 +1,8 @@
-import { TestBed, async, inject } from '@angular/core/testing';
+import {
+  TestBed,
+  inject,
+} from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { AssistGuard } from './assist.guard';
 import { MspDataService } from '../../../services/msp-data.service';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -11,10 +13,6 @@ describe('AssistGuard', () => {
     TestBed.configureTestingModule({
       imports: [
         RouterTestingModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
         HttpClientTestingModule
       ],
       providers: [

@@ -2,8 +2,8 @@ import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { MspAccountApp } from '../../models/account.model';
-import { Component, ViewChild, ElementRef, OnInit, AfterViewInit } from '@angular/core';
-import { PROVINCE_LIST, COUNTRY_LIST, PageStateService, ContainerService } from 'moh-common-lib';
+import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { PROVINCE_LIST, COUNTRY_LIST, PageStateService, ContainerService } from 'moh-common-lib-angular';
 import {ProcessService} from '../../../../services/process.service';
 
 import {
@@ -11,7 +11,7 @@ import {
   ProvinceList,
   CANADA,
   BRITISH_COLUMBIA
-} from 'moh-common-lib';
+} from 'moh-common-lib-angular';
 
 import { Subscription } from 'rxjs';
 import { BaseForm } from '../../models/base-form';
@@ -19,12 +19,13 @@ import { SpaEnvService } from '../../../../services/spa-env.service';
 import { environment } from 'environments/environment';
 
 @Component({
+  standalone: false,
   selector: 'msp-contact-info',
   templateUrl: './contact-info.component.html',
   styleUrls: ['./contact-info.component.scss']
 })
 
-export class ContactInfoComponent extends BaseForm implements OnInit, AfterViewInit {
+export class ContactInfoComponent extends BaseForm implements OnInit {
    // Constants TODO: Figure out whether used in html
    outsideBCFor30DaysLabel = 'Have you or any family member been outside BC for more than 30 days in total during the past 12 months?';
    addAnotherOutsideBCPersonButton = 'Add Another Person';
@@ -33,7 +34,7 @@ export class ContactInfoComponent extends BaseForm implements OnInit, AfterViewI
 
    static ProcessStepNum = 3;
 
-   @ViewChild('formRef') form: NgForm;
+   @ViewChild('formRef', { static: true }) declare form: NgForm;
    @ViewChild('address') address: ElementRef;
    @ViewChild('mailingAddress') mailingAddress: ElementRef;
    @ViewChild('phone') phone: ElementRef;
@@ -68,8 +69,6 @@ export class ContactInfoComponent extends BaseForm implements OnInit, AfterViewI
     this.mspAccountApp.mailingSameAsResidentialAddress = !this.mspAccountApp.mailingSameAsResidentialAddress;
     this.dataService.saveMspAccountApp();
   }
-
-   ngAfterViewInit(): void {}
 
    handlePhoneNumberChange(evt: any) {
      this.mspAccountApp.phoneNumber = evt;

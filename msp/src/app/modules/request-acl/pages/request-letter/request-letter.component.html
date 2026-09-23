@@ -1,7 +1,6 @@
 <main class="container-fluid" id="content">
 <msp-consent-modal #mspConsentModal
-                   (onClose)="Account_Holder_Phn.focus()"
-                   [consentProcessName]="'ACL'" 
+                   [consentProcessName]="'ACL'"
                    (accept)="acceptAgreement($event)">
 </msp-consent-modal>
 

@@ -6,16 +6,17 @@ import {MspBenefitDataService} from '../../services/msp-benefit-data.service';
 import {MspApiBenefitService} from '../../services/msp-api-benefit.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiResponse} from '../../../../models/api-response.interface';
+import enLang from './i18n/data/en/index';
 
 
 @Component({
+  standalone: false,
   selector: 'msp-benefit-sending',
   templateUrl: './sending.component.html',
   styleUrls: ['./sending.component.scss']
 })
 export class BenefitSendingComponent implements AfterContentInit  {
-    lang = require('./i18n');
-
+    lang = enLang;
     application: BenefitApplication;
     rawUrl: string;
     rawError: string;
@@ -57,7 +58,7 @@ export class BenefitSendingComponent implements AfterContentInit  {
             }
 
             // Business errors. Might be either a DB error.
-            this.suppBenefitResponse = <ApiResponse> response;
+            this.suppBenefitResponse = response as ApiResponse;
 
             if (this.isFailure(this.suppBenefitResponse)) {
                 this.logService.log(
@@ -93,7 +94,6 @@ export class BenefitSendingComponent implements AfterContentInit  {
   processErrorResponse(transmissionInProcess: boolean) {
       this.hasError = true;
       this.transmissionInProcess = transmissionInProcess;
-      const oldUUID = this.application.uuid;
       this.application.regenUUID();
       this.application.authorizationToken = null;
       this.dataService.saveBenefitApplication();

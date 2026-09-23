@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { MspLogService } from '../../../services/log.service';
-import { HttpClient } from '@angular/common/http';
-import { CommonImage } from 'moh-common-lib';
-import { Response } from '@angular/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { CommonImage } from 'moh-common-lib-angular';
 import { ApiResponse } from '../../../models/api-response.interface';
 import {
  MSPApplicationSchema,
@@ -75,7 +74,7 @@ export class MspApiEnrolmentService extends BaseMspApiService {
           app.uuid,
           app.getAllImages()
         )
-        .then(attachmentResponse => {
+        .then(() => {
           return this.sendApplication( enrolmentRequest, app.authorizationToken )
             .subscribe(response => {
               // Add reference number TODO: Why do we need this clause here? Does not save in service
@@ -86,7 +85,7 @@ export class MspApiEnrolmentService extends BaseMspApiService {
               return resolve(response);
             });
           })
-          .catch((err: Response | any) => {
+          .catch((err: HttpErrorResponse | any) => {
             // TODO - Is this error correct? What if sendApplication() errors, would it be caught in this .catch()?
             this.logService.log(
               {

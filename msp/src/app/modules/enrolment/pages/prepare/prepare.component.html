@@ -1,6 +1,5 @@
-<msp-consent-modal #mspConsentModal 
-                   (onClose)="liveInBCBtn.focus()"
-                   [consentProcessName]="'MSP'" 
+<msp-consent-modal #mspConsentModal
+                   [consentProcessName]="'MSP'"
                    (accept)="acceptAgreement($event)">
 </msp-consent-modal>
 
@@ -70,7 +69,7 @@
             </div>
 
             <p class="text-danger" 
-               *ngIf="liveInBC == false"
+               *ngIf="liveInBC === false"
                role="alert" aria-live="assertive">
                 You might not qualify for public health insurance if you do not live in B.C. Contact
                  <a href="{{links.HIBC}}" target="_blank">Health Insurance BC</a> for more information.
@@ -81,6 +80,5 @@
 </common-page-framework>
 
 <common-form-action-bar (btnClick)="continue()"
-                        widthOption='extra-width-mobile-only'
                         submitLabel='Apply'>
 </common-form-action-bar>

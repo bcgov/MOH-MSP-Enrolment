@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LocalStorageService } from 'angular-2-local-storage';
+import { LocalStorageService } from './local-storage.service';
 import { BasePersonDto, BasePerson } from '../models/base-person';
 import {
   BaseApplicationDto,
@@ -10,7 +10,7 @@ import {
   SupportDocuments,
 } from '../modules/msp-core/models/support-documents.model';
 import { AddressDto } from '../models/address.dto';
-import { Address, CommonImage } from 'moh-common-lib';
+import { Address, CommonImage } from 'moh-common-lib-angular';
 import { CommonImageDto } from '../models/common-image.dto';
 
 export class MspPagesDto {
@@ -23,7 +23,7 @@ export class MspPagesDto {
 })
 export abstract class BaseMspDataService {
   // Set key for page status storage
-  protected _pageStorageKey: string = 'msp-pages';
+  protected _pageStorageKey = 'msp-pages';
 
   // Application storage key set in derived service
   protected abstract _storageKey: string;
@@ -63,7 +63,7 @@ export abstract class BaseMspDataService {
    */
   protected fromBasePersonTransferObject<T extends BasePerson>(
     dto: BasePersonDto,
-    c: { new (): T }
+    c: new () => T
   ): T {
     const output = new c();
 
@@ -87,7 +87,7 @@ export abstract class BaseMspDataService {
    */
   protected toBasePersonTransferObject<T extends BasePersonDto>(
     input: BasePerson,
-    c: { new (): T }
+    c: new () => T
   ): T {
     const dto = new c();
 
@@ -107,7 +107,7 @@ export abstract class BaseMspDataService {
 
   protected toBaseApplicationTransferObject<T extends BaseApplicationDto>(
     input: BaseApplication,
-    c: { new (): T }
+    c: new () => T
   ): T {
     const dto = new c();
 
@@ -125,7 +125,7 @@ export abstract class BaseMspDataService {
 
   protected fromBaseApplicationTransferObject<T extends BaseApplication>(
     dto: BaseApplicationDto,
-    c: { new (): T }
+    c: new () => T
   ): T {
     const output = new c();
 

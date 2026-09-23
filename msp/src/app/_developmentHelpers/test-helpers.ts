@@ -1,7 +1,10 @@
 import { ComponentFixture, tick, TestBed, ComponentFixtureAutoDetect } from '@angular/core/testing';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
-import { SharedCoreModule } from 'moh-common-lib';
+import {
+  DateComponent, DuplicateCheckDirective, NameComponent, PageSectionComponent, PhnComponent,
+  RadioComponent, SinComponent, ValidateNameDirective
+} from 'moh-common-lib-angular';
 import { Type } from '@angular/core';
 
 // Helpers for unit tests
@@ -26,7 +29,14 @@ export function createTestingModule<T>( cmp: Type<T>,
     imports: [
       BrowserModule,
       FormsModule,
-      SharedCoreModule
+      DateComponent,
+      NameComponent,
+      PageSectionComponent,
+      PhnComponent,
+      RadioComponent,
+      SinComponent,
+      DuplicateCheckDirective,
+      ValidateNameDirective
     ],
     providers: [
       { provide: ComponentFixtureAutoDetect, useValue: true }

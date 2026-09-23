@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ViewChild, OnInit, ChangeDetectorRef, AfterViewInit, OnDestroy } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { MspDataService } from '../../../../services/msp-data.service';
 import { MspImageErrorModalComponent } from '../../../msp-core/components/image-error-modal/image-error-modal.component';
@@ -8,14 +8,16 @@ import { environment } from '../../../../../environments/environment';
 import { FinancialAssistApplication } from '../../models/financial-assist-application.model';
 import { AssistStateService } from '../../services/assist-state.service';
 import { BaseComponent } from '../../../../models/base.component';
-import { CommonImage } from 'moh-common-lib';
+import { Observable } from 'rxjs';
+import { CommonImage } from 'moh-common-lib-angular';
 
 @Component({
+  standalone: false,
   templateUrl: './authorize-submit.component.html',
 })
 export class AssistanceAuthorizeSubmitComponent
   extends BaseComponent
-  implements OnInit {
+  implements OnInit, AfterViewInit, OnDestroy {
   title = 'Authorize and submit your application';
 
   declarationOne = `The information I provide will be relevant to and used solely for the purpose of determining and verifying my entitlement to Retroactive Premium Assistance under the
@@ -32,7 +34,7 @@ export class AssistanceAuthorizeSubmitComponent
     'Yes, I have Power of Attorney or another legal representation agreement';
 
   private hasToken = false;
-  touched$ = this.stateSvc.touched.asObservable();
+  touched$: Observable<boolean>;
 
   get questionApplicant() {
     return `${this.applicantName} (or legal representative), do you agree?`;
@@ -51,6 +53,9 @@ export class AssistanceAuthorizeSubmitComponent
 
   application: FinancialAssistApplication;
 
+  // Both mspImageErrorModal and form sit inside the *ngIf="!stateSvc.submitted"
+  // wrapper (and form's upload block is further gated by
+  // *ngIf="application.authorizedByAttorney"), so they stay deferred.
   @ViewChild('mspImageErrorModal')
   mspImageErrorModal: MspImageErrorModalComponent;
 
@@ -64,6 +69,7 @@ export class AssistanceAuthorizeSubmitComponent
     super(cd);
     this.application = this.dataService.finAssistApp;
     this.captchaApiBaseUrl = environment.appConstants.captchaApiBaseUrl;
+    this.touched$ = this.stateSvc.touched.asObservable();
   }
 
   @ViewChild('form') form: NgForm;

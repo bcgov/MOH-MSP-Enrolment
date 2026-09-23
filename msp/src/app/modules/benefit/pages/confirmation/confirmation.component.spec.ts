@@ -9,10 +9,10 @@ describe('BenefitConfirmationComponent', () => {
   let component: BenefitConfirmationComponent;
   let fixture: ComponentFixture<BenefitConfirmationComponent>;
   beforeEach(() => {
-    const unsubscribeStub = () => { };
+    const unsubscribeStub = () => undefined;
     const mspBenefitDataServiceStub = () => ({ benefitApp: {}});
     const activatedRouteStub = () => ({
-      queryParams: { subscribe: f => new Subscription(unsubscribeStub) }
+      queryParams: { subscribe: () => new Subscription(unsubscribeStub) }
     });
     TestBed.configureTestingModule({
       schemas: [NO_ERRORS_SCHEMA],

@@ -1,7 +1,7 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { CanadianStatusComponent, ICanadianStatus } from './canadian-status.component';
-import { SharedCoreModule } from 'moh-common-lib';
+import { PageSectionComponent, RadioComponent } from 'moh-common-lib-angular';
 import { FormsModule } from '@angular/forms';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import { Relationship } from '../../../../models/relationship.enum';
@@ -10,10 +10,10 @@ describe('CanadianStatusComponent', () => {
   let component: CanadianStatusComponent<ICanadianStatus>;
   let fixture: ComponentFixture<CanadianStatusComponent<ICanadianStatus>>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ CanadianStatusComponent ],
-      imports: [SharedCoreModule, FormsModule]
+      imports: [FormsModule, PageSectionComponent, RadioComponent]
     })
     .compileComponents();
   }));

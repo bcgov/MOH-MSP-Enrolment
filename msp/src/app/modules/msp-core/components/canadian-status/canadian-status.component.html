@@ -17,7 +17,7 @@
         <option selected value="" disabled="true">Please select</option>
         <option *ngFor="let item of statusOpts"
           [ngValue]="item"
-          [selected]="statusInCanada == item">
+          [selected]="statusInCanada === item">
           {{item}}
         </option>
       </ng-container>

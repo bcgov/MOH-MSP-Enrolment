@@ -3,7 +3,7 @@ import {
   Output,
   Component,
   Input,
-  forwardRef,
+  forwardRef, OnInit,
 } from '@angular/core';
 import {
   MspAccountApp,
@@ -19,14 +19,14 @@ import {
 } from '../../../msp-core/components/support-documents/support-documents.component';
 import { SupportDocuments } from '../../../msp-core/models/support-documents.model';
 import { SupportDocumentTypes } from 'app/modules/msp-core/models/support-documents.enum';
-import { Base } from 'moh-common-lib';
+import { Base } from 'moh-common-lib-angular';
 import { ControlContainer, NgForm } from '@angular/forms';
 import { CanadianStatusReason, StatusInCanada } from 'app/modules/msp-core/models/canadian-status.enum';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import { Relationship } from '../../../../models/relationship.enum';
-import { SupportDocumentList } from '../../../msp-core/models/support-documents.enum';
 
 @Component({
+  standalone: false,
   selector: 'msp-update-request',
   templateUrl: './update-request.component.html',
   styleUrls: ['./update-request.component.scss'],
@@ -37,11 +37,11 @@ import { SupportDocumentList } from '../../../msp-core/models/support-documents.
     },
   ],
 })
-export class UpdateRequestComponent extends Base {
+export class UpdateRequestComponent extends Base implements OnInit {
   @Input() person: MspPerson;
   @Input() activitiesTable: any[];
   @Input() accountApp: MspAccountApp;
-  @Input() label: string = 'Update';
+  @Input() label = 'Update';
   @Input() title: string;
   @Input() subtitle: string;
   @Input() status: boolean;
@@ -169,11 +169,9 @@ export class UpdateRequestComponent extends Base {
       case Relationship.Applicant:
         return 'your';
       case Relationship.Spouse:
-        // tslint:disable-next-line
-        return "your spouse's";
+               return "your spouse's";
       default:
-        // tslint:disable-next-line
-        return "the child's";
+               return "the child's";
     }
   }
 

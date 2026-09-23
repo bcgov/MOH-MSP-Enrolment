@@ -17,15 +17,15 @@ import { format } from 'date-fns';
   providedIn: 'root'
 })
 export class AssistTransformService {
-  private app: FinancialAssistApplication = this.dataSvc.finAssistApp;
+  private app: FinancialAssistApplication;
   readonly ISO8601DateFormat = 'yyyy-MM-dd';
-  listKeys(obj: Object) {
+  listKeys(obj: object) {
     return Object.keys(obj);
   }
 
-  setKeys() {}
-
-  constructor(private dataSvc: MspDataService) {}
+  constructor(private dataSvc: MspDataService) {
+    this.app = this.dataSvc.finAssistApp;
+  }
 
   get application(): MSPApplicationSchema {
     const object = {
@@ -207,7 +207,6 @@ export class AssistTransformService {
    */
 
   calcAssistYearType(): AssistanceYearType {
-    const date = new Date();
     // const [...appliedYears] = this.app.assistYears.filter(year => year.apply);
     // if (!appliedYears) return null;
     // if (appliedYears.length === 1) {

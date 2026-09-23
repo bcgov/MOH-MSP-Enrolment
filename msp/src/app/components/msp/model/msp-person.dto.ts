@@ -2,7 +2,7 @@ import { AddressDto } from '../../../models/address.dto';
 import { OutofBCRecordDto } from '../../../models/outof-bc-record.model';
 import { CancellationReasons} from '../../../models/status-activities-documents';
 import { PersonStatusChange } from './person-status-change';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 import { SupportDocuments } from '../../../modules/msp-core/models/support-documents.model';
 import { Gender } from '../../../models/gender.enum';
 import { BaseDto } from 'app/models/base.dto';

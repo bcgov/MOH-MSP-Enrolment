@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef } from '@angular/core';
+import { Component, ViewContainerRef, OnInit, OnDestroy } from '@angular/core';
 import { Title } from '@angular/platform-browser';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
@@ -10,11 +10,12 @@ import { SpaEnvService } from './services/spa-env.service';
 // import { } from '../version.GENERATED';
 
 @Component({
+  standalone: false,
   selector: 'general-app',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class GeneralAppComponent {
+export class GeneralAppComponent implements OnInit, OnDestroy {
   private viewContainerRef: ViewContainerRef;
   routerSubscription: Subscription;
   headerSubscription: Subscription;
@@ -59,18 +60,19 @@ export class GeneralAppComponent {
   ngOnInit() {
     this.routerSubscription = this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
-      .subscribe((event) => {
+      .subscribe(() => {
         document.body.scrollTop = 0;
       });
 
-    const prefix = environment.appConstants.serviceName;
     this.headerSubscription = this.header.title.subscribe((title) => {
       this.headerName = title;
     });
 
-    version.success
-      ? console.log('%c' + version.message, 'color: #036; font-size: 20px;')
-      : console.error(version.message);
+    if (version.success) {
+      console.log('%c' + version.message, 'color: #036; font-size: 20px;');
+    } else {
+      console.error(version.message);
+    }
     this.spaEnvService
       .loadEnvs()
       .subscribe((response) => this.spaEnvService._values.next(response));

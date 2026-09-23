@@ -16,12 +16,13 @@ import {
 } from 'app/modules/msp-core/components/support-documents/support-documents.component';
 import { nameChangeSupportDocs } from 'app/modules/msp-core/components/support-documents/support-documents.component';
 import { SupportDocumentTypes } from 'app/modules/msp-core/models/support-documents.enum';
-import { Base } from 'moh-common-lib';
+import { Base } from 'moh-common-lib-angular';
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
 import { isAfter } from 'date-fns';
 import { CanadianStatusReason } from 'app/modules/msp-core/models/canadian-status.enum';
 
 @Component({
+  standalone: false,
   selector: 'msp-add-spouse',
   templateUrl: './add-spouse.component.html',
   styleUrls: ['./add-spouse.component.scss'],

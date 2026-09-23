@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AccountPersonCardComponent } from './person-card.component';
 import { MspDataService } from '../../../../services/msp-data.service';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { RouterTestingModule } from '@angular/router/testing';
 import { MspCoreModule } from '../../../msp-core/msp-core.module';
@@ -15,7 +14,7 @@ import {
   CanadianStatusReasonStrings,
 } from '../../../msp-core/models/canadian-status.enum';
 import { SupportDocuments } from '../../../msp-core/models/support-documents.model';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 import { parseISO } from 'date-fns';
 
 describe('MspPersonCardComponent', () => {
@@ -32,10 +31,6 @@ describe('MspPersonCardComponent', () => {
         FormsModule,
         ModalModule.forRoot(),
         RouterTestingModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage',
-        }),
         MspCoreModule,
       ],
       providers: [MspDataService, { provide: Router, useValue: routerStub }],
@@ -60,7 +55,6 @@ describe('MspPersonCardComponent', () => {
   });
 
   describe('statusInCanadaLabel', () => {
-    // tslint:disable-next-line
     it("should return the person's status in Canada.", () => {
       component.person.status = StatusInCanada.CitizenAdult;
       expect(component.statusInCanadaLabel).toEqual('Canadian citizen');
@@ -92,7 +86,6 @@ describe('MspPersonCardComponent', () => {
   });
 
   describe('hasDocumentAttached', () => {
-    // tslint:disable-next-line
     it("should return false when doesn't have attached documents.", () => {
       expect(component.hasDocumentAttached).toBe(false);
     });
@@ -104,7 +97,6 @@ describe('MspPersonCardComponent', () => {
   });
 
   describe('documentCount', () => {
-    // tslint:disable-next-line
     it("should return 0 when doesn't have attached documents.", () => {
       expect(component.documentCount).toBe(0);
     });
@@ -123,7 +115,6 @@ describe('MspPersonCardComponent', () => {
   });
 
   describe('movedFromLabel', () => {
-    // tslint:disable-next-line
     it("should return 'Moved from jurisdiction' when is temporary resident or is moving from country.", () => {
       component.person.status = StatusInCanada.TemporaryResident;
       expect(component.movedFromLabel).toEqual('Moved from jurisdiction');
@@ -132,20 +123,17 @@ describe('MspPersonCardComponent', () => {
       expect(component.movedFromLabel).toEqual('Moved from jurisdiction');
     });
 
-    // tslint:disable-next-line
     it("should return 'Moved from province' for all other cases.", () => {
       expect(component.movedFromLabel).toEqual('Moved from province');
     });
   });
 
   describe('fileLabel', () => {
-    // tslint:disable-next-line
     it("should return 'File' documentCount is 1.", () => {
       spyOnProperty(component, 'documentCount').and.returnValue(1);
       expect(component.fileLabel).toEqual('File');
     });
 
-    // tslint:disable-next-line
     it("should return 'Files' documentCount is more than 1.", () => {
       spyOnProperty(component, 'documentCount').and.returnValue(2);
       expect(component.fileLabel).toEqual('Files');
@@ -153,14 +141,12 @@ describe('MspPersonCardComponent', () => {
   });
 
   describe('movedFromProvinceOrCountry', () => {
-    // tslint:disable-next-line
     it("should return 'Canada' when given 'CAN'.", () => {
       component.person.currentActivity = CanadianStatusReason.MovingFromCountry;
       component.person.movedFromProvinceOrCountry = 'CAN';
       expect(component.movedFromProvinceOrCountry).toEqual('Canada');
     });
 
-    // tslint:disable-next-line
     it("should return 'British Columbia' when given 'BC'.", () => {
       component.person.movedFromProvinceOrCountry = 'BC';
       expect(component.movedFromProvinceOrCountry).toEqual('British Columbia');
@@ -168,7 +154,6 @@ describe('MspPersonCardComponent', () => {
   });
 
   describe('formatDateField', () => {
-    // tslint:disable-next-line
     it("should return 'Canada' when given 'CAN'.", () => {
       expect(component.formatDateField(parseISO('2020-04-01'))).toEqual(
         'April 1, 2020'

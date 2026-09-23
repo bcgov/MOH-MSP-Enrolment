@@ -1,13 +1,14 @@
 import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import * as moment from 'moment';
+import moment from 'moment';
 import {BaseComponent} from '../../../../../models/base.component';
 import {AssistanceYear} from '../../../../assistance/models/assistance-year.model';
 import {BenefitApplication} from '../../../models/benefit-application.model';
 import {MspBenefitDataService} from '../../../services/msp-benefit-data.service';
 import {ISpaEnvResponse} from '../../../../../components/msp/model/spa-env-response.interface';
-import { parseDate } from 'ngx-bootstrap/chronos';
+import enLang from './i18n/data/en/index';
 
 @Component({
+  standalone: false,
     selector: 'msp-tax-year',
     templateUrl: './tax-year.component.html',
     styleUrls: ['./tax-year.component.scss']
@@ -16,9 +17,9 @@ import { parseDate } from 'ngx-bootstrap/chronos';
  * this is a component to support current year or previous tax year.
  * This component has to grow and fetch the tax year either from RAPID OR some other mechanism.
  */
-export class TaxYearComponent extends BaseComponent {
+export class TaxYearComponent extends BaseComponent implements OnInit {
 
-    lang = require('./i18n');
+    lang = enLang;
     taxYears: number[] ;
     @Input() currentTaxYear: number;
     assistanceYears: AssistanceYear[];

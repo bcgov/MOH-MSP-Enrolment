@@ -8,7 +8,7 @@
       Medical Services Plan premiums <i class="fa fa-external-link" aria-hidden="true"></i>
     </a>
     are based on the previous tax year's
-    <button class="btn btn-link p-0" (click)="openModal(modal)">
+    <button class="btn btn-link p-0" (click)="openModal()">
       adjusted net income.
     </button>
   </p>
@@ -73,7 +73,6 @@
 <msp-consent-modal
   #mspConsentModal
   [consentProcessName]="consentProcessName"
-  [isMaintenanceMode]="true"
   (accept)="
     finAssistApp.infoCollectionAgreement = $event;
     this.dataSvc.saveFinAssistApplication()

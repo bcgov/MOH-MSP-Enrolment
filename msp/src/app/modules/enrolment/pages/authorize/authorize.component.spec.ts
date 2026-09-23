@@ -13,14 +13,14 @@ describe('Enrolment AuthorizeComponent', () => {
   let fixture: ComponentFixture<AuthorizeComponent>;
 
   beforeEach(() => {
-    const routerStub = () => ({ url: {}, navigate: (array, object) => ({}) });
+    const routerStub = () => ({ url: {}, navigate: () => ({}) });
     const pageStateServiceStub = () => ({
-      setPageComplete: (url, pageStatus) => ({}),
-      clearCompletePages: pageStatus => ({})
+      setPageComplete: () => ({}),
+      clearCompletePages: () => ({})
     });
-    const mspLogServiceStub = () => ({ log: (object, arg) => ({}) });
+    const mspLogServiceStub = () => ({ log: () => ({}) });
     const mspApiEnrolmentServiceStub = () => ({
-      sendRequest: mspApplication => ({ then: () => ({ catch: () => ({}) }) })
+      sendRequest: () => ({ then: () => ({ catch: () => ({}) }) })
     });
     const enrolDataServiceStub = () => ({
       pageStatus: {},

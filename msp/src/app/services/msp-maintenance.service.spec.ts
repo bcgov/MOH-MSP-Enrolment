@@ -1,21 +1,9 @@
-/* tslint:disable:no-unused-variable */
-import {
-  JsonpModule,
-  Jsonp,
-  BaseRequestOptions,
-  Response,
-  ResponseOptions,
-  Http,
-} from '@angular/http';
 import { TestBed, getTestBed, inject } from '@angular/core/testing';
 import { MspMaintenanceService } from './msp-maintenance.service';
 import { MspLogService } from './log.service';
 import { MspLog2Service } from './log2.service';
 import { MspDataService } from './msp-data.service';
-import {
-  LocalStorageService,
-  LocalStorageModule,
-} from 'angular-2-local-storage';
+import { LocalStorageService } from './local-storage.service';
 import { HttpClientModule } from '@angular/common/http';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
@@ -28,8 +16,6 @@ import {
 
 describe('MspMaintenanceService', () => {
   let injector: TestBed;
-  let service: MspMaintenanceService;
-  let httpMock: HttpTestingController;
   // let spaEnvRes: ISpaEnvResponse;
   const log2ServiceStub = () => ({});
 
@@ -40,10 +26,6 @@ describe('MspMaintenanceService', () => {
         HttpClientModule,
         RouterTestingModule,
         FormsModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage',
-        }),
       ],
       providers: [
         LocalStorageService,
@@ -54,14 +36,13 @@ describe('MspMaintenanceService', () => {
       ],
     });
     injector = getTestBed();
-    service = injector.get(MspMaintenanceService);
-    httpMock = injector.get(HttpTestingController);
+    injector.get(MspMaintenanceService);
+    injector.get(HttpTestingController);
   });
 
   it('should be created', inject(
     [MspMaintenanceService],
-    // tslint:disable-next-line:no-shadowed-variable
-    (service: MspMaintenanceService) => {
+       (service: MspMaintenanceService) => {
       expect(service).toBeTruthy();
     }
   ));

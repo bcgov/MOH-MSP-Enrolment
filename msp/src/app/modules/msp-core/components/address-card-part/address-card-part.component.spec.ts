@@ -2,7 +2,6 @@ import { TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { MspAddressCardPartComponent } from './address-card-part.component';
 import { MspDataService } from '../../../../services/msp-data.service';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { TypeaheadModule } from 'ngx-bootstrap/typeahead';
 
 describe('MspAddressCardPartComponent', () => {
@@ -10,10 +9,7 @@ describe('MspAddressCardPartComponent', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [MspAddressCardPartComponent],
-      imports: [FormsModule, TypeaheadModule, LocalStorageModule.withConfig({
-        prefix: 'ca.bc.gov.msp',
-        storageType: 'sessionStorage'
-      })],
+      imports: [FormsModule, TypeaheadModule,],
       providers: [MspDataService]
     });
   });

@@ -12,8 +12,14 @@ import { PrepareComponent } from './pages/prepare/prepare.component';
 import { ReviewComponent } from './pages/review/review.component';
 import { SpouseInfoComponent } from './pages/spouse-info/spouse-info.component';
 import { FormsModule } from '@angular/forms';
-import { CaptchaModule } from 'moh-common-lib/captcha';
-import { RouteGuardService, AbstractPgCheckService } from 'moh-common-lib';
+import { CaptchaModule } from 'moh-common-lib-angular/captcha';
+import {
+  RouteGuardService, AbstractPgCheckService,
+  AddressComponent, ButtonComponent, CheckboxComponent, ConfirmTemplateComponent,
+  CoreBreadcrumbComponent, DateComponent, ErrorContainerComponent, FormActionBarComponent,
+  PageFrameworkComponent, PageSectionComponent, PhoneNumberComponent, RadioComponent,
+  WizardProgressBarComponent, XiconButtonComponent
+} from 'moh-common-lib-angular';
 import { GuardEnrolService } from './services/guard-enrol.service';
 import { MspApiEnrolmentService } from '../enrolment/services/msp-api-enrolment.service';
 import { PersonReviewCardComponent } from './components/person-review-card/person-review-card.component';
@@ -37,7 +43,21 @@ if ( environment.useMockBackend ) {
     FormsModule,
     MspCoreModule,
     EnrolmentRoutingModule,
-    CaptchaModule
+    CaptchaModule,
+    AddressComponent,
+    ButtonComponent,
+    CheckboxComponent,
+    ConfirmTemplateComponent,
+    CoreBreadcrumbComponent,
+    DateComponent,
+    ErrorContainerComponent,
+    FormActionBarComponent,
+    PageFrameworkComponent,
+    PageSectionComponent,
+    PhoneNumberComponent,
+    RadioComponent,
+    WizardProgressBarComponent,
+    XiconButtonComponent
   ],
   declarations: [
     EnrolContainerComponent,

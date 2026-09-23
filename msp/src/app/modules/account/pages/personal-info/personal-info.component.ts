@@ -1,11 +1,15 @@
-import { Component, Injectable , ViewChild, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, AfterViewInit, OnDestroy, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { MspAccountApp, AccountChangeOptions, UpdateList } from '../../models/account.model';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import { AbstractForm, ContainerService, PageStateService } from 'moh-common-lib';
+import enLang from './i18n/data/en/index';
+import {
+  ContainerService,
+  PageStateService,
+} from 'moh-common-lib-angular';
 import { StatusInCanada, CanadianStatusReason, CanadianStatusStrings } from '../../../msp-core/models/canadian-status.enum';
 import { Relationship } from '../../../../models/relationship.enum';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
@@ -14,26 +18,35 @@ import { SupportDocuments } from '../../../msp-core/models/support-documents.mod
 import {ProcessService} from '../../../../services/process.service';
 
 @Component({
+  standalone: false,
   templateUrl: './personal-info.component.html',
   styleUrls: ['./personal-info.component.scss']
 })
-
-@Injectable()
 export class AccountPersonalInfoComponent extends BaseForm implements OnInit, AfterViewInit, OnDestroy {
+  // canContinue() reads this.form.valid through AbstractForm.canContinue().
+  // AbstractForm's own formRef query is not static, which leaves form
+  // undefined on the first change-detection pass. On a fresh application
+  // updatingPersonalInfo is undefined too, so canContinue() short-circuits
+  // to false on both CD passes and NG0100 does not fire - but a return
+  // visit (e.g. the Review page's Edit link) re-renders with
+  // updatingPersonalInfo already set, and the same false-then-true flip
+  // that broke child-info and review reproduces here. Matches contact-info,
+  // spouse-info and authorize.
+  @ViewChild('formRef', { static: true }) declare form: NgForm;
+
   static ProcessStepNum = 0;
-  lang = require('./i18n');
+  lang = enLang;
   docSelected: string ;
   //activitiesOpts: string[] = CanadianStatusReason;
 
   langStatus = CanadianStatusStrings;
 
   Activities: typeof CanadianStatusReason = CanadianStatusReason;
-  @ViewChild('formRef') form: NgForm;
-  public buttonstyle: string = 'btn btn-default';
+  public buttonstyle = 'btn btn-default';
   accountApp: MspAccountApp;
   accountChangeOptions: AccountChangeOptions;
-  accountHolderTitle: string = 'Account Holder Identification';
-  accountHolderSubtitle: string = 'Please provide the Account Holder’s personal information for verification purposes.';
+  accountHolderTitle = 'Account Holder Identification';
+  accountHolderSubtitle = 'Please provide the Account Holder’s personal information for verification purposes.';
   person: MspPerson;
   updateList: UpdateList[];
   subscriptions: Subscription[];
@@ -48,7 +61,7 @@ export class AccountPersonalInfoComponent extends BaseForm implements OnInit, Af
     super(router, containerService, pageStateService, _processService);
   }
 
-  onChange($event) {
+  onChange() {
     //this.dataService.saveMspAccountApp();
   }
 

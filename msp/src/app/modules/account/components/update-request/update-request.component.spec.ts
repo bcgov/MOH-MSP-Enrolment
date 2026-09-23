@@ -1,5 +1,5 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { SharedCoreModule } from 'moh-common-lib';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
+import { CheckboxComponent, NameComponent, RadioComponent } from 'moh-common-lib-angular';
 import { UpdateRequestComponent } from './update-request.component';
 import { MspCoreModule } from '../../../msp-core/msp-core.module';
 import { FormsModule } from '@angular/forms';
@@ -10,14 +10,12 @@ describe('UpdateRequestComponent', () => {
   let component: UpdateRequestComponent;
   let fixture: ComponentFixture<UpdateRequestComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ UpdateRequestComponent ],
       imports: [
         FormsModule,
-        MspCoreModule,
-        SharedCoreModule
-      ]
+        MspCoreModule, CheckboxComponent, NameComponent, RadioComponent]
     })
     .compileComponents();
   }));

@@ -4,7 +4,7 @@ import { ChangeDetectorRef } from '@angular/core';
 import { MspDataService } from '../../../../services/msp-data.service';
 import { ActivatedRoute } from '@angular/router';
 import { AssistStateService } from '../../services/assist-state.service';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 import { AssistanceAuthorizeSubmitComponent } from './authorize-submit.component';
 import { FormsModule } from '@angular/forms';
 
@@ -22,8 +22,8 @@ describe('AssistanceAuthorizeSubmitComponent', () => {
       snapshot: { routeConfig: { path: {} } },
     });
     const assistStateServiceStub = () => ({
-      setPageIncomplete: (path) => ({}),
-      setPageValid: (path, arg1) => ({}),
+      setPageIncomplete: () => ({}),
+      setPageValid: () => ({}),
       touched: { asObservable: () => ({ subscribe: (f) => f({}) }) },
     });
     TestBed.configureTestingModule({
@@ -53,7 +53,7 @@ describe('AssistanceAuthorizeSubmitComponent', () => {
     it('makes expected calls', () => {
       const mspDataServiceStub: MspDataService =
         fixture.debugElement.injector.get(MspDataService);
-      const commonImageStub: CommonImage = <any>{};
+      const commonImageStub: CommonImage = {} as any;
       spyOn(mspDataServiceStub, 'saveFinAssistApplication').and.callThrough();
       component.addDocument(commonImageStub);
       expect(mspDataServiceStub.saveFinAssistApplication).toHaveBeenCalled();
@@ -64,7 +64,7 @@ describe('AssistanceAuthorizeSubmitComponent', () => {
     it('makes expected calls', () => {
       const mspDataServiceStub: MspDataService =
         fixture.debugElement.injector.get(MspDataService);
-      const commonImageStub: CommonImage = <any>{};
+      const commonImageStub: CommonImage = {} as any;
       spyOn(mspDataServiceStub, 'saveFinAssistApplication').and.callThrough();
       component.deleteDocument(commonImageStub);
       expect(mspDataServiceStub.saveFinAssistApplication).toHaveBeenCalled();

@@ -6,6 +6,7 @@ export interface ColumnClass {
 }
 
 @Component({
+  standalone: false,
   selector: 'msp-review-part',
   templateUrl: './review-part.component.html',
   styleUrls: ['./review-part.component.scss']
@@ -14,11 +15,9 @@ export class ReviewPartComponent implements OnInit {
   @Input() label: string;
   @Input() value: string;
   @Input() columnClass: ColumnClass;
-  @Input() underlineLabel: boolean = false;
+  @Input() underlineLabel = false;
 
   _defaultColumnClass: ColumnClass = {label: 'col-6', value: 'col-6'};
-
-  constructor() {}
 
   ngOnInit() {
     if (this.columnClass) {

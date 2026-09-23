@@ -18,7 +18,14 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { BenefitSpouseInfoComponent } from './pages/spouse-info/spouse-info.component';
 import { BenefitAddressComponent } from './pages/contact-info/address.component';
 import { ProcessService , ProcessStep} from '../../services/process.service';
-import { CheckCompleteBaseService, RouteGuardService, AbstractPgCheckService } from 'moh-common-lib';
+import {
+  CheckCompleteBaseService, RouteGuardService, AbstractPgCheckService,
+  AddressComponent, CheckboxComponent, ConsentModalComponent, CoreBreadcrumbComponent,
+  ErrorContainerComponent, FileUploaderComponent, FormActionBarComponent, PageFrameworkComponent,
+  PageSectionComponent, PhoneNumberComponent, RadioComponent, WizardProgressBarComponent,
+  XiconButtonComponent
+} from 'moh-common-lib-angular';
+import { CaptchaModule } from 'moh-common-lib-angular/captcha';
 import { PersonalDetailsRetroSuppbenComponent } from './components/personal-details-retro-suppben/personal-details-retro-suppben.component';
 import { EligibilityComponent } from './pages/eligibility/eligibility.component';
 
@@ -30,7 +37,21 @@ import { EligibilityComponent } from './pages/eligibility/eligibility.component'
     BenefitRoutingModule,
     FormsModule,
     MspCoreModule,
-    ModalModule
+    ModalModule,
+    CaptchaModule,
+    AddressComponent,
+    CheckboxComponent,
+    ConsentModalComponent,
+    CoreBreadcrumbComponent,
+    ErrorContainerComponent,
+    FileUploaderComponent,
+    FormActionBarComponent,
+    PageFrameworkComponent,
+    PageSectionComponent,
+    PhoneNumberComponent,
+    RadioComponent,
+    WizardProgressBarComponent,
+    XiconButtonComponent
   ],
   declarations: [
     BenefitContainerComponent,

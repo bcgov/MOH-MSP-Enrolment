@@ -1,4 +1,4 @@
-<label class="intro" id="taxYear" [innerHtml]="lang('./en/index.js').enterTaxYearLabel"></label>
+<span class="intro" id="taxYear" [innerHtml]="lang.enterTaxYearLabel"></span>
 <div  style="display:inline-block;" *ngFor="let st of assistanceYears;  let i = index">
     <common-radio [value]="currentTaxYear"
         [radioLabels]='[{"label": st.year, "value": st.year}]'

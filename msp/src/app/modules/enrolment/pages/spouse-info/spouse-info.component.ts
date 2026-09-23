@@ -10,12 +10,13 @@ import { EnrolDataService } from '../../services/enrol-data.service';
 import { Enrollee } from '../../models/enrollee';
 
 @Component({
+  standalone: false,
   selector: 'msp-spouse-info',
   templateUrl: './spouse-info.component.html'
 })
 export class SpouseInfoComponent extends EnrolForm {
 
-  statusLabel: string = 'Spouse\'s immigration status in Canada';
+  statusLabel = 'Spouse\'s immigration status in Canada';
   nameChangeDocList = nameChangeSupportDocuments();
   spouseNameChangeDocList = nameChangeSupportDocs();
 

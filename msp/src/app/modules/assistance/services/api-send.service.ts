@@ -4,13 +4,12 @@ import { MSPApplicationSchema } from 'app/modules/msp-core/interfaces/i-api';
 import {
   HttpClient,
   HttpHeaders,
-  HttpErrorResponse,
 } from '@angular/common/http';
 import { environment } from 'environments/environment';
 import { MspApiService } from 'app/services/msp-api.service';
-import { of } from 'rxjs';
+import { of, Observable, throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { AbstractHttpService, CommonImage } from 'moh-common-lib';
+import { AbstractHttpService, CommonImage } from 'moh-common-lib-angular';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 import { MspLogService } from 'app/services/log.service';
 
@@ -19,8 +18,8 @@ import { MspLogService } from 'app/services/log.service';
 })
 export class ApiSendService extends AbstractHttpService {
   protected _headers: HttpHeaders;
-  protected handleError(error: HttpErrorResponse) {
-    throw new Error('Method not implemented.');
+  protected handleError(): Observable<never> {
+    return throwError(() => new Error('Method not implemented.'));
   }
   constructor(
     private schemaSvc: SchemaService,
@@ -76,7 +75,7 @@ export class ApiSendService extends AbstractHttpService {
     }
 
     try {
-      const res = await Promise.all(attachmentPromises);
+      await Promise.all(attachmentPromises);
       return;
     } catch (err) {
       devOnlyConsoleLog(err);
@@ -95,10 +94,10 @@ export class ApiSendService extends AbstractHttpService {
 
     const headers = this.setHeaders(attachment.contentType, token);
 
-    const options = { headers: headers, responseType: 'text' as 'text' };
+    const options = { headers: headers, responseType: 'text' as const };
 
     const binary = atob(attachment.fileContent.split(',')[1]);
-    const array = <any>[];
+    const array = [] as any;
     for (let i = 0; i < binary.length; i++) {
       array.push(binary.charCodeAt(i));
     }

@@ -38,9 +38,6 @@
               #fileUploader
               [images]="application.powerOfAttorneyDocs"
               [id]="application.id"
-              (onAddDocument)="addDocument($event)"
-              (onErrorDocument)="errorDocument($event)"
-              (onDeleteDocument)="deleteDocument($event)"
               (imagesChange)="updateFiles($event)"
               instructionText="Click add, or drag and drop file into this box"
               [required]='true'

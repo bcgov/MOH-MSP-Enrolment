@@ -5,6 +5,7 @@ import { MspAccountApp, UpdateList } from '../../../models/account.model';
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
 
 @Component({
+  standalone: false,
   selector: 'msp-update-spouse',
   templateUrl: './update-spouse.component.html',
   styleUrls: ['./update-spouse.component.scss']
@@ -27,7 +28,7 @@ export class UpdateSpouseComponent extends BaseComponent implements OnInit {
     //this.accountChangeOptions = this.dataService.accountApp.accountChangeOptions;
   }
 
-  onChange($event){
+  onChange(){
     //this.dataService.saveMspAccountApp();
   }
 

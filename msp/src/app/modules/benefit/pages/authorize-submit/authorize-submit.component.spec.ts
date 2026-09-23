@@ -1,10 +1,10 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { Router } from '@angular/router';
 import { CompletenessCheckService } from '../../../../services/completeness-check.service';
 import { ProcessService } from '../../../../services/process.service';
 import { MspBenefitDataService } from '../../services/msp-benefit-data.service';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 import { BenefitAuthorizeSubmitComponent } from './authorize-submit.component';
 import { FormsModule } from '@angular/forms';
 import { BenefitApplication } from '../../models/benefit-application.model';
@@ -13,11 +13,11 @@ describe('BenefitAuthorizeSubmitComponent', () => {
   let component: BenefitAuthorizeSubmitComponent;
   let fixture: ComponentFixture<BenefitAuthorizeSubmitComponent>;
 
-  beforeEach(async(() => {
-    const routerStub = () => ({ navigate: (array) => ({}) });
+  beforeEach(waitForAsync(() => {
+    const routerStub = () => ({ navigate: () => ({}) });
     const completenessCheckServiceStub = () => ({});
     const processServiceStub = () => ({
-      setStep: (processStepNum, arg) => ({}),
+      setStep: () => ({}),
     });
     const mspBenefitDataServiceStub = () => ({
       benefitApp: new BenefitApplication(),
@@ -60,7 +60,7 @@ describe('BenefitAuthorizeSubmitComponent', () => {
     it('makes expected calls', () => {
       const mspBenefitDataServiceStub: MspBenefitDataService =
         fixture.debugElement.injector.get(MspBenefitDataService);
-      const commonImageStub: CommonImage = <any>{};
+      const commonImageStub: CommonImage = {} as any;
       spyOn(
         mspBenefitDataServiceStub,
         'saveBenefitApplication'
@@ -76,7 +76,7 @@ describe('BenefitAuthorizeSubmitComponent', () => {
     it('makes expected calls', () => {
       const mspBenefitDataServiceStub: MspBenefitDataService =
         fixture.debugElement.injector.get(MspBenefitDataService);
-      const commonImageStub: CommonImage = <any>{};
+      const commonImageStub: CommonImage = {} as any;
       spyOn(
         mspBenefitDataServiceStub,
         'saveBenefitApplication'

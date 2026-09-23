@@ -4,7 +4,7 @@ import {
   EventEmitter,
   Input,
   Output,
-  ViewChild,
+  ViewChild, AfterViewInit,
 } from '@angular/core';
 import { debounceTime } from 'rxjs/operators';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
@@ -14,28 +14,29 @@ import { BenefitApplication } from '../../models/benefit-application.model';
 import { MspBenefitDataService } from '../../services/msp-benefit-data.service';
 import { Subscription } from 'rxjs';
 import { MspImageErrorModalComponent } from '../../../msp-core/components/image-error-modal/image-error-modal.component';
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 import { Relationship } from '../../../../models/relationship.enum';
 @Component({
+  standalone: false,
   selector: 'msp-personal-details-retro-suppben',
   templateUrl: './personal-details-retro-suppben.component.html',
   styleUrls: ['./personal-details-retro-suppben.component.scss'],
 })
-export class PersonalDetailsRetroSuppbenComponent extends BaseComponent {
+export class PersonalDetailsRetroSuppbenComponent extends BaseComponent implements AfterViewInit {
   @Input() benefitApp: BenefitApplication;
-  @Input() removeable: boolean = false;
+  @Input() removeable = false;
   @Input() person: MspPerson;
-  @ViewChild('formRef') personalDetailsForm: NgForm;
+  @ViewChild('formRef', { static: true }) personalDetailsForm: NgForm;
   @Output() onChange = new EventEmitter<any>();
   @Output() docActionEvent = new EventEmitter<any>();
   @Output() notifySpouseRemoval: EventEmitter<MspPerson> =
     new EventEmitter<MspPerson>();
-  @ViewChild('mspImageErrorModal')
+  @ViewChild('mspImageErrorModal', { static: true })
   mspImageErrorModal: MspImageErrorModalComponent;
 
   Relationship = Relationship;
   subscriptions: Subscription[];
-  supportDocErrorMsg: string = '';
+  supportDocErrorMsg = '';
 
   constructor(
     private dataService: MspBenefitDataService,
@@ -56,8 +57,7 @@ export class PersonalDetailsRetroSuppbenComponent extends BaseComponent {
   get docText(): string {
     return this.person.relationship === Relationship.Applicant
       ? 'your'
-      : // tslint:disable-next-line
-        "your spouse's";
+      :        "your spouse's";
   }
 
   isSinUnique(): boolean {
@@ -95,7 +95,7 @@ export class PersonalDetailsRetroSuppbenComponent extends BaseComponent {
   }
 
   // Check the collective size, triggered whenever an image is added or removed
-  handleImagesChange(imgs: Array<CommonImage>) {
+  handleImagesChange(imgs: CommonImage[]) {
     let sum = 0;
     let tooSmall = false;
     this.person.assistYearDocs = imgs;

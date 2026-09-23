@@ -1,16 +1,15 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { FormsModule } from '@angular/forms';
-import { SharedCoreModule } from 'moh-common-lib';
+import { PageFrameworkComponent } from 'moh-common-lib-angular';
 import { AccountSendingComponent } from './sending.component';
 import { MspDataService } from '../../../../services/msp-data.service';
-import { LocalStorageModule } from 'angular-2-local-storage';
 import { MspApiService } from '../../../../services/msp-api.service';
 import { ProcessService } from '../../../../services/process.service';
 import { HttpClientModule } from '@angular/common/http';
 import { MspLogService } from '../../../../services/log.service';
 import { MspMaintenanceService } from '../../../../services/msp-maintenance.service';
-import { TransmissionErrorView } from '../../../../components/msp/common/transmission-error-view/transmission-error-view.component';
+import { TransmissionErrorViewComponent } from '../../../../components/msp/common/transmission-error-view/transmission-error-view.component';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 
 describe('SendingComponent', () => {
@@ -19,18 +18,12 @@ describe('SendingComponent', () => {
     TestBed.configureTestingModule({
       declarations: [
         AccountSendingComponent,
-        TransmissionErrorView
+        TransmissionErrorViewComponent
       ],
       imports: [
         FormsModule,
         HttpClientModule,
-        RouterTestingModule,
-        LocalStorageModule.withConfig({
-          prefix: 'ca.bc.gov.msp',
-          storageType: 'sessionStorage'
-        }),
-        SharedCoreModule
-      ],
+        RouterTestingModule, PageFrameworkComponent],
       providers: [
         MspDataService,
         MspApiService,

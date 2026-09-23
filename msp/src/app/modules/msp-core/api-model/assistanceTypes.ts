@@ -1,4 +1,3 @@
-import * as Primitive from './xml-primitives';
 import * as ct from './commonTypes';
 
 // Source files:
@@ -7,10 +6,9 @@ import * as ct from './commonTypes';
 interface BaseType {
   _exists: boolean;
   _namespace: string;
-  _sequence: Array<string>;
+  _sequence: string[];
 }
 
-// tslint:disable-next-line:class-name
 interface _AssistanceApplicantType extends ct.BasicInfoType {
   financials: FinancialsType;
   mailingAddress: ct.AddressType;
@@ -21,13 +19,13 @@ interface _AssistanceApplicantType extends ct.BasicInfoType {
   telephone: number;
 }
 export interface AssistanceApplicantType extends _AssistanceApplicantType {
-  constructor: { new (): AssistanceApplicantType };
+  constructor: new () => AssistanceApplicantType;
 }
-export let AssistanceApplicantType: { new (): AssistanceApplicantType };
+export let AssistanceApplicantType: new () => AssistanceApplicantType;
 
 export class AssistanceApplicantTypeFactory {
   static make(): AssistanceApplicantType {
-    const instance = <AssistanceApplicantType>{};
+    const instance = {} as AssistanceApplicantType;
     instance._sequence = [
       'name',
       'gender',
@@ -45,7 +43,6 @@ export class AssistanceApplicantTypeFactory {
   }
 }
 
-// tslint:disable-next-line:class-name
 interface _AssistanceApplicationType extends BaseType {
   applicant: AssistanceApplicantType;
   authorizedByApplicant: ct.YesOrNoType;
@@ -54,13 +51,13 @@ interface _AssistanceApplicationType extends BaseType {
   spouse?: AssistanceSpouseType;
 }
 export interface AssistanceApplicationType extends _AssistanceApplicationType {
-  constructor: { new (): AssistanceApplicationType };
+  constructor: new () => AssistanceApplicationType;
 }
-export let AssistanceApplicationType: { new (): AssistanceApplicationType };
+export let AssistanceApplicationType: new () => AssistanceApplicationType;
 
 export class AssistanceApplicationTypeFactory {
   static make(): AssistanceApplicationType {
-    const instance = <AssistanceApplicationType>{};
+    const instance = {} as AssistanceApplicationType;
     instance._sequence = [
       'applicant',
       'spouse',
@@ -72,7 +69,6 @@ export class AssistanceApplicationTypeFactory {
   }
 }
 
-// tslint:disable-next-line:class-name
 interface _AssistanceSpouseType extends BaseType {
   name: ct.NameType;
   birthDate?: string;
@@ -82,13 +78,13 @@ interface _AssistanceSpouseType extends BaseType {
   spouseSixtyFiveDeduction?: number;
 }
 export interface AssistanceSpouseType extends _AssistanceSpouseType {
-  constructor: { new (): AssistanceSpouseType };
+  constructor: new () => AssistanceSpouseType;
 }
-export let AssistanceSpouseType: { new (): AssistanceSpouseType };
+export let AssistanceSpouseType: new () => AssistanceSpouseType;
 
 export class AssistanceSpouseTypeFactory {
   static make(): AssistanceSpouseType {
-    const instance = <AssistanceSpouseType>{};
+    const instance = {} as AssistanceSpouseType;
     instance._sequence = [
       'name',
       'birthDate',
@@ -102,12 +98,7 @@ export class AssistanceSpouseTypeFactory {
 }
 
 export type AssistanceYearType = 'CurrentPA' | 'PreviousTwo' | 'MultiYear';
-// tslint:disable-next-line:class-name
-interface _AssistanceYearType extends Primitive._string {
-  content: AssistanceYearType;
-}
 
-// tslint:disable-next-line:class-name
 interface _FinancialsType extends BaseType {
   adjustedNetIncome?: number;
   assistanceYear: AssistanceYearType;
@@ -128,13 +119,13 @@ interface _FinancialsType extends BaseType {
   uccb?: number;
 }
 export interface FinancialsType extends _FinancialsType {
-  constructor: { new (): FinancialsType };
+  constructor: new () => FinancialsType;
 }
-export let FinancialsType: { new (): FinancialsType };
+export let FinancialsType: new () => FinancialsType;
 
 export class FinancialsTypeFactory {
   static make(): FinancialsType {
-    const instance = <FinancialsType>{};
+    const instance = {} as FinancialsType;
     instance._sequence = [
       'taxYear',
       'assistanceYear',
@@ -158,7 +149,6 @@ export class FinancialsTypeFactory {
   }
 }
 
-// tslint:disable-next-line:class-name
 export interface document extends BaseType {
   assistanceApplication: AssistanceApplicationType;
 }
@@ -166,7 +156,7 @@ export let document: document;
 
 export class DocumentFactory {
   static make(): document {
-    const instance = <document>{};
+    const instance = {} as document;
     instance._sequence = ['assistanceApplication'];
     return instance;
   }

@@ -1,10 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MspDataService } from '../../../../services/msp-data.service';
 import {
   ApplicantInformation,
   IApplicantInformation
 } from '../../models/applicant-information.model';
-import { Address, getCountryDescription, getProvinceDescription } from 'moh-common-lib';
+import { Address, getCountryDescription, getProvinceDescription } from 'moh-common-lib-angular';
 import {
   SpouseInformation,
   ISpouseInformation
@@ -13,13 +13,12 @@ import { ActivatedRoute } from '@angular/router';
 import { AssistStateService } from '../../services/assist-state.service';
 import { ROUTES_ASSIST } from '../../models/assist-route-constants';
 
-export interface IContactInformation {}
-
 @Component({
+  standalone: false,
   templateUrl: './review.component.html',
   styleUrls: ['./review.component.scss']
 })
-export class AssistanceReviewComponent {
+export class AssistanceReviewComponent implements OnInit {
   title = 'Review your application';
 
   applicantTitle = 'Account Holder Information';
@@ -47,7 +46,11 @@ export class AssistanceReviewComponent {
     this.address = app.mailingAddress;
     this.applicantInformation();
     this.hasSpouse = app.hasSpouseOrCommonLaw;
-    this.hasSpouse ? this.spouseInformation() : (this.hasSpouse = false);
+    if (this.hasSpouse) {
+      this.spouseInformation();
+    } else {
+      this.hasSpouse = false;
+    }
     this.phone = app.phoneNumber;
   }
 

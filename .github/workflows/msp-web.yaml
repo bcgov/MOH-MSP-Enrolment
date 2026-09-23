@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@main
       - uses: actions/setup-node@main
         with:
-          node-version: "12"
+          node-version: "22"
       - name: Install dependencies
         run: npm ci
       - name: Unit tests w/ coverage
@@ -35,20 +35,42 @@ jobs:
         run: npm run lint
       # - name: OpenAPI Schema
       #   run: npm run test:schema
+  e2e:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./msp
+    steps:
+      - uses: actions/checkout@main
+      - uses: actions/setup-node@main
+        with:
+          node-version: "22"
+      - name: Install Cypress OS dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libnspr4 libnss3 libasound2t64
+      - name: Cypress e2e tests
+        uses: cypress-io/github-action@v7
+        with:
+          working-directory: msp
+          command: npm run test:e2e:headless
+      - name: Upload Cypress screenshots
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cypress-screenshots
+          path: msp/cypress/screenshots
   build:
     runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: ./msp
     needs: [test]
-    strategy:
-      matrix:
-        node-version: [12.x]
     steps:
       - uses: actions/checkout@v1
       - uses: actions/setup-node@v1
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: "22"
       - name: Cache node modules
         uses: actions/cache@v4
         with:

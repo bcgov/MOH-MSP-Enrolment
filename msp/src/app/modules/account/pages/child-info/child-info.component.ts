@@ -13,7 +13,7 @@ import {
   OperationActionType,
   MspPerson,
 } from '../../../../components/msp/model/msp-person.model';
-import { scrollTo, ContainerService, PageStateService } from 'moh-common-lib';
+import { scrollTo, ContainerService, PageStateService } from 'moh-common-lib-angular';
 import { Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import { Relationship } from 'app/models/relationship.enum';
@@ -28,6 +28,7 @@ import { MspAccountApp } from '../../models/account.model';
 const DOM_REFRESH_TIMEOUT = 50;
 
 @Component({
+  standalone: false,
   selector: 'msp-child-info',
   templateUrl: './child-info.component.html',
   styleUrls: ['./child-info.component.scss'],
@@ -48,19 +49,24 @@ export class ChildInfoComponent
     this.mspAccountApp = dataService.getMspAccountApp();
   }
   subscriptions: Subscription[];
-  @ViewChild('formRef') form: NgForm;
+
+  // canContinue() reads this.form.valid through AbstractForm.canContinue().
+  // AbstractForm's own formRef query is not static, which leaves form
+  // undefined on the first change-detection pass and throws NG0100 once it
+  // resolves. Matches contact-info, spouse-info and authorize.
+  @ViewChild('formRef', { static: true }) declare form: NgForm;
 
   // Modal variables
-  @ViewChild('missingInfoReqModalLabel') public missingInfoReqModalLabel: ModalDirective;
-  @ViewChild('modalContents') public modalContents: ElementRef;
+  @ViewChild('missingInfoReqModalLabel', { static: true }) public missingInfoReqModalLabel: ModalDirective;
+  @ViewChild('modalContents', { static: true }) public modalContents: ElementRef;
 
-  showChild: boolean = false;
+  showChild = false;
   operation: OperationActionType;
 
   mspAccountApp: MspAccountApp;
   child: MspPerson;
-  showRemoveChild: boolean = false;
-  showUpdateChild: boolean = false;
+  showRemoveChild = false;
+  showUpdateChild = false;
   canadianCitizenDocList: SupportDocumentTypes[] = [
     SupportDocumentTypes.CanadianCitizenCard,
     SupportDocumentTypes.PermanentResidentCard,
@@ -201,7 +207,7 @@ export class ChildInfoComponent
   }
 
   scrollToChild(section: string) {
-    const el = <HTMLElement>document.querySelector(section);
+    const el = document.querySelector(section) as HTMLElement;
     if (el) {
       const top: number =
         el.getBoundingClientRect().top + window.pageYOffset - 75;

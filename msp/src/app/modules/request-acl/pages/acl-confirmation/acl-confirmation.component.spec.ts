@@ -2,18 +2,18 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AclConfirmationComponent } from './acl-confirmation.component';
-import { ApiStatusCodes } from 'moh-common-lib';
+import { ApiStatusCodes } from 'moh-common-lib-angular';
 import { Subscription } from 'rxjs';
 
 describe('AclConfirmationComponent', () => {
   let component: AclConfirmationComponent;
   let fixture: ComponentFixture<AclConfirmationComponent>;
   beforeEach(() => {
-    const unsubcribeStub = () => {};
+    const unsubcribeStub = () => undefined;
     const activatedRouteStub = () => {
       return {
         queryParams: {
-          subscribe: (f) => {
+          subscribe: () => {
             return new Subscription(unsubcribeStub);
           },
         },

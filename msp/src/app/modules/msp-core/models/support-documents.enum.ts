@@ -1,4 +1,4 @@
-import { SampleImageInterface } from 'moh-common-lib';
+import { SampleImageInterface } from 'moh-common-lib-angular';
 // NOTE: Added to end of enums and strings so that we do not break sample documents modal
 /**
  * Types of supporting documentation

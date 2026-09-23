@@ -1,27 +1,33 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { NgForm } from '@angular/forms';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { ProcessService, ProcessUrls } from '../../../../services/process.service';
 import { environment } from '../../../../../environments/environment';
 import { MspAccountApp } from '../../models/account.model';
-import { ContainerService, PageStateService } from 'moh-common-lib';
+import { ContainerService, PageStateService } from 'moh-common-lib-angular';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { MspPerson } from '../../../../../app/components/msp/model/msp-person.model';
 import { BaseForm } from '../../models/base-form';
 import { MspLogService } from '../../../../services/log.service';
+import { NgForm } from '@angular/forms';
+import enLang from './i18n/data/en/index';
 
 @Component({
+  standalone: false,
   selector: 'msp-authorize',
   templateUrl: './authorize.component.html',
   styleUrls: ['./authorize.component.scss']
 })
 export class AuthorizeComponent extends BaseForm implements OnInit {
-  lang = require('./i18n');
+  // The template reads form.submitted unguarded, so the query has to resolve
+  // before the first render. AbstractForm's own formRef query is not static,
+  // which leaves form undefined on that pass.
+  @ViewChild('formRef', { static: true }) declare form: NgForm;
+
+  lang = enLang;
   static ProcessStepNum = 5;
   mspAccountApp: MspAccountApp;
   captchaApiBaseUrl: string;
-  @ViewChild(NgForm) form: NgForm;
-  _showUnauthorizedError: boolean = false;
+  _showUnauthorizedError = false;
 
   constructor(private dataService: MspAccountMaintenanceDataService,
               private _router: Router,
@@ -66,7 +72,7 @@ export class AuthorizeComponent extends BaseForm implements OnInit {
   }
 
   get questionApplicant() {
-    return this.lang('./en/index.js').doYouAgreeLabel.replace('{name}', this.applicantName);
+    return this.lang.doYouAgreeLabel.replace('{name}', this.applicantName);
   }
 
   get applicantName() {
@@ -92,14 +98,12 @@ export class AuthorizeComponent extends BaseForm implements OnInit {
   }
 
   questionSpouse() {
-    return this.lang('./en/index.js').doYouAgreeLabel.replace('{name}', this.spouseName());
+    return this.lang.doYouAgreeLabel.replace('{name}', this.spouseName());
   }
 
   spouseName() {
     return this.spouseForAuthorization.firstName + ' ' + this.spouseForAuthorization.lastName;
   }
-
-  handleFormSubmission($event) {}
 
   continue(): void {
     if (!this.canContinue() || !this.mspAccountApp.authorizedByApplicant) {

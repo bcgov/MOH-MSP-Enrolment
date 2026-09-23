@@ -1,5 +1,4 @@
-import {UUID} from 'angular2-uuid';
-import * as _ from 'lodash';
+import { v4 as uuid } from 'uuid';
 import { compareAsc } from 'date-fns';
 import { BaseDto } from './base.dto';
 
@@ -7,7 +6,7 @@ export class OutofBCRecord {
   readonly id: string;
 
   constructor(){
-    this.id = UUID.UUID();
+    this.id = uuid();
   }
   reason: string;
   location: string;

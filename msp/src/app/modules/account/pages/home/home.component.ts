@@ -1,12 +1,11 @@
 import {
   Component,
   OnInit,
-  ChangeDetectorRef,
-  Injectable,
   ViewChild,
-  ElementRef,
+  AfterViewInit,
 } from '@angular/core';
-import { ConsentModalComponent, PageStateService } from 'moh-common-lib';
+import { ConsentModalComponent, PageStateService } from 'moh-common-lib-angular';
+import { SpaEnvService } from '../../../../services/spa-env.service';
 import { MspAccountMaintenanceDataService } from '../../services/msp-account-data.service';
 import { Router } from '@angular/router';
 import { MspAccountApp } from '../../models/account.model';
@@ -19,23 +18,26 @@ import { MspLogService } from '../../../../services/log.service';
 import devOnlyConsoleLog from 'app/_developmentHelpers/dev-only-console-log';
 
 @Component({
+  standalone: false,
   selector: 'msp-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   static ProcessStepNum = 0;
   public addressChangeLabel = 'Update Address';
   mspAccountApp: MspAccountApp;
   captchaApiBaseUrl: string = environment.appConstants.captchaApiBaseUrl;
   addressChangeBCUrl: string;
-  @ViewChild('mspConsentModal') mspConsentModal: ConsentModalComponent;
-  showAddressChangeCaptcha: boolean = false;
-  showMoveCaptcha: boolean = false;
+  @ViewChild('mspConsentModal', { static: true }) mspConsentModal: ConsentModalComponent;
+  showAddressChangeCaptcha = false;
+  showMoveCaptcha = false;
   outLinkTitle: string;
   outLinkUrl: string;
-  continueButtonLoading: boolean = false;
-  addressAppSent: boolean = false;
+  continueButtonLoading = false;
+  addressAppSent = false;
+  isUnderMaintenance = false;
+  maintenanceMessage = '';
 
   constructor(
     private dataService: MspAccountMaintenanceDataService,
@@ -43,7 +45,8 @@ export class HomeComponent implements OnInit {
     private pageStateService: PageStateService,
     private apiService: MspApiAccountService,
     private router: Router,
-    private logService: MspLogService
+    private logService: MspLogService,
+    private spaEnvService: SpaEnvService
   ) {
     this.header.setTitle('Account Management');
     this.pageStateService.setPageComplete();
@@ -51,6 +54,10 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.mspAccountApp = this.dataService.getMspAccountApp();
+    this.spaEnvService.checkMaintenance('ACL').subscribe(check => {
+      this.isUnderMaintenance = check.isUnderMaintenance;
+      this.maintenanceMessage = check.message;
+    });
   }
 
   ngAfterViewInit() {

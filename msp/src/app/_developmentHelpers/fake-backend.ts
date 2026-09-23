@@ -6,12 +6,11 @@ import {
   HttpRequest,
   HttpResponse
 } from '@angular/common/http';
-import { Observable } from 'rxjs/internal/Observable';
+import { Observable } from 'rxjs';
 import { mergeMap, delay } from 'rxjs/operators';
-import { of } from 'rxjs/internal/observable/of';
+import { of } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { FakeBackendService } from './fake-backend.service';
-import { AclApiPayLoad } from '../modules/request-acl/model/acl-api.model';
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -60,7 +59,7 @@ export class FakeBackendInterceptor implements HttpInterceptor  {
   }
 }
 
-export let fakeBackendProvider = {
+export const fakeBackendProvider = {
   // use fake backend in place of Http service for backend-less development
   provide: HTTP_INTERCEPTORS,
   useClass: FakeBackendInterceptor,

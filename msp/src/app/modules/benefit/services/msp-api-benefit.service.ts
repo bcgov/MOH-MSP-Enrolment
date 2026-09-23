@@ -6,12 +6,10 @@ import {
   HttpErrorResponse,
 } from '@angular/common/http';
 import { BenefitApplication } from '../models/benefit-application.model';
-import { _ApplicationTypeNameSpace } from '../../msp-core/api-model/applicationTypes';
 import { environment } from '../../../../environments/environment';
-import { AbstractHttpService, CommonImage } from 'moh-common-lib';
+import { AbstractHttpService, CommonImage } from 'moh-common-lib-angular';
 import { Observable } from 'rxjs';
 import { of } from 'rxjs';
-import { Response } from '@angular/http';
 import { MspApiService } from '../../../services/msp-api.service';
 import { ApiResponse } from '../../../models/api-response.interface';
 import { SchemaService } from 'app/services/schema.service';
@@ -22,7 +20,6 @@ import {
   MSPApplicationSchema,
 } from 'app/modules/msp-core/interfaces/i-api';
 import { FieldPageMap } from '../models/field-page-map';
-import { moment } from 'ngx-bootstrap/chronos/test/chain';
 import { format } from 'date-fns';
 
 @Injectable({
@@ -96,7 +93,7 @@ export class MspApiBenefitService extends AbstractHttpService {
           app.uuid,
           app.getAllImages()
         )
-          .then((attachmentResponse) => {
+          .then(() => {
             // TODO - Likely have to store all the responses for image uploads, so we can use those UUIDs with our application upload
             // unless we can just use our pre-uploaded ones? though that has potential for missing records.
             // once all attachments are done we can sendApplication in the data
@@ -113,7 +110,7 @@ export class MspApiBenefitService extends AbstractHttpService {
               return resolve(response);
             });
           })
-          .catch((error: Response | any) => {
+          .catch((error: HttpErrorResponse | any) => {
             // TODO - Is this error correct? What if sendApplication() errors, would it be caught in this .catch()?
             this.logService.log(
               {
@@ -155,7 +152,7 @@ export class MspApiBenefitService extends AbstractHttpService {
     return new Promise<string[]>((resolve, reject) => {
       // Instantly resolve if no attachments
       if (!attachments || attachments.length < 1) {
-        resolve();
+        resolve([]);
       }
 
       // Make a list of promises for each attachment
@@ -179,7 +176,7 @@ export class MspApiBenefitService extends AbstractHttpService {
             );
             return resolve(responses);
           },
-          (error: Response | any) => {
+          (error: HttpErrorResponse | any) => {
             this.logService.log(
               {
                 text: 'Supplementary Benefits - Attachments - Send All Error ',
@@ -190,7 +187,7 @@ export class MspApiBenefitService extends AbstractHttpService {
             return reject();
           }
         )
-        .catch((error: Response | any) => {
+        .catch((error: HttpErrorResponse | any) => {
           this.logService.log(
             {
               text: 'Supplementary Benefits - Attachments - Send All Error ',
@@ -242,10 +239,10 @@ export class MspApiBenefitService extends AbstractHttpService {
         'Access-Control-Allow-Origin': '*',
         'X-Authorization': 'Bearer ' + token,
       });
-      const options = { headers: headers, responseType: 'text' as 'text' };
+      const options = { headers: headers, responseType: 'text' as const };
 
       const binary = atob(attachment.fileContent.split(',')[1]);
-      const array = <any>[];
+      const array = [] as any;
       for (let i = 0; i < binary.length; i++) {
         array.push(binary.charCodeAt(i));
       }
@@ -267,7 +264,7 @@ export class MspApiBenefitService extends AbstractHttpService {
             );
             return resolve(response);
           },
-          (error: Response | any) => {
+          (error: HttpErrorResponse | any) => {
             this.logService.log(
               {
                 text: 'Supplementary Benefits - Attachment - Send Individual Error ',
@@ -278,7 +275,7 @@ export class MspApiBenefitService extends AbstractHttpService {
             return reject(error);
           }
         )
-        .catch((error: Response | any) => {
+        .catch((error: HttpErrorResponse | any) => {
           this.logService.log(
             {
               text: 'Supplementary Benefits - Attachment - Send Individual Error ',
@@ -292,7 +289,7 @@ export class MspApiBenefitService extends AbstractHttpService {
     });
   }
 
-  protected handleError(error: HttpErrorResponse) {
+  protected handleError(error: HttpErrorResponse): Observable<unknown> {
     if (error.error instanceof ErrorEvent) {
       //Client-side / network error occurred
       console.error('MSP Supp Benefit API error: ', error.error.message);

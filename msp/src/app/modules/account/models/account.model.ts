@@ -1,11 +1,11 @@
-import { UUID } from 'angular2-uuid';
+import { v4 as uuid } from 'uuid';
 import { ApplicationBase } from '../../../models/application-base.model';
 import {
   MspPerson,
   OperationActionType,
 } from '../../../components/msp/model/msp-person.model';
 import { PhoneNumber } from '../../../components/msp/model/phone.model';
-import { Address, CommonImage } from 'moh-common-lib';
+import { Address, CommonImage } from 'moh-common-lib-angular';
 import { StatusInCanada } from '../../msp-core/models/canadian-status.enum';
 import { Relationship } from '../../../models/relationship.enum';
 
@@ -14,9 +14,9 @@ class AccountChangeOptions {
   spouseInfoUpdate: boolean;
   spouseRemoved: boolean;
   lastNameUpdate: boolean;
-  dependentRemoved: boolean = false;
-  dependentChange: boolean = false;
-  addressUpdate: boolean = false;
+  dependentRemoved = false;
+  dependentChange = false;
+  addressUpdate = false;
   immigrationStatusChange: boolean;
 
   get nameChangeDueToMarriage(): boolean {
@@ -27,8 +27,8 @@ class AccountChangeOptions {
     this._nameChangeDueToMarriage = value;
   }
 
-  statusUpdate: boolean = false;
-  private _nameChangeDueToMarriage: boolean = false;
+  statusUpdate = false;
+  private _nameChangeDueToMarriage = false;
 
   hasAnyPISelected(): boolean {
     return this.personInfoUpdate || this.statusUpdate;
@@ -62,14 +62,19 @@ class AccountChangeOptions {
 }
 
 class MspAccountApp implements ApplicationBase {
-  set updatedChildren(value: Array<MspPerson>) {
+  set updatedChildren(value: MspPerson[]) {
     this._updatedChildren = value;
   }
 
-  private _uuid = UUID.UUID();
-  public infoCollectionAgreement: boolean = false;
+  get updatedChildren(): MspPerson[] {
+    //   var updateChildren =  this.children.filter( (child:Person) => child.operationActionType === OperationActionType.Update);
+    return this._updatedChildren;
+  }
+
+  private _uuid = uuid();
+  public infoCollectionAgreement = false;
   authorizationToken: string;
-  phnRequired: boolean = false;
+  phnRequired = false;
   /**
    * Set by the API, not for client use
    */
@@ -95,7 +100,7 @@ class MspAccountApp implements ApplicationBase {
 
   // Address and Contact Info
   public residentialAddress: Address = new Address();
-  public mailingSameAsResidentialAddress: boolean = true;
+  public mailingSameAsResidentialAddress = true;
   public mailingAddress: Address = new Address();
   public phoneNumber: string;
 
@@ -121,16 +126,16 @@ class MspAccountApp implements ApplicationBase {
   }
 
   private _removedSpouse: MspPerson = new MspPerson(Relationship.Spouse);
-  private _removedChildren: Array<MspPerson> = [];
-  private _addedChildren: Array<MspPerson> = [];
-  private _updatedChildren: Array<MspPerson> = [];
+  private _removedChildren: MspPerson[] = [];
+  private _addedChildren: MspPerson[] = [];
+  private _updatedChildren: MspPerson[] = [];
 
   /**
    * Returns an array of ALL persons uses in account.
    *
    * Useful, for example, to make sure all PHNs are unique.
    */
-  get allPersons(): Array<MspPerson> {
+  get allPersons(): MspPerson[] {
     return [
       this.applicant,
       ...this.addedChildren,
@@ -144,7 +149,7 @@ class MspAccountApp implements ApplicationBase {
   /*
         for phn validation purpose
      */
-  get allPersonsInPI(): Array<MspPerson> {
+  get allPersonsInPI(): MspPerson[] {
     return [this.applicant, ...this.updatedChildren, this.updatedSpouse].filter(
       (x) => x
     ); //no undefineds
@@ -154,7 +159,7 @@ class MspAccountApp implements ApplicationBase {
        for phn validation purpose.. Applicant , ADD/Update/Remove children , Add/Remove Spouse
         Update spouse can have same phn as added/remove spouse
      */
-  get allPersonsInDep(): Array<MspPerson> {
+  get allPersonsInDep(): MspPerson[] {
     return [
       this.applicant,
       ...this.addedChildren,
@@ -166,7 +171,7 @@ class MspAccountApp implements ApplicationBase {
   }
 
   public isMembersPresentWithStatus(
-    personList: Array<MspPerson>,
+    personList: MspPerson[],
     statusInCanada: StatusInCanada
   ): boolean {
     return (
@@ -192,34 +197,34 @@ class MspAccountApp implements ApplicationBase {
     );
   }
 
-  get addedChildren(): Array<MspPerson> {
+  get addedChildren(): MspPerson[] {
     return this._addedChildren;
   }
 
-  set addedChildren(value: Array<MspPerson>) {
+  set addedChildren(value: MspPerson[]) {
     this._addedChildren = value;
   }
 
-  get children(): Array<MspPerson> {
+  get children(): MspPerson[] {
     return this._addedChildren;
   }
 
-  set children(value: Array<MspPerson>) {
+  set children(value: MspPerson[]) {
     this._addedChildren = value;
   }
 
-  get removedChildren(): Array<MspPerson> {
+  get removedChildren(): MspPerson[] {
     return this._removedChildren;
   }
 
-  set removedChildren(value: Array<MspPerson>) {
+  set removedChildren(value: MspPerson[]) {
     this._removedChildren = value;
   }
 
   private _addedSpouse: MspPerson = new MspPerson(Relationship.Spouse);
   private _updatedSpouse: MspPerson = new MspPerson(Relationship.Spouse);
   //DEAM doesn't use children as such..its either updated/removed/added children
-  private _children: Array<MspPerson> = [];
+  private _children: MspPerson[] = [];
 
   private _accountChangeOptions: AccountChangeOptions =
     new AccountChangeOptions();
@@ -239,15 +244,12 @@ class MspAccountApp implements ApplicationBase {
     return this.authorizationToken && this.authorizationToken.length > 1;
   }
 
-  removeUpdateChild(idx: number): void {}
-
-  get updatedChildren(): Array<MspPerson> {
-    //   var updateChildren =  this.children.filter( (child:Person) => child.operationActionType === OperationActionType.Update);
-    return this._updatedChildren;
-  }
-
   get applicant(): MspPerson {
     return this._applicant;
+  }
+
+  set applicant(apt: MspPerson) {
+    this._applicant = apt;
   }
 
   get isUniquePhnsinDependents() {
@@ -305,10 +307,6 @@ class MspAccountApp implements ApplicationBase {
     }
   }
 
-  set applicant(apt: MspPerson) {
-    this._applicant = apt;
-  }
-
   get accountChangeOptions(): AccountChangeOptions {
     return this._accountChangeOptions;
   }
@@ -318,14 +316,14 @@ class MspAccountApp implements ApplicationBase {
   }
 
   regenUUID() {
-    this._uuid = UUID.UUID();
+    this._uuid = uuid();
     /**
      * Each image will have a uuid that starts with application uuid
      * followed by [index]-of-[total]
      */
     const all = this.getAllImages();
     all.forEach((image) => {
-      image.uuid = UUID.UUID();
+      image.uuid = uuid();
     });
   }
 
@@ -380,8 +378,7 @@ class MspAccountApp implements ApplicationBase {
   getAllImages(): CommonImage[] {
     const images: CommonImage[] = [];
     const persons: MspPerson[] = this.allPersons;
-    // tslint:disable-next-line
-    for (let index in persons) {
+       for (const index in persons) {
       images.push(...persons[index].getAllImages());
     }
     return images;
@@ -394,7 +391,7 @@ class MspAccountApp implements ApplicationBase {
     if (this.addedSpouse && this.addedSpouse.isVisitor()) {
       return true;
     }
-    const children: Array<MspPerson> = [
+    const children: MspPerson[] = [
       ...this.addedChildren,
       ...this.updatedChildren,
     ];
@@ -402,7 +399,7 @@ class MspAccountApp implements ApplicationBase {
   }
 
   constructor() {
-    this.id = UUID.UUID();
+    this.id = uuid();
   }
 
   addChild(relationship: Relationship): MspPerson {

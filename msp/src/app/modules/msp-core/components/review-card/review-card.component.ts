@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 // This component was created so existing applications are not impacted by change, automate tests
 // might be impacted by html change
 @Component({
+  standalone: false,
   selector: 'msp-review-card',
   templateUrl: './review-card.component.html',
   styleUrls: ['./review-card.component.scss'],

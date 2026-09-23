@@ -4,9 +4,8 @@ import { AccountContainerComponent } from './components/account-container/accoun
 import { HomeComponent } from './pages/home/home.component';
 import { AccountConfirmationComponent } from './pages/confirmation/confirmation.component';
 import { ACCOUNT_PAGES } from './account.constants';
-import { LoadPageGuardService } from 'moh-common-lib';
+import { LoadPageGuardService } from 'moh-common-lib-angular';
 import { accountPageRoutes } from './account-pages.route';
-import { AccountPersonalInfoComponent } from './pages/personal-info/personal-info.component';
 import { AccountSendingComponent } from './pages/sending/sending.component';
 
 export const routes: Routes = [

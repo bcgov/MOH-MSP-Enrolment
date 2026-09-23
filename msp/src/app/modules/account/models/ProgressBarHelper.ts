@@ -1,18 +1,19 @@
 import { AccountChangeOptions } from './account.model';
+import enLang from '../pages/i18n/data/en/index';
 
 export class ProgressBarHelper {
 
   /** Separator to be used when concatenating strings for labels */
   public static readonly seperator = '<br>';
-  lang = require('../pages/i18n');
-  private _height: Object = {'height': '70px'};
-  private _dependentsLabel: string = '';
-  private _personalInfoLabel: string = '';
-  private _widthMainMenu: Object = {};
-  private _widthPersonalInfo: Object = {};
-  private _widthDependents: Object = {};
-  private _widthDocumentUpload: Object = {};
-  private _widthReview: Object = {};
+  lang = enLang;
+  private _height: object = {'height': '70px'};
+  private _dependentsLabel = '';
+  private _personalInfoLabel = '';
+  private _widthMainMenu: object = {};
+  private _widthPersonalInfo: object = {};
+  private _widthDependents: object = {};
+  private _widthDocumentUpload: object = {};
+  private _widthReview: object = {};
 
   constructor(private _accountChangeOptions: AccountChangeOptions) {
     this.constructLabels();
@@ -57,9 +58,9 @@ export class ProgressBarHelper {
 
     //_dependentsLabel
     if (this._accountChangeOptions.dependentChange) {
-      this._dependentsLabel = this.lang('./en/index.js').progressStepDependents;
+      this._dependentsLabel = this.lang.progressStepDependents;
       if (this._accountChangeOptions.addressUpdate && !this._accountChangeOptions.hasAnyPISelected()) {
-        this._dependentsLabel = this._dependentsLabel.concat(ProgressBarHelper.seperator).concat(this.lang('./en/index.js').progressStepAddressUpdate);
+        this._dependentsLabel = this._dependentsLabel.concat(ProgressBarHelper.seperator).concat(this.lang.progressStepAddressUpdate);
       }
     }
   }
@@ -68,20 +69,20 @@ export class ProgressBarHelper {
    * Sets _personalInfoLabel based on account change options.
    */
   private constructPILabel(): void {
-    let seperatorString: string = '';
+    let seperatorString = '';
     if (this._accountChangeOptions.hasAnyPISelected()) {
       if (this._accountChangeOptions.personInfoUpdate) {
-        this._personalInfoLabel = this.lang('./en/index.js').progressStepPersonalInfo;
+        this._personalInfoLabel = this.lang.progressStepPersonalInfo;
         seperatorString = ProgressBarHelper.seperator;
       }
 
       if (this._accountChangeOptions.addressUpdate) {
-        this._personalInfoLabel = this._personalInfoLabel.concat(seperatorString).concat(this.lang('./en/index.js').progressStepAddressUpdate);
+        this._personalInfoLabel = this._personalInfoLabel.concat(seperatorString).concat(this.lang.progressStepAddressUpdate);
         seperatorString = ProgressBarHelper.seperator;
       }
 
       if (this._accountChangeOptions.statusUpdate) {
-        this._personalInfoLabel = this._personalInfoLabel.concat(seperatorString).concat(this.lang('./en/index.js').progressStepUpdateStatus);
+        this._personalInfoLabel = this._personalInfoLabel.concat(seperatorString).concat(this.lang.progressStepUpdateStatus);
       }
     }
   }
@@ -90,23 +91,23 @@ export class ProgressBarHelper {
     return this._personalInfoLabel;
   }
 
-  get height(): Object {
+  get height(): object {
     return this._height;
   }
 
-  get widthMainMenu(): Object {
+  get widthMainMenu(): object {
     return this._widthMainMenu;
   }
 
-  get widthPersonalInfo(): Object {
+  get widthPersonalInfo(): object {
     return this._widthPersonalInfo;
   }
 
-  get widthDependents(): Object {
+  get widthDependents(): object {
     return this._widthDependents;
   }
 
-  get widthDocumentUpload(): Object {
+  get widthDocumentUpload(): object {
     return this._widthDocumentUpload;
   }
 
@@ -114,7 +115,7 @@ export class ProgressBarHelper {
     return this._dependentsLabel;
   }
 
-  get widthWidthReview(): Object {
+  get widthWidthReview(): object {
     return this._widthReview;
   }
 }

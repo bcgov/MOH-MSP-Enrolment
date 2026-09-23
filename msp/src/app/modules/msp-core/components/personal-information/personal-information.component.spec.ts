@@ -3,7 +3,7 @@ import { Gender } from '../../../../models/gender.enum';
 import { Relationship } from '../../../../models/relationship.enum';
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { createTestingModule } from '../../../../_developmentHelpers/test-helpers';
-import { ComponentFixture, fakeAsync } from '@angular/core/testing';
+import { ComponentFixture } from '@angular/core/testing';
 
 class Person1 implements IPersonalInformation {
 
@@ -27,10 +27,10 @@ class Person3 extends Person1 {
   sin: string;
 }
 @Component({
+  standalone: false,
   template: ``,
 })
-// tslint:disable-next-line: component-class-suffix
-class PersonalInfo {
+class PersonalInfoComponent {
 
   @ViewChildren(PersonalInformationComponent) personalInfo: QueryList<PersonalInformationComponent<Person1 | Person2>>;
 
@@ -38,19 +38,19 @@ class PersonalInfo {
   applicant2: Person2 = new Person2();
   applicant3: Person3 = new Person3();
 
-  sectionTitle: string = 'Personal Information';
-  sectionInstructions: string = 'Enter your legal name and gender.';
+  sectionTitle = 'Personal Information';
+  sectionInstructions = 'Enter your legal name and gender.';
 }
 
 describe('PersonalInformationComponent', () => {
 
   describe('Mandatory fields (no properities set)', () => {
 
-    let component: PersonalInfo;
+    let component: PersonalInfoComponent;
     let fixture: ComponentFixture<any>;
 
     beforeEach(() => {
-      fixture = createTestingModule( PersonalInfo,
+      fixture = createTestingModule( PersonalInfoComponent,
          `<msp-personal-information [(person)]="applicant1">
             <div sectionTitleInfo>
               <h2>{{sectionTitle}}</h2>
@@ -79,11 +79,11 @@ describe('PersonalInformationComponent', () => {
   });
 
   describe('Gender properity set',  () => {
-    let component: PersonalInfo;
+    let component: PersonalInfoComponent;
     let fixture: ComponentFixture<any>;
 
     beforeEach(() => {
-      fixture = createTestingModule( PersonalInfo,
+      fixture = createTestingModule( PersonalInfoComponent,
         `<msp-personal-information [(person)]="applicant2">
            <div sectionTitleInfo>
              <h2>{{sectionTitle}}</h2>
@@ -113,11 +113,11 @@ describe('PersonalInformationComponent', () => {
   });
 
   describe('SIN & PHN properities set',  () => {
-    let component: PersonalInfo;
+    let component: PersonalInfoComponent;
     let fixture: ComponentFixture<any>;
 
     beforeEach(() => {
-      fixture = createTestingModule( PersonalInfo,
+      fixture = createTestingModule( PersonalInfoComponent,
         `<msp-personal-information [(person)]="applicant3">
            <div sectionTitleInfo>
              <h2>{{sectionTitle}}</h2>

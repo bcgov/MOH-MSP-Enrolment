@@ -19,10 +19,10 @@ describe('BenefitAddressComponent', () => {
       saveBenefitApplication: () => ({})
     });
     const processServiceStub = () => ({
-      setStep: (processStepNum, arg) => ({})
+      setStep: () => ({})
     });
-    const routerStub = () => ({ navigate: array => ({}) });
-    const mspLogServiceStub = () => ({ log: () => {} });
+    const routerStub = () => ({ navigate: () => ({}) });
+    const mspLogServiceStub = () => ({ log: () => undefined });
     TestBed.configureTestingModule({
       imports: [
         FormsModule,

@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpHeaders, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpHeaders,
+} from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { AbstractHttpService } from 'moh-common-lib';
+import { AbstractHttpService } from 'moh-common-lib-angular';
 import { throwError } from 'rxjs';
-import * as moment from 'moment';
+import moment from 'moment';
 import {MspDataService} from './msp-data.service';
 import { Router } from '@angular/router';
 import { MspBenefitDataService } from '../modules/benefit/services/msp-benefit-data.service';
@@ -31,19 +35,7 @@ export class MspLog2Service extends AbstractHttpService {
      * @type {HttpHeaders}
      * @memberof Log2Service
      */
-    protected _headers: HttpHeaders = new HttpHeaders({
-        applicationId: this.getApplicationId(),
-        referenceNumber: this.enrolDataService.application.referenceNumber ||
-                         this.benefitDataService.benefitApp.referenceNumber ||
-                         this.dataService.finAssistApp.referenceNumber ||
-                         this.dataService.getMspAccountApp().referenceNumber ||
-                         'n/a',
-        logsource: window.location.hostname,
-        http_x_forwarded_host: window.location.hostname,
-        timestamp: moment().toISOString(),
-        program: 'msp',
-        request_method: 'POST',
-    });
+    protected _headers: HttpHeaders;
 
     /**
      * Constructor with injected dataService and Router
@@ -57,6 +49,19 @@ export class MspLog2Service extends AbstractHttpService {
                 private benefitDataService: MspBenefitDataService,
                 private enrolDataService: EnrolDataService) {
         super(http);
+        this._headers = new HttpHeaders({
+            applicationId: this.getApplicationId(),
+            referenceNumber: this.enrolDataService.application.referenceNumber ||
+                             this.benefitDataService.benefitApp.referenceNumber ||
+                             this.dataService.finAssistApp.referenceNumber ||
+                             this.dataService.getMspAccountApp().referenceNumber ||
+                             'n/a',
+            logsource: window.location.hostname,
+            http_x_forwarded_host: window.location.hostname,
+            timestamp: moment().toISOString(),
+            program: 'msp',
+            request_method: 'POST',
+        });
     }
 
     /**
@@ -116,9 +121,6 @@ export class MspLog2Service extends AbstractHttpService {
         // Configure request
         const url = environment.appConstants.logBaseUrl;
         const body = { message: message };
-
-        if (environment.logHTTPRequestsToConsole){
-        }
 
         if (environment.appConstants.enableLogging){
             // We call .subscribe() here because we don't care about the response and

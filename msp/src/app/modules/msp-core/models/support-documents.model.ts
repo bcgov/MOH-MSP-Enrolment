@@ -1,4 +1,4 @@
-import { CommonImage } from 'moh-common-lib';
+import { CommonImage } from 'moh-common-lib-angular';
 import { CommonImageDto } from '../../../models/common-image.dto';
 /**
  * Class used to store documents name changes, residency status, etc
@@ -7,8 +7,6 @@ export class SupportDocuments {
 
   documentType: string;
   private _images: CommonImage[];
-
-  constructor() {}
 
   get images(): CommonImage[] {
     if (!this._images) {

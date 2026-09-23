@@ -1,18 +1,15 @@
-/* tslint:disable:no-unused-variable */
 import {
-    BaseRequestOptions,
-    Http,
-    XHRBackend
-} from '@angular/http';
-import {TestBed, getTestBed, async, fakeAsync, tick, inject } from '@angular/core/testing';
+  TestBed,
+  getTestBed,
+  waitForAsync,
+} from '@angular/core/testing';
 import {MspMaintenanceService} from './msp-maintenance.service';
 import {MspLog2Service} from './log2.service';
 import {MspDataService} from './msp-data.service';
-import { LocalStorageService, LocalStorageModule } from 'angular-2-local-storage';
+import { LocalStorageService } from './local-storage.service';
 import {HttpClientModule} from '@angular/common/http';
 import {RouterTestingModule} from '@angular/router/testing';
 import {FormsModule} from '@angular/forms';
-import { MockBackend, MockConnection } from '@angular/http/testing';
 import { environment } from '../../environments/environment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { EnrolDataService } from '../modules/enrolment/services/enrol-data.service';
@@ -27,36 +24,20 @@ describe('MspLog2Service', () => {
         }
     });
 
-    beforeEach(async(() => {
+    beforeEach(waitForAsync(() => {
       TestBed.configureTestingModule({
         imports: [
             HttpClientTestingModule,
             HttpClientModule,
             RouterTestingModule,
             FormsModule,
-            LocalStorageModule.withConfig({
-                prefix: 'ca.bc.gov.msp',
-                storageType: 'sessionStorage'
-            })
-        ],
+],
         providers: [
-            BaseRequestOptions,
-            MockBackend,
             LocalStorageService,
             MspLog2Service,
             MspDataService,
             MspMaintenanceService,
-            { provide: EnrolDataService, useFactory: enrolDataServiceStub },
-            {
-                deps: [
-                    MockBackend,
-                    BaseRequestOptions
-                ],
-                provide: Http,
-                useFactory: (backend: XHRBackend, defaultOptions: BaseRequestOptions) => {
-                    return new Http(backend, defaultOptions);
-                }
-            }
+            { provide: EnrolDataService, useFactory: enrolDataServiceStub }
         ]
       });
       injector = getTestBed();
@@ -70,7 +51,7 @@ describe('MspLog2Service', () => {
 
         const mockResponse = { message: Object({ event: 'submission', dateObj: new Date() }) };
 
-        const serviceResponse = service.log({
+        service.log({
             event: 'submission',
             dateObj: new Date()
         });
