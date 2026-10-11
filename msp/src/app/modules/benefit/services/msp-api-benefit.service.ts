@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PhoneNumber } from '../../../components/msp/model/phone.model';
 import { MspLogService } from '../../../services/log.service';
 import {
   HttpClient,
@@ -457,9 +458,7 @@ export class MspApiBenefitService extends AbstractHttpService {
     to.applicantProvinceOrState = from.mailingAddress.province;
 
     if (from.phoneNumber) {
-      to.applicantTelephone = from.phoneNumber
-        .replace(/[() +/-]/g, '')
-        .substr(1);
+      to.applicantTelephone = PhoneNumber.toTenDigits(from.phoneNumber);
     }
 
     // Capturing Authorization page response

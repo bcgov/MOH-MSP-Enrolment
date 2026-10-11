@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { Address } from 'moh-common-lib-angular';
+import { PhoneNumber } from '../../../../components/msp/model/phone.model';
 import { ColumnClass } from '../review-part/review-part.component';
 
 @Component({
@@ -14,6 +15,10 @@ export class ContactReviewCardComponent {
   @Input() mailingAddress: Address;
   @Input() phoneNumber: string;
   @Input() editRouterLink: string;
+
+  get formattedPhoneNumber(): string {
+    return PhoneNumber.format(this.phoneNumber);
+  }
 
   // Formatting for column sizes
   columnClass: ColumnClass = {label: 'col-sm-4', value: 'col-sm-8 font-weight-bold'};

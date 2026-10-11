@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { MspDataService } from 'app/services/msp-data.service';
+import { PhoneNumber } from '../../../components/msp/model/phone.model';
 import { FinancialAssistApplication } from '../models/financial-assist-application.model';
 
 import {
@@ -72,7 +73,7 @@ export class AssistTransformService {
     const powerOfAttorney = this.app.hasPowerOfAttorney ? 'Y' : 'N';
     const sin = app.sin.replace(/ /g, '');
     const telephone = this.app.phoneNumber
-      ? this.app.phoneNumber.replace(/[() +-]/g, '').slice(1)
+      ? PhoneNumber.toTenDigits(this.app.phoneNumber)
       : undefined; // Must return undefined, not empty string, due to JSON Schema validation.
     return {
       attachmentUuids,

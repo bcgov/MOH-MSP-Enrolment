@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PhoneNumber } from '../../../components/msp/model/phone.model';
 import { MspLogService } from '../../../services/log.service';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CommonImage } from 'moh-common-lib-angular';
@@ -271,7 +272,7 @@ export class MspApiEnrolmentService extends BaseMspApiService {
     };
 
     if (application.phoneNumber) {
-      enrolee.telephone = application.phoneNumber.replace(/[() +/-]/g, '').substr(1);
+      enrolee.telephone = PhoneNumber.toTenDigits(application.phoneNumber);
     }
 
     if ( !application.mailingSameAsResidentialAddress ) {
