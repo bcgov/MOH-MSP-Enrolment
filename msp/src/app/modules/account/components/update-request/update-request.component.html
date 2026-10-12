@@ -11,7 +11,7 @@
   <common-checkbox
     [attr.aria-expanded]="person.updateStatusInCanada"
     [label]="'Update/renew status in Canada'"
-    (dataChange)="person.updateStatusInCanada = $event;"
+    (dataChange)="changeUpdateStatusInCanada($event)"
     [data]="person.updateStatusInCanada">
   </common-checkbox>
 </div>
@@ -130,7 +130,7 @@
   <common-checkbox
     [attr.aria-expanded]="person.updateNameDueToNameChange"
     [label]="'Update name - due to name change'"
-    (dataChange)="person.updateNameDueToNameChange = $event;"
+    (dataChange)="changeUpdateNameDueToNameChange($event)"
     [data]="person.updateNameDueToNameChange">
   </common-checkbox>
 </div>
@@ -153,7 +153,7 @@
   <common-checkbox
     [attr.aria-expanded]="person.updateGender"
     [label]="'Update gender designation - due to change'"
-    (dataChange)="person.updateGender = $event;"
+    (dataChange)="changeUpdateGender($event)"
     [data]="person.updateGender">
   </common-checkbox>
 </div>
@@ -216,7 +216,7 @@
   <common-checkbox
     [attr.aria-expanded]="person.updateNameDueToError"
     [label]="'Correct name - due to error'"
-    (dataChange)="person.updateNameDueToError = $event;"
+    (dataChange)="changeUpdateNameDueToError($event)"
     [data]="person.updateNameDueToError">
   </common-checkbox>
 </div>
@@ -239,7 +239,7 @@
   <common-checkbox
     [attr.aria-expanded]="person.updateBirthdate"
     [label]="'Correct birthdate - due to error'"
-    (dataChange)="person.updateBirthdate = $event;"
+    (dataChange)="changeUpdateBirthdate($event)"
     [data]="person.updateBirthdate">
   </common-checkbox>
 </div>
@@ -262,7 +262,7 @@
   <common-checkbox
     [attr.aria-expanded]="person.updateGenderDesignation"
     [label]="'Correct gender designation - due to error'"
-    (dataChange)="person.updateGenderDesignation = $event;"
+    (dataChange)="changeUpdateGenderDesignation($event)"
     [data]="person.updateGenderDesignation">
   </common-checkbox>
 </div>
