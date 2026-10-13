@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PhoneNumber } from '../../../../components/msp/model/phone.model';
 import { MspDataService } from '../../../../services/msp-data.service';
 import {
   ApplicantInformation,
@@ -51,7 +52,7 @@ export class AssistanceReviewComponent implements OnInit {
     } else {
       this.hasSpouse = false;
     }
-    this.phone = app.phoneNumber;
+    this.phone = PhoneNumber.format(app.phoneNumber);
   }
 
   ngOnInit() {

@@ -33,4 +33,24 @@ describe('ContactReviewCardComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('shows the phone number in display format', () => {
+    component.phoneNumber = '2143234323';
+    fixture.detectChanges();
+    const text = fixture.nativeElement.textContent;
+    expect(text).toContain('Phone');
+    expect(text).toContain('+1 (214) 323-4323');
+  });
+
+  it('shows the phone number in display format when the model holds the formatted value', () => {
+    component.phoneNumber = '+1 (214) 323-4323';
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).toContain('+1 (214) 323-4323');
+  });
+
+  it('shows no phone row when the phone number is empty', () => {
+    component.phoneNumber = '';
+    fixture.detectChanges();
+    expect(fixture.nativeElement.textContent).not.toContain('Phone');
+  });
 });

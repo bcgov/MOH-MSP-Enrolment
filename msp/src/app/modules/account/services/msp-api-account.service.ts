@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { PhoneNumber } from '../../../components/msp/model/phone.model';
 import { MspLogService } from '../../../services/log.service';
 import {
   HttpClient,
@@ -1264,9 +1265,7 @@ export class MspApiAccountService extends AbstractHttpService {
     }
 
     if (from.phoneNumber) {
-      accountHolder.telephone = from.phoneNumber
-        .replace(/[() +/-]/g, '')
-        .substr(1);
+      accountHolder.telephone = PhoneNumber.toTenDigits(from.phoneNumber);
     }
 
     if (from.applicant.updateNameDueToMarriage) {

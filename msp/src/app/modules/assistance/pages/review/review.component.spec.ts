@@ -32,4 +32,10 @@ describe('AssistanceReviewComponent', () => {
     const fixture = TestBed.createComponent(AssistanceReviewComponent);
     expect(fixture.componentInstance instanceof AssistanceReviewComponent).toBe(true, 'should create AssistanceReviewComponent');
   });
+
+  it ('should show the stored 10 digit phone number formatted', () => {
+    TestBed.inject(MspDataService).finAssistApp.phoneNumber = '2143234323';
+    const fixture = TestBed.createComponent(AssistanceReviewComponent);
+    expect(fixture.componentInstance.phone).toBe('+1 (214) 323-4323');
+  });
 });

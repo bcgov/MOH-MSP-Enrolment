@@ -378,16 +378,19 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
     return this.dateTodaySafe;
   }
 
-  get departureDateDuring6MonthsEndRange() {
-    if (this.returnDateDuring6MonthsDate) {
-      return isBefore(
-        subDays(this.returnDateDuring6MonthsDate, 30),
-        this.dateTodaySafe
-      )
-        ? this.dateToday
-        : subDays(this.returnDateDuring6MonthsDate, 30);
-    }
+  // Latest departure that still leaves 30 days of absence inside the next 6 months.
+  // Shared by the range and the error message so the two cannot disagree.
+  private get latestDepartureDuring6Months(): Date {
     return subDays(addMonths(this.dateTodaySafe, 6), 30);
+  }
+
+  get departureDateDuring6MonthsEndRange() {
+    const latest = this.latestDepartureDuring6Months;
+    if (this.returnDateDuring6MonthsDate) {
+      const beforeReturn = subDays(this.returnDateDuring6MonthsDate, 30);
+      return isBefore(latest, beforeReturn) ? latest : beforeReturn;
+    }
+    return latest;
   }
 
   get returnDateDuring6MonthsStartRange() {
@@ -515,32 +518,42 @@ export class ChildMovingInformationComponent extends Base implements OnInit {
   }
 
   get departureDate6MonthsErrorMessage(): ErrorMessage {
-    // If the departure date is less than 30 days before the return date
+    const message = this.departureDate6MonthsRangeMessage;
+    // The library reports noFutureDatesAllowed instead of invalidRange when the
+    // range end is today (date.component.ts validateRange), so both keys carry
+    // the same text.
+    return {
+      required: '{label} is required.',
+      invalidRange: message,
+      noFutureDatesAllowed: message,
+    };
+  }
+
+  private get departureDate6MonthsRangeMessage(): string {
+    // If the departure is beyond the latest allowed date, whatever the return date is
     if (
-      this.returnDateDuring6MonthsDate <
-      addDays(this.departureDateDuring6MonthsDate, 30)
-    ) {
-      return {
-        required: '{label} is required.',
-        invalidRange: 'Date must be more than 30 days before return date.',
-      };
-      // If the departure is after today's date
-    } else if (this.departureDateDuring6MonthsDate < this.dateToday) {
-      return { required: '{label} is required.', invalidRange: 'Date cannot be in the past.' };
-      // If the departure is after six months from now
-    } else if (
       isBefore(
-        addMonths(this.dateTodaySafe, 6),
+        this.latestDepartureDuring6Months,
         this.departureDateDuring6MonthsDate
       )
     ) {
-      return { required: '{label} is required.', invalidRange: 'Date must be within the next six months.' };
+      return 'Date must be within the next six months.';
+      // If the departure date is less than 30 days before the return date
+    } else if (
+      this.returnDateDuring6MonthsDate &&
+      this.returnDateDuring6MonthsDate <
+        addDays(this.departureDateDuring6MonthsDate, 30)
+    ) {
+      return 'Date must be more than 30 days before return date.';
+      // If the departure is before today's date
+    } else if (this.departureDateDuring6MonthsDate < this.dateToday) {
+      return 'Date cannot be in the past.';
       // If they are departing before birthdate
     } else if (this.departureDateDuring6MonthsDate < this.dob) {
-      return { required: '{label} is required.', invalidRange: 'Date must be after birthdate.' };
+      return 'Date must be after birthdate.';
       // Catchall
     } else {
-      return { required: '{label} is required.', invalidRange: 'Invalid date range.' };
+      return 'Invalid date range.';
     }
   }
 

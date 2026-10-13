@@ -175,10 +175,64 @@ export class UpdateRequestComponent extends Base implements OnInit {
     }
   }
 
+  // An option that is unchecked no longer applies, so its uploaded files and
+  // document type are dropped. Review counts and submit read these models.
+  private clearDocuments(doc: SupportDocuments) {
+    doc.documentType = null;
+    doc.images = [];
+  }
+
+  changeUpdateStatusInCanada(event: boolean) {
+    this.person.updateStatusInCanada = event;
+    if (!event) {
+      this.clearDocuments(this.person.updateStatusInCanadaDocType);
+    }
+  }
+
   changeUpdateNameDueToMarriage(event: boolean) {
     this.person.updateNameDueToMarriage = event;
     if (!event) {
       this.person.updateNameDueToMarriageRequestedLastName = '';
+      this.clearDocuments(this.person.updateNameDueToMarriageDocType);
+    }
+  }
+
+  changeUpdateNameDueToNameChange(event: boolean) {
+    this.person.updateNameDueToNameChange = event;
+    if (!event) {
+      this.clearDocuments(this.person.updateNameDueToNameChangeDocType);
+    }
+  }
+
+  changeUpdateGender(event: boolean) {
+    this.person.updateGender = event;
+    if (!event) {
+      this.clearDocuments(this.person.updateGenderDocType);
+      this.clearDocuments(this.person.updateGenderDocType2);
+      this.clearDocuments(this.person.updateGenderDocType3);
+      this.person.updateGenderAdditionalDocs = null;
+      this.person.updateGenderAdditionalDocs2 = null;
+    }
+  }
+
+  changeUpdateNameDueToError(event: boolean) {
+    this.person.updateNameDueToError = event;
+    if (!event) {
+      this.clearDocuments(this.person.updateNameDueToErrorDocType);
+    }
+  }
+
+  changeUpdateBirthdate(event: boolean) {
+    this.person.updateBirthdate = event;
+    if (!event) {
+      this.clearDocuments(this.person.updateBirthdateDocType);
+    }
+  }
+
+  changeUpdateGenderDesignation(event: boolean) {
+    this.person.updateGenderDesignation = event;
+    if (!event) {
+      this.clearDocuments(this.person.updateGenderDesignationDocType);
     }
   }
 }

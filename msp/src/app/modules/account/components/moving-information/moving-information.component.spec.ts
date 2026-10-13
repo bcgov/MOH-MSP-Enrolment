@@ -1,9 +1,10 @@
+import { Component, ViewChild } from '@angular/core';
 import { waitForAsync, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ChildMovingInformationComponent } from './moving-information.component';
 import { Relationship } from 'app/models/relationship.enum';
 import { AddressComponent, DateComponent, ErrorContainerComponent, PageSectionComponent, RadioComponent } from 'moh-common-lib-angular';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgForm } from '@angular/forms';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
 import {
   CanadianStatusReason,
@@ -679,14 +680,16 @@ describe('ChildMovingInformationComponent', () => {
   });
 
   describe('departureDateDuring6MonthsEndRange', () => {
-    it('should return date today when today is 30 days before return date.', () => {
+    it('should return 30 days before the return date even when that is before today.', () => {
       const fakeToday = parseISO('2020-04-01');
       const fakeReturnDate = parseISO('2020-02-01');
       component.dateToday = fakeToday;
       spyOnProperty(component, 'returnDateDuring6MonthsDate').and.returnValue(
         fakeReturnDate
       );
-      expect(component.departureDateDuring6MonthsEndRange).toEqual(fakeToday);
+      expect(component.departureDateDuring6MonthsEndRange).toEqual(
+        parseISO('2020-01-02')
+      );
     });
 
     it('should return 30 days minus return date when today is less than 30 days before return date.', () => {
@@ -1092,6 +1095,7 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.departureDate6MonthsErrorMessage).toEqual({
         required: '{label} is required.',
         invalidRange: 'Date must be more than 30 days before return date.',
+        noFutureDatesAllowed: 'Date must be more than 30 days before return date.',
       });
     });
 
@@ -1106,6 +1110,7 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.departureDate6MonthsErrorMessage).toEqual({
         required: '{label} is required.',
         invalidRange: 'Date cannot be in the past.',
+        noFutureDatesAllowed: 'Date cannot be in the past.',
       });
     });
 
@@ -1120,6 +1125,7 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.departureDate6MonthsErrorMessage).toEqual({
         required: '{label} is required.',
         invalidRange: 'Date must be within the next six months.',
+        noFutureDatesAllowed: 'Date must be within the next six months.',
       });
     });
 
@@ -1135,6 +1141,7 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.departureDate6MonthsErrorMessage).toEqual({
         required: '{label} is required.',
         invalidRange: 'Date must be after birthdate.',
+        noFutureDatesAllowed: 'Date must be after birthdate.',
       });
     });
 
@@ -1142,6 +1149,7 @@ describe('ChildMovingInformationComponent', () => {
       expect(component.departureDate6MonthsErrorMessage).toEqual({
         required: '{label} is required.',
         invalidRange: 'Invalid date range.',
+        noFutureDatesAllowed: 'Invalid date range.',
       });
     });
   });
@@ -1371,6 +1379,192 @@ describe('ChildMovingInformationComponent', () => {
         required: '{label} is required.',
         invalidRange: 'Invalid date range.',
       });
+    });
+  });
+});
+
+@Component({
+  standalone: false,
+  template: `<form #f="ngForm"><msp-child-moving-information [person]="person"></msp-child-moving-information></form>`,
+})
+class SixMonthHostComponent {
+  person = (() => {
+    const spouse = new MspPerson(Relationship.Spouse);
+    spouse.hasActiveMedicalServicePlan = false;
+    spouse.declarationForOutsideOver60Days = true;
+    return spouse;
+  })();
+  @ViewChild('f') form: NgForm;
+  @ViewChild(ChildMovingInformationComponent) moving: ChildMovingInformationComponent;
+}
+
+describe('ChildMovingInformationComponent six-month departure window (today 2026-10-07)', () => {
+  const SIX_MONTHS = 'Date must be within the next six months.';
+  const BEFORE_RETURN = 'Date must be more than 30 days before return date.';
+  const IN_PAST = 'Date cannot be in the past.';
+  const DEFAULT_DEPARTURE = 'Invalid Departure date.';
+  let host: SixMonthHostComponent;
+  let moving: ChildMovingInformationComponent;
+  let fixture: any;
+
+  // Renders the section with the clock fixed at 2026-10-07 10:00 and the two
+  // six-month dates set, then lets the form controls validate.
+  async function render(departure?: Date, ret?: Date) {
+    fixture = TestBed.createComponent(SixMonthHostComponent);
+    fixture.detectChanges();
+    host = fixture.componentInstance;
+    moving = host.moving;
+    moving.person.departureDateDuring6MonthsDate = departure;
+    moving.person.returnDateDuring6MonthsDate = ret;
+    fixture.detectChanges();
+    await fixture.whenStable();
+    // The date component shows errors on a touched or dirty control.
+    departureControl().markAsTouched();
+    returnControl().markAsTouched();
+    fixture.detectChanges();
+  }
+
+  const departureControl = () =>
+    host.form.controls['departureDate6Months_' + moving.objectId];
+  const returnControl = () =>
+    host.form.controls['returnDate6Months_' + moving.objectId];
+  const renderedText = () =>
+    (fixture.nativeElement as HTMLElement).innerText.replace(/\s+/g, ' ');
+
+  beforeEach(async () => {
+    jasmine.clock().install();
+    jasmine.clock().mockDate(new Date(2026, 9, 7, 10, 0, 0));
+    await TestBed.configureTestingModule({
+      declarations: [SixMonthHostComponent, ChildMovingInformationComponent],
+      imports: [FormsModule, HttpClientTestingModule, AddressComponent, DateComponent, ErrorContainerComponent, PageSectionComponent, RadioComponent],
+      providers: [{ provide: MspLogService, useFactory: () => ({ log: () => undefined }) }],
+    }).compileComponents();
+  });
+
+  afterEach(() => {
+    jasmine.clock().uninstall();
+  });
+
+  describe('departureDateDuring6MonthsEndRange', () => {
+    it('caps the end at six months less 30 days when the return date is further out than that', async () => {
+      await render(undefined, new Date(2027, 5, 1));
+      expect(moving.departureDateDuring6MonthsEndRange).toEqual(new Date(2027, 2, 8, 10));
+    });
+
+    it('non-regression: still ends 30 days before a return date inside the window', async () => {
+      await render(undefined, new Date(2026, 10, 15));
+      expect(moving.departureDateDuring6MonthsEndRange).toEqual(new Date(2026, 9, 16));
+    });
+
+    it('non-regression: ends at six months less 30 days when there is no return date', async () => {
+      await render();
+      expect(moving.departureDateDuring6MonthsEndRange).toEqual(new Date(2027, 2, 8, 10));
+    });
+  });
+
+  describe('departureDate6MonthsErrorMessage', () => {
+    it('reports the six month message for a departure between six months less 30 days and six months, with no return date', async () => {
+      await render(new Date(2027, 2, 20));
+      expect(moving.departureDate6MonthsErrorMessage.invalidRange).toBe(SIX_MONTHS);
+    });
+
+    it('reports the six month message ahead of the 30 day message when the departure is far out and the return is under 30 days later', async () => {
+      await render(new Date(2027, 9, 7), new Date(2027, 9, 20));
+      expect(moving.departureDate6MonthsErrorMessage.invalidRange).toBe(SIX_MONTHS);
+    });
+
+    it('non-regression: reports the six month message for a departure one year out with a return 32 days later', async () => {
+      await render(new Date(2027, 9, 7), new Date(2027, 10, 8));
+      expect(moving.departureDate6MonthsErrorMessage.invalidRange).toBe(SIX_MONTHS);
+    });
+
+    it('non-regression: reports the 30 day message for a departure inside the window less than 30 days before the return', async () => {
+      await render(new Date(2026, 10, 1), new Date(2026, 10, 15));
+      expect(moving.departureDate6MonthsErrorMessage.invalidRange).toBe(BEFORE_RETURN);
+    });
+
+    it('non-regression: reports the past message for a departure before today', async () => {
+      await render(new Date(2026, 9, 1));
+      expect(moving.departureDate6MonthsErrorMessage.invalidRange).toBe(IN_PAST);
+    });
+  });
+
+  describe('departureDate6MonthsErrorMessage with a cleared return date', () => {
+    it('reports the past message for a departure before today when the return date is null', async () => {
+      await render(new Date(2026, 9, 1), null);
+      expect(moving.departureDate6MonthsErrorMessage.invalidRange).toBe(IN_PAST);
+      expect(departureControl().errors).toEqual({ invalidRange: true });
+      expect(renderedText()).toContain(IN_PAST);
+      expect(renderedText()).not.toContain(BEFORE_RETURN);
+    });
+  });
+
+  describe('rendered departure text when the return date is within 30 days of today', () => {
+    it('shows the six month message for a departure one year out with a return 11 days from today', async () => {
+      await render(new Date(2027, 9, 7), new Date(2026, 9, 18));
+      expect(departureControl().errors).toEqual({ invalidRange: true });
+      expect(renderedText()).toContain(SIX_MONTHS);
+      expect(renderedText()).not.toContain(DEFAULT_DEPARTURE);
+    });
+
+    it('shows the six month message for a departure one year out with a return date in the past', async () => {
+      await render(new Date(2027, 9, 7), new Date(2026, 8, 27));
+      expect(departureControl().errors).toEqual({ invalidRange: true });
+      expect(renderedText()).toContain(SIX_MONTHS);
+      expect(renderedText()).not.toContain(DEFAULT_DEPARTURE);
+    });
+
+    it('shows the 30 day message for a departure inside the window with a return 18 days from today', async () => {
+      await render(new Date(2026, 9, 20), new Date(2026, 9, 25));
+      expect(departureControl().errors).toEqual({ invalidRange: true });
+      expect(renderedText()).toContain(BEFORE_RETURN);
+      expect(renderedText()).not.toContain(DEFAULT_DEPARTURE);
+    });
+
+    it('shows the 30 day message when the return date is exactly 30 days from today and the departure is tomorrow', async () => {
+      await render(new Date(2026, 9, 8), new Date(2026, 10, 6));
+      expect(departureControl().errors).toEqual({ noFutureDatesAllowed: true });
+      expect(renderedText()).toContain(BEFORE_RETURN);
+      expect(renderedText()).not.toContain(DEFAULT_DEPARTURE);
+    });
+  });
+
+  describe('rendered departure and return controls', () => {
+    it('marks a departure one year out invalid with a return 32 days later, and shows the six month message', async () => {
+      await render(new Date(2027, 9, 7), new Date(2027, 10, 8));
+      expect(departureControl().errors).toEqual({ invalidRange: true });
+      expect(host.form.valid).toBe(false);
+      expect(renderedText()).toContain(SIX_MONTHS);
+    });
+
+    it('shows the six month message for a departure just past the latest allowed date, with no return date', async () => {
+      await render(new Date(2027, 2, 20));
+      expect(departureControl().errors).toEqual({ invalidRange: true });
+      expect(renderedText()).toContain(SIX_MONTHS);
+    });
+
+    it('non-regression: a departure in the window with a return more than 30 days later leaves both dates valid', async () => {
+      await render(new Date(2026, 11, 1), new Date(2027, 2, 1));
+      expect(departureControl().errors).toBeNull();
+      expect(returnControl().errors).toBeNull();
+      expect(renderedText()).not.toContain(SIX_MONTHS);
+    });
+
+    it('non-regression: a departure on the last allowed date with a return beyond six months leaves both dates valid', async () => {
+      await render(new Date(2027, 2, 8), new Date(2027, 5, 1));
+      expect(departureControl().errors).toBeNull();
+      expect(returnControl().errors).toBeNull();
+    });
+
+    it('marks a departure the day after the last allowed date invalid with the six month message', async () => {
+      await render(new Date(2027, 2, 9), new Date(2027, 5, 1));
+      expect(departureControl().errors).toEqual({ invalidRange: true });
+      expect(renderedText()).toContain(SIX_MONTHS);
+    });
+
+    it('non-regression: a departure less than 30 days before the return shows the 30 day message', async () => {
+      await render(new Date(2026, 10, 1), new Date(2026, 10, 15));
+      expect(renderedText()).toContain(BEFORE_RETURN);
     });
   });
 });
