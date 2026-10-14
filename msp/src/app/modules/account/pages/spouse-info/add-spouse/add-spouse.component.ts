@@ -137,6 +137,27 @@ export class AddSpouseComponent extends Base implements OnInit {
     }
   }
 
+  onNameChangeAnswer(hasNameChange: boolean) {
+    if (hasNameChange === false) {
+      // answered No: drop uploads so they are not submitted
+      this.spouse.nameChangeDocs.documentType = null;
+      this.spouse.nameChangeDocs.images = [];
+      this.spouse.hasNameChangeAdditional = null;
+      this.clearNameChangeAdditionalDocs();
+    }
+  }
+
+  onNameChangeAdditionalAnswer(hasAdditional: boolean) {
+    if (hasAdditional === false) {
+      this.clearNameChangeAdditionalDocs();
+    }
+  }
+
+  private clearNameChangeAdditionalDocs() {
+    this.spouse.nameChangeAdditionalDocs.documentType = null;
+    this.spouse.nameChangeAdditionalDocs.images = [];
+  }
+
   isWorkPermit() {
     return this.spouse.currentActivity === CanadianStatusReason.WorkingInBC;
   }
