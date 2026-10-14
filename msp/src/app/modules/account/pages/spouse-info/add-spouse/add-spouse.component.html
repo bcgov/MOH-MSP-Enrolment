@@ -70,6 +70,7 @@
       <common-radio
         name="nameChangeQuestion__{{objectId}}"
         [(ngModel)]="spouse.hasNameChange"
+        (valueChange)="onNameChangeAnswer($event)"
         label="Has your spouse's name changed since their ID was issued due to a legal name change?"
         [required]="true">
       </common-radio>
@@ -93,6 +94,7 @@
             <common-radio
               name="additionalDoc"
               [(ngModel)]="spouse.hasNameChangeAdditional"
+              (valueChange)="onNameChangeAdditionalAnswer($event)"
               label="Do you need to add an additional document?">
             </common-radio>
           </div>

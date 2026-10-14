@@ -116,6 +116,15 @@ export class AddChildComponent extends Base implements OnInit {
     this.personChange.emit(evt);
   }
 
+  onNameChangeAnswer(hasNameChange: boolean) {
+    if (hasNameChange === false) {
+      // answered No: drop uploads so they are not submitted
+      this.child.nameChangeDocs.documentType = null;
+      this.child.nameChangeDocs.images = [];
+    }
+    this.personChange.emit(this.child);
+  }
+
   get phnList() {
     const cp = [...this.phns];
     cp.splice(cp.indexOf(this.child.phn), 1);

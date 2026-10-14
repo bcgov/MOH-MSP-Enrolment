@@ -76,7 +76,7 @@
       name="nameChange_{{objectId}}"
       [(ngModel)]="child.hasNameChange"
       label="Has the child's name changed since their ID was issued due to a legal name change?"
-      (valueChange)="this.personChange.emit(child);"
+      (valueChange)="onNameChangeAnswer($event)"
       [required]="true">
     </common-radio>
 
