@@ -120,7 +120,12 @@ export class RemoveSpouseComponent extends BaseComponent implements OnInit {
 
   get phnList() {
     const cp = [...this.phns];
-    cp.splice(cp.indexOf(this.spouse.phn), 1);
+    // Drop this person's own entry. indexOf is -1 until their PHN is long enough
+    // to be listed, and splice(-1, 1) would drop another member's PHN instead.
+    const own = cp.indexOf(this.spouse.phn);
+    if (own >= 0) {
+      cp.splice(own, 1);
+    }
     return cp;
   }
 

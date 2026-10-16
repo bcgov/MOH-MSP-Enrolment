@@ -237,7 +237,12 @@ export class UpdateChildComponent implements OnInit {
 
   get phnList() {
     const cp = [...this.phns];
-    cp.splice(cp.indexOf(this.child.phn), 1);
+    // Drop this person's own entry. indexOf is -1 until their PHN is long enough
+    // to be listed, and splice(-1, 1) would drop another member's PHN instead.
+    const own = cp.indexOf(this.child.phn);
+    if (own >= 0) {
+      cp.splice(own, 1);
+    }
     return cp;
   }
 
@@ -288,6 +293,25 @@ export class UpdateChildComponent implements OnInit {
       this.child.updateGenderDocType2.documentType = null;
       this.child.updateGenderDocType2.images = [];
       this.child.updateGenderAdditionalDocs2 = null;
+      this.child.updateGenderDocType3.documentType = null;
+      this.child.updateGenderDocType3.images = [];
+    }
+  }
+
+  // Answering No to a second or third document question drops the files that
+  // were uploaded under it, so they are not counted or submitted.
+  onGenderAdditionalAnswer(hasAdditional: boolean) {
+    if (hasAdditional === false) {
+      this.child.updateGenderDocType2.documentType = null;
+      this.child.updateGenderDocType2.images = [];
+      this.child.updateGenderAdditionalDocs2 = null;
+      this.child.updateGenderDocType3.documentType = null;
+      this.child.updateGenderDocType3.images = [];
+    }
+  }
+
+  onGenderAdditionalAnswer2(hasAdditional: boolean) {
+    if (hasAdditional === false) {
       this.child.updateGenderDocType3.documentType = null;
       this.child.updateGenderDocType3.images = [];
     }

@@ -6,7 +6,6 @@ import { getCountryDescription, getProvinceDescription } from 'moh-common-lib-an
 import { getStatusStrings, getStatusReasonStrings } from '../../../msp-core/components/canadian-status/canadian-status.component';
 import { Relationship } from '../../../../models/relationship.enum';
 import { format } from 'date-fns';
-import { SupportDocuments } from '../../../msp-core/models/support-documents.model';
 import enLang from './i18n/data/en/index';
 
 /* TO BE REPLACED when remaining apps are refactored to have own application  model definitions
@@ -82,37 +81,12 @@ export class AccountPersonCardComponent {
     return this.documentCount > 0;
   }
 
-  /** Files uploaded for the status in Canada question only. */
-  get documentCount(): number {
-    return this.countFiles(this.person.updateStatusInCanadaDocType);
-  }
-
   /**
-   * Files uploaded for the name change question, including the optional
-   * additional document that is asked under it. Uploads left over from an
-   * answer that was later changed to No are not counted.
+   * Every file in the collection that is submitted (see getAllImages), so the
+   * count on the review page matches what is sent.
    */
-  get nameChangeDocumentCount(): number {
-    if (!this.person.hasNameChange) {
-      return 0;
-    }
-    return this.countFiles(this.person.nameChangeDocs) +
-      (this.person.hasNameChangeAdditional ? this.countFiles(this.person.nameChangeAdditionalDocs) : 0);
-  }
-
-  /** Files uploaded for every other update request (name, gender, birthdate, divorce). */
-  get otherDocumentCount(): number {
-    return [
-      this.person.updateNameDueToMarriageDocType,
-      this.person.updateNameDueToNameChangeDocType,
-      this.person.updateGenderDocType,
-      this.person.updateGenderDocType2,
-      this.person.updateGenderDocType3,
-      this.person.updateNameDueToErrorDocType,
-      this.person.updateBirthdateDocType,
-      this.person.updateGenderDesignationDocType,
-      this.person.removedSpouseDueToDivorceDoc
-    ].reduce((total, docs) => total + this.countFiles(docs), 0);
+  get documentCount(): number {
+    return this.person.getAllImages().length;
   }
 
   get movedFromLabel(): string {
@@ -125,15 +99,10 @@ export class AccountPersonCardComponent {
   }
 
   get fileLabel(): string {
-    return this.filesLabel(this.documentCount);
-  }
-
-  get nameChangeFileLabel(): string {
-    return this.filesLabel(this.nameChangeDocumentCount);
-  }
-
-  get otherFileLabel(): string {
-    return this.filesLabel(this.otherDocumentCount);
+    if (this.documentCount > 1) {
+      return 'Files';
+    }
+    return this.documentCount === 1 ? 'File' : '';
   }
 
   get movedFromProvinceOrCountry() {
@@ -141,17 +110,6 @@ export class AccountPersonCardComponent {
       return getCountryDescription(this.person.movedFromProvinceOrCountry);
     }
     return getProvinceDescription(this.person.movedFromProvinceOrCountry);
-  }
-
-  private countFiles(docs: SupportDocuments): number {
-    return docs && docs.images ? docs.images.length : 0;
-  }
-
-  private filesLabel(count: number): string {
-    if (count > 1) {
-      return 'Files';
-    }
-    return count === 1 ? 'File' : '';
   }
 
   formatDateField(dt: Date) {
