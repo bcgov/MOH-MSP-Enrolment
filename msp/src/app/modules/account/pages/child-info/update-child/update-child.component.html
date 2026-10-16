@@ -125,6 +125,7 @@
         <common-radio
           name="additionalDoc"
           [(ngModel)]="child.updateGenderAdditionalDocs"
+          (valueChange)="onGenderAdditionalAnswer($event)"
           label="Do you need to add a second document?">
         </common-radio>
       </div>
@@ -139,6 +140,7 @@
                 <common-radio
                   name="additionalDoc2"
                   [(ngModel)]="child.updateGenderAdditionalDocs2"
+                  (valueChange)="onGenderAdditionalAnswer2($event)"
                   label="Do you need to add a third document?">
                 </common-radio>
               </div>

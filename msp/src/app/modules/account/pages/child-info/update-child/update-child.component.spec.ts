@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { subYears, startOfToday } from 'date-fns';
 import {
-  AddressComponent, CheckboxComponent, DateComponent, DuplicateCheckDirective, ErrorContainerComponent,
+  AddressComponent, CheckboxComponent, CommonImage, DateComponent, DuplicateCheckDirective, ErrorContainerComponent,
   NameComponent, PageSectionComponent, PhnComponent, RadioComponent
 } from 'moh-common-lib-angular';
 import { UpdateChildComponent } from './update-child.component';
@@ -14,6 +14,8 @@ import { MspAccountMaintenanceDataService } from '../../../services/msp-account-
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
 import { Relationship } from '../../../../../models/relationship.enum';
 import { MspLogService } from '../../../../../services/log.service';
+import { SupportDocumentList } from '../../../../msp-core/models/support-documents.enum';
+import { StatusInCanada } from '../../../../msp-core/models/canadian-status.enum';
 
 describe('UpdateChildComponent', () => {
   let component: UpdateChildComponent;
@@ -103,6 +105,130 @@ describe('UpdateChildComponent', () => {
       expect(component.child.updateChildStatus).toBe(true);
       expect(component.child.fullTimeStudent).toBe(true);
       expect(component.child.schoolName).toBe('UBC');
+    });
+  });
+
+  describe('phnList and duplicate PHN', () => {
+    const AH_PHN = '9999 999 998';
+    const OWN_PHN = '9999 999 973';
+    const DUPLICATE_MESSAGE = 'This Personal Health Number (PHN) was already used for another family member. ' +
+      'Please provide the PHN that is listed on the family member\'s PHN card/letter.';
+
+    // Same rule as the parent page's phns getter: the account holder first, then this person once the PHN is long enough.
+    function listedPhns(): string[] {
+      return [AH_PHN, component.child.phn].filter(p => p && p.length >= 10);
+    }
+
+    function render() {
+      component.phns = listedPhns();
+      fixture.detectChanges();
+    }
+
+    function typePhn(value: string) {
+      const input: HTMLInputElement = fixture.nativeElement.querySelector('common-phn input');
+      input.value = value;
+      input.dispatchEvent(new Event('input'));
+      input.dispatchEvent(new Event('change'));
+      input.dispatchEvent(new Event('blur'));
+      component.phns = listedPhns();
+      fixture.detectChanges();
+    }
+
+    it('keeps the account holder PHN while the own PHN is partial', () => {
+      component.phns = [AH_PHN];
+      component.child.phn = '99999';
+      expect(component.phnList).toEqual([AH_PHN]);
+    });
+
+    it('keeps the account holder PHN while the own PHN is not entered', () => {
+      component.phns = [AH_PHN];
+      component.child.phn = undefined;
+      expect(component.phnList).toEqual([AH_PHN]);
+    });
+
+    // Pins the existing own-entry removal; it also passes without the guard.
+    it('drops only the own PHN once it is listed', () => {
+      component.phns = [AH_PHN, OWN_PHN];
+      component.child.phn = OWN_PHN;
+      expect(component.phnList).toEqual([AH_PHN]);
+    });
+
+    it('flags the account holder PHN typed into the rendered field and clears it for a unique PHN', () => {
+      render();
+      const field: HTMLElement = fixture.nativeElement.querySelector('common-phn');
+
+      typePhn(AH_PHN);
+      expect(field.classList.contains('ng-invalid')).toBeTrue();
+      expect(field.textContent.replace(/\s+/g, ' ')).toContain(DUPLICATE_MESSAGE);
+
+      typePhn(OWN_PHN);
+      expect(field.classList.contains('ng-invalid')).toBeFalse();
+      expect(field.textContent.replace(/\s+/g, ' ')).not.toContain(DUPLICATE_MESSAGE);
+    });
+  });
+
+  describe('second and third gender document questions', () => {
+    const docTypes = Object.keys(SupportDocumentList).map(k => SupportDocumentList[k]);
+
+    function files(count: number): CommonImage[] {
+      return Array.from({ length: count }, () => new CommonImage());
+    }
+
+    // Documents 1, 2 and 3 hold 1, 2 and 3 files; one more file sits outside the gender documents.
+    function seed() {
+      const child = component.child;
+      const validType = docTypes[component.genderChangeDocs[0]];
+      child.status = StatusInCanada.CitizenAdult;
+      child.updateGender = true;
+      child.updateGenderAdditionalDocs = true;
+      child.updateGenderAdditionalDocs2 = true;
+      [child.updateGenderDocType, child.updateGenderDocType2, child.updateGenderDocType3].forEach((doc, i) => {
+        doc.documentType = validType;
+        doc.images = files(i + 1);
+      });
+      child.documents.images = files(1);
+      fixture.detectChanges();
+    }
+
+    // Clicks the "No" radio of the common-radio whose legend matches the label text.
+    function clickNo(legendText: string) {
+      const fieldset = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('fieldset'))
+        .find(f => (f.querySelector('legend')?.textContent || '').includes(legendText));
+      expect(fieldset).withContext('radio "' + legendText + '" rendered').toBeTruthy();
+      fieldset.querySelector<HTMLInputElement>('input[type=radio][id^="false_"]').click();
+      fixture.detectChanges();
+    }
+
+    it('drops the third document when the user clicks No on the third document question', () => {
+      seed();
+      const child = component.child;
+      expect(child.getAllImages().length).toBe(7);
+
+      clickNo('Do you need to add a third document?');
+
+      expect(child.updateGenderAdditionalDocs2).toBeFalse();
+      expect(child.updateGenderDocType3.images.length).toBe(0);
+      expect(child.updateGenderDocType3.documentType).toBeNull();
+      expect(child.updateGenderAdditionalDocs).toBeTrue();
+      expect(child.updateGenderDocType.images.length).toBe(1);
+      expect(child.updateGenderDocType2.images.length).toBe(2);
+      expect(child.getAllImages().length).toBe(4);
+    });
+
+    it('drops the second and third documents when the user clicks No on the second document question', () => {
+      seed();
+      const child = component.child;
+
+      clickNo('Do you need to add a second document?');
+
+      expect(child.updateGenderAdditionalDocs).toBeFalse();
+      expect(child.updateGenderAdditionalDocs2).toBeNull();
+      expect(child.updateGenderDocType2.images.length).toBe(0);
+      expect(child.updateGenderDocType2.documentType).toBeNull();
+      expect(child.updateGenderDocType3.images.length).toBe(0);
+      expect(child.updateGenderDocType3.documentType).toBeNull();
+      expect(child.updateGenderDocType.images.length).toBe(1);
+      expect(child.getAllImages().length).toBe(2);
     });
   });
 });

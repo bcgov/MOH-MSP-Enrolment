@@ -215,6 +215,22 @@ export class UpdateRequestComponent extends Base implements OnInit {
     }
   }
 
+  // Answering No to a second or third document question drops the files that
+  // were uploaded under it, so they are not counted or submitted.
+  onGenderAdditionalAnswer(hasAdditional: boolean) {
+    if (hasAdditional === false) {
+      this.clearDocuments(this.person.updateGenderDocType2);
+      this.clearDocuments(this.person.updateGenderDocType3);
+      this.person.updateGenderAdditionalDocs2 = null;
+    }
+  }
+
+  onGenderAdditionalAnswer2(hasAdditional: boolean) {
+    if (hasAdditional === false) {
+      this.clearDocuments(this.person.updateGenderDocType3);
+    }
+  }
+
   changeUpdateNameDueToError(event: boolean) {
     this.person.updateNameDueToError = event;
     if (!event) {

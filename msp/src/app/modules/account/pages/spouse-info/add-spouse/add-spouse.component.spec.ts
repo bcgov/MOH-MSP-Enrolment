@@ -153,4 +153,97 @@ describe('AddSpouseComponent', () => {
       expect(component.spouse.getAllImages()).not.toContain(additionalImg);
     });
   });
+
+  describe('phnList and duplicate PHN', () => {
+    const AH_PHN = '9999 999 998';
+    const OWN_PHN = '9999 999 973';
+    const DUPLICATE_MESSAGE = 'This Personal Health Number (PHN) was already used for another family member. ' +
+      'Please provide the PHN that is listed on the family member\'s PHN card/letter.';
+
+    // Same rule as the parent page's phns getter: the account holder first, then this person once the PHN is long enough.
+    function listedPhns(): string[] {
+      return [AH_PHN, component.spouse.phn].filter(p => p && p.length >= 10);
+    }
+
+    function render() {
+      component.phns = listedPhns();
+      component.spouse.immigrationStatusChange = true;
+      fixture.detectChanges();
+    }
+
+    function typePhn(value: string) {
+      const input: HTMLInputElement = fixture.nativeElement.querySelector('common-phn input');
+      input.value = value;
+      input.dispatchEvent(new Event('input'));
+      input.dispatchEvent(new Event('change'));
+      input.dispatchEvent(new Event('blur'));
+      component.phns = listedPhns();
+      fixture.detectChanges();
+    }
+
+    it('keeps the account holder PHN while the own PHN is partial', () => {
+      component.phns = [AH_PHN];
+      component.spouse.phn = '99999';
+      expect(component.phnList).toEqual([AH_PHN]);
+    });
+
+    it('keeps the account holder PHN while the own PHN is not entered', () => {
+      component.phns = [AH_PHN];
+      component.spouse.phn = undefined;
+      expect(component.phnList).toEqual([AH_PHN]);
+    });
+
+    // Pins the existing own-entry removal; it also passes without the guard.
+    it('drops only the own PHN once it is listed', () => {
+      component.phns = [AH_PHN, OWN_PHN];
+      component.spouse.phn = OWN_PHN;
+      expect(component.phnList).toEqual([AH_PHN]);
+    });
+
+    it('flags the account holder PHN typed into the rendered field and clears it for a unique PHN', () => {
+      render();
+      const field: HTMLElement = fixture.nativeElement.querySelector('common-phn');
+
+      typePhn(AH_PHN);
+      expect(field.classList.contains('ng-invalid')).toBeTrue();
+      expect(field.textContent.replace(/\s+/g, ' ')).toContain(DUPLICATE_MESSAGE);
+
+      typePhn(OWN_PHN);
+      expect(field.classList.contains('ng-invalid')).toBeFalse();
+      expect(field.textContent.replace(/\s+/g, ' ')).not.toContain(DUPLICATE_MESSAGE);
+    });
+  });
+
+  describe('name changed due to marriage', () => {
+    const docTypes = Object.keys(SupportDocumentList).map(k => SupportDocumentList[k]);
+
+    function seed() {
+      const spouse = component.spouse;
+      spouse.updateNameDueToMarriage = true;
+      spouse.updateNameDueToMarriageRequestedLastName = 'Smith';
+      spouse.updateNameDueToMarriageDocType.documentType = docTypes[component.nameChangeDueToMarriageDocs[0]];
+      spouse.updateNameDueToMarriageDocType.images = [new CommonImage(), new CommonImage()];
+      spouse.documents.images = [new CommonImage()];
+      component.phns = [];
+      spouse.immigrationStatusChange = true;
+      fixture.detectChanges();
+    }
+
+    it('drops the marriage documents when the user clicks No on the rendered marriage question', () => {
+      seed();
+      const spouse = component.spouse;
+      expect(spouse.getAllImages().length).toBe(3);
+
+      const fieldset = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('fieldset'))
+        .find(f => (f.querySelector('legend')?.textContent || '').includes('name changed due to marriage'));
+      expect(fieldset).withContext('marriage radio rendered').toBeTruthy();
+      fieldset.querySelector<HTMLInputElement>('input[type=radio][id^="false_"]').click();
+      fixture.detectChanges();
+
+      expect(spouse.updateNameDueToMarriage).toBeFalse();
+      expect(spouse.updateNameDueToMarriageDocType.images.length).toBe(0);
+      expect(spouse.updateNameDueToMarriageDocType.documentType).toBeNull();
+      expect(spouse.getAllImages().length).toBe(1);
+    });
+  });
 });

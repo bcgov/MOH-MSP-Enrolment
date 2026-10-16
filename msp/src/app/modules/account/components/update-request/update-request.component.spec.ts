@@ -177,4 +177,69 @@ describe('UpdateRequestComponent', () => {
       expect(component.person.updateBirthdateDocType.images.length).toBe(0);
     });
   });
+
+  describe('second and third gender document questions', () => {
+    const docTypes = Object.keys(SupportDocumentList).map(k => SupportDocumentList[k]);
+
+    function files(count: number): CommonImage[] {
+      return Array.from({ length: count }, () => new CommonImage());
+    }
+
+    // Documents 1, 2 and 3 hold 1, 2 and 3 files; one more file sits outside the gender documents.
+    function seed() {
+      const person = component.person;
+      const validType = docTypes[component.genderChangeDocs[0]];
+      person.status = StatusInCanada.CitizenAdult;
+      person.updateGender = true;
+      person.updateGenderAdditionalDocs = true;
+      person.updateGenderAdditionalDocs2 = true;
+      [person.updateGenderDocType, person.updateGenderDocType2, person.updateGenderDocType3].forEach((doc, i) => {
+        doc.documentType = validType;
+        doc.images = files(i + 1);
+      });
+      person.documents.images = files(1);
+      fixture.detectChanges();
+    }
+
+    // Clicks the "No" radio of the common-radio whose legend matches the label text.
+    function clickNo(legendText: string) {
+      const fieldset = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('fieldset'))
+        .find(f => (f.querySelector('legend')?.textContent || '').includes(legendText));
+      expect(fieldset).withContext('radio "' + legendText + '" rendered').toBeTruthy();
+      fieldset.querySelector<HTMLInputElement>('input[type=radio][id^="false_"]').click();
+      fixture.detectChanges();
+    }
+
+    it('drops the third document when the user clicks No on the third document question', () => {
+      seed();
+      const person = component.person;
+      expect(person.getAllImages().length).toBe(7);
+
+      clickNo('Do you need to add a third document?');
+
+      expect(person.updateGenderAdditionalDocs2).toBeFalse();
+      expect(person.updateGenderDocType3.images.length).toBe(0);
+      expect(person.updateGenderDocType3.documentType).toBeNull();
+      expect(person.updateGenderAdditionalDocs).toBeTrue();
+      expect(person.updateGenderDocType.images.length).toBe(1);
+      expect(person.updateGenderDocType2.images.length).toBe(2);
+      expect(person.getAllImages().length).toBe(4);
+    });
+
+    it('drops the second and third documents when the user clicks No on the second document question', () => {
+      seed();
+      const person = component.person;
+
+      clickNo('Do you need to add a second document?');
+
+      expect(person.updateGenderAdditionalDocs).toBeFalse();
+      expect(person.updateGenderAdditionalDocs2).toBeNull();
+      expect(person.updateGenderDocType2.images.length).toBe(0);
+      expect(person.updateGenderDocType2.documentType).toBeNull();
+      expect(person.updateGenderDocType3.images.length).toBe(0);
+      expect(person.updateGenderDocType3.documentType).toBeNull();
+      expect(person.updateGenderDocType.images.length).toBe(1);
+      expect(person.getAllImages().length).toBe(2);
+    });
+  });
 });

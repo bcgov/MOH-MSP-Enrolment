@@ -42,4 +42,63 @@ describe('RemoveChildComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  describe('phnList and duplicate PHN', () => {
+    const AH_PHN = '9999 999 998';
+    const OWN_PHN = '9999 999 973';
+    const DUPLICATE_MESSAGE = 'This Personal Health Number (PHN) was already used for another family member. ' +
+      'Please provide the PHN that is listed on the family member\'s PHN card/letter.';
+
+    // Same rule as the parent page's phns getter: the account holder first, then this person once the PHN is long enough.
+    function listedPhns(): string[] {
+      return [AH_PHN, component.child.phn].filter(p => p && p.length >= 10);
+    }
+
+    function render() {
+      component.phns = listedPhns();
+      fixture.detectChanges();
+    }
+
+    function typePhn(value: string) {
+      const input: HTMLInputElement = fixture.nativeElement.querySelector('common-phn input');
+      input.value = value;
+      input.dispatchEvent(new Event('input'));
+      input.dispatchEvent(new Event('change'));
+      input.dispatchEvent(new Event('blur'));
+      component.phns = listedPhns();
+      fixture.detectChanges();
+    }
+
+    it('keeps the account holder PHN while the own PHN is partial', () => {
+      component.phns = [AH_PHN];
+      component.child.phn = '99999';
+      expect(component.phnList).toEqual([AH_PHN]);
+    });
+
+    it('keeps the account holder PHN while the own PHN is not entered', () => {
+      component.phns = [AH_PHN];
+      component.child.phn = undefined;
+      expect(component.phnList).toEqual([AH_PHN]);
+    });
+
+    // Pins the existing own-entry removal; it also passes without the guard.
+    it('drops only the own PHN once it is listed', () => {
+      component.phns = [AH_PHN, OWN_PHN];
+      component.child.phn = OWN_PHN;
+      expect(component.phnList).toEqual([AH_PHN]);
+    });
+
+    it('flags the account holder PHN typed into the rendered field and clears it for a unique PHN', () => {
+      render();
+      const field: HTMLElement = fixture.nativeElement.querySelector('common-phn');
+
+      typePhn(AH_PHN);
+      expect(field.classList.contains('ng-invalid')).toBeTrue();
+      expect(field.textContent.replace(/\s+/g, ' ')).toContain(DUPLICATE_MESSAGE);
+
+      typePhn(OWN_PHN);
+      expect(field.classList.contains('ng-invalid')).toBeFalse();
+      expect(field.textContent.replace(/\s+/g, ' ')).not.toContain(DUPLICATE_MESSAGE);
+    });
+  });
 });

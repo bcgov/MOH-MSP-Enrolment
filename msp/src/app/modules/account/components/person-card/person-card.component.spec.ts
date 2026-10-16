@@ -159,67 +159,53 @@ describe('MspPersonCardComponent', () => {
         .map((r) => r.textContent.replace(/\s+/g, ' ').trim());
     }
 
-    it('should label the name change count by its own count when status has more files.', () => {
-      component.person.updateStatusInCanadaDocType = docs(2);
-      component.person.hasNameChange = true;
-      component.person.nameChangeDocs = docs(1);
-      expect(component.nameChangeDocumentCount).toBe(1);
-      expect(component.nameChangeFileLabel).toEqual('File');
-      expect(documentRows()).toEqual(['Documents 2 Files', 'Documents 1 File']);
-    });
-
-    it('should label the name change count by its own count when status has fewer files.', () => {
+    it('should show one Documents row counting the name change and additional files with status files.', () => {
       component.person.updateStatusInCanadaDocType = docs(1);
-      component.person.hasNameChange = true;
-      component.person.nameChangeDocs = docs(2);
-      expect(component.nameChangeDocumentCount).toBe(2);
-      expect(component.nameChangeFileLabel).toEqual('Files');
-      expect(documentRows()).toEqual(['Documents 1 File', 'Documents 2 Files']);
-    });
-
-    it('should count the additional document under name change.', () => {
-      component.person.updateStatusInCanadaDocType = docs(1);
-      component.person.hasNameChange = true;
       component.person.nameChangeDocs = docs(1);
-      component.person.hasNameChangeAdditional = true;
       component.person.nameChangeAdditionalDocs = docs(1);
-      expect(component.nameChangeDocumentCount).toBe(2);
-      expect(documentRows()).toEqual(['Documents 1 File', 'Documents 2 Files']);
+      expect(component.documentCount).toBe(3);
+      expect(documentRows()).toEqual(['Documents 3 Files']);
     });
 
-    it('should ignore the additional document when the additional answer is No.', () => {
-      component.person.hasNameChange = true;
-      component.person.nameChangeDocs = docs(1);
-      component.person.hasNameChangeAdditional = false;
-      component.person.nameChangeAdditionalDocs = docs(1);
-      expect(component.nameChangeDocumentCount).toBe(1);
-      expect(documentRows()).toEqual(['Documents 1 File']);
-    });
-
-    it('should ignore name change files when the name change answer is No.', () => {
-      component.person.hasNameChange = false;
-      component.person.nameChangeDocs = docs(1);
-      component.person.hasNameChangeAdditional = true;
-      component.person.nameChangeAdditionalDocs = docs(1);
-      expect(component.nameChangeDocumentCount).toBe(0);
-      expect(documentRows()).toEqual([]);
-    });
-
-    it('should not add the other update request files to the status count.', () => {
+    it('should count the other update request files in the same row.', () => {
       component.person.updateStatusInCanadaDocType = docs(1);
       component.person.updateNameDueToMarriageDocType = docs(1);
       component.person.updateBirthdateDocType = docs(2);
-      expect(component.documentCount).toBe(1);
-      expect(component.fileLabel).toEqual('File');
-      expect(component.otherDocumentCount).toBe(3);
-      expect(component.otherFileLabel).toEqual('Files');
-      expect(documentRows()).toEqual(['Documents 1 File', 'Documents 3 Files']);
+      expect(component.documentCount).toBe(4);
+      expect(component.fileLabel).toEqual('Files');
+      expect(documentRows()).toEqual(['Documents 4 Files']);
+    });
+
+    it('should count exactly the files that getAllImages returns.', () => {
+      component.person.updateStatusInCanadaDocType = docs(1);
+      component.person.updateGenderDocType = docs(1);
+      component.person.updateGenderDocType2 = docs(1);
+      component.person.updateGenderDocType3 = docs(1);
+      expect(component.documentCount).toBe(component.person.getAllImages().length);
+      expect(documentRows()).toEqual(['Documents 4 Files']);
     });
 
     it('should return an empty label for zero files.', () => {
       expect(component.fileLabel).toEqual('');
-      expect(component.nameChangeFileLabel).toEqual('');
-      expect(component.otherFileLabel).toEqual('');
+      expect(documentRows()).toEqual([]);
+    });
+
+    it('should render one Documents row, directly below Status in Canada, counting status, gender and name change files.', () => {
+      component.person.status = StatusInCanada.CitizenAdult;
+      component.person.updateStatusInCanadaDocType = docs(1);
+      component.person.updateGender = true;
+      component.person.updateGenderDocType = docs(2);
+      component.person.hasNameChange = true;
+      component.person.nameChangeDocs = docs(1);
+      fixture.detectChanges();
+
+      const rows: string[] = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.row'))
+        .map((r) => r.textContent.replace(/\s+/g, ' ').trim());
+      const statusRow = rows.findIndex((r) => r.startsWith('Status in Canada'));
+
+      expect(component.person.getAllImages().length).toBe(4);
+      expect(rows.filter((r) => r.startsWith('Documents'))).toEqual(['Documents 4 Files']);
+      expect(rows[statusRow + 1]).toEqual('Documents 4 Files');
     });
   });
 
