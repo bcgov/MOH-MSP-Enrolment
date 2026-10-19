@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <!-- Status in Canada documents -->
+  <!-- Documents: one row, every uploaded file -->
   <div class="row" *ngIf="hasDocumentAttached">
     <div class="col-sm-4">
       Documents
@@ -68,16 +68,6 @@
     </div>
     <div class="col-sm-8">
       <strong>{{person.hasNameChange ? "Yes": "No"}}</strong>
-    </div>
-  </div>
-
-  <!-- Name change documents, including the additional document -->
-  <div class="row" *ngIf="nameChangeDocumentCount > 0">
-    <div class="col-sm-4">
-      Documents
-    </div>
-    <div class="col-sm-8">
-      <strong>{{nameChangeDocumentCount}} {{nameChangeFileLabel}}</strong>
     </div>
   </div>
 
@@ -485,16 +475,6 @@
     </div>
     <div class="col-sm-8">
       <strong>{{lang.requestedLabel}}</strong>
-    </div>
-  </div>
-
-  <!-- Documents for the update requests above -->
-  <div class="row" *ngIf="otherDocumentCount > 0">
-    <div class="col-sm-4">
-      Documents
-    </div>
-    <div class="col-sm-8">
-      <strong>{{otherDocumentCount}} {{otherFileLabel}}</strong>
     </div>
   </div>
 
