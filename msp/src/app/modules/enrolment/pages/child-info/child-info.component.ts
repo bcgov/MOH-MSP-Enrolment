@@ -24,7 +24,7 @@ export class ChildInfoComponent extends EnrolForm {
   statusLabel = 'Child\'s immigration status in Canada';
   childAgeCategory = [
     {label: '0-18 years', value: Relationship.ChildUnder19},
-    {label: '18-24 years (must meet the definition of a DPSS above)', value: Relationship.Child18To24},
+    {label: '18-24 years (must meet the definition of a dependent post-secondary student above)', value: Relationship.Child18To24},
   ];
 
   // Replace default messages in the date component for school completion and departure dates
