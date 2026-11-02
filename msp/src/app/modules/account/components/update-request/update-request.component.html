@@ -16,7 +16,7 @@
   </common-checkbox>
 </div>
 
-<div class="add-document mb-4">
+<div *ngIf="person.updateStatusInCanada" class="add-document mb-4">
   <div class="row">
     <div class="col-md-8">
       <msp-canadian-status
@@ -49,18 +49,9 @@
                 </li>
                 <li>
                   Acceptable <strong>Immigration, Refugees and Citizenship Canada 
-                  (IRCC)</strong> documentation include: 
-                  <a role="button"
-                    aria-haspopup="true"
-                    href="javascript:void(0)"
-                    (click)="docSample.openModal()">
-                    {{documentType}}.
-                  </a>
-                  <!-- <common-sample-modal
-                    #docSample
-                    [title]="documentType"
-                    [images]="docSampleImages">
-                  </common-sample-modal> -->
+                  (IRCC)</strong> documentation include: a payment receipt, a letter 
+                  or email from IRCC, or a screenshot from your IRCC online account 
+                  showing your application status and the current date.
                 </li>
               </ul>
             </div>
