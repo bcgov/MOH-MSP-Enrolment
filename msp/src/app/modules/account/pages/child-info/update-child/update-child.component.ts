@@ -48,6 +48,7 @@ export class UpdateChildComponent implements OnInit {
     StatusInCanada.CitizenAdult,
     StatusInCanada.PermanentResident
   ];
+  documentType = "a payment receipt, a letter or email from IRCC, or a screenshot from your IRCC online account showing your application status and the current date.";
   nameChangeDueToNameChangeDocs = nameChangeSupportDocs();
   nameChangeDueToMarriageDocs = nameChangeDueToMarriageOrDivorceDocuments();
   genderChangeDocs = genderDesignationChangeDocuments();
@@ -368,5 +369,9 @@ export class UpdateChildComponent implements OnInit {
     this.child.studiesBeginDate = null;
     this.child.studiesFinishedDate = null;
     this.child.inBCafterStudies = null;
+  }
+
+  isTemporaryPermitHolder() {
+    return this.child.status === StatusInCanada.TemporaryResident;
   }
 }

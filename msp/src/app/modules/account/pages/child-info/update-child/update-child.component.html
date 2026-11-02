@@ -22,14 +22,49 @@
 </div>
 
 <div *ngIf="child.updateStatusInCanada" class="add-document mb-4">
-  <msp-canadian-status
-    [(person)]="child"
-    [hideStatusReasons]="hideStatus">
-    <div sectionTitleInfo>
-      <h2>Child's status in Canada</h2>
+  <div class="row">
+    <div class="col-md-8">
+      <msp-canadian-status
+        [(person)]="child"
+        [hideStatusReasons]="hideStatus">
+        <div sectionTitleInfo>
+          <h2>Child's status in Canada</h2>
+        </div>
+      </msp-canadian-status>
     </div>
-  </msp-canadian-status>
-
+    <div *ngIf="isTemporaryPermitHolder()" class="col-md-4">
+      <div class="tipbox">
+        <div class="card">
+          <div class="card-body">
+            <div><strong>Note for Maintained status holders.</strong></div>
+            <div>
+              If you are waiting for a subsequent work or study permit may be eligible
+              for temporary coverage. To apply, select "Work Permit" or "Study Permit"
+              and upload:
+              <ul>
+                <li> 
+                  Proof that you applied for your new permit on or before your current
+                  permit expired.
+                </li>
+                <li>
+                  If temporary coverage is requested more than four weeks after your
+                  current permit expired, you must provide documentation dated within
+                  four weeks of your request that shows your permit application remains
+                  active.
+                </li>
+                <li>
+                  Acceptable <strong>Immigration, Refugees and Citizenship Canada 
+                  (IRCC)</strong> documentation include: a payment receipt, a letter 
+                  or email from IRCC, or a screenshot from your IRCC online account 
+                  showing your application status and the current date.
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
   <msp-support-documents
     *ngIf="checkStatus()"
     [canadianStatus]="child.status"
