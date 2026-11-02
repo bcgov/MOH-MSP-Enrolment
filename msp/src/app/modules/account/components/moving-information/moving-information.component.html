@@ -63,7 +63,7 @@
     <common-radio
       name="adopted_{{objectId}}"
       [(ngModel)]="person.newlyAdopted"
-      label="Is this child newly adopted?"
+      label="Is the child adopted or born through surrogacy?"
       [required]="true">
     </common-radio>
   </div>
@@ -72,7 +72,7 @@
     <div class="form-group col-sm-6 p-sm-2">
       <common-date
         name="adoptionDate_{{objectId}}"
-        label="Adoption date"
+        label="Adoption date or date of birth for a child born through surrogacy"
         [(ngModel)]="person.adoptedDate"
         [dateRangeStart]='person.dateOfBirth'
         [dateRangeEnd]='dateToday'
