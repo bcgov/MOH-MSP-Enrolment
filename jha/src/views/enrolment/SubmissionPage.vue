@@ -177,15 +177,10 @@
             <ul>
               <li>Your application will be processed within 21 business days.&nbsp;</li>
               <li>
-                After your application is processed, HIBC will mail you a letter confirming your MSP
-                enrolment status. You may have a
-                <a
-                  href="http://www2.gov.bc.ca/gov/content/health/health-drug-coverage/msp/bc-residents/eligibility-and-enrolment/how-to-enrol/coverage-wait-period"
-                  target="_blank"
-                >
-                  wait period
-                </a>
-                .&nbsp;
+                Most adults need to visit a BC driver licensing office to obtain a photo BC Services Card.&nbsp;
+              </li>
+              <li>
+                After you complete ID proofing, you will receive your BC Services Card in the mail. The card carrier includes information about your coverage effective date.&nbsp;
               </li>
               <li>
                 Living outside B.C. for more than six months could cause your MSP coverage to be

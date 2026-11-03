@@ -18,8 +18,8 @@ import {
   genderBirthDateChangeDocuments,
 } from '../../../msp-core/components/support-documents/support-documents.component';
 import { SupportDocuments } from '../../../msp-core/models/support-documents.model';
-import { SupportDocumentTypes } from 'app/modules/msp-core/models/support-documents.enum';
-import { Base } from 'moh-common-lib-angular';
+import { SupportDocumentTypes, SupportDocumentSamples } from 'app/modules/msp-core/models/support-documents.enum';
+import { Base, SampleImageInterface } from 'moh-common-lib-angular';
 import { ControlContainer, NgForm } from '@angular/forms';
 import { CanadianStatusReason, StatusInCanada } from 'app/modules/msp-core/models/canadian-status.enum';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
@@ -64,7 +64,8 @@ export class UpdateRequestComponent extends Base implements OnInit {
     StatusInCanada.CitizenAdult,
     StatusInCanada.PermanentResident,
   ];
-
+  documentType = "a payment receipt, a letter or email from IRCC, or a screenshot from your IRCC online account showing your application status and the current date";
+  docSampleImages: SampleImageInterface[] = [SupportDocumentSamples[1]];
   nameChangeDueToMarriageDocs = nameChangeDueToMarriageOrDivorceDocuments();
   nameChangeDueToNameChangeDocs = nameChangeSupportDocs();
   nameChangeDueToErrorDocs = nameChangeDueToErrorDocuments();
@@ -250,5 +251,9 @@ export class UpdateRequestComponent extends Base implements OnInit {
     if (!event) {
       this.clearDocuments(this.person.updateGenderDesignationDocType);
     }
+  }
+
+  isTemporaryPermitHolder() {
+    return this.person.status === StatusInCanada.TemporaryResident;
   }
 }
