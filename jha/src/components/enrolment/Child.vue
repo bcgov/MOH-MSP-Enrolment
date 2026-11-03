@@ -270,89 +270,105 @@
         from the menu below.
       </p>
       <hr />
-      <SelectComponent
-        :id="'child-status-' + index"
-        v-model="status"
-        :name="'child-status-' + index"
-        label="Immigration status in Canada"
-        class="mt-3"
-        default-option-label="Please select"
-        :disable-placeholder="true"
-        :required="true"
-        :options="citizenshipStatusOptions"
-        :input-style="mediumStyles"
-        @blur="handleBlurField(v$.status)"
-      />
-      <div
-        v-if="v$.status.$dirty && v$.status.required.$invalid"
-        class="text-danger"
-        aria-live="assertive"
-      >
-        Please select your child's immigration status.
-      </div>
-      <div v-if="status && status == statusOptions.TemporaryResident">
-        <p>
-          If this child arrived recently in Canada and does not have a temporary permit, select
-          "Visitor Permit" below and copies of the child's passport ID page and entry stamp or
-          copies of other proof of entry (for example, flight itineraries or airline tickets).
-        </p>
-      </div>
-      <div v-if="status === statusOptions.Citizen || status === statusOptions.PermanentResident">
-        <RadioComponent
-          :id="'child-status-reason-' + index"
-          v-model="statusReason"
-          :name="'child-status-reason-' + index"
-          label=""
-          :required="true"
-          :items="citizenshipStatusReasonOptions"
-          @blur="handleBlurField(v$.statusReason)"
-        />
-        <div
-          v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
-          class="text-danger"
-          aria-live="assertive"
-        >
-          This field is required.
+      <div class="row">
+        <div class="col-md-7">
+          <SelectComponent
+            :id="'child-status-' + index"
+            v-model="status"
+            :name="'child-status-' + index"
+            label="Immigration status in Canada"
+            class="mt-3"
+            default-option-label="Please select"
+            :disable-placeholder="true"
+            :required="true"
+            :options="citizenshipStatusOptions"
+            :input-style="mediumStyles"
+            @blur="handleBlurField(v$.status)"
+          />
+          <div
+            v-if="v$.status.$dirty && v$.status.required.$invalid"
+            class="text-danger"
+            aria-live="assertive"
+          >
+            Please select your child's immigration status.
+          </div>
+          <div v-if="status && status == statusOptions.TemporaryResident">
+            <p>
+              If this child arrived recently in Canada and does not have a temporary permit, select
+              "Visitor Permit" below and copies of the child's passport ID page and entry stamp or
+              copies of other proof of entry (for example, flight itineraries or airline tickets).
+            </p>
+          </div>
+          <div
+            v-if="status === statusOptions.Citizen || status === statusOptions.PermanentResident"
+          >
+            <RadioComponent
+              :id="'child-status-reason-' + index"
+              v-model="statusReason"
+              :name="'child-status-reason-' + index"
+              label=""
+              :required="true"
+              :items="citizenshipStatusReasonOptions"
+              @blur="handleBlurField(v$.statusReason)"
+            />
+            <div
+              v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
+              class="text-danger"
+              aria-live="assertive"
+            >
+              This field is required.
+            </div>
+          </div>
+          <div
+            v-if="
+              status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child18To24
+            "
+          >
+            <RadioComponent
+              :id="'child-status-reason' + index"
+              v-model="statusReason"
+              :name="'child-status-reason' + index"
+              label=""
+              :required="true"
+              :items="temporaryResidentStatusReasonOptions"
+              @blur="handleBlurField(v$.statusReason)"
+            />
+            <div
+              v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
+              class="text-danger"
+              aria-live="assertive"
+            >
+              This field is required.
+            </div>
+          </div>
+          <div
+            v-if="
+              status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child18To24
+            "
+          >
+            <RadioComponent
+              :id="'child-status-reason' + index"
+              v-model="statusReason"
+              :name="'child-status-reason' + index"
+              label=""
+              :required="true"
+              :items="overageChildTemporaryResidentStatusReasonOptions"
+              @blur="handleBlurField(v$.statusReason)"
+            />
+            <div
+              v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
+              class="text-danger"
+              aria-live="assertive"
+            >
+              This field is required.
+            </div>
+          </div>
         </div>
-      </div>
-      <div
-        v-if="status === statusOptions.TemporaryResident && ageRange !== childAgeTypes.Child18To24"
-      >
-        <RadioComponent
-          :id="'child-status-reason' + index"
-          v-model="statusReason"
-          :name="'child-status-reason' + index"
-          label=""
-          :required="true"
-          :items="temporaryResidentStatusReasonOptions"
-          @blur="handleBlurField(v$.statusReason)"
-        />
         <div
-          v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
-          class="text-danger"
-          aria-live="assertive"
+          v-if="status === statusOptions.TemporaryResident"
+          class="col-md-5 d-flex align-items-end"
         >
-          This field is required.
-        </div>
-      </div>
-      <div
-        v-if="status === statusOptions.TemporaryResident && ageRange === childAgeTypes.Child18To24"
-      >
-        <RadioComponent
-          :id="'child-status-reason' + index"
-          v-model="statusReason"
-          :name="'child-status-reason' + index"
-          label=""
-          :required="true"
-          :items="overageChildTemporaryResidentStatusReasonOptions"
-          @blur="handleBlurField(v$.statusReason)"
-        />
-        <div
-          v-if="v$.statusReason.$dirty && v$.statusReason.required.$invalid"
-          class="text-danger"
-          aria-live="assertive"
-        >
-          This field is required.
+          <SampleDocTipBox />
         </div>
       </div>
       <div
@@ -1654,6 +1670,7 @@ import { ChildAgeTypes } from "../../constants/child-age-types";
 import { isAfter, isBefore } from "date-fns";
 import TipBox from "@/components/TipBox.vue";
 import SampleImageTipBox from "@/components/SampleImageTipBox.vue";
+import SampleDocTipBox from "@/components/SampleDocTipBox.vue";
 import { mediumStyles, smallStyles } from "@/constants/input-styles";
 import spaEnvService from "@/services/spa-env-service";
 import {
@@ -1807,6 +1824,7 @@ export default {
     SampleImageTipBox,
     PostalCodeInput,
     ContactInformation,
+    SampleDocTipBox,
   },
   mixins: [pageContentMixin],
   props: {
