@@ -235,65 +235,77 @@
             below.
           </p>
           <hr />
-          <SelectComponent
-            id="immigration-status"
-            v-model="citizenshipStatus"
-            label="Immigration status in Canada"
-            default-option-label="Please select"
-            :disable-placeholder="true"
-            :required="true"
-            :options="citizenshipStatusOptions"
-            :input-style="mediumStyles"
-            @blur="handleBlurField(v$.citizenshipStatus)"
-          />
-          <div
-            v-if="v$.citizenshipStatus.$dirty && v$.citizenshipStatus.required.$invalid"
-            class="text-danger"
-            aria-live="assertive"
-          >
-            Please select your immigration status.
-          </div>
-          <div
-            v-if="
-              citizenshipStatus === StatusInCanada.Citizen ||
-              citizenshipStatus === StatusInCanada.PermanentResident
-            "
-          >
-            <RadioComponent
-              v-model="citizenshipStatusReason"
-              name="citizen-status-reason"
-              class="mt-3"
-              :required="true"
-              :items="citizenshipStatusReasonOptions"
-              @blur="handleBlurField(v$.citizenshipStatusReason)"
-            />
-            <div
-              v-if="
-                v$.citizenshipStatusReason.$dirty && v$.citizenshipStatusReason.required.$invalid
-              "
-              class="text-danger"
-              aria-live="assertive"
-            >
-              This field is required.
+          <div class="row">
+            <div class="col-md-7">
+              <SelectComponent
+                id="immigration-status"
+                v-model="citizenshipStatus"
+                label="Immigration status in Canada"
+                default-option-label="Please select"
+                :disable-placeholder="true"
+                :required="true"
+                :options="citizenshipStatusOptions"
+                :input-style="mediumStyles"
+                @blur="handleBlurField(v$.citizenshipStatus)"
+              />
+              <div
+                v-if="v$.citizenshipStatus.$dirty && v$.citizenshipStatus.required.$invalid"
+                class="text-danger"
+                aria-live="assertive"
+              >
+                Please select your immigration status.
+              </div>
+              <div
+                v-if="
+                  citizenshipStatus === StatusInCanada.Citizen ||
+                  citizenshipStatus === StatusInCanada.PermanentResident
+                "
+              >
+                <RadioComponent
+                  v-model="citizenshipStatusReason"
+                  name="citizen-status-reason"
+                  class="mt-3"
+                  :required="true"
+                  :items="citizenshipStatusReasonOptions"
+                  @blur="handleBlurField(v$.citizenshipStatusReason)"
+                />
+                <div
+                  v-if="
+                    v$.citizenshipStatusReason.$dirty &&
+                    v$.citizenshipStatusReason.required.$invalid
+                  "
+                  class="text-danger"
+                  aria-live="assertive"
+                >
+                  This field is required.
+                </div>
+              </div>
+              <div v-if="citizenshipStatus === StatusInCanada.TemporaryResident">
+                <RadioComponent
+                  v-model="citizenshipStatusReason"
+                  name="citizen-status-reason"
+                  class="mt-3"
+                  :required="true"
+                  :items="temporaryResidentStatusReasonOptions"
+                  @blur="handleBlurField(v$.citizenshipStatusReason)"
+                />
+                <div
+                  v-if="
+                    v$.citizenshipStatusReason.$dirty &&
+                    v$.citizenshipStatusReason.required.$invalid
+                  "
+                  class="text-danger"
+                  aria-live="assertive"
+                >
+                  This field is required.
+                </div>
+              </div>
             </div>
-          </div>
-          <div v-if="citizenshipStatus === StatusInCanada.TemporaryResident">
-            <RadioComponent
-              v-model="citizenshipStatusReason"
-              name="citizen-status-reason"
-              class="mt-3"
-              :required="true"
-              :items="temporaryResidentStatusReasonOptions"
-              @blur="handleBlurField(v$.citizenshipStatusReason)"
-            />
             <div
-              v-if="
-                v$.citizenshipStatusReason.$dirty && v$.citizenshipStatusReason.required.$invalid
-              "
-              class="text-danger"
-              aria-live="assertive"
+              v-if="citizenshipStatus === StatusInCanada.TemporaryResident"
+              class="col-md-5 d-flex align-items-end"
             >
-              This field is required.
+              <SampleDocTipBox />
             </div>
           </div>
         </div>
@@ -1261,6 +1273,7 @@ import { SupportDocumentTypes } from "@/constants/document-types";
 import ConsentModal from "@/components/ConsentModal.vue";
 import TipBox from "@/components/TipBox.vue";
 import SampleImageTipBox from "@/components/SampleImageTipBox.vue";
+import SampleDocTipBox from "@/components/SampleDocTipBox.vue";
 import { isAfter, isBefore, isSameDay, addDays, startOfToday, subDays, subYears } from "date-fns";
 import pageStepperMixin from "@/mixins/page-stepper-mixin";
 import {
@@ -1324,6 +1337,7 @@ export default {
     RadioComponent,
     RegionSelect,
     SampleImageTipBox,
+    SampleDocTipBox,
     SelectComponent,
     SINInput,
     TipBox,

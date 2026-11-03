@@ -177,10 +177,12 @@
             <ul>
               <li>Your application will be processed within 21 business days.&nbsp;</li>
               <li>
-                Most adults need to visit a BC driver licensing office to obtain a photo BC Services Card.&nbsp;
+                Most adults need to visit a BC driver licensing office to obtain a photo BC Services
+                Card.&nbsp;
               </li>
               <li>
-                After you complete ID proofing, you will receive your BC Services Card in the mail. The card carrier includes information about your coverage effective date.&nbsp;
+                After you complete ID proofing, you will receive your BC Services Card in the mail.
+                The card carrier includes information about your coverage effective date.&nbsp;
               </li>
               <li>
                 Living outside B.C. for more than six months could cause your MSP coverage to be

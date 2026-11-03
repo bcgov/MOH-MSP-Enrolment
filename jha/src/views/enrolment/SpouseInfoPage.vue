@@ -316,71 +316,81 @@
               </p>
             </div>
             <hr class="mt-0" />
-            <SelectComponent
-              id="spouse-status"
-              v-model="spouseStatus"
-              name="spouse-status"
-              default-option-label="Please select"
-              :disable-placeholder="true"
-              label="Immigration status in Canada"
-              class="mt-3"
-              :required="true"
-              :options="citizenshipStatusOptions"
-              :input-style="mediumStyles"
-              @blur="handleBlurField(v$.spouseStatus)"
-            />
-            <div
-              v-if="v$.spouseStatus.$dirty && v$.spouseStatus.required.$invalid"
-              class="text-danger"
-              aria-live="assertive"
-            >
-              Please select your spouse's immigration status.
-            </div>
-            <div
-              v-if="
-                spouseStatus === statusOptions.Citizen ||
-                spouseStatus === statusOptions.PermanentResident
-              "
-            >
-              <RadioComponent
-                id="spouse-status-reason"
-                v-model="spouseStatusReason"
-                name="spouse-status-reason"
-                label=""
-                :required="true"
-                :items="citizenshipStatusReasonOptions"
-                @blur="handleBlurField(v$.spouseStatusReason)"
-              />
-              <div
-                v-if="v$.spouseStatusReason.$dirty && v$.spouseStatusReason.required.$invalid"
-                class="text-danger"
-                aria-live="assertive"
-              >
-                This field is required.
+            <div class="row">
+              <div class="col-md-7">
+                <SelectComponent
+                  id="spouse-status"
+                  v-model="spouseStatus"
+                  name="spouse-status"
+                  default-option-label="Please select"
+                  :disable-placeholder="true"
+                  label="Immigration status in Canada"
+                  class="mt-3"
+                  :required="true"
+                  :options="citizenshipStatusOptions"
+                  :input-style="mediumStyles"
+                  @blur="handleBlurField(v$.spouseStatus)"
+                />
+                <div
+                  v-if="v$.spouseStatus.$dirty && v$.spouseStatus.required.$invalid"
+                  class="text-danger"
+                  aria-live="assertive"
+                >
+                  Please select your spouse's immigration status.
+                </div>
+                <div
+                  v-if="
+                    spouseStatus === statusOptions.Citizen ||
+                    spouseStatus === statusOptions.PermanentResident
+                  "
+                >
+                  <RadioComponent
+                    id="spouse-status-reason"
+                    v-model="spouseStatusReason"
+                    name="spouse-status-reason"
+                    label=""
+                    :required="true"
+                    :items="citizenshipStatusReasonOptions"
+                    @blur="handleBlurField(v$.spouseStatusReason)"
+                  />
+                  <div
+                    v-if="v$.spouseStatusReason.$dirty && v$.spouseStatusReason.required.$invalid"
+                    class="text-danger"
+                    aria-live="assertive"
+                  >
+                    This field is required.
+                  </div>
+                </div>
+                <div v-if="spouseStatus === statusOptions.TemporaryResident">
+                  <p>
+                    If the spouse arrived recently in Canada and does not have a temporary permit,
+                    select "Visitor Permit" below and copies of the spouse's passport ID page and
+                    entry stamp or copies of other proof of entry (for example, flight itineraries
+                    or airline tickets).
+                  </p>
+                  <RadioComponent
+                    id="spouse-status-reason"
+                    v-model="spouseStatusReason"
+                    name="spouse-status-reason"
+                    label=""
+                    :required="true"
+                    :items="temporaryResidentStatusReasonOptions"
+                    @blur="handleBlurField(v$.spouseStatusReason)"
+                  />
+                  <div
+                    v-if="v$.spouseStatusReason.$dirty && v$.spouseStatusReason.required.$invalid"
+                    class="text-danger"
+                    aria-live="assertive"
+                  >
+                    This field is required.
+                  </div>
+                </div>
               </div>
-            </div>
-            <div v-if="spouseStatus === statusOptions.TemporaryResident">
-              <p>
-                If the spouse arrived recently in Canada and does not have a temporary permit,
-                select "Visitor Permit" below and copies of the spouse's passport ID page and entry
-                stamp or copies of other proof of entry (for example, flight itineraries or airline
-                tickets).
-              </p>
-              <RadioComponent
-                id="spouse-status-reason"
-                v-model="spouseStatusReason"
-                name="spouse-status-reason"
-                label=""
-                :required="true"
-                :items="temporaryResidentStatusReasonOptions"
-                @blur="handleBlurField(v$.spouseStatusReason)"
-              />
               <div
-                v-if="v$.spouseStatusReason.$dirty && v$.spouseStatusReason.required.$invalid"
-                class="text-danger"
-                aria-live="assertive"
+                v-if="spouseStatus === statusOptions.TemporaryResident"
+                class="col-md-5 d-flex align-items-end"
               >
-                This field is required.
+                <SampleDocTipBox />
               </div>
             </div>
             <div
@@ -1372,6 +1382,7 @@ import {
 } from "@/store/modules/enrolment-module";
 import TipBox from "@/components/TipBox.vue";
 import SampleImageTipBox from "@/components/SampleImageTipBox.vue";
+import SampleDocTipBox from "@/components/SampleDocTipBox.vue";
 import pageStepperMixin from "@/mixins/page-stepper-mixin";
 import {
   firstNameMaxLength,
@@ -1470,6 +1481,7 @@ export default {
     FileUploader,
     TipBox,
     SampleImageTipBox,
+    SampleDocTipBox,
     ContactInformation,
   },
   mixins: [pageContentMixin, pageStepperMixin],
