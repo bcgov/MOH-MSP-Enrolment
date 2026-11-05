@@ -4,7 +4,7 @@ import { MspAccountApp, AccountChangeOptions, UpdateList } from '../../../models
 import { MspPerson } from '../../../../../components/msp/model/msp-person.model';
 import { Relationship } from '../../../../../models/relationship.enum';
 import { StatusInCanada, CanadianStatusReason } from '../../../../msp-core/models/canadian-status.enum';
-import { SupportDocumentTypes } from 'app/modules/msp-core/models/support-documents.enum';
+import { SupportDocumentSamples, SupportDocumentTypes } from 'app/modules/msp-core/models/support-documents.enum';
 import {
   nameChangeSupportDocs,
   nameChangeDueToMarriageOrDivorceDocuments,
@@ -48,7 +48,7 @@ export class UpdateChildComponent implements OnInit {
     StatusInCanada.CitizenAdult,
     StatusInCanada.PermanentResident
   ];
-  documentType = "a payment receipt, a letter or email from IRCC, or a screenshot from your IRCC online account showing your application status and the current date.";
+  docSampleImages = [SupportDocumentSamples[0]];
   nameChangeDueToNameChangeDocs = nameChangeSupportDocs();
   nameChangeDueToMarriageDocs = nameChangeDueToMarriageOrDivorceDocuments();
   genderChangeDocs = genderDesignationChangeDocuments();

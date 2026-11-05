@@ -68,6 +68,11 @@ export const SupportDocumentList = {
 
 // Must match order of enums
 export const SupportDocumentSamples: SampleImageInterface[] = [
+  // Acceptable Documents
+  {
+    path: 'assets/acceptable-docs.png',
+    desc: 'a payment receipt, a letter or email from IRCC, or a screenshot from your IRCC online account showing your application status and the current date'
+  },
   // CanadianBirthCertificate
   {
     path: 'assets/canadian_birth_certs.jpg',
