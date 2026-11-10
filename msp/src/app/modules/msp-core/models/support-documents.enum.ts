@@ -188,6 +188,9 @@ export const SupportDocumentSamples: SampleImageInterface[] = [
     path: 'assets/affidavit.png',
     desc: 'Picture of a sample Affidavit',
   },
+];
+
+export const IrccDocumentSample: SampleImageInterface[] = [
   // IRCC Documentation
   {
     path: 'assets/acceptable-docs.png',
