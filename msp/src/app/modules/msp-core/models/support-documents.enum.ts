@@ -63,16 +63,12 @@ export const SupportDocumentList = {
     'Request for Waiver of Parental Consent (minor) (for under 19 years)',
   SeparationAgreement: 'Separation Agreement',
   NotarizedStatementOrAffidavit: 'Notarized Statement Or Affidavit',
+  IrccDocumentation: 'Immigration, Refugees and Citizenship Canada (IRCC) documentation',
   Other: 'Other',
 };
 
 // Must match order of enums
 export const SupportDocumentSamples: SampleImageInterface[] = [
-  // Acceptable Documents
-  {
-    path: 'assets/acceptable-docs.png',
-    desc: 'a payment receipt, a letter or email from IRCC, or a screenshot from your IRCC online account showing your application status and the current date'
-  },
   // CanadianBirthCertificate
   {
     path: 'assets/canadian_birth_certs.jpg',
@@ -191,5 +187,10 @@ export const SupportDocumentSamples: SampleImageInterface[] = [
   {
     path: 'assets/affidavit.png',
     desc: 'Picture of a sample Affidavit',
+  },
+  // IRCC Documentation
+  {
+    path: 'assets/acceptable-docs.png',
+    desc: 'a payment receipt, a letter or email from IRCC, or a screenshot from your IRCC online account showing your application status and the current date'
   },
 ];
