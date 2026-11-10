@@ -19,7 +19,8 @@ import {
 } from '../../../msp-core/components/support-documents/support-documents.component';
 import { SupportDocuments } from '../../../msp-core/models/support-documents.model';
 import { SupportDocumentTypes } from '../../../msp-core/models/support-documents.enum';
-import { Base } from 'moh-common-lib-angular';
+import { IrccDocumentSample } from '../../../msp-core/models/support-documents.enum';
+import { Base, SampleImageInterface } from 'moh-common-lib-angular';
 import { ControlContainer, NgForm } from '@angular/forms';
 import { CanadianStatusReason, StatusInCanada } from 'app/modules/msp-core/models/canadian-status.enum';
 import { MspPerson } from '../../../../components/msp/model/msp-person.model';
@@ -46,6 +47,7 @@ export class UpdateRequestComponent extends Base implements OnInit {
   @Input() subtitle: string;
   @Input() status: boolean;
   @Input() updateList: UpdateList[];
+  readonly irccSampleImages: SampleImageInterface[] = IrccDocumentSample;
 
   itemList: ItemList[];
   @Output() statusChange: EventEmitter<boolean>; //  = new EventEmitter<boolean>();

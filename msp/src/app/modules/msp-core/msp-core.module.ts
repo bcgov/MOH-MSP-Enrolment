@@ -106,6 +106,7 @@ const templistCore = [
   exports: [
     componentList,
     CaptchaModule,
+    SampleModalComponent,
 
     // TODO: Be reviewed
     templistCore,
