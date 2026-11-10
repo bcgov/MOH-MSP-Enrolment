@@ -13,7 +13,8 @@ import {
   genderBirthDateChangeDocuments
 } from '../../../../msp-core/components/support-documents/support-documents.component';
 import { SpaEnvService } from '../../../../../services/spa-env.service';
-import { ErrorMessage } from 'moh-common-lib-angular';
+import { IrccDocumentSample } from '../../../../msp-core/models/support-documents.enum';
+import { ErrorMessage, SampleImageInterface  } from 'moh-common-lib-angular';
 import { startOfToday, subDays, isBefore, differenceInYears } from 'date-fns';
 import { environment } from 'environments/environment';
 
@@ -54,6 +55,7 @@ export class UpdateChildComponent implements OnInit {
   genderChangeDocs = genderDesignationChangeDocuments();
   nameChangeDuetoErrorDocs = nameChangeDueToErrorDocuments();
   genderBirthdateChangeDocs = genderBirthDateChangeDocuments();
+  readonly irccSampleImages: SampleImageInterface[] = IrccDocumentSample;
 
   private _today = startOfToday();
   public readonly addressServiceUrl: string =
